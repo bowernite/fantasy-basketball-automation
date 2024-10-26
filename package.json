@@ -1,0 +1,14 @@
+{
+  "name": "ff-basketball-automation",
+  "module": "main.ts",
+  "type": "module",
+  "scripts": {
+    "build": "./build.sh"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.5.4"
+  }
+}
