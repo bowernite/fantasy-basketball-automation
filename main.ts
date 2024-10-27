@@ -2,6 +2,11 @@ import { playerData } from "./src/selectors";
 
 let numPlayersSelected = 0;
 
+const ALTERNATE_COLOR = "rgba(0, 255, 255, 0.3)";
+const OUTLINE_COLOR = "rgb(0, 200, 255)";
+const SELECTED_COLOR = "rgba(0, 255, 0, 0.3)";
+const WARNING_COLOR = "rgba(255, 0, 0, 0.3)";
+
 // Set all players to Bench first
 playerData.forEach((player) => {
   player.setPositionDropdown.value = "0";
@@ -9,7 +14,7 @@ playerData.forEach((player) => {
   player.setPositionDropdown.dispatchEvent(changeEvent);
 });
 
-// TODO: Handle TAXI, IR players properly
+// TODO: Handle TAXI, IR players properly. Right now it puts them on the bench.
 
 const playersToStart = playerData
   // TODO: Handle probable, questionable, etc.
@@ -21,12 +26,10 @@ const playersToStart = playerData
     const weightedScoreB = 0.75 * b.seasonAvg + 0.25 * b.last5Avg;
     return weightedScoreB - weightedScoreA;
   })
-  .map((player) => {
+  .map((player, index) => {
     if (numPlayersSelected >= 9) {
       return;
     }
-
-    player.row.style.backgroundColor = "rgba(255, 0, 0, 0.3)";
 
     const positionOptions = Array.from(player.setPositionDropdown.options)
       .map((option) => ({ position: option.text, value: option.value }))
@@ -53,7 +56,20 @@ const playersToStart = playerData
       console.log(
         `Set ${player.playerName} to position: ${lowestValueOption.position}`
       );
+
+      if (index >= 10) {
+        player.row.style.backgroundColor = ALTERNATE_COLOR;
+        player.row.style.outline = `2px solid ${OUTLINE_COLOR}`;
+        setTimeout(() => {
+          player.row.style.backgroundColor = ALTERNATE_COLOR;
+        }, 1000);
+      } else {
+        setTimeout(() => {
+          player.row.style.backgroundColor = SELECTED_COLOR;
+        }, 500);
+      }
     } else {
+      player.row.style.backgroundColor = WARNING_COLOR;
       console.error(`No position options available for ${player.playerName}`);
     }
 
