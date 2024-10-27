@@ -2,6 +2,13 @@ import { playerData } from "./src/selectors";
 
 let numPlayersSelected = 0;
 
+// Set all players to Bench first
+playerData.forEach((player) => {
+  player.setPositionDropdown.value = "0";
+  const changeEvent = new Event("change", { bubbles: true });
+  player.setPositionDropdown.dispatchEvent(changeEvent);
+});
+
 const playersToStart = playerData
   // TODO: Handle probable, questionable, etc.
   .filter((player) => player.playerStatus === "active")
