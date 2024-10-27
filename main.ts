@@ -9,6 +9,8 @@ playerData.forEach((player) => {
   player.setPositionDropdown.dispatchEvent(changeEvent);
 });
 
+// TODO: Handle TAXI, IR players properly
+
 const playersToStart = playerData
   // TODO: Handle probable, questionable, etc.
   .filter((player) => player.playerStatus === "active")
