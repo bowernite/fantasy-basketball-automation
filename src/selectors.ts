@@ -19,37 +19,48 @@ export const playerData = Array.from(rows)
       console.warn("Empty row found; skipping");
       return;
     }
-    console.log("🟣 :", playerName);
+    console.log("🟣 playerName:", playerName);
 
     const playerStatus = row.querySelector(".injury")?.textContent || "active";
-    console.log("🟣 :", playerStatus);
+    console.log("🟣 playerStatus:", playerStatus);
 
     const fantasyPointsElements = row.querySelectorAll(".fp");
-    console.log("🟣 :", fantasyPointsElements);
+    console.log("🟣 fantasyPointsElements:", fantasyPointsElements);
     const last5Avg = Number(fantasyPointsElements[1]?.textContent ?? 0);
-    console.log("🟣 :", last5Avg);
+    console.log("🟣 last5Avg:", last5Avg);
     const seasonAvg = Number(fantasyPointsElements[2]?.textContent ?? 0);
-    console.log("🟣 :", seasonAvg);
+    console.log("🟣 seasonAvg:", seasonAvg);
     const seasonTotal = Number(fantasyPointsElements[3]?.textContent ?? 0);
-    console.log("🟣 :", seasonTotal);
+    console.log("🟣 seasonTotal:", seasonTotal);
     const gamesPlayed = seasonTotal / seasonAvg;
-    console.log("🟣 :", gamesPlayed);
+    console.log("🟣 gamesPlayed:", gamesPlayed);
 
     const todaysGame = row.querySelector(".pro-opp-matchup")?.textContent;
-    console.log("🟣 :", todaysGame);
+    console.log("🟣 todaysGame:", todaysGame);
 
     const position = row.querySelector(".position")?.textContent;
-    console.log("🟣 :", position);
+    console.log("🟣 position:", position);
+
+    const setPositionDropdown =
+      row.querySelector<HTMLSelectElement>(".form-control");
+    console.log("🟣 setPositionDropdown:", setPositionDropdown);
+    if (!(setPositionDropdown instanceof HTMLSelectElement)) {
+      throw new Error(
+        "Expected setPositionDropdown to be an HTMLSelectElement"
+      );
+    }
 
     return {
       playerName,
       playerStatus,
       last5Avg,
       seasonAvg,
-      seasonTotal,
-      gamesPlayed,
+      // seasonTotal,
+      // gamesPlayed,
       todaysGame,
       position,
+      setPositionDropdown,
+      row,
     };
   })
   .filter((player) => player !== undefined);
