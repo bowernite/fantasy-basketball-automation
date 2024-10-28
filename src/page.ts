@@ -76,7 +76,6 @@ export function startPlayer(
 ) {
   if (!player.setPositionDropdown) {
     const errorMessage = `Tried to start ${player.playerName} without a dropdown; this player is likely LOCKED.`;
-    throw new Error(errorMessage);
     alert(`WARNING: ${errorMessage}`);
     return false;
   }
@@ -90,6 +89,27 @@ export function startPlayer(
   console.log(`Available positions for ${player.playerName}:`, positionOptions);
 
   if (positionOptions.length > 0) {
+    // First try to find preferred positions in order
+    const preferredPositions = ["PF", "C", "SF"];
+    for (const preferredPosition of preferredPositions) {
+      const preferredOption = positionOptions.find(
+        option => option.position === preferredPosition
+      );
+      if (preferredOption) {
+        setPlayerPosition(player, preferredOption.value);
+        console.log(
+          `Set ${player.playerName} to preferred position: ${preferredOption.position}`
+        );
+        if (isAlternate) {
+          stylePlayerAsAlternate(player);
+        } else {
+          stylePlayerAsStarted(player);
+        }
+        return true;
+      }
+    }
+
+    // Fall back to lowest value option if no preferred positions found
     const lowestValueOption = positionOptions.reduce((lowest, current) =>
       Number(current.value) < Number(lowest.value) ? current : lowest
     );
@@ -112,6 +132,8 @@ export function startPlayer(
     return false;
   }
 }
+
+console.table(players);
 
 export const setPlayerPosition = (player: Player, position: string) => {
   if (!player.setPositionDropdown) {

@@ -1,5 +1,6 @@
 import { players, setAllPlayersToBench, startPlayer } from "./src/page";
 import { getPlayerWeightedScore } from "./src/score-weighting.ts";
+import { stylePlayerAsUnableToStart } from "./src/styling.ts";
 
 setAllPlayersToBench();
 
@@ -23,6 +24,13 @@ topPlayers.forEach((player, index) => {
     alert(
       `WARNING: ${player.playerName} is ${player.playerStatus}; not starting this player, but you may want to check back later if they're playing`
     );
+    return;
+  }
+  if (player.isTaxi) {
+    alert(
+      `WARNING: ${player.playerName} is a TAXI; not starting this player, but maybe activate them at some point?`
+    );
+    stylePlayerAsUnableToStart(player);
     return;
   }
 
