@@ -83,3 +83,7 @@ cp ./chrome-extension/background.js ./chrome-extension/dist/background.js
 
 log_step "🔄 Opening Chrome Extension"
 open -a "Google Chrome"
+
+# if [[ "$*" == *"--run"* ]]; then
+# TODO: Click chrome extension icon
+# fi

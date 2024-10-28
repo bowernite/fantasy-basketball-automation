@@ -1,7 +1,7 @@
 import { players, type Player } from "./src/page";
 import {
   stylePlayerAsAlternate,
-  stylePlayerAsSelected,
+  stylePlayerAsStarted,
   stylePlayerAsUnableToStart,
 } from "./src/styling";
 
@@ -84,7 +84,7 @@ function startPlayer(
     if (isAlternate) {
       stylePlayerAsAlternate(player);
     } else {
-      stylePlayerAsSelected(player);
+      stylePlayerAsStarted(player);
     }
   } else {
     stylePlayerAsUnableToStart(player);
