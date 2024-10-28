@@ -1,4 +1,4 @@
-import type { Player } from "./selectors";
+import type { Player } from "./page";
 
 type StrictPosition = "PG" | "SG" | "SF" | "PF" | "C";
 type WidePosition = StrictPosition | string;

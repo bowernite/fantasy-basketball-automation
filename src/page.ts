@@ -12,7 +12,7 @@ if (rows.length === 0) {
   throw new Error("Expected at least one row");
 }
 
-export const playerData = Array.from(rows)
+export const players = Array.from(rows)
   .map((row) => {
     const playerName = row.querySelector(".player-text")?.textContent;
     if (!playerName) {
@@ -65,4 +65,4 @@ export const playerData = Array.from(rows)
   })
   .filter((player) => player !== undefined);
 
-export type Player = (typeof playerData)[number];
+export type Player = (typeof players)[number];
