@@ -2,7 +2,7 @@ import { players, type Player } from "./src/page";
 import {
   stylePlayerAsAlternate,
   stylePlayerAsSelected,
-  stylePlayerAsWarning,
+  stylePlayerAsUnableToStart,
 } from "./src/styling";
 
 let numPlayersStarted = 0;
@@ -47,7 +47,7 @@ const playersToStart = topPlayers.map((player, index) => {
   if (numPlayersStarted >= 9) {
     return;
   }
-  startPlayer(player, { isAlternate: index >= 10 });
+  startPlayer(player, { isAlternate: index >= 9 });
 
   return player;
 });
@@ -87,7 +87,7 @@ function startPlayer(
       stylePlayerAsSelected(player);
     }
   } else {
-    stylePlayerAsWarning(player);
+    stylePlayerAsUnableToStart(player);
     console.error(`No position options available for ${player.playerName}`);
   }
 }
