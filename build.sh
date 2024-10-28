@@ -80,3 +80,6 @@ echo "✅ Successfully built JavaScript to ./chrome-extension/dist/main.js and c
 
 log_step "🔄 Copying Chrome Extension background file"
 cp ./chrome-extension/background.js ./chrome-extension/dist/background.js
+
+log_step "🔄 Opening Chrome Extension"
+open -a "Google Chrome"
