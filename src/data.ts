@@ -63,4 +63,12 @@ export const PLAYER_DATA = {
   "Zach Edey": {
     projectedSeasonAvg: 23.7,
   },
+
+  // PICKUPS
+  "Daniel Theis": {
+    projectedSeasonAvg: 19.55,
+  },
+  "Kevon Looney": {
+    projectedSeasonAvg: 25.3,
+  },
 };

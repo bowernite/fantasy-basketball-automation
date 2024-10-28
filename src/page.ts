@@ -90,10 +90,10 @@ export function startPlayer(
 
   if (positionOptions.length > 0) {
     // First try to find preferred positions in order
-    const preferredPositions = ["PF", "C", "SF"];
+    const preferredPositions = ["PF", "C", "SF", "F", "SG", "PG"];
     for (const preferredPosition of preferredPositions) {
       const preferredOption = positionOptions.find(
-        option => option.position === preferredPosition
+        (option) => option.position === preferredPosition
       );
       if (preferredOption) {
         setPlayerPosition(player, preferredOption.value);

@@ -1,8 +1,15 @@
-import { players, setAllPlayersToBench, startPlayer } from "./src/page";
+import {
+  players,
+  setAllPlayersToBench,
+  startPlayer,
+  type Player,
+} from "./src/page";
 import { getPlayerWeightedScore } from "./src/score-weighting.ts";
 import { stylePlayerAsUnableToStart } from "./src/styling.ts";
 
 setAllPlayersToBench();
+
+const backupPlayers: Player[] = [];
 
 const topPlayers = players
   .filter(
@@ -21,15 +28,10 @@ topPlayers.forEach((player, index) => {
   }
 
   if (player.playerStatus === "DTD") {
-    alert(
-      `WARNING: ${player.playerName} is ${player.playerStatus}; not starting this player, but you may want to check back later if they're playing`
-    );
+    backupPlayers.push(player);
     return;
   }
   if (player.isTaxi) {
-    alert(
-      `WARNING: ${player.playerName} is a TAXI; not starting this player, but maybe activate them at some point?`
-    );
     stylePlayerAsUnableToStart(player);
     return;
   }
@@ -42,10 +44,19 @@ topPlayers.forEach((player, index) => {
 
 if (numPlayersStarted < 9) {
   console.warn("Not enough players started;");
-  setTimeout(() => {
-    alert(
-      "WARNING: Not enough players started; you may want to pick someone up."
-    );
-  }, 500);
   // TODO: Start empty players? I guess it doesn't matter...
+  backupPlayers.forEach((player) => {
+    const playerStarted = startPlayer(player);
+    if (playerStarted) {
+      numPlayersStarted++;
+    }
+  });
+  backupPlayers.shift();
 }
+
+const remainingBackupPlayers = [...backupPlayers];
+remainingBackupPlayers.forEach((player) => {
+  alert(
+    `WARNING: ${player.playerName} is ${player.playerStatus}; not starting this player, but you may want to check back later if they're playing`
+  );
+});
