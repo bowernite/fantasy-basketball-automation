@@ -1,0 +1,13 @@
+{
+  "manifest_version": 3,
+  "name": "Fantasy Basketball Automation",
+  "version": "1.0",
+  "description": "Description of your extension",
+  "action": {
+    "default_icon": "icons/icon.png"
+  },
+  "background": {
+    "service_worker": "dist/background.js"
+  },
+  "permissions": ["activeTab", "scripting"]
+}

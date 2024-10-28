@@ -34,10 +34,9 @@ else
   exit 1
 fi
 
-log_step "📁 Creating temporary directory"
-# Create a temporary directory
-TEMP_DIR=$(mktemp -d)
-TEMP_JS_FILE="$TEMP_DIR/temp.js"
+log_step "📁 Creating dist directory"
+# Create dist directory if it doesn't exist
+mkdir -p ./chrome-extension/dist
 
 log_step "🔎 Determining TypeScript file to transpile"
 # Check for main.ts, then package.json entrypoint, then index.ts
@@ -56,31 +55,28 @@ fi
 
 if [ -z "$TS_FILE" ]; then
   echo "❌ No TypeScript file found. Please ensure main.ts, a valid entrypoint in package.json, or index.ts exists."
-  rm -rf "$TEMP_DIR"
   exit 1
 fi
 
 log_step "🔄 Transpiling TypeScript to JavaScript"
 # Transpile TypeScript to JavaScript
 if [ "$TRANSPILE_CMD" = "bun build" ]; then
-  $TRANSPILE_CMD "$TS_FILE" --outfile="$TEMP_JS_FILE"
+  $TRANSPILE_CMD "$TS_FILE" --outfile="./chrome-extension/dist/main.js"
 else
-  $TRANSPILE_CMD --outFile "$TEMP_JS_FILE" "$TS_FILE"
+  $TRANSPILE_CMD --outFile "./chrome-extension/dist/main.js" "$TS_FILE"
 fi
 
 # Check if transpilation was successful
 if [ $? -ne 0 ]; then
   echo "❌ Transpilation failed. Please check your TypeScript code."
-  rm -rf "$TEMP_DIR"
   exit 1
 fi
 
 log_step "📋 Copying transpiled JavaScript to clipboard"
 # Copy the transpiled JavaScript to clipboard
-cat "$TEMP_JS_FILE" | $CLIPBOARD_CMD
+cat "./chrome-extension/dist/main.js" | $CLIPBOARD_CMD
 
-echo "✅ Transpiled JavaScript has been copied to clipboard."
+echo "✅ Successfully built JavaScript to ./chrome-extension/dist/main.js and copied to clipboard"
 
-log_step "🧹 Cleaning up temporary files"
-# Clean up temporary files
-rm -rf "$TEMP_DIR"
+log_step "🔄 Copying Chrome Extension background file"
+cp ./chrome-extension/background.js ./chrome-extension/dist/background.js
