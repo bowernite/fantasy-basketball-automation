@@ -1,6 +1,12 @@
 // NOTES
 // - Assumes we're on `fantasy stats` page
 
+import {
+  stylePlayerAsAlternate,
+  stylePlayerAsStarted,
+  stylePlayerAsUnableToStart,
+} from "./styling";
+
 let tables = document.querySelectorAll("table");
 if (tables.length !== 1) {
   throw new Error("Expected exactly one table");
@@ -19,39 +25,33 @@ export const players = Array.from(rows)
       console.warn("Empty row found; skipping");
       return;
     }
-    console.log("🟣 playerName:", playerName);
-
-    const playerStatus = row.querySelector(".injury")?.textContent || "active";
-    console.log("🟣 playerStatus:", playerStatus);
-
+    const playerStatus =
+      row.querySelector(".injury")?.textContent || "(active)";
     const fantasyPointsElements = row.querySelectorAll(".fp");
-    console.log("🟣 fantasyPointsElements:", fantasyPointsElements);
     const last5Avg = Number(fantasyPointsElements[1]?.textContent ?? 0);
-    console.log("🟣 last5Avg:", last5Avg);
     const seasonAvg = Number(fantasyPointsElements[2]?.textContent ?? 0);
-    console.log("🟣 seasonAvg:", seasonAvg);
     const seasonTotal = Number(fantasyPointsElements[3]?.textContent ?? 0);
-    console.log("🟣 seasonTotal:", seasonTotal);
     const gamesPlayed = seasonTotal / seasonAvg;
-    console.log("🟣 gamesPlayed:", gamesPlayed);
-
     const todaysGame = row.querySelector(".pro-opp-matchup")?.textContent;
-    console.log("🟣 todaysGame:", todaysGame);
-
     const position = row.querySelector(".position")?.textContent;
-    console.log("🟣 position:", position);
-
     const setPositionDropdown =
       row.querySelector<HTMLSelectElement>(".form-control");
-    console.log("🟣 setPositionDropdown:", setPositionDropdown);
     const isTaxi = row.textContent?.includes("TAXI");
-    console.log("🟣 isTaxi:", isTaxi);
     const isIr = row.textContent?.includes("IR");
-    console.log("🟣 isIr:", isIr);
+
+    if (
+      playerStatus !== "DTD" &&
+      playerStatus !== "OUT" &&
+      playerStatus !== "Q" &&
+      playerStatus !== "OFS" &&
+      playerStatus !== "(active)"
+    ) {
+      alert(`Unknown player status: ${playerStatus}`);
+    }
 
     return {
       playerName,
-      playerStatus,
+      playerStatus: playerStatus as PlayerStatus,
       last5Avg,
       seasonAvg,
       // seasonTotal,
@@ -67,3 +67,69 @@ export const players = Array.from(rows)
   .filter((player) => player !== undefined);
 
 export type Player = (typeof players)[number];
+
+export type PlayerStatus = "(active)" | "DTD" | "OUT" | "Q" | "OFS";
+
+export function startPlayer(
+  player: Player,
+  { isAlternate = false }: { isAlternate?: boolean } = {}
+) {
+  if (!player.setPositionDropdown) {
+    const errorMessage = `Tried to start ${player.playerName} without a dropdown; this player is likely LOCKED.`;
+    throw new Error(errorMessage);
+    alert(`WARNING: ${errorMessage}`);
+    return false;
+  }
+
+  const positionOptions = Array.from(player.setPositionDropdown.options)
+    .map((option) => ({ position: option.text, value: option.value }))
+    .filter(
+      (option) =>
+        option.position.toLowerCase() !== "bench" && option.value !== "0"
+    );
+  console.log(`Available positions for ${player.playerName}:`, positionOptions);
+
+  if (positionOptions.length > 0) {
+    const lowestValueOption = positionOptions.reduce((lowest, current) =>
+      Number(current.value) < Number(lowest.value) ? current : lowest
+    );
+    setPlayerPosition(player, lowestValueOption.value);
+
+    console.log(
+      `Set ${player.playerName} to position: ${lowestValueOption.position}`
+    );
+
+    if (isAlternate) {
+      stylePlayerAsAlternate(player);
+    } else {
+      stylePlayerAsStarted(player);
+    }
+
+    return true;
+  } else {
+    stylePlayerAsUnableToStart(player);
+    console.error(`No position options available for ${player.playerName}`);
+    return false;
+  }
+}
+
+export const setPlayerPosition = (player: Player, position: string) => {
+  if (!player.setPositionDropdown) {
+    throw new Error(
+      "Tried to set a player's position without a dropdown; this player is likely LOCKED."
+    );
+  }
+  player.setPositionDropdown.value = position;
+  const changeEvent = new Event("change", { bubbles: true });
+  player.setPositionDropdown.dispatchEvent(changeEvent);
+};
+
+// Set all players to Bench first
+export function setAllPlayersToBench() {
+  players
+    .filter((player) => player.setPositionDropdown)
+    .filter((player) => !player.isTaxi && !player.isIr)
+    .forEach((player) => {
+      setPlayerPosition(player, "0");
+    });
+}

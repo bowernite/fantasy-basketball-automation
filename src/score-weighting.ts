@@ -1,5 +1,6 @@
 import { PLAYER_DATA } from "./data";
 import type { Player } from "./page";
+
 export const getPlayerWeightedScore = (player: Player) => {
   const playerData = PLAYER_DATA[player.playerName as keyof typeof PLAYER_DATA];
   const projectedSeasonAvg = playerData?.projectedSeasonAvg;
@@ -18,3 +19,4 @@ export const getPlayerWeightedScore = (player: Player) => {
     (1 - seasonProgressWeight) * (projectedSeasonAvg ?? actualPerformanceWeight)
   );
 };
+
