@@ -8,21 +8,29 @@ const SELECTED_COLOR = "rgba(0, 255, 0, 0.3)";
 const WARNING_COLOR = "rgba(255, 0, 0, 0.3)";
 
 const setPlayerPosition = (player: Player, position: string) => {
+  if (!player.setPositionDropdown) {
+    throw new Error(
+      "Tried to set a player's position without a dropdown; this player is likely LOCKED."
+    );
+  }
   player.setPositionDropdown.value = position;
   const changeEvent = new Event("change", { bubbles: true });
   player.setPositionDropdown.dispatchEvent(changeEvent);
 };
 
 // Set all players to Bench first
-players.forEach((player) => {
-  setPlayerPosition(player, "0");
-});
+players
+  .filter((player) => player.setPositionDropdown)
+  .forEach((player) => {
+    setPlayerPosition(player, "0");
+  });
 
 // TODO: Handle TAXI, IR players properly. Right now it puts them on the bench.
 
 const topPlayers = players
   // TODO: Handle probable, questionable, etc.
   .filter((player) => player.playerStatus === "active")
+  .filter((player) => player.setPositionDropdown)
   // TODO: turn back on
   // .filter((player) => player.todaysGame)
   .sort((a, b) => {
@@ -47,6 +55,12 @@ function startPlayer(
   player: Player,
   { isAlternate = false }: { isAlternate?: boolean } = {}
 ) {
+  if (!player.setPositionDropdown) {
+    throw new Error(
+      "Tried to start a player without a dropdown; this player is likely LOCKED."
+    );
+  }
+
   const positionOptions = Array.from(player.setPositionDropdown.options)
     .map((option) => ({ position: option.text, value: option.value }))
     .filter(

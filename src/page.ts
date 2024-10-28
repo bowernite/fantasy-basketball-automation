@@ -41,14 +41,10 @@ export const players = Array.from(rows)
     const position = row.querySelector(".position")?.textContent;
     console.log("🟣 position:", position);
 
-    const setPositionDropdown =
-      row.querySelector<HTMLSelectElement>(".form-control");
+    const setPositionDropdown = row.querySelector<HTMLSelectElement>(
+      ".form-control"
+    );
     console.log("🟣 setPositionDropdown:", setPositionDropdown);
-    if (!(setPositionDropdown instanceof HTMLSelectElement)) {
-      throw new Error(
-        "Expected setPositionDropdown to be an HTMLSelectElement"
-      );
-    }
 
     return {
       playerName,
