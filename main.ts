@@ -1,4 +1,5 @@
 import { players, type Player } from "./src/page";
+import { getPlayerWeightedScore } from "./src/score-weighting.ts";
 import {
   stylePlayerAsAlternate,
   stylePlayerAsStarted,
@@ -32,12 +33,9 @@ const topPlayers = players
   // TODO: Handle probable, questionable, etc.
   .filter((player) => player.playerStatus === "active")
   .filter((player) => player.setPositionDropdown)
-  // TODO: turn back on
-  // .filter((player) => player.todaysGame)
+  .filter((player) => player.todaysGame)
   .sort((a, b) => {
-    const weightedScoreA = 0.75 * a.seasonAvg + 0.25 * a.last5Avg;
-    const weightedScoreB = 0.75 * b.seasonAvg + 0.25 * b.last5Avg;
-    return weightedScoreB - weightedScoreA;
+    return getPlayerWeightedScore(b) - getPlayerWeightedScore(a);
   });
 const topPlayersWithoutGameToday = topPlayers.filter(
   (player) => !player.todaysGame

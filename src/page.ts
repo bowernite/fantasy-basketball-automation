@@ -55,7 +55,7 @@ export const players = Array.from(rows)
       last5Avg,
       seasonAvg,
       // seasonTotal,
-      // gamesPlayed,
+      gamesPlayed,
       todaysGame,
       position,
       setPositionDropdown,
