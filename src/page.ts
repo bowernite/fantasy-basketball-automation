@@ -41,10 +41,13 @@ export const players = Array.from(rows)
     const position = row.querySelector(".position")?.textContent;
     console.log("🟣 position:", position);
 
-    const setPositionDropdown = row.querySelector<HTMLSelectElement>(
-      ".form-control"
-    );
+    const setPositionDropdown =
+      row.querySelector<HTMLSelectElement>(".form-control");
     console.log("🟣 setPositionDropdown:", setPositionDropdown);
+    const isTaxi = row.textContent?.includes("TAXI");
+    console.log("🟣 isTaxi:", isTaxi);
+    const isIr = row.textContent?.includes("IR");
+    console.log("🟣 isIr:", isIr);
 
     return {
       playerName,
@@ -56,6 +59,8 @@ export const players = Array.from(rows)
       todaysGame,
       position,
       setPositionDropdown,
+      isTaxi,
+      isIr,
       row,
     };
   })

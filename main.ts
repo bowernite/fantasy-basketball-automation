@@ -1,11 +1,11 @@
 import { players, type Player } from "./src/page";
+import {
+  stylePlayerAsAlternate,
+  stylePlayerAsSelected,
+  stylePlayerAsWarning,
+} from "./src/styling";
 
 let numPlayersStarted = 0;
-
-const ALTERNATE_COLOR = "rgba(0, 255, 255, 0.3)";
-const OUTLINE_COLOR = "rgb(0, 200, 255)";
-const SELECTED_COLOR = "rgba(0, 255, 0, 0.3)";
-const WARNING_COLOR = "rgba(255, 0, 0, 0.3)";
 
 const setPlayerPosition = (player: Player, position: string) => {
   if (!player.setPositionDropdown) {
@@ -21,6 +21,7 @@ const setPlayerPosition = (player: Player, position: string) => {
 // Set all players to Bench first
 players
   .filter((player) => player.setPositionDropdown)
+  .filter((player) => !player.isTaxi && !player.isIr)
   .forEach((player) => {
     setPlayerPosition(player, "0");
   });
@@ -81,18 +82,12 @@ function startPlayer(
     );
 
     if (isAlternate) {
-      player.row.style.backgroundColor = ALTERNATE_COLOR;
-      player.row.style.outline = `2px solid ${OUTLINE_COLOR}`;
-      setTimeout(() => {
-        player.row.style.backgroundColor = ALTERNATE_COLOR;
-      }, 1000);
+      stylePlayerAsAlternate(player);
     } else {
-      setTimeout(() => {
-        player.row.style.backgroundColor = SELECTED_COLOR;
-      }, 500);
+      stylePlayerAsSelected(player);
     }
   } else {
-    player.row.style.backgroundColor = WARNING_COLOR;
+    stylePlayerAsWarning(player);
     console.error(`No position options available for ${player.playerName}`);
   }
 }
