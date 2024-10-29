@@ -60,3 +60,9 @@ remainingBackupPlayers.forEach((player) => {
     `WARNING: ${player.playerName} is ${player.playerStatus}; not starting this player, but you may want to check back later if they're playing`
   );
 });
+
+players.forEach((player) =>
+  console.log(
+    `Weighted score for ${player.playerName}: ${getPlayerWeightedScore(player)}`
+  )
+);

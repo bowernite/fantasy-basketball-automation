@@ -86,7 +86,6 @@ export function startPlayer(
       (option) =>
         option.position.toLowerCase() !== "bench" && option.value !== "0"
     );
-  console.log(`Available positions for ${player.playerName}:`, positionOptions);
 
   if (positionOptions.length > 0) {
     // First try to find preferred positions in order
