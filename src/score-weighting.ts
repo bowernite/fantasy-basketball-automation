@@ -5,8 +5,6 @@ export const getPlayerWeightedScore = (player: Player) => {
   const playerData = PLAYER_DATA[player.playerName as keyof typeof PLAYER_DATA];
   const { last5Avg, seasonAvg, gamesPlayed, opponentInfo } = player;
 
-  console.log("🟣 opponentInfo:", opponentInfo);
-
   // Weight recent performance more heavily as season progresses
   const seasonProjectionAvg = playerData?.projectedSeasonAvg;
   const seasonProjectionWeight = Math.max(
@@ -35,3 +33,36 @@ export const getPlayerWeightedScore = (player: Player) => {
 
   return weightedScore;
 };
+
+export const getPlayerPredictedScore = (player: Player) => {
+  const weightedScore = getPlayerWeightedScore(player);
+  const { opponentInfo } = player;
+  if (!opponentInfo) {
+    return weightedScore;
+  }
+
+  const mpg = predictPlayerMinutesPerGame({
+    position: opponentInfo?.position,
+    avgScore: weightedScore,
+  });
+  const portionOfGamePlayed = mpg / 36;
+  const avgOppPointsAllowed =
+    (opponentInfo?.avgPointsAllowed ?? 0) * portionOfGamePlayed;
+
+  return weightedScore;
+};
+
+function predictPlayerMinutesPerGame({
+  position,
+  avgScore,
+}: {
+  position?: string;
+  avgScore: number;
+}) {
+  // TODO: Make this better?
+  const basedOnScore = Math.min(avgScore * 1.25, 36);
+
+  // TODO: Lessen for centers?
+
+  return basedOnScore;
+}

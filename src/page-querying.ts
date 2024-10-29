@@ -14,6 +14,10 @@ if (rows.length === 0) {
 
 export type Player = Awaited<ReturnType<typeof getPlayers>>[number];
 export type PlayerStatus = "(active)" | "DTD" | "OUT" | "Q" | "OFS";
+export type PlayerOpponentInfo = {
+  avgPointsAllowed: number;
+  avgPointsAllowedRank: number;
+};
 
 export const getPlayers = async () => {
   const players = await Promise.all(
@@ -104,6 +108,11 @@ async function getPlayerOpponentInfo(
   }
 
   // "Vs opposing Cs per game:Pts: 24.67 (6th)Reb: 20.67 (t-15th)Ast: 7 (19th)Default FPts: 43.78 (12th)"
+  const positionMatch = opponentInfoContent?.match(
+    /Vs opposing (\w+)s per game/
+  );
+  const position = positionMatch?.[1];
+
   const defaultFptsMatch = opponentInfoContent?.match(
     /Default FPts: (\d+\.?\d*) \((\d+)(?:st|nd|rd|th)\)/
   );
@@ -121,10 +130,12 @@ async function getPlayerOpponentInfo(
         opponentInfoContent ?? "No content"
       }`
     );
+    return undefined;
   }
 
   return {
     avgPointsAllowed,
     avgPointsAllowedRank,
+    position,
   };
 }

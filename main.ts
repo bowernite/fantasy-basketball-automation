@@ -1,6 +1,9 @@
 import { setAllPlayersToBench, startPlayer } from "./src/page-interaction.ts";
 import { getPlayers, type Player } from "./src/page-querying.ts";
-import { getPlayerWeightedScore } from "./src/score-weighting.ts";
+import {
+  getPlayerPredictedScore,
+  getPlayerWeightedScore,
+} from "./src/score-weighting.ts";
 import { stylePlayerAsUnableToStart } from "./src/styling.ts";
 
 (async () => {
@@ -17,7 +20,7 @@ import { stylePlayerAsUnableToStart } from "./src/styling.ts";
     .filter((player) => player.setPositionDropdown)
     .filter((player) => player.todaysGame)
     .sort((a, b) => {
-      return getPlayerWeightedScore(b) - getPlayerWeightedScore(a);
+      return getPlayerPredictedScore(b) - getPlayerPredictedScore(a);
     });
   let numPlayersStarted = 0;
   topPlayers.forEach((player, index) => {
