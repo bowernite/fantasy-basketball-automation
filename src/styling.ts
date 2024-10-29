@@ -1,4 +1,4 @@
-import type { Player } from "./page";
+import type { Player } from "./page-querying";
 
 /********************************************************************
  * Starting player

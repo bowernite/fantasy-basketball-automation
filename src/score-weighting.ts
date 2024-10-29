@@ -1,9 +1,11 @@
 import { PLAYER_DATA } from "./data";
-import type { Player } from "./page";
+import type { Player } from "./page-querying";
 
 export const getPlayerWeightedScore = (player: Player) => {
   const playerData = PLAYER_DATA[player.playerName as keyof typeof PLAYER_DATA];
-  const { last5Avg, seasonAvg, gamesPlayed } = player;
+  const { last5Avg, seasonAvg, gamesPlayed, opponentInfo } = player;
+
+  console.log("🟣 opponentInfo:", opponentInfo);
 
   // Weight recent performance more heavily as season progresses
   const seasonProjectionAvg = playerData?.projectedSeasonAvg;
