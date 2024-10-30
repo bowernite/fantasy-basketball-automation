@@ -28,12 +28,12 @@ import { stylePlayerAsUnableToStart } from "./src/styling.ts";
       return;
     }
 
-    if (player.playerStatus === "DTD") {
-      backupPlayers.push(player);
-      return;
-    }
     if (player.isTaxi) {
       stylePlayerAsUnableToStart(player);
+      return;
+    }
+    if (player.playerStatus === "DTD") {
+      backupPlayers.push(player);
       return;
     }
 
