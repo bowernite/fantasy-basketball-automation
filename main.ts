@@ -1,12 +1,14 @@
 import { setAllPlayersToBench, startPlayer } from "./src/page-interaction.ts";
 import { getPlayers, type Player } from "./src/page-querying.ts";
-import {
-  getPlayerPredictedScore,
-  getPlayerWeightedScore,
-} from "./src/score-weighting.ts";
+import { getPlayerPredictedScore } from "./src/score-weighting.ts";
 import { stylePlayerAsUnableToStart } from "./src/styling.ts";
+import { verifyPage } from "./src/sanity-checks.ts";
 
 (async () => {
+  if (!verifyPage()) {
+    return;
+  }
+
   const players = await getPlayers();
   console.table(players);
   setAllPlayersToBench(players);
