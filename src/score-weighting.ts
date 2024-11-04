@@ -21,15 +21,15 @@ export const getPlayerWeightedScore = (player: Player) => {
   const weightedScore =
     seasonProjectionWeight * seasonProjectionAvg +
     actualPerformanceWeight * actualPerformance;
-  console.log(`weightedScore data for ${player.playerName}:`, {
-    seasonProjectionWeight,
-    seasonProjectionAvg,
-    actualPerformanceWeight,
-    actualPerformance,
-    last5Avg,
-    seasonAvg,
-    weightedScore,
-  });
+  // console.log(`weightedScore data for ${player.playerName}:`, {
+  //   seasonProjectionWeight,
+  //   seasonProjectionAvg,
+  //   actualPerformanceWeight,
+  //   actualPerformance,
+  //   last5Avg,
+  //   seasonAvg,
+  //   weightedScore,
+  // });
 
   return weightedScore;
 };

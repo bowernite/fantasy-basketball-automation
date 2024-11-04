@@ -37,8 +37,8 @@ export const getPlayers = async () => {
       const position = row.querySelector(".position")?.textContent;
       const setPositionDropdown =
         row.querySelector<HTMLSelectElement>(".form-control");
-      const isTaxi = row.textContent?.includes("TAXI");
-      const isIr = row.textContent?.includes("IR");
+      const isTaxi = setPositionDropdown?.selectedOptions[0]?.text === "TAXI";
+      const isIr = setPositionDropdown?.selectedOptions[0]?.text === "IR";
 
       const todaysGameElement = row.querySelector(".pro-opp-matchup");
       const todaysGame = todaysGameElement?.textContent;
@@ -46,7 +46,7 @@ export const getPlayers = async () => {
       const opponentInfo = todaysGameElement
         ? await getPlayerOpponentInfo(todaysGameElement, playerName)
         : undefined;
-      console.log("🟣 opp:", opponentInfo);
+      // console.log("🟣 opp:", opponentInfo);
 
       if (
         playerStatus !== "DTD" &&

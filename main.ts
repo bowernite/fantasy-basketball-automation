@@ -8,6 +8,7 @@ import { stylePlayerAsUnableToStart } from "./src/styling.ts";
 
 (async () => {
   const players = await getPlayers();
+  console.table(players);
   setAllPlayersToBench(players);
 
   const backupPlayers: Player[] = [];
@@ -28,7 +29,7 @@ import { stylePlayerAsUnableToStart } from "./src/styling.ts";
       return;
     }
 
-    if (player.isTaxi) {
+    if (player.isTaxi || player.isIr) {
       stylePlayerAsUnableToStart(player);
       return;
     }
