@@ -139,3 +139,20 @@ async function getPlayerOpponentInfo(
     position,
   };
 }
+
+export function getStatTypeDropdown() {
+  // 1: average/total. 2: season, fantasy, daily, last 5, etc. 3: previous year. 4: year selector
+  const dropdownTriggers = document.querySelectorAll<HTMLAnchorElement>(
+    ".btn-toolbar a.dropdown-toggle"
+  );
+  let statTypeDropdown: HTMLAnchorElement | undefined;
+  dropdownTriggers.forEach((dropdownTrigger) => {
+    if (statTypeDropdown) return;
+    const dropdownMenu = dropdownTrigger.nextElementSibling;
+    if (dropdownMenu?.textContent?.toLowerCase().includes("fantasy stats")) {
+      statTypeDropdown = dropdownTrigger;
+    }
+  });
+
+  return statTypeDropdown;
+}
