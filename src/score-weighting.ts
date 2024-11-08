@@ -1,40 +1,16 @@
 import { PLAYER_DATA } from "./data";
 import type { Player } from "./page-querying";
 
-export const getPlayerPredictedScore = (player: Player) => {
+export function getPlayerPredictedScore(player: Player) {
   const weightedScore = getPlayerWeightedScore(player);
-  const { opponentInfo } = player;
-  if (!opponentInfo) {
-    return weightedScore;
-  }
-
-  const mpg = predictPlayerMinutesPerGame({
-    position: opponentInfo?.position,
-    avgScore: weightedScore,
-  });
-  const portionOfGamePlayed = mpg / 36;
-  const avgOppPointsAllowed =
-    (opponentInfo?.avgPointsAllowed ?? 0) * portionOfGamePlayed;
-
-  return weightedScore;
-};
-
-function predictPlayerMinutesPerGame({
-  position,
-  avgScore,
-}: {
-  position?: string;
-  avgScore: number;
-}) {
-  // TODO: Make this better?
-  const basedOnScore = Math.min(avgScore * 1.25, 36);
-
-  // TODO: Lessen for centers?
-
-  return basedOnScore;
+  const adjustedForOpponent = adjustPredictedScoreBasedOnOpponent(
+    weightedScore,
+    player.opponentInfo
+  );
+  return adjustedForOpponent;
 }
 
-const getPlayerWeightedScore = (player: Player) => {
+function getPlayerWeightedScore(player: Player) {
   const playerData = PLAYER_DATA[player.playerName as keyof typeof PLAYER_DATA];
   const { last5Avg, last10Avg, seasonAvg, gamesPlayed, opponentInfo } = player;
 
@@ -68,7 +44,7 @@ const getPlayerWeightedScore = (player: Player) => {
   // });
 
   return weightedScore;
-};
+}
 
 /**
  * Calculate a score of how well the player's been doing this season, taking into account season average, last 5 games, and last 10 games.
@@ -101,4 +77,30 @@ function getActualPerformance({
   }
 
   return weightedSum / totalWeight;
+}
+
+/**
+ * Adjust the predicted score based on the opponent's defense.
+ */
+function adjustPredictedScoreBasedOnOpponent(
+  initialScore: number,
+  opponentInfo: Player["opponentInfo"]
+) {
+  if (!opponentInfo) {
+    return initialScore;
+  }
+
+  const WORST_DEFENSE_RANK = 30;
+  const BEST_DEFENSE_RANK = 1;
+  const MIDDLE_RANK = (WORST_DEFENSE_RANK + BEST_DEFENSE_RANK) / 2;
+  const MAX_RANK_ADJUSTMENT = 0.15; // 15% boost/reduction based on opponent defense
+
+  // Center around middle rank (15.5) instead of best rank (1)
+  const defenseRankDifference = opponentInfo.defenseRank - MIDDLE_RANK;
+  const maxRankDifference = (WORST_DEFENSE_RANK - BEST_DEFENSE_RANK) / 2;
+  const rankAdjustmentFactor = defenseRankDifference / maxRankDifference;
+
+  const scoreMultiplier = 1 + rankAdjustmentFactor * MAX_RANK_ADJUSTMENT;
+
+  return initialScore * scoreMultiplier;
 }

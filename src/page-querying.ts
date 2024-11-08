@@ -30,8 +30,10 @@ export const getPlayers = async () => {
       const playerStatus =
         row.querySelector(".injury")?.textContent || "(active)";
       const fantasyPointsElements = row.querySelectorAll(".fp");
-      const last5Avg = Number(fantasyPointsElements[1]?.textContent ?? 0) || undefined;
-      const last10Avg = Number(fantasyPointsElements[2]?.textContent ?? 0) || undefined;
+      const last5Avg =
+        Number(fantasyPointsElements[1]?.textContent ?? 0) || undefined;
+      const last10Avg =
+        Number(fantasyPointsElements[2]?.textContent ?? 0) || undefined;
       const seasonAvg = Number(fantasyPointsElements[2]?.textContent ?? 0);
       const seasonTotal = Number(fantasyPointsElements[3]?.textContent ?? 0);
       const gamesPlayed = seasonTotal / seasonAvg;
@@ -119,13 +121,13 @@ async function getPlayerOpponentInfo(
     /Default FPts: (\d+\.?\d*) \((\d+)(?:st|nd|rd|th)\)/
   );
   const avgPointsAllowed = parseFloat(defaultFptsMatch?.[1] ?? "0");
-  const avgPointsAllowedRank = parseInt(defaultFptsMatch?.[2] ?? "0", 10);
+  const defenseRank = parseInt(defaultFptsMatch?.[2] ?? "0", 10);
 
   const isInvalid =
     isNaN(avgPointsAllowed) ||
-    isNaN(avgPointsAllowedRank) ||
+    isNaN(defenseRank) ||
     !avgPointsAllowed ||
-    !avgPointsAllowedRank;
+    !defenseRank;
   if (isInvalid) {
     alert(
       `Failed to parse opponent info for ${playerName}: ${
@@ -137,7 +139,7 @@ async function getPlayerOpponentInfo(
 
   return {
     avgPointsAllowed,
-    avgPointsAllowedRank,
+    defenseRank,
     position,
   };
 }
