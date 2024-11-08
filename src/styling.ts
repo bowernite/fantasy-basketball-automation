@@ -19,6 +19,16 @@ export const stylePlayerAsUnableToStart = (player: Player) => {
 };
 
 /********************************************************************
+ * Possibly injured player
+ *******************************************************************/
+const ORANGE_HIGHLIGHT = "rgba(255, 165, 0, 0.3)";
+const ORANGE_OUTLINE = "rgb(255, 165, 0)";
+export const stylePlayerAsPossiblyInjured = (player: Player) => {
+  setRowBackgroundColor(player.row, ORANGE_HIGHLIGHT);
+  player.row.style.outline = `2px solid ${ORANGE_OUTLINE}`;
+};
+
+/********************************************************************
  * Alternate player
  *******************************************************************/
 const BLUE_OUTLINE = "rgb(0, 200, 255)";

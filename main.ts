@@ -1,7 +1,7 @@
 import { setAllPlayersToBench, startPlayer } from "./src/page-interaction.ts";
 import { getPlayers, type Player } from "./src/page-querying.ts";
 import { getPlayerPredictedScore } from "./src/score-weighting.ts";
-import { stylePlayerAsUnableToStart } from "./src/styling.ts";
+import { stylePlayerAsPossiblyInjured, stylePlayerAsUnableToStart } from "./src/styling.ts";
 import { verifyPage } from "./src/sanity-checks.ts";
 
 (async () => {
@@ -37,6 +37,7 @@ import { verifyPage } from "./src/sanity-checks.ts";
     }
     if (player.playerStatus === "DTD") {
       backupPlayers.push(player);
+      stylePlayerAsPossiblyInjured(player);
       return;
     }
 
@@ -59,15 +60,9 @@ import { verifyPage } from "./src/sanity-checks.ts";
   }
 
   const remainingBackupPlayers = [...backupPlayers];
-  remainingBackupPlayers.forEach((player) => {
-    alert(
-      `WARNING: ${player.playerName} is ${player.playerStatus}; not starting this player, but you may want to check back later if they're playing`
-    );
+  remainingBackupPlayers.forEach(({ playerName, playerStatus }) => {
+    // alert(
+    //   `⚠️ Would have started ${playerName}, but they're ${playerStatus}; check their status now, or check back before game time`
+    // );
   });
-
-  // players.forEach((player) =>
-  //   console.log(
-  //     `Weighted score for ${player.playerName}: ${getPlayerWeightedScore(player)}`
-  //   )
-  // );
 })();
