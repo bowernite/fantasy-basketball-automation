@@ -30,7 +30,8 @@ export const getPlayers = async () => {
       const playerStatus =
         row.querySelector(".injury")?.textContent || "(active)";
       const fantasyPointsElements = row.querySelectorAll(".fp");
-      const last5Avg = Number(fantasyPointsElements[1]?.textContent ?? 0);
+      const last5Avg = Number(fantasyPointsElements[1]?.textContent ?? 0) || undefined;
+      const last10Avg = Number(fantasyPointsElements[2]?.textContent ?? 0) || undefined;
       const seasonAvg = Number(fantasyPointsElements[2]?.textContent ?? 0);
       const seasonTotal = Number(fantasyPointsElements[3]?.textContent ?? 0);
       const gamesPlayed = seasonTotal / seasonAvg;
@@ -62,6 +63,7 @@ export const getPlayers = async () => {
         playerName,
         playerStatus: playerStatus as PlayerStatus,
         last5Avg,
+        last10Avg,
         seasonAvg,
         // seasonTotal,
         gamesPlayed,
