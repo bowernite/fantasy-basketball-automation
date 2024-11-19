@@ -11,28 +11,24 @@ export function prioritizePlayers(players: Player[]): Player[] {
     )
     .filter((player) => player.setPositionDropdown)
     .sort((a, b) => {
-      // First prioritize players who have a game today
-      if (a.todaysGame !== b.todaysGame) {
-        return a.todaysGame ? -1 : 1;
-      }
+      const aScore = getPlayerPredictedScore(a);
+      const bScore = getPlayerPredictedScore(b);
 
-      // Then prioritize non-injured players
+      const aHasGame = Boolean(a.opponentInfo);
+      const bHasGame = Boolean(b.opponentInfo);
+
       const aIsInjured = a.playerStatus === "DTD" || a.playerStatus === "OUT";
       const bIsInjured = b.playerStatus === "DTD" || b.playerStatus === "OUT";
-      if (aIsInjured !== bIsInjured) {
-        return aIsInjured ? 1 : -1;
-      }
 
-      // Within injury status, sort OUT players after DTD players
-      if (aIsInjured && bIsInjured) {
-        const aIsOut = a.playerStatus === "OUT";
-        const bIsOut = b.playerStatus === "OUT";
-        if (aIsOut !== bIsOut) {
-          return aIsOut ? 1 : -1;
-        }
-      }
+      // First priority: Has game and not injured
+      if (aHasGame && !aIsInjured && (!bHasGame || bIsInjured)) return -1;
+      if (bHasGame && !bIsInjured && (!aHasGame || aIsInjured)) return 1;
 
-      // Finally sort by predicted score
-      return getPlayerPredictedScore(b) - getPlayerPredictedScore(a);
+      // Second priority: Has game and injured
+      if (aHasGame && aIsInjured && !bHasGame) return -1;
+      if (bHasGame && bIsInjured && !aHasGame) return 1;
+
+      // Within same priority group, sort by predicted score
+      return bScore - aScore;
     });
 }

@@ -1,5 +1,9 @@
-import { setAllPlayersToBench, startPlayer } from "./src/page-interaction.ts";
-import { getPlayers } from "./src/page-querying.ts";
+import {
+  saveLineup,
+  setAllPlayersToBench,
+  startPlayer,
+} from "./src/page-interaction.ts";
+import { getPlayers, lineupHasChanges } from "./src/page-querying.ts";
 import {
   stylePlayerAsPossiblyInjured,
   stylePlayerAsUnableToStart,
@@ -41,4 +45,8 @@ import { prioritizePlayers } from "./src/prioritization.ts";
       numPlayersStarted++;
     }
   });
+
+  if (lineupHasChanges()) {
+    saveLineup();
+  }
 })();

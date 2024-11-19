@@ -160,3 +160,21 @@ export function getStatTypeDropdown() {
 
   return statTypeDropdown;
 }
+
+export function lineupHasChanges() {
+  return (
+    document.body.textContent
+      ?.toLowerCase()
+      .includes("click save lineup to save your changes".toLowerCase()) ?? false
+  );
+}
+
+export function getSaveLineupButton() {
+  const buttons = Array.from(
+    document.querySelectorAll<HTMLButtonElement>("button[type='submit']")
+  );
+  const saveButton = buttons.find((button) =>
+    button.textContent?.toLowerCase().includes("save lineup")
+  );
+  return saveButton;
+}

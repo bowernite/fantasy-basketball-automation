@@ -1,4 +1,4 @@
-import type { Player } from "./page-querying";
+import { getSaveLineupButton, type Player } from "./page-querying";
 import {
   stylePlayerAsAlternate,
   stylePlayerAsStarted,
@@ -86,4 +86,17 @@ export function setAllPlayersToBench(players: Player[]) {
     .forEach((player) => {
       setPlayerPosition(player, "0");
     });
+}
+
+export function saveLineup() {
+  const button = getSaveLineupButton();
+  if (button) {
+    button.click();
+
+    // Also try submitting the form directly if button is in a form
+    // const form = button.closest("form");
+    // if (form) {
+    //   form.submit();
+    // }
+  }
 }
