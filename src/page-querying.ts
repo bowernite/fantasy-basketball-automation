@@ -34,8 +34,12 @@ export const getPlayers = async () => {
         Number(fantasyPointsElements[1]?.textContent ?? 0) || undefined;
       const last10Avg =
         Number(fantasyPointsElements[2]?.textContent ?? 0) || undefined;
-      const seasonAvg = Number(fantasyPointsElements[2]?.textContent ?? 0);
-      const seasonTotal = Number(fantasyPointsElements[3]?.textContent ?? 0);
+      const seasonAvg = Number(
+        fantasyPointsElements[fantasyPointsElements.length - 2]?.textContent
+      );
+      const seasonTotal = Number(
+        fantasyPointsElements[fantasyPointsElements.length - 1]?.textContent
+      );
       const gamesPlayed = seasonTotal / seasonAvg;
       const position = row.querySelector(".position")?.textContent;
       const setPositionDropdown =
