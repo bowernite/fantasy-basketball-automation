@@ -129,8 +129,8 @@ async function getPlayerOpponentInfo(
     !avgPointsAllowed ||
     !defenseRank;
   if (isInvalid) {
-    alert(
-      `Failed to parse opponent info for ${playerName}: ${
+    console.warn(
+      `Failed to parse opponent info for ${playerName}. Tooltip content: ${
         opponentInfoContent ?? "No content"
       }`
     );
