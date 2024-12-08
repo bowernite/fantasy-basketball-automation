@@ -72,3 +72,5 @@ export const PLAYER_DATA = {
     projectedSeasonAvg: 25.3,
   },
 };
+
+export type PlayerData = (typeof PLAYER_DATA)[keyof typeof PLAYER_DATA];

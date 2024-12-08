@@ -62,7 +62,6 @@ export function startPlayer(
     return true;
   } else {
     stylePlayerAsUnableToStart(player);
-    console.error(`No position options available for ${player.playerName}`);
     return false;
   }
 }

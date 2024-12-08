@@ -2,7 +2,7 @@ import type { Player } from "./page-querying";
 import { getPlayerPredictedScore } from "./score-weighting";
 
 export function prioritizePlayers(players: Player[]): Player[] {
-  return players
+  const playersWithScores = players
     .filter(
       (player) =>
         player.playerStatus === "(active)" ||
@@ -10,51 +10,47 @@ export function prioritizePlayers(players: Player[]): Player[] {
         player.playerStatus === "OUT"
     )
     .filter((player) => player.setPositionDropdown)
-    .sort((a, b) => {
-      const aScore = getPlayerPredictedScore(a);
-      const bScore = getPlayerPredictedScore(b);
-      const aHasGame = Boolean(a.opponentInfo);
-      const bHasGame = Boolean(b.opponentInfo);
-      const aIsDtd = a.playerStatus === "DTD";
-      const bIsDtd = b.playerStatus === "DTD";
-      const aIsOut = a.playerStatus === "OUT";
-      const bIsOut = b.playerStatus === "OUT";
-      const aIsInjured = aIsDtd || aIsOut;
-      const bIsInjured = bIsDtd || bIsOut;
-
-
-      if (aHasGame && !bHasGame) return -1;
-      if (!aHasGame && bHasGame) return 1;
-
-      if (
-        a.playerName === "Khris Middleton" ||
-        b.playerName === "Khris Middleton"
-      ) {
-        console.log(
-          "Player A Name:",
-          a.playerName,
-          "A Injured:",
-          aIsInjured,
-          "A DTD:",
-          aIsDtd,
-          "A Out:",
-          aIsOut,
-          "Player B Name:",
-          b.playerName,
-          "B Injured:",
-          bIsInjured,
-          "B DTD:",
-          bIsDtd,
-          "B Out:",
-          bIsOut
-        );
-      }
-      if (!aIsInjured && bIsInjured) return -1;
-      if (!bIsInjured && aIsInjured) return 1;
-
-      if (aIsDtd && bIsOut) return -1;
-      if (aIsOut && bIsDtd) return 1;
-
-      return bScore - aScore;
+    .map((player) => {
+      const [score, debugInfo] = getPlayerPredictedScore(player);
+      return {
+        player,
+        score,
+        debugInfo,
+      };
     });
+
+  const prioritizedPlayers = playersWithScores.sort((a, b) => {
+    const aHasGame = Boolean(a.player.opponentInfo);
+    const bHasGame = Boolean(b.player.opponentInfo);
+    const aIsDtd = a.player.playerStatus === "DTD";
+    const bIsDtd = b.player.playerStatus === "DTD";
+    const aIsOut = a.player.playerStatus === "OUT";
+    const bIsOut = b.player.playerStatus === "OUT";
+    const aIsInjured = aIsDtd || aIsOut;
+    const bIsInjured = bIsDtd || bIsOut;
+
+    if (aHasGame && !bHasGame) return -1;
+    if (!aHasGame && bHasGame) return 1;
+
+    if (!aIsInjured && bIsInjured) return -1;
+    if (!bIsInjured && aIsInjured) return 1;
+
+    if (aIsDtd && bIsOut) return -1;
+    if (aIsOut && bIsDtd) return 1;
+
+    return b.score - a.score;
+  });
+
+  console.log("🟣 Prioritized players debug info:");
+  console.table(
+    playersWithScores.map(({ player, score, debugInfo }) => ({
+      name: player.playerName,
+      // status: player.playerStatus,
+      predictedScore: score,
+      ...debugInfo,
+      // hasGame: Boolean(player.opponentInfo),
+    }))
+  );
+
+  return prioritizedPlayers.map((p) => p.player);
 }

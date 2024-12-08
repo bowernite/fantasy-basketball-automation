@@ -1,25 +1,34 @@
-import { PLAYER_DATA } from "./data";
+import { PLAYER_DATA, type PlayerData } from "./data";
 import type { Player } from "./page-querying";
 
 export function getPlayerPredictedScore(player: Player) {
-  const weightedScore = getPlayerWeightedScore(player);
-  const adjustedForOpponent = adjustPredictedScoreBasedOnOpponent(
-    weightedScore,
-    player.opponentInfo
-  );
-  return adjustedForOpponent;
+  const [weightedScore, debugInfo] = getPlayerWeightedScore(player);
+  if (isNaN(weightedScore)) {
+    console.error(`NaN weighted score for ${player.playerName}`);
+    alert(`NaN weighted score for ${player.playerName}`);
+  }
+  const [adjustedForOpponent, opponentAdjustmentDebugInfo] =
+    adjustPredictedScoreBasedOnOpponent(weightedScore, player.opponentInfo);
+  return [
+    adjustedForOpponent,
+    {
+      ...debugInfo,
+      beforeOpponentAdjustment: weightedScore,
+      ...opponentAdjustmentDebugInfo,
+    },
+  ] as const;
 }
 
 function getPlayerWeightedScore(player: Player) {
-  const playerData = PLAYER_DATA[player.playerName as keyof typeof PLAYER_DATA];
-  const { last5Avg, last10Avg, seasonAvg, gamesPlayed, opponentInfo } = player;
+  // @ts-ignore
+  const playerData = PLAYER_DATA[player.playerName] as PlayerData | undefined;
+  const { last5Avg, last10Avg, seasonAvg, gamesPlayed } = player;
 
   // Weight recent performance more heavily as season progresses
   const seasonProjectionAvg = playerData?.projectedSeasonAvg;
-  const seasonProjectionWeight = Math.max(
-    Math.min((12 - gamesPlayed) / 12, 1),
-    0
-  );
+  const seasonProjectionWeight = seasonProjectionAvg
+    ? Math.max(Math.min((12 - gamesPlayed) / 12, 1), 0)
+    : 0;
 
   const actualPerformance = getActualPerformance({
     last5Avg,
@@ -31,7 +40,7 @@ function getPlayerWeightedScore(player: Player) {
   // Early season: rely more on projections
   // Late season: rely more on actual performance
   const weightedScore =
-    seasonProjectionWeight * seasonProjectionAvg +
+    seasonProjectionWeight * (seasonProjectionAvg ?? 0) +
     actualPerformanceWeight * actualPerformance;
   // console.log(`weightedScore data for ${player.playerName}:`, {
   //   seasonProjectionWeight,
@@ -43,7 +52,18 @@ function getPlayerWeightedScore(player: Player) {
   //   weightedScore,
   // });
 
-  return weightedScore;
+  return [
+    weightedScore,
+    {
+      seasonProjectionWeight,
+      seasonProjectionAvg,
+      actualPerformanceWeight,
+      actualPerformance,
+      last5Avg,
+      last10Avg,
+      seasonAvg,
+    },
+  ] as const;
 }
 
 /**
@@ -87,7 +107,7 @@ function adjustPredictedScoreBasedOnOpponent(
   opponentInfo: Player["opponentInfo"]
 ) {
   if (!opponentInfo) {
-    return initialScore;
+    return [initialScore, {}] as const;
   }
 
   const WORST_DEFENSE_RANK = 30;
@@ -102,5 +122,13 @@ function adjustPredictedScoreBasedOnOpponent(
 
   const scoreMultiplier = 1 + rankAdjustmentFactor * MAX_RANK_ADJUSTMENT;
 
-  return initialScore * scoreMultiplier;
+  return [
+    initialScore * scoreMultiplier,
+    {
+      scoreMultiplier,
+      rankAdjustmentFactor,
+      defenseRankDifference,
+      maxRankDifference,
+    },
+  ] as const;
 }
