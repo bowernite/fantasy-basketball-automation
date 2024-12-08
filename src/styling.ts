@@ -38,6 +38,54 @@ export const stylePlayerAsAlternate = (player: Player) => {
 };
 
 /********************************************************************
+ * Predicted score
+ *******************************************************************/
+const PREDICTED_SCORE_BG = "rgb(75, 0, 130)"; // Deep purple background
+const PREDICTED_SCORE_TEXT = "rgb(255, 255, 255)"; // White text
+const PREDICTED_SCORE_BG_NO_GAME = "rgb(128, 128, 128)";
+const PREDICTED_SCORE_BG_DTD = "rgb(204, 85, 0)"; // Darker orange
+export const insertPlayerPredictedScore = (
+  player: Player,
+  score: number,
+  { isDtd = false, noGame = false }: { isDtd?: boolean; noGame?: boolean } = {}
+) => {
+  const cell = player.row.querySelector("td:first-child");
+  if (!cell || !(cell instanceof HTMLTableCellElement)) {
+    return;
+  }
+
+  const existingScoreDiv = cell.querySelector("div[data-predicted-score]");
+  if (existingScoreDiv) {
+    existingScoreDiv.textContent = score.toFixed(1);
+  } else {
+    // Set display flex on cell to align items horizontally
+    cell.style.display = "flex";
+    cell.style.alignItems = "center";
+    // cell.style.gap = "8px";
+
+    const scoreDiv = document.createElement("div");
+    scoreDiv.setAttribute("data-predicted-score", "");
+
+    let backgroundColor = PREDICTED_SCORE_BG;
+    if (noGame) {
+      backgroundColor = PREDICTED_SCORE_BG_NO_GAME;
+    } else if (isDtd) {
+      backgroundColor = PREDICTED_SCORE_BG_DTD;
+    }
+
+    scoreDiv.style.backgroundColor = backgroundColor;
+    scoreDiv.style.color = PREDICTED_SCORE_TEXT;
+    scoreDiv.style.fontWeight = "bold";
+    scoreDiv.style.fontSize = "1.1rem";
+    scoreDiv.style.padding = "4px 8px";
+    scoreDiv.style.borderRadius = "999px";
+    scoreDiv.style.flexShrink = "0";
+    scoreDiv.textContent = score.toFixed(1);
+    cell.insertBefore(scoreDiv, cell.firstChild);
+  }
+};
+
+/********************************************************************
  * Utils
  *******************************************************************/
 

@@ -5,7 +5,6 @@ export function getPlayerPredictedScore(player: Player) {
   const [weightedScore, debugInfo] = getPlayerWeightedScore(player);
   if (isNaN(weightedScore)) {
     console.error(`NaN weighted score for ${player.playerName}`);
-    alert(`NaN weighted score for ${player.playerName}`);
   }
   const [adjustedForOpponent, opponentAdjustmentDebugInfo] =
     adjustPredictedScoreBasedOnOpponent(weightedScore, player.opponentInfo);
@@ -55,6 +54,7 @@ function getPlayerWeightedScore(player: Player) {
   return [
     weightedScore,
     {
+      gamesPlayed,
       seasonProjectionWeight,
       seasonProjectionAvg,
       actualPerformanceWeight,

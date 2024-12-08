@@ -5,6 +5,7 @@ import {
 } from "./src/page-interaction.ts";
 import { getPlayers, lineupHasChanges } from "./src/page-querying.ts";
 import {
+  insertPlayerPredictedScore,
   stylePlayerAsPossiblyInjured,
   stylePlayerAsUnableToStart,
 } from "./src/styling.ts";
@@ -22,7 +23,12 @@ import { prioritizePlayers } from "./src/prioritization.ts";
 
   let numPlayersStarted = 0;
 
-  prioritizePlayers(players).forEach((player) => {
+  prioritizePlayers(players).forEach(({ player, score }) => {
+    insertPlayerPredictedScore(player, score, {
+      isDtd: player.playerStatus === "DTD",
+      noGame: !player.opponentInfo,
+    });
+
     if (numPlayersStarted >= 9) {
       return;
     }

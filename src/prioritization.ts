@@ -1,7 +1,7 @@
 import type { Player } from "./page-querying";
 import { getPlayerPredictedScore } from "./score-weighting";
 
-export function prioritizePlayers(players: Player[]): Player[] {
+export function prioritizePlayers(players: Player[]) {
   const playersWithScores = players
     .filter(
       (player) =>
@@ -43,7 +43,7 @@ export function prioritizePlayers(players: Player[]): Player[] {
 
   console.log("🟣 Prioritized players debug info:");
   console.table(
-    playersWithScores.map(({ player, score, debugInfo }) => ({
+    prioritizedPlayers.map(({ player, score, debugInfo }) => ({
       name: player.playerName,
       // status: player.playerStatus,
       predictedScore: score,
@@ -52,5 +52,5 @@ export function prioritizePlayers(players: Player[]): Player[] {
     }))
   );
 
-  return prioritizedPlayers.map((p) => p.player);
+  return prioritizedPlayers;
 }
