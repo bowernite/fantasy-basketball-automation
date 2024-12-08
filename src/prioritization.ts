@@ -1,7 +1,10 @@
+import { getNumDaysInFuture } from "./dates";
 import type { Player } from "./page-querying";
 import { getPlayerPredictedScore } from "./score-weighting";
 
 export function prioritizePlayers(players: Player[]) {
+  const numberOfDaysInFuture = getNumDaysInFuture();
+
   const playersWithScores = players
     .filter(
       (player) =>
@@ -22,8 +25,8 @@ export function prioritizePlayers(players: Player[]) {
   const prioritizedPlayers = playersWithScores.sort((a, b) => {
     const aHasGame = Boolean(a.player.opponentInfo);
     const bHasGame = Boolean(b.player.opponentInfo);
-    const aIsDtd = a.player.playerStatus === "DTD";
-    const bIsDtd = b.player.playerStatus === "DTD";
+    const aIsDtd = numberOfDaysInFuture >= 2 ? false : a.player.playerStatus === "DTD";
+    const bIsDtd = numberOfDaysInFuture >= 2 ? false : b.player.playerStatus === "DTD";
     const aIsOut = a.player.playerStatus === "OUT";
     const bIsOut = b.player.playerStatus === "OUT";
     const aIsInjured = aIsDtd || aIsOut;

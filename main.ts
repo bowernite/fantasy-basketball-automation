@@ -17,6 +17,8 @@ import { prioritizePlayers } from "./src/prioritization.ts";
     return;
   }
 
+  console.clear();
+
   const players = await getPlayers();
   console.table(players);
   setAllPlayersToBench(players);
@@ -53,6 +55,6 @@ import { prioritizePlayers } from "./src/prioritization.ts";
   });
 
   if (lineupHasChanges()) {
-    saveLineup();
+    // saveLineup();
   }
 })();

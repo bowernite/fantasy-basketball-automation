@@ -182,3 +182,29 @@ export function getSaveLineupButton() {
   );
   return saveButton;
 }
+
+export function getPageDate() {
+  const allButtons = document.querySelectorAll("a.btn[data-toggle='dropdown']");
+  const buttonsWithDates = Array.from(allButtons).filter((button) => {
+    const text = button.textContent?.toLowerCase().trim() ?? "";
+    return text.match(/\d{1,2}\/\d{1,2}(?:\/\d{2})?/) || text === "today";
+  });
+  if (buttonsWithDates.length !== 1) {
+    console.error(
+      `Tried to get page date but found ${buttonsWithDates.length} date buttons`,
+      buttonsWithDates
+    );
+    throw new Error("Tried to get page date but found multiple date buttons");
+  }
+  const dateText = buttonsWithDates[0].textContent?.toLowerCase().trim() ?? "";
+  if (dateText === "today") {
+    return new Date(new Date().setHours(0, 0, 0, 0));
+  }
+  const dateMatch = dateText.match(/(\d{1,2}\/\d{1,2})(?:\/\d{2})?/);
+  if (!dateMatch) {
+    console.error("Could not find date in button text");
+    throw new Error("Could not find date in button text");
+  }
+  const [month, day] = dateMatch[1].split("/").map(Number);
+  return new Date(new Date().getFullYear(), month - 1, day);
+}
