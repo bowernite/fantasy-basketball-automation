@@ -1,5 +1,5 @@
 import { getNumDaysInFuture } from "./dates";
-import type { Player } from "./page-querying";
+import type { Player } from "./page/page-querying";
 import { getPlayerPredictedScore } from "./score-weighting";
 
 export function prioritizePlayers(players: Player[]) {

@@ -1,4 +1,4 @@
-import type { Player } from "./page-querying";
+import type { Player } from "./page/page-querying";
 
 type StrictPosition = "PG" | "SG" | "SF" | "PF" | "C";
 type WidePosition = StrictPosition | string;

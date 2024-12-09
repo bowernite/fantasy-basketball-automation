@@ -1,4 +1,4 @@
-import { getStatTypeDropdown } from "./page-querying";
+import { getStatTypeDropdown } from "./page/page-querying";
 
 export function verifyPage() {
   return verifyOnFantasyStatsPage();

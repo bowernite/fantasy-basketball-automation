@@ -1,5 +1,5 @@
 import { PLAYER_DATA, type PlayerData } from "./data";
-import type { Player } from "./page-querying";
+import type { Player } from "./page/page-querying";
 
 export function getPlayerPredictedScore(player: Player) {
   const [weightedScore, debugInfo] = getPlayerWeightedScore(player);

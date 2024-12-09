@@ -3,7 +3,7 @@ import {
   stylePlayerAsAlternate,
   stylePlayerAsStarted,
   stylePlayerAsUnableToStart,
-} from "./styling";
+} from "../styling";
 
 export function startPlayer(
   player: Player,

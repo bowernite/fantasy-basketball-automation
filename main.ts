@@ -2,8 +2,8 @@ import {
   saveLineup,
   setAllPlayersToBench,
   startPlayer,
-} from "./src/page-interaction.ts";
-import { getPlayers, lineupHasChanges } from "./src/page-querying.ts";
+} from "./src/page/page-interaction.ts";
+import { getPlayers, lineupHasChanges } from "./src/page/page-querying.ts";
 import {
   insertPlayerPredictedScore,
   stylePlayerAsPossiblyInjured,

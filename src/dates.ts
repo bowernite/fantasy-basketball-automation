@@ -1,4 +1,4 @@
-import { getPageDate } from "./page-querying";
+import { getPageDate } from "./page/page-querying";
 
 export function getNumDaysInFuture() {
   const pageDate = getPageDate();
