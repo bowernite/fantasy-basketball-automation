@@ -3,12 +3,13 @@ import {
   setAllPlayersToBench,
   startPlayer,
 } from "./src/page/page-interaction.ts";
-import { getPlayers, lineupHasChanges } from "./src/page/page-querying.ts";
+import { lineupHasChanges } from "./src/page/page-querying.ts";
+import { getPlayers } from "./src/page/get-players.ts";
 import {
   insertPlayerPredictedScore,
   stylePlayerAsPossiblyInjured,
   stylePlayerAsUnableToStart,
-} from "./src/styling.ts";
+} from "./src/page/styling.ts";
 import { verifyPage } from "./src/sanity-checks.ts";
 import { prioritizePlayers } from "./src/prioritization.ts";
 

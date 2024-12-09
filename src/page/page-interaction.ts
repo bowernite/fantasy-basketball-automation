@@ -1,9 +1,10 @@
-import { getSaveLineupButton, type Player } from "./page-querying";
+import { getSaveLineupButton } from "./page-querying";
+import { type Player } from "./get-players";
 import {
   stylePlayerAsAlternate,
   stylePlayerAsStarted,
   stylePlayerAsUnableToStart,
-} from "../styling";
+} from "./styling";
 
 export function startPlayer(
   player: Player,
