@@ -21,7 +21,8 @@ export function startPlayer(
     .filter(
       (option) =>
         option.position.toLowerCase() !== "bench" && option.value !== "0"
-    );
+    )
+    .filter((option) => option.position !== "TAXI");
 
   if (positionOptions.length > 0) {
     // First try to find preferred positions in order
