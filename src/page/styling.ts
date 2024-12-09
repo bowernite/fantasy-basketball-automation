@@ -40,9 +40,9 @@ export const stylePlayerAsAlternate = (player: Player) => {
 /********************************************************************
  * Predicted score
  *******************************************************************/
-const PREDICTED_SCORE_BG = "rgb(75, 0, 130)"; // Deep purple background
+const PREDICTED_SCORE_BG = "rgb(75, 0, 130)"; // Deep purple
 const PREDICTED_SCORE_TEXT = "rgb(255, 255, 255)"; // White text
-const PREDICTED_SCORE_BG_NO_GAME = "rgb(128, 128, 128)";
+const PREDICTED_SCORE_BG_NO_GAME = "rgb(128, 128, 128)"; // Dark gray
 const PREDICTED_SCORE_BG_DTD = "rgb(204, 85, 0)"; // Darker orange
 export const insertPlayerPredictedScore = (
   player: Player,
