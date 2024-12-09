@@ -12,10 +12,14 @@ if (rows.length === 0) {
 }
 
 export type Player = Awaited<ReturnType<typeof getPlayers>>[number];
-export type PlayerStatus = "(active)" | "DTD" | "OUT" | "Q" | "OFS";
+export type PlayerStatus = "(active)" | "DTD" | "P" | "Q" | "D" | "OUT" | "OFS";
 export type PlayerOpponentInfo = {
   avgPointsAllowed: number;
   avgPointsAllowedRank: number;
+};
+export type TimeAgo = {
+  value: number;
+  unit: "days" | "hours" | "minutes";
 };
 
 export const getPlayers = async () => {
@@ -48,11 +52,17 @@ export const getPlayers = async () => {
 
       const todaysGameElement = row.querySelector(".pro-opp-matchup");
       const todaysGame = todaysGameElement?.textContent;
-
       const opponentInfo = todaysGameElement
         ? await getPlayerOpponentInfo(todaysGameElement, playerName)
         : undefined;
-      // console.log("🟣 opp:", opponentInfo);
+
+      const newsTrigger = row.querySelector(".fa-file-text");
+      const news = newsTrigger
+        ? await getTooltipContent(newsTrigger)
+        : undefined;
+      const refinedPlayerStatus = news ? parsePlayerNews(news) : undefined;
+      console.log(`🟣 ${playerName} refinedPlayerStatus:`, refinedPlayerStatus);
+
       if (
         playerStatus !== "DTD" &&
         playerStatus !== "OUT" &&
@@ -66,6 +76,7 @@ export const getPlayers = async () => {
       return {
         playerName,
         playerStatus: playerStatus as PlayerStatus,
+        refinedPlayerStatus,
         last5Avg,
         last10Avg,
         seasonAvg,
@@ -93,25 +104,14 @@ async function getPlayerOpponentInfo(
 ) {
   const opponentInfoElement = todaysGameElement?.querySelector("a");
   let opponentInfoContent: string | undefined | null;
-  if (opponentInfoElement && todaysGameElement) {
-    opponentInfoElement.dispatchEvent(
-      new MouseEvent("mouseover", {
-        bubbles: true,
-        cancelable: true,
-        view: window,
-      })
-    );
-    await new Promise((resolve) => setTimeout(resolve, 100));
-    const tooltip = todaysGameElement.querySelector(".tooltip");
-    opponentInfoContent = tooltip?.textContent;
-    opponentInfoElement.dispatchEvent(
-      new MouseEvent("mouseout", {
-        bubbles: true,
-        cancelable: true,
-        view: window,
-      })
-    );
+  if (!opponentInfoElement) {
+    console.warn(`Failed to get opponent info for ${playerName}.`, {
+      todaysGameElement,
+      opponentInfoElement,
+    });
+    return undefined;
   }
+  opponentInfoContent = await getTooltipContent(opponentInfoElement);
 
   // "Vs opposing Cs per game:Pts: 24.67 (6th)Reb: 20.67 (t-15th)Ast: 7 (19th)Default FPts: 43.78 (12th)"
   const positionMatch = opponentInfoContent?.match(
@@ -144,4 +144,57 @@ async function getPlayerOpponentInfo(
     defenseRank,
     position,
   };
+}
+
+function parsePlayerNews(news: string) {
+  const injuryStatusMatch = news.match(
+    /\b(questionable|doubtful|probable|available|out)\b/i
+  );
+  const rawStatus = injuryStatusMatch?.[1]?.toLowerCase();
+  const injuryStatus: PlayerStatus | undefined =
+    rawStatus === "questionable"
+      ? "Q"
+      : rawStatus === "doubtful"
+      ? "D"
+      : rawStatus === "probable"
+      ? "P"
+      : rawStatus === "out"
+      ? "OUT"
+      : undefined;
+  const timeAgoMatch = news.match(/(\d+)\s+(days?|hours?|minutes?)\s+ago/i);
+  const timeAgo: TimeAgo | undefined = timeAgoMatch
+    ? {
+        value: parseInt(timeAgoMatch[1], 10),
+        unit: timeAgoMatch[2].toLowerCase() as "days" | "hours" | "minutes",
+      }
+    : undefined;
+
+  return { injuryStatus, timeAgo };
+}
+
+/********************************************************************
+ * Utils
+ *******************************************************************/
+async function getTooltipContent(trigger: Element) {
+  trigger.dispatchEvent(
+    new MouseEvent("mouseover", {
+      bubbles: true,
+      cancelable: true,
+      view: window,
+    })
+  );
+  await new Promise((resolve) => setTimeout(resolve, 100));
+
+  const tooltip = trigger.parentElement?.querySelector(".tooltip");
+  const tooltipContent = tooltip?.textContent;
+
+  trigger.dispatchEvent(
+    new MouseEvent("mouseout", {
+      bubbles: true,
+      cancelable: true,
+      view: window,
+    })
+  );
+
+  return tooltipContent;
 }

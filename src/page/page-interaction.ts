@@ -4,7 +4,7 @@ import {
   stylePlayerAsAlternate,
   stylePlayerAsStarted,
   stylePlayerAsUnableToStart,
-} from "./styling";
+} from "./page-manipulation";
 
 export function startPlayer(
   player: Player,

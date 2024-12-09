@@ -1,4 +1,4 @@
-import type { Player } from "./get-players";
+import type { Player, PlayerStatus, TimeAgo } from "./get-players";
 
 /********************************************************************
  * Starting player
@@ -84,6 +84,24 @@ export const insertPlayerPredictedScore = (
     cell.insertBefore(scoreDiv, cell.firstChild);
   }
 };
+
+export function insertRefinedPlayerStatus(
+  player: Player,
+  status: PlayerStatus,
+  timeAgo: TimeAgo
+) {
+  const cell = player.row.querySelector("td:first-child");
+  if (!cell || !(cell instanceof HTMLTableCellElement)) {
+    return;
+  }
+
+  const existingStatusDiv = cell.querySelector(
+    "div[data-refined-player-status]"
+  );
+  if (existingStatusDiv) {
+    existingStatusDiv.textContent = status;
+  }
+}
 
 /********************************************************************
  * Utils

@@ -7,9 +7,10 @@ import { lineupHasChanges } from "./src/page/page-querying.ts";
 import { getPlayers } from "./src/page/get-players.ts";
 import {
   insertPlayerPredictedScore,
+  insertRefinedPlayerStatus,
   stylePlayerAsPossiblyInjured,
   stylePlayerAsUnableToStart,
-} from "./src/page/styling.ts";
+} from "./src/page/page-manipulation.ts";
 import { verifyPage } from "./src/sanity-checks.ts";
 import { prioritizePlayers } from "./src/prioritization.ts";
 
@@ -31,6 +32,9 @@ import { prioritizePlayers } from "./src/prioritization.ts";
       isDtd: player.playerStatus === "DTD",
       noGame: !player.opponentInfo,
     });
+    // if (player.refinedPlayerStatus) {
+    //   insertRefinedPlayerStatus(player, player.refinedPlayerStatus);
+    // }
 
     if (numPlayersStarted >= 9) {
       return;
