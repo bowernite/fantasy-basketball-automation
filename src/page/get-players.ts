@@ -22,6 +22,11 @@ export type TimeAgo = {
   unit: "days" | "hours" | "minutes";
 };
 
+function parseNumberString(numberString: string | null | undefined) {
+  if (!numberString) return undefined;
+  return Number(numberString.replace(/,/g, ""));
+}
+
 export const getPlayers = async () => {
   const players = await Promise.all(
     Array.from(rows).map(async (row) => {
@@ -33,17 +38,22 @@ export const getPlayers = async () => {
       const playerStatus =
         row.querySelector(".injury")?.textContent || "(active)";
       const fantasyPointsElements = row.querySelectorAll(".fp");
-      const last5Avg =
-        Number(fantasyPointsElements[1]?.textContent ?? 0) || undefined;
-      const last10Avg =
-        Number(fantasyPointsElements[2]?.textContent ?? 0) || undefined;
-      const seasonAvg = Number(
+      const last5Avg = parseNumberString(fantasyPointsElements[1]?.textContent);
+      const last10Avg = parseNumberString(
+        fantasyPointsElements[2]?.textContent
+      );
+      const seasonAvg = parseNumberString(
         fantasyPointsElements[fantasyPointsElements.length - 2]?.textContent
       );
-      const seasonTotal = Number(
+      if (!seasonAvg) {
+        // alert(`No season avg found for ${playerName}`);
+        throw new Error(`No season avg found for ${playerName}`);
+      }
+      const seasonTotal = parseNumberString(
         fantasyPointsElements[fantasyPointsElements.length - 1]?.textContent
       );
-      const gamesPlayed = seasonTotal / seasonAvg;
+      const gamesPlayed =
+        seasonTotal && seasonAvg ? seasonTotal / seasonAvg : null;
       const position = row.querySelector(".position")?.textContent;
       const setPositionDropdown =
         row.querySelector<HTMLSelectElement>(".form-control");
@@ -80,7 +90,7 @@ export const getPlayers = async () => {
         last5Avg,
         last10Avg,
         seasonAvg,
-        // seasonTotal,
+        seasonTotal,
         gamesPlayed,
         todaysGame,
         position,
