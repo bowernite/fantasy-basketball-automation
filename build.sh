@@ -38,32 +38,14 @@ log_step "📁 Creating dist directory"
 # Create dist directory if it doesn't exist
 mkdir -p ./chrome-extension/dist
 
-log_step "🔎 Determining TypeScript file to transpile"
-# Check for main.ts, then package.json entrypoint, then index.ts
-if [ -f "./main.ts" ]; then
-  TS_FILE="./main.ts"
-elif [ -f "./package.json" ]; then
-  ENTRYPOINT=$(node -p "require('./package.json').main")
-  if [ -n "$ENTRYPOINT" ] && [ -f "$ENTRYPOINT" ]; then
-    TS_FILE="$ENTRYPOINT"
-  fi
-fi
-
-if [ -z "$TS_FILE" ] && [ -f "./index.ts" ]; then
-  TS_FILE="./index.ts"
-fi
-
-if [ -z "$TS_FILE" ]; then
-  echo "❌ No TypeScript file found. Please ensure main.ts, a valid entrypoint in package.json, or index.ts exists."
-  exit 1
-fi
-
 log_step "🔄 Transpiling TypeScript to JavaScript"
 # Transpile TypeScript to JavaScript
 if [ "$TRANSPILE_CMD" = "bun build" ]; then
-  $TRANSPILE_CMD "$TS_FILE" --outfile="./chrome-extension/dist/main.js"
+  $TRANSPILE_CMD "./main.ts" --outfile="./chrome-extension/dist/main.js"
+  $TRANSPILE_CMD "./page-load__set-lineup.ts" --outfile="./chrome-extension/dist/page-load__set-lineup.js"
 else
-  $TRANSPILE_CMD --outFile "./chrome-extension/dist/main.js" "$TS_FILE"
+  $TRANSPILE_CMD "./main.ts" --outFile "./chrome-extension/dist/main.js"
+  $TRANSPILE_CMD "./page-load__set-lineup.ts" --outFile "./chrome-extension/dist/page-load__set-lineup.js"
 fi
 
 # Check if transpilation was successful
