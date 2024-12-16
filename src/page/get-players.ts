@@ -23,7 +23,7 @@ export type TimeAgo = {
 };
 
 function parseNumberString(numberString: string | null | undefined) {
-  if (!numberString) return undefined;
+  if (!numberString) return null;
   return Number(numberString.replace(/,/g, ""));
 }
 
@@ -45,10 +45,6 @@ export const getPlayers = async () => {
       const seasonAvg = parseNumberString(
         fantasyPointsElements[fantasyPointsElements.length - 2]?.textContent
       );
-      if (!seasonAvg) {
-        // alert(`No season avg found for ${playerName}`);
-        throw new Error(`No season avg found for ${playerName}`);
-      }
       const seasonTotal = parseNumberString(
         fantasyPointsElements[fantasyPointsElements.length - 1]?.textContent
       );

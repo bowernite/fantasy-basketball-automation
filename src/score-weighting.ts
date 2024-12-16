@@ -22,13 +22,12 @@ export function getPlayerPredictedScore(player: Player) {
 function getPlayerWeightedScore(player: Player) {
   // @ts-ignore
   const playerData = PLAYER_DATA[player.playerName] as PlayerData | undefined;
-  const { last5Avg, last10Avg, seasonAvg, gamesPlayed } = player;
+  const { last5Avg, last10Avg, seasonAvg } = player;
+  const gamesPlayed = player.gamesPlayed ?? 0;
 
   // Weight recent performance more heavily as season progresses
   const seasonProjectionAvg = playerData?.projectedSeasonAvg;
-  const seasonProjectionWeight = !gamesPlayed
-    ? 1
-    : seasonProjectionAvg
+  const seasonProjectionWeight = seasonProjectionAvg
     ? Math.max(Math.min((12 - gamesPlayed) / 12, 1), 0)
     : 0;
 
@@ -77,17 +76,22 @@ function getActualPerformance({
   last10Avg,
   seasonAvg,
 }: {
-  last5Avg?: number;
-  last10Avg?: number;
-  seasonAvg: number;
+  last5Avg: number | null | undefined;
+  last10Avg: number | null | undefined;
+  seasonAvg: number | null | undefined;
 }) {
   // Recent form matters more than season average
   const SEASON_WEIGHT = 0.2;
   const LAST_10_WEIGHT = 0.45;
   const LAST_5_WEIGHT = 0.35;
 
-  let totalWeight = SEASON_WEIGHT;
-  let weightedSum = SEASON_WEIGHT * seasonAvg;
+  let totalWeight = 0;
+  let weightedSum = 0;
+
+  if (seasonAvg) {
+    totalWeight += SEASON_WEIGHT;
+    weightedSum += SEASON_WEIGHT * seasonAvg;
+  }
 
   if (last10Avg) {
     totalWeight += LAST_10_WEIGHT;
@@ -97,6 +101,10 @@ function getActualPerformance({
   if (last5Avg) {
     totalWeight += LAST_5_WEIGHT;
     weightedSum += LAST_5_WEIGHT * last5Avg;
+  }
+
+  if (totalWeight === 0) {
+    return 0;
   }
 
   return weightedSum / totalWeight;
