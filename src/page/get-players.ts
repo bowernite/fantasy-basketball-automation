@@ -1,6 +1,8 @@
 // NOTES
 // - Assumes we're on `fantasy stats` page
 
+import { parseNumberString } from "../utils/parse-number-string";
+
 let tables = document.querySelectorAll("table");
 if (tables.length !== 1) {
   throw new Error("Expected exactly one table");
@@ -22,17 +24,11 @@ export type TimeAgo = {
   unit: "days" | "hours" | "minutes";
 };
 
-function parseNumberString(numberString: string | null | undefined) {
-  if (!numberString) return null;
-  return Number(numberString.replace(/,/g, ""));
-}
-
 export const getPlayers = async () => {
   const players = await Promise.all(
     Array.from(rows).map(async (row) => {
       const playerName = row.querySelector(".player-text")?.textContent;
       if (!playerName) {
-        console.warn("Empty row found; skipping");
         return;
       }
       const playerStatus =
