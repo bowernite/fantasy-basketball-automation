@@ -1,3 +1,4 @@
+import { interpolateColors } from "../utils/interpolate-colors";
 import type { Player, PlayerStatus, TimeAgo } from "./get-players";
 import { saveLineup } from "./page-interaction";
 
@@ -48,7 +49,6 @@ const PREDICTED_SCORE_BORDER_DTD = "rgb(204, 85, 0)"; // Darker orange
 const PREDICTED_SCORE_BORDER_DEFAULT = "rgb(75, 0, 130)"; // Deep purple
 const LOW_SCORE_COLOR = "rgb(204, 150, 0)"; // Darker yellow
 const HIGH_SCORE_COLOR = "rgb(46, 125, 50)"; // Deep green
-
 export const insertPlayerPredictedScore = (player: Player, score: number) => {
   const cell = player.row.querySelector("td:first-child");
   if (!cell || !(cell instanceof HTMLTableCellElement)) {
@@ -92,22 +92,6 @@ export const insertPlayerPredictedScore = (player: Player, score: number) => {
     }
     scoreDiv.textContent = score.toFixed(1);
     cell.insertBefore(scoreDiv, cell.firstChild);
-  }
-
-  function interpolateColors(
-    color1: string,
-    color2: string,
-    percentage: number
-  ) {
-    const rgb1 = color1.match(/\d+/g)!.map(Number);
-    const rgb2 = color2.match(/\d+/g)!.map(Number);
-
-    const interpolatedColor = rgb1.map((channel1, i) => {
-      const channel2 = rgb2[i];
-      return Math.round(channel1 + (channel2 - channel1) * percentage);
-    });
-
-    return `rgb(${interpolatedColor.join(", ")})`;
   }
 };
 
