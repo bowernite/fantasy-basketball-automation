@@ -26,10 +26,11 @@ function getPlayerWeightedScore(player: Player) {
   const gamesPlayed = player.gamesPlayed ?? 0;
 
   // Weight recent performance more heavily as season progresses
-  const seasonProjectionAvg = playerData?.projectedSeasonAvg;
-  const seasonProjectionWeight = seasonProjectionAvg
-    ? Math.max(Math.min((12 - gamesPlayed) / 12, 1), 0)
-    : 0;
+  const seasonProjectionAvg = playerData?.projectedSeasonAvg ?? 20;
+  const seasonProjectionWeight = Math.max(
+    Math.min((12 - gamesPlayed) / 12, 1),
+    0
+  );
 
   const actualPerformance = getActualPerformance({
     last5Avg,
