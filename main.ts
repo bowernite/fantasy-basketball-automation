@@ -21,16 +21,12 @@ import { prioritizePlayers } from "./src/prioritization.ts";
     console.clear();
 
     const players = await getPlayers();
-    console.table(players);
     setAllPlayersToBench(players);
 
     let numPlayersStarted = 0;
 
     prioritizePlayers(players).forEach(({ player, score }) => {
-      insertPlayerPredictedScore(player, score, {
-        isDtd: player.playerStatus === "DTD",
-        noGame: !player.opponentInfo,
-      });
+      insertPlayerPredictedScore(player, score, );
       // if (player.refinedPlayerStatus) {
       //   insertRefinedPlayerStatus(player, player.refinedPlayerStatus);
       // }
@@ -63,7 +59,7 @@ import { prioritizePlayers } from "./src/prioritization.ts";
     }
   } catch (error) {
     console.error(error);
-    alert("Script failed:" + error);
+    alert(error);
     throw error;
   }
 })();
