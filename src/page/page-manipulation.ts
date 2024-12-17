@@ -146,7 +146,6 @@ export function refinePlayerStatus(
   statusEl.style.fontWeight = "bold";
   statusEl.style.position = "relative";
   statusEl.style.display = "inline-block";
-  statusEl.style.paddingRight = ".5em";
 
   if (timeAgo) {
     statusEl.textContent += ` (${timeAgo.value}${timeAgo.unit.charAt(0)})`;
@@ -154,10 +153,6 @@ export function refinePlayerStatus(
 
   const sparkleEl = document.createElement("span");
   sparkleEl.textContent = "✨";
-  sparkleEl.style.position = "absolute";
-  sparkleEl.style.top = "0";
-  sparkleEl.style.right = "0";
-  sparkleEl.style.fontSize = "0.8em";
   statusEl.appendChild(sparkleEl);
 }
 
