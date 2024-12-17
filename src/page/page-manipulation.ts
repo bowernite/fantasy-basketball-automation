@@ -1,3 +1,4 @@
+import type { ScoreWeightingDebugInfo } from "../score-weighting";
 import { interpolateColors } from "../utils/interpolate-colors";
 import type { Player, PlayerStatus, TimeAgo } from "./get-players";
 import { saveLineup } from "./page-interaction";
@@ -49,7 +50,12 @@ const PREDICTED_SCORE_BORDER_DTD = "rgb(204, 85, 0)"; // Darker orange
 const PREDICTED_SCORE_BORDER_DEFAULT = "rgb(75, 0, 130)"; // Deep purple
 const LOW_SCORE_COLOR = "rgb(204, 150, 0)"; // Darker yellow
 const HIGH_SCORE_COLOR = "rgb(46, 125, 50)"; // Deep green
-export const insertPlayerPredictedScore = (player: Player, score: number) => {
+export const insertPlayerPredictedScore = (
+  player: Player,
+  score: number,
+  { debugInfo }: { debugInfo: ScoreWeightingDebugInfo }
+) => {
+  console.log("🟣 debugInfo:", debugInfo);
   const cell = player.row.querySelector("td:first-child");
   if (!cell || !(cell instanceof HTMLTableCellElement)) {
     return;
@@ -69,7 +75,7 @@ export const insertPlayerPredictedScore = (player: Player, score: number) => {
     // Calculate background color based on score
     const normalizedScore = Math.min(Math.max(score, MIN_SCORE), MAX_SCORE);
     const percentage = (normalizedScore - MIN_SCORE) / (MAX_SCORE - MIN_SCORE);
-    const backgroundColor = interpolateColors(
+    let backgroundColor = interpolateColors(
       LOW_SCORE_COLOR,
       HIGH_SCORE_COLOR,
       percentage
@@ -91,6 +97,16 @@ export const insertPlayerPredictedScore = (player: Player, score: number) => {
       scoreDiv.style.boxShadow = "0 2px 4px rgba(0, 0, 0, 0.2)";
     }
     scoreDiv.textContent = score.toFixed(1);
+
+    const hasSeasonProjectionAvg = debugInfo.seasonProjectionAvg != null;
+    if (!hasSeasonProjectionAvg && debugInfo.seasonProjectionWeight > 0.2) {
+      scoreDiv.style.backgroundColor = "rgb(255, 0, 0)";
+      scoreDiv.title = `No preseason projection available, and we're weighting a guess of ~20 at ${(
+        debugInfo.seasonProjectionWeight * 100
+      ).toFixed(0)}%`;
+      scoreDiv.textContent = `${score.toFixed(1)} ⚠️`;
+    }
+
     cell.insertBefore(scoreDiv, cell.firstChild);
   }
 };

@@ -25,8 +25,8 @@ import { prioritizePlayers } from "./src/prioritization.ts";
 
     let numPlayersStarted = 0;
 
-    prioritizePlayers(players).forEach(({ player, score }) => {
-      insertPlayerPredictedScore(player, score, );
+    prioritizePlayers(players).forEach(({ player, score, debugInfo }) => {
+      insertPlayerPredictedScore(player, score, { debugInfo });
       // if (player.refinedPlayerStatus) {
       //   insertRefinedPlayerStatus(player, player.refinedPlayerStatus);
       // }

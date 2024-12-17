@@ -1,8 +1,13 @@
 import { PLAYER_DATA, type PlayerData } from "./data/player-data";
 import type { Player } from "./page/get-players";
 
+export type ScoreWeightingDebugInfo = ReturnType<
+  typeof getPlayerWeightedScore
+>[1];
+
 export function getPlayerPredictedScore(player: Player) {
-  const [weightedScore, debugInfo] = getPlayerWeightedScore(player);
+  const [weightedScore, weightedScoreDebugInfo] =
+    getPlayerWeightedScore(player);
   if (isNaN(weightedScore) && !player.isIr) {
     console.error(`NaN weighted score for ${player.playerName}`);
     alert(`NaN weighted score for ${player.playerName}`);
@@ -12,7 +17,7 @@ export function getPlayerPredictedScore(player: Player) {
   return [
     adjustedForOpponent,
     {
-      ...debugInfo,
+      ...weightedScoreDebugInfo,
       beforeOpponentAdjustment: weightedScore,
       ...opponentAdjustmentDebugInfo,
     },
@@ -26,7 +31,6 @@ function getPlayerWeightedScore(player: Player) {
   const gamesPlayed = player.gamesPlayed ?? 0;
 
   // Weight recent performance more heavily as season progresses
-  const seasonProjectionAvg = playerData?.projectedSeasonAvg ?? 20;
   const seasonProjectionWeight = Math.max(
     Math.min((12 - gamesPlayed) / 12, 1),
     0
@@ -42,7 +46,7 @@ function getPlayerWeightedScore(player: Player) {
   // Early season: rely more on projections
   // Late season: rely more on actual performance
   const weightedScore =
-    seasonProjectionWeight * (seasonProjectionAvg ?? 0) +
+    seasonProjectionWeight * (playerData?.projectedSeasonAvg ?? 20) +
     actualPerformanceWeight * actualPerformance;
   // console.log(`weightedScore data for ${player.playerName}:`, {
   //   seasonProjectionWeight,
@@ -59,7 +63,7 @@ function getPlayerWeightedScore(player: Player) {
     {
       gamesPlayed,
       seasonProjectionWeight,
-      seasonProjectionAvg,
+      seasonProjectionAvg: playerData?.projectedSeasonAvg,
       actualPerformanceWeight,
       actualPerformance,
       last5Avg,

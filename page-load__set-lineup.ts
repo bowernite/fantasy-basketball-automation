@@ -10,8 +10,8 @@ addSaveLineupButton();
 (async () => {
   try {
     const players = await getPlayers();
-    prioritizePlayers(players).forEach(({ player, score }) => {
-      insertPlayerPredictedScore(player, score);
+    prioritizePlayers(players).forEach(({ player, score, debugInfo }) => {
+      insertPlayerPredictedScore(player, score, { debugInfo });
     });
   } catch (error) {
     console.error(error);
