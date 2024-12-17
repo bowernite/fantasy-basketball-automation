@@ -46,11 +46,6 @@ export const stylePlayerAsAlternate = (player: Player) => {
   player.row.style.outline = `2px solid ${BLUE_OUTLINE}`;
 };
 
-/********************************************************************
- * Predicted score
- *******************************************************************/
-const MIN_SCORE = 15;
-const MAX_SCORE = 50;
 export const insertPlayerPredictedScore = (
   player: Player,
   score: number,
@@ -74,13 +69,15 @@ export const insertPlayerPredictedScore = (
     scoreDiv.setAttribute("data-predicted-score", "");
 
     // Calculate background color based on score
-    const normalizedScore = Math.min(Math.max(score, MIN_SCORE), MAX_SCORE);
-    const percentage = (normalizedScore - MIN_SCORE) / (MAX_SCORE - MIN_SCORE);
-    const LOW_SCORE_COLOR = "rgb(204, 150, 0)"; // Darker yellow
-    const HIGH_SCORE_COLOR = "rgb(46, 125, 50)"; // Deep green
+    const minScore = 15;
+    const maxScore = 50;
+    const normalizedScore = Math.min(Math.max(score, minScore), maxScore);
+    const percentage = (normalizedScore - minScore) / (maxScore - minScore);
+    const lowScoreColor = "rgb(204, 150, 0)"; // Darker yellow
+    const highScoreColor = "rgb(46, 125, 50)"; // Deep green
     let backgroundColor = interpolateColors(
-      LOW_SCORE_COLOR,
-      HIGH_SCORE_COLOR,
+      lowScoreColor,
+      highScoreColor,
       percentage
     );
 
