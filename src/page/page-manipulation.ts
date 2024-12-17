@@ -1,6 +1,11 @@
 import type { ScoreWeightingDebugInfo } from "../score-weighting";
 import { interpolateColors } from "../utils/interpolate-colors";
-import type { Player, PlayerStatus, TimeAgo } from "./get-players";
+import {
+  PLAYER_STATUS_SELECTOR,
+  type Player,
+  type PlayerStatus,
+  type TimeAgo,
+} from "./get-players";
 import { saveLineup } from "./page-interaction";
 
 /********************************************************************
@@ -55,7 +60,6 @@ export const insertPlayerPredictedScore = (
   score: number,
   { debugInfo }: { debugInfo: ScoreWeightingDebugInfo }
 ) => {
-  console.log("🟣 debugInfo:", debugInfo);
   const cell = player.row.querySelector("td:first-child");
   if (!cell || !(cell instanceof HTMLTableCellElement)) {
     return;
@@ -111,21 +115,40 @@ export const insertPlayerPredictedScore = (
   }
 };
 
-export function insertRefinedPlayerStatus(
+export function refinePlayerStatus(
   player: Player,
-  status: PlayerStatus,
-  timeAgo: TimeAgo
+  status: PlayerStatus | undefined,
+  timeAgo: TimeAgo | undefined
 ) {
   const cell = player.row.querySelector("td:first-child");
+  console.log("🟣 cell:", cell);
   if (!cell || !(cell instanceof HTMLTableCellElement)) {
     return;
   }
 
-  const existingStatusDiv = cell.querySelector(
-    "div[data-refined-player-status]"
+  const statusEl = player.row.querySelector<HTMLDivElement>(
+    PLAYER_STATUS_SELECTOR
   );
-  if (existingStatusDiv) {
-    existingStatusDiv.textContent = status;
+  console.log("🟣 statusEl:", statusEl);
+  console.log("🟣 status:", status);
+  if (statusEl && status) {
+    statusEl.textContent = status;
+    statusEl.style.fontWeight = "bold";
+    statusEl.style.position = "relative";
+    statusEl.style.display = "inline-block";
+    statusEl.style.paddingRight = ".5em";
+
+    if (timeAgo) {
+      statusEl.textContent += ` (${timeAgo.value}${timeAgo.unit.charAt(0)})`;
+    }
+
+    const sparkleEl = document.createElement("span");
+    sparkleEl.textContent = "✨";
+    sparkleEl.style.position = "absolute";
+    sparkleEl.style.top = "0";
+    sparkleEl.style.right = "0";
+    sparkleEl.style.fontSize = "0.8em";
+    statusEl.appendChild(sparkleEl);
   }
 }
 

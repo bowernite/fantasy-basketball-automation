@@ -24,6 +24,8 @@ export type TimeAgo = {
   unit: "days" | "hours" | "minutes";
 };
 
+export const PLAYER_STATUS_SELECTOR = ".injury";
+
 export const getPlayers = async () => {
   const players = await Promise.all(
     Array.from(rows).map(async (row) => {
@@ -31,8 +33,9 @@ export const getPlayers = async () => {
       if (!playerName) {
         return;
       }
-      const playerStatus =
-        row.querySelector(".injury")?.textContent || "(active)";
+      let playerStatus =
+        row.querySelector(PLAYER_STATUS_SELECTOR)?.textContent?.split(" ")[0] ||
+        "(active)";
       const fantasyPointsElements = row.querySelectorAll(".fp");
       const last5Avg = parseNumberString(fantasyPointsElements[1]?.textContent);
       const last10Avg = parseNumberString(
@@ -62,9 +65,18 @@ export const getPlayers = async () => {
       const news = newsTrigger
         ? await getTooltipContent(newsTrigger)
         : undefined;
-      const refinedPlayerStatus = news ? parsePlayerNews(news) : undefined;
+      const refinedPlayerStatus =
+        news && playerStatus === "DTD" ? parsePlayerNews(news) : undefined;
       console.log(`🟣 ${playerName} refinedPlayerStatus:`, refinedPlayerStatus);
 
+      // TODO: Instead of doing this, just handle refined player statuses in prioritization
+      if (
+        playerStatus === "P" ||
+        playerStatus === "Q" ||
+        playerStatus === "D"
+      ) {
+        playerStatus = "DTD";
+      }
       if (
         playerStatus !== "DTD" &&
         playerStatus !== "OUT" &&
@@ -150,7 +162,8 @@ async function getPlayerOpponentInfo(
 
 function parsePlayerNews(news: string) {
   const injuryStatusMatch = news.match(
-    /\b(questionable|doubtful|probable|available|out)\b/i
+    // 'fouled' is to handle 'fouled out'
+    /\b(?<!fouled\s+)(questionable|doubtful|probable|available|out)\b/i
   );
   const rawStatus = injuryStatusMatch?.[1]?.toLowerCase();
   const injuryStatus: PlayerStatus | undefined =
