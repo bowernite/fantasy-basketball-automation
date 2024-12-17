@@ -66,26 +66,8 @@ export const getPlayers = async () => {
         ? await getTooltipContent(newsTrigger)
         : undefined;
       const refinedPlayerStatus =
-        news && playerStatus === "DTD" ? parsePlayerNews(news) : undefined;
+        news && playerStatus !== "(active)" ? parsePlayerNews(news) : undefined;
       console.log(`🟣 ${playerName} refinedPlayerStatus:`, refinedPlayerStatus);
-
-      // TODO: Instead of doing this, just handle refined player statuses in prioritization
-      if (
-        playerStatus === "P" ||
-        playerStatus === "Q" ||
-        playerStatus === "D"
-      ) {
-        playerStatus = "DTD";
-      }
-      if (
-        playerStatus !== "DTD" &&
-        playerStatus !== "OUT" &&
-        playerStatus !== "Q" &&
-        playerStatus !== "OFS" &&
-        playerStatus !== "(active)"
-      ) {
-        alert(`Unknown player status: ${playerStatus}`);
-      }
 
       return {
         playerName,

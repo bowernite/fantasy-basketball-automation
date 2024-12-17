@@ -6,12 +6,6 @@ export function prioritizePlayers(players: Player[]) {
   const numberOfDaysInFuture = getNumDaysInFuture();
 
   const playersWithScores = players
-    .filter(
-      (player) =>
-        player.playerStatus === "(active)" ||
-        player.playerStatus === "DTD" ||
-        player.playerStatus === "OUT"
-    )
     .filter((player) => player.setPositionDropdown)
     .map((player) => {
       const [score, debugInfo] = getPlayerPredictedScore(player);
@@ -25,8 +19,19 @@ export function prioritizePlayers(players: Player[]) {
   const prioritizedPlayers = playersWithScores.sort((a, b) => {
     const aHasGame = Boolean(a.player.opponentInfo);
     const bHasGame = Boolean(b.player.opponentInfo);
-    const aIsDtd = numberOfDaysInFuture >= 2 ? false : a.player.playerStatus === "DTD";
-    const bIsDtd = numberOfDaysInFuture >= 2 ? false : b.player.playerStatus === "DTD";
+    const aIsDtd =
+      numberOfDaysInFuture >= 2
+        ? false
+        : // Quick hack: ignoring probable. Next step is probably a more thought out approach, where we take into account `time ago`, days in future, etc., and maybe use those as multipliers for the predicted score, instead of the fancy sorting logic below
+          ["DTD", "Q", "D"].includes(
+            a.player.refinedPlayerStatus?.injuryStatus ?? ""
+          );
+    const bIsDtd =
+      numberOfDaysInFuture >= 2
+        ? false
+        : ["DTD", "Q", "D"].includes(
+            b.player.refinedPlayerStatus?.injuryStatus ?? ""
+          );
     const aIsOut = a.player.playerStatus === "OUT";
     const bIsOut = b.player.playerStatus === "OUT";
     const aIsInjured = aIsDtd || aIsOut;
