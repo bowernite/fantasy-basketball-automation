@@ -1,6 +1,8 @@
 import type { ScoreWeightingDebugInfo } from "../score-weighting";
 import { interpolateColors } from "../utils/interpolate-colors";
 import {
+  getPlayerNameCell,
+  getPlayerNameEl,
   PLAYER_STATUS_SELECTOR,
   type Player,
   type PlayerStatus,
@@ -60,10 +62,8 @@ export const insertPlayerPredictedScore = (
   score: number,
   { debugInfo }: { debugInfo: ScoreWeightingDebugInfo }
 ) => {
-  const cell = player.row.querySelector("td:first-child");
-  if (!cell || !(cell instanceof HTMLTableCellElement)) {
-    return;
-  }
+  const cell = getPlayerNameCell(player);
+  if (!cell) return;
 
   const existingScoreDiv = cell.querySelector("div[data-predicted-score]");
   if (existingScoreDiv) {
@@ -72,6 +72,12 @@ export const insertPlayerPredictedScore = (
     // Set display flex on cell to align items horizontally
     cell.style.display = "flex";
     cell.style.alignItems = "center";
+    cell.style.gap = "4px";
+
+    const nameEl = getPlayerNameEl(player);
+    if (nameEl) {
+      nameEl.style.marginLeft = "8px";
+    }
 
     const scoreDiv = document.createElement("div");
     scoreDiv.setAttribute("data-predicted-score", "");
@@ -92,6 +98,8 @@ export const insertPlayerPredictedScore = (
     scoreDiv.style.padding = "4px 8px";
     scoreDiv.style.borderRadius = "999px";
     scoreDiv.style.flexShrink = "0";
+    scoreDiv.style.minWidth = "46px";
+    scoreDiv.style.textAlign = "center";
     const hasGameToday = !!player.todaysGame;
     if (hasGameToday) {
       const isDtd = player.playerStatus === "DTD";
@@ -120,36 +128,37 @@ export function refinePlayerStatus(
   status: PlayerStatus | undefined,
   timeAgo: TimeAgo | undefined
 ) {
-  const cell = player.row.querySelector("td:first-child");
-  console.log("🟣 cell:", cell);
-  if (!cell || !(cell instanceof HTMLTableCellElement)) {
-    return;
-  }
+  const cell = getPlayerNameCell(player);
+  if (!cell) return;
 
   const statusEl = player.row.querySelector<HTMLDivElement>(
     PLAYER_STATUS_SELECTOR
   );
-  console.log("🟣 statusEl:", statusEl);
-  console.log("🟣 status:", status);
-  if (statusEl && status) {
-    statusEl.textContent = status;
-    statusEl.style.fontWeight = "bold";
-    statusEl.style.position = "relative";
-    statusEl.style.display = "inline-block";
-    statusEl.style.paddingRight = ".5em";
+  if (!statusEl) return;
 
-    if (timeAgo) {
-      statusEl.textContent += ` (${timeAgo.value}${timeAgo.unit.charAt(0)})`;
-    }
+  // Moves the element to the end of the cell
+  cell.appendChild(statusEl);
+  statusEl.style.alignSelf = "flex-start";
 
-    const sparkleEl = document.createElement("span");
-    sparkleEl.textContent = "✨";
-    sparkleEl.style.position = "absolute";
-    sparkleEl.style.top = "0";
-    sparkleEl.style.right = "0";
-    sparkleEl.style.fontSize = "0.8em";
-    statusEl.appendChild(sparkleEl);
+  if (!status) return;
+
+  statusEl.textContent = status;
+  statusEl.style.fontWeight = "bold";
+  statusEl.style.position = "relative";
+  statusEl.style.display = "inline-block";
+  statusEl.style.paddingRight = ".5em";
+
+  if (timeAgo) {
+    statusEl.textContent += ` (${timeAgo.value}${timeAgo.unit.charAt(0)})`;
   }
+
+  const sparkleEl = document.createElement("span");
+  sparkleEl.textContent = "✨";
+  sparkleEl.style.position = "absolute";
+  sparkleEl.style.top = "0";
+  sparkleEl.style.right = "0";
+  sparkleEl.style.fontSize = "0.8em";
+  statusEl.appendChild(sparkleEl);
 }
 
 export function addSaveLineupButton() {

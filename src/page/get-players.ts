@@ -112,6 +112,15 @@ export const getPlayers = async () => {
   );
 };
 
+export function getPlayerNameCell(player: Player) {
+  return player.row.querySelector<HTMLTableCellElement>("td:first-child");
+}
+export function getPlayerNameEl(player: Player) {
+  const cell = getPlayerNameCell(player);
+  if (!cell) return;
+  return cell.querySelector<HTMLElement>(".player");
+}
+
 async function getPlayerOpponentInfo(
   todaysGameElement: Element,
   playerName: string
