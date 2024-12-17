@@ -9,6 +9,7 @@ import {
   type TimeAgo,
 } from "./get-players";
 import { saveLineup } from "./page-interaction";
+import { applyStyles, SAVE_LINEUP_STYLES, STYLES } from "./styles";
 
 /********************************************************************
  * Starting player
@@ -21,10 +22,8 @@ export const stylePlayerAsStarted = (player: Player) => {
 /********************************************************************
  * Unable to start player
  *******************************************************************/
-const GRAYED_OUT = "rgb(235, 235, 235)";
 const GRAY = "rgb(128, 128, 128)";
 export const stylePlayerAsUnableToStart = (player: Player) => {
-  // setRowBackgroundColor(player.row, GRAYED_OUT);
   player.row.style.outline = `2px solid ${GRAY}`;
 };
 
@@ -52,11 +51,6 @@ export const stylePlayerAsAlternate = (player: Player) => {
  *******************************************************************/
 const MIN_SCORE = 15;
 const MAX_SCORE = 50;
-const PREDICTED_SCORE_TEXT = "rgb(255, 255, 255)"; // White text
-const PREDICTED_SCORE_BORDER_DTD = "rgb(204, 85, 0)"; // Darker orange
-const PREDICTED_SCORE_BORDER_DEFAULT = "rgb(75, 0, 130)"; // Deep purple
-const LOW_SCORE_COLOR = "rgb(204, 150, 0)"; // Darker yellow
-const HIGH_SCORE_COLOR = "rgb(46, 125, 50)"; // Deep green
 export const insertPlayerPredictedScore = (
   player: Player,
   score: number,
@@ -69,14 +63,11 @@ export const insertPlayerPredictedScore = (
   if (existingScoreDiv) {
     existingScoreDiv.textContent = score.toFixed(1);
   } else {
-    // Set display flex on cell to align items horizontally
-    cell.style.display = "flex";
-    cell.style.alignItems = "center";
-    cell.style.gap = "4px";
+    applyStyles(cell, STYLES.playerNameCell);
 
     const nameEl = getPlayerNameEl(player);
     if (nameEl) {
-      nameEl.style.marginLeft = "8px";
+      applyStyles(nameEl, STYLES.playerName);
     }
 
     const scoreDiv = document.createElement("div");
@@ -85,34 +76,32 @@ export const insertPlayerPredictedScore = (
     // Calculate background color based on score
     const normalizedScore = Math.min(Math.max(score, MIN_SCORE), MAX_SCORE);
     const percentage = (normalizedScore - MIN_SCORE) / (MAX_SCORE - MIN_SCORE);
+    const LOW_SCORE_COLOR = "rgb(204, 150, 0)"; // Darker yellow
+    const HIGH_SCORE_COLOR = "rgb(46, 125, 50)"; // Deep green
     let backgroundColor = interpolateColors(
       LOW_SCORE_COLOR,
       HIGH_SCORE_COLOR,
       percentage
     );
 
-    scoreDiv.style.backgroundColor = backgroundColor;
-    scoreDiv.style.color = PREDICTED_SCORE_TEXT;
-    scoreDiv.style.fontWeight = "bold";
-    scoreDiv.style.fontSize = "1.1rem";
-    scoreDiv.style.padding = "4px 8px";
-    scoreDiv.style.borderRadius = "999px";
-    scoreDiv.style.flexShrink = "0";
-    scoreDiv.style.minWidth = "46px";
-    scoreDiv.style.textAlign = "center";
+    applyStyles(scoreDiv, {
+      ...STYLES.predictedScore,
+      "background-color": backgroundColor,
+    });
     const hasGameToday = !!player.todaysGame;
     if (hasGameToday) {
+      // applyStyles(scoreDiv, STYLES.predictedScoreWithGameToday);
+
       const isDtd = player.playerStatus === "DTD";
-      scoreDiv.style.border = `2px solid ${
-        isDtd ? PREDICTED_SCORE_BORDER_DTD : PREDICTED_SCORE_BORDER_DEFAULT
-      }`;
-      scoreDiv.style.boxShadow = "0 2px 4px rgba(0, 0, 0, 0.2)";
+      if (isDtd) {
+        applyStyles(scoreDiv, STYLES.predictedScoreWithGameTodayAndDtd);
+      }
     }
     scoreDiv.textContent = score.toFixed(1);
 
     const hasSeasonProjectionAvg = debugInfo.seasonProjectionAvg != null;
     if (!hasSeasonProjectionAvg && debugInfo.seasonProjectionWeight > 0.2) {
-      scoreDiv.style.backgroundColor = "rgb(255, 0, 0)";
+      applyStyles(scoreDiv, STYLES.predictedScoreWithNoSeasonProjection);
       scoreDiv.title = `No preseason projection available, and we're weighting a guess of ~20 at ${(
         debugInfo.seasonProjectionWeight * 100
       ).toFixed(0)}%`;
@@ -138,14 +127,12 @@ export function refinePlayerStatus(
 
   // Moves the element to the end of the cell
   cell.appendChild(statusEl);
-  statusEl.style.alignSelf = "flex-start";
+  applyStyles(statusEl, STYLES.playerStatus);
 
   if (!status) return;
 
   statusEl.textContent = status;
-  statusEl.style.fontWeight = "bold";
-  statusEl.style.position = "relative";
-  statusEl.style.display = "inline-block";
+  applyStyles(statusEl, STYLES.playerStatusRefined);
 
   if (timeAgo) {
     statusEl.textContent += ` (${timeAgo.value}${timeAgo.unit.charAt(0)})`;
@@ -158,39 +145,7 @@ export function refinePlayerStatus(
 
 export function addSaveLineupButton() {
   const style = document.createElement("style");
-  style.textContent = `
-  .save-lineup-button {
-    position: fixed;
-    top: 6px;
-    right: 210px;
-    padding: 2px;
-    background: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: bold;
-    z-index: 9999;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-    background-image: linear-gradient(45deg, #FF6B6B, #4ECDC4);
-    transition: all 0.2s ease-in-out;
-  }
-
-  .save-lineup-button:hover {
-    transform: scale(1.05);
-    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
-  }
-
-  .save-lineup-button__inner {
-    background: white;
-    padding: 8px 18px;
-    border-radius: 6px;
-  }
-
-  .save-lineup-button__inner:hover {
-    background: #f5f5f5;
-  }
-`;
+  style.textContent = SAVE_LINEUP_STYLES;
   document.head.appendChild(style);
 
   const button = document.createElement("button");
