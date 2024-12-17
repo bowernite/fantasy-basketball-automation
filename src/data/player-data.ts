@@ -55,7 +55,7 @@ export const PLAYER_DATA = {
     projectedSeasonAvg: 28.8,
   },
   "Kawhi Leonard": {
-    projectedSeasonAvg: 33.5,
+    projectedSeasonAvg: 38,
   },
   "Amen Thompson": {
     projectedSeasonAvg: 29.9,
