@@ -51,12 +51,15 @@ export const insertPlayerPredictedScore = (
   score: number,
   { debugInfo }: { debugInfo: ScoreWeightingDebugInfo }
 ) => {
+  const { injuryMultiplier, opponentAdjustmentDiff } = debugInfo;
   const cell = getPlayerNameCell(player);
   if (!cell) return;
 
-  const existingScoreDiv = cell.querySelector("div[data-predicted-score]");
-  if (existingScoreDiv) {
-    existingScoreDiv.textContent = score.toFixed(1);
+  let scoreDiv = cell.querySelector<HTMLDivElement>(
+    "div[data-predicted-score]"
+  );
+  if (scoreDiv) {
+    scoreDiv.textContent = score.toFixed(1);
   } else {
     applyStyles(cell, STYLES.playerNameCell);
 
@@ -65,7 +68,7 @@ export const insertPlayerPredictedScore = (
       applyStyles(nameEl, STYLES.playerName);
     }
 
-    const scoreDiv = document.createElement("div");
+    scoreDiv = document.createElement("div");
     scoreDiv.setAttribute("data-predicted-score", "");
 
     // Calculate background color based on score
@@ -107,13 +110,27 @@ export const insertPlayerPredictedScore = (
 
     cell.insertBefore(scoreDiv, cell.firstChild);
   }
+
+  scoreDiv.title = "";
+  scoreDiv.title =
+    opponentAdjustmentDiff == null
+      ? "Opponent adjustment: (none)\n"
+      : `Opponent adjustment: ${
+          opponentAdjustmentDiff > 0 ? "+" : ""
+        }${opponentAdjustmentDiff.toFixed(1)}\n`;
+  scoreDiv.title += `Injury multiplier: ${
+    injuryMultiplier !== 1
+      ? (injuryMultiplier * 100).toFixed(0) + "%"
+      : "(none)"
+  }`;
+  if (scoreDiv.title === "") {
+    scoreDiv.title = "(no adjustments)";
+  }
 };
 
-export function refinePlayerStatus(
-  player: Player,
-  status: PlayerStatus | undefined,
-  timeAgo: TimeAgo | undefined
-) {
+export function refinePlayerStatus(player: Player) {
+  const { refinedPlayerStatus: { injuryStatus: status, timeAgo } = {} } =
+    player;
   const cell = getPlayerNameCell(player);
   if (!cell) return;
 
@@ -130,6 +147,9 @@ export function refinePlayerStatus(
 
   statusEl.textContent = status;
   applyStyles(statusEl, STYLES.playerStatusRefined);
+  if (status === "P") applyStyles(statusEl, STYLES.playerStatusProbable);
+  else if (status === "D") applyStyles(statusEl, STYLES.playerStatusDoubtful);
+  else if (status === "OUT") applyStyles(statusEl, STYLES.playerStatusOut);
 
   if (timeAgo) {
     statusEl.textContent += ` (${timeAgo.value}${timeAgo.unit.charAt(0)})`;
@@ -137,7 +157,8 @@ export function refinePlayerStatus(
 
   const sparkleEl = document.createElement("span");
   sparkleEl.textContent = "✨";
-  statusEl.appendChild(sparkleEl);
+  applyStyles(sparkleEl, STYLES.playerStatusSparkle);
+  statusEl.prepend(sparkleEl);
 }
 
 export function addSaveLineupButton() {

@@ -62,11 +62,15 @@ export const getPlayers = async () => {
         : undefined;
 
       const newsTrigger = row.querySelector(".fa-file-text");
-      const news = newsTrigger
+      const { fullString: news, element: newsElement } = newsTrigger
         ? await getTooltipContent(newsTrigger)
-        : undefined;
+        : { fullString: undefined, element: undefined };
+      const timeAgoString =
+        newsElement?.querySelector("relative-time")?.textContent;
       const refinedPlayerStatus =
-        news && playerStatus !== "(active)" ? parsePlayerNews(news) : undefined;
+        news && playerStatus !== "(active)"
+          ? parsePlayerNews(news, timeAgoString)
+          : undefined;
       console.log(`🟣 ${playerName} refinedPlayerStatus:`, refinedPlayerStatus);
 
       return {
@@ -116,7 +120,8 @@ async function getPlayerOpponentInfo(
     });
     return undefined;
   }
-  opponentInfoContent = await getTooltipContent(opponentInfoElement);
+  const opponentInfoTooltip = await getTooltipContent(opponentInfoElement);
+  opponentInfoContent = opponentInfoTooltip?.fullString;
 
   // "Vs opposing Cs per game:Pts: 24.67 (6th)Reb: 20.67 (t-15th)Ast: 7 (19th)Default FPts: 43.78 (12th)"
   const positionMatch = opponentInfoContent?.match(
@@ -151,7 +156,10 @@ async function getPlayerOpponentInfo(
   };
 }
 
-function parsePlayerNews(news: string) {
+function parsePlayerNews(
+  news: string,
+  timeAgoString: string | null | undefined
+) {
   const injuryStatusMatch = news.match(
     // 'fouled' is to handle 'fouled out'
     /\b(?<!fouled\s+)(questionable|doubtful|probable|available|out)\b/i
@@ -167,13 +175,29 @@ function parsePlayerNews(news: string) {
       : rawStatus === "out"
       ? "OUT"
       : undefined;
-  const timeAgoMatch = news.match(/(\d+)\s+(days?|hours?|minutes?)\s+ago/i);
-  const timeAgo: TimeAgo | undefined = timeAgoMatch
-    ? {
-        value: parseInt(timeAgoMatch[1], 10),
-        unit: timeAgoMatch[2].toLowerCase() as "days" | "hours" | "minutes",
-      }
-    : undefined;
+  let timeAgo: TimeAgo | undefined;
+  if (timeAgoString?.toLowerCase().includes("yesterday")) {
+    timeAgo = {
+      value: 16,
+      unit: "hours",
+    };
+  } else if (timeAgoString?.toLowerCase().includes("today")) {
+    timeAgo = {
+      value: 0,
+      unit: "minutes",
+    };
+  } else {
+    timeAgoString ??= news;
+    const timeAgoMatch = timeAgoString?.match(
+      /(\d+)\s+(days?|hours?|minutes?)\s+ago/i
+    );
+    timeAgo = timeAgoMatch
+      ? {
+          value: parseInt(timeAgoMatch[1], 10),
+          unit: timeAgoMatch[2].toLowerCase() as "days" | "hours" | "minutes",
+        }
+      : undefined;
+  }
 
   return { injuryStatus, timeAgo };
 }
@@ -202,5 +226,8 @@ async function getTooltipContent(trigger: Element) {
     })
   );
 
-  return tooltipContent;
+  return {
+    fullString: tooltipContent,
+    element: tooltip,
+  };
 }

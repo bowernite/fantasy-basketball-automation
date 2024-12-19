@@ -13,11 +13,7 @@ addSaveLineupButton();
     const players = await getPlayers();
     prioritizePlayers(players).forEach(({ player, score, debugInfo }) => {
       insertPlayerPredictedScore(player, score, { debugInfo });
-      refinePlayerStatus(
-        player,
-        player.refinedPlayerStatus?.injuryStatus,
-        player.refinedPlayerStatus?.timeAgo
-      );
+      refinePlayerStatus(player);
     });
   } catch (error) {
     console.error(error);

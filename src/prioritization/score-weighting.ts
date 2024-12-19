@@ -1,10 +1,9 @@
 import { PLAYER_DATA, type PlayerData } from "../data/player-data";
-import { getNumDaysInFuture } from "../dates";
 import type { Player } from "../page/get-players";
 import { adjustPredictedScoreForInjury } from "./injury-adjustments";
 
 export type ScoreWeightingDebugInfo = ReturnType<
-  typeof getPlayerWeightedScore
+  typeof getPlayerPredictedScore
 >[1];
 
 export function getPlayerPredictedScore(player: Player) {
@@ -22,10 +21,10 @@ export function getPlayerPredictedScore(player: Player) {
     adjustedForInjury,
     {
       ...weightedScoreDebugInfo,
-      beforeOpponentAdjustment: weightedScore,
       ...opponentAdjustmentDebugInfo,
-      beforeInjuryAdjustment: adjustedForOpponent,
       ...injuryAdjustmentDebugInfo,
+      beforeOpponentAdjustment: weightedScore,
+      beforeInjuryAdjustment: adjustedForOpponent,
     },
   ] as const;
 }
@@ -144,13 +143,15 @@ function adjustPredictedScoreBasedOnOpponent(
 
   const scoreMultiplier = 1 + rankAdjustmentFactor * MAX_RANK_ADJUSTMENT;
 
+  const adjustedScore = initialScore * scoreMultiplier;
   return [
-    initialScore * scoreMultiplier,
+    adjustedScore,
     {
       scoreMultiplier,
       rankAdjustmentFactor,
       defenseRankDifference,
       maxRankDifference,
+      opponentAdjustmentDiff: initialScore - adjustedScore,
     },
   ] as const;
 }

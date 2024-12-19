@@ -44,9 +44,20 @@ export const STYLES = {
     "align-self": "flex-start",
   },
   playerStatusRefined: {
-    "font-weight": "bold",
     position: "relative",
     display: "inline-block",
+  },
+  playerStatusProbable: {
+    color: "rgb(255, 255, 0)",
+  },
+  playerStatusDoubtful: {
+    color: "rgb(255, 69, 0)",
+  },
+  playerStatusOut: {
+    color: "rgb(255, 0, 0)",
+  },
+  playerStatusSparkle: {
+    "margin-right": "4px",
   },
 };
 
