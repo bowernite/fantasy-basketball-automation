@@ -48,13 +48,13 @@ export const STYLES = {
     display: "inline-block",
   },
   playerStatusProbable: {
-    color: "rgb(255, 255, 0)",
+    color: "rgb(46, 125, 50)", // Deep green
   },
   playerStatusDoubtful: {
-    color: "rgb(255, 69, 0)",
+    color: "rgb(255, 69, 0)", // Orange red
   },
   playerStatusOut: {
-    color: "rgb(255, 0, 0)",
+    color: "rgb(255, 0, 0)", // Red
   },
   playerStatusSparkle: {
     "margin-right": "4px",
