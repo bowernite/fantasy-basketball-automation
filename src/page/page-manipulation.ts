@@ -1,4 +1,4 @@
-import type { ScoreWeightingDebugInfo } from "../score-weighting";
+import type { ScoreWeightingDebugInfo } from "../prioritization/score-weighting";
 import { interpolateColors } from "../utils/interpolate-colors";
 import {
   getPlayerNameCell,

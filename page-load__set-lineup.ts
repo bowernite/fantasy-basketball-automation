@@ -4,7 +4,7 @@ import {
   insertPlayerPredictedScore,
   refinePlayerStatus,
 } from "./src/page/page-manipulation";
-import { prioritizePlayers } from "./src/prioritization";
+import { prioritizePlayers } from "./src/prioritization/prioritization";
 
 addSaveLineupButton();
 

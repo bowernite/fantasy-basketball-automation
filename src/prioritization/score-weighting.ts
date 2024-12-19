@@ -1,5 +1,7 @@
-import { PLAYER_DATA, type PlayerData } from "./data/player-data";
-import type { Player } from "./page/get-players";
+import { PLAYER_DATA, type PlayerData } from "../data/player-data";
+import { getNumDaysInFuture } from "../dates";
+import type { Player } from "../page/get-players";
+import { adjustPredictedScoreForInjury } from "./injury-adjustments";
 
 export type ScoreWeightingDebugInfo = ReturnType<
   typeof getPlayerWeightedScore
@@ -14,12 +16,16 @@ export function getPlayerPredictedScore(player: Player) {
   }
   const [adjustedForOpponent, opponentAdjustmentDebugInfo] =
     adjustPredictedScoreBasedOnOpponent(weightedScore, player.opponentInfo);
+  const [adjustedForInjury, injuryAdjustmentDebugInfo] =
+    adjustPredictedScoreForInjury(adjustedForOpponent, player);
   return [
-    adjustedForOpponent,
+    adjustedForInjury,
     {
       ...weightedScoreDebugInfo,
       beforeOpponentAdjustment: weightedScore,
       ...opponentAdjustmentDebugInfo,
+      beforeInjuryAdjustment: adjustedForOpponent,
+      ...injuryAdjustmentDebugInfo,
     },
   ] as const;
 }

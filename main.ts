@@ -5,12 +5,11 @@ import {
 import { lineupHasChanges } from "./src/page/page-querying.ts";
 import { getPlayers } from "./src/page/get-players.ts";
 import {
-  insertPlayerPredictedScore,
   stylePlayerAsPossiblyInjured,
   stylePlayerAsUnableToStart,
 } from "./src/page/page-manipulation.ts";
 import { verifyPage } from "./src/sanity-checks.ts";
-import { prioritizePlayers } from "./src/prioritization.ts";
+import { prioritizePlayers } from "./src/prioritization/prioritization.ts";
 
 (async () => {
   try {
@@ -31,6 +30,10 @@ import { prioritizePlayers } from "./src/prioritization.ts";
       // if (player.refinedPlayerStatus) {
       //   insertRefinedPlayerStatus(player, player.refinedPlayerStatus);
       // }
+
+      if (!player.setPositionDropdown) {
+        return;
+      }
 
       if (numPlayersStarted >= 9) {
         return;
