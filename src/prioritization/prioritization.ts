@@ -22,7 +22,7 @@ export function prioritizePlayers(players: Player[]) {
   });
 
   console.log("🟣 Prioritized players debug info:");
-  console.table(
+  console.log(
     prioritizedPlayers.map(({ player, score, debugInfo }) => ({
       name: player.playerName,
       predictedScore: score,

@@ -33,9 +33,10 @@ export const getPlayers = async () => {
       if (!playerName) {
         return;
       }
-      let playerStatus =
-        row.querySelector(PLAYER_STATUS_SELECTOR)?.textContent?.split(" ")[0] ||
-        "(active)";
+      const playerStatus =
+        (row
+          .querySelector(PLAYER_STATUS_SELECTOR)
+          ?.textContent?.split(" ")[0] as PlayerStatus) || "(active)";
       const fantasyPointsElements = row.querySelectorAll(".fp");
       const last5Avg = parseNumberString(fantasyPointsElements[1]?.textContent);
       const last10Avg = parseNumberString(
@@ -175,6 +176,9 @@ function parsePlayerNews(
       : rawStatus === "out"
       ? "OUT"
       : undefined;
+
+  if (injuryStatus === undefined) return undefined;
+
   let timeAgo: TimeAgo | undefined;
   if (timeAgoString?.toLowerCase().includes("yesterday")) {
     timeAgo = {
