@@ -22,7 +22,8 @@ export function startPlayer(
       (option) =>
         option.position.toLowerCase() !== "bench" && option.value !== "0"
     )
-    .filter((option) => option.position !== "TAXI");
+    .filter((option) => option.position !== "TAXI")
+    .filter((option) => option.position !== "IR");
 
   if (positionOptions.length > 0) {
     // First try to find preferred positions in order
