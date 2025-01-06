@@ -151,7 +151,7 @@ function adjustPredictedScoreBasedOnOpponent(
       rankAdjustmentFactor,
       defenseRankDifference,
       maxRankDifference,
-      opponentAdjustmentDiff: initialScore - adjustedScore,
+      opponentAdjustmentDiff: adjustedScore - initialScore,
     },
   ] as const;
 }
