@@ -3,16 +3,6 @@
 
 import { parseNumberString } from "../utils/parse-number-string";
 
-let tables = document.querySelectorAll("table");
-if (tables.length !== 1) {
-  throw new Error("Expected exactly one table");
-}
-let table = tables[0];
-let rows = table.querySelectorAll("tr");
-if (rows.length === 0) {
-  throw new Error("Expected at least one row");
-}
-
 export type Player = Awaited<ReturnType<typeof getPlayers>>[number];
 export type PlayerStatus = "(active)" | "DTD" | "P" | "Q" | "D" | "OUT" | "OFS";
 export type PlayerOpponentInfo = {
@@ -27,6 +17,17 @@ export type TimeAgo = {
 export const PLAYER_STATUS_SELECTOR = ".injury";
 
 export const getPlayers = async () => {
+  let tables = document.querySelectorAll("table");
+  if (tables.length !== 1) {
+    console.error("Expected exactly one table, found", tables);
+    throw new Error("Expected exactly one table");
+  }
+  let table = tables[0];
+  let rows = table.querySelectorAll("tr");
+  if (rows.length === 0) {
+    throw new Error("Expected at least one row");
+  }
+
   const players = await Promise.all(
     Array.from(rows).map(async (row) => {
       const playerName = row.querySelector(".player-text")?.textContent;

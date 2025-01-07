@@ -6,9 +6,12 @@ import {
 } from "./src/page/page-manipulation";
 import { prioritizePlayers } from "./src/prioritization/prioritization";
 
-addSaveLineupButton();
+if (typeof window !== "undefined") {
+  pageLoad();
+}
 
-(async () => {
+async function pageLoad() {
+  addSaveLineupButton();
   try {
     const players = await getPlayers();
     prioritizePlayers(players).forEach(({ player, score, debugInfo }) => {
@@ -20,4 +23,4 @@ addSaveLineupButton();
     alert(error);
     throw error;
   }
-})();
+}
