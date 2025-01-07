@@ -6,11 +6,6 @@ import {
 } from "./src/page/page-manipulation";
 import { prioritizePlayers } from "./src/prioritization/prioritization";
 
-const inBrowser = typeof window !== "undefined";
-if (inBrowser) {
-  pageLoad();
-}
-
 async function pageLoad() {
   addSaveLineupButton();
   try {

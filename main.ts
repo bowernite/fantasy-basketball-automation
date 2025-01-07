@@ -11,12 +11,7 @@ import {
 import { verifyPage } from "./src/sanity-checks.ts";
 import { prioritizePlayers } from "./src/prioritization/prioritization.ts";
 
-const inBrowser = typeof window !== "undefined";
-if (inBrowser) {
-  main();
-}
-
-async function main() {
+async function setLineup() {
   try {
     if (!verifyPage()) {
       return;
@@ -73,4 +68,4 @@ async function main() {
   }
 }
 
-main();
+setLineup();
