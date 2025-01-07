@@ -6,7 +6,8 @@ import {
 } from "./src/page/page-manipulation";
 import { prioritizePlayers } from "./src/prioritization/prioritization";
 
-if (typeof window !== "undefined") {
+const inBrowser = typeof window !== "undefined";
+if (inBrowser) {
   pageLoad();
 }
 

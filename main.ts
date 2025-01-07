@@ -11,7 +11,12 @@ import {
 import { verifyPage } from "./src/sanity-checks.ts";
 import { prioritizePlayers } from "./src/prioritization/prioritization.ts";
 
-(async () => {
+const inBrowser = typeof window !== "undefined";
+if (inBrowser) {
+  main();
+}
+
+async function main() {
   try {
     if (!verifyPage()) {
       return;
@@ -66,4 +71,6 @@ import { prioritizePlayers } from "./src/prioritization/prioritization.ts";
     alert(error);
     throw error;
   }
-})();
+}
+
+main();
