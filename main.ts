@@ -11,6 +11,8 @@ import {
 import { verifyPage } from "./src/sanity-checks.ts";
 import { prioritizePlayers } from "./src/prioritization/prioritization.ts";
 
+setLineup();
+
 async function setLineup() {
   try {
     if (!verifyPage()) {
@@ -67,5 +69,3 @@ async function setLineup() {
     throw error;
   }
 }
-
-setLineup();

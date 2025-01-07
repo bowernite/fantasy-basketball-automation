@@ -1,5 +1,9 @@
 import { chromium, type Page } from "playwright";
 
+if (!process.env.FF_EMAIL || !process.env.FF_PASSWORD) {
+  throw new Error("FF_EMAIL and FF_PASSWORD must be set");
+}
+
 (async () => {
   await build();
 
@@ -13,6 +17,8 @@ import { chromium, type Page } from "playwright";
     console.log("Adding script tag...");
     await page.waitForLoadState("load");
 
+    await login(page);
+
     await page.waitForTimeout(2000);
     console.log("Running pageLoad...");
     await page.addScriptTag({
@@ -25,6 +31,8 @@ import { chromium, type Page } from "playwright";
     await page.addScriptTag({
       path: "./chrome-extension/dist/main.js",
     });
+
+    await page.waitForTimeout(1000000);
   }
 
   const browser = await chromium.launch({
@@ -43,6 +51,33 @@ import { chromium, type Page } from "playwright";
     await browser.close();
   }
 })();
+
+async function login(page: Page) {
+  const loginInitButton = page.getByText("Log In");
+  console.log("Login button:", loginInitButton);
+  const isLoggedIn = !(await loginInitButton.isVisible());
+  if (isLoggedIn) {
+    console.log("Already logged in");
+    return;
+  }
+
+  console.log("Logging in...");
+  await loginInitButton.click();
+
+  const emailInput = page.getByRole("textbox", { name: "email" });
+  const passwordInput = page.getByRole("textbox", { name: "password" });
+  const loginButton = page.getByRole("button", { name: "Log In" });
+
+  console.log("Waiting for email input...");
+  await page.waitForSelector('input[name="email"]');
+  console.log("Email input HTML:", await emailInput.evaluate((node) => node.outerHTML));
+
+  await emailInput.fill(process.env.FF_EMAIL ?? "");
+  await passwordInput.fill(process.env.FF_PASSWORD ?? "");
+  await loginButton.click();
+
+  await page.waitForTimeout(1000000);
+}
 
 async function build(): Promise<void> {
   const { exec } = require("child_process");
