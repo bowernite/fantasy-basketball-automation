@@ -6,6 +6,8 @@ import {
 } from "./src/page/page-manipulation";
 import { prioritizePlayers } from "./src/prioritization/prioritization";
 
+pageLoad();
+
 async function pageLoad() {
   addSaveLineupButton();
   try {
