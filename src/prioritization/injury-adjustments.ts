@@ -8,24 +8,24 @@ export function adjustPredictedScoreForInjury(score: number, player: Player) {
   const numberOfDaysInFuture = getNumDaysInFuture();
 
   const timeAgoInDays = timeAgo ? getTimeAgoInDays(timeAgo) : null;
-  const daysBetweenReportAndGame =
-    timeAgoInDays != null ? timeAgoInDays + numberOfDaysInFuture : null;
-
-  const timelapse = daysBetweenReportAndGame ?? numberOfDaysInFuture;
+  let daysBetweenReportAndGame =
+    timeAgoInDays != null
+      ? timeAgoInDays + numberOfDaysInFuture
+      : numberOfDaysInFuture;
 
   let multiplier = 1;
   if (status === "P") {
-    if (timelapse <= 0) multiplier = 0.85;
-    if (timelapse <= 1) multiplier = 0.95;
+    if (daysBetweenReportAndGame <= 0) multiplier = 0.85;
+    if (daysBetweenReportAndGame <= 1) multiplier = 0.95;
   } else if (status === "DTD" || status === "Q") {
-    if (timelapse <= 0) multiplier = 0.65;
-    if (timelapse <= 1) multiplier = 0.65;
+    if (daysBetweenReportAndGame <= 0) multiplier = 0.65;
+    else if (daysBetweenReportAndGame <= 1) multiplier = 0.65;
   } else if (status === "D") {
-    if (timelapse <= 0) multiplier = 0.1;
-    if (timelapse <= 1) multiplier = 0.2;
+    if (daysBetweenReportAndGame <= 0) multiplier = 0.1;
+    else if (daysBetweenReportAndGame <= 1) multiplier = 0.2;
   } else if (status === "OUT") {
-    if (timelapse <= 0) multiplier = 0;
-    if (timelapse <= 1) multiplier = 0.1;
+    if (daysBetweenReportAndGame <= 1) multiplier = 0;
+    else if (daysBetweenReportAndGame <= 2) multiplier = 0.1;
   } else if (status === "OFS") {
     multiplier = 0;
   }
@@ -38,7 +38,6 @@ export function adjustPredictedScoreForInjury(score: number, player: Player) {
       status,
       timeAgo,
       daysBetweenReportAndGame,
-      timelapse,
       injuryMultiplier: multiplier,
     },
   ] as const;
@@ -49,7 +48,8 @@ function getTimeAgoInDays(timeAgo: TimeAgo) {
     return timeAgo.value / 60 / 24;
   }
   if (timeAgo.unit === "hours") {
-    return Math.round(timeAgo.value / 24);
+    return timeAgo.value / 24;
   }
   return timeAgo.value;
 }
+
