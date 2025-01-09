@@ -76,11 +76,15 @@ export const insertPlayerPredictedScore = (
     const maxScore = 50;
     const normalizedScore = Math.min(Math.max(score, minScore), maxScore);
     const percentage = (normalizedScore - minScore) / (maxScore - minScore);
-    const lowScoreColor = "rgb(204, 150, 0)"; // Darker yellow
-    const highScoreColor = "rgb(46, 125, 50)"; // Deep green
     let backgroundColor = interpolateColors(
-      lowScoreColor,
-      highScoreColor,
+      {
+        start: "rgb(64, 64, 64)", // Dark gray
+        end: "rgb(0, 0, 139)", // Deep blue
+        stops: [
+          { color: "rgb(204, 150, 0)", percentage: 0.2 }, // Darker yellow
+          { color: "rgb(0, 100, 0)", percentage: 0.6 }, // Deep green
+        ],
+      },
       percentage
     );
 
