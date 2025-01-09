@@ -94,7 +94,7 @@ export const insertPlayerPredictedScore = (
     });
     const hasGameToday = !!player.todaysGame;
     if (hasGameToday) {
-      // applyStyles(scoreDiv, STYLES.predictedScoreWithGameToday);
+      applyStyles(scoreDiv, STYLES.predictedScoreWithGameToday);
 
       const isDtd = player.playerStatus === "DTD";
       if (isDtd) {

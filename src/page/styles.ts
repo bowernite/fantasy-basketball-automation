@@ -1,6 +1,6 @@
 const PREDICTED_SCORE_TEXT = "rgb(255, 255, 255)"; // White text
 const PREDICTED_SCORE_BORDER_DTD = "rgb(204, 85, 0)"; // Darker orange
-const PREDICTED_SCORE_BORDER_DEFAULT = "rgb(75, 0, 130)"; // Deep purple
+const PREDICTED_SCORE_BORDER_WITH_GAME_TODAY = "rgb(75, 0, 130)"; // Deep purple
 
 export function applyStyles(
   element: HTMLElement,
@@ -29,10 +29,11 @@ export const STYLES = {
     "flex-shrink": "0",
     "min-width": "46px",
     "text-align": "center",
-    border: `2px solid ${PREDICTED_SCORE_BORDER_DEFAULT}`,
+    border: `2px solid transparent`,
   },
   predictedScoreWithGameToday: {
     "box-shadow": "0 2px 4px rgba(0, 0, 0, 0.2)",
+    "border-color": PREDICTED_SCORE_BORDER_WITH_GAME_TODAY,
   },
   predictedScoreWithGameTodayAndDtd: {
     border: `2px solid ${PREDICTED_SCORE_BORDER_DTD}`,
