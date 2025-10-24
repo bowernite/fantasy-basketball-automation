@@ -58,7 +58,9 @@ export const getPlayers = async () => {
       const isIr = setPositionDropdown?.selectedOptions[0]?.text === "IR";
 
       const todaysGameElement = row.querySelector(".pro-opp-matchup");
+      console.log(`🟣 todaysGameElement (${playerName}):`, todaysGameElement);
       const todaysGame = todaysGameElement?.textContent;
+      console.log(`🟣 todaysGame (${playerName}):`, todaysGame);
       const opponentInfo = todaysGameElement
         ? await getPlayerOpponentInfo(todaysGameElement, playerName)
         : undefined;

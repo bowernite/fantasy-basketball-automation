@@ -12,8 +12,8 @@ export function prioritizePlayers(players: Player[]) {
   });
 
   const prioritizedPlayers = playersWithScores.sort((a, b) => {
-    const aHasGame = Boolean(a.player.opponentInfo);
-    const bHasGame = Boolean(b.player.opponentInfo);
+    const aHasGame = Boolean(a.player.todaysGame);
+    const bHasGame = Boolean(b.player.todaysGame);
 
     if (aHasGame && !bHasGame) return -1;
     if (!aHasGame && bHasGame) return 1;
@@ -22,10 +22,11 @@ export function prioritizePlayers(players: Player[]) {
   });
 
   console.log("🟣 Prioritized players debug info:");
-  console.log(
+  console.table(
     prioritizedPlayers.map(({ player, score, debugInfo }) => ({
       name: player.playerName,
       predictedScore: score,
+      todaysGame: player.todaysGame,
       ...debugInfo,
       // hasGame: Boolean(player.opponentInfo),
     }))
