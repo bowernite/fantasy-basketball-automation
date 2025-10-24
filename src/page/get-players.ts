@@ -2,6 +2,7 @@
 // - Assumes we're on `fantasy stats` page
 
 import { parseNumberString } from "../utils/parse-number-string";
+import { getPlayersTable } from "./page-querying";
 
 export type Player = Awaited<ReturnType<typeof getPlayers>>[number];
 export type PlayerStatus = "(active)" | "DTD" | "P" | "Q" | "D" | "OUT" | "OFS";
@@ -17,13 +18,8 @@ export type TimeAgo = {
 export const PLAYER_STATUS_SELECTOR = ".injury";
 
 export const getPlayers = async () => {
-  let tables = document.querySelectorAll("table");
-  if (tables.length !== 1) {
-    console.error("Expected exactly one table, found", tables);
-    throw new Error("Expected exactly one table");
-  }
-  let table = tables[0];
-  let rows = table.querySelectorAll("tr");
+  const table = getPlayersTable();
+  const rows = table.querySelectorAll("tr");
   if (rows.length === 0) {
     throw new Error("Expected at least one row");
   }

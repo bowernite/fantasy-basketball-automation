@@ -1,7 +1,7 @@
 import { getPlayers } from "./src/page/get-players";
 import {
   addSaveLineupButton,
-  insertPlayerPredictedScore,
+  insertPlayerScores,
   refinePlayerStatus,
 } from "./src/page/page-manipulation";
 import { prioritizePlayers } from "./src/prioritization/prioritization";
@@ -10,12 +10,21 @@ pageLoad();
 
 async function pageLoad() {
   addSaveLineupButton();
+  
+  
   try {
     const players = await getPlayers();
-    prioritizePlayers(players).forEach(({ player, score, debugInfo }) => {
-      insertPlayerPredictedScore(player, score, { debugInfo });
-      refinePlayerStatus(player);
-    });
+    prioritizePlayers(players).forEach(
+      ({ player, predictedScore, weightedScore, debugInfo }) => {
+        insertPlayerScores({
+          player,
+          weightedScore,
+          predictedScore: player.todaysGame ? predictedScore : 0,
+          debugInfo,
+        });
+        refinePlayerStatus(player);
+      }
+    );
   } catch (error) {
     console.error(error);
     alert(error);

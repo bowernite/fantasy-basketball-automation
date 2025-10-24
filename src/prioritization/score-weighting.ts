@@ -23,6 +23,7 @@ export function getPlayerPredictedScore(player: Player) {
       ...weightedScoreDebugInfo,
       ...opponentAdjustmentDebugInfo,
       ...injuryAdjustmentDebugInfo,
+      weightedScore,
       beforeOpponentAdjustment: weightedScore,
       beforeInjuryAdjustment: adjustedForOpponent,
     },

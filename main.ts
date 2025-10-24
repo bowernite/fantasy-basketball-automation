@@ -26,7 +26,7 @@ async function setLineup() {
 
     let numPlayersStarted = 0;
 
-    prioritizePlayers(players).forEach(({ player, score, debugInfo }) => {
+    prioritizePlayers(players).forEach(({ player, debugInfo }) => {
       // For now, this is done on page load
       // insertPlayerPredictedScore(player, score, { debugInfo });
       // if (player.refinedPlayerStatus) {

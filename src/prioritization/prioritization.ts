@@ -3,10 +3,11 @@ import { getPlayerPredictedScore } from "./score-weighting";
 
 export function prioritizePlayers(players: Player[]) {
   const playersWithScores = players.map((player) => {
-    const [score, debugInfo] = getPlayerPredictedScore(player);
+    const [predictedScore, debugInfo] = getPlayerPredictedScore(player);
     return {
       player,
-      score,
+      predictedScore,
+      weightedScore: debugInfo.weightedScore,
       debugInfo,
     };
   });
@@ -18,14 +19,14 @@ export function prioritizePlayers(players: Player[]) {
     if (aHasGame && !bHasGame) return -1;
     if (!aHasGame && bHasGame) return 1;
 
-    return b.score - a.score;
+    return b.predictedScore - a.predictedScore;
   });
 
   console.log("🟣 Prioritized players debug info:");
   console.table(
-    prioritizedPlayers.map(({ player, score, debugInfo }) => ({
+    prioritizedPlayers.map(({ player, predictedScore, debugInfo }) => ({
       name: player.playerName,
-      predictedScore: score,
+      predictedScore,
       todaysGame: player.todaysGame,
       ...debugInfo,
       // hasGame: Boolean(player.opponentInfo),

@@ -1,6 +1,7 @@
+import { interpolateColors } from "../utils/interpolate-colors";
+
 const PREDICTED_SCORE_TEXT = "rgb(255, 255, 255)"; // White text
 const PREDICTED_SCORE_BORDER_DTD = "rgb(204, 85, 0)"; // Darker orange
-const PREDICTED_SCORE_BORDER_WITH_GAME_TODAY = "rgb(75, 0, 130)"; // Deep purple
 
 export function applyStyles(
   element: HTMLElement,
@@ -20,26 +21,36 @@ export const STYLES = {
   playerName: {
     "margin-left": "8px",
   },
-  predictedScore: {
+  scorePill: {
     color: PREDICTED_SCORE_TEXT,
     "font-weight": "bold",
     "font-size": "1.1rem",
     padding: "4px 8px",
     "border-radius": "999px",
     "flex-shrink": "0",
-    "min-width": "46px",
+    "min-width": "8ch",
     "text-align": "center",
     border: `2px solid transparent`,
   },
   predictedScoreWithGameToday: {
     "box-shadow": "0 2px 4px rgba(0, 0, 0, 0.2)",
-    "border-color": PREDICTED_SCORE_BORDER_WITH_GAME_TODAY,
   },
   predictedScoreWithGameTodayAndDtd: {
     border: `2px solid ${PREDICTED_SCORE_BORDER_DTD}`,
   },
   predictedScoreWithNoSeasonProjection: {
     "background-color": "rgb(255, 0, 0)",
+  },
+  scoresContainer: {
+    display: "flex",
+    "align-items": "center",
+    gap: "6px",
+    "flex-shrink": "0",
+  },
+  scoreSeparator: {
+    color: "rgb(64, 64, 64)",
+    "font-weight": "bold",
+    "font-size": "1.1rem",
   },
   playerStatus: {
     "align-self": "flex-start",
@@ -95,3 +106,21 @@ export const SAVE_LINEUP_STYLES = `
     background: #f5f5f5;
   }
 `;
+
+export function generateScoreColor(score: number) {
+  const minScore = 15;
+  const maxScore = 50;
+  const normalizedScore = Math.min(Math.max(score, minScore), maxScore);
+  const percentage = (normalizedScore - minScore) / (maxScore - minScore);
+  return interpolateColors(
+    {
+      start: "rgb(64, 64, 64)",
+      end: "rgb(0, 0, 139)",
+      stops: [
+        { color: "rgb(204, 150, 0)", percentage: 0.2 },
+        { color: "rgb(0, 100, 0)", percentage: 0.6 },
+      ],
+    },
+    percentage
+  );
+}

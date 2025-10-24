@@ -5,11 +5,15 @@ import {
   getPlayerNameEl,
   PLAYER_STATUS_SELECTOR,
   type Player,
-  type PlayerStatus,
-  type TimeAgo,
 } from "./get-players";
 import { saveLineup } from "./page-interaction";
-import { applyStyles, SAVE_LINEUP_STYLES, STYLES } from "./styles";
+import { getPlayersTable } from "./page-querying";
+import {
+  applyStyles,
+  generateScoreColor,
+  SAVE_LINEUP_STYLES,
+  STYLES,
+} from "./styles";
 
 /********************************************************************
  * Starting player
@@ -46,91 +50,199 @@ export const stylePlayerAsAlternate = (player: Player) => {
   player.row.style.outline = `2px solid ${BLUE_OUTLINE}`;
 };
 
-export const insertPlayerPredictedScore = (
-  player: Player,
-  score: number,
-  { debugInfo }: { debugInfo: ScoreWeightingDebugInfo }
-) => {
+/********************************************************************
+ * Score pills
+ *******************************************************************/
+
+export const insertPlayerScores = ({
+  player,
+  weightedScore,
+  predictedScore,
+  debugInfo,
+}: {
+  player: Player;
+  weightedScore: number | null;
+  predictedScore: number;
+  debugInfo: ScoreWeightingDebugInfo;
+}) => {
   const { injuryMultiplier, opponentAdjustmentDiff } = debugInfo;
+
   const cell = getPlayerNameCell(player);
   if (!cell) return;
 
-  let scoreDiv = cell.querySelector<HTMLDivElement>(
-    "div[data-predicted-score]"
+  const existingContainer = cell.querySelector<HTMLDivElement>(
+    "div[data-scores-container]"
   );
-  if (scoreDiv) {
-    scoreDiv.textContent = score.toFixed(1);
-  } else {
-    applyStyles(cell, STYLES.playerNameCell);
 
-    const nameEl = getPlayerNameEl(player);
-    if (nameEl) {
-      applyStyles(nameEl, STYLES.playerName);
+  const predictedScoreDiv = existingContainer
+    ? updateExistingScores(existingContainer, weightedScore, predictedScore)
+    : createScoresDisplay(
+        cell,
+        player,
+        weightedScore,
+        predictedScore,
+        debugInfo
+      );
+
+  setScoreTooltip(
+    predictedScoreDiv,
+    debugInfo,
+    injuryMultiplier,
+    opponentAdjustmentDiff
+  );
+};
+
+function updateExistingScores(
+  container: HTMLDivElement,
+  weightedScore: number | null,
+  predictedScore: number
+) {
+  const baseScoreDiv = container.querySelector<HTMLDivElement>(
+    "div[data-base-score]"
+  )!;
+  const predictedScoreDiv = container.querySelector<HTMLDivElement>(
+    "div[data-predicted-score]"
+  )!;
+
+  if (weightedScore != null) {
+    baseScoreDiv.textContent = weightedScore.toFixed(1);
+  }
+  predictedScoreDiv.textContent = predictedScore.toFixed(1);
+
+  return predictedScoreDiv;
+}
+
+function createBaseScoreDiv(
+  weightedScore: number | null,
+  predictedScore: number
+) {
+  const baseScoreDiv = document.createElement("div");
+  baseScoreDiv.setAttribute("data-base-score", "");
+  const baseBackgroundColor =
+    weightedScore != null
+      ? generateScoreColor(weightedScore)
+      : generateScoreColor(predictedScore);
+  applyStyles(baseScoreDiv, {
+    ...STYLES.scorePill,
+    "background-color": baseBackgroundColor,
+  });
+  if (weightedScore != null) {
+    baseScoreDiv.textContent = weightedScore.toFixed(1);
+  }
+  return baseScoreDiv;
+}
+
+function createSeparatorDiv() {
+  const separatorDiv = document.createElement("div");
+  separatorDiv.setAttribute("data-separator", "");
+  separatorDiv.textContent = "/";
+  applyStyles(separatorDiv, STYLES.scoreSeparator);
+  return separatorDiv;
+}
+
+function createPredictedScoreDiv(predictedScore: number) {
+  const predictedScoreDiv = document.createElement("div");
+  predictedScoreDiv.setAttribute("data-predicted-score", "");
+  const predictedScoreBgColor = generateScoreColor(predictedScore);
+  applyStyles(predictedScoreDiv, {
+    ...STYLES.scorePill,
+    "background-color": predictedScoreBgColor,
+  });
+  predictedScoreDiv.textContent = predictedScore.toFixed(1) + " ✨";
+  return predictedScoreDiv;
+}
+
+function applyPredictedScoreConditionalStyles(
+  predictedScoreDiv: HTMLDivElement,
+  player: Player,
+  predictedScore: number,
+  debugInfo: ScoreWeightingDebugInfo
+) {
+  const hasGameToday = !!player.todaysGame;
+  if (hasGameToday) {
+    applyStyles(predictedScoreDiv, STYLES.predictedScoreWithGameToday);
+
+    const isDtd = player.playerStatus === "DTD";
+    if (isDtd) {
+      applyStyles(predictedScoreDiv, STYLES.predictedScoreWithGameTodayAndDtd);
     }
-
-    scoreDiv = document.createElement("div");
-    scoreDiv.setAttribute("data-predicted-score", "");
-
-    // Calculate background color based on score
-    const minScore = 15;
-    const maxScore = 50;
-    const normalizedScore = Math.min(Math.max(score, minScore), maxScore);
-    const percentage = (normalizedScore - minScore) / (maxScore - minScore);
-    let backgroundColor = interpolateColors(
-      {
-        start: "rgb(64, 64, 64)", // Dark gray
-        end: "rgb(0, 0, 139)", // Deep blue
-        stops: [
-          { color: "rgb(204, 150, 0)", percentage: 0.2 }, // Darker yellow
-          { color: "rgb(0, 100, 0)", percentage: 0.6 }, // Deep green
-        ],
-      },
-      percentage
-    );
-
-    applyStyles(scoreDiv, {
-      ...STYLES.predictedScore,
-      "background-color": backgroundColor,
-    });
-    const hasGameToday = !!player.todaysGame;
-    if (hasGameToday) {
-      applyStyles(scoreDiv, STYLES.predictedScoreWithGameToday);
-
-      const isDtd = player.playerStatus === "DTD";
-      if (isDtd) {
-        applyStyles(scoreDiv, STYLES.predictedScoreWithGameTodayAndDtd);
-      }
-    }
-    scoreDiv.textContent = score.toFixed(1);
-
-    const hasSeasonProjectionAvg = debugInfo.seasonProjectionAvg != null;
-    if (!hasSeasonProjectionAvg && debugInfo.seasonProjectionWeight > 0.2) {
-      applyStyles(scoreDiv, STYLES.predictedScoreWithNoSeasonProjection);
-      scoreDiv.title = `No preseason projection available, and we're weighting a guess of ~20 at ${(
-        debugInfo.seasonProjectionWeight * 100
-      ).toFixed(0)}%`;
-      scoreDiv.textContent = `${score.toFixed(1)} ⚠️`;
-    }
-
-    cell.insertBefore(scoreDiv, cell.firstChild);
   }
 
-  scoreDiv.title = "";
-  scoreDiv.title =
+  const hasSeasonProjectionAvg = debugInfo.seasonProjectionAvg != null;
+  if (!hasSeasonProjectionAvg && debugInfo.seasonProjectionWeight > 0.2) {
+    applyStyles(predictedScoreDiv, STYLES.predictedScoreWithNoSeasonProjection);
+    predictedScoreDiv.textContent = `${predictedScore.toFixed(1)} ⚠️`;
+  }
+}
+
+function createScoresDisplay(
+  cell: HTMLTableCellElement,
+  player: Player,
+  weightedScore: number | null,
+  predictedScore: number,
+  debugInfo: ScoreWeightingDebugInfo
+) {
+  applyStyles(cell, STYLES.playerNameCell);
+
+  const nameEl = getPlayerNameEl(player);
+  if (nameEl) {
+    applyStyles(nameEl, STYLES.playerName);
+  }
+
+  const container = document.createElement("div");
+  container.setAttribute("data-scores-container", "");
+  applyStyles(container, STYLES.scoresContainer);
+
+  const predictedScoreDiv = createPredictedScoreDiv(predictedScore);
+  applyPredictedScoreConditionalStyles(
+    predictedScoreDiv,
+    player,
+    predictedScore,
+    debugInfo
+  );
+
+  container.appendChild(predictedScoreDiv);
+
+  if (weightedScore != null) {
+    const separatorDiv = createSeparatorDiv();
+    const baseScoreDiv = createBaseScoreDiv(weightedScore, predictedScore);
+    container.appendChild(separatorDiv);
+    container.appendChild(baseScoreDiv);
+  }
+
+  cell.insertBefore(container, cell.firstChild);
+
+  return predictedScoreDiv;
+}
+
+function setScoreTooltip(
+  predictedScoreDiv: HTMLDivElement,
+  debugInfo: ScoreWeightingDebugInfo,
+  injuryMultiplier: number,
+  opponentAdjustmentDiff: number | null | undefined
+) {
+  const hasSeasonProjectionAvg = debugInfo.seasonProjectionAvg != null;
+  predictedScoreDiv.title = "";
+
+  if (!hasSeasonProjectionAvg && debugInfo.seasonProjectionWeight > 0.2) {
+    predictedScoreDiv.title = `No preseason projection available, and we're weighting a guess of ~20 at ${(
+      debugInfo.seasonProjectionWeight * 100
+    ).toFixed(0)}%\n`;
+  }
+
+  predictedScoreDiv.title +=
     opponentAdjustmentDiff == null
       ? "Opponent adjustment: (none)\n"
       : `Opponent adjustment: ${
           opponentAdjustmentDiff > 0 ? "+" : ""
         }${opponentAdjustmentDiff.toFixed(1)}\n`;
-  scoreDiv.title += `Injury multiplier: ${
+
+  predictedScoreDiv.title += `Injury multiplier: ${
     injuryMultiplier !== 1
       ? (injuryMultiplier * 100).toFixed(0) + "%"
       : "(none)"
   }`;
-  if (scoreDiv.title === "") {
-    scoreDiv.title = "(no adjustments)";
-  }
-};
+}
 
 export function refinePlayerStatus(player: Player) {
   const { refinedPlayerStatus: { injuryStatus: status, timeAgo } = {} } =
@@ -183,6 +295,11 @@ export function addSaveLineupButton() {
   button.addEventListener("click", () => {
     saveLineup();
   });
+}
+
+export function randomPageStylings() {
+  const playersTable = getPlayersTable();
+  playersTable.style.maxWidth = "800px";
 }
 
 /********************************************************************

@@ -1,3 +1,12 @@
+export function getPlayersTable() {
+  const tables = document.querySelectorAll("table");
+  if (tables.length !== 1) {
+    console.error("Expected exactly one table, found", tables);
+    throw new Error("Expected exactly one table");
+  }
+  return tables[0];
+}
+
 export function getStatTypeDropdown() {
   // 1: average/total. 2: season, fantasy, daily, last 5, etc. 3: previous year. 4: year selector
   const dropdownTriggers = document.querySelectorAll<HTMLAnchorElement>(

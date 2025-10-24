@@ -65,7 +65,8 @@ cp ./chrome-extension/background.js ./chrome-extension/dist/background.js
 
 if [[ "$*" != *"--no-browser"* ]]; then
   log_step "🔄 Opening Chrome"
-  open -a "Google Chrome"
+  # open -a "Google Chrome"
+  open -a "Google Chrome" "chrome://extensions/"
 fi
 
 # if [[ "$*" == *"--run"* ]]; then
