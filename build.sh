@@ -64,7 +64,7 @@ log_step "🔄 Copying Chrome Extension background file"
 cp ./chrome-extension/background.js ./chrome-extension/dist/background.js
 
 if [[ "$*" != *"--no-browser"* ]]; then
-  log_step "🔄 Opening Chrome Extension"
+  log_step "🔄 Opening Chrome"
   open -a "Google Chrome"
 fi
 
