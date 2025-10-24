@@ -2,16 +2,17 @@ import { getPlayers } from "./src/page/get-players";
 import {
   addSaveLineupButton,
   insertPlayerScores,
+  randomPageStylings,
   refinePlayerStatus,
 } from "./src/page/page-manipulation";
 import { prioritizePlayers } from "./src/prioritization/prioritization";
 
 pageLoad();
+randomPageStylings();
 
 async function pageLoad() {
   addSaveLineupButton();
-  
-  
+
   try {
     const players = await getPlayers();
     prioritizePlayers(players).forEach(

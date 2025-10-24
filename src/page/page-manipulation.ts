@@ -28,6 +28,7 @@ export const stylePlayerAsStarted = (player: Player) => {
  *******************************************************************/
 const GRAY = "rgb(128, 128, 128)";
 export const stylePlayerAsUnableToStart = (player: Player) => {
+  console.log("stylePlayerAsUnableToStart", player);
   player.row.style.outline = `2px solid ${GRAY}`;
 };
 
@@ -46,6 +47,7 @@ export const stylePlayerAsPossiblyInjured = (player: Player) => {
  *******************************************************************/
 const BLUE_OUTLINE = "rgb(0, 200, 255)";
 export const stylePlayerAsAlternate = (player: Player) => {
+  console.log("stylePlayerAsAlternate", player);
   stylePlayerAsStarted(player);
   player.row.style.outline = `2px solid ${BLUE_OUTLINE}`;
 };

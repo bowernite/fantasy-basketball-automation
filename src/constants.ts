@@ -1,0 +1,1 @@
+export const NUM_PLAYERS_THAT_CAN_START = 9;
