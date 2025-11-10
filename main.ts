@@ -1,7 +1,4 @@
-import {
-  setAllPlayersToBench,
-  startPlayer,
-} from "./src/page/page-interaction.ts";
+import { setAllPlayersToBench } from "./src/lineup/lineup-dom-actions.ts";
 import { lineupHasChanges } from "./src/page/page-querying.ts";
 import { getPlayers } from "./src/page/get-players.ts";
 import {
@@ -9,8 +6,7 @@ import {
   stylePlayerAsUnableToStart,
 } from "./src/page/page-manipulation.ts";
 import { verifyPage } from "./src/sanity-checks.ts";
-import { prioritizePlayers } from "./src/prioritization/prioritization.ts";
-import { NUM_PLAYERS_THAT_CAN_START } from "./src/constants.ts";
+import { setOptimalLineup } from "./src/lineup/set-optimal-lineup.ts";
 
 setLineup();
 
@@ -25,43 +21,19 @@ async function setLineup() {
     const players = await getPlayers();
     setAllPlayersToBench(players);
 
-    let numPlayersStarted = 0;
-
-    prioritizePlayers(players).forEach(({ player, debugInfo }, index) => {
-      // For now, this is done on page load
-      // insertPlayerPredictedScore(player, score, { debugInfo });
-      // if (player.refinedPlayerStatus) {
-      //   insertRefinedPlayerStatus(player, player.refinedPlayerStatus);
-      // }
-
-      if (player.playerName === "Myles Turner") debugger;
-
-      if (!player.setPositionDropdown) {
-        return;
-      }
-
-      if (numPlayersStarted >= NUM_PLAYERS_THAT_CAN_START) {
-        return;
-      }
-
+    players.forEach((player) => {
       if (player.isTaxi || player.isIr) {
         stylePlayerAsUnableToStart(player);
         return;
       }
-
       const isInjured =
         player.playerStatus === "DTD" || player.playerStatus === "OUT";
       if (isInjured) {
         stylePlayerAsPossiblyInjured(player);
       }
-
-      const playerStarted = startPlayer(player, {
-        isAlternate: index + 1 > NUM_PLAYERS_THAT_CAN_START,
-      });
-      if (playerStarted) {
-        numPlayersStarted++;
-      }
     });
+
+    setOptimalLineup(players);
 
     if (lineupHasChanges()) {
       // saveLineup();

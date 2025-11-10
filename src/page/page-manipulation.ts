@@ -6,7 +6,7 @@ import {
   PLAYER_STATUS_SELECTOR,
   type Player,
 } from "./get-players";
-import { saveLineup } from "./page-interaction";
+import { saveLineup } from "../lineup/lineup-dom-actions";
 import { getPlayersTable } from "./page-querying";
 import {
   applyStyles,
