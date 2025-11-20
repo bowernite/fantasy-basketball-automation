@@ -18,15 +18,14 @@ export async function setLineup() {
 
     let players = await getPlayers();
     await setAllPlayersToBench(players);
-    
+
     players.forEach((player) => {
       if (player.isTaxi || player.isIr) {
         stylePlayerAsUnableToStart(player);
         return;
       }
-      const isInjured =
-        player.playerStatus === "DTD" || player.playerStatus === "OUT";
-      if (isInjured) {
+      const isInjured = player.playerStatus === "DTD";
+      if (isInjured && player.todaysGame) {
         stylePlayerAsPossiblyInjured(player);
       }
     });
@@ -42,4 +41,3 @@ export async function setLineup() {
     throw error;
   }
 }
-
