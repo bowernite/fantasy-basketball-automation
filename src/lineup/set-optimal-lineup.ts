@@ -39,23 +39,13 @@ function getEligibleSlotLabelsFromDropdown(
 }
 
 function buildCandidates(players: Player[]): Candidate[] {
-  const GAME_OFFSET = 10000;
-  
   return players
     .map((p, idx) => {
       if (!p.setPositionDropdown || p.isIr || p.isTaxi) return null;
       const eligible = getEligibleSlotLabelsFromDropdown(p);
       if (!eligible || eligible.length === 0) return null;
-      const [predictedScore, debugInfo] = getPlayerPredictedScore(p);
-      const weightedScore = debugInfo.weightedScore;
-      
-      let score: number;
-      if (p.todaysGame) {
-        score = predictedScore + GAME_OFFSET;
-      } else {
-        score = weightedScore ?? 0;
-      }
-      
+      const [predictedScore] = getPlayerPredictedScore(p);
+      const score = p.todaysGame ? predictedScore : 0;
       return {
         id: p.playerName,
         score: Number(score) || 0,
