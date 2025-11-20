@@ -15,8 +15,7 @@ import {
   STYLES,
 } from "./styles";
 import { saveLineupIcon, setLineupIcon } from "../icons/icons";
-import { setOptimalLineup } from "../lineup/set-optimal-lineup";
-import { getPlayers } from "./get-players";
+import { setLineup } from "../lineup/set-lineup";
 
 /********************************************************************
  * Starting player
@@ -343,8 +342,7 @@ export async function addSetLineupButton() {
 
   button.addEventListener("click", async () => {
     try {
-      const players = await getPlayers();
-      setOptimalLineup(players);
+      await setLineup();
     } catch (error) {
       console.error("Error setting lineup:", error);
       alert(`Error setting lineup: ${error}`);

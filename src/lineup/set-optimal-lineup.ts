@@ -28,6 +28,7 @@ function normalizeOptionTextToSlotLabel(text: string): SlotLabel | null {
 function getEligibleSlotLabelsFromDropdown(player: Player): SlotLabel[] | null {
   const select = player.setPositionDropdown;
   if (!select) return null;
+  console.log("position options for player:", player.playerName, select.options);
   const labels = Array.from(select.options)
     .map((o) => o.text)
     .filter((t) => t && !/^(bench|taxi|ir)$/i.test(t.trim()))
@@ -84,8 +85,10 @@ function findOptionValueForLabel(
 }
 
 export function setOptimalLineup(players: Player[]) {
+  console.log("🟣 players:", players);
   const slots = buildDefaultSlots();
   const candidates = buildCandidates(players);
+  console.table(candidates);
   const { assignments } = computeOptimalAssignments(
     candidates.map((c) => ({
       id: c.id,
