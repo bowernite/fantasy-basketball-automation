@@ -1,0 +1,36 @@
+{
+  "manifest_version": 3,
+  "name": "Fantasy Basketball Automation",
+  "version": "1.0",
+  "description": "Description of your extension",
+  "action": {
+    "default_icon": "icons/icon.png"
+  },
+  "background": {
+    "service_worker": "dist/background.js",
+    "scripts": ["dist/background.js"]
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://www.fleaflicker.com/nba/leagues/30579/teams/161025*"],
+      "js": ["dist/page-load__set-lineup.js"]
+    }
+  ],
+  "commands": {
+    "run-script": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+U",
+        "mac": "Command+Shift+U"
+      },
+      "description": "Run the lineup optimization script"
+    },
+    "save-lineup": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+I",
+        "mac": "Command+Shift+I"
+      },
+      "description": "Save the lineup"
+    }
+  },
+  "permissions": ["activeTab", "scripting"]
+}

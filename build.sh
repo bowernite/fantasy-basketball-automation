@@ -36,16 +36,16 @@ fi
 
 log_step "📁 Creating dist directory"
 # Create dist directory if it doesn't exist
-mkdir -p ./chrome-extension/dist
+mkdir -p ./extension/dist
 
 log_step "🔄 Transpiling TypeScript to JavaScript"
 # Transpile TypeScript to JavaScript
 if [ "$TRANSPILE_CMD" = "bun build" ]; then
-  $TRANSPILE_CMD "./main.ts" --outfile="./chrome-extension/dist/main.js"
-  $TRANSPILE_CMD "./page-load__set-lineup.ts" --outfile="./chrome-extension/dist/page-load__set-lineup.js"
+  $TRANSPILE_CMD "./main.ts" --outfile="./extension/dist/main.js"
+  $TRANSPILE_CMD "./page-load__set-lineup.ts" --outfile="./extension/dist/page-load__set-lineup.js"
 else
-  $TRANSPILE_CMD "./main.ts" --outFile "./chrome-extension/dist/main.js"
-  $TRANSPILE_CMD "./page-load__set-lineup.ts" --outFile "./chrome-extension/dist/page-load__set-lineup.js"
+  $TRANSPILE_CMD "./main.ts" --outFile "./extension/dist/main.js"
+  $TRANSPILE_CMD "./page-load__set-lineup.ts" --outFile "./extension/dist/page-load__set-lineup.js"
 fi
 
 # Check if transpilation was successful
@@ -56,17 +56,18 @@ fi
 
 log_step "📋 Copying transpiled JavaScript to clipboard"
 # Copy the transpiled JavaScript to clipboard
-cat "./chrome-extension/dist/main.js" | $CLIPBOARD_CMD
+cat "./extension/dist/main.js" | $CLIPBOARD_CMD
 
-echo "✅ Successfully built JavaScript to ./chrome-extension/dist/main.js and copied to clipboard"
+echo "✅ Successfully built JavaScript to ./extension/dist/main.js and copied to clipboard"
 
-log_step "🔄 Copying Chrome Extension background file"
-cp ./chrome-extension/background.js ./chrome-extension/dist/background.js
+log_step "🔄 Copying extension background file"
+cp ./extension/background.js ./extension/dist/background.js
 
 if [[ "$*" != *"--no-browser"* ]]; then
-  log_step "🔄 Opening Chrome"
+  log_step "🔄 Opening Browser"
   # open -a "Google Chrome"
-  open -a "Google Chrome" "chrome://extensions/"
+  # open -a "Google Chrome" "chrome://extensions/"
+  /Applications/Zen.app/Contents/MacOS/zen "about:debugging#/runtime/this-firefox" 2>&1 &
 fi
 
 # if [[ "$*" == *"--run"* ]]; then

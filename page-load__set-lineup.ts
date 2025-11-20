@@ -6,6 +6,9 @@ import {
   refinePlayerStatus,
 } from "./src/page/page-manipulation";
 import { prioritizePlayers } from "./src/prioritization/prioritization";
+import { saveLineup } from "./src/lineup/lineup-dom-actions";
+
+(window as any).saveLineup = saveLineup;
 
 pageLoad();
 randomPageStylings();

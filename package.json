@@ -2,13 +2,15 @@
   "name": "ff-basketball-automation",
   "module": "main.ts",
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "web-ext": "^9.1.0"
   },
   "peerDependencies": {
     "typescript": "^5.5.4"
   },
   "scripts": {
     "build": "./build.sh",
+    "dev:zen": "web-ext run --source-dir ./extension --firefox=/Applications/Zen.app/Contents/MacOS/zen --watch-file ./extension/dist/main.js --watch-file ./extension/dist/page-load__set-lineup.js --watch-file ./extension/dist/background.js",
     "start:debug": "playwright test main.ts --debug"
   },
   "type": "module"

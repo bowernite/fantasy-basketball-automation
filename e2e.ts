@@ -22,14 +22,14 @@ if (!process.env.FF_EMAIL || !process.env.FF_PASSWORD) {
     await page.waitForTimeout(2000);
     console.log("Running pageLoad...");
     await page.addScriptTag({
-      path: "./chrome-extension/dist/page-load__set-lineup.js",
+      path: "./extension/dist/page-load__set-lineup.js",
     });
     console.log("pageLoad complete");
 
     await page.waitForTimeout(2000);
     console.log("Running main...");
     await page.addScriptTag({
-      path: "./chrome-extension/dist/main.js",
+      path: "./extension/dist/main.js",
     });
 
     await page.waitForTimeout(1000000);
