@@ -25,9 +25,7 @@ function normalizeOptionTextToSlotLabel(text: string): SlotLabel | null {
   return null;
 }
 
-function getEligibleSlotLabelsFromDropdown(
-  player: Player
-): SlotLabel[] | null {
+function getEligibleSlotLabelsFromDropdown(player: Player): SlotLabel[] | null {
   const select = player.setPositionDropdown;
   if (!select) return null;
   const labels = Array.from(select.options)
@@ -44,11 +42,17 @@ function buildCandidates(players: Player[]): Candidate[] {
       if (!p.setPositionDropdown || p.isIr || p.isTaxi) return null;
       const eligible = getEligibleSlotLabelsFromDropdown(p);
       if (!eligible || eligible.length === 0) return null;
-      const [predictedScore] = getPlayerPredictedScore(p);
-      const score = p.todaysGame ? predictedScore : 0;
+      const [predictedScore, { weightedScore }] = getPlayerPredictedScore(p);
+
+      // We need a secondary score, so that when there is a tie (i.e. players with no games), there is a deterministic fallback to break a tie (their 'weighted score', i.e. roughly their season average)
+      // Fallback to 1, so that players with a predicted score of `0` *because of injury* are still prioritized over players with no games
+      const primaryScore = p.todaysGame ? predictedScore || 1 : 0;
+      const fallbackScore = weightedScore;
+      const combinedScore = primaryScore * 1000 + fallbackScore;
+
       return {
         id: p.playerName,
-        score: Number(score) || 0,
+        score: combinedScore,
         eligibleSlotLabels: eligible,
         playerIndex: idx,
       };
@@ -107,5 +111,3 @@ export function setOptimalLineup(players: Player[]) {
     numStarted: startedIndexes.size,
   };
 }
-
-
