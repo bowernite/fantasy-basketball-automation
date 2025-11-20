@@ -1,6 +1,7 @@
 import { getPlayers } from "./src/page/get-players";
 import {
   addSaveLineupButton,
+  addSetLineupButton,
   insertPlayerScores,
   randomPageStylings,
   refinePlayerStatus,
@@ -15,6 +16,7 @@ randomPageStylings();
 
 async function pageLoad() {
   addSaveLineupButton();
+  addSetLineupButton();
 
   try {
     const players = await getPlayers();

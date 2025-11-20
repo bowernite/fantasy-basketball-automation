@@ -14,6 +14,9 @@ import {
   SAVE_LINEUP_STYLES,
   STYLES,
 } from "./styles";
+import { saveLineupIcon, setLineupIcon } from "../icons/icons";
+import { setOptimalLineup } from "../lineup/set-optimal-lineup";
+import { getPlayers } from "./get-players";
 
 /********************************************************************
  * Starting player
@@ -280,22 +283,72 @@ export function refinePlayerStatus(player: Player) {
 }
 
 export function addSaveLineupButton() {
-  const style = document.createElement("style");
-  style.textContent = SAVE_LINEUP_STYLES;
-  document.head.appendChild(style);
+  if (!document.head.querySelector('style[data-button-styles]')) {
+    const style = document.createElement("style");
+    style.textContent = SAVE_LINEUP_STYLES;
+    style.setAttribute('data-button-styles', '');
+    document.head.appendChild(style);
+  }
 
   const button = document.createElement("button");
   button.className = "save-lineup-button";
 
   const innerButton = document.createElement("div");
   innerButton.className = "save-lineup-button__inner";
-  innerButton.textContent = "Save Lineup";
+  
+  const iconDiv = document.createElement("div");
+  iconDiv.className = "save-lineup-button__icon";
+  iconDiv.innerHTML = saveLineupIcon;
+  
+  const textSpan = document.createElement("span");
+  textSpan.textContent = "Save Lineup";
+  
+  innerButton.appendChild(iconDiv);
+  innerButton.appendChild(textSpan);
 
   button.appendChild(innerButton);
   document.body.appendChild(button);
 
   button.addEventListener("click", () => {
     saveLineup();
+  });
+}
+
+export async function addSetLineupButton() {
+  if (!document.head.querySelector('style[data-button-styles]')) {
+    const style = document.createElement("style");
+    style.textContent = SAVE_LINEUP_STYLES;
+    style.setAttribute('data-button-styles', '');
+    document.head.appendChild(style);
+  }
+
+  const button = document.createElement("button");
+  button.className = "set-lineup-button";
+
+  const innerButton = document.createElement("div");
+  innerButton.className = "set-lineup-button__inner";
+  
+  const iconDiv = document.createElement("div");
+  iconDiv.className = "set-lineup-button__icon";
+  iconDiv.innerHTML = setLineupIcon;
+  
+  const textSpan = document.createElement("span");
+  textSpan.textContent = "Set Lineup";
+  
+  innerButton.appendChild(iconDiv);
+  innerButton.appendChild(textSpan);
+
+  button.appendChild(innerButton);
+  document.body.appendChild(button);
+
+  button.addEventListener("click", async () => {
+    try {
+      const players = await getPlayers();
+      setOptimalLineup(players);
+    } catch (error) {
+      console.error("Error setting lineup:", error);
+      alert(`Error setting lineup: ${error}`);
+    }
   });
 }
 

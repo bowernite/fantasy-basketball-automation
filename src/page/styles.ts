@@ -73,11 +73,11 @@ export const STYLES = {
   },
 };
 
-export const SAVE_LINEUP_STYLES = `
-  .save-lineup-button {
+export const BUTTON_STYLES = `
+  .save-lineup-button,
+  .set-lineup-button {
     position: fixed;
     top: 6px;
-    right: 210px;
     padding: 2px;
     background: white;
     border: none;
@@ -87,11 +87,24 @@ export const SAVE_LINEUP_STYLES = `
     font-weight: bold;
     z-index: 9999;
     box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-    background-image: linear-gradient(45deg, #FF6B6B, #4ECDC4);
     transition: all 0.2s ease-in-out;
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
 
-  .save-lineup-button:hover {
+  .save-lineup-button {
+    right: 210px;
+    background-image: linear-gradient(45deg, #4ECDC4, #44A08D);
+  }
+
+  .set-lineup-button {
+    right: 385px;
+    background-image: linear-gradient(45deg, #F7971E, #FFD200);
+  }
+
+  .save-lineup-button:hover,
+  .set-lineup-button:hover {
     transform: scale(1.05);
     box-shadow: 0 6px 20px rgba(0,0,0,0.1);
   }
@@ -100,12 +113,39 @@ export const SAVE_LINEUP_STYLES = `
     background: white;
     padding: 8px 18px;
     border-radius: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #2C5F5A;
+  }
+
+  .set-lineup-button__inner {
+    background: white;
+    padding: 8px 18px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #B8731A;
   }
 
   .save-lineup-button__inner:hover {
-    background: #f5f5f5;
+    background: #f0f9f7;
+  }
+
+  .set-lineup-button__inner:hover {
+    background: #fff8f0;
+  }
+
+  .save-lineup-button__icon,
+  .set-lineup-button__icon {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
   }
 `;
+
+export const SAVE_LINEUP_STYLES = BUTTON_STYLES;
 
 export function generateScoreColor(score: number) {
   const minScore = 15;
