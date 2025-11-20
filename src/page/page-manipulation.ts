@@ -301,7 +301,7 @@ export function addSaveLineupButton() {
 
 export function randomPageStylings() {
   const playersTable = getPlayersTable();
-  playersTable.style.maxWidth = "800px";
+  playersTable.style.maxWidth = "1200px";
 }
 
 /********************************************************************
