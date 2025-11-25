@@ -113,6 +113,12 @@ function updateExistingScores(
   }
   predictedScoreDiv.textContent = predictedScore.toFixed(1);
 
+  if (predictedScore === 0) {
+    predictedScoreDiv.style.visibility = "hidden";
+  } else {
+    predictedScoreDiv.style.visibility = "visible";
+  }
+
   return predictedScoreDiv;
 }
 
@@ -153,6 +159,9 @@ function createPredictedScoreDiv(predictedScore: number) {
     "background-color": predictedScoreBgColor,
   });
   predictedScoreDiv.textContent = predictedScore.toFixed(1) + " ✨";
+  if (predictedScore === 0) {
+    predictedScoreDiv.style.visibility = "hidden";
+  }
   return predictedScoreDiv;
 }
 
@@ -204,6 +213,10 @@ function createScoresDisplay(
     predictedScore,
     debugInfo
   );
+
+  if (predictedScore === 0) {
+    predictedScoreDiv.style.visibility = "hidden";
+  }
 
   container.appendChild(predictedScoreDiv);
 
