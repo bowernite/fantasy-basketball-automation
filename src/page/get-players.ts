@@ -3,234 +3,77 @@
 
 import { parseNumberString } from "../utils/parse-number-string";
 import { getPlayersTable } from "./page-querying";
+import { getTooltipPageData } from "./page-data";
+import { getOpponentInfo } from "./opponent-info";
+import { getPlayerStatusInfo } from "./player-status";
+import type { Player } from "../types";
 
-export type Player = Awaited<ReturnType<typeof getPlayers>>[number];
-export type PlayerStatus = "(active)" | "DTD" | "P" | "Q" | "D" | "OUT" | "OFS";
-export type PlayerOpponentInfo = {
-  avgPointsAllowed: number;
-  avgPointsAllowedRank: number;
-};
-export type TimeAgo = {
-  value: number;
-  unit: "days" | "hours" | "minutes";
-};
-
-export const PLAYER_STATUS_SELECTOR = ".injury";
-
-export const getPlayers = async () => {
+export const getPlayers = async (): Promise<Player[]> => {
   const table = getPlayersTable();
-  const rows = table.querySelectorAll("tr");
-  if (rows.length === 0) {
+  const rows = Array.from(table.querySelectorAll("tr"));
+  if (!rows.length) {
     throw new Error("Expected at least one row");
   }
 
-  const players = await Promise.all(
-    Array.from(rows).map(async (row) => {
-      const playerName = row.querySelector(".player-text")?.textContent;
-      if (!playerName) {
-        return;
-      }
-      const playerStatus =
-        (row
-          .querySelector(PLAYER_STATUS_SELECTOR)
-          ?.textContent?.split(" ")[0] as PlayerStatus) || "(active)";
-      const fantasyPointsElements = row.querySelectorAll(".fp");
-      const last5Avg = parseNumberString(fantasyPointsElements[1]?.textContent);
-      const last10Avg = parseNumberString(
-        fantasyPointsElements[2]?.textContent
-      );
-      const seasonAvg = parseNumberString(
-        fantasyPointsElements[fantasyPointsElements.length - 2]?.textContent
-      );
-      const seasonTotal = parseNumberString(
-        fantasyPointsElements[fantasyPointsElements.length - 1]?.textContent
-      );
-      const gamesPlayed =
-        seasonTotal && seasonAvg ? seasonTotal / seasonAvg : null;
-      const position = row.querySelector(".position")?.textContent;
-      const setPositionDropdown =
-        row.querySelector<HTMLSelectElement>(".form-control");
-      const isTaxi = setPositionDropdown?.selectedOptions[0]?.text === "TAXI";
-      const isIr = setPositionDropdown?.selectedOptions[0]?.text === "IR";
+  // Initialize the tooltip map once
+  getTooltipPageData();
 
-      const todaysGameElement = row.querySelector(".pro-opp-matchup");
-      console.log(`🟣 todaysGameElement (${playerName}):`, todaysGameElement);
-      const todaysGame = todaysGameElement?.textContent;
-      console.log(`🟣 todaysGame (${playerName}):`, todaysGame);
-      const opponentInfo = todaysGameElement
-        ? await getPlayerOpponentInfo(todaysGameElement, playerName)
-        : undefined;
-
-      const newsTrigger = row.querySelector(".fa-file-text");
-      const { fullString: news, element: newsElement } = newsTrigger
-        ? await getTooltipContent(newsTrigger)
-        : { fullString: undefined, element: undefined };
-      const timeAgoString =
-        newsElement?.querySelector("relative-time")?.textContent;
-      const refinedPlayerStatus =
-        news && playerStatus !== "(active)"
-          ? parsePlayerNews(news, timeAgoString)
-          : undefined;
-      console.log(`🟣 ${playerName} refinedPlayerStatus:`, refinedPlayerStatus);
-
-      return {
-        playerName,
-        playerStatus: playerStatus as PlayerStatus,
-        refinedPlayerStatus,
-        last5Avg,
-        last10Avg,
-        seasonAvg,
-        seasonTotal,
-        gamesPlayed,
-        todaysGame,
-        position,
-        setPositionDropdown,
-        isTaxi,
-        isIr,
-        opponentInfo,
-        row,
-      };
-    })
-  );
-
-  return players.filter(
-    (player): player is NonNullable<typeof player> => player !== undefined
-  );
+  const players = await Promise.all(rows.map(processPlayerRow));
+  return players.filter((p): p is Player => p !== undefined);
 };
 
-export function getPlayerNameCell(player: Player) {
-  return player.row.querySelector<HTMLTableCellElement>("td:first-child");
-}
-export function getPlayerNameEl(player: Player) {
-  const cell = getPlayerNameCell(player);
-  if (!cell) return;
-  return cell.querySelector<HTMLElement>(".player");
-}
+async function processPlayerRow(
+  row: HTMLTableRowElement
+): Promise<Player | undefined> {
+  const playerName = row.querySelector(".player-text")?.textContent;
+  if (!playerName) return undefined;
 
-async function getPlayerOpponentInfo(
-  todaysGameElement: Element,
-  playerName: string
-) {
-  const opponentInfoElement = todaysGameElement?.querySelector("a");
-  let opponentInfoContent: string | undefined | null;
-  if (!opponentInfoElement) {
-    console.warn(`Failed to get opponent info for ${playerName}.`, {
-      todaysGameElement,
-      opponentInfoElement,
-    });
-    return undefined;
-  }
-  const opponentInfoTooltip = await getTooltipContent(opponentInfoElement);
-  opponentInfoContent = opponentInfoTooltip?.fullString;
-
-  // "Vs opposing Cs per game:Pts: 24.67 (6th)Reb: 20.67 (t-15th)Ast: 7 (19th)Default FPts: 43.78 (12th)"
-  const positionMatch = opponentInfoContent?.match(
-    /Vs opposing (\w+)s per game/
+  const fantasyPoints = extractFantasyPoints(row);
+  const basicInfo = extractBasicInfo(row);
+  const opponentInfo = await getOpponentInfo(row, playerName);
+  const { playerStatus, refinedPlayerStatus } = await getPlayerStatusInfo(
+    row,
+    playerName
   );
-  const position = positionMatch?.[1];
-
-  const defaultFptsMatch = opponentInfoContent?.match(
-    /Default FPts: (\d+\.?\d*) \((\d+)(?:st|nd|rd|th)\)/
-  );
-  const avgPointsAllowed = parseFloat(defaultFptsMatch?.[1] ?? "0");
-  const defenseRank = parseInt(defaultFptsMatch?.[2] ?? "0", 10);
-
-  const isInvalid =
-    isNaN(avgPointsAllowed) ||
-    isNaN(defenseRank) ||
-    !avgPointsAllowed ||
-    !defenseRank;
-  if (isInvalid) {
-    console.warn(
-      `Failed to parse opponent info for ${playerName}. Tooltip content: ${
-        opponentInfoContent ?? "No content"
-      }`
-    );
-    return undefined;
-  }
 
   return {
-    avgPointsAllowed,
-    defenseRank,
-    position,
+    playerName,
+    playerStatus,
+    refinedPlayerStatus,
+    ...fantasyPoints,
+    ...basicInfo,
+    opponentInfo,
+    row,
   };
 }
 
-function parsePlayerNews(
-  news: string,
-  timeAgoString: string | null | undefined
-) {
-  const injuryStatusMatch = news.match(
-    // 'fouled' is to handle 'fouled out'
-    /\b(?<!fouled\s+)(questionable|doubtful|probable|available|out)\b/i
+function extractFantasyPoints(row: HTMLTableRowElement) {
+  const fpElements = row.querySelectorAll(".fp");
+  const last5Avg = parseNumberString(fpElements[1]?.textContent);
+  const last10Avg = parseNumberString(fpElements[2]?.textContent);
+  const seasonAvg = parseNumberString(
+    fpElements[fpElements.length - 2]?.textContent
   );
-  const rawStatus = injuryStatusMatch?.[1]?.toLowerCase();
-  const injuryStatus: PlayerStatus | undefined =
-    rawStatus === "questionable"
-      ? "Q"
-      : rawStatus === "doubtful"
-      ? "D"
-      : rawStatus === "probable"
-      ? "P"
-      : rawStatus === "out"
-      ? "OUT"
-      : undefined;
+  const seasonTotal = parseNumberString(
+    fpElements[fpElements.length - 1]?.textContent
+  );
+  const gamesPlayed = seasonTotal && seasonAvg ? seasonTotal / seasonAvg : null;
 
-  if (injuryStatus === undefined) return undefined;
-
-  let timeAgo: TimeAgo | undefined;
-  if (timeAgoString?.toLowerCase().includes("yesterday")) {
-    timeAgo = {
-      value: 16,
-      unit: "hours",
-    };
-  } else if (timeAgoString?.toLowerCase().includes("today")) {
-    timeAgo = {
-      value: 0,
-      unit: "minutes",
-    };
-  } else {
-    timeAgoString ??= news;
-    const timeAgoMatch = timeAgoString?.match(
-      /(\d+)\s+(days?|hours?|minutes?)\s+ago/i
-    );
-    timeAgo = timeAgoMatch
-      ? {
-          value: parseInt(timeAgoMatch[1], 10),
-          unit: timeAgoMatch[2].toLowerCase() as "days" | "hours" | "minutes",
-        }
-      : undefined;
-  }
-
-  return { injuryStatus, timeAgo };
+  return { last5Avg, last10Avg, seasonAvg, seasonTotal, gamesPlayed };
 }
 
-/********************************************************************
- * Utils
- *******************************************************************/
-async function getTooltipContent(trigger: Element) {
-  trigger.dispatchEvent(
-    new MouseEvent("mouseover", {
-      bubbles: true,
-      cancelable: true,
-      view: window,
-    })
-  );
-  await new Promise((resolve) => setTimeout(resolve, 100));
-
-  const tooltip = trigger.parentElement?.querySelector(".tooltip");
-  const tooltipContent = tooltip?.textContent;
-
-  trigger.dispatchEvent(
-    new MouseEvent("mouseout", {
-      bubbles: true,
-      cancelable: true,
-      view: window,
-    })
-  );
+function extractBasicInfo(row: HTMLTableRowElement) {
+  const position = row.querySelector(".position")?.textContent;
+  const setPositionDropdown =
+    row.querySelector<HTMLSelectElement>(".form-control");
+  const selectedText = setPositionDropdown?.selectedOptions[0]?.text;
+  const todaysGameElement = row.querySelector(".pro-opp-matchup");
 
   return {
-    fullString: tooltipContent,
-    element: tooltip,
+    position,
+    setPositionDropdown,
+    isTaxi: selectedText === "TAXI",
+    isIr: selectedText === "IR",
+    todaysGame: todaysGameElement?.textContent,
   };
 }

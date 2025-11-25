@@ -1,4 +1,4 @@
-import type { Player } from "../page/get-players";
+import type { Player } from "../types";
 import { setPlayerPosition } from "./lineup-dom-actions";
 import { stylePlayerAsStarted } from "../page/page-manipulation";
 import {

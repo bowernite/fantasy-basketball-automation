@@ -1,5 +1,5 @@
 import { PLAYER_DATA, type PlayerData } from "../data/player-data";
-import type { Player } from "../page/get-players";
+import type { Player } from "../types";
 import { adjustPredictedScoreForInjury } from "./injury-adjustments";
 
 export type ScoreWeightingDebugInfo = ReturnType<

@@ -1,5 +1,5 @@
 import { getSaveLineupButton } from "../page/page-querying";
-import { type Player } from "../page/get-players";
+import { type Player } from "../types";
 import {
   stylePlayerAsAlternate,
   stylePlayerAsStarted,

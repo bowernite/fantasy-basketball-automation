@@ -1,13 +1,13 @@
 import type { ScoreWeightingDebugInfo } from "../prioritization/score-weighting";
 import { interpolateColors } from "../utils/interpolate-colors";
+import type { Player } from "../types";
+import { saveLineup } from "../lineup/lineup-dom-actions";
 import {
+  getPlayersTable,
   getPlayerNameCell,
   getPlayerNameEl,
   PLAYER_STATUS_SELECTOR,
-  type Player,
-} from "./get-players";
-import { saveLineup } from "../lineup/lineup-dom-actions";
-import { getPlayersTable } from "./page-querying";
+} from "./page-querying";
 import {
   applyStyles,
   generateScoreColor,

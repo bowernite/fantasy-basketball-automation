@@ -1,3 +1,7 @@
+import type { Player } from "../types";
+
+export const PLAYER_STATUS_SELECTOR = ".injury";
+
 export function getPlayersTable() {
   const tables = document.querySelectorAll("table");
   if (tables.length !== 1) {
@@ -66,4 +70,14 @@ export function getPageDate() {
   }
   const [month, day] = dateMatch[1].split("/").map(Number);
   return new Date(new Date().getFullYear(), month - 1, day);
+}
+
+export function getPlayerNameCell(player: Player) {
+  return player.row.querySelector<HTMLTableCellElement>("td:first-child");
+}
+
+export function getPlayerNameEl(player: Player) {
+  const cell = getPlayerNameCell(player);
+  if (!cell) return;
+  return cell.querySelector<HTMLElement>(".player");
 }

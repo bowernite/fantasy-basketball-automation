@@ -1,5 +1,5 @@
 import { getNumDaysInFuture } from "../dates";
-import type { Player, TimeAgo } from "../page/get-players";
+import type { Player, TimeAgo } from "../types";
 
 export function adjustPredictedScoreForInjury(score: number, player: Player) {
   const { playerStatus, refinedPlayerStatus } = player;

@@ -1,4 +1,4 @@
-import type { Player } from "../page/get-players";
+import type { Player } from "../types";
 import { getPlayerPredictedScore } from "./score-weighting";
 
 export function prioritizePlayers(players: Player[]) {
