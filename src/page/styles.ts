@@ -148,18 +148,21 @@ export const BUTTON_STYLES = `
 export const SAVE_LINEUP_STYLES = BUTTON_STYLES;
 
 export function generateScoreColor(score: number) {
-  const minScore = 15;
-  const maxScore = 50;
+  const minScore = 7;
+  const maxScore = 72;
   const normalizedScore = Math.min(Math.max(score, minScore), maxScore);
   const percentage = (normalizedScore - minScore) / (maxScore - minScore);
+
   return interpolateColors(
     {
-      start: "rgb(64, 64, 64)",
-      end: "rgb(0, 0, 139)",
+      start: "rgb(64, 64, 64)", // dark gray
       stops: [
-        { color: "rgb(204, 150, 0)", percentage: 0.2 },
-        { color: "rgb(0, 100, 0)", percentage: 0.6 },
+        { color: "rgb(204, 150, 0)", percentage: 0.2 },   // gold (1/5)
+        { color: "rgb(0, 100, 0)", percentage: 0.4 },     // green (2/5)
+        { color: "rgb(0, 0, 139)", percentage: 0.6 },     // blue (3/5)
+        { color: "rgb(102, 0, 204)", percentage: 0.8 },   // purple (4/5)
       ],
+      end: "rgb(255, 0, 144)", // magenta / hot pink
     },
     percentage
   );
