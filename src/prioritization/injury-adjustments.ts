@@ -15,17 +15,30 @@ export function adjustPredictedScoreForInjury(score: number, player: Player) {
 
   let multiplier = 1;
   if (status === "P") {
-    if (daysBetweenReportAndGame <= 0) multiplier = 0.85;
-    if (daysBetweenReportAndGame <= 1) multiplier = 0.95;
+    // Probable: Very likely to play (>90%).
+    // High confidence if reported within the last ~36 hours.
+    if (daysBetweenReportAndGame <= 1.5) multiplier = 0.95;
   } else if (status === "DTD" || status === "Q") {
-    if (daysBetweenReportAndGame <= 0) multiplier = 0.65;
-    else if (daysBetweenReportAndGame <= 1) multiplier = 0.65;
+    // Questionable: Typically 50/50.
+    // We use 0.5 to reflect the coin-flip nature.
+    if (daysBetweenReportAndGame <= 1.5) multiplier = 0.5;
   } else if (status === "D") {
-    if (daysBetweenReportAndGame <= 0) multiplier = 0.1;
-    else if (daysBetweenReportAndGame <= 1) multiplier = 0.2;
+    // Doubtful: Very unlikely (~25% or less).
+    // If fresh (< 17 hours), almost certainly out.
+    if (daysBetweenReportAndGame <= 0.7) multiplier = 0.05;
+    else if (daysBetweenReportAndGame <= 1.5) multiplier = 0.2;
+    else if (daysBetweenReportAndGame <= 2.5) multiplier = 0.4;
+    else if (daysBetweenReportAndGame <= 3.5) multiplier = 0.6;
   } else if (status === "OUT") {
-    if (daysBetweenReportAndGame <= 1) multiplier = 0;
-    else if (daysBetweenReportAndGame <= 2) multiplier = 0.1;
+    // OUT: Confirmed out.
+    // If report is fresh (< 17 hours), it's definitely for this game -> 0.
+    if (daysBetweenReportAndGame <= 0.7) multiplier = 0;
+    // If report is ~1 day old (e.g. 22 hours), it might be from the *previous* game.
+    // We treat this as high risk (likely still injured), but give it a chance (0.25)
+    // so we don't completely zero out a player who might just be DTD.
+    else if (daysBetweenReportAndGame <= 1.5) multiplier = 0.25;
+    else if (daysBetweenReportAndGame <= 2.5) multiplier = 0.4;
+    else if (daysBetweenReportAndGame <= 3.5) multiplier = 0.6;
   } else if (status === "OFS") {
     multiplier = 0;
   }
