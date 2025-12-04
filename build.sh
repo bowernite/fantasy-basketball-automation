@@ -10,6 +10,31 @@ log_step() {
   echo -e "\n🚀 \033[1;34m==>\033[0m \033[1m$1\033[0m"
 }
 
+# Check if we should skip version bump and signing (for dev builds)
+SKIP_VERSION_AND_SIGN=false
+if [ "$1" = "--skip-version-sign" ]; then
+  SKIP_VERSION_AND_SIGN=true
+fi
+
+if [ "$SKIP_VERSION_AND_SIGN" = false ]; then
+  log_step "📝 Bumping version"
+  # Read manifest.json, bump patch version, and write back
+  MANIFEST_PATH="./extension/manifest.json"
+  CURRENT_VERSION=$(node -pe "JSON.parse(require('fs').readFileSync('$MANIFEST_PATH', 'utf-8')).version")
+  IFS='.' read -r -a VERSION_PARTS <<< "$CURRENT_VERSION"
+  NEW_VERSION="${VERSION_PARTS[0]}.${VERSION_PARTS[1]}.$((VERSION_PARTS[2] + 1))"
+  
+  # Update manifest.json with new version
+  node -e "
+    const fs = require('fs');
+    const manifest = JSON.parse(fs.readFileSync('$MANIFEST_PATH', 'utf-8'));
+    manifest.version = '$NEW_VERSION';
+    fs.writeFileSync('$MANIFEST_PATH', JSON.stringify(manifest, null, 2) + '\n');
+  "
+  
+  echo "✅ Version bumped from $CURRENT_VERSION to $NEW_VERSION"
+fi
+
 log_step "🔍 Checking for TypeScript compiler"
 # Check for TypeScript compiler
 if command_exists bun; then
@@ -63,13 +88,32 @@ echo "✅ Successfully built JavaScript to ./extension/dist/main.js and copied t
 log_step "🔄 Copying extension background file"
 cp ./extension/background.js ./extension/dist/background.js
 
-if [[ "$*" != *"--no-browser"* ]]; then
-  log_step "🔄 Opening Browser"
-  # open -a "Google Chrome"
-  # open -a "Google Chrome" "chrome://extensions/"
-  /Applications/Zen.app/Contents/MacOS/zen "about:debugging#/runtime/this-firefox" 2>&1 &
-fi
+echo "✅ Build complete!"
 
-# if [[ "$*" == *"--run"* ]]; then
-# TODO: Click chrome extension icon
-# fi
+if [ "$SKIP_VERSION_AND_SIGN" = false ]; then
+  log_step "🔐 Signing extension"
+  
+  # Check if .env file exists
+  if [ ! -f .env ]; then
+    echo "❌ .env file not found. Please create it from env.signing.example"
+    exit 1
+  fi
+  
+  # Load environment variables and run web-ext sign
+  if command_exists bun; then
+    bun run sign
+  elif command_exists npm; then
+    npm run sign
+  else
+    echo "❌ Neither bun nor npx found. Cannot run signing command."
+    exit 1
+  fi
+  
+  if [ $? -ne 0 ]; then
+    echo "❌ Signing failed. Please check your credentials in .env"
+    exit 1
+  fi
+  
+  echo ""
+  echo "✅ Extension signed! Install the .xpi file from ./signed directory"
+fi

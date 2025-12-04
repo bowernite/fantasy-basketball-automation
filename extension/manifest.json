@@ -1,19 +1,30 @@
 {
   "manifest_version": 3,
   "name": "Fantasy Basketball Automation",
-  "version": "1.0",
-  "description": "Description of your extension",
+  "version": "1.0.3",
+  "description": "Automates lineup optimization for fantasy basketball on Fleaflicker",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "ff-basketball-automation@abramczyk.dev"
+    }
+  },
   "action": {
     "default_icon": "icons/icon.png"
   },
   "background": {
     "service_worker": "dist/background.js",
-    "scripts": ["dist/background.js"]
+    "scripts": [
+      "dist/background.js"
+    ]
   },
   "content_scripts": [
     {
-      "matches": ["https://www.fleaflicker.com/nba/leagues/30579/teams/161025*"],
-      "js": ["dist/page-load__set-lineup.js"]
+      "matches": [
+        "https://www.fleaflicker.com/nba/leagues/30579/teams/161025*"
+      ],
+      "js": [
+        "dist/page-load__set-lineup.js"
+      ]
     }
   ],
   "commands": {
@@ -32,5 +43,8 @@
       "description": "Save the lineup"
     }
   },
-  "permissions": ["activeTab", "scripting"]
+  "permissions": [
+    "activeTab",
+    "scripting"
+  ]
 }

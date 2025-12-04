@@ -10,7 +10,10 @@
   },
   "scripts": {
     "build": "./build.sh",
-    "dev:zen": "web-ext run --source-dir ./extension --firefox=/Applications/Zen.app/Contents/MacOS/zen --watch-file ./extension/dist/main.js --watch-file ./extension/dist/page-load__set-lineup.js --watch-file ./extension/dist/background.js",
+    "build:only": "./build.sh --skip-version-sign",
+    "dev": "web-ext run --source-dir ./extension --watch-file ./extension/dist/main.js --watch-file ./extension/dist/page-load__set-lineup.js --watch-file ./extension/dist/background.js",
+    "dev:zen": "bun run dev -- --firefox=/Applications/Zen.app/Contents/MacOS/zen",
+    "sign": "web-ext sign --source-dir ./extension --artifacts-dir ./signed --channel unlisted --api-key=$AMO_JWT_ISSUER --api-secret=$AMO_JWT_SECRET",
     "start:debug": "playwright test main.ts --debug"
   },
   "type": "module"

@@ -8,31 +8,78 @@
 1. Pick `extension` directory in this repo
 1. Go to `Details` for the extension -> Turn off `Collect Errors`
 
-## Firefox / Zen Browser
+## Firefox / Zen Browser (Development - Temporary)
 
-1. Run `bun run build` (opens browser to debugging page automatically)
-1. Click `Load Temporary Add-on`
+1. Run `bun run dev:zen` (opens browser with auto-reloading extension)
+1. Click `Load Temporary Add-on` (if not auto-loaded)
 1. Select `manifest.json` from the `extension` directory
 
-# Building
+**Note:** Temporary add-ons are removed when you close the browser. For persistent installation, see below.
 
-1. `bun run build`
-1. **Chrome**: Go to `chrome://extensions/` -> Reload
-1. **Firefox/Zen**: Extension reloads automatically with `bun run dev:firefox`
+## Firefox / Zen Browser (Permanent Installation)
+
+For a permanent installation that survives browser restarts and updates:
+
+### First-time setup:
+
+1. Go to [Mozilla Add-ons Developer Hub](https://addons.mozilla.org/developers/)
+2. Sign in or create an account
+3. Navigate to [API Credentials](https://addons.mozilla.org/developers/addon/api/key/)
+4. Click "Generate new credentials" or "Create new API credentials"
+5. Copy the `JWT issuer` and `JWT secret`
+6. Create a `.env` file in the project root (see `env.signing.example` for reference):
+
+```bash
+AMO_JWT_ISSUER=user:12345678:123
+AMO_JWT_SECRET=your-secret-key-here
+```
+
+### Build and sign the extension:
+
+```bash
+bun run build
+```
+
+This will:
+
+- Automatically increment the version in `manifest.json`
+- Build your extension
+- Sign it with Mozilla (as an unlisted extension)
+- Create a signed `.xpi` file in the `./signed` directory
+
+### Install the signed extension:
+
+1. Open Zen Browser
+2. Go to `about:addons`
+3. Click the gear icon ⚙️ → "Install Add-on From File..."
+4. Select the `.xpi` file from the `./signed` directory
+5. Confirm the installation
+
+The extension will now persist across browser restarts and updates.
+
+### Updating the extension:
+
+```bash
+bun run build
+```
+
+Then install the new `.xpi` file in Zen Browser (it will update the existing installation).
 
 # Reference
 
-## To run automatically
+## To run automatically on page load
 
-manifest.json:
+The extension is configured in `manifest.json` to run automatically:
 
 ```json
 "content_scripts": [
     {
       "matches": [
-        "https://www.fleaflicker.com/nba/leagues/30579/teams/161025?statType=0"
+        "https://www.fleaflicker.com/nba/leagues/30579/teams/161025*"
       ],
-      "js": ["dist/main.js"]
+      "js": ["dist/page-load__set-lineup.js"]
     }
   ]
 ```
+
+Update the `matches` pattern to your league/team URL. The `*` wildcard allows it to run on all pages within that team.
