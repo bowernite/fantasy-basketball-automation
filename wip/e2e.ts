@@ -84,7 +84,7 @@ async function build(): Promise<void> {
 
   return new Promise((resolve, reject) => {
     exec(
-      "./build.sh --no-browser",
+      "./scripts/build.sh --no-browser",
       (error: Error | null, stdout: string, stderr: string) => {
         if (error) {
           console.error(`Error executing build.sh: ${error}`);

@@ -175,5 +175,5 @@ dist
 .DS_Store
 
 # Signed extension artifacts
-signed/
+extension/signed/
 extension/.amo-upload-uuid

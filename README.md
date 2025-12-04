@@ -40,19 +40,13 @@ AMO_JWT_SECRET=your-secret-key-here
 bun run build
 ```
 
-This will:
-
-- Automatically increment the version in `manifest.json`
-- Build your extension
-- Sign it with Mozilla (as an unlisted extension)
-- Create a signed `.xpi` file in the `./signed` directory
 
 ### Install the signed extension:
 
 1. Open Zen Browser
 2. Go to `about:addons`
 3. Click the gear icon ⚙️ → "Install Add-on From File..."
-4. Select the `.xpi` file from the `./signed` directory
+4. Select the `.xpi` file we just built
 5. Confirm the installation
 
 The extension will now persist across browser restarts and updates.
