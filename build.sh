@@ -116,4 +116,6 @@ if [ "$SKIP_VERSION_AND_SIGN" = false ]; then
   
   echo ""
   echo "✅ Extension signed! Install the .xpi file from ./signed directory"
+  
+  open -a "Zen" "about:addons"
 fi
