@@ -177,3 +177,6 @@ dist
 # Signed extension artifacts
 extension/signed/
 extension/.amo-upload-uuid
+
+.safari/
+.tmp-safari*/
