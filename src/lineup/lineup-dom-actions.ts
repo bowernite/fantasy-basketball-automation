@@ -3,6 +3,7 @@ import {
   getPreviousDayButton,
   getSaveLineupButton,
 } from "../page/page-querying";
+import { getSubmitButtonForm } from "../utils/dom-utils";
 import { type Player } from "../types";
 import {
   stylePlayerAsAlternate,
@@ -93,9 +94,26 @@ export function setAllPlayersToBench(players: Player[]) {
 
 export function saveLineup() {
   const button = getSaveLineupButton();
-  if (button) {
-    button.click();
+  if (!button) return;
+
+  const form = getSubmitButtonForm(button);
+  if (form) {
+    const maybeRequestSubmit = (
+      form as HTMLFormElement & {
+        requestSubmit?: (submitter?: HTMLElement) => void;
+      }
+    ).requestSubmit;
+
+    if (typeof maybeRequestSubmit === "function") {
+      maybeRequestSubmit.call(form, button);
+      return;
+    }
+
+    form.submit();
+    return;
   }
+
+  button.click();
 }
 
 export function goToPreviousDay() {
@@ -111,5 +129,3 @@ export function goToNextDay() {
     button.click();
   }
 }
-
-

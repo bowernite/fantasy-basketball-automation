@@ -304,6 +304,7 @@ export function addSaveLineupButton() {
 
   const button = document.createElement("button");
   button.className = "save-lineup-button";
+  button.type = "button";
 
   const innerButton = document.createElement("div");
   innerButton.className = "save-lineup-button__inner";
@@ -336,6 +337,7 @@ export async function addSetLineupButton() {
 
   const button = document.createElement("button");
   button.className = "set-lineup-button";
+  button.type = "button";
 
   const innerButton = document.createElement("div");
   innerButton.className = "set-lineup-button__inner";
