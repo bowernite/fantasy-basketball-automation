@@ -1,4 +1,5 @@
 import type { Player } from "../types";
+import { parseDateFromText } from "../utils/date-utils";
 
 export const PLAYER_STATUS_SELECTOR = ".injury";
 
@@ -63,13 +64,14 @@ export function getPageDate() {
   if (dateText === "today") {
     return new Date(new Date().setHours(0, 0, 0, 0));
   }
-  const dateMatch = dateText.match(/(\d{1,2}\/\d{1,2})(?:\/\d{2})?/);
-  if (!dateMatch) {
+  
+  const date = parseDateFromText(dateText);
+  if (!date) {
     console.error("Could not find date in button text");
     throw new Error("Could not find date in button text");
   }
-  const [month, day] = dateMatch[1].split("/").map(Number);
-  return new Date(new Date().getFullYear(), month - 1, day);
+  
+  return date;
 }
 
 function getDateDropdownButton() {

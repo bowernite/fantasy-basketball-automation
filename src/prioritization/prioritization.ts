@@ -29,8 +29,9 @@ export function prioritizePlayers(players: Player[]) {
       predictedScore,
       todaysGame: player.todaysGame,
       ...debugInfo,
-      // hasGame: Boolean(player.opponentInfo),
-    }))
+    })),
+    // prettier-ignore
+    ['name', 'predictedScore', 'todaysGame', 'injuryStatus', 'reportDaysAgo', 'daysBetweenReportAndGame', 'injuryMultiplier', 'seasonAvg', 'actualPerformance', 'scoreMultiplier', 'beforeInjuryAdjustment', 'beforeOpponentAdjustment', 'actualPerformanceWeight', 'last5Avg', 'last10Avg', 'gamesPlayed', 'seasonProjectionAvg', 'seasonProjectionWeight']
   );
 
   return prioritizedPlayers;

@@ -1,4 +1,4 @@
-import { getNumDaysInFuture } from "../dates";
+import { getNumDaysInFuture } from "../utils/date-utils";
 import type { Player, TimeAgo } from "../types";
 
 export function adjustPredictedScoreForInjury(score: number, player: Player) {
@@ -46,11 +46,9 @@ export function adjustPredictedScoreForInjury(score: number, player: Player) {
   return [
     score * multiplier,
     {
-      playerStatus,
-      refinedPlayerStatus,
-      status,
-      timeAgo,
-      daysBetweenReportAndGame,
+      injuryStatus: status,
+      reportDaysAgo: timeAgoInDays?.toFixed(2) ?? null,
+      daysBetweenReportAndGame: daysBetweenReportAndGame.toFixed(2),
       injuryMultiplier: multiplier,
     },
   ] as const;
