@@ -26,6 +26,7 @@ xcodebuild \
   -scheme "$SAFARI_SCHEME" \
   -configuration Debug \
   -derivedDataPath "$SAFARI_DERIVED_DATA_DIR" \
+  -quiet \
   build
 
 APP_PATH="$(find "$SAFARI_DERIVED_DATA_DIR" -type d -name "*.app" -path "*/Build/Products/Debug/*" | head -n 1 || true)"
