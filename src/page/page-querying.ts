@@ -72,6 +72,51 @@ export function getPageDate() {
   return new Date(new Date().getFullYear(), month - 1, day);
 }
 
+function getDateDropdownButton() {
+  const allButtons = document.querySelectorAll("a.btn[data-toggle='dropdown']");
+  const buttonsWithDates = Array.from(allButtons).filter((button) => {
+    const text = button.textContent?.toLowerCase().trim() ?? "";
+    return text.match(/\d{1,2}\/\d{1,2}(?:\/\d{2})?/) || text === "today";
+  });
+
+  if (buttonsWithDates.length === 1) {
+    return buttonsWithDates[0];
+  }
+  return null;
+}
+
+export function getPreviousDayButton() {
+  const dateDropdown = getDateDropdownButton();
+  if (!dateDropdown) return;
+
+  const container = dateDropdown.parentElement; // div.btn-group
+  if (!container) return;
+
+  const prevButton = container.previousElementSibling;
+  if (
+    prevButton instanceof HTMLAnchorElement &&
+    prevButton.querySelector(".fa-chevron-left")
+  ) {
+    return prevButton;
+  }
+}
+
+export function getNextDayButton() {
+  const dateDropdown = getDateDropdownButton();
+  if (!dateDropdown) return;
+
+  const container = dateDropdown.parentElement; // div.btn-group
+  if (!container) return;
+
+  const nextButton = container.nextElementSibling;
+  if (
+    nextButton instanceof HTMLAnchorElement &&
+    nextButton.querySelector(".fa-chevron-right")
+  ) {
+    return nextButton;
+  }
+}
+
 export function getPlayerNameCell(player: Player) {
   return player.row.querySelector<HTMLTableCellElement>("td:first-child");
 }

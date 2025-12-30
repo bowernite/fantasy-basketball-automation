@@ -1,4 +1,8 @@
-import { getSaveLineupButton } from "../page/page-querying";
+import {
+  getNextDayButton,
+  getPreviousDayButton,
+  getSaveLineupButton,
+} from "../page/page-querying";
 import { type Player } from "../types";
 import {
   stylePlayerAsAlternate,
@@ -89,6 +93,20 @@ export function setAllPlayersToBench(players: Player[]) {
 
 export function saveLineup() {
   const button = getSaveLineupButton();
+  if (button) {
+    button.click();
+  }
+}
+
+export function goToPreviousDay() {
+  const button = getPreviousDayButton();
+  if (button) {
+    button.click();
+  }
+}
+
+export function goToNextDay() {
+  const button = getNextDayButton();
   if (button) {
     button.click();
   }

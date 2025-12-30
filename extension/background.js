@@ -31,5 +31,31 @@ chrome.commands.onCommand.addListener((command) => {
         });
       }
     });
+  } else if (command === "previous-day") {
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      if (tabs[0] && tabs[0].id) {
+        chrome.scripting.executeScript({
+          target: { tabId: tabs[0].id },
+          func: () => {
+            if (typeof window.goToPreviousDay === "function") {
+              window.goToPreviousDay();
+            }
+          },
+        });
+      }
+    });
+  } else if (command === "next-day") {
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      if (tabs[0] && tabs[0].id) {
+        chrome.scripting.executeScript({
+          target: { tabId: tabs[0].id },
+          func: () => {
+            if (typeof window.goToNextDay === "function") {
+              window.goToNextDay();
+            }
+          },
+        });
+      }
+    });
   }
 });

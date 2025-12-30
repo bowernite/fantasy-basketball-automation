@@ -7,9 +7,15 @@ import {
   refinePlayerStatus,
 } from "./src/page/page-manipulation";
 import { prioritizePlayers } from "./src/prioritization/prioritization";
-import { saveLineup } from "./src/lineup/lineup-dom-actions";
+import {
+  goToNextDay,
+  goToPreviousDay,
+  saveLineup,
+} from "./src/lineup/lineup-dom-actions";
 
 (window as any).saveLineup = saveLineup;
+(window as any).goToPreviousDay = goToPreviousDay;
+(window as any).goToNextDay = goToNextDay;
 
 pageLoad();
 randomPageStylings();

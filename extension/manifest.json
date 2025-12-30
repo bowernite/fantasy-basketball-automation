@@ -47,6 +47,20 @@
         "mac": "Command+Shift+I"
       },
       "description": "Save the lineup"
+    },
+    "previous-day": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+7",
+        "mac": "Command+Shift+7"
+      },
+      "description": "Go to previous day"
+    },
+    "next-day": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+O",
+        "mac": "Command+Shift+O"
+      },
+      "description": "Go to next day"
     }
   },
   "permissions": [
