@@ -17,6 +17,7 @@
     "safari:sync": "bash ./scripts/safari/sync.sh",
     "safari:build": "bash ./scripts/safari/build.sh",
     "safari:dev": "bash ./scripts/safari/dev.sh",
+    "safari:archive": "bash ./scripts/safari/archive.sh",
     "sign": "web-ext sign --source-dir ./extension --artifacts-dir ./extension/signed --channel unlisted --api-key=$AMO_JWT_ISSUER --api-secret=$AMO_JWT_SECRET",
     "start:debug": "playwright test main.ts --debug"
   },

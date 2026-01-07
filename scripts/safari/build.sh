@@ -26,6 +26,7 @@ xcodebuild \
   -scheme "$SAFARI_SCHEME" \
   -configuration Debug \
   -derivedDataPath "$SAFARI_DERIVED_DATA_DIR" \
+  -allowProvisioningUpdates \
   -quiet \
   build
 
