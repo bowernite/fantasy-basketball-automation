@@ -180,3 +180,8 @@ extension/.amo-upload-uuid
 
 .safari/
 .tmp-safari*/
+
+# Python
+
+__pycache__/
+*.pyc

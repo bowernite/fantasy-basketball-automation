@@ -48,8 +48,8 @@ Row counts exclude the header. Dynasty counts include `TIER BREAK` rows.
   Points board.
 - **`Estimated Value` is a player-rank equivalence, not a score** — `Top 15-25`
   means the pick is worth the player ranked 15th–25th on the dynasty board. It
-  composes directly with the boards and needs no convex curve, unlike Hashtag's
-  Keeper Value.
+  needs no *rescaling*, unlike Hashtag's Keeper Value, but the rank it yields
+  still goes through `team-eval`'s curve like any other rank.
 - **`Draft Pick` on the rookie tabs is the real NBA slot, not our draft.** Our
   rookie draft takes any player from the class in any order, so our slot N ≈ the
   Nth row, and `Who I Might Take (Points)` is the direct answer.
