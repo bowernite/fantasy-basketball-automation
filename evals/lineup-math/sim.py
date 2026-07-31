@@ -430,7 +430,7 @@ def our_roster(path=None, projected=True):
 
 POOL = "players-%s.json" % SEASON_TAG        # fetch_data.py pool
 
-BOARD_DIR = os.path.join(HERE, os.pardir, "dizzle-dynasty")
+BOARD_DIR = os.path.join(HERE, os.pardir, "board-snapshots", "dizzle-dynasty")
 BOARD_SUFFIX = "dynasty-ranks-points.csv"    # points league; 9cat is cross-check
 _MONTHS = ("january february march april may june july august september october"
            " november december").split()

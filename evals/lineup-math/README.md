@@ -155,7 +155,7 @@ flips only the 5-for-1.
 
 ⚠️ **Suggs/Coby/Turner/Poeltl/Reid are this study's *filler*, held fixed so body count is the
 only variable — not a bucket, not a surplus list, not a recommendation.** On
-`bathroom-club.md`'s **pre-execution** medians (991 / +0.410) **three of the five** price as
+`../my-team/my-team.md`'s **pre-execution** medians (991 / +0.410) **three of the five** price as
 **Core**, where shipping one is a walk-away trigger; the count moves with the medians, so recut
 it. Buckets: `my-team-situation`.
 

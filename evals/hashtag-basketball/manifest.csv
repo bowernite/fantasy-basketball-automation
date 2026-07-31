@@ -1,3 +1,0 @@
-board,file,title,source_url,controls,board_updated,fetched_utc,rows,max_rank,pick_bands,votes,class_loading_notice
-crowd-keeper,crowd-keeper.csv,Crowdsourced Fantasy Basketball Dynasty Rankings | Hashtag Basketball,https://hashtagbasketball.com/keeper,GET,29 July 2026,2026-07-30T02:11:57+00:00,759,764,8,198492,The 2026 draft class is currently being loaded into the voting system. It will take a few days for their rankings to normalize.
-expert-dynasty-points,expert-dynasty-points.csv,Fantasy Basketball Dynasty Rankings | Hashtag Basketball,https://hashtagbasketball.com/fantasy-basketball-dynasty-rankings,DDSTAT=800 DDTYPE=POINT DDFORECAST=5 DDPOS=All DDPOSFROM=1 DDTSUM=All,02 July 2026 by Joseph Mamone,2026-07-30T02:11:57+00:00,766,772,,,

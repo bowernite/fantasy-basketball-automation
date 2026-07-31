@@ -57,7 +57,7 @@ not vary by expert view.
   name — that also catches **Jalen Pickett**. Bands cover the NBA's 60 slots, so look
   them up by overall ordinal `(R-1)×12 + S` (`evaluating-picks`).
 - **`class_loading_notice` is non-empty in this snapshot**, so its pick rows are
-  distorted in both directions — worked numbers in `evals/boards-2026-07-29.md`.
+  distorted in both directions — worked numbers in `evals/board-snapshots/boards-2026-07-29.md`.
   A blank field is the only clean state for those 8 rows.
 - **`rank` is not the row index.** Ties and server-side skips both break it: 759
   crowd rows span 1–764 (ordinals 134, 136, 140–142 are absent from the page

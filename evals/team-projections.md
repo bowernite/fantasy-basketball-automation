@@ -32,7 +32,7 @@ projection resolves to a **single exact slot** (bolded). A bottom-8 projection r
 to the **range its rank range implies, marked "prior"** — the lottery can move it anywhere in
 the band, so a point estimate there is a fabrication, not a rounding. It is not a small
 difference: rank 9–12 spans slots 1.04→1.01, which on Dizzle's prefixed rows is board rank
-30→11 and **VALUE 4,075 → 6,756, a 66% swing** (`evals/the-don.md`, `evals/boards-2026-07-29.md`).
+30→11 and **VALUE 4,075 → 6,756, a 66% swing** (`evals/teams/mitch/mitch.md`, `evals/board-snapshots/boards-2026-07-29.md`).
 
 ⚠️ **Two rules this file used to state are false. Do not reinstate either.**
 
@@ -129,7 +129,8 @@ Keyonte 54, Luka 64. Median age ~24 with nothing that declines before '29. Kessl
 now cleared and starting next to a post-LeBron, max-usage Luka; Flagg won ROY.
 Health normalisation alone is ~+3,500–4,500 net PF. On top of that they hold **four of the top
 ten Sept-'26 ordinals** — 1.03 (own), 1.04 (Mongol's), 1.08 (Yao's), 1.10 (Jesus Christ's) — and
-**1.09 (ours) makes five** once pending trade 483809 executes. Their own future 1sts are
+**1.09 (ours) makes five** — trade 483809 **has now executed** (`approvedOn`
+2026-07-29T21:10Z; 0 pending league-wide as of 2026-07-30). Their own future 1sts are
 back-of-round garbage — **1.09 exactly** off '27-28 and **1.11 exactly** off '28-29, with only
 the Sept-'27 one still a prior (1.05–1.11, most likely ~1.07) — and the market is still
 pricing them off a 6-13 record.
@@ -221,8 +222,11 @@ essentially their raw rank). Two stars and a cliff: the third-best player scored
 Median age ~23, but fourteen 16–25 FPts players is not a substitute for six 30+ ones when
 you must fill nine slots nightly. **Their own future 1sts are the most valuable in the
 league over this window — better than Han's, because Han bounces back and they don't.**
-Their 1.02 is a blue-chip; the five 2nds are volume, not quality (a player who tops out at
-18 FPts/G has zero value here, and five of them is not one good player). **Live risk:
+Their 1.02 is a blue-chip; the **four** 2nds are volume, not quality (a player who tops out
+at 18 FPts/G has zero value here, and four of them is not one good player). ⚠️ **Corrected
+2026-07-30** — this said *five*. The Sept-'26 board gives them **1.02, 1.11, 2.02, 2.04,
+2.08, 2.10**: two firsts and four seconds, own 3rd already gone to Jesus Christ (465874).
+Priced in `teams/jon/jon.md`. **Live risk:
 the owner trades SGA (28) or Şengün (24)** — that deepens the tank and makes their '28/'29
 1sts better still.
 
@@ -284,8 +288,14 @@ if Jokić plays 75 games this is a top-4 team and their picks are worthless.
 1. **This is where picks LAND, not who OWNS them.** The draft board serves only the upcoming
    draft (`FetchLeagueDraftBoard?season=2027` returns `{}`), but **`FetchTrades` does carry
    future ownership** — `originalOwner` names the team a traded pick originates from (verified
-   on pending trade 483809: of the two 2027 2nds coming to us, one is The Don's own and one is
-   King Christopher's). ⚠️ Its `slot` values for a future season are **placeholders keyed to
+   on trade 483809, since executed: of the two 2027 2nds that came to us, one is The Don's own
+   and one is King Christopher's).
+   ⚠️ **`originalOwner` is inconsistently populated for a sender's own pick — do not read its
+   absence as a signal.** On 483809 read as *completed*, **both** 2027 2nds carry an
+   `originalOwner` (161020 and 161014), including The Don's own; read while *pending* the
+   same record showed The Don's as absent. Trades 465873 and 477499 both show a sender's own
+   pick with the field absent. **Resolve ownership by walking `approvedOn` order across the
+   whole history, never off one record's missing key.** ⚠️ Its `slot` values for a future season are **placeholders keyed to
    the current order**; the '27 order is set by the '26-27 finish.
    **Corrected — two of these were previously reversed.** Traded '26 firsts, read off
    `draftOrder[]` vs the round-1 cells: Mongol's → **The Don** · Yao Ming's → **The Don** ·

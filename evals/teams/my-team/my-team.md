@@ -2,6 +2,31 @@
 
 **Derived 2026-07-30.** Re-derive from scratch; do not copy this header (`team-eval`).
 
+## Situation — dated 2026-07-29; re-derive before quoting any of it
+
+Situation = **contending**, and also built for the future (`my-team-situation` owns this
+framing and the re-derive procedure below).
+
+Finished **4th on record, 5th in points for**. Weekly variance is not a lever — never
+trade production for it (`team-eval`).
+
+- **Best top-9 in the league by rate.** No top-end-talent deficit.
+- **Best young core in the league.** Our window and our young core are the same thing.
+- ~A third of our production never enters a lineup. Format working as designed, not a
+  fixable inefficiency.
+
+### Weaknesses, in order
+
+1. **The bottom of the roster.** Sub-replacement bodies occupying light-night slots.
+   Upgrading them to durable mid-tier vets is the cheapest win available.
+2. **Guard glut** — ~12 pure PG/SG against 3 guard-only slots plus 2 shared. Prefer
+   forwards back while this holds.
+3. **Age concentration in the win-now vets** — where our `LATE` risk sits. Price of
+   contending, not a flaw to fix.
+
+**Our own 1sts land late every year of the window** (`evals/team-projections.md`) — cheap
+currency, spend them, and never let a counterparty price them as lottery tickets.
+
 **BASE** is blended points-format board rank and nothing else — no adjustment by us for
 injury, role, situation or contract. **WINS** is what he banks for *that* roster next
 season. **`TVAL`** is his worth **to us** in BASE units over our window (`κ × Σδ · M · Δw`,

@@ -69,7 +69,7 @@ Overwrites everything here from the live sheet. Run from the repo root.
 uv run --quiet --with openpyxl python - <<'PY'
 import io, csv, re, datetime, urllib.request, pathlib, openpyxl
 ID = '1EmReTa5KUcFFMCy8Fq-NpQG3WU0pMY7XNW54G3EPbEM'
-OUT = pathlib.Path('evals/dizzle-dynasty')
+OUT = pathlib.Path('evals/board-snapshots/dizzle-dynasty')
 assert OUT.is_dir(), f'run from the repo root — {OUT} not found'
 (OUT / 'archive').mkdir(exist_ok=True)
 
