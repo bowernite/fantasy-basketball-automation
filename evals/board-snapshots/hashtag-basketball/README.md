@@ -1,7 +1,7 @@
 # Hashtag Basketball — local snapshot
 
 Offline copy of the two hashtagbasketball.com boards that carry 60% of BASE
-(`team-eval`). Neither is reproducible upstream: the crowd board is re-voted daily,
+(`eval-team`). Neither is reproducible upstream: the crowd board is re-voted daily,
 and the expert board is a dated snapshot that gets overwritten in place. Without
 this directory no published eval can be re-checked.
 
@@ -28,7 +28,7 @@ showing. Compare `board_updated` against a live pull before trusting anything he
 
 Row counts exclude the header. Both boards reach well past `D` = 12 × 38 = 456, so
 absence from either is a real 0 — never renormalise a weight off these two
-(`team-eval` → *Depth and absence*).
+(`eval-team` → *Depth and absence*).
 
 Only the expert Points view is snapshotted; `OVERALL` / `CONTEND` / `REBUILD` /
 `ROOKIE` are one postback each off the Skill and enter no blend.
@@ -51,13 +51,13 @@ not vary by expert view.
 
 - **`keeper_value` is not BASE and never enters it.** It is near-linear, so summing
   it for a package implies three #60s beat the #1. Only the **rank** crosses boards,
-  through `team-eval`'s curve.
+  through `eval-team`'s curve.
 - **Draft picks are the 8 `team == DRA` rows in `crowd-keeper.csv`**, ranked inline
   against players with blank `pos`/`age`. Filter on `DRA`, never on `Pick` in the
   name — that also catches **Jalen Pickett**. Bands cover the NBA's 60 slots, so look
-  them up by overall ordinal `(R-1)×12 + S` (`evaluating-picks`).
+  them up by overall ordinal `(R-1)×12 + S` (`eval-pick`).
 - **`class_loading_notice` is non-empty in this snapshot**, so its pick rows are
-  distorted in both directions — worked numbers in `evals/board-snapshots/boards-2026-07-29.md`.
+  distorted in both directions — worked numbers in `evals/board-snapshots/Boards 2026-07-29.md`.
   A blank field is the only clean state for those 8 rows.
 - **`rank` is not the row index.** Ties and server-side skips both break it: 759
   crowd rows span 1–764 (ordinals 134, 136, 140–142 are absent from the page
@@ -72,7 +72,7 @@ not vary by expert view.
   `pos` empty for 117 rows (incoming class, no eligibility yet), `keeper_value` for
   30, and the whole stat line for anyone without an NBA season.
 - Both expert views are one analyst; the crowd board is the only actual market here.
-  See "Caveats" in `evaluating-players`.
+  See "Caveats" in `eval-player`.
 
 ## Refresh
 

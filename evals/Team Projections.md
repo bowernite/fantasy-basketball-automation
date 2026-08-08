@@ -32,17 +32,18 @@ projection resolves to a **single exact slot** (bolded). A bottom-8 projection r
 to the **range its rank range implies, marked "prior"** — the lottery can move it anywhere in
 the band, so a point estimate there is a fabrication, not a rounding. It is not a small
 difference: rank 9–12 spans slots 1.04→1.01, which on Dizzle's prefixed rows is board rank
-30→11 and **VALUE 4,075 → 6,756, a 66% swing** (`evals/teams/mitch/mitch.md`, `evals/board-snapshots/boards-2026-07-29.md`).
+30→11 and **VALUE 4,075 → 6,756, a 66% swing** (`evals/teams/mitch/Mitch's Team.md`, `evals/board-snapshots/Boards 2026-07-29.md`).
 
-⚠️ **Two rules this file used to state are false. Do not reinstate either.**
+⚠️ **Two plausible readings of this league, both false. Do not adopt either.**
 
-1. **"Only the top 4 make the playoffs."** The bracket is **6 teams, 3 rounds, top 2 seeds
-   byed** (`league-info`, verified off `FetchLeagueScoreboard`), and its seeds tie-break on
-   points-for rather than `rank`. The 4-team cut is the **draft** rule, a different cut — a
-   team can play in the bracket and still pick 1.07/1.08. This matters directly downstream:
-   `team-eval`'s **`Mₜ`** for a counterparty projected **6th** is a bubble **~0.8**, not the
-   ~0.5 of a team just outside, which changes whether a deal is sellable at all.
-2. **"Playoff teams are ordered by how far they advanced."** Nothing on the '26 board
+1. **The playoff cut is not 4.** The 4-team cut is the **draft** rule, a different cut — the
+   bracket takes **8 of 12** and seeds on points-for rather than `rank`, so a team can play in
+   it and still pick 1.07/1.08. **`league-info` owns the bracket** — read size and bubble
+   there, never restate them here. With 8 in, **two-thirds of the league makes it and the
+   bubble sits at 8/9**, so a mid-table counterparty is a playoff team: `Mₜ` values cut
+   against a narrower bracket read too pessimistic and need re-checking before a deal turns
+   on one.
+2. **Playoff teams are not ordered by how far they advanced.** Nothing on the '26 board
    evidences it. `recordOverall.rank` is King Christopher **2** and Jesus Christ **3**, and
    `rank` does **not** tie-break on points-for — both went 14-5 and *Jesus* had the league's
    best PF (28,502 vs 27,320), yet ranks below. `13 − rank` then lands them at slots 11 and 10
@@ -113,14 +114,22 @@ Sorted by '28-29 projection (i.e. roughly by where the league is heading).
 ## Per-team notes
 
 ### Pharaoh Mattankhamun-Ra (Matthew7) — 9-11, 26,393 PF
-Youngest strong roster in the league; oldest meaningful player is Queta at 27, so
-there is **no decline cliff anywhere in the window**. Wembanyama (22, 50.4) and Jalen
-Johnson (24, 48.2) are two of the four best assets in the league, with Barnes (24,
-40.5) behind them. The 9-11 record came on ~200 lost player-games. The one real
-weakness is depth — only 9 players at 25+ FPts/G, which genuinely hurts on a 5-game
+Youngest strong roster in the league; the oldest meaningful player **was** Queta at 27 and is
+now Murray/Vassell at 25.9, so there is **no decline cliff anywhere in the window**.
+Wembanyama (22, 50.4) and Jalen Johnson (24, 48.2) are two of the four best assets in the
+league, with Barnes (24, 40.5) behind them. The 9-11 record came on ~200 lost player-games. The
+one real weakness is depth — **8** players at 25+ FPts/G, which genuinely hurts on a 5-game
 NBA night — and that is exactly what fills in as their 20–23 year olds mature.
 **The only path to a valuable Pharaoh pick is a Wembanyama injury**, which is not a
 branch to be long. Dylan Harper (20) is the best non-top-3 asset.
+
+⚠️ **Updated 2026-07-31 for a trade with us: Walker + Queta + his own Sept-'28 3rd out, Sion
+James + Maluach in.** The projection itself was **not re-run** — this moves the depth count from
+9 to 8 at 25+ and drops ~1.2 wins of '26-27 production for two teenage-to-early-20s bodies. On a
+5th-place projection with a range of 2–8 that is **inside the noise**, and the file's own
+±2–3 rule already covers it; it is, though, a small push *down* in '26-27 and a small push *up*
+by '28-29. **`FetchTrades` may still show the deal as pending until EOD 2026-08-01** — assume
+executed. Their Sept-'28 3rd is now ours (`teams/my-team/My Team.md` §Picks).
 
 ### The Don (MitchBrault3) — 6-13, 22,996 PF
 **The most mispriced team in the league.** 11th on record, 5th in raw top-14 talent.
@@ -138,7 +147,7 @@ pricing them off a 6-13 record.
 used to call them** (it named Kawhi/Butler/Kyrie/Turner/Poeltl) — that read contradicts the rest
 of this paragraph. Everything above says *riser*: the age profile, the pick pile, and caveat 5
 flagging them as consolidating firsts into a star. Their window opens **'27-28/'28-29**, by
-which point a 35-year-old Kawhi's `Δwₜ` is 0 (`team-eval`). Three of those five names are *Core*
+which point a 35-year-old Kawhi adds them nothing. Three of those five names are *Core*
 on `my-team-situation`'s current cut (one unbucketed post-execution), so the pitch also tripped
 `trades`' walk-away. What they buy is a **young** star; anything we sell them starts from
 *Prime sell* and is priced from their seat first (`trades` → *Pricing their side*).
@@ -163,6 +172,13 @@ already above 30 FPts and only 9 nightly slots, marginal additions are worth les
 face value. Swing factors are Duren's RFA standoff, Edey's two ankle surgeries in nine
 months, and Kawhi's frozen Toronto trade.
 
+⚠️ **Updated 2026-07-31 for a trade with Pharaoh: Sion James + Maluach out, Jarace Walker +
+Neemias Queta + Pharaoh's Sept-'28 3rd in.** The projection was **not re-run**; measured
+directly it is **+1.249 wins ±0.022 per 20 matchups** (~+750 PF/season) — real, and pointed the
+same way the 2nd-place projection already points, so it does not move the rank. It does harden
+the top of the range. **`FetchTrades` may still show the deal as pending until EOD 2026-08-01**
+— assume executed.
+
 ### Mongol Khans Freak Militia (henry12287) — 7-12, 24,292 PF
 **The mid-first trap** — never bad enough to reach the lottery, never good enough to
 contend. Edwards (25, ascending) is the real centerpiece, not Giannis. **Giannis is the
@@ -185,7 +201,7 @@ and Ayton.
 
 ### Yao Ming Dynasty (Scal) — 11-8, 25,667 PF
 Jokić (65.2 FPts/G) is the **only player in the league over 60** — 8 cleared 45 at 30+ GP and
-3 cleared 50 (`evals/lineup-math/README.md` §*Is the incoming rate even purchasable?*) — a
+3 cleared 50 (`evals/lineup-math/findings.md` §*Is the incoming rate even purchasable?*) — a
 structural edge nobody else has, and the reason their availability-adjusted baseline grades 1st. But behind him this is a pile of 26–33 year old mid-tier producers:
 roughly 9 decliners against 4 risers, with **not one young player who projects as a
 future 40+ FPts asset**. Ayton's collapse to backup C in Washington is already locked in;
@@ -226,7 +242,7 @@ Their 1.02 is a blue-chip; the **four** 2nds are volume, not quality (a player w
 at 18 FPts/G has zero value here, and four of them is not one good player). ⚠️ **Corrected
 2026-07-30** — this said *five*. The Sept-'26 board gives them **1.02, 1.11, 2.02, 2.04,
 2.08, 2.10**: two firsts and four seconds, own 3rd already gone to Jesus Christ (465874).
-Priced in `teams/jon/jon.md`. **Live risk:
+Priced in `teams/jon/Jon's Team.md`. **Live risk:
 the owner trades SGA (28) or Şengün (24)** — that deepens the tank and makes their '28/'29
 1sts better still.
 
@@ -297,10 +313,12 @@ if Jokić plays 75 games this is a top-4 team and their picks are worthless.
    pick with the field absent. **Resolve ownership by walking `approvedOn` order across the
    whole history, never off one record's missing key.** ⚠️ Its `slot` values for a future season are **placeholders keyed to
    the current order**; the '27 order is set by the '26-27 finish.
-   **Corrected — two of these were previously reversed.** Traded '26 firsts, read off
-   `draftOrder[]` vs the round-1 cells: Mongol's → **The Don** · Yao Ming's → **The Don** ·
+   Traded '26 firsts, read off `draftOrder[]` vs the round-1 cells: Mongol's → **The Don** · Yao Ming's → **The Don** ·
    **Jesus Christ's → The Don** · **King Christopher's → SGA-the-Great**.
    **Verify ownership on `FetchTrades` before trading on any row above.**
+   **Added 2026-07-31: Pharaoh's own Sept-'28 3rd → us.** It renders as
+   `'28-29 3rd round pick 3.5 #29` — a textbook case of the placeholder warning above, since
+   `3.5` is the 2026 order and the pick lands at **3.10** on Pharaoh's projected 3rd.
 2. **The 2027 draft class is a clear step down from 2026.** ESPN calls it "indeterminate";
    no prospect currently projects as a guaranteed lottery pick, the high-school class
    underwhelmed, NIL kept talent in college, and international supply is thin. **Discount

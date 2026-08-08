@@ -49,7 +49,7 @@ Row counts exclude the header. Dynasty counts include `TIER BREAK` rows.
 - **`Estimated Value` is a player-rank equivalence, not a score** — `Top 15-25`
   means the pick is worth the player ranked 15th–25th on the dynasty board. It
   needs no *rescaling*, unlike Hashtag's Keeper Value, but the rank it yields
-  still goes through `team-eval`'s curve like any other rank.
+  still goes through `eval-team`'s curve like any other rank.
 - **`Draft Pick` on the rookie tabs is the real NBA slot, not our draft.** Our
   rookie draft takes any player from the class in any order, so our slot N ≈ the
   Nth row, and `Who I Might Take (Points)` is the direct answer.
@@ -59,7 +59,7 @@ Row counts exclude the header. Dynasty counts include `TIER BREAK` rows.
   column names its own as-of date) and are months stale — never mix them into a
   current board.
 - All tabs are **one analyst**, who also sits on Dynatyze's expert panel. The two
-  formats are not two opinions. See "Caveats" in `evaluating-players`.
+  formats are not two opinions. See "Caveats" in `eval-player`.
 
 ## Refresh
 

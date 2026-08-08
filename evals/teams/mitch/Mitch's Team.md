@@ -1,257 +1,267 @@
-# The Don (Mitch) — dynasty values
+# The Don (`161020`, `MitchBrault3`, Mitch) — evaluated 2026-07-31 · 27 bodies · sorted on BASE
 
-**Derived 2026-07-30.** Re-derive from scratch; do not copy this header (`team-eval`).
+⚠️ **Stale on method: `TVAL` / `κ*` / `W` columns are retired** (`Eval Definitions` now runs
+BASE / `Δw` / `SIT` only). Names, `GET` reads and flags stand; every `TVAL`/`κ*` figure is
+historical — re-derive per the current framework before acting on any number here. The
+`Δw` figures also predate the per-slot-group counterfactual and unsigned-FA handling
+(`evals/lineup-math/method.md`), so they are stale on basis as well as method.
 
-## Recut 2026-07-30 — targeting now runs on `GET` + `TVAL`, not `Δw theirs`
 
-**`Δw theirs` never selected or sorted targets and still doesn't** — it prices only what
-Mitch gives up inside a concrete deal (`team-eval` §`WINS`). The player table below still
-**sorts** by `Δw theirs` — that sort is legitimate as a *pricing* reference, it just isn't a
-priority order. §*Gettability* below applies `trades`' `GET` heuristic (recent `FPts/G` +
-`AGE` + their situation, light BASE) to say who's actually available, and §*`TVAL` — the
-top candidates* runs `sim.py players` with each of a few names added to **our** roster to
-say who's actually worth having. Neither of those two questions is the other, and TVAL is
-never comparable to a number on this file — it's ours, not theirs (`team-eval` §`TVAL`).
-Measurements below — ranks, BASE, `FPts/G`, `GP`, `AGE`, `ELIG`, `LATE`, `REPL`, `κ`, sim
-`Δw theirs` — are unaffected by this recut; only the targeting conclusions changed.
+| Player | dizP | htP | crd | **BASE** | **`TVAL`** | `κ*` | `Δw ours` | `Δw theirs` | `FPts/G` | `GP` | GPp | `AGE` | `ELIG` | `LATE` | `GET` | `ACQ` |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|---|---|---|
+| Luka Dončić | 3 | 3 | 6 | **8,874** | **+12026** | 1090 | +3.083 | +3.19 | 57.2 | 64 | 62 | 27.4 | SF/SG | ✓ 1/5 rotation seasons <60 ('24, 50 — calf) | high | ✗ franchise, 27.4 at 57.2 |
+| Cooper Flagg | 5 | 7 | 2 | **8,473** | **+5228** | 2394 | +1.340 | +1.47 | 37.3 | 70 | 64 | 19.6 | PF/SF | – 1 rotation season | high | ✗ 19.6, the '28-29 centrepiece |
+| Deni Avdija | 26 | 31 | 21 | **4,441** | **+6278** | 1045 | +1.609 | +1.73 | 41.5 | 66 | 63 | 25.6 | PF/SF | ✓✓ none <60 (82/76/75/72/66) | high | ✗ 25.6, ascending 4 straight |
+| Franz Wagner | 28 | 34 | 33 | **3,971** | **+2477** | 2368 | +0.635 | +0.77 | 32.6 | 34 | 51 | 24.9 | PF/SF | ✓ 1/5 <60 ('25, 34 — oblique) | mid | ✓ |
+| Jaren Jackson | 53 | 37 | 49 | **3,010** | **+3296** | 1349 | +0.845 | +0.93 | 32.0 | 48 | 56 | 26.9 | C/PF | ✓ 1/5 <60 ('25, 48 — foot) | mid | ✓ |
+| Keyonte George | 49 | 47 | 47 | **2,900** | **+4004** | 1070 | +1.026 | +1.35 | 37.0 | 54 | 59 | 22.7 | PG/SG | ✓ 1/3 <60 ('25, 54 — heel; yr 3, not role) | high | ✓ |
+| Walker Kessler | 47 | 78 | 65 | **2,386** | **+3018** | 1168 | +0.774 | +0.95 | 40.2 | 5 | 41 | 25.0 | C | ✗ 2/4 <60 ('24 58, '25 5 — shoulder surgery) | mid | ✓ |
+| Collin Murray-Boyles | 65 | 86 | 68 | **2,016** | **+404** | 7379 | +0.103 | +0.24 | 21.8 | 57 | 56 | 21.1 | PF/SF | – 1 rotation season; 57 GP is rookie earning-time, unresolved | high | ✓ |
+| Derik Queen | 86 | 83 | 56 | **1,927** | **+1349** | 2110 | +0.346 | +0.95 | 27.9 | 81 | 68 | 21.6 | C | – 1 rotation season (81) | high | ✓ |
+| Reed Sheppard | 88 | 87 | 88 | **1,660** | **+1255** | 1954 | +0.322 | +0.87 | 26.2 | 82 | 67 | 22.1 | PG/SG | – 1 rotation season ('24 at rate 10.1 is role) | high | ✓ |
+| Moussa Diabaté | 170 | 140 | 137 | **878** | **+1399** | 927 | +0.359 | +0.61 | 26.6 | 73 | 64 | 24.5 | PF/SF | – 2 rotation seasons (71/73); '22–'23 sub-15 rate is role | mid | ✓ |
+| Zaccharie Risacher | 235 | 166 | 150 | **655** | **-140** | – | -0.036 | -0.03 | 18.7 | 67 | 58 | 21.3 | PF/SF | – 2 rotation seasons (75/67) | mid | ✓ |
+| Isaiah Collier | 221 | 190 | 139 | **650** | **+968** | 991 | +0.248 | +0.49 | 25.8 | 60 | 59 | 21.8 | PG/SG | – 2 rotation seasons (71/59; the 59 is year 2) | mid | ✓ |
+| Will Riley | 166 | 191 | 354 | **552** | **-365** | – | -0.094 | -0.03 | 17.5 | 74 | 61 | 20.5 | PF/SF | – 1 rotation season | mid | ✓ |
+| Robert Williams | 222 | 163 | 604 | **462** | **+56** | 12283 | +0.014 | +0.06 | 21.5 | 59 | 57 | 28.8 | C/PF | ✗ 4/5 <60 — chronic knee ('23 6 GP, '24 20 GP) | low | ✓ |
+| Nikola Topić | 213 | 334 | 208 | **396** | **-778** | – | -0.200 | -0.17 | 13.4 | 10 | 35 | 21.0 | PG/SG | – 0 rotation seasons; lost his draft year to ACL, 10 GP in '25 | mid | ✓ |
+| Sam Hauser | 218 | 380 | 335 | **270** | **-94** | – | -0.024 | n/m | 18.0 | 78 | 62 | 28.6 | PF/SF | ✓✓ 3 rotation seasons, none <60 (79/71/78) | low | ✓ |
+| Tre Jones | 214 | 366 | 458 | **242** | **+758** | 471 | +0.194 | +0.78 | 27.7 | 65 | 62 | 26.6 | PG/SG | ✓ 1/4 <60 ('24, 46) | low | ✓ |
+| Devin Carter | 313 | 269 | 364 | **224** | **-596** | – | -0.153 | -0.05 | 18.0 | 38 | 47 | 24.4 | PG/SG | – 1 rotation season (38 GP, year 2) | low | ✓ |
+| Grant Williams | 326 | 310 | 643 | **149** | **-705** | – | -0.181 | -0.16 | 16.3 | 36 | 46 | 27.7 | PF/SF | ✓ 2/5 <60 — '24 ACL (16), '25 recovery (36); threshold does not fire | low | ✓ |
+| Tidjane Salaün | 285 | 431 | 434 | **125** | **-890** | – | -0.228 | -0.24 | 13.0 | 37 | 45 | 21.0 | PF/SF | – 0 rotation seasons | mid | ✓ |
+| Jordan Goodwin | 329 | 351 | 706 | **120** | **+126** | 1402 | +0.032 | +0.33 | 22.6 | 70 | 61 | 27.8 | PG/SG | ✗ 2/4 <60 ('23 57, '24 29) — waiver/two-way churn, not injury | low | ✓ |
+| Will Richard | 325 | 376 | - | **109** | **-655** | – | -0.168 | -0.06 | 14.7 | 69 | 57 | 23.6 | PG/SG | – 0 rotation seasons (rate 14.7) | low | ✓ |
+| Dalton Knecht | 402 | 386 | 405 | **69** | **-854** | – | -0.219 | -0.30 | 6.9 | 54 | 49 | 25.3 | PF/SF | – 0 rotation seasons | low | ✓ |
+| Bronny James | 422 | 353 | 592 | **62** | **-936** | – | -0.240 | n/m | 6.3 | 42 | 44 | 21.8 | PG/SG | – 0 rotation seasons | low | ✓ |
+| Jaden Hardy | 426 | 378 | 599 | **47** | **-613** | – | -0.157 | -0.22 | 12.5 | 57 | 52 | 24.1 | PG/SG | – 0 rotation seasons | low | ✓ |
+| Jahmai Mashack | 424 | - | - | **14** | **-563** | – | -0.144 | -0.07 | 15.3 | 31 | 44 | 23.7 | PG/SG | – 1 rotation season; 31 GP is rookie earning-time, unresolved | low | ✓ |
 
-**BASE** is blended points-format board rank and nothing else. **WINS** is what a player
-banks **for a specific roster** — so it is reported twice below, and the two are not
-interchangeable. `TVAL` (below) is specific to **us** and never applies to a counterparty's
-own worth — it only prices what he'd be worth *if he were ours*.
+**σ**, in the `Δw ours` (= `TVAL`) ordering, **not** the printed BASE sort: one adjacent pair
+falls under ~2σ — **Diabaté / Queen 1.8σ** (gap +0.013 w). Every other adjacent pair in that
+ordering resolves.
 
-## ⚠️ Which side of trade 483809 every number here sits on
+`GP` is last season actual and `GPp` the projection behind every `Δw` — they diverge hard here
+(§*Durability*). `κ*` is the κ at which a row's `TVAL` crosses its BASE. `n/m` in `Δw theirs`
+= not fitted (§*Roster basis*). `–` in a board column = off that board, and for Mashack (both
+Hashtag boards) and Will Richard (crowd) that is a value of 0 on a board deeper than `D`, not
+a join failure.
 
-They are the **counterparty**. **Still pending** as of this derivation (`FetchTrades`,
-2026-07-30): veto window closes 2026-07-30T21:03:44Z (`expiryIso`, 5 vetoes needed), executes
-**2026-07-31T00:00:00Z**. They receive our **2026 1.09**; they send **Mark Williams**, their
-**own 2027 2nd** and **King Christopher's 2027 2nd**.
-
-- **Pre-execution** (this table, `REPL`, `κ`, the pick table): `roster-161020-2025-26.json`,
-  **Mark Williams still on it**, 1.09 not yet theirs.
-- **Post-execution `REPL`** (25 real bodies padded to 38, measured): guard **12.0** ·
-  forward **12.8** · centre **12.6**, `K` 778 — every group falls, so every player they keep
-  reads slightly *more* valuable to them. Re-derive the `WINS theirs` column before pricing a
-  second deal off this file.
-- After it executes, re-run `fetch_data.py roster 161020`; **do not hand-edit.**
+## Inputs
 
 | | |
 |---|---|
-| Blend | 40% Dizzle Points · 35% Hashtag Points · 25% Hashtag crowd. Dynatyze not blended |
-| Board depths | Dizzle **450** · Hashtag Points **772** · crowd **764** |
-| Board stamps | Dizzle Jul 2026 (snapshot) · Hashtag Points 2 Jul 2026 · crowd **29 Jul 2026** |
-| Curve | `D = teams x roster_size = 456` · `a = sqrt(D) = 21.354` · `V(r) = 9999*(a+1)/(D-1)*(D-r)/(a+r)`, 0 at or past `D` |
-| `REPL` basis | **`sim.basis(path)` — both rosters padded to 38 bodies**, the post-Sept size, and the only way `WINS` compares across teams |
-| `REPL` theirs | guard **12.4** · forward **13.6** · centre **14.0** (`K` 777 all three) |
-| `REPL` ours | guard **18.0** / `K` 782 · forward **16.1** / 779 · centre **17.8** / 781 |
-| Horizon | `delta = 0.875`, H = 3 seasons, `Sum delta = 2.641` |
-| `kappa` theirs | **895** sim layer (n=16, quartiles 589-1771) · 594 formula layer (n=24) |
+| `D` | **456** = 12 × 38 (`league-info`, announced post-Sept size) |
+| Dizzle Points | stamp **10 Jul 2026** · depth **450** — below `D`, so absence renormalises |
+| Hashtag Points | stamp **2 Jul 2026** · depth **772** |
+| Hashtag crowd | stamp **29 Jul 2026** · depth **764**; carries a live vote-convergence notice on the incoming class |
+| `REPL` theirs (padded 38) | guard **12.44** · forward **13.61** · centre **13.97**; `c` 0.7689, `K` ≈ **776** in all three groups |
+| `κ` theirs | **1376**, band **1051–2387**, 16 rows scored |
+| `κ` used for every `TVAL` here | **1477** ours, band **1205–3339** (`../my-team/My Team.md` §`kappa`) |
+| Horizon | `δ` 0.875, H 3, `Σδ` **2.641**; `Mₜ` **1.0** all three seasons (ours — `TVAL` is worth to *us*) |
+| `TVAL` multiplier | **3902 × `Δw ours`** |
 
-⚠️ **`WINS` is not comparable across rosters of different size, and `REPL` is dominated by
-size before shape.** Measured on their **live 26** bodies `REPL` is **9.7 / 11.1 / 11.2**
-against **12.4 / 13.6 / 14.0** padded — 2.5-2.8 rate points, ~0.2 wins on every player they
-own, all of it flattering. Ours moves 13.7 → 16.1 (forward) over the same padding. Everything
-below is on the padded 38 basis.
+### Roster basis
 
-⚠️ **The snapshot is 26 bodies against 28 live.** `FetchRoster?season=` is a snapshot as of
-the season's last lineup period, so **Bronny James and Sam Hauser** are absent from it and the
-sim never sees them. They are listed below off `players-2025-26.json` instead — real, sourced
-'25-26 rate and `GP`, but **no `Δw`**, because the sim measured a roster they were not on.
-Body counts come from `FetchLeagueRosters`.
+27 live bodies (`FetchLeagueRosters`, 2026-07-31). The `season=2025` snapshot the sim fits is
+taken as of the season's last lineup period, so it carries 26 rows: it misses **Bronny James**
+and **Sam Hauser**, and carries **Mark Williams**, who is not on this roster. Both additions
+are priced above — BASE off the boards, `Δw ours` measured against our own padded-38 basis
+exactly as every other row is — and Mark Williams is excluded.
 
-**Our bar is higher against this roster, by group, not by a flat amount** — guard **+5.6**,
-forward **+2.5**, centre **+3.8** rate points. So `WINS ours` runs **0.15-0.45 wins** under
-`WINS theirs`, widest on guards and narrowest on forwards. That gap *is* the depth penalty
-`team-eval` names.
-**Acquisition decisions use `WINS ours`; what they give up uses `WINS theirs`** — which for
-Mark Williams is **+1.04 to them against +0.75 to us** on the formula, **+0.59 to them against
-a measured +0.36 to us** on the sim (`../my-team/my-team.md` §*Post-execution*). We are paying for
-market value, not for wins.
+Only `Δw theirs` and `REPL` theirs are affected, since both are fitted on the 26-row set: the
+live 27 is marginally weaker at the bottom, so their true `R` sits a shade **below** 13.61 and
+every `Δw theirs` here reads a shade low. **BASE and `TVAL` — the two decision columns — are
+untouched**, because `Δw ours` never depends on their roster's composition.
 
-⚠️ **The sign is per group and per roster, not a league-wide fact.** King Christopher's *forward*
-bar sits **above** ours and his centre bar 4.0 below it (`../my-team/my-team.md` §`WINS`), which
-inverts the conclusion for his forwards. Run `sim.replacement` on the counterparty's padded file
-before assuming a direction.
+### `κ` theirs against ours
 
-**`kappa` is stable once the basis is fixed** — formula layer 594 (them) · 502 (Pharaoh) · 631
-(us), all inside our own 413-982 for that layer (`../my-team/my-team.md` §`kappa`, which `team-eval`
-now points at rather than restating). **Calibrate on the layer you apply it
-to** (`team-eval`): against a `sim.py players` `Delta w`, use the sim layer — 895 here, 940 for
-us. The two layers do **not** share a row set — only **16** rows clear `Delta w > 0` against
-24 on the formula, which is also why their sim-layer upper quartile (1771) is so wide.
-Quote the band, never the point.
+Their point estimate sits *below* ours and their band is lower and narrower, and their `REPL`
+runs **3.5 rate points under ours at forward** (13.61 vs our 17.15) at a matched padded 38.
+Both facts say the same thing: their bench is thinner and their BASE per discounted win is
+cheaper, so every asset here reads better on their own file than on ours. `Δw theirs` exceeds
+`Δw ours` on all 25 rows where both are fitted. Read that column as what a player is worth
+*to them* and nothing else (`Eval Definitions §WINS`) — never a price, never a sort key, never
+crossed with our `TVAL`.
 
-**Sourced vs modelled.** Board ranks, `FPts/G`, `GP`, `AGE`, `ELIG` are sourced. `GP proj`,
-both `WINS` columns, `Delta w`, `REPL`, `K`, `kappa`, `LATE` are modelled or judgment. Never
-present the two as bracketing a range.
+### Productive window
 
-## Players
+Flat `Δwₜ` across all three seasons for every row — a choice stated, per
+`Eval Definitions §TVAL`, not a default. Nothing here ages out inside the horizon: the oldest
+body, Robert Williams, ends '28-29 at 31.8, and median age is **24.1**. No row needs the
+both-ways `TVAL` print.
 
-Sorted by **`Δw theirs`**, so the order matches `sim.py --roster roster-161020-2025-26.json
-players`. **This is a pricing reference, not a buy-priority order** — it says what Mitch
-gives up if a given name leaves his roster, nothing about whether he'll sell or whether the
-name is worth anything to us. Buy priority is §*Gettability* (`GET`) crossed with
-§*`TVAL`* below. `FPts/G` and `GP` are last season **actual**, reporting only; `GP proj` is
-`sim.project_gp` as `our_roster` rounds it — the integer the sim ran.
+## Durability — the whole point of this roster
 
-- **`W theirs` / `W ours`** = `(rate - REPL) x GP proj / K`, per slot group, on their `REPL`
-  and on ours. **Same layer, so they are comparable to each other.**
-- **`Δw theirs`** = sim-measured wins lost if he were swapped for a replacement-level
-  13.6-rate, 68-GP forward **on their roster**, 3 x 200 trials. **There is no `Δw ours`
-  column** — measuring one means putting him on our roster (`sim.swap` + `sim.player_wins`),
-  as done for Mark Williams above. Scaling `W ours` by the sim/formula ratio (~0.7 here) is
-  the cheap substitute.
-- **σ** = gap to the row below, in sigma of that gap. `-` = off that board.
+Their '25-26 `GP` column is a casualty list: Kessler **5**, Topić **10**, Franz **34**, Grant
+Williams **36**, Jaren Jackson **48**, Keyonte **54**, Luka **64**. `sim.project_gp` regresses
+all of it — Kessler 5→**41**, Topić 10→**35**, Franz 34→**51**, Jaren Jackson 48→**56**,
+Keyonte 54→**59** — and that regression is already inside every `Δw` and `TVAL` above.
+**Do not credit the health bounce-back a second time on top of these numbers.**
 
-⚠️ **State no order below ~2σ.** Unordered adjacent pairs: **Kessler/Queen 1.3σ ·
-Tre Jones/Franz 0.3σ · Risacher/Riley 0.3σ · Riley/Carter 0.8σ · Carter/Richard 0.7σ ·
-Richard/Mashack 0.4σ · Grant Williams/Topić 0.3σ · Hardy/Salaün 1.8σ.** Risacher, Riley,
-Carter, Richard and Mashack are a **five-way tie** between −0.03 and −0.07 — that whole band
-is one undifferentiated group, not a ranking.
+Two rows sit in `Eval Definitions §Durability`'s flagged blind spots and are reported, not
+patched: **Kessler** (5 GP) and **Topić** (10 GP) are fragments, the only evidence the fit has.
+Topić additionally lost his draft year outright, which is absent from the fit rather than a
+zero, so his 35 is expected GP *given he plays at all*.
 
-⚠️ A negative `WINS`/`Δw` is "not a starter", **not** worse than an empty slot —
-sub-replacement players still pay as light-night bodies, which no rate metric sees. `BASE` 0
-means past `D`; every all-boards absence here was hand-checked (`evaluating-players`).
+## The read — fringe and rising, not a win-now buyer
 
-| Player | dizP | htP | crd | **BASE** | FPts/G | GP | GP proj | **W theirs** | **W ours** | **Δw theirs** | σ | **LATE** | AGE | ELIG |
-|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|---:|---|
-| Luka Dončić | 3 | 3 | 6 | **8874** | 57.2 | 64 | 62 | **3.48** | 3.27 | **+3.19** | 84.0 | ✓ 1 of 5 under 60 | 27.4 | SG/SF |
-| Deni Avdija | 26 | 31 | 21 | **4441** | 41.5 | 66 | 63 | **2.26** | 2.05 | **+1.73** | 16.0 | ✓✓ none under 60 in 5 | 25.6 | SF/PF |
-| Cooper Flagg | 5 | 7 | 2 | **8473** | 37.3 | 70 | 64 | **1.95** | 1.74 | **+1.47** | 6.4 | – 1 rotation season (70) | 19.6 | SF/PF |
-| Keyonte George | 49 | 47 | 47 | **2900** | 37.0 | 54 | 59 | **1.87** | 1.43 | **+1.35** | 24.7 | ✓ 1 of 3 under 60 | 22.7 | PG/SG |
-| Walker Kessler | 47 | 78 | 65 | **2386** | 40.2 | 5 | 41 | **1.38** | 1.18 | **+0.95** | 1.3 | ✗ 2 of 4 under 60 | 25.0 | C |
-| Derik Queen | 86 | 83 | 56 | **1927** | 27.9 | 81 | 68 | **1.22** | 0.88 | **+0.95** | 5.7 | – 1 rotation season (81) | 21.6 | C |
-| Jaren Jackson | 53 | 37 | 49 | **3010** | 32.0 | 48 | 56 | **1.33** | 1.14 | **+0.93** | 7.9 | ✓ 1 of 5 under 60 | 26.9 | PF/C |
-| Reed Sheppard | 88 | 87 | 88 | **1660** | 26.2 | 82 | 67 | **1.19** | 0.70 | **+0.87** | 5.4 | – 1 rotation season (82) | 22.1 | PG/SG |
-| Tre Jones | 214 | 366 | 458 | **242** | 27.7 | 65 | 62 | **1.22** | 0.77 | **+0.78** | 0.3 | ✓ 1 of 4 under 60 | 26.6 | PG/SG |
-| Franz Wagner | 28 | 34 | 33 | **3971** | 32.6 | 34 | 51 | **1.25** | 1.08 | **+0.77** | 9.4 | ✓ 1 of 5 under 60 | 24.9 | SF/PF |
-| Moussa Diabaté | 170 | 140 | 137 | **878** | 26.6 | 73 | 64 | **1.07** | 0.86 | **+0.61** | 2.1 | – 2 rotation seasons (71/73) | 24.5 | SF/PF |
-| **Mark Williams** → us | 114 | 97 | 121 | **1307** | 27.5 | 60 | 60 | **1.04** | 0.75 | **+0.59** | 7.6 | ✗ 3 of 4 under 60 | 24.6 | C |
-| Isaiah Collier | 221 | 190 | 139 | **650** | 25.8 | 60 | 59 | **1.02** | 0.59 | **+0.49** | 13.7 | – 2 rotation seasons (71/59) | 21.8 | PG/SG |
-| Jordan Goodwin | 329 | 351 | 706 | **120** | 22.6 | 70 | 61 | **0.80** | 0.36 | **+0.33** | 6.8 | ✗ 2 of 4 under 60 | 27.8 | PG/SG |
-| Collin Murray-Boyles | 65 | 86 | 68 | **2016** | 21.8 | 57 | 56 | **0.59** | 0.41 | **+0.24** | 10.4 | – 1 rotation season (57) | 21.1 | SF/PF |
-| Robert Williams | 222 | 163 | 604 | **462** | 21.5 | 59 | 57 | **0.58** | 0.40 | **+0.06** | 4.3 | ✗ 4 of 5 under 60 | 28.8 | PF/C |
-| Zaccharie Risacher | 235 | 166 | 150 | **655** | 18.7 | 67 | 58 | **0.38** | 0.19 | **-0.03** | 0.3 | – 2 rotation seasons (75/67) | 21.3 | SF/PF |
-| Will Riley | 166 | 191 | 354 | **552** | 17.5 | 74 | 61 | **0.31** | 0.11 | **-0.03** | 0.8 | – 1 rotation season (74) | 20.5 | SF/PF |
-| Devin Carter | 313 | 269 | 364 | **224** | 18.0 | 38 | 47 | **0.34** | 0.00 | **-0.05** | 0.7 | – 1 rotation season (38) | 24.4 | PG/SG |
-| Will Richard | 325 | 376 | - | **109** | 14.7 | 69 | 57 | **0.17** | -0.24 | **-0.06** | 0.4 | – 0 rotation seasons | 23.6 | PG/SG |
-| Jahmai Mashack | 424 | - | - | **14** | 15.3 | 31 | 44 | **0.16** | -0.15 | **-0.07** | 8.0 | – 1 rotation season (31) | 23.7 | PG/SG |
-| Grant Williams | 326 | 310 | 643 | **149** | 16.3 | 36 | 46 | **0.16** | 0.01 | **-0.16** | 0.3 | ✓ 2 of 5 under 60 | 27.7 | SF/PF |
-| Nikola Topić | 213 | 334 | 208 | **396** | 13.4 | 10 | 35 | **0.05** | -0.21 | **-0.17** | 2.5 | – 0 rotation seasons | 21.0 | PG/SG |
-| Jaden Hardy | 426 | 378 | 599 | **47** | 12.5 | 57 | 52 | **0.01** | -0.37 | **-0.22** | 1.8 | – 0 rotation seasons | 24.1 | PG/SG |
-| Tidjane Salaün | 285 | 431 | 434 | **125** | 13.0 | 37 | 45 | **-0.03** | -0.18 | **-0.24** | 5.9 | – 0 rotation seasons | 21.0 | SF/PF |
-| Dalton Knecht | 402 | 386 | 405 | **69** | 6.9 | 54 | 49 | **-0.42** | -0.58 | **-0.30** | — | – 0 rotation seasons | 25.3 | SF/PF |
-| Sam Hauser † | 218 | 380 | 335 | **270** | 18.0 | 78 | 62 | **0.35** | 0.15 | **–** | – | ✓✓ none under 60 in 3 | 28.6 | SF/PF |
-| Bronny James † | 422 | 353 | 592 | **62** | 6.3 | 42 | 44 | **-0.35** | -0.66 | **–** | – | – 0 rotation seasons | 21.8 | PG/SG |
+**VERDICT situation, 2026-07-31: fringe, rising.** Projected **6th** ('26-27) → **4th**
+('27-28) → **2nd** ('28-29) (`Team Projections.md`). Their own `Mₜ` is a bubble ~0.8 next
+season and 1.0 after. The window opens **'27-28/'28-29**.
 
-† **Absent from the roster snapshot the sim ran** (added after the season's last lineup
-period). `FPts/G`, `GP`, `AGE` and `ELIG` here come from `players-2025-26.json`, which is
-sourced and re-scored under current rules; `GP proj` and both `WINS` columns are computed the
-same way as every other row. **They have no `Δw`** — add them to the roster file and re-run
-before pricing either.
+**They are not a market for an aging veteran.** By the time that window opens, a 34-or-35
+year-old's `Δwₜ` is 0 (`Eval Definitions §TVAL`), so a win-now vet buys them nothing they can
+use — and this owner knows it. What he buys is a **young star**; `Team Projections.md` caveat
+5 flags exactly that behaviour, consolidating firsts into a second star. Sell into that frame
+or not at all (`trades` → *Package it in their frame*).
 
-## Gettability — `GET`
+**What they refuse:** anything under 23 with pedigree and a rising rate — Flagg, Keyonte,
+Murray-Boyles, Queen, Sheppard, Risacher, Riley, Salaün, Topić. A riser keeps all of it, and
+`GET` on that group is high whatever the `TVAL` column says.
 
-`trades` §*What other owners price on*: recent `FPts/G` + `AGE` + their situation, light
-BASE — judgment, not a computed column. Their situation (`team-projections.md`): **6-13,
-5th in raw top-14 talent, most mispriced team in the league, median age ~24 with nothing
-declining before '29, window opens '27-28/'28-29.** That is a **riser assembling a young
-core**, not a rebuilder or a win-now team — so the age-sign flip in `trades` runs the
-rebuilder way here: **they refuse youth at any price**, symmetrically with our own *Core*.
-It also means the low-BASE veteran-buy pattern (`trades` §*Buy: old + high current rate +
-durable*) doesn't apply to them at all — there's almost nobody old on this roster to buy.
+**Shape.** 27 bodies against a 28 cap today, 38 from September, with **seven Sept-'26 picks**
+incoming. They are the one team in the league with no reason to buy bodies: the draft fills
+seven of their eleven new slots, and per `eval-pick` §*A pick has no production dimension in
+year 1* that haul pays in '27-28/'28-29 — the same seasons the projection rises in.
 
-| Player | AGE | FPts/G | `GET` | Why |
-|---|---:|---:|---|---|
-| Luka Dončić | 27.4 | 57.2 | **high** | The franchise piece the whole rebuild is built on. Not for sale at any shape we'd offer. |
-| Cooper Flagg | 19.6 | 37.3 | **high** | ROY, 19. The single most untouchable name on this roster. |
-| Deni Avdija | 25.6 | 41.5 | **high** | Ascending 2-way forward, no decline in this window — core, not surplus. |
-| Walker Kessler | 25.0 | 40.2 | **high** | Just cleared from injury into a starting role next to Luka — the opposite of expendable right when he'd be tempting to buy low. |
-| Keyonte George | 22.7 | 37.0 | **high** | Young lead guard on the rise; part of the timeline, not filler. |
-| Derik Queen | 21.6 | 27.9 | medium-high | Durable rookie big (81 GP) they'll want to pair with Kessler, not one they've shown any pressure to move. |
-| Jaren Jackson | 26.9 | 32.0 | **medium** | Oldest of their frontcourt names and logjammed behind Kessler/Queen at the 5 — the one genuine crack in "refuse everyone." Still not cheap. |
-| Franz Wagner | 24.9 | 32.6 | medium-high | Young, on a rate climb once healthy — no obvious reason for them to sell. |
-| Reed Sheppard | 22.1 | 26.2 | medium | Part of a real guard glut (Sheppard/Keyonte/Tre Jones/Collier/Carter/Hardy/Richard/Mashack/Topić) — the glut itself is the opening, not any one name's profile. |
-| Tre Jones | 26.6 | 27.7 | **medium** | Oldest of the guard glut and a stable, replaceable game-manager rate — the most plausible sell inside that group. |
-| Moussa Diabaté | 24.5 | 26.6 | **medium** | Durable (73 GP) complementary forward without a clear star trajectory — gettable, not a priority hold. |
-| Isaiah Collier | 21.8 | 25.8 | medium-low | Young, but buried in the same guard glut — lower price than his age alone would suggest. |
-| Collin Murray-Boyles | 21.1 | 21.8 | **low-medium** | Least established of the young forward names; a rebuilder assembling a core is least attached to its bottom prospects. |
-| Jordan Goodwin, Robert Williams, Risacher, Riley, Carter, Richard, Mashack, Grant Williams, Topić, Hardy, Salaün, Knecht | 21-29 | 6.9-22.6 | **low** | Fringe/replaceable bodies on any roster — cheap `GET`, but `Δw theirs` above already flags most of this band as an undifferentiated tie. |
+Nine of theirs clear our own roster's medians (BASE 1,228.5 / `Δw ours` +0.215): Luka, Flagg,
+Avdija, Franz, Jaren Jackson, Keyonte, Kessler, Queen, Sheppard. Their own medians are BASE
+**552** and `Δw ours` **+0.032** — a top nine and then a long tail.
 
-**Read:** the whole top of their roster is `GET`-high — a young, ascending core a riser will
-not sell cheap regardless of how attractive the name is to us (`trades`: "`GET` high +
-`TVAL` high means pay up or walk — not a mispricing"). The only names with a real crack in
-that stance are **Jaren Jackson** (blocked positionally, oldest of the bigs) and the **guard
-glut** behind Keyonte — Tre Jones and, a step below him, Isaiah Collier and Diabaté.
+### Reading `κ*` against our band
 
-## `TVAL` — the top candidates
+Our band is **1205–3339**. Below its floor a row is underpriced for us at every κ in the band;
+above the ceiling, overpriced at every κ; inside, the BASE↔`TVAL` gap is not a signal
+(`Eval Definitions §κ`).
 
-Shortlist only (`team-eval` §`TVAL`: "our roster: whole table; counterparty: shortlist
-only"). Each candidate added to **our** current roster (`roster-161025-2025-26.json`, 28
-bodies, post-execution — Mark Williams already in, so he's excluded here as already ours)
-in place of the bottom filler body (`sim.swap`, replacing Sion James, the lowest-value real
-body on our padded-38 file), then `sim.player_wins` against our own replacement level —
-**forward `R` = 15.66** (post-execution, `../my-team/my-team.md` §*Post-execution*), 3×200
-trials. `GP proj` is `sim.project_gp` on the candidate's own pool history — same function,
-same rounding, as every `GP proj` column in this repo. `TVAL = 940 × 2.641 × 1.0 × Δw ours`
-(same `κ`, `Σδ`, `M` as `../my-team/my-team.md` — see that file for why `M` = 1.0 flat).
+- **Below the floor — a real gap:** Tre Jones 471 · Diabaté 927 · Collier 991 · Avdija 1,045 ·
+  Keyonte 1,070 · Luka 1,090 · Kessler 1,168.
+- **Inside the band — no signal:** Jaren Jackson 1,349 · Goodwin 1,402 · Sheppard 1,954 ·
+  Queen 2,110 · Franz 2,368 · Flagg 2,394.
+- **Above the ceiling — overpriced for us:** Murray-Boyles 7,379 · Robert Williams 12,283.
 
-| Player | rate | GP proj | `Δw ours` | sd | **TVAL** | `GET` |
-|---|---:|---:|---:|---:|---:|---|
-| Luka Dončić | 57.2 | 62 | +3.19 | 0.012 | **7929** | high |
-| Deni Avdija | 41.5 | 63 | +1.76 | 0.018 | **4369** | high |
-| Cooper Flagg | 37.3 | 64 | +1.46 | 0.020 | **3623** | high |
-| Keyonte George | 37.0 | 59 | +1.07 | 0.011 | **2667** | high |
-| Jaren Jackson | 32.0 | 56 | +0.96 | 0.014 | **2392** | medium |
-| Walker Kessler | 40.2 | 41 | +0.83 | 0.039 | **2061** | high |
-| Franz Wagner | 32.6 | 51 | +0.73 | 0.019 | **1816** | medium-high |
-| Moussa Diabaté | 26.6 | 64 | +0.54 | 0.011 | **1333** | medium |
-| Derik Queen | 27.9 | 68 | +0.45 | 0.001 | **1126** | medium-high |
-| Isaiah Collier | 25.8 | 59 | +0.30 | 0.012 | **745** | medium-low |
-| Tre Jones | 27.7 | 62 | +0.24 | 0.016 | **607** | medium |
-| Collin Murray-Boyles | 21.8 | 56 | +0.23 | 0.013 | **561** | low-medium |
+### Buy targets
 
-**`GET` low + `TVAL` high is the target list, and this roster barely has one.** Every name
-with real `TVAL` (Luka, Avdija, Flagg, Keyonte, Kessler) is also `GET`-high — pay-up-or-walk,
-not a mispricing, and not worth opening on given `my-team-situation`'s *Core* already covers
-most of what we'd need to send. **Jaren Jackson is the one name where the two columns
-actually cross** — real `TVAL` (2392, ahead of Kessler and Diabaté) at a `GET` that isn't
-pinned to "never" the way the true core is. Diabaté and Tre Jones are next, at real but
-modest `TVAL` and a genuinely lower ask. **None of this reverses the pre-recut instinct that
-Mitch is a riser to avoid selling to, not a target-rich counterparty** — it just replaces
-"look at `Δw theirs`" with a reason: the whole roster prices as `GET`-high because it's a
-core, not because any individual name is overpriced.
+`GET` is judgment off recent `FPts/G` + `AGE` + their situation + light BASE (`trades`
+§*What other owners price on*) — never inferred from `TVAL` or `Δw`.
 
-`LATE` legend, causes and thresholds: **`team-eval` §`LATE`** (`../my-team/my-team.md` §*`LATE`* has
-the worked scoring) — same rule, so the column is comparable across files.
+1. **Walker Kessler** — BASE 2,386 / `TVAL` 3,018 / `κ*` 1,168 / `GET` **mid**. The largest
+   gettable BASE→`TVAL` gap here. ⚠️ **Board-cheap but lineup-load-bearing** (`trades`
+   §*Pricing their side* 5): the 47/78/65 ranks price a 5-game season, and he is their starting
+   centre next to a max-usage Luka. **Not available at his board price** — name the tension
+   before anchoring low. `LATE ✗`.
+2. **Moussa Diabaté** — BASE 878 / `TVAL` 1,399 / `κ*` 927 / `GET` **mid**. 24.5, 26.6 FPts/G
+   on 73 GP, rate risen 17.7 → 26.6, no pedigree on any board (170/140/137). The buy signal
+   survives the entire κ band.
+3. **Tre Jones** — BASE 242 / `TVAL` 758 / `κ*` 471 / `GET` **low**. The only strict `GET`-low
+   row with real `TVAL`: 26.6, 27.7 FPts/G, 65 GP, 214/366/458 on the boards. Exactly the
+   profile a riser sheds, and the cheapest real production on the roster.
+4. **Jaren Jackson** — BASE 3,010 / `TVAL` 3,296 / `κ*` 1,349 / `GET` **mid**. The big one:
+   26.9, rate down 36.0 → 32.0, 48 GP, and 29.5 by the time their window opens — the most
+   sellable good player they own. `κ*` sits inside our band, so the value gap is a tie; buy him
+   on `GET`, not on the columns.
+5. **Isaiah Collier** — BASE 650 / `TVAL` 968 / `κ*` 991 / `GET` **mid**. Small, and the signal
+   clears the band.
 
-## Picks — Sept '26
+**Pay up or walk, not a mispricing:** Keyonte George (`κ*` 1,070) and Deni Avdija (`κ*` 1,045)
+are both genuinely underpriced for us *and* `GET` **high** — a riser's core. Luka is the same
+case one tier up.
 
-Off the Dizzle dynasty board's **slot-prefixed rookie rows**, by **overall ordinal**
-`(R-1)*12 + S`. Originators off `draftOrder[]` against each round's cells. **Never off the
-label**, on either lookup.
+**Untouchable (`ACQ ✗`):** Luka Dončić (the franchise, 27.4 at 57.2, the roster is built around
+him) · Cooper Flagg (19.6, the '28-29 centrepiece) · Deni Avdija (25.6, four straight ascending
+seasons, `LATE ✓✓`, and precisely the age their window wants).
 
-**`VALUE` is Dizzle alone, not the 50/50 pick blend** — `evaluating-picks` §*4. BASE* drops
-the crowd board while its pick rows carry a class-normalising notice, which they do.
+## Picks
 
-| Pick | originates | ordinal | chart slot | board rank | **VALUE** | would take |
-|---|---|---:|---|---:|---:|---|
-| 1.03 | own | 3 | 1.03 | 17 | **5623** | Darryn Peterson |
-| 1.04 | Mongol | 4 | 1.04 | 30 | **4075** | Caleb Wilson |
-| 1.08 | Yao Ming | 8 | 1.08 | 69 | **2104** | Kingston Flemings |
-| **1.09** | **ours — incoming, 483809** | 9 | 1.09 | 95 | **1524** | Brayden Burries |
-| 1.10 | Jesus Christ | 10 | 1.10 | 99 | **1457** | Yaxel Lendeborg |
-| 2.03 | own | 15 | 1.15 | 139 | **971** | Bennett Stirtz |
-| 3.11 | King Christopher | 35 | 2.05 | 274 | **303** | Ryan Conwell |
+Slot values are the **Dizzle dynasty Points slot prefix** through `Eval Definitions §BASE`'s
+curve at `D` = 456 — the primary source per `eval-pick` §4. **The Hashtag crowd `/keeper` pick
+bands are excluded**, because that board still carries its vote-convergence notice (manifest
+2026-07-30); that is the discount chosen here, and it is `eval-pick` §4's rule rather than a
+judgment about the class. The named player is Dizzle's expected pick at that slot — a class
+cross-check, not a prediction of whom they take.
 
-Their own **3.03 is already gone** (→ Han, trade 475769), so this is the whole holding.
+### Sept '26 — **sourced**, off `FetchLeagueDraftBoard?season=2026` (2026-07-31)
 
-**Post-execution they hold five of the top ten Sept-'26 ordinals** (3, 4, 8, 9, 10) — the
-shape `team-projections.md` flags as their likely path to consolidating firsts into a second
-star. That is the deal's real cost to us, not the 1524.
+| Pick | originates | ordinal | Dizzle rank / player | VALUE |
+|---|---|---:|---|---:|
+| **1.03** | own | 3 | 17 · Darryn Peterson | **5,623** |
+| **1.04** | Mongol Khans | 4 | 30 · Caleb Wilson | **4,075** |
+| **1.08** | Yao Ming | 8 | 69 · Kingston Flemings | **2,104** |
+| **1.09** | Bathroom club | 9 | 95 · Brayden Burries | **1,524** |
+| **1.10** | Jesus Christ | 10 | 99 · Yaxel Lendeborg | **1,457** |
+| 2.03 | own | 15 | 139 · Bennett Stirtz | 971 |
+| 3.11 | King Christopher | 35 | 274 · Ryan Conwell | 303 |
 
-**Outgoing: two 2027 2nds** — their own (no `originalOwner`) and **King Christopher's**
-(`originalOwner`, `traded: true`). ⚠️ The `slot` values in the trade record (2.03, 2.11) are
-placeholders keyed to the **2026** order: `FetchLeagueDraftBoard?season=2027` returns `{}`, and
-the '27 order is set by the '26-27 finish. Price by **originating team** off
-`team-projections.md`, method in `evaluating-picks` §*Future picks*.
+**Their own gone this year: the 3rd (3.03), to Han Dybantsy.** Everything else is held.
+
+**Five of the league's twelve firsts, and four of the top ten ordinals.** 16,057 BASE across
+the seven — additive, unlike `TVAL`, because a pick enters VERDICT through `ΔBASE` alone
+(`Eval Definitions §TVAL`). This is the largest single asset on the file after Luka, and the
+reason the projection climbs.
+
+### Sept '27 — set by the '26-27 finish (projected **6th**, range 2–8 → bottom-8, a **prior**)
+
+| Pick | originates | slot | ordinal | VALUE |
+|---|---|---|---:|---|
+| own 1st | own | **1.05–1.11 (prior)** | 5–11 | ~1,200–2,400, central **~1,900** |
+| own 2nd | — | **gone** | — | — |
+| own 3rd | own | **3.05–3.11 (prior)** | 29–35 | ~300–410 |
+
+Modelled baseline at those ordinals on the current class is 1,425–2,795 (modal 1.07 → 2,391).
+**Market anchor:** Dynatyze prices a `2027 Early 1st` at implied rank 41 → 3,270 and a
+`2027 Mid 1st` at rank 72 → 2,021 (ranks sourced, conversion modelled). Against the
+current-class baseline at comparable slots that implies an effective haircut **h ≈ 42% early,
+≈ 18% mid** — slot-dependent and concentrated at the top, exactly as `eval-pick`
+§*Future picks* predicts. ⚠️ **Dynatyze publishes no late-1st row in any year**, so `Mid 1st`
+is an upper bound on a 1.07–1.11, not a price. Applying the mid haircut plus
+`Team Projections.md` caveat 2 (the 2027 class is a clear step down from 2026) gives the
+central figure above.
+
+Carried named and unsized (`eval-pick` §*Traps*): a prior is worth **more** than its modal slot
+taken as a point, because `V()` is convex — the asymmetry favours whoever holds it.
+
+### Sept '28 — set by the '27-28 finish (projected **4th** of 1–6 → **1.09 exact**)
+
+| Pick | slot | ordinal | baseline VALUE |
+|---|---|---:|---:|
+| own 1st | **1.09** | 9 | 1,524 |
+| own 2nd | 2.09 | 21 | 645 |
+| own 3rd | 3.09 | 33 | 357 |
+
+All three held. Exact at the modal rank; ranks 5–6 inside the projected range would make it a
+prior instead. **No market anchor exists** — Dynatyze carries no 2028 row and no late 1st — so
+`h` is **unsized** here and its direction unknown. Modelled, not sourced.
+
+### Sept '29 — set by the '28-29 finish (projected **2nd** of 1–5 → **1.11 exact**)
+
+| Pick | slot | ordinal | baseline VALUE |
+|---|---|---:|---:|
+| own 1st | **1.11** | 11 | 1,425 |
+| own 2nd | 2.11 | 23 | 634 |
+| own 3rd | 3.11 | 35 | 303 |
+
+All three held; nothing in the league has traded into 2029. `h` unsized, same reason.
+
+### ⚠️ Never buy their future firsts
+
+**1.09 exactly off '27-28 and 1.11 exactly off '28-29** — back-of-round in both years, and only
+the Sept-'27 one is even a prior. Their trajectory is what kills the asset: these picks get
+worse every season the projection improves, and it improves in all three. Meanwhile the market
+still prices this team off a 6-13 record. **Sell them a future first; never buy one.**
+
+## Sourced vs modelled
+
+Per `Eval Definitions §Sourced vs modelled`, plus what is specific to this file.
+
+- **Sourced:** per-board ranks and BASE's inputs · `FPts/G` and `GP` (last season actual) ·
+  `AGE`, `ELIG` · the live 27-body count (`FetchLeagueRosters`) · **every Sept-'26 pick
+  holding** (`FetchLeagueDraftBoard?season=2026`) · Dynatyze's implied ranks 41 and 72 ·
+  future-pick ownership, walked across `FetchTrades` in `approvedOn` order.
+- **Modelled:** `GPp` · `Δw` on both sides · `REPL`, `K`, `κ` (point and band) · `TVAL` ·
+  `LATE` · every pick VALUE (the curve conversion) · all future-year slots, which come from
+  `Team Projections.md`'s projected finishes and not from any board.
+- **Judgment:** `GET` · `ACQ`.
+- **Staleness:** Dizzle is 3 weeks old, Hashtag Points 4 weeks; the crowd board is 2 days old
+  but its class rows are unsettled, which is why the pick tables use Dizzle alone. `Δw theirs`
+  and `REPL` theirs are fitted on the 26-row season snapshot rather than the live 27.
