@@ -55,10 +55,13 @@ def report_schedules():
     held = [p for i, p in enumerate(full) if i not in slots]
     held_tms = {p["tm"] for p in held}
     if not fa:
-        sys.exit("this roster is already full at %d bodies, so the September "
-                 "auction fills nothing.\nthis report is about what THAT "
-                 "auction's schedules buy -- there is nothing to steer."
-                 % len(full))
+        # RAISED, not `sys.exit`: from inside a report that killed every later
+        # report in the same run with no sign that any were skipped, and it is
+        # reachable from the import path too, where an exit is not an answer.
+        raise ValueError(
+            "this roster is already full at %d bodies, so the September auction "
+            "fills nothing. This report is about what THAT auction's schedules "
+            "buy -- there is nothing to steer." % len(full))
     gp = max(p["gp"] for p in fa)
     light, tight = light_nights(), light_nights(TIGHT_GAMES)
     per_team = {t: len(team_light_nights(t)) for t in NBA_TEAMS}

@@ -9,7 +9,7 @@ SLOTS = [("PG", {"PG"}), ("SG", {"SG"}), ("G", {"PG", "SG"}),
 # DERIVED off SLOTS, never a second literal: the solver runs ~26k times per
 # `run` and this is its innermost scan, so it reads the eligibility sets without
 # re-unpacking the labelled tuple.
-SLOT_ELIG = [e for _, e in SLOTS]
+SLOT_POS = [e for _, e in SLOTS]
 
 
 def lineup(avail):
@@ -18,12 +18,12 @@ def lineup(avail):
     Exact: capacities are 1 and players are added in descending value, so
     greedy placement with Kuhn augmentation cannot be improved on.
     """
-    assign = [None] * len(SLOT_ELIG)
+    assign = [None] * len(SLOT_POS)
     seen = set()
 
     def place(x):
         ex = avail[x][1]
-        for si, elig in enumerate(SLOT_ELIG):
+        for si, elig in enumerate(SLOT_POS):
             if si in seen or not (ex & elig):
                 continue
             seen.add(si)
@@ -37,7 +37,7 @@ def lineup(avail):
     # player for the whole of a night.
     filled = 0
     for pi in sorted(range(len(avail)), key=lambda i: -avail[i][0]):
-        if filled == len(SLOT_ELIG):
+        if filled == len(SLOT_POS):
             break
         seen.clear()
         if place(pi):

@@ -8,7 +8,7 @@ from ..wins import PF_PER_WIN, wins
 # A scenario's FILLER, not a bucket, a surplus list or a recommendation: held
 # fixed so the only variable down a ladder is body count. Two of these price as
 # Core, where shipping one is a walk-away trigger (`trades`). Buckets live in
-# `my-team-situation`; this list is not one and must not be read as one.
+# `evals/teams/my-team/My Team.md`; this list is not one and must not be read as one.
 #
 # ONE list, because the two reports below are read against each other: a second
 # copy asserting in prose that it is "the same filler" is a comparison that can
@@ -42,7 +42,7 @@ def report_scenarios():
     # handicap that the ladder then read as body count.
     #
     # The rate rides in the same dict as the rest of his shape: five rungs is
-    # five chances for one of them to price a different centre.
+    # five chances for one of them to price a different center.
     JOKIC = dict(rate=65.2, gp=65, elig=("C",), tm=SIM_TM)
     SC = [
         # Body count held fixed at 1 incoming, GP and position held fixed too,
@@ -88,7 +88,7 @@ def report_scenarios():
           % grade(GENEROUS))
     # STATED, because `breakevens` ten lines down states it -- "GP and position
     # are STATED because they move the answer several points" -- and a row here
-    # labelled bare is the row a reader compares a real 50-rate centre against.
+    # labelled bare is the row a reader compares a real 50-rate center against.
     # Every shape read off the bodies actually priced: the exceptions are the
     # rows a label has no room for, so a hand-typed sentence describes them until
     # one of them changes.
@@ -103,6 +103,9 @@ def report_scenarios():
           % (JOKIC["gp"], "/".join(JOKIC["elig"])))
     print("different slot group, at %s GP."
           % " and ".join("%d" % g for g in multi))
+    print("`dPF` is season PF against the baseline above, `CV` the WEEKLY "
+          "coefficient\nof variation of PF after the swap (the baseline's is on "
+          "line 1), `wins` the\ndPF converted at the PF-per-win above.")
     print("%-30s %9s %7s %8s" % ("scenario", "dPF", "CV", "wins"))
     for label, out, adds in SC:
         r = engine.run(swap(full, out, adds))
@@ -119,7 +122,7 @@ def report_breakevens():
           % len(full))
     print("and the file as it stands. Every incoming body is on %s." % SIM_TM)
     shapes = [("68 GP forward", 68, ("SF", "PF")),
-              ("65 GP centre", 65, ("C",)),
+              ("65 GP center", 65, ("C",)),
               ("78 GP forward", 78, ("SF", "PF"))]
     for roster in (full, ours):
         avail = [n for n in FILLER if any(p["n"] == n for p in roster)]

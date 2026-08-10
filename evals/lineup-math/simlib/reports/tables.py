@@ -13,9 +13,14 @@ def report_extras():
     full = basis()
     base = engine.run(full)
     d = base["pf"] - engine.run(our_roster())["pf"]
-    print("\nSept '26 expansion: filling %d -> %d with auction-grade bodies"
+    print("\nSept '26 expansion, for the roster named in this report's header:")
+    print("filling %d -> %d bodies with auction-grade filler (`pad`'s EXPANSION"
           % (len(our_roster()), len(full)))
-    print("  %+5.0f PF = %+.2f wins, free" % (d, d / PF_PER_WIN))
+    print("grades), against the same roster at its live count.")
+    print("  %+5.0f PF = %+.2f wins" % (d, d / PF_PER_WIN))
+    print("  Costs nothing in trade: the slots arrive with the expansion and the")
+    print("  bodies come off the auction, so every team gets this. It is a level")
+    print("  shift, not an edge -- do not book it as one.")
 
 
 def report_players():
@@ -42,6 +47,8 @@ def report_players():
     print("Below ~2 sigma the two rows are not ordered. QUOTE NO ORDER THERE, and")
     print("note %d blocks is %d dof -- sigma itself is coarse."
           % (value.PLAYER_BLOCKS, value.PLAYER_BLOCKS - 1))
+    print("  %-24s %5s %5s  %-6s %5s  %7s  %5s  %s"
+          % ("player", "rate", "gp", "elig", "wins", "sd", "next", "flags"))
     w = value.player_wins(full, [p["n"] for p in ours], R=R)
     order = sorted(ours, key=lambda q: -w[q["n"]][0])
     for i, p in enumerate(order):
@@ -52,16 +59,16 @@ def report_players():
             # PAIRED. Both rows run on the SAME seed blocks, so the gap is a
             # within-block quantity and the two sds are not independent.
             se = se_mean([a - b for a, b in zip(blk, blk2)])
-            nxt = "%5.1f" % ((m - m2) / se) if se else "   inf"
+            nxt = "%5.1f" % ((m - m2) / se) if se else "  inf"
         row_flags = [code for code, on in (("fa", unsigned(p["tm"])),
                                            ("noproj", projected_rate(p["n"]) is None))
                      if on]
         flag = " ".join(evidence_flags(p["n"]) + row_flags)
-        print("  %-24s %5.1f rate %3d gp  %-6s %+.2f  +-%.3f  %5s  %s"
+        print("  %-24s %5.1f %5d  %-6s %+5.2f  +-%.3f  %5s  %s"
               % (p["n"], p["avg"], p["gp"], "/".join(p["elig"]), m, sd, nxt, flag))
     print("\nThe rate above is PROJECTED (`projections`); `gp` is projected off the")
     print("pool. The flag column is what the GP projection rests on (`Eval")
-    print("Definitions §Output`): `frag` a <=%d game season, `miss` a whole season"
+    print("Output §Flags`): `frag` a <=%d game season, `miss` a whole season"
           % FRAGMENT_GP)
     print("gone from the pool, `rotN` fewer than 3 seasons at rate >= %g, `nopool`"
           % ROTATION_RATE)

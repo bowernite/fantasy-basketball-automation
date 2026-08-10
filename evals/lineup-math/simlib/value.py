@@ -68,7 +68,7 @@ def breakeven(roster, out_names, gp=68, elig=("SF", "PF"), tm=SIM_TM,
     """Incoming rate at which trading `out_names` away is PF-neutral.
 
     GP and eligibility are ARGUMENTS, not incidentals: the break-even for a
-    65-GP centre is several points above the one for a 68-GP forward, and a
+    65-GP center is several points above the one for a 68-GP forward, and a
     reader who compares a real player's rate to the wrong row gets the sign of
     the deal wrong. `dead` is the backfill grade -- see swap().
     """
@@ -100,7 +100,7 @@ def group_fits(roster, gp=68):
 
     R is position-dependent by roughly 2-3 rate points on any real roster
     (`report_replacement` calls that a third of the formula's error), so ONE R is
-    a different counterfactual for a centre than for a forward. `c` comes back
+    a different counterfactual for a center than for a forward. `c` comes back
     with it because the reports price with both, and a second comprehension over
     GROUPS is the same fit measured twice.
     """
@@ -133,11 +133,12 @@ PLAYER_BLOCKS = 3
 
 
 def _sampling(roster, blocks, trials, seed0, R):
-    """The `(seeds, R)` both `Delta w` columns run on, resolved the one way.
+    """The `(seeds, R)` every per-player column runs on, resolved the one way.
 
-    Shared so the two cannot drift: they are read against each other, and a
-    column sampled on different seeds or fitted on a different R is not the
-    comparison the reports print it as.
+    Shared so they cannot drift: both `Delta w` columns and `bracket`'s
+    `Delta P(title)` are read against each other, and a column sampled on
+    different seeds or fitted on a different R is not the comparison the reports
+    print it as.
 
     `PLAYER_BLOCKS` is resolved HERE at call time, never bound as a default:
     `players` prints the block count as a caveat on the table, and a default
@@ -154,7 +155,7 @@ def player_wins(roster, names, blocks=None, trials=TRIALS, seed0=101, R=None):
     SLOT GROUP, sd across `blocks` independent seed blocks, the per-block values).
 
     Own group, not a forward every time: R runs several rate points apart across
-    groups, so pricing a centre against a forward's alternative is the single-R
+    groups, so pricing a center against a forward's alternative is the single-R
     error `report_replacement` calls a third of the formula's, applied to the
     table the framework actually decides on. `R` is a {group: rate} mapping; it is
     fitted on `roster` if omitted.

@@ -1,6 +1,6 @@
 """Rosters as the study prices them: load, project, pad to a common body count,
 and build the synthetic bodies a trade swaps in."""
-import collections, itertools
+import collections, itertools, os
 from fetch_data import SEASON_TAG, TEAM
 from .board import pool_seasons
 from .data import _load
@@ -34,13 +34,32 @@ DEAD = {"tm": "MIA", "avg": 6.0, "gp": 40, "elig": ["PG", "SG"]}
 
 
 # Slot groups, for padding a short roster without inventing a positional hole.
-PAD_ELIG = (["PG", "SG"], ["SF", "PF"], ["C"])
+PAD_POS = (["PG", "SG"], ["SF", "PF"], ["C"])
 
 
 # Ours, written by the SAME command as any counterparty's (`fetch_data.py roster
 # 161025`), so re-fetching it after a trade executes lands on the file that is
 # actually read. `--roster PATH` overrides it.
 ROSTER = "roster-%d-%s.json" % (TEAM, SEASON_TAG)
+
+
+def label(path=None):
+    """The loaded roster as a reader can identify it: file AND team name.
+
+    `roster-161020-2025-26.json` names a team only to someone holding the
+    `team-info` table, and every table this study prints is about one roster.
+    `teams-<season>.json` is written by the same `fetch_data.py roster` run; a
+    tree that predates it, or a path from outside the league, prints the file
+    alone rather than failing.
+    """
+    name = os.path.basename(path or ROSTER)
+    try:
+        teams = _load("teams-%s.json" % SEASON_TAG)
+    except (OSError, ValueError):
+        return name
+    parts = name.split("-")
+    team = teams.get(parts[1]) if len(parts) > 1 else None
+    return "%s (%s)" % (name, team) if team else name
 
 
 def our_roster(path=None, projected=True):
@@ -196,7 +215,7 @@ def pad(roster, n=38):
             out.append({"n": "PAD%d" % i,
                         "tm": EXPANSION[i % len(EXPANSION)]["tm"],
                         "avg": EXPANSION[-1]["avg"], "gp": EXPANSION[-1]["gp"],
-                        "elig": list(PAD_ELIG[i % len(PAD_ELIG)])})
+                        "elig": list(PAD_POS[i % len(PAD_POS)])})
     return out
 
 
@@ -212,13 +231,13 @@ PAD_NAMES = frozenset(p["n"] for p in pad([]))
 AUCTION_NAMES = frozenset(n for n in PAD_NAMES if n.startswith("FA"))
 
 
-GROUPS = {"guard": ("PG", "SG"), "forward": ("SF", "PF"), "centre": ("C",)}
+GROUPS = {"guard": ("PG", "SG"), "forward": ("SF", "PF"), "center": ("C",)}
 
 
 def slot_group(elig):
     """Which of GROUPS a body belongs to, on `Eval Definitions §Columns`' rule."""
     e = set(elig)
-    return ("centre" if e == {"C"} else
+    return ("center" if e == {"C"} else
             "guard" if e <= {"PG", "SG"} else "forward")
 
 
@@ -230,7 +249,7 @@ def pure_bodies(roster, elig):
 
 def group_slots(elig):
     """Starting slots a body pure to `elig` can fill, off `SLOTS` rather than
-    counted by hand: the two ANY slots make guards 5 and centres 3, and a hand
+    counted by hand: the two ANY slots make guards 5 and centers 3, and a hand
     count keeps missing them."""
     return sum(1 for _, e in SLOTS if e & set(elig))
 

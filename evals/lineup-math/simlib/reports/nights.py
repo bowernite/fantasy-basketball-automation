@@ -20,8 +20,12 @@ def report_nights():
     r = engine.run(full)
     print("fill rate by night size, %d-man roster, %d scored nights."
           % (len(full), len(SCORING_NIGHTS)))
-    print("`cum` = share of the season's WHOLE unfilled-slot count sitting on"
-          " nights\nthis small or smaller. Price-free, hence quotable.")
+    print("Columns, per night of that size: `nights` how many there are,"
+          " `avail` mean\nbodies with an NBA game, `filled/%d` mean starting "
+          "slots filled of the %d,\n`slotsLost` the slot-nights that went empty,"
+          " `cum` the share of the season's\nWHOLE unfilled-slot count sitting "
+          "on nights this small or smaller.\n`cum` is price-free, hence quotable."
+          % (len(SLOTS), len(SLOTS)))
     print("  %5s %7s %8s %9s %10s %6s" %
           ("games", "nights", "avail", "filled/%d" % len(SLOTS), "slotsLost",
            "cum"))

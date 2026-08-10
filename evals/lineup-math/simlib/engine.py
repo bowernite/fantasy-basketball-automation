@@ -1,7 +1,7 @@
 """The simulator: who is available on a night, what a season scores, and the
 Monte Carlo `run` every figure in the study comes out of."""
 import collections, random, statistics
-from .data import NIGHTS, SCORING_NIGHTS, WEEKS, WEEK_OF
+from .data import NIGHTS, SCORED_CAL
 from .lineups import SLOTS, lineup
 from .schedule import games_on, team_nights
 
@@ -85,8 +85,11 @@ def absence_blocks(roster, seeds=40, seed0=101):
             "mean_block": nights / blocks if blocks else 0.0}
 
 
-def season(roster, seed, bursty=False, surprise=0.0):
+def season(roster, seed, bursty=False, surprise=0.0, cal=SCORED_CAL):
     """`surprise`: share of a player's absence BLOCKS he is started into.
+
+    `cal` selects which nights are scored and how they bucket. Availability is
+    drawn over the whole season regardless of `cal`: GP/82 is a season-long rate.
 
     Lineups lock before tip, so a late scratch does not free the slot -- you have
     started a player who scores 0 and cannot refill. Everything else here assumes
@@ -117,10 +120,10 @@ def season(roster, seed, bursty=False, surprise=0.0):
     eligs = [set(p["elig"]) for p in roster]
     avgs = [p["avg"] for p in roster]
     names = [p["n"] for p in roster]
-    weeks = [0.0] * WEEKS
+    weeks = [0.0] * cal.weeks
     starts, pts = collections.Counter(), collections.Counter()
     by_night = []
-    for i in SCORING_NIGHTS:
+    for i in cal.nights:
         tms = NIGHTS[i][1]
         # Keyed on the ROSTER INDEX, never the name. Two bodies can share a name
         # -- two `star()`s in one deal, or the league's two Jaylin Williamses --
@@ -140,7 +143,7 @@ def season(roster, seed, bursty=False, surprise=0.0):
         # its 13th digit.
         scored = [0.0 if i in ghosts[w] else avgs[w] for w in who]
         total = sum(scored)
-        weeks[WEEK_OF[i]] += total
+        weeks[cal.week_of[i]] += total
         for w, v in zip(who, scored):
             starts[names[w]] += 1
             pts[names[w]] += v
@@ -153,23 +156,26 @@ def season(roster, seed, bursty=False, surprise=0.0):
 TRIALS = 200
 
 
-def run(roster, trials=TRIALS, bursty=False, seed0=101, surprise=0.0):
-    """-> dict(pf, wk_mean, wk_sd, cv, by_night)
+def run(roster, trials=TRIALS, bursty=False, seed0=101, surprise=0.0,
+        cal=SCORED_CAL):
+    """-> dict(pf, wk_mean, wk_sd, cv, wk, by_night)
 
     Per-player figures come off `season`, which returns `starts` and `pts` for a
-    single season.
+    single season. `wk` is the mean of each `cal` bucket separately.
     """
     allweeks = []
     agg = collections.defaultdict(lambda: [0, 0, 0.0, 0])
     for t in range(trials):
-        w, _, _, bn = season(roster, seed0 + t, bursty, surprise)
+        w, _, _, bn = season(roster, seed0 + t, bursty, surprise, cal)
         allweeks += w
         for n in bn:
             a = agg[n.size]
             a[0] += n.avail; a[1] += n.filled; a[2] += n.pf; a[3] += 1
     m, sd = statistics.mean(allweeks), statistics.stdev(allweeks)
     return {
-        "pf": m * WEEKS, "wk_mean": m, "wk_sd": sd, "cv": sd / m,
+        "pf": m * cal.weeks, "wk_mean": m, "wk_sd": sd, "cv": sd / m,
+        "wk": tuple(statistics.mean(allweeks[w::cal.weeks])
+                    for w in range(cal.weeks)),
         "by_night": {g: NightAvg(v[0] / v[3], v[1] / v[3], v[2] / v[3],
                                  v[3] / trials)
                      for g, v in agg.items()},

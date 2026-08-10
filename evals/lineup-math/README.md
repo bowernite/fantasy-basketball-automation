@@ -5,28 +5,29 @@ number and **re-run rather than quote it.**
 
 - **`method.md`** — the basis, the calibration, and where to distrust the model. Read it
   before quoting anything.
-- **`findings.md`** — every measured table: PF→wins, the consolidation ladder, break-evens,
-  the valuation formula, GP, durability, the slot-fill curve, positional premium,
-  light-night coverage, the Sept '26 expansion.
+- **`tldr.md`** — the headline number and sign-flipping caveat from each section below.
+  What a trade reads.
+- **`findings.md`** — every measured table, with its error bars and derivation: PF→wins, the
+  consolidation ladder, break-evens, the valuation formula, GP, durability, the slot-fill
+  curve, positional premium, light-night coverage, bracket weeks, the Sept '26 expansion.
 
 Durable valuation rules live in `Eval Definitions`; how to apply them, `eval-team`. Nothing
 here restates either.
 
 ```
-python3 sim.py gp            # expected GP: what predicts it, and what doesn't
-python3 sim.py market        # board rank -> FPts/G, and GP persistence
-python3 sim.py calibration   # NBA calendar, sim vs reality, PF -> wins and its band
-python3 sim.py scenarios     # the consolidation ladder
-python3 sim.py breakevens    # N-for-1 break-evens + backfill bracket (~6 min)
-python3 sim.py replacement   # replacement level per position, the formula's shape
-python3 sim.py schedules     # what steering the auction on the NBA calendar buys (~4 min)
-python3 sim.py nights formula durability positions extras players
+python3 sim.py --help        # every report, what it answers, and which take --roster
+python3 sim.py <report ...>  # runs each, in the order named
 python3 -m unittest test_sim
-python3 fetch_data.py [pool]                   # re-scrape; `pool` is ~20 min, resumable
+python3 fetch_data.py --help # every file it writes and what each argument costs
 ```
 
-The CLI knows only these names and **exits non-zero on anything else.** For a live trade,
-import it:
+**The report list is `--help`'s, not this file's** — it is generated from the registry the
+CLI dispatches on, so it cannot drift. Same for units and column meanings: every table
+names the roster it priced and defines its own columns above itself. Read them off the run.
+
+The CLI knows only fixed report names and **exits non-zero on anything else** — and on a
+report that refuses the roster it was given, naming any reports it then skipped. For a live
+trade, import it:
 
 ```python
 import sim
@@ -65,6 +66,7 @@ says which:
 | `board` `projections` `gp` | rank↔rate; the projected rate; expected games played |
 | `engine` `roster` | `season`/`run`; loading, projecting, padding, `swap` |
 | `auction` `value` | steering the September auction; replacement, `Δw`, break-evens |
+| `bracket` | the seed bands and the draw, the projected field a bracket week is played against, `ΔP(title)` |
 | `reports/` | one module per group of reports, plus the `REPORTS` registry |
 
 No module imports a row below its own, so the layering is checkable by reading the import
@@ -77,7 +79,7 @@ than a snapshot; every other name it exports is a plain re-export.
 
 `sim.py players` prints a flag column and `sim.evidence_flags(name)` returns the pool codes
 (`frag` · `miss` · `rotN` · `nopool`); the table adds **`fa`** and **`noproj`**. Those six are
-the whole of what the sim publishes. `Eval Definitions §Output` defines them — and the other
+the whole of what the sim publishes. `Eval Template.md` defines them — and the other
 four an eval may carry — once; cite it, and carry the flag with the row.
 
 **Those rows are where `Δw` is an upper bound, not a measurement** (`Eval Definitions §Δw`),
@@ -91,7 +93,20 @@ python3 fetch_data.py roster 160941      # -> roster-160941-2025-26.json
 python3 sim.py --roster roster-160941-2025-26.json players replacement
 python3 fetch_data.py roster 161025      # OURS is the same command, same schema.
                                          # Re-run it after any trade EXECUTES.
+python3 fetch_data.py roster             # all 12, ~20s. Cheap; do it before a
+                                         # session rather than trusting the files.
 ```
+
+**`playoffs` reads all 12 files, not just the loaded one** — the opponent level is the rest of
+the league simulated the same way, and their projected order is the draw itself (`findings.md`
+§*Bracket weeks*), so a stale or missing roster file moves μ_opp for every team. Re-fetch all
+12 before quoting a `ΔP(title)`. The set is the season's own: `roster-<id>-<season>.json`, and
+a roll leaves the previous season's beside it.
+
+**Import it and the file has to be named twice.** `sim.basis(path)` reads a roster without
+moving `sim.ROSTER`, so `player_title`/`roster_title` take a `path=` of their own — omitted,
+the bracket seeds whoever `sim.ROSTER` says, which puts a counterparty in a draw containing
+himself. The CLI's `--roster` sets both.
 
 **Two different Δw columns, and the CLI only prints one.** `--roster their.json players`
 prices his players **on his roster** — that is `Δw theirs`. `Δw ours` for those same
@@ -113,8 +128,8 @@ Each column is measured against its own roster's `R`, so **neither substitutes f
 and their difference is not a number**: a gap between them is mostly the two rosters'
 replacement levels, not the player.
 
-`--roster` serves **9 of the 13 reports** and **exits non-zero on `calibration` `scenarios`
-`breakevens` `durability`, naming the 9 it does serve** — those four are built on our own
+`--roster` serves every report but **`calibration` `scenarios` `breakevens` `durability`**,
+which **exit non-zero naming the ones it does serve** — those four are built on our own
 player names and our real weekly scores, so under another team's file they answer nothing.
 `sim.our_roster(path)` and `sim.basis(path)` are the import path. Team ids are in
 `team-info`. A row is `{n, tm, avg, tot, gp, posLabel, elig}` —
@@ -125,10 +140,11 @@ player names and our real weekly scores, so under another team's file they answe
 `(rate − R) × GP`, so **a roster measured short has a low `R` and every player on it reads too
 valuable.** Measured **2026-08-03**, **forward group** throughout: ours **14.6 live at 28 →
 17.1 padded to 38**; Pharaoh's 26 bodies **9.6 live → 12.9 padded** (per group 9.3/9.6/8.1 →
-12.1/12.9/11.6 guard/forward/centre). Those 4.2 rate points are **~0.3 wins on every player he
+12.1/12.9/11.6 guard/forward/center). Those 4.2 rate points are **~0.3 wins on every player he
 owns** — ten times the gaps the σ column is there to police. `sim.basis()` pads to 38 for
 exactly this reason. **14.6 is the *live file*; `findings.md` §*Valuation formula*'s 28 row is
-a different 28 and reads 15.1.**
+a different 28 and reads 15.1.** Both figures need a fresh cut — re-run `fetch_data.py roster
+<id>` and re-measure before quoting either.
 
 ⚠️ **`R` is a property of a roster's shape at a moment, not a constant.** It moves on a trade,
 on the rate basis and on the body count alike, and the two sides of one deal can move in
@@ -137,12 +153,19 @@ these files.** An unsigned body still prices as a body, on the study's own sched
 (`method.md`), so a roster holding one is not thereby measured short. **Acquisition prices on
 our roster; what they give up prices on theirs.**
 
-⚠️ **`FetchRoster?season=` is a snapshot** as of the season's last lineup period: a body added
-after it is absent (The Don, 26 against 28 live — take counts from `FetchLeagueRosters`), and
-a player who missed the whole season carries no rate on it. That does not reach the rate —
-`our_roster` takes it from the projection (`projections`), which is the same number whether
-or not he played. A player the feed does not carry keeps the snapshot's rate and
-prints `noproj`.
+⚠️ **Membership is live; only the rates are last season's.** `FetchRoster?season=` answers as
+of the season's **last lineup period** (~end of March), so read as a roster it is months
+stale in both directions — an add after it is missing, a drop is still on it, silently.
+`fetch_data.py roster` therefore takes the bodies from `FetchLeagueRosters` and only
+`avg`/`tot`/`gp` from the season endpoint; **re-cut the files rather than trusting a count in
+a written eval**, and never hand-patch a file for a trade.
+
+A body the season snapshot has no line for played for somebody else, so his line comes off
+`players-2025-26.json` — the same numbers to ~0.01 (`viewingActualPoints` against
+`seasonAverage`). A player who **missed the whole season** carries no rate anywhere and reads
+0/0. Neither reaches the rate `Δw` runs on: `our_roster` takes that from the projection
+(`projections`), which is the same number whether or not he played. Only a player the
+projection feed does not carry keeps the file's rate — and prints `noproj`.
 
 ⚠️ **A July snapshot also carries unsigned players** (`proTeamAbbreviation` "FA") — **7 of
 the 12 roster files hold 1–3**, Beal, Sochan and Kuminga among them. They have no NBA

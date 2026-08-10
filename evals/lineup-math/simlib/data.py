@@ -50,11 +50,55 @@ US = "Bathroom club"
 # ONE basis for every PF figure in this study: the periods that count toward the
 # standings (1-20 here). Periods 21-23 are the playoff/consolation bracket, and
 # the standings' PF column excludes them -- calibrating on a 23-period total and
-# comparing it to standings PF overstates ours by 18%.
+# comparing it to standings PF overstates ours by 18%. Overlaps BRACKET below at
+# period 20 (`league-info`).
 SCORED = [i for i, p in enumerate(PERIODS) if "regular" in p["kinds"]]
 
 
 WEEKS = len(SCORED)
+
+
+# Games in a period every team plays: 12 teams, 6 games.
+FULL_FIELD = max(len(p["games"]) for p in PERIODS)
+
+
+def _bracket():
+    """Period indices of the bracket: the trailing run of short-field periods.
+    Never taken from `kinds` (`league-info` §Matchup periods)."""
+    out = []
+    for i in reversed(range(len(PERIODS))):
+        if len(PERIODS[i]["games"]) == FULL_FIELD:
+            break
+        out.append(i)
+    out.reverse()
+    short = [i for i, p in enumerate(PERIODS) if len(p["games"]) < FULL_FIELD]
+    assert out == short, (
+        "short-field periods %s are not one trailing run: the bracket window "
+        "cannot be read off the field size in %s"
+        % ([PERIODS[i]["ordinal"] for i in short], "league-%s.json" % SEASON_TAG))
+    assert out, ("no bracket in league-%s.json: every period is full-field"
+                 % SEASON_TAG)
+    flagged = {i for i, p in enumerate(PERIODS) if "playoff" in p["kinds"]}
+    assert flagged <= set(out), (
+        "periods %s are flagged playoff and fall outside the derived window %s"
+        % (sorted(PERIODS[i]["ordinal"] for i in flagged - set(out)),
+           [PERIODS[i]["ordinal"] for i in out]))
+    return out
+
+
+BRACKET = _bracket()
+
+
+REGULAR = [i for i in range(len(PERIODS)) if i not in set(BRACKET)]
+
+
+def period_nights(i):
+    """Night indices inside PERIODS[i]'s date range."""
+    return tuple(n for n, (d, _) in enumerate(NIGHTS)
+                 if PERIODS[i]["start"] <= d <= PERIODS[i]["end"])
+
+
+BRACKET_NIGHTS = [period_nights(i) for i in BRACKET]
 
 
 def _week_of(date):
@@ -76,6 +120,27 @@ WEEK_OF = [_week_of(d) for d, _ in NIGHTS]
 
 
 SCORING_NIGHTS = [i for i, w in enumerate(WEEK_OF) if w is not None]
+
+
+# Which nights `season` scores and which bucket each falls in. `engine.run`
+# takes one as `cal`: SCORED_CAL (the standings basis) by default, BRACKET_CAL
+# for a bracket round.
+Calendar = collections.namedtuple("Calendar", "nights week_of weeks")
+
+
+def _calendar(buckets):
+    """A Calendar over `buckets`, one group of night indices per bucket."""
+    where = [None] * len(NIGHTS)
+    for w, nights in enumerate(buckets):
+        for n in nights:
+            where[n] = w
+    return Calendar([n for g in buckets for n in g], where, len(buckets))
+
+
+SCORED_CAL = Calendar(SCORING_NIGHTS, WEEK_OF, WEEKS)
+
+
+BRACKET_CAL = _calendar(BRACKET_NIGHTS)
 
 
 SCORED_ORDINALS = [PERIODS[i]["ordinal"] for i in SCORED]

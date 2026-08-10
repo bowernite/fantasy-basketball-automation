@@ -32,9 +32,9 @@ def report_replacement():
     #
     # Counts off `full` -- the SAME padded bodies R was fitted on. Off the live
     # file they are 4-8 bodies per group short of the roster being explained, and
-    # padding does not add them evenly (4 guards, 3 forwards, 3 centres).
-    print("  R against forwards: guard %+.1f, centre %+.1f."
-          % (Rs["guard"] - Rs["forward"], Rs["centre"] - Rs["forward"]))
+    # padding does not add them evenly (4 guards, 3 forwards, 3 centers).
+    print("  R against forwards: guard %+.1f, center %+.1f."
+          % (Rs["guard"] - Rs["forward"], Rs["center"] - Rs["forward"]))
     byR = sorted(Rs, key=lambda g: -Rs[g])
     counts = {g: (pure_bodies(full, e), group_slots(e)) for g, e in GROUPS.items()}
     crowd = {g: b / s for g, (b, s) in counts.items()}
@@ -73,13 +73,13 @@ def report_positions():
     base = engine.run(full)["pf"]
     print("value of an ADDED body of each eligibility, vs the same rate as a")
     # Counted on `full`, the roster the body is ADDED to. The live file is a
-    # different shape -- padding adds 4 guards, 3 forwards and 3 centres.
+    # different shape -- padding adds 4 guards, 3 forwards and 3 centers.
     print("guard. this %d-man roster's %d pure PG/SG chase at most %d"
           % (len(full), pure_bodies(full, GROUPS["guard"]),
              group_slots(GROUPS["guard"])))
-    print("guard-eligible slots; %d pure centres chase %d."
-          % (pure_bodies(full, GROUPS["centre"]), group_slots(GROUPS["centre"])))
-    print("  %6s %10s %10s %10s" % ("rate", "guard PF", "forward", "centre"))
+    print("guard-eligible slots; %d pure centers chase %d."
+          % (pure_bodies(full, GROUPS["center"]), group_slots(GROUPS["center"])))
+    print("  %6s %10s %10s %10s" % ("rate", "guard PF", "forward", "center"))
     for rate in (25, 35, 45):
         v = {}
         for lab, elig in GROUPS.items():
@@ -87,7 +87,7 @@ def report_positions():
             v[lab] = engine.run(full + [body])["pf"] - base
         print("  %6d %10.0f %+9.0f%% %+9.0f%%"
               % (rate, v["guard"], 100 * (v["forward"] / v["guard"] - 1),
-                 100 * (v["centre"] / v["guard"] - 1)))
+                 100 * (v["center"] / v["guard"] - 1)))
 
 
 def report_formula():
@@ -102,7 +102,11 @@ def report_formula():
     # reports must grade ONE counterfactual, or the posR column is scored against a
     # `sim` column with the very error it exists to fix baked into it.
     print("a replacement 68-GP body OF HIS OWN SLOT GROUP -- the counterfactual")
-    print("`players` prices, so the two reports grade the same swap.\n")
+    print("`players` prices, so the two reports grade the same swap.")
+    print("`sim` is what the sim measured; `1R` the formula on the ONE roster-wide")
+    print("R printed above; `err` and `posR err` are (formula / sim - 1), the")
+    print("second using the per-slot-group R from `replacement`. Signed: + means")
+    print("the formula pays him more than the sim does.\n")
     grp = group_fits(full)
     print("  %-22s %5s %4s %8s %8s %7s %7s" %
           ("player", "rate", "gp", "sim", "1R", "err", "posR err"))

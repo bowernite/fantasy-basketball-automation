@@ -43,9 +43,24 @@ Read this before quoting anything in `findings.md`.
     and that a projected rate reaches the win figure without reaching the GP;
   - light-night counts on the **scored** basis, and only the auction's seven bodies
     steerable;
-  - the flag vocabulary being `Eval Definitions` §*Output*'s, and every section these files
+  - the flag vocabulary being `Eval Template.md`'s, and every section these files
     cite existing;
-  - the CLI failing loudly on an unknown report;
+  - the bracket window taken off the period field size rather than the wire's flags, a
+    period 20 carrying anything beside R1 refused where it is read, the per-team game counts
+    against the NBA schedule, the seed bands against who actually played each round, and
+    `ΔP(title)`'s counterfactual and sign — with a one-body joint run agreeing to the digit
+    with the per-player row;
+  - **the draw**: every game of last season's bracket walked through it in seed terms, the
+    half a seed cannot meet before the final being exactly the half it meets in it, the final's
+    opponent sitting above the field, and the eight seeds' title probabilities summing to 1;
+  - **σ's split**: a named opponent narrower than a drawn one by exactly the field's level
+    spread, and the two recombining onto the margins they came from;
+  - **the matched basis**: inflating every team's projected rates together moves no band's
+    `P(title)`, the field is the top 8 of the projected league, the league is one season's
+    roster files rather than two, and no team is inside the opponent level it is measured
+    against — including when its file arrives as an argument instead of loaded;
+  - the CLI failing loudly on an unknown report, and every `sim.py <report>` a page or a
+    skill cites naming a real one;
   - every verdict sentence in `findings.md` §*Light-night coverage*'s report being **derived
     from the numbers printed above it**, and moving when those move;
   - the published constants, so a re-scrape cannot move them silently: `PF_PER_WIN`, the
@@ -71,7 +86,7 @@ Read this before quoting anything in `findings.md`.
   that same spread is what an acquisition tiebreak harvests (`findings.md` §*Light-night
   coverage*). An unsigned player runs on `SIM_TM` too (`README.md` §*Pricing a
   counterparty*). ⚠️ **`SIM_TM` is unresolved:** LAC sits roughly half a schedule-sd below
-  the 30-team mean, with DEN nearest its centre — so every break-even and scenario row
+  the 30-team mean, with DEN nearest its center — so every break-even and scenario row
   carries a mild unfavourable handicap. Re-pointing it re-measures all of them;
   `simlib/schedule.py` carries the flag.
 - **Year-specific:** which NBA teams play 10 vs 12 games in a window, playoff-week dates,
@@ -107,7 +122,53 @@ carry into a bracket week.** Every `Δw` here is built on the 20 periods Fleafli
 regular, so periods 21–23 sit outside all of them — and **period 20 is bracket R1**
 (`league-info`), priced here as a regular-season period. Pricing a bracket-week game in these
 units and reading it against the floor is a currency error, not a conservative approximation.
-In that week one game from the same player moves `P(title)` by roughly **6–18×** what a
-regular-season game does (measured across σ_margin 125–265 and per-round win prob `p`
-0.52–0.70; centre **~9–13×**). **That multiplier varies by seed — take the bracket structure
-from `league-info`, and never hardcode a round count here.**
+`Eval Definitions §ΔP(title)` owns what the bracket currency is and what it may decide;
+**`sim.py playoffs` is the only source of the number** and re-runs it per roster.
+
+**The multiplier.** `findings.md` §*Bracket weeks* carries the measured tables, per band and
+per roster. **Take the window and the round count from the period data — never hardcode
+either here** (`league-info`).
+
+**One basis, both sides.** μ_us and μ_opp are the same measurement of different rosters — all
+12 roster files, projected rates, padded to 38, one engine — so the body count, the projections
+and the sim's own optimism cancel out of the margin instead of booking as an edge. `test_sim.py`
+pins it: inflate every team's rates 10% together and no band's `P(title)` moves more than
+**0.008**. ⚠️ **Not exactly zero, and the residual is ours** — `pad`'s ten bodies carry fixed
+grades no rate feed reaches, so the team holding the most real bodies (us, 28) rescales hardest.
+
+⚠️ **A level error that hits one roster and not the field does not cancel**, and nothing here
+is a paired difference against a fixed opponent: `P(title)`, the multiplier and `ΔP(title)` all
+scale with the loaded roster's own level. Read them per roster — the same run over a rebuilding
+one prices a bracket game at a twentieth of ours or less (`findings.md` §*Bracket weeks*).
+
+Its error bars, in the order they bite:
+- **A band is a seed range, and `P(title)` is the mean over it.** The opponent is the round's
+  survivor, enumerated over the whole draw, but which seed inside the band is not resolved —
+  and the draw splits them (`findings.md` §*Bracket weeks* carries the spread). A decision that
+  turns on that spread needs the seed, not the band.
+- **σ is a decomposition, and it closes.** The eight seeds over the 19 regular periods split
+  into a within-team weekly CV *w* = **0.1005** and a between-team level CV *b* = **0.0448**;
+  a bracket margin names both teams and takes √2·*w*, a regular matchup draws its opponent and
+  takes √(2*w*²+*b*²) — with *b* the **whole league's 0.0909**, since the seeds are the top of
+  it by construction and a regular opponent is drawn from all 11. Recombined with both level
+  terms that reads **0.1556** against the **0.1557** the same margins pool to directly.
+  ⚠️ **Both steps that isolate *w* also shrink it** — the period mean is the same 8 teams', and
+  each team's deviations are taken from its own measured level — so *w* carries an explicit
+  finite-sample correction; without it the split lands 9% short and every σ below with it.
+- **σ is fitted, not observed** — from within-period scores of last season's eight seeds
+  (`findings.md` §*Bracket weeks*). The 7 title-ladder games actually played give a narrower
+  read, printed by the report as a bound and not used as the basis.
+- **The field is projected, not known.** Which 8 seed is a season away; the rule is the
+  league's own (PF), run forward on this basis. The 8th/9th cut is ~1,500 PF wide, so it is not
+  on a knife edge — but the **7th/8th is ~70 PF, 0.3% of a season**, and two teams swapping
+  there re-point a whole slot of the draw.
+- **Three sigmas of the same name are not the same quantity.** Pooling periods 21–23 without
+  excluding the consolation half inflates σ by mixing two brackets scoring in one period.
+- **One season of margins**, like every other figure here — and nothing re-measures the CV.
+- **Monte Carlo — the smallest bar here, and the only one the report prints.** `P(title)`,
+  `by seed` and the multiplier are single **unpaired** draws: `ΔP(title)` differences two runs
+  across the seed blocks they share and the draw cancels out of it, while these difference
+  against nothing, so one whole sim of 12 rosters rides in each. `sim.py playoffs` carries the
+  sd across re-draws of the entire basis beside every one (`findings.md` §*Bracket weeks*).
+  ⚠️ **Both sides re-draw together** — our weeks re-seeded against a pinned field measure a
+  mismatch on top of the sampling noise and read wider than the truth.

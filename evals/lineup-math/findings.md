@@ -1,8 +1,13 @@
 # Findings — what a player is worth under a 9-slot daily cap
 
+**This is the long file. `tldr.md` carries every headline number and sign-flipping caveat a
+trade reads — start there, and come here for the error bars, the derivations and the
+re-cut warnings behind a row.** Its sections mirror this one's.
+
 **Measured 2026-08-03**, on our 28 live bodies padded to 38, calibrated against our real
-weekly scores. `method.md` owns the basis and the caveats every table below inherits;
-`README.md` owns the commands. **Re-run rather than quote.**
+weekly scores — except where a section carries a stamp of its own, which is that section's
+date. `method.md` owns the basis and the caveats every table below inherits; `README.md` owns
+the commands. **Re-run rather than quote.**
 
 # PF → wins: 1 win ≈ 600 PF (±14%)
 
@@ -47,7 +52,7 @@ points and flips no sign.
 only variable — not a bucket, not a surplus list, not a recommendation.** Two of the five
 price as **Core** against `../teams/my-team/My Team.md`'s own medians, where shipping one is a
 walk-away trigger — the count moves with those medians, so read them there. Buckets:
-`my-team-situation`.
+`evals/teams/my-team/My Team.md`.
 
 | Move | ΔPF | **+wins/20** |
 |---|---:|---:|
@@ -114,10 +119,10 @@ rates, and **not a send list**.
 | roster · incoming shape | 2-for-1 | 3-for-1 | 4-for-1 | 5-for-1 |
 |---|---:|---:|---:|---:|
 | **38** · 68 GP forward | 37.6 | 51.4 | 59.6 | 73.3 |
-| **38** · 65 GP centre | 41.0 | 56.4 | **64.0** | 79.0 |
+| **38** · 65 GP center | 41.0 | 56.4 | **64.0** | 79.0 |
 | **38** · 78 GP forward | 35.0 | 46.9 | 54.0 | 65.3 |
 | **28** · 68 GP forward | 37.6 | 53.4 | 63.0 | 79.3 |
-| **28** · 65 GP centre | 41.8 | 59.4 | 68.2 | 86.2 |
+| **28** · 65 GP center | 41.8 | 59.4 | 68.2 | 86.2 |
 | **28** · 78 GP forward | 34.4 | 48.2 | 56.6 | 70.2 |
 
 Both sides of a break-even regress together, so the *GP basis* barely moves these cells;
@@ -129,7 +134,7 @@ break-even flat (37.6 → 37.6), then +2.0 / +3.4 / +6.0 at 3/4/5-for-1 — larg
 deal is unbuyable anyway. Don't lean on it.
 
 **Which row you pick decides the sign.** Jokić (65.2, 65 GP, C) reads against the **65 GP
-centre** row: at 4-for-1, **64.0** against his 65.2 is the +0.10 the ladder prints, while the
+center** row: at 4-for-1, **64.0** against his 65.2 is the +0.10 the ladder prints, while the
 68-GP-forward row (59.6) makes the same deal look like a win by 5.6 rate points. At 5-for-1 he
 is short on either row (79.0, or 65.3 as a 78-GP forward), and the generous refund below still
 asks 69.0.
@@ -199,26 +204,26 @@ the roster's **own fitted `R`**.
 **R is position-dependent, and that is a third of the error** — measured on our roster
 (padded 38):
 
-| | guard | forward | centre |
+| | guard | forward | center |
 |---|---:|---:|---:|
 | R | 18.8 | **17.1** | 19.9 |
 | K | 781 | 779 | 780 |
 
-**Centre carries the highest `R` here.** Crowding on the **padded 38 those fits are measured
-on** — bodies pure to a group over slots it can fill — is centre 9/3, guard 15/5, forward 9/5:
-centre and guard are **equally crowded at 3.0 bodies per slot** and centre `R` is still 1.1
+**Center carries the highest `R` here.** Crowding on the **padded 38 those fits are measured
+on** — bodies pure to a group over slots it can fill — is center 9/3, guard 15/5, forward 9/5:
+center and guard are **equally crowded at 3.0 bodies per slot** and center `R` is still 1.1
 points higher, so ⚠️ **crowding does not order the three, and "crowding lifts a group's `R`"
 is not an explanation this table supports.** Read the `R` column itself. (Counted on the live
-28 it is centre 6/3, guard 11/5 — a different roster from the one `R` was fitted on, so never
+28 it is center 6/3, guard 11/5 — a different roster from the one `R` was fitted on, so never
 read a crowding count off it against this table.)
 
-A single R is **2.9 rate points** wrong end to end (guard +1.7, centre +2.9 against
-forwards), and **the highest-R group is whichever the table says** — here it is centre, not
+A single R is **2.9 rate points** wrong end to end (guard +1.7, center +2.9 against
+forwards), and **the highest-R group is whichever the table says** — here it is center, not
 guards, so a fixed "our guard glut lifts guard R" reading is now backwards.
 
 ⚠️ **That gap is not a formula footnote — it is the counterfactual.** `sim.py players`
 prices every player against a replacement body **of his own slot group**; against one
-forward for everybody a centre reads **0.06–0.09 wins** too high (Poeltl 22% high) and a
+forward for everybody a center reads **0.06–0.09 wins** too high (Poeltl 22% high) and a
 guard **0.08–0.15** (Garland the widest), while a forward row does not move at all. A
 `Δw` and its counterfactual are one statement (`Eval Definitions §Δw`).
 
@@ -231,7 +236,7 @@ is **Suggs (+178% / +138%)**: the formula is least trustworthy on low-rate/low-G
 
 ⚠️ **Both error figures are against a sim column that swaps in a body of the player's own
 slot group.** An error figure carried in from anywhere else is on a different
-counterfactual — guard and centre rows move most, forward rows not at all — so **re-cut it
+counterfactual — guard and center rows move most, forward rows not at all — so **re-cut it
 off `sim.py formula`, never reconcile it.**
 
 ⚠️ **The error is an offset, not a scale — so no multiplier converts formula to sim, and
@@ -391,8 +396,8 @@ board's GP haircut — that is a claim about the market; don't launder it as for
 
 **Burstiness is EV-neutral for season points** (+0.00%, provably: equal day-level marginals,
 independent players, and lineup value depends only on that night's availability set). It does
-not extend to a short window, the split `LATE` draws; `eval-team` does not size that, so
-neither does this file.
+not extend to a short window — `sim.py playoffs` sizes that window in `ΔP(title)` (§*Bracket
+weeks*; `Eval Definitions §ΔP(title)` owns the currency rule).
 
 **No IR + empty pool after expansion:** a season-long absence also burns a slot. Marginal
 38th body 60–73 PF = **0.100–0.122 wins**, an upper bound.
@@ -441,16 +446,16 @@ Added body of identical rate, versus that rate as a guard:
 | rate | 25 | 35 | 45 |
 |---|---:|---:|---:|
 | forward vs guard | **+12%** | +11% | +7% |
-| centre vs guard | **−16%** | −7% | −5% |
+| center vs guard | **−16%** | −7% | −5% |
 
 At rate 25 that +12% is **~+0.08 wins** — worth pricing on a marginal body, not worth building
 around, and the premium shrinks as rate rises: a high-rate player starts on heavy nights
-regardless of slot. **Centre is a discount, not a wash** — the same roster shape that
-pushed centre `R` to 19.9 (§*Valuation formula*) is what makes another centre worth less than
+regardless of slot. **Center is a discount, not a wash** — the same roster shape that
+pushed center `R` to 19.9 (§*Valuation formula*) is what makes another center worth less than
 a guard here.
 
 ⚠️ **Purely a function of our current positional distribution** — on the **padded 38 the
-bodies are added to**, 15 pure PG/SG chasing at most 5 guard-eligible slots and 9 pure centres
+bodies are added to**, 15 pure PG/SG chasing at most 5 guard-eligible slots and 9 pure centers
 chasing 3 (11 and 6 on the live 28, which is a different roster from the one measured here).
 **Not structural**, and it disappears when the roster's shape changes.
 
@@ -458,7 +463,7 @@ chasing 3 (11 and 6 on the live 28, which is a different roster from the one mea
 
 §*The slot-fill curve* is the mechanism; this is the size of it, and
 `Eval Definitions §Where our format pulls off consensus` 5 is the rule that spends it.
-**`python3 sim.py schedules` emits every table below** (~4 min); `--roster` gives another
+**`python3 sim.py schedules` emits every table below**; `--roster` gives another
 team's answer, which is a different one.
 
 **Steering the seven September auction bodies on schedule is worth +0.095 ± 0.015 wins** —
@@ -602,6 +607,102 @@ Aug 2026.
 ⚠️ **This last paragraph is the one claim on this page with no report behind it** — it needs
 eleven seasons of NBA schedules and `fetch_data.py` writes one. Treat the autocorrelation and
 the 0.008 as unverified here; everything above it re-cuts from `sim.py schedules`.
+
+# Bracket weeks — what a game is worth once the bracket starts
+
+**Measured 2026-08-08**, `sim.py playoffs`, our 28 padded to 38. Bracket structure and seed
+bands: `league-info §Matchup periods`. `Eval Definitions §ΔP(title)` owns what the column may
+and may not do; `method.md` §*The 0.1-win floor* owns the model's error bars.
+
+**A bracket week is not four games for everybody.** Per-team NBA games in the four periods:
+
+| period | W20 | W21 | W22 | W23 | window |
+|---|---:|---:|---:|---:|---:|
+| NBA games in the period | 52 | 53 | 54 | 54 | 213 |
+| per team, mean | 3.47 | 3.53 | 3.60 | 3.60 | 14.20 |
+| per team, range | 2–4 | 2–5 | 3–5 | 2–4 | 12–16 |
+
+**17 distinct four-week patterns across the 30 teams.** The pair every seed band plays,
+W22+W23, runs **8 games for 11 teams** (ATL BKN DEN GS HOU LAC MEM NO ORL POR WSH) and **6 for
+5** (CLE DAL MIN NY PHI) — a third of a bracket week between two otherwise identical bodies,
+and nothing in a season rate says so. Whole-window totals run CLE **12** to LAC **16**.
+
+**The opponent is the projected field, measured the way we are.** All 12 roster files through
+one pipeline — projected rates, padded to 38, same engine — sorted on projected season PF, cut
+at the bracket's 8 — so **1–8 are the field and 9–12 are outside it**:
+
+| rank | team | PF | rank | team | PF |
+|---:|---|---:|---:|---|---:|
+| 1 | **Bathroom club (us)** | **30,231** | 7 | The Gutes of Gotland | 26,488 |
+| 2 | Yao Ming Dynasty | 29,312 | 8 | Mongol Khans Freak Militia | 26,415 |
+| 3 | Jesus Christ and his Disciples | 28,510 | 9 | The Don | 24,915 |
+| 4 | Pascals of Pangea | 27,541 | 10 | SGA-the-Great | 24,322 |
+| 5 | Matthew the Apostle | 27,155 | 11 | Pharaoh Mattankhamun-Ra | 24,170 |
+| 6 | King Christopher of Bavaria | 26,968 | 12 | The Han Dybantsy | 23,311 |
+
+⚠️ **This is not `../Team Projections.md`'s finish order** — that one is last season's record
+and judgment about next; this is one sim of today's 12 roster files. Read the two against each
+other, never as one measurement.
+
+**μ_opp is the round's survivor.** The draw is two halves, **8-5-4-1 | 7-6-3-2** (`league-info`
+§Matchup periods), so who a seed can meet is structure: a 1-seed's W22 opponent comes out of
+{4,5,8} at **1,522**, and its final opponent has won two rounds of the other half, at
+**1,587**. The field's own mean for those weeks is 1,599 and 1,519 — **nobody's opponent, in
+either round.** The band rows average over the band's own seeds:
+
+| band | round | μ_us | μ_opp | field mean | σ_w | P(round) |
+|---|---|---:|---:|---:|---:|---:|
+| 1–2 | W22 | 1,738 | 1,575 | 1,599 | 227 | 0.756 |
+| 1–2 | W23 | 1,730 | 1,580 | 1,519 | 216 | 0.754 |
+| 3–4 | W21 | 1,735 | 1,494 | 1,585 | 225 | 0.852 |
+| 3–4 | W22 | 1,738 | 1,690 | 1,599 | 227 | 0.582 |
+| 3–4 | W23 | 1,730 | 1,573 | 1,519 | 216 | 0.760 |
+| 5–8 | W20 | 1,755 | 1,472 | 1,541 | 219 | 0.901 |
+| 5–8 | W21 | 1,735 | 1,534 | 1,585 | 225 | 0.811 |
+| 5–8 | W22 | 1,738 | 1,690 | 1,599 | 227 | 0.582 |
+| 5–8 | W23 | 1,730 | 1,568 | 1,519 | 216 | 0.764 |
+| | reg | 1,499 | 1,307 | 1,307 | 221 | 0.807 |
+
+**W23 is the softest round on the field's own level and W22 the hardest, on a league-wide game
+count that says they are the same** (54 each) — that is the field's NBA schedules, not the
+density. Against the *draw* W22 is harder still for every seed below 2: it is the round the
+1-seed enters.
+
+σ is the **week-to-week spread of two named teams' scores** — both levels are already in μ_us
+and μ_opp, so only that is left: **CV 0.1422**, ridden back up on the round's own level. The
+`reg` row's opponent is drawn out of all 11 others rather than named, so it carries that
+field's level spread as well — and the 8 seeds are the top of the league by construction, so
+the spread that belongs there is the whole league's: **0.1688**. Both come off last season's
+wire; `method.md` owns the split and what it costs.
+
+| band | rounds | P(title) | by seed | one bracket game × one regular game |
+|---|---:|---:|---:|---:|
+| 1–2 | 2 | 0.569 ±0.005 | 0.523–0.616 ±0.007 | **16.1 ±0.1** (15.5–16.8 by round) |
+| 3–4 | 3 | 0.378 ±0.006 | 0.310–0.446 ±0.010 | **11.3 ±0.1** (6.7–16.6) |
+| 5–8 | 4 | 0.323 ±0.005 | 0.284–0.359 ±0.008 | **8.8 ±0.1** (4.4–14.3) |
+
+⚠️ **Every ± here is one draw's own spread, not the standard error of a mean.** These three are
+single unpaired figures — nothing differences against anything, so a whole sim of 12 rosters
+rides in each — and the bar is their sd over 8 re-draws of the entire basis, ours and the
+field's seeded together. Read it the *other* way from the `ΔP(title)` column below: that one is
+a paired difference at matched seeds, so it is the tighter of the two. `method.md` owns where
+this sits against the other error bars.
+
+⚠️ **A band is a seed *range*, and the draw splits it.** Seeds 6 and 7 sit on the 2-seed's side
+and 5 and 8 on the 1-seed's, which is most of the 0.284–0.359 spread inside 5–8. The band
+number is the mean of that; a call that turns on it needs the seed.
+
+Both sides of that ratio are the probability of the whole prize the week is played for — a
+title, or one of 19 regular matchups — and both are per PF, so the rate cancels and "one game"
+is the same game. **It scales with `P(title)`, so it is a fact about the roster loaded, not
+about the format**: the same run over Pharaoh Mattankhamun-Ra's 25 bodies (11th above) reads
+**0.0–1.3×** by round, band means 1.1 / 0.2 / 0.0, on a `P(title)` of 0.012 / 0.002 / 0.000.
+Re-run it per roster.
+
+**Per-player `ΔP(title)` tops out at +15.6 percentage points** (Amen Thompson, band 1–2). Every
+band figure carries its own standard error — **±0.05–0.36** across the 28 rows — and that is
+the noise on that figure alone. **Bands and rows share seed blocks**, so a gap between any two
+cells is a paired difference the table does not carry: no ordering claim off two printed cells.
 
 # Sept '26 expansion
 

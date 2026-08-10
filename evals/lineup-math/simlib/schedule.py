@@ -2,7 +2,8 @@
 teams covers. Knows nothing about our roster or about scoring."""
 import functools
 from fetch_data import SEASON_TAG
-from .data import FF2ESPN, NIGHTS, SCORING_NIGHTS
+from .data import (
+    BRACKET_NIGHTS, FF2ESPN, NIGHTS, SCORING_NIGHTS, period_nights)
 
 
 # THE schedule every synthetic body is priced on. Which NBA team a body sits on
@@ -97,6 +98,19 @@ def team_light_nights(tm):
     """`tm`'s light nights -- through `team_nights`, so an unsigned body inherits
     SIM_TM's light nights exactly as he inherits its schedule everywhere else."""
     return frozenset(team_nights(tm)) & set(light_nights())
+
+
+@functools.lru_cache(maxsize=None)
+def bracket_games(tm):
+    """`tm`'s NBA game count in each bracket period, in round order -- the
+    count `W20`-`W23` multiply a rate by (`Eval Definitions §Columns`)."""
+    nights = set(team_nights(tm))
+    return tuple(sum(1 for n in wk if n in nights) for wk in BRACKET_NIGHTS)
+
+
+def period_games(i):
+    """NBA games inside league period `i`."""
+    return sum(games_on(NIGHTS[n][1]) for n in period_nights(i))
 
 
 NBA_TEAMS = tuple(sorted({t for _, tms in NIGHTS for t in tms}))

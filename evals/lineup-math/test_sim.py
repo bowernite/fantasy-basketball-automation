@@ -4,21 +4,26 @@ import contextlib
 import glob
 import importlib
 import io
+import itertools
 import json
 import math
 import os
 import random
 import re
 import runpy
+import shutil
 import statistics
 import subprocess
 import sys
 import tempfile
+import threading
 import unittest
+from unittest import mock
 
 import fetch_data
 import sim
-from simlib import engine, gp, roster as roster_mod, value
+from simlib import bracket, engine, gp, roster as roster_mod, value
+from simlib import reports
 from simlib.reports import durability
 
 THEIR_ROSTER = "roster-161020-2025-26.json"
@@ -44,12 +49,30 @@ def cheap_monte_carlo(trials=4, blocks=1):
         roster, names, **dict(kw, trials=trials))
     gp.gp_bootstrap = lambda rows, **kw: real_boot(rows, **dict(kw, n=50))
     value.PLAYER_BLOCKS = blocks
+    bracket.league.cache_clear()
     try:
         yield
     finally:
         engine.run, value.player_wins, gp.gp_bootstrap = (real_run, real_wins,
                                                           real_boot)
         value.PLAYER_BLOCKS = was_blocks
+        bracket.league.cache_clear()
+
+
+@contextlib.contextmanager
+def league_rates(k):
+    """Every projected rate in the league scaled by `k`, at the one place a
+    roster reads the feed -- so every team inflates together, which is the only
+    way to move a level without moving anybody's edge"""
+    real = roster_mod.projected_rate
+    roster_mod.projected_rate = lambda n: (None if real(n) is None
+                                           else k * real(n))
+    bracket.league.cache_clear()
+    try:
+        yield
+    finally:
+        roster_mod.projected_rate = real
+        bracket.league.cache_clear()
 
 
 @contextlib.contextmanager
@@ -104,9 +127,10 @@ def roster_file(*rows):
 
 
 def committed_rosters():
-    """Every roster file in the tree. The league is 12 and they are re-cut with
-    `fetch_data.py roster <id>`, so the set is the directory's to state"""
-    return sorted(glob.glob(os.path.join(sim.HERE, "roster-*.json")))
+    """Every roster file in the tree for THIS season. The league is 12 and they
+    are re-cut with `fetch_data.py roster <id>`, so the set is the directory's
+    to state -- and the previous season's files sit beside them"""
+    return sorted(glob.glob(os.path.join(sim.HERE, bracket.ROSTERS)))
 
 
 def rostered(name, path=None, projected=True):
@@ -197,7 +221,7 @@ def roster_payload(**over):
     """One `FetchRoster?season=` row, trimmed to the keys the transform reads.
     Fleaflicker omits zero and default fields entirely, so the shape that bites
     is a row with no `seasonAverage`, `seasonTotal` or `rankFantasy` at all"""
-    row = {"proPlayer": {"nameFull": "Darius Garland", "position": "G",
+    row = {"proPlayer": {"id": 1, "nameFull": "Darius Garland", "position": "G",
                          "proTeamAbbreviation": "LAC",
                          "positionEligibility": ["PG", "SG"]},
            "seasonAverage": {"value": 31.894444},
@@ -225,7 +249,8 @@ class FetchRosterTransform(unittest.TestCase):
         either, which is how a player reaches the roster file with `elig: []`
         and gets guessed at as a guard. `positionEligibility` is on the row
         whether or not he played"""
-        p = roster_payload(proPlayer={"nameFull": "Kyrie Irving", "position": "G",
+        p = roster_payload(proPlayer={"id": 2, "nameFull": "Kyrie Irving",
+                                      "position": "G",
                                       "proTeamAbbreviation": "DAL",
                                       "positionEligibility": ["PG", "SG"]})
         del p["groups"][0]["slots"][1]["leaguePlayer"]["seasonAverage"]
@@ -235,6 +260,132 @@ class FetchRosterTransform(unittest.TestCase):
                          [{"n": "Kyrie Irving", "tm": "DAL", "avg": 0.0,
                            "tot": 0.0, "gp": 0, "posLabel": "G",
                            "elig": ["PG", "SG"]}])
+
+
+def pro_player(name, pid, tm="LAC", pos="G", elig=("PG", "SG")):
+    return {"id": pid, "nameFull": name, "position": pos,
+            "proTeamAbbreviation": tm, "positionEligibility": list(elig)}
+
+
+def snapshot_payload(*rows):
+    """`FetchRoster?season=` for a whole team, one (proPlayer, FPts/G, total)
+    per body"""
+    return {"groups": [{"slots": [
+        {"leaguePlayer": {"proPlayer": p, "seasonAverage": {"value": avg},
+                          "seasonTotal": {"value": tot}}}
+        for p, avg, tot in rows]}]}
+
+
+def league_payload(*teams):
+    """`FetchLeagueRosters` with no `season=`: live ownership for all 12 teams
+    as a flat player list per team, and -- the whole reason the snapshot is
+    still fetched -- no stat line anywhere on it"""
+    return {"rosters": [{"team": {"id": tid, "name": "Team %d" % tid},
+                         "players": [{"proPlayer": p} for p in pros]}
+                        for tid, pros in teams]}
+
+
+class LiveRosterMerge(unittest.TestCase):
+    """`FetchRoster?season=` is a snapshot as of the season's LAST LINEUP
+    PERIOD, so every add after it is silently missing and every drop is
+    silently still there -- four teams were priced for months off bodies they
+    no longer owned. Membership is therefore the live league feed's to state
+    and only the rates come off the snapshot"""
+
+    def test_a_body_added_after_the_snapshot_is_on_the_roster(self):
+        league = league_payload((161014, [
+            pro_player("Darius Garland", 1),
+            pro_player("Steven Adams", 9, "HOU", "C", ("C",))]))
+        rows = fetch_data.merged_rows(league, 161014, roster_payload(), {})
+        self.assertEqual([r["n"] for r in rows],
+                         ["Darius Garland", "Steven Adams"])
+
+    def test_a_body_dropped_after_the_snapshot_is_off_the_roster(self):
+        """The other half of the same defect, and the more expensive one: a
+        traded-away player left on the file is priced as an asset the team no
+        longer has"""
+        snapshot = snapshot_payload(
+            (pro_player("Darius Garland", 1), 31.9, 1435.25),
+            (pro_player("Nick Richards", 7, "PHX", "C", ("C",)), 20.0, 1000.0))
+        league = league_payload((161014, [pro_player("Darius Garland", 1)]))
+        rows = fetch_data.merged_rows(league, 161014, snapshot, {})
+        self.assertEqual([r["n"] for r in rows], ["Darius Garland"])
+
+    def test_a_body_the_snapshot_never_saw_takes_last_season_off_the_pool(self):
+        """He played the season, just not for this team, so his own team's
+        snapshot has no line for him -- `players-<season>.json` does, and it is
+        already on disk. Zeroing him instead publishes a real producer as an
+        empty body, and `noproj` would then price him at nothing"""
+        league = league_payload((161014, [
+            pro_player("Steven Adams", 9, "HOU", "C", ("C",))]))
+        pool = {"Steven Adams": {"seasons": {"2024": [10.0, 5], "2025": [23.117, 32]}}}
+        row, = fetch_data.merged_rows(league, 161014, snapshot_payload(), pool)
+        self.assertEqual(row, {"n": "Steven Adams", "tm": "HOU", "avg": 23.117,
+                               "tot": 739.744, "gp": 32, "posLabel": "C",
+                               "elig": ["C"]})
+
+    def test_the_bodies_keep_the_snapshot_order_and_the_new_ones_append(self):
+        """Roster ORDER is the rng draw order (`swap`, `pad`), so re-ordering a
+        file nobody traded on re-rolls every player's availability and moves
+        every published figure inside its own noise. The live feed lists bodies
+        in its own order; taking it would do exactly that, so the snapshot's
+        order stands and an add goes on the end the way `pad` appends"""
+        snapshot = snapshot_payload(
+            (pro_player("Darius Garland", 1), 31.9, 1435.25),
+            (pro_player("Zach Edey", 3, "MEM", "C", ("C",)), 33.7, 371.0))
+        league = league_payload((161014, [
+            pro_player("Steven Adams", 9, "HOU", "C", ("C",)),
+            pro_player("Zach Edey", 3, "MEM", "C", ("C",)),
+            pro_player("Darius Garland", 1)]))
+        rows = fetch_data.merged_rows(league, 161014, snapshot, {})
+        self.assertEqual([r["n"] for r in rows],
+                         ["Darius Garland", "Zach Edey", "Steven Adams"])
+
+    def test_two_bodies_who_share_a_name_keep_their_own_seasons(self):
+        """The league has rostered two Jaylin Williamses. Joined on the name,
+        one of them silently takes the other's rate and games, and the row that
+        reaches the roster file is a body who never existed"""
+        snapshot = snapshot_payload(
+            (pro_player("Jaylin Williams", 4, "OKC", "F", ("PF", "C")),
+             12.0, 600.0),
+            (pro_player("Jaylin Williams", 5, "WAS", "F", ("PF",)), 30.0, 900.0))
+        league = league_payload((161014, [
+            pro_player("Jaylin Williams", 5, "WAS", "F", ("PF",)),
+            pro_player("Jaylin Williams", 4, "OKC", "F", ("PF", "C"))]))
+        rows = fetch_data.merged_rows(league, 161014, snapshot, {})
+        self.assertEqual([(r["tm"], r["avg"], r["gp"]) for r in rows],
+                         [("OKC", 12.0, 50), ("WAS", 30.0, 30)])
+
+    def test_the_nba_team_is_the_live_feeds_and_not_the_march_snapshots(self):
+        """`tm` is the SCHEDULE the sim prices a body on, so a February trade
+        left him scoring on the nights his old NBA team played. Both feeds
+        carry it and the live one is the fresher"""
+        snapshot = snapshot_payload(
+            (pro_player("Zach Edey", 3, "MEM", "C", ("C",)), 33.7, 371.0))
+        league = league_payload((161014, [
+            pro_player("Zach Edey", 3, "DAL", "F", ("PF", "C"))]))
+        row, = fetch_data.merged_rows(league, 161014, snapshot, {})
+        self.assertEqual(row, {"n": "Zach Edey", "tm": "DAL", "avg": 33.7,
+                               "tot": 371.0, "gp": 11, "posLabel": "F",
+                               "elig": ["C", "PF"]})
+
+    def test_a_body_neither_feed_has_a_line_for_is_written_as_an_empty_one(self):
+        """A rookie: no season snapshot anywhere and no pool history. 0/0 is
+        the `nopool` row `our_roster` documents and prices off the projection,
+        and the alternative here is a division by his zero rate"""
+        league = league_payload((161014, [
+            pro_player("Cooper Flagg", 11, "DAL", "F", ("SF", "PF"))]))
+        row, = fetch_data.merged_rows(league, 161014, snapshot_payload(), {})
+        self.assertEqual((row["avg"], row["tot"], row["gp"]), (0.0, 0.0, 0))
+
+    def test_a_team_id_the_league_does_not_carry_refuses(self):
+        """Writing what it found would be `[]`, and an empty roster file is the
+        one input `our_roster` cannot tell from a real team -- it pads to 38 and
+        prices the auction bodies as that owner's roster"""
+        league = league_payload((161014, [pro_player("Darius Garland", 1)]))
+        with self.assertRaises(KeyError) as e:
+            fetch_data.merged_rows(league, 161099, roster_payload(), {})
+        self.assertIn("161099", str(e.exception))
 
 
 class CommittedRosterFiles(unittest.TestCase):
@@ -328,6 +479,118 @@ class CLI(unittest.TestCase):
         self.assertNotEqual(status, 0)
         self.assertNotIn("PLAYERS", out)
 
+    def test_a_file_that_is_not_a_roster_is_refused_before_any_table_prints(self):
+        """The existence check passed and the run then died on a JSON decode
+        error mid-report, under a header that reads as a started run -- exactly
+        what the path check above it was written to prevent. `--roster
+        findings.md` and a half-written fetch both land here"""
+        path = os.path.join(tempfile.mkdtemp(), "notaroster.json")
+        with open(path, "w") as f:
+            f.write("# notes\n")
+        p = sim_process("--roster", path, "players")
+        self.assertNotEqual(p.returncode, 0)
+        self.assertNotIn("Traceback", p.stderr)
+        self.assertNotIn("PLAYERS", p.stdout)
+        self.assertIn(path, p.stdout + p.stderr)
+
+    def test_a_report_that_refuses_says_so_without_a_traceback(self):
+        """Half these refusals are written as prose -- `schedules` on a roster
+        with no auction slots, a missing board snapshot, a name the pool has
+        never seen. They arrived wrapped in a stack trace, which reads as the
+        command being broken rather than as the answer it is"""
+        full = roster_file(*[
+            {"n": "Body %d" % i, "tm": "LAC", "avg": 20.0, "tot": 0.0, "gp": 60,
+             "posLabel": "F", "elig": ["SF", "PF"]} for i in range(38)])
+        p = sim_process("--roster", full, "schedules", "positions")
+        self.assertNotEqual(p.returncode, 0)
+        self.assertNotIn("Traceback", p.stderr)
+        self.assertIn("auction", p.stdout + p.stderr)
+        self.assertIn("positions", p.stdout + p.stderr,
+                      "the run died without saying what it never ran")
+
+    def test_a_report_that_breaks_is_not_dressed_up_as_one_that_refuses(self):
+        """The refusals above are authored prose and are caught as
+        `ValueError`. `statistics.StatisticsError` IS a `ValueError`, and
+        `playoffs` alone makes ~20 `mean`/`stdev` calls -- caught with them, a
+        broken run prints a tidy one-line explanation with no file, no line and
+        no traceback, and reads exactly like an answer"""
+        name = sorted(sim.ROSTER_FREE)[0]
+        was = reports.REPORTS[name]
+        reports.REPORTS[name] = lambda: statistics.mean([])
+        try:
+            with self.assertRaises(statistics.StatisticsError):
+                cli(name)
+        finally:
+            reports.REPORTS[name] = was
+
+    def test_help_describes_every_report_without_running_one(self):
+        """The whole point of the flag: an agent handed this command learns the
+        surface from the command, not from README.md. A `--help` treated as a
+        report name exits 1 with a bare list of words, which reads as a failure
+        and describes nothing"""
+        p = sim_process("--help")
+        self.assertEqual(p.returncode, 0, p.stdout + p.stderr)
+        self.assertNotIn("=" * 72, p.stdout, "--help ran a report")
+        for name in sim.REPORTS:
+            self.assertIn(name, p.stdout)
+            self.assertIn(sim.BLURB[name], p.stdout)
+
+    def test_help_says_which_reports_refuse_a_counterparty_roster(self):
+        """`--roster` on one of the four is the commonest way to mistype this
+        command, and the refusal is the only place that list appears"""
+        p = sim_process("--help")
+        for name in sim.OURS_ONLY:
+            self.assertRegex(p.stdout, r"%s.*\(ours only\)" % name)
+
+    def test_a_slow_report_names_itself_before_it_finishes(self):
+        """Two of the fourteen run for minutes, and every caller captures this
+        through a pipe, which Python block-buffers. A run cut short then hands
+        back ZERO bytes -- no report name, nothing separating slow from hung
+        from crashed"""
+        p = subprocess.Popen([sys.executable, "sim.py", "schedules"],
+                             cwd=sim.HERE, stdout=subprocess.PIPE, text=True)
+        first = []
+        reader = threading.Thread(target=lambda: first.append(p.stdout.readline()))
+        reader.daemon = True
+        reader.start()
+        reader.join(20)
+        p.kill()
+        p.wait()
+        p.stdout.close()
+        self.assertTrue(first, "nothing reached the pipe in 20s")
+        self.assertIn("=", first[0])
+
+    def test_each_report_header_names_the_roster_that_report_priced(self):
+        """One banner on line 1 of a multi-report run leaves thousands of lines
+        between it and the tables, and a single table lifted out of the run --
+        which is how these get quoted -- carries no team at all"""
+        status, out = cli("--roster", THEIR_ROSTER, "players", "positions")
+        self.assertEqual(status, 0, out)
+        heads = [l for l in out.splitlines()
+                 if l.startswith(("PLAYERS", "POSITIONS"))]
+        self.assertEqual(len(heads), 2, out)
+        for head in heads:
+            self.assertIn(THEIR_ROSTER, head)
+
+    def test_a_report_that_reads_no_roster_does_not_claim_one(self):
+        """`market` is the board and the pool; its table is byte-identical
+        whatever `--roster` says. A header naming a counterparty over it
+        attributes to that team a measurement of nobody"""
+        status, out = cli("--roster", THEIR_ROSTER, "market")
+        self.assertEqual(status, 0, out)
+        self.assertNotIn(THEIR_ROSTER, out.splitlines()[1])
+
+    def test_the_header_names_the_team_not_just_its_id(self):
+        """`roster-161020-2025-26.json` is a team only to a reader holding the
+        `team-info` table. The command knows the name at fetch time, so the run
+        it labels should not send its reader to a skill file to find out whose
+        roster he is looking at"""
+        teams = json.loads(read_text(
+            os.path.join(sim.HERE, "teams-%s.json" % fetch_data.SEASON_TAG)))
+        status, out = cli("--roster", THEIR_ROSTER, "positions")
+        self.assertEqual(status, 0, out)
+        self.assertIn(teams[THEIR_ROSTER.split("-")[1]], out.splitlines()[1])
+
     def test_every_report_named_in_one_run_prints(self):
         """The README advertises the reports on one line, so a run that takes
         the first name and drops the rest answers half of what was asked with
@@ -342,7 +605,7 @@ class EveryReportRunsEndToEnd(unittest.TestCase):
     """A report that names the players it trades as literals breaks the moment
     the roster file is re-cut, and every unit underneath it stays green. The
     file is re-cut after every trade, so that is a standing hazard for any
-    report holding a name, which is what makes all twelve worth paying for"""
+    report holding a name, which is what makes every one worth paying for"""
 
     def test_every_report_runs_on_our_roster(self):
         for name in sorted(sim.REPORTS):
@@ -358,6 +621,249 @@ class EveryReportRunsEndToEnd(unittest.TestCase):
             with self.subTest(report=name):
                 self.assertTrue(render(name, THEIR_ROSTER).strip(),
                                 "printed nothing")
+
+
+class FetchDataCLI(unittest.TestCase):
+    """The other half of the command surface. It WRITES the files every report
+    reads, so its failure modes are quieter and cost more"""
+
+    def fetch(self, *args):
+        return subprocess.run([sys.executable, "fetch_data.py"] + list(args),
+                              cwd=sim.HERE, capture_output=True, text=True,
+                              timeout=30)
+
+    def test_an_unrecognised_argument_refuses_instead_of_re_scraping(self):
+        """`rosters` (plural), `players`, a bare team id -- each fell through to
+        the default branch, spent 30 requests overwriting the schedule and the
+        calendar, printed `wrote ...` and exited 0"""
+        before = {p: os.path.getmtime(p)
+                  for p in glob.glob(os.path.join(sim.HERE, "*.json"))}
+        p = self.fetch("rosters")
+        self.assertNotEqual(p.returncode, 0)
+        self.assertNotIn("wrote", p.stdout)
+        self.assertEqual({q: os.path.getmtime(q) for q in before}, before)
+
+    def test_a_non_numeric_team_id_is_caught_before_any_request(self):
+        """`int(t)` raised only after a league call had been made and a roster
+        file already truncated"""
+        p = self.fetch("roster", "brett")
+        self.assertNotEqual(p.returncode, 0)
+        self.assertNotIn("Traceback", p.stderr)
+        self.assertIn("brett", p.stdout + p.stderr)
+
+    def test_help_names_every_thing_it_can_be_asked_for(self):
+        p = self.fetch("--help")
+        self.assertEqual(p.returncode, 0, p.stdout + p.stderr)
+        for word in ("pool", "roster", "teams"):
+            self.assertIn(word, p.stdout)
+
+
+class DataFileWrites(unittest.TestCase):
+    """One function lands every file `sim.py` reads, and none of them is
+    re-fetchable at will: the pool is a 20-minute scrape and the season it
+    describes is over"""
+
+    def test_a_rebuild_that_dies_mid_scrape_leaves_the_good_file_alone(self):
+        """Opening the path for writing AROUND the build truncated it first, so
+        a transport error left a zero-byte `league-<season>.json` where the
+        season was, and every `sim.py` run after it died on a JSON decode error
+        naming nothing that had happened"""
+        d = tempfile.mkdtemp()
+        with open(os.path.join(d, "league-x.json"), "w") as f:
+            f.write('{"periods": [1, 2, 3]}')
+
+        def transport_error():
+            raise RuntimeError("connection reset by peer")
+
+        was = fetch_data.HERE
+        fetch_data.HERE = d
+        try:
+            with self.assertRaises(RuntimeError):
+                fetch_data.write("league-x.json", transport_error)
+        finally:
+            fetch_data.HERE = was
+        self.assertEqual(read_text(os.path.join(d, "league-x.json")),
+                         '{"periods": [1, 2, 3]}')
+        self.assertEqual(os.listdir(d), ["league-x.json"],
+                         "a half-written file was left behind to be read next")
+
+
+STUB_FLEAFLICKER = '''"""`fetch_data.py` against a canned Fleaflicker: the same
+__main__, the same files, no network. `feed.json` beside this file supplies the
+two endpoints the roster flow calls."""
+import io, json, runpy, sys, time, urllib.request
+
+FEED = json.load(open("feed.json"))
+
+
+def urlopen(url, timeout=None):
+    if "FetchLeagueRosters" in url:
+        payload = FEED["league"]
+    elif "FetchRoster" in url:
+        payload = FEED["snapshots"][url.split("team_id=")[1].split("&")[0]]
+    else:
+        raise AssertionError("unstubbed request: " + url)
+    return io.BytesIO(json.dumps(payload).encode())
+
+
+urllib.request.urlopen = urlopen
+time.sleep = lambda *a: None                  # the 1.1s courtesy pause per team
+sys.argv = ["fetch_data.py"] + sys.argv[1:]
+runpy.run_path("fetch_data.py", run_name="__main__")
+'''
+
+
+class FetchDataWritesWhatSimReads(unittest.TestCase):
+    """`fetch_data.py roster` is the sole writer of the twelve files every
+    counterparty table is priced off, and of the id -> name map that labels
+    them. Driven against a canned league so the files it lands can be read
+    back, which is the only thing that shows the fetch and the sim agree on a
+    schema"""
+
+    def setUp(self):
+        self.dir = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, self.dir, True)
+        shutil.copy(fetch_data.__file__, self.dir)
+        with open(os.path.join(self.dir, "stub_fleaflicker.py"), "w") as f:
+            f.write(STUB_FLEAFLICKER)
+        self.ids = [161001 + i for i in range(12)]
+        bodies = {t: [pro_player("Starter %d" % t, t * 10),
+                      pro_player("Bench %d" % t, t * 10 + 1, "HOU", "C", ("C",))]
+                  for t in self.ids}
+        with open(os.path.join(self.dir, "feed.json"), "w") as f:
+            json.dump({"league": league_payload(*sorted(bodies.items())),
+                       "snapshots": {str(t): snapshot_payload(
+                           (bodies[t][0], 30.0, 1500.0), (bodies[t][1], 10.0, 400.0))
+                           for t in self.ids}}, f)
+
+    def fetch(self, *args):
+        return subprocess.run(
+            [sys.executable, "stub_fleaflicker.py"] + list(args),
+            cwd=self.dir, capture_output=True, text=True, timeout=60)
+
+    def rosters(self):
+        return sorted(f for f in os.listdir(self.dir) if f.startswith("roster-"))
+
+    def test_naming_no_team_re_cuts_all_twelve(self):
+        """They drift independently, so a team left un-recut is a team priced
+        off whoever owned him in March -- which is how four went stale"""
+        p = self.fetch("roster")
+        self.assertEqual(p.returncode, 0, p.stdout + p.stderr)
+        self.assertEqual(self.rosters(),
+                         sorted("roster-%d-%s.json" % (t, fetch_data.SEASON_TAG)
+                                for t in self.ids))
+
+    def test_the_rows_it_lands_are_the_rows_sim_prices(self):
+        """The schema is this file's to state and `--roster` is the only reader
+        of it, so a key renamed on either side shows up nowhere else"""
+        self.assertEqual(self.fetch("roster", "161001").returncode, 0)
+        rows = json.loads(read_text(os.path.join(
+            self.dir, "roster-161001-%s.json" % fetch_data.SEASON_TAG)))
+        self.assertEqual(rows, [
+            {"n": "Starter 161001", "tm": "LAC", "avg": 30.0, "tot": 1500.0,
+             "gp": 50, "posLabel": "G", "elig": ["PG", "SG"]},
+            {"n": "Bench 161001", "tm": "HOU", "avg": 10.0, "tot": 400.0,
+             "gp": 40, "posLabel": "C", "elig": ["C"]}])
+
+    def test_asking_for_one_team_still_writes_all_twelve_labels(self):
+        """The labels cost nothing extra, and a partial map makes the header of
+        one report inconsistent with the next"""
+        self.assertEqual(self.fetch("roster", "161001").returncode, 0)
+        teams = json.loads(read_text(os.path.join(
+            self.dir, "teams-%s.json" % fetch_data.SEASON_TAG)))
+        self.assertEqual(teams, {str(t): "Team %d" % t for t in self.ids})
+
+    def test_a_team_id_the_league_lacks_stops_the_run_before_any_roster(self):
+        """Re-cutting eleven and dying on the twelfth leaves the directory half
+        stale, and nothing downstream can tell which half"""
+        p = self.fetch("roster", "161001", "999999")
+        self.assertNotEqual(p.returncode, 0)
+        self.assertNotIn("Traceback", p.stderr)
+        self.assertIn("999999", p.stdout + p.stderr)
+        self.assertEqual(self.rosters(), [])
+
+    def test_the_file_it_says_it_wrote_is_the_file_it_wrote(self):
+        """`wrote teams-2025-26.json` says nothing about where, and the answer
+        is never the directory the caller is standing in"""
+        p = self.fetch("teams")
+        self.assertEqual(p.returncode, 0, p.stdout + p.stderr)
+        wrote = [os.path.realpath(l.split(None, 1)[1])
+                 for l in p.stdout.splitlines() if l.startswith("wrote ")]
+        self.assertEqual(wrote, [os.path.realpath(os.path.join(
+            self.dir, "teams-%s.json" % fetch_data.SEASON_TAG))])
+        self.assertTrue(os.path.exists(wrote[0]))
+        self.assertEqual(self.rosters(), [], "`teams` re-cut a roster")
+
+
+class OutputIsSelfDescribing(unittest.TestCase):
+    """A caller reads these tables in a terminal, not next to findings.md. A
+    figure whose units live in another file is a figure he has to go and look
+    up -- and the commonest way that ends is that he does not"""
+
+    def test_every_report_opens_with_the_units_its_numbers_are_in(self):
+        """`+2.01` is per 20-matchup regular season. Nothing on stdout said so,
+        so it read equally well as per week, per matchup or per game -- and a
+        legend that arrives BELOW the table it explains is one a reader who
+        scrolled to his row never sees"""
+        for name in sorted(sim.REPORTS):
+            with self.subTest(report=name):
+                raw = render(name)
+                legend = reports.OWN_UNITS.get(name, reports.UNITS)
+                self.assertTrue(raw.startswith(legend),
+                                "%s opens with:\n%s" % (name, raw[:200]))
+                if "win" not in one_line(raw).lower():
+                    continue
+                self.assertRegex(one_line(raw), r"%d-matchup regular season"
+                                 % sim.REAL_MATCHUPS)
+
+    def test_the_consolidation_ladder_converts_at_the_rate_it_prints(self):
+        """`wins` is `dPF` through the PF-per-win on line 1, and the note above
+        the table says so. It is the one place these tables cross from points
+        into wins, and every scenario in `trades` is quoted out of this column"""
+        out = render("scenarios")
+        pf_per_win = float(re.search(r"1 win = (\d+) PF", out).group(1))
+        rows = re.findall(r"([-+]\d+) +\d+\.\d% +([-+]\d+\.\d\d)$", out, re.M)
+        self.assertGreater(len(rows), 10, out)
+        for dpf, wins in rows:
+            self.assertAlmostEqual(float(wins), float(dpf) / pf_per_win,
+                                   delta=0.01, msg=out)
+
+    def test_the_formula_error_is_signed_the_way_its_own_note_says(self):
+        """`+ means the formula pays him more than the sim does`. The direction
+        is what a reader books -- reversed, the bodies the shorthand overpays
+        read as the ones it underpays, and he sorts on it backwards"""
+        out = render("formula")
+        rows = re.findall(r"([-+]\d+\.\d\d) +([-+]\d+\.\d\d) +([-+]\d+)% +"
+                          r"([-+]\d+)%$", out, re.M)
+        self.assertGreaterEqual(len(rows), 10, out)
+        for sim_w, one_r, err, _ in rows:
+            self.assertEqual(float(err) > 0, float(one_r) > float(sim_w),
+                             "%s vs %s reads as err %s%%" % (one_r, sim_w, err))
+
+    def test_the_per_player_table_names_its_columns(self):
+        """Seven columns, no header row: `+-0.001` and a trailing `48.5` next to
+        a name reads as two more scores"""
+        out = render("players")
+        head, = [l for l in out.splitlines() if l.strip().startswith("player")]
+        for col in ("rate", "gp", "elig", "wins", "sd", "next", "flags"):
+            self.assertIn(col, head)
+
+    def test_the_per_player_header_sits_over_the_numbers_it_names(self):
+        """Naming the columns is only half of it -- a header shifted off its own
+        data reads `sd` over the wins figure, and the reader books the wrong
+        column"""
+        lines = render("players").splitlines()
+        head, = [l for l in lines if l.strip().startswith("player")]
+        row = lines[lines.index(head) + 1]
+        at = 0
+        for col, pattern in (("wins", r"[-+]\d+\.\d{2}"),
+                             ("sd", r"\+-\d+\.\d{3}"),
+                             ("next", r"inf|\d+\.\d")):
+            with self.subTest(column=col):
+                at = re.compile(pattern).search(row, at).end()
+                self.assertEqual(re.search(r"%s\b" % col, head).end(), at,
+                                 "`%s` does not end over its own column:\n%s\n%s"
+                                 % (col, head, row))
 
 
 class OptimalLineup(unittest.TestCase):
@@ -400,11 +906,11 @@ class OptimalLineup(unittest.TestCase):
                 self.assertAlmostEqual(total, self.best_possible(avail), places=6)
 
     def test_a_body_with_no_legal_slot_left_does_not_start(self):
-        """The positional half of the 9-slot cap. A pure centre reaches C and
-        the two ANY slots and no further, so the 4th-best centre on the roster
+        """The positional half of the 9-slot cap. A pure center reaches C and
+        the two ANY slots and no further, so the 4th-best center on the roster
         scores nothing however good he is"""
-        centres = [(float(40 - i), {"C"}, i) for i in range(12)]
-        total, filled, who = sim.lineup(centres)
+        centers = [(float(40 - i), {"C"}, i) for i in range(12)]
+        total, filled, who = sim.lineup(centers)
         self.assertEqual(filled, sim.group_slots(("C",)))
         self.assertEqual(sorted(who), [0, 1, 2])
         self.assertEqual(total, 40 + 39 + 38)
@@ -437,6 +943,62 @@ class FantasyCalendar(unittest.TestCase):
             if w is not None:
                 games[w] += len(tms) // 2
         self.assertEqual((min(games.values()), max(games.values())), (28, 56))
+
+
+class NightToPeriodMapping(unittest.TestCase):
+    """A night reaches a period two independent ways: the points column buckets
+    it through the scoring calendar's `WEEK_OF`, and the games count comes off
+    `period_nights`, a date-range test against the period. Let those drift and
+    the two columns of the same row describe different weeks"""
+
+    def test_the_scoring_nights_are_exactly_the_scored_periods_nights_in_order(self):
+        """Same nights AND same order, since position `w` in the points column
+        is the `w`th scored period. A scoring calendar that carried an extra
+        night, or ran them in another order, would still total the same season
+        """
+        self.assertEqual([n for i in sim.SCORED for n in sim.period_nights(i)],
+                         list(sim.SCORING_NIGHTS))
+
+    def test_every_night_buckets_into_the_period_it_falls_inside(self):
+        """The off-by-one guard. A shift of one leaves the season total alone
+        and moves nearly every entry of the column"""
+        for w, i in enumerate(sim.SCORED):
+            for n in sim.period_nights(i):
+                with self.subTest(period=sim.PERIODS[i]["ordinal"],
+                                  night=sim.NIGHTS[n][0]):
+                    self.assertEqual(sim.WEEK_OF[n], w)
+
+    def test_no_night_falls_inside_two_periods_at_once(self):
+        """Periods are read off start/end dates, so an inclusive end meeting an
+        inclusive start double-counts that night's games in both"""
+        seen = collections.Counter(n for i in range(len(sim.PERIODS))
+                                   for n in sim.period_nights(i))
+        self.assertTrue(seen)
+        self.assertEqual(max(seen.values()), 1,
+                         sorted(n for n, c in seen.items() if c > 1))
+
+    def test_bracket_round_one_is_the_only_night_the_two_calendars_share(self):
+        """Period 20 is both the last scored period and R1, so the standings
+        basis and the bracket basis overlap there and NOWHERE else. An overlap
+        that grew would score playoff-only nights into the standings; one that
+        vanished would leave R1 out of the basis its own seeding is cut from"""
+        self.assertEqual(set(sim.SCORED_CAL.nights) & set(sim.BRACKET_CAL.nights),
+                         set(sim.BRACKET_NIGHTS[0]))
+
+
+class GameCountsAgree(unittest.TestCase):
+    """A bracket period's size is printed as the games on its nights and drives
+    every per-player `W` column as that team's games in the round. The two are
+    counted over separately built night lists, and a window that slipped a
+    night on one side prices bodies off a schedule the printed table never
+    showed"""
+
+    def test_a_bracket_round_is_the_same_window_counted_per_night_and_per_team(self):
+        for w, i in enumerate(sim.BRACKET):
+            with self.subTest(period=sim.PERIODS[i]["ordinal"]):
+                self.assertEqual(2 * sim.period_games(i),
+                                 sum(sim.bracket_games(t)[w]
+                                     for t in sim.NBA_TEAMS))
 
 
 def light_nights_per_team():
@@ -851,6 +1413,75 @@ class SurpriseScratches(unittest.TestCase):
         risky = sim.run(full, trials=40, bursty=True, surprise=0.10)["pf"]
         self.assertLess(risky, base - 20)
 
+    def test_a_scratch_you_started_costs_the_bench_body_who_would_have_played(self):
+        """Lineups lock before tip, so the slot is spent, not freed. Ten bodies
+        all on one NBA team and all eligible everywhere, so every night has one
+        more body than the nine slots: starting the scratched man benches the
+        10th, and what the season loses is HIS rate, not the scratched man's"""
+        every = ("PG", "SG", "SF", "PF", "C")
+        def deep(spare):
+            return ([sim.star(50.0, 41, every, "MEM", "OUT")]
+                    + [sim.star(40.0 - i, 82, every, "MEM", "B%d" % i)
+                       for i in range(1, 9)]
+                    + [sim.star(spare, 82, every, "MEM", "SPARE")])
+        cost = {}
+        for spare in (31.0, 10.0):
+            r = deep(spare)
+            cost[spare] = (sim.run(r, trials=3)["pf"]
+                           - sim.run(r, trials=3, surprise=1.0)["pf"])
+        self.assertGreater(cost[31.0], 0)
+        self.assertAlmostEqual(cost[31.0] / 31.0, cost[10.0] / 10.0, places=6)
+
+    def test_a_scratch_costs_nothing_when_there_is_nobody_to_bench(self):
+        """The other half of the same claim, and the one that says the cost is
+        the FOREGONE body rather than the scratched man's own points. Nine
+        bodies for nine slots: whether he is started or known out, the same
+        eight teammates play and the night scores the same"""
+        every = ("PG", "SG", "SF", "PF", "C")
+        thin = ([sim.star(50.0, 41, every, "MEM", "OUT")]
+                + [sim.star(40.0 - i, 82, every, "MEM", "B%d" % i)
+                   for i in range(1, 9)])
+        self.assertEqual(sim.run(thin, trials=3, surprise=1.0)["pf"],
+                         sim.run(thin, trials=3)["pf"])
+
+
+class WeeklyPointsColumn(unittest.TestCase):
+    """`wk` is the per-period points column a bracket opponent's level is
+    measured from. A run that buckets a night into the wrong period is
+    invisible in the season total and wrong everywhere the column is read"""
+
+    def test_a_period_totals_its_own_nights_and_no_others(self):
+        """An ironman on one NBA team scores his rate once per team game in the
+        period, so every one of the 20 entries is pinned. Shift the buckets by
+        one and `pf` is untouched while most of the column moves"""
+        body = sim.star(30.0, 82, ("C",), "MEM", "IRON")
+        out = sim.run([body], trials=2)
+        played = set(sim.team_nights("MEM"))
+        self.assertEqual(
+            [round(x, 6) for x in out["wk"]],
+            [round(30.0 * len(played & set(sim.period_nights(i))), 6)
+             for i in sim.SCORED])
+
+
+class AvailabilityIsSeasonLong(unittest.TestCase):
+    """GP/82 is a season-long rate, drawn over the WHOLE season even when only
+    the bracket weeks are scored. Restrict the draw to the scored window and
+    every bracket column comes out systematically wrong"""
+
+    def test_a_41_gp_body_scores_about_half_the_bracket_an_ironman_does(self):
+        """Not zero and not full: the four bracket rounds are a sample of a
+        season-long absence pattern, so a half-season body loses about half of
+        them. Zero means the draw ran out before the bracket, full means it
+        never ran on the rounds being scored"""
+        iron = sim.run([sim.star(30.0, 82, ("C",), "MEM", "IRON")],
+                       trials=60, cal=sim.BRACKET_CAL)
+        half = sim.run([sim.star(30.0, 41, ("C",), "MEM", "HALF")],
+                       trials=60, cal=sim.BRACKET_CAL)
+        self.assertEqual(
+            [round(x, 6) for x in iron["wk"]],
+            [round(30.0 * g, 6) for g in sim.bracket_games("MEM")])
+        self.assertAlmostEqual(sum(half["wk"]) / sum(iron["wk"]), 0.5, delta=0.06)
+
 
 class DuplicateNames(unittest.TestCase):
     """`season` scores a night off a `{name: points}` built from the players
@@ -894,7 +1525,7 @@ class DuplicateNames(unittest.TestCase):
 
 class PerPositionReplacement(unittest.TestCase):
     """`replacement` prints an `R` per slot group and the README calls the
-    single-R error "a third of the formula's error". Pricing a centre against a
+    single-R error "a third of the formula's error". Pricing a center against a
     forward's 17.1 when his own group's is 20.5 is worth 0.07-0.09 wins cross-
     position, so the counterfactual has to be a body of the outgoing player's
     OWN group"""
@@ -904,15 +1535,15 @@ class PerPositionReplacement(unittest.TestCase):
         with cheap_monte_carlo(40):
             groups = {g: sim.replacement(full, 68, e)[0]
                       for g, e in sim.GROUPS.items()}
-            self.assertGreater(groups["centre"], groups["forward"] + 1.0,
-                               "this roster's centre group is not the tight one")
+            self.assertGreater(groups["center"], groups["forward"] + 1.0,
+                               "this roster's center group is not the tight one")
             base = sim.run(full, seed0=101)
 
             def against(R, elig):
                 return sim.wins(base, sim.run(
                     sim.swap(full, ["Jakob Poeltl"], [sim.star(R, 68, elig)]),
                     seed0=101))
-            own = against(groups["centre"], ("C",))
+            own = against(groups["center"], ("C",))
             forward = against(groups["forward"], ("SF", "PF"))
             got, = sim.player_wins(full, ["Jakob Poeltl"], blocks=1).values()
         self.assertAlmostEqual(got[0], own, delta=0.02)
@@ -994,7 +1625,7 @@ class AdjacentRowSigma(unittest.TestCase):
     independent runs up to 3x out in BOTH directions, which is the difference
     between an ordered pair and a tie"""
 
-    ROW = re.compile(r"^ +(?P<n>\S.*?) +[\d.]+ rate +\d+ gp +\S+ "
+    ROW = re.compile(r"^ +(?P<n>\S.*?) +[\d.]+ +\d+ +\S+ "
                      r"+(?P<w>[-+][\d.]+) +\+-[\d.]+ +(?P<next>[-\d.]+|inf)?",
                      re.M)
 
@@ -1081,7 +1712,7 @@ class IncomingWins(unittest.TestCase):
         which of three near-identical bottom bodies loses its slot"""
         full = sim.basis()
         recipe = [p["n"] for p in sim.pad(sim.our_roster(), len(full) - 1)]
-        R = {"guard": 18.0, "forward": 17.0, "centre": 20.0}
+        R = {"guard": 18.0, "forward": 17.0, "center": 20.0}
         with recorded_rosters() as seen:
             sim.incoming_wins(full, [sim.star(40.0, 68, ("SF", "PF"), n="IN")],
                               blocks=1, trials=2, R=R)
@@ -1180,22 +1811,33 @@ class Thin(unittest.TestCase):
             self.assertEqual(sim.replacement(sim.thin(full, len(full)))[0],
                              sim.replacement(full)[0])
 
-    def test_thinning_uses_the_rosters_own_r_not_a_stale_constant(self):
+    def test_a_live_counterparty_file_is_nowhere_near_our_padded_r(self):
         """`R` is the x-intercept of value in rate, so it moves with the body
-        COUNT by construction, 17.1 on our padded 38 against ~11 on a live
-        26-man file. Ranking that file at a hard-coded 17 is 6 rate points out,
-        and it does not merely relabel the order, it prefers rate to games
-        where this roster's own level prefers games"""
-        theirs = sim.our_roster(THEIR_ROSTER)
+        COUNT by construction: ~17 on our padded 38 against ~11 on a live
+        27-man file. That gap is why `thin` takes the roster's own"""
         with cheap_monte_carlo(20):
-            fitted = sim.replacement(theirs)[0]
-            self.assertLess(fitted, 14.0, "this file's R is not far enough from "
-                            "17 to tell the two rankings apart")
-            kept = sim.thin(theirs, 22)
-            stale = sim.thin(theirs, 22, R=17.0)
-            self.assertNotEqual({p["n"] for p in kept}, {p["n"] for p in stale})
-        self.assertGreater(sim.run(kept, trials=40)["pf"],
-                           sim.run(stale, trials=40)["pf"] + 40)
+            self.assertLess(sim.replacement(sim.our_roster(THEIR_ROSTER))[0],
+                            14.0)
+
+    def test_thinning_at_a_stale_r_keeps_a_different_set_of_bodies(self):
+        """Six rate points out does not merely relabel the order -- it prefers
+        rate to games where the roster's own level prefers games, and keeps
+        other bodies.
+
+        BUILT, not read off a roster file. Whether two R's happen to order one
+        real 27-man file differently is a fact about that week's transactions,
+        and this test went green on a trade"""
+        grinders = [sim.star(15.0, gp=82, elig=("SF", "PF"), n="GRIND%d" % i)
+                    for i in range(3)]
+        scorers = [sim.star(30.0, gp=30, elig=("SF", "PF"), n="SCORE%d" % i)
+                   for i in range(3)]
+        roster = [p for pair in zip(grinders, scorers) for p in pair]
+        # (15-5)*82 = 820 against (30-5)*30 = 750, and at R=12 it is 246
+        # against 540 -- the same six bodies, ranked the other way up
+        self.assertEqual({p["n"] for p in sim.thin(roster, 3, R=5.0)},
+                         {"GRIND0", "GRIND1", "GRIND2"})
+        self.assertEqual({p["n"] for p in sim.thin(roster, 3, R=12.0)},
+                         {"SCORE0", "SCORE1", "SCORE2"})
 
 
 class Pad(unittest.TestCase):
@@ -1329,7 +1971,7 @@ class MultiPieceDeal(unittest.TestCase):
         return joint, summed
 
     def test_adding_the_rows_up_overstates_a_three_piece_package(self):
-        """Three 46-rate centres for Suggs/White/Turner run +3.0 wins priced as
+        """Three 46-rate centers for Suggs/White/Turner run +3.0 wins priced as
         one deal and +4.0 as three rows added. A third of the package is an
         arrival the nine slots have no room to start, and the sum cannot see
         it, which is a whole win on a deal whose verdict turns on tenths"""
@@ -1340,7 +1982,7 @@ class MultiPieceDeal(unittest.TestCase):
     def test_the_overstatement_is_worst_when_the_pieces_share_a_slot_group(self):
         """The mechanism, and the reason the rule is not a haircut a caller
         could apply from the sum alone. The same three bodies spread over
-        guard/forward/centre lose ~0.2 wins to the cap instead of ~1.0, so a
+        guard/forward/center lose ~0.2 wins to the cap instead of ~1.0, so a
         package's sub-additivity is a fact about its shape against OUR roster's
         shape and has to be simulated"""
         stacked = self.priced_both_ways([("C",)] * 3)
@@ -1385,15 +2027,15 @@ class SlotGroups(unittest.TestCase):
     def test_a_body_takes_the_group_of_the_slots_he_is_confined_to(self):
         """`player_wins` prices every player against his own group's R, and the
         three run 3.4 rate points apart here, so where a PF/C lands is worth
-        0.07-0.09 wins on his row. Only a body confined to {C} takes the centre
+        0.07-0.09 wins on his row. Only a body confined to {C} takes the center
         counterfactual"""
-        self.assertEqual(sim.slot_group(["C"]), "centre")
+        self.assertEqual(sim.slot_group(["C"]), "center")
         self.assertEqual(sim.slot_group(["PF", "C"]), "forward")
         self.assertEqual(sim.slot_group(["PG", "SG"]), "guard")
         self.assertEqual(sim.slot_group(["SG", "SF"]), "forward")
 
     def test_a_group_counts_every_slot_it_can_fill(self):
-        """The two ANY slots are what a hand count misses. A pure centre chases
+        """The two ANY slots are what a hand count misses. A pure center chases
         3 of the 9, not the 1 the template labels C"""
         self.assertEqual(sim.group_slots(("C",)), 3)
         self.assertEqual(sim.group_slots(("PG", "SG")), 5)
@@ -1425,6 +2067,22 @@ class RosterScopedReports(unittest.TestCase):
                 self.assertNotEqual(p.returncode, 0)
                 for served in set(sim.REPORTS) - sim.OURS_ONLY:
                     self.assertIn(served, p.stdout + p.stderr)
+
+    def test_the_roster_free_report_measures_the_same_thing_for_every_team(self):
+        """Its header says it read no roster, which is a claim about the table
+        under it: if `market` ever starts reading one, the header is the last
+        place that shows, and a board table gets quoted as a team's"""
+        for name in sorted(sim.ROSTER_FREE):
+            with self.subTest(report=name):
+                self.assertEqual(render(name), render(name, THEIR_ROSTER))
+
+    def test_a_roster_the_labels_do_not_carry_is_headed_by_its_own_filename(self):
+        """`--roster` takes any path, and the id -> name map only covers the
+        twelve. A header that insisted on a name would take out every report in
+        the run, including on a tree cut before the map existed"""
+        self.assertEqual(roster_mod.label("roster-999999-%s.json"
+                                          % fetch_data.SEASON_TAG),
+                         "roster-999999-%s.json" % fetch_data.SEASON_TAG)
 
     def test_naming_no_report_at_all_refuses_the_one_it_falls_back_to(self):
         """`calibration` is the default, so a default applied AFTER the refusal
@@ -1484,14 +2142,11 @@ class RosterScopedReports(unittest.TestCase):
         sets and both stay green while the page sends the reader to run
         something that exits 1"""
         text = one_line(read_text(os.path.join(sim.HERE, "README.md")))
-        refused = re.search(r"exits non-zero on ((?:`\w+`[ ,])+)", text)
+        refused = re.search(r"serves every report but ((?:\*\*)?(?:`\w+` ?)+)",
+                            text)
         self.assertIsNotNone(refused, "the README stopped naming them")
-        self.assertEqual(set(re.findall(r"\w+", refused.group(1))), sim.OURS_ONLY)
-        served = re.search(r"serves \*\*(\d+) of the (\d+) reports\*\*", text)
-        self.assertIsNotNone(served, "the README stopped counting them")
-        self.assertEqual(
-            (int(served.group(1)), int(served.group(2))),
-            (len(set(sim.REPORTS) - sim.OURS_ONLY), len(sim.REPORTS)))
+        self.assertEqual(set(re.findall(r"`(\w+)`", refused.group(1))),
+                         sim.OURS_ONLY)
 
     def test_the_module_docstring_names_the_reports_the_flag_refuses(self):
         """`sim.py`'s own docstring is the first thing anyone opening the file
@@ -1499,28 +2154,36 @@ class RosterScopedReports(unittest.TestCase):
         four it refuses, gets exit 1, and reads the flag as broken rather than
         the sentence"""
         text = one_line(sim.__doc__)
-        served = re.search(r"serves (\d+) of the (\d+) reports", text)
-        self.assertIsNotNone(served, "the docstring stopped counting them")
-        self.assertEqual((int(served.group(1)), int(served.group(2))),
-                         (len(set(sim.REPORTS) - sim.OURS_ONLY), len(sim.REPORTS)))
         refused = re.search(r"refuse it: ([^.]+)\.", text)
         self.assertIsNotNone(refused, "the docstring stopped naming them")
         self.assertEqual(set(re.findall(r"\w+", refused.group(1))), sim.OURS_ONLY)
 
-    def test_the_trades_skill_counts_the_served_reports_the_same_way(self):
-        """Step 6 of `trades` is where the count is actually READ, since that
-        skill and not this README is what gets loaded before a deal is priced.
-        Whoever follows it skips a report the flag serves, or is sent to run
-        one it refuses and reads the refusal as the flag being broken"""
-        text = one_line(read_text(skills_path("trades", "SKILL.md")))
-        served = len(set(sim.REPORTS) - sim.OURS_ONLY)
-        counted = re.search(r"on \*\*(\d+) of the (\d+) reports\*\*", text)
-        self.assertIsNotNone(counted, "the skill stopped counting them")
-        self.assertEqual((int(counted.group(1)), int(counted.group(2))),
-                         (served, len(sim.REPORTS)))
-        naming = re.search(r"naming the (\d+)", text)
-        self.assertIsNotNone(naming, "the skill stopped saying what it names")
-        self.assertEqual(int(naming.group(1)), served)
+    def test_no_skill_carries_its_own_copy_of_the_report_list(self):
+        """`trades` used to name the four reports `--roster` refuses. That list
+        is `sim.py --help`'s to state -- a second copy in a file the command
+        does not read is a copy that goes stale silently, and the skill is what
+        gets loaded before a deal is priced"""
+        for path in glob.glob(skills_path("*", "*.md")):
+            with self.subTest(skill=os.path.basename(os.path.dirname(path))):
+                text = one_line(read_text(path))
+                named = [n for n in sim.OURS_ONLY if "`%s`" % n in text]
+                self.assertLess(len(named), len(sim.OURS_ONLY), named)
+
+    def test_every_report_the_skills_and_pages_cite_is_a_real_one(self):
+        """`Eval Definitions`, `eval-team`, `eval-player` and `trades` all send
+        a reader to a named `sim.py` run. A citation to a report the registry
+        does not carry exits 1 on the command a skill just mandated"""
+        pages = [os.path.join(sim.HERE, n) for n in
+                 ("README.md", "method.md", "findings.md", "tldr.md")]
+        pages += glob.glob(skills_path("*", "*.md"))
+        pages += glob.glob(os.path.join(sim.HERE, os.pardir, "*.md"))
+        cited = collections.Counter()
+        for path in pages:
+            for name in re.findall(r"sim\.py ([a-z]\w*)", read_text(path)):
+                cited[name] += 1
+                with self.subTest(page=os.path.basename(path), report=name):
+                    self.assertIn(name, sim.REPORTS)
+        self.assertIn("playoffs", cited)
 
     def test_roster_with_no_file_after_it_says_what_it_wanted(self):
         """Every other CLI error here exits with a written explanation. A
@@ -1569,17 +2232,20 @@ class RosterScopedReports(unittest.TestCase):
         on, the padded 38 rather than the live file, which is a different shape
         and 4-8 bodies short per group. And crowding is offered as an
         explanation only where it actually orders the three R's, since on our
-        own padded roster guards and centres are equally crowded while centre R
+        own padded roster guards and centers are equally crowded while center R
         is the higher"""
         out = render("replacement", THEIR_ROSTER)
         R = {lab: float(re.search(r"^ +%s +([\d.]+)" % lab, out, re.M).group(1))
-             for lab in ("guard", "forward", "centre")}
-        note = re.search(r"guard ([-+]\d+\.\d), centre ([-+]\d+\.\d)", out)
+             for lab in ("guard", "forward", "center")}
+        note = re.search(r"guard ([-+]\d+\.\d), center ([-+]\d+\.\d)", out)
         self.assertIsNotNone(note, out)
+        # The note is a 1-dp difference; `R` is the difference of two 1-dp
+        # table cells. Each cell is up to 0.05 off, so 0.1 is the bound and it
+        # has to be INCLUSIVE -- a gap of exactly 0.1 is a float 0.10000000009
         self.assertAlmostEqual(float(note.group(1)),
-                               R["guard"] - R["forward"], delta=0.1)
+                               R["guard"] - R["forward"], delta=0.11)
         self.assertAlmostEqual(float(note.group(2)),
-                               R["centre"] - R["forward"], delta=0.1)
+                               R["center"] - R["forward"], delta=0.11)
         padded = sim.basis(THEIR_ROSTER)
         for g, elig in sim.GROUPS.items():
             with self.subTest(group=g):
@@ -1673,7 +2339,7 @@ class BreakEven(unittest.TestCase):
 
     def test_the_breakeven_moves_with_the_incoming_gp_and_slot(self):
         """"Read the row matching his shape." The same 3-for-1 needs several
-        more rate points from a 65-GP centre than from a 68-GP forward and
+        more rate points from a 65-GP center than from a 68-GP forward and
         fewer from a 78-GP one, which is how Jokic reads as a hair positive
         against his own row and a 6-point win against the forward row. A break-
         even quoted without its GP and slot is the wrong number, not a rounded
@@ -1681,9 +2347,9 @@ class BreakEven(unittest.TestCase):
         full = sim.basis()
         with cheap_monte_carlo(20):
             forward = sim.breakeven(full, THREE_OUT, 68, ("SF", "PF"))
-            centre = sim.breakeven(full, THREE_OUT, 65, ("C",))
+            center = sim.breakeven(full, THREE_OUT, 65, ("C",))
             durable = sim.breakeven(full, THREE_OUT, 78, ("SF", "PF"))
-        self.assertGreater(centre, forward + 3.0)
+        self.assertGreater(center, forward + 3.0)
         self.assertLess(durable, forward - 1.5)
 
 
@@ -2193,7 +2859,7 @@ class GPRunsOnTheActualRate(unittest.TestCase):
             p = rostered(name)
             self.assertNotEqual(raw["gp"], p["gp"])
             row, = [l for l in table.splitlines() if l.startswith("  " + name)]
-            printed, = re.findall(r"[\d.]+ rate +(\d+) gp", row)
+            printed, = re.findall(r"[\d.]+ +(\d+) +\S+ +[-+][\d.]+", row)
             self.assertEqual(int(printed), p["gp"], row)
 
 
@@ -2263,13 +2929,14 @@ class RateEvidence(unittest.TestCase):
 
     def test_it_counts_the_rotation_seasons_the_role_rests_on(self):
         """Rate >= 15 is where GP starts measuring health rather than role
-        (`Eval Definitions §LATE`), so it is also the bar a season clears to be
-        evidence the role is real"""
+        (`Eval Definitions §Durability`), so it is also the bar a season clears
+        to be evidence the role is real"""
         self.assertEqual(sim.rate_evidence("Kevin Porter")["rotation"], 4)
         self.assertEqual(sim.rate_evidence("Ty Jerome")["rotation"], 2)
 
     def test_it_names_every_flag_code_an_eval_has_to_carry(self):
-        """`Eval Definitions §Output` fixes the vocabulary and §Durability
+        """`Eval Template.md` fixes the vocabulary and `Eval Definitions`
+        §Durability
         fixes the fragment band at 10-25 games. An eval author reads these off
         here rather than eyeballing five seasons of pool rows per player, so
         the PUBLIC function has to name all four codes, or a caller gets two of
@@ -2316,9 +2983,9 @@ class EvidenceFlagsInThePlayersTable(unittest.TestCase):
         the wrong row clears the first half and fails here.
 
         `rotN` carries the count rather than just a mark, the bar being 3
-        seasons at rate >= 15 (`Eval Definitions §LATE`). Below it the rate is
-        a role that has not held up yet, at or above it the reader may read the
-        row clean"""
+        seasons at rate >= 15 (`Eval Definitions §Durability`). Below it the
+        rate is a role that has not held up yet, at or above it the reader may
+        read the row clean"""
         for name, line in self.rows.items():
             with self.subTest(player=name):
                 self.assertEqual(
@@ -2331,44 +2998,118 @@ class EvidenceFlagsInThePlayersTable(unittest.TestCase):
                          sorted(p["n"] for p in sim.our_roster()))
 
 
-class DefinitionsVocabulary(unittest.TestCase):
-    """`Eval Definitions` is cited by section instead of restated and it owns
-    the canonical flag table. Both halves only work if the citations resolve,
-    since a `§Delta w` that names no section sends the reader looking for a
-    definition that is not there, and a flag code printed on a row but absent
-    from the table is a vocabulary the rest of the repo cannot carry"""
+def sim_sources():
+    """Every python file the sim ships, source glued back across the `print`
+    calls and comment lines a wrapped sentence is split over. A citation this
+    code PRINTS spans two string literals and one in a comment spans two lines,
+    so scanning the raw text checks a sentence nobody reads"""
+    paths = [sim.__file__] + sorted(
+        glob.glob(os.path.join(sim.HERE, "simlib", "**", "*.py"),
+                  recursive=True))
+    return {p: re.sub(r"\n\s*#+ ?", " ",
+                      re.sub(r'"\)?\s*\n\s*(?:print\()?"', " ", read_text(p)))
+            for p in paths}
 
-    DEFS = os.path.join(sim.HERE, os.pardir, "Eval Definitions.md")
+
+def doc_sections(path):
+    """Every heading in a markdown file, cut at the em-dash gloss -- the form a
+    `§` citation names it by"""
+    return {re.split(r" +[-—] +",
+                     h.replace("`", "").replace("*", ""))[0].strip()
+            for h in re.findall(r"^#+ +(.*)$", read_text(path), re.M)}
+
+
+def eval_docs():
+    """{the name a citation writes: path} for every page beside the evals.
+    DISCOVERED, not listed: these pages get split and renamed, and a hardcoded
+    path is a test that keeps passing while the citation dangles"""
+    return {os.path.splitext(os.path.basename(p))[0]: p for p in
+            sorted(glob.glob(os.path.join(sim.HERE, os.pardir, "*.md")))}
+
+
+class DefinitionsVocabulary(unittest.TestCase):
+    """The eval pages are cited by section instead of restated, and one of them
+    owns the canonical flag table. Both halves only work if the citations
+    resolve, since a `§Delta w` that names no section sends the reader looking
+    for a definition that is not there, and a flag code printed on a row but
+    absent from the table is a vocabulary the rest of the repo cannot carry"""
+
+    LEAGUE = skills_path("league-info", "SKILL.md")
+    # One canonical flag row, as the table writes it. Lower-case codes: the
+    # column tables on these pages are keyed by upper-case column names, and
+    # the two are the same markdown otherwise
+    FLAG_ROW = r"^\| `([a-z0-9]\w*)` *\|([^|]*)\|"
 
     @classmethod
     def setUpClass(cls):
-        cls.text = read_text(cls.DEFS)
-        cls.sections = set()
-        for h in re.findall(r"^#+ +(.*)$", cls.text, re.M):
-            head = h.replace("`", "").replace("*", "")
-            cls.sections.add(re.split(r" +[-—] +", head)[0].strip())
-        cls.source = read_text(sim.__file__)
+        cls.docs = {name: doc_sections(path)
+                    for name, path in eval_docs().items()}
+        cls.sources = sim_sources()
+        owners = [path for path in eval_docs().values()
+                  if len(re.findall(cls.FLAG_ROW, read_text(path), re.M)) > 1]
+        assert len(owners) == 1, (
+            "%d eval pages carry the canonical flag table: it has one owner "
+            "and the codes travel with the row" % len(owners))
+        cls.text = read_text(owners[0])
+
+    def cited(self, pattern):
+        """{(page cited, section cited): file that cites it}, over every
+        source. The page is "" where the citation names none"""
+        out = {}
+        for path, text in self.sources.items():
+            for m in re.findall(pattern, text):
+                doc, name = m if isinstance(m, tuple) else ("", m)
+                # A citation wraps across lines wherever the sentence does
+                doc, name = one_line(doc), one_line(name)
+                # `Delta w` and `Delta P(title)` are printed in ASCII by
+                # reports that cannot rely on a UTF-8 terminal
+                name = name.rstrip(".,:").replace("Delta ", "Δ").replace(
+                    "Delta P", "ΔP")
+                out[(doc, name)] = os.path.basename(path)
+        return out
 
     def test_every_section_sim_cites_is_a_section_that_exists(self):
-        """A citation runs to the closing backtick rather than to the first
-        space, since the definitions carry multi-word headings, and stopping at
-        the space checks a section name nobody wrote. Every citation has to be
-        inside the backticks for that to hold, so the two counts are compared
-        rather than assumed"""
-        cited = set(re.findall(r"`Eval Definitions §([^`]+)`", self.source))
-        self.assertTrue(cited, "nothing cites the definitions any more")
-        self.assertEqual(len(re.findall(r"`Eval Definitions §", self.source)),
-                         len(re.findall(r"Eval Definitions §", self.source)),
-                         "a citation outside backticks is not being checked")
-        for name in cited:
-            with self.subTest(section=name.rstrip(".,:")):
-                self.assertIn(name.rstrip(".,:"), self.sections)
+        """A citation names its page and runs to the closing backtick rather
+        than to the first space, since the pages carry multi-word headings and
+        stopping at the space checks a section name nobody wrote. Every
+        citation has to be inside the backticks for that to hold, so the two
+        counts are compared rather than assumed"""
+        cited = self.cited(r"`(Eval [^§`]+)§([^`]+)`")
+        self.assertTrue(cited, "nothing cites the eval pages any more")
+        for text in self.sources.values():
+            self.assertEqual(len(re.findall(r"`Eval [A-Za-z]+ §", text)),
+                             len(re.findall(r"Eval [A-Za-z]+ §", text)),
+                             "a citation outside backticks is not checked")
+        for (doc, name), where in cited.items():
+            with self.subTest(page=doc, section=name, file=where):
+                self.assertIn(doc, self.docs)
+                self.assertIn(name, self.docs[doc])
+
+    def test_a_bare_section_mark_names_a_section_of_a_file_that_owns_one(self):
+        """A `§` with no file in front of it is the same citation with the file
+        named a sentence earlier, and it goes stale the same way -- so it is
+        checked against every file this code cites by section, not skipped for
+        being short.
+
+        Section names carry spaces and the sentence carries on past them, so a
+        citation resolves when some leading run of its words is a heading"""
+        owned = set(doc_sections(self.LEAGUE))
+        for sections in self.docs.values():
+            owned |= sections
+        for (_, name), where in self.cited(r"§([A-Za-z][^`\n]*)").items():
+            words, heads = name.split(), set()
+            for i in range(len(words)):
+                head = " ".join(words[:i + 1])
+                heads |= {head, re.sub(r"(?:'s)?[).,:;\"]*$", "", head)}
+            with self.subTest(section=name, file=where):
+                self.assertTrue(heads & owned, "%s cites no section that "
+                                "exists" % name)
 
     def test_the_flag_legend_and_the_canonical_table_are_the_same_vocabulary(self):
-        """Both directions. A code the table prints and §Output does not define
-        cannot be carried into an eval, and a code §Output sources FROM `sim.py
-        players` that this table never prints is a row the eval author is told
-        to read off a report that does not emit it"""
+        """Both directions. A code the table prints and `Eval Template` does not
+        define cannot be carried into an eval, and a code it sources FROM
+        `sim.py players` that this table never prints is a row the eval author
+        is told to read off a report that does not emit it"""
         canon = dict(re.findall(r"^\| `(\w+)` *\|([^|]*)\|", self.text, re.M))
         out = render("players")
         legend = set(re.findall(r"`([a-z]\w*)`", out[out.index("flag column"):]))
@@ -2380,7 +3121,7 @@ class DefinitionsVocabulary(unittest.TestCase):
 
 
 class UnprojectedRates(unittest.TestCase):
-    """`Eval Definitions §Output` says a player the projection feed does not
+    """`Eval Template.md` says a player the projection feed does not
     carry keeps LAST SEASON's average, which is a different kind of number from
     every other row in the column. Nothing in the rate itself says so, so the
     row has to carry `noproj` or a stale average reads as a projection"""
@@ -2443,8 +3184,8 @@ class UnusableSnapshot(unittest.TestCase):
     """A snapshot that cannot be read is indistinguishable, row by row, from a
     feed that carries nobody. Every rate falls back to last season's average
     and every row flags `noproj`, which is the whole study re-cut onto the
-    basis `projections` exists to replace, and eleven of the twelve reports
-    print no flag column at all"""
+    basis `projections` exists to replace, and every report but `players`
+    prints no flag column at all"""
 
     def test_a_missing_snapshot_is_refused_rather_than_repricing_everybody(self):
         with projection_snapshot(None):
@@ -2554,14 +3295,14 @@ class ScenarioShapes(unittest.TestCase):
     answer several points", and `scenarios` states them once above the table
     for the rows whose labels do not. So that sentence carries the whole
     table's worth of the warning, and a reader who takes a bare label at its
-    word compares a real 65-GP centre against a row priced as a 68-GP forward
+    word compares a real 65-GP center against a row priced as a 68-GP forward
     """
 
     @classmethod
     def setUpClass(cls):
         cls.head = render("scenarios").split("scenario ")[0]
 
-    def test_the_centre_rows_are_not_described_as_the_default_forward(self):
+    def test_the_center_rows_are_not_described_as_the_default_forward(self):
         self.assertRegex(self.head, r"Jokic[\s\S]*?65-GP C\b")
 
     def test_the_multi_body_rows_say_they_are_not_all_the_default_either(self):
@@ -2713,6 +3454,1020 @@ class PlayerBlocksIsOneConstant(unittest.TestCase):
         body = sim.star(40.0, 68, ("C",), n="INCOMING")
         w = sim.incoming_wins(sim.basis(), [body], trials=2, R=R)
         self.assertEqual(len(w["INCOMING"][2]), 2)
+
+
+class BracketWindow(unittest.TestCase):
+    """Which periods the bracket is played over. Fleaflicker cannot label R1,
+    so it arrives marked `regular` and a window taken off `kinds` is three
+    rounds starting a week late. What separates a bracket period from a
+    regular one on the wire is that not every team plays"""
+
+    def test_the_wire_flags_fewer_rounds_than_are_actually_played(self):
+        """The flags are a floor on the window, never the window. Some periods
+        do arrive flagged, so the field reads as usable -- and taking the count
+        from it drops R1 and prices a 3-round bracket starting a week late"""
+        flagged = {i for i, p in enumerate(sim.PERIODS)
+                   if "playoff" in p["kinds"]}
+        self.assertTrue(flagged)
+        self.assertLess(len(flagged), len(sim.BRACKET))
+
+    def test_it_matches_the_window_league_info_states(self):
+        """`league-info` is the verified owner of the bracket's shape and every
+        skill reasons from it. A derivation that drifts from the page leaves
+        both green and the two disagreeing about which weeks bind"""
+        text = one_line(read_text(skills_path("league-info", "SKILL.md")))
+        m = re.search(r"Bracket: (\d+) of (\d+) teams, (\d+) rounds, "
+                      r"periods (\d+)\W(\d+)\*\*", text)
+        self.assertIsNotNone(m, "the skill stopped stating the bracket")
+        _, teams, rounds, first, last = (int(g) for g in m.groups())
+        self.assertEqual(rounds, len(sim.BRACKET))
+        self.assertEqual([first, last],
+                         [sim.PERIODS[sim.BRACKET[0]]["ordinal"],
+                          sim.PERIODS[sim.BRACKET[-1]]["ordinal"]])
+        self.assertEqual(teams, 2 * sim.FULL_FIELD)
+
+
+class BracketGames(unittest.TestCase):
+    """`W20`-`W23` are a rate times a GAME COUNT, so the count is the whole
+    column. Four a week for everybody is the assumption these exist to refuse"""
+
+    def test_every_team_game_in_the_window_is_counted_once(self):
+        for w, nights in enumerate(sim.BRACKET_NIGHTS):
+            with self.subTest(week=w):
+                self.assertEqual(
+                    sum(sim.bracket_games(t)[w] for t in sim.NBA_TEAMS),
+                    sum(len(sim.NIGHTS[n][1]) for n in nights))
+
+    def test_the_weeks_are_not_flat_across_teams(self):
+        """The spread is 2-5 in a week, and the last two periods -- the pair
+        every seed band plays -- run 6 to 8 games across the 30 teams. A body
+        priced at the mean is priced a third of a week wrong at either end"""
+        per = {t: sim.bracket_games(t) for t in sim.NBA_TEAMS}
+        self.assertEqual((min(min(c) for c in per.values()),
+                          max(max(c) for c in per.values())), (2, 5))
+        pair = [sum(c[-2:]) for c in per.values()]
+        self.assertEqual((min(pair), max(pair)), (6, 8))
+
+    def test_the_nba_schedule_covers_the_whole_window(self):
+        """The bracket sits in March and the fantasy season ends before the
+        NBA's, so a schedule file cut short leaves a bracket week with no
+        nights at all and every W column in it reads 0"""
+        for i, nights in zip(sim.BRACKET, sim.BRACKET_NIGHTS):
+            with self.subTest(period=sim.PERIODS[i]["ordinal"]):
+                self.assertTrue(nights)
+                self.assertEqual(sim.NIGHTS[nights[0]][0],
+                                 sim.PERIODS[i]["start"])
+                self.assertEqual(sim.NIGHTS[nights[-1]][0],
+                                 sim.PERIODS[i]["end"])
+
+
+class SeedBands(unittest.TestCase):
+    """Which rounds a seed has to win is the whole of why `Delta P(title)` is
+    reported three times. Seeds 1-2 are double-byed into two games; 5-8 play
+    four, so a body's bracket weeks are worth twice as many rounds to them"""
+
+    def test_a_consolation_half_in_r1_is_named_where_it_is_read(self):
+        """R1's field is read off the period's game count, and two seeds enter
+        every round after it, so a period 20 that ever carried a consolation
+        half beside the bracket reads as a wider entering band. `_bands`' own
+        size assert passes on it and the failure surfaces rounds later as the
+        snake draw disagreeing with the bands -- a message about the draw for a
+        fact about the wire"""
+        was = bracket.PERIODS
+        first = dict(was[sim.BRACKET[0]])
+        first["games"] = first["games"] * 2
+        bracket.PERIODS = was[:sim.BRACKET[0]] + [first]
+        try:
+            with self.assertRaises(AssertionError) as raised:
+                bracket._bands()
+        finally:
+            bracket.PERIODS = was
+        self.assertIn("consolation", str(raised.exception))
+
+    def test_a_band_enters_the_bracket_in_the_period_it_is_seeded_into(self):
+        """Checked against the wire: a byed team has no score at all in the
+        rounds before its entry, and every team in the band has one in the
+        round it enters"""
+        for band in sim.BANDS:
+            skipped = [sim.PERIODS[i]["ordinal"] for i in sim.BRACKET
+                       if i < band.periods[0]]
+            entered = sim.PERIODS[band.periods[0]]["ordinal"]
+            for t in band.seeds:
+                with self.subTest(band=band.label, team=t):
+                    self.assertIn(entered, sim.SCORES[t])
+                    for o in skipped:
+                        self.assertNotIn(o, sim.SCORES[t])
+
+    def test_the_bands_partition_the_field_league_info_states(self):
+        text = one_line(read_text(skills_path("league-info", "SKILL.md")))
+        field = int(re.search(r"Bracket: (\d+) of \d+ teams", text).group(1))
+        seeds = [t for band in sim.BANDS for t in band.seeds]
+        self.assertEqual(len(seeds), field)
+        self.assertEqual(sorted(seeds), sorted(sim.BRACKET_TEAMS))
+        self.assertEqual(len(set(seeds)), field)
+
+    def test_no_team_outside_the_bracket_plays_the_first_round(self):
+        """Periods 21-23 run a consolation bracket alongside the playoff one,
+        so appearing in one proves nothing. R1 is the one period only bracket
+        teams are in, and the four missing from it are the four that missed"""
+        first = sim.PERIODS[sim.BRACKET[0]]["ordinal"]
+        played = {t for t, s in sim.SCORES.items() if first in s}
+        self.assertTrue(played <= set(sim.BRACKET_TEAMS))
+        self.assertEqual(played, set(sim.BANDS[-1].seeds))
+
+    def test_every_bracket_round_ends_in_the_final(self):
+        """A band's periods are the tail of the window from its entry round.
+        `P(title)` is a product over them, each factor conditional on winning
+        the one before, so a band that stops short is one that cannot win"""
+        for band in sim.BANDS:
+            with self.subTest(band=band.label):
+                self.assertEqual(list(band.periods),
+                                 [i for i in sim.BRACKET if i >= band.periods[0]])
+                self.assertEqual(band.periods[-1], sim.BRACKET[-1])
+        self.assertEqual([len(b.periods) for b in sim.BANDS],
+                         sorted(len(b.periods) for b in sim.BANDS))
+
+
+class TheDraw(unittest.TestCase):
+    """Who a seed can meet in a round is structure, not an average. The draw
+    splits into two halves and each is climbed worst seed first, so a 1-seed's
+    penultimate opponent comes only from its own half and can never be the 2 or
+    the 3. Every opponent level in the model is a distribution over that"""
+
+    def test_the_ladders_are_the_pairings_the_league_actually_played(self):
+        """Every playoff game of last season's bracket, walked in seed terms:
+        each half's climb, the winner carried forward on the wire's own scores,
+        and the two survivors meeting in the final. A shape taken from anywhere
+        but this is an assumption about who a seed can draw"""
+        order, held = bracket._seeded(), []
+        for ladder in sim.LADDERS:
+            cur = order[ladder[0] - 1]
+            for r, i in enumerate(sim.BRACKET[:-1]):
+                nxt, o = order[ladder[r + 1] - 1], sim.PERIODS[i]["ordinal"]
+                with self.subTest(period=o, seeds=(ladder[r + 1], ladder[:r + 1])):
+                    self.assertIn({cur, nxt}, [{a, h} for a, _, h, _
+                                               in sim.PERIODS[i]["games"]])
+                cur = max((cur, nxt), key=lambda t: sim.SCORES[t][o])
+            held.append(cur)
+        self.assertIn(set(held),
+                      [{a, h} for a, _, h, _
+                       in sim.PERIODS[sim.BRACKET[-1]]["games"]])
+
+    def test_every_seed_climbs_in_from_the_round_its_band_enters(self):
+        """The ladders and the bands are two readings of one bracket -- the
+        seeds a band holds are the seeds that enter where the band does, and a
+        ladder that disagrees prices a bye nobody has"""
+        entry = {s: sim.BRACKET.index(b.periods[0])
+                 for b in sim.BANDS for s in b.slots}
+        self.assertEqual(sorted(s for l in sim.LADDERS for s in l),
+                         sorted(entry))
+        for ladder in sim.LADDERS:
+            for k, s in enumerate(ladder):
+                with self.subTest(seed=s):
+                    self.assertEqual(entry[s], max(0, k - 1))
+
+    def test_the_half_a_seed_cannot_meet_early_is_the_half_it_meets_in_the_final(self):
+        """Half the draw is unreachable until the last round and the other half
+        is unreachable in it. Priced at the field's mean, every round is played
+        against a blend of both -- which is a team no bracket can produce"""
+        with cheap_monte_carlo(8):
+            last = len(sim.BRACKET) - 1
+            for b in sim.BANDS:
+                for s in b.slots:
+                    early = set().union(*[
+                        set(sim.opp_dist(s, w))
+                        for w in range(sim.BRACKET.index(b.periods[0]), last)])
+                    late = set(sim.opp_dist(s, last))
+                    with self.subTest(seed=s):
+                        self.assertFalse(early & late)
+                        self.assertEqual(len(early | late),
+                                         len(sim.BRACKET_TEAMS) - 1)
+
+    def test_the_final_is_played_against_a_survivor_not_against_the_field(self):
+        """Whoever you meet in the last round has already won its way through
+        its own half, which selects it above the level the field's mean quotes
+        -- a final priced at that mean is priced against a team the bracket
+        cannot produce"""
+        with cheap_monte_carlo(8):
+            last = len(sim.BRACKET) - 1
+            for b in sim.BANDS:
+                for s in b.slots:
+                    with self.subTest(seed=s):
+                        self.assertGreater(sim.opp_mean(last, s),
+                                           sim.opp_mean(last))
+                        self.assertAlmostEqual(
+                            sum(sim.opp_dist(s, last).values()), 1.0)
+
+
+class WeekPoints(unittest.TestCase):
+    """`W20`-`W23` as `Eval Definitions` defines them: a rate times the games
+    that player's NBA team plays inside the period, times the share of the
+    season he is projected available for"""
+
+    def test_an_ever_present_body_totals_his_rate_times_his_games_in_it(self):
+        body = sim.star(30.0, len(sim.team_nights("MEM")), ("C",), "MEM")
+        self.assertEqual(len(sim.week_points(body)), len(sim.BRACKET))
+        self.assertAlmostEqual(sum(sim.week_points(body)),
+                               30.0 * sum(sim.bracket_games("MEM")))
+
+    def test_a_body_projected_for_half_a_season_scores_half_the_window(self):
+        """The column is an EXPECTATION, so the share of the season he is
+        projected available is in it: same rate, same NBA schedule, half the
+        games and he is worth half the week"""
+        tg = len(sim.team_nights("MEM"))
+        iron = sim.star(30.0, tg, ("C",), "MEM")
+        half = sim.star(30.0, tg // 2, ("C",), "MEM")
+        self.assertAlmostEqual(
+            sum(sim.week_points(half)) / sum(sim.week_points(iron)),
+            (tg // 2) / tg)
+
+    def test_a_gp_above_his_teams_own_game_count_is_capped_at_every_night(self):
+        """`season` suits a body up for `min(gp, team games)` nights, so this
+        column agrees with the sim only if it caps the same way: a GP over his
+        team's game count is a body who plays every night, not one worth more
+        than his rate"""
+        tg = len(sim.team_nights("MEM"))
+        self.assertEqual(sim.week_points(sim.star(30.0, tg + 12, ("C",), "MEM")),
+                         sim.week_points(sim.star(30.0, tg, ("C",), "MEM")))
+
+    def test_two_identical_rates_split_on_their_nba_schedules(self):
+        """The whole reason the column exists. Same rate, same slot, 8 games in
+        the last two rounds against 6, and nothing in a season rate says so"""
+        pair = {t: sum(sim.bracket_games(t)[-2:]) for t in sim.NBA_TEAMS}
+        deep, thin = max(pair, key=pair.get), min(pair, key=pair.get)
+        self.assertGreater(sum(sim.week_points(sim.star(30.0, 68, ("C",), deep))[-2:]),
+                           sum(sim.week_points(sim.star(30.0, 68, ("C",), thin))[-2:]))
+
+
+class MarginSpread(unittest.TestCase):
+    """`sigma` is a margin between two weekly scores, and which spreads belong
+    inside it depends on what the model has already priced. An opponent the
+    draw NAMES carries only its own week-to-week deviation, because its level
+    is in `mus`; an opponent drawn unidentified out of the field carries the
+    field's level spread on top"""
+
+    def test_a_named_opponent_is_narrower_than_a_drawn_one_by_the_fields_spread(self):
+        self.assertLess(sim.MARGIN_CV, sim.FIELD_MARGIN_CV)
+        self.assertAlmostEqual(sim.FIELD_MARGIN_CV ** 2 - sim.MARGIN_CV ** 2,
+                               sim.FIELD_LEVEL_CV ** 2)
+
+    def test_the_drawn_opponent_carries_the_spread_of_the_field_it_comes_from(self):
+        """`reg_mean` draws that opponent from all 11 other teams and the
+        bracket's 8 are the top of the league by construction, so their levels
+        are a truncated sample of it: last season the whole league's spread was
+        twice the seeds'. A regular matchup priced on the seeds' spread is
+        priced against a field it is not drawn from"""
+        def level_sd(teams):
+            rel = [[sim.SCORES[t][sim.PERIODS[i]["ordinal"]]
+                    / statistics.mean(sim.SCORES[u][sim.PERIODS[i]["ordinal"]]
+                                      for u in teams)
+                    for i in sim.REGULAR] for t in teams]
+            return statistics.stdev([statistics.mean(v) for v in rel])
+        self.assertGreater(level_sd(sorted(sim.SCORES)),
+                           level_sd(sim.BRACKET_TEAMS))
+        self.assertGreater(sim.FIELD_LEVEL_CV, sim.LEVEL_CV)
+        self.assertLess(sim.FIELD_LEVEL_CV, level_sd(sorted(sim.SCORES)))
+
+    def test_the_split_recombines_onto_the_margins_it_was_taken_from(self):
+        """Put both sides' level spread and both sides' weekly spread back
+        together and it has to land ON the pair margins the eight seeds
+        actually scored -- a margin is a difference, so the period mean each
+        score was divided by cancels out of it and nothing about the split
+        survives into the total. A split that lands short is a split that has
+        eaten variance the margin needs, and every `sigma` here is that total"""
+        pooled = statistics.stdev(
+            [(x - y) / statistics.mean(pf)
+             for pf in ([sim.SCORES[t][sim.PERIODS[i]["ordinal"]]
+                         for t in sim.BRACKET_TEAMS] for i in sim.REGULAR)
+             for x, y in itertools.permutations(pf, 2)])
+        both = math.sqrt(2 * (sim.WITHIN_CV ** 2 + sim.LEVEL_CV ** 2))
+        self.assertLess(abs(both - pooled) / pooled, 0.01)
+
+
+class RoundProbability(unittest.TestCase):
+    """One bracket round is one week's PF against the opponents that round can
+    produce, so the model is a normal CDF on a margin mixed over the draw. What
+    it is fitted to is the argument"""
+
+    def test_a_better_week_wins_more_often(self):
+        p = [sim.round_pwin(mu, 0, sim.BANDS[-1].slots[0])
+             for mu in (1000.0, 1400.0, 1600.0, 2200.0)]
+        self.assertEqual(p, sorted(p))
+        self.assertTrue(all(0.0 < x < 1.0 for x in p), p)
+
+    def test_a_week_at_the_opponents_level_is_a_coin_flip(self):
+        """R1 is the one round nobody has survived into, so its opponent is a
+        named team rather than a mixture and the margin is readable straight
+        off `mus`. Every later round mixes, and a week at the mixture's mean
+        is not a coin flip -- the mixture is what makes it not one"""
+        seed = sim.BANDS[-1].slots[0]
+        opp, = sim.opp_dist(seed, 0)
+        self.assertAlmostEqual(sim.round_pwin(opp.mus[0], 0, seed), 0.5)
+
+    def test_the_opponent_level_is_measured_for_the_week_it_is_played_in(self):
+        """Periods run 28-56 NBA games and the bracket's four are all at the
+        dense end, so an opponent quoted at the season mean is quoted for a
+        week nobody plays. Which of the four is heaviest is the FIELD's own
+        schedules, not the league-wide game count -- the two disagree here"""
+        with cheap_monte_carlo(8):
+            levels = [sim.opp_mean(w) for w in range(len(sim.BRACKET))]
+            self.assertGreater(min(levels), sim.reg_mean())
+        self.assertEqual(len(set(levels)), len(levels))
+
+    def test_the_opponent_is_a_seed_rather_than_an_average_team(self):
+        """A playoff opponent is one of the eight. Priced off all 12 the bar
+        carries a team nobody can meet in the bracket, which lowers it in
+        every round"""
+        with cheap_monte_carlo(8):
+            for w, i in enumerate(sim.BRACKET):
+                whole = statistics.mean(t.mus[w] for t in sim.league())
+                with self.subTest(period=sim.PERIODS[i]["ordinal"]):
+                    self.assertGreater(sim.opp_mean(w), whole)
+
+    def test_sigma_scales_with_the_level_it_is_measured_against(self):
+        """A margin sd is a dispersion around a weekly level, so a denser week
+        carries a proportionally wider one. Held flat, the densest bracket week
+        reads as the most certain"""
+        cv = [sim.sigma(w) / sim.field_mean(w) for w in range(len(sim.BRACKET))]
+        for c in cv:
+            self.assertAlmostEqual(c, cv[0])
+        self.assertGreater(sim.sigma(max(range(len(sim.BRACKET)),
+                                         key=sim.field_mean)),
+                           sim.sigma(min(range(len(sim.BRACKET)),
+                                         key=sim.field_mean)))
+
+    def test_sigma_is_the_same_for_every_team_in_the_draw(self):
+        """Every game in the bracket is priced with it, including the ones
+        deciding who a later opponent is. Scaled off the field LESS the loaded
+        roster, the eight seeds would each be running a bracket of their own"""
+        was = roster_mod.ROSTER
+        try:
+            with cheap_monte_carlo(8):
+                mine = [sim.sigma(w) for w in range(len(sim.BRACKET))]
+                roster_mod.ROSTER = THEIR_ROSTER
+                self.assertEqual([sim.sigma(w) for w in range(len(sim.BRACKET))],
+                                 mine)
+        finally:
+            roster_mod.ROSTER = was
+
+
+class MatchedBasis(unittest.TestCase):
+    """`mu_us` and `mu_opp` are the SAME measurement of two rosters -- every
+    team's file through this sim's own pipeline. Anything else prices a margin
+    between two quantities that differ by more than the rosters do, and the
+    difference lands in `P(round)` as an edge nobody has"""
+
+    def test_inflating_every_teams_rates_leaves_every_band_where_it_was(self):
+        """The property the matched basis IS. A league-wide 10% is a rescaling
+        of the whole board, not an edge: our week grows and so does every
+        opponent's, so no published figure may move. An opponent level taken
+        off anything but this pipeline reads the inflation as an edge and books
+        it.
+
+        It does not cancel EXACTLY. `league_rates` reaches a rate through
+        `projected_rate`, and the bodies `pad` tops each roster up to 38 with
+        carry fixed grades no rate feed serves, so a team holding more real
+        bodies rescales harder. Measured at 0.008 of a `P(title)`, which is
+        what this tolerance sits just above: a bound on that leak, not slack.
+
+        On BANDS rather than on single rounds, because a band averages over its
+        four seeds. One round from one seed is one slot of the draw, and the
+        7th and 8th projected seeds are 0.3% of a season apart -- they trade
+        places under a re-run, which re-points that slot at a different team"""
+        with cheap_monte_carlo(8):
+            mus = sim.bracket_weeks(sim.basis())
+            base = [sim.title_prob(mus, b) for b in sim.BANDS]
+            with league_rates(1.10):
+                mus = sim.bracket_weeks(sim.basis())
+                got = [sim.title_prob(mus, b) for b in sim.BANDS]
+        for b, was, now in zip(sim.BANDS, base, got):
+            with self.subTest(band=b.label):
+                self.assertAlmostEqual(was, now, delta=0.012)
+
+    def test_the_field_is_the_top_eight_projected_teams(self):
+        """Which teams seed next season is unknown, so the field is the rule
+        stated in `method.md`: the league sorted on projected season PF, cut at
+        the bracket's own size"""
+        with cheap_monte_carlo(8):
+            league, field = sim.league(), sim.field()
+        self.assertEqual(len(field), len(sim.BRACKET_TEAMS))
+        self.assertEqual(list(field), list(league)[:len(field)])
+        self.assertGreater(min(t.pf for t in field),
+                           max(t.pf for t in league[len(field):]))
+
+    def test_a_team_is_never_its_own_opponent(self):
+        """We are the strongest projected roster, so leaving ourselves in the
+        field pulls the bar we are measured against up toward us and shrinks
+        the edge by an eighth of it"""
+        with cheap_monte_carlo(8):
+            field = sim.field()
+            ours = [t for t in field
+                    if t.path == os.path.basename(roster_mod.ROSTER)]
+            self.assertTrue(ours, "our own roster is not a projected seed")
+            for w in range(len(sim.BRACKET)):
+                with self.subTest(round=w):
+                    self.assertAlmostEqual(
+                        sim.opp_mean(w),
+                        statistics.mean(t.mus[w] for t in field
+                                        if t not in ours))
+
+    def test_last_seasons_roster_files_are_not_a_second_league(self):
+        """`fetch_data.py roster` writes `roster-<id>-<season>.json` and leaves
+        the previous season's beside it, so the roll puts 24 files in the
+        directory. Read season-blind the league is 24 teams, one franchise can
+        take two seats in `field()`, and the bracket that comes out is a draw
+        nobody plays -- with no short-field guard to trip"""
+        stale = os.path.join(sim.HERE, "roster-161025-2020-21.json")
+        with open(stale, "w") as f:
+            f.write(read_text(os.path.join(sim.HERE, roster_mod.ROSTER)))
+        try:
+            with cheap_monte_carlo(4):
+                teams = json.loads(read_text(os.path.join(
+                    sim.HERE, "teams-%s.json" % fetch_data.SEASON_TAG)))
+                self.assertEqual(len(sim.league()), len(teams))
+        finally:
+            os.remove(stale)
+
+    def test_a_roster_priced_by_path_is_left_out_of_its_own_field(self):
+        """`basis(path)` reads a file without moving the module global, so the
+        import path in `sim.py`'s module docstring hands a counterparty's
+        roster to a bracket that still believes ours is loaded: the
+        counterparty is seeded against a clone of itself and the one seed it
+        could never avoid drops out of the draw. Whose roster it is comes in as
+        an argument here, the way every other import entry point takes it"""
+        with cheap_monte_carlo(8):
+            for t in sim.field():
+                with self.subTest(team=t.path):
+                    self.assertNotIn(t.path,
+                                     [o.path for o in sim.opponents(t.path)])
+
+    def test_a_stronger_roster_wins_more_rounds_than_a_weaker_one(self):
+        """End to end: the only thing left between two teams' `P(round)` is
+        the rosters, which is what the whole model is for"""
+        seed = sim.BANDS[-1].slots[0]
+        with cheap_monte_carlo(8):
+            best, worst = sim.league()[0], sim.league()[-1]
+            for w in range(len(sim.BRACKET)):
+                with self.subTest(round=w):
+                    self.assertGreater(sim.round_pwin(best.mus[w], w, seed),
+                                       sim.round_pwin(worst.mus[w], w, seed))
+
+
+class BracketWeeks(unittest.TestCase):
+    """`mu_us` for a round is one week of the same sim every other figure here
+    comes out of -- optimal nightly lineups, projected GP -- scored over that
+    week's NBA nights and no others"""
+
+    def test_a_week_scores_that_weeks_nights_and_no_others(self):
+        """An ironman on one NBA team scores his rate once per team game in
+        the period. Anything else and the run is bucketing the wrong nights"""
+        body = sim.star(30.0, 82, ("C",), "MEM", "IRON")
+        self.assertEqual([round(x, 6) for x in sim.bracket_weeks([body], trials=2)],
+                         [30.0 * g for g in sim.bracket_games("MEM")])
+
+    def test_the_last_three_rounds_score_nothing_toward_the_standings(self):
+        """Periods 21-23 are outside `SCORED`, so a run on the standings basis
+        never reaches them at all"""
+        for i in sim.BRACKET[1:]:
+            for n in sim.period_nights(i):
+                with self.subTest(night=sim.NIGHTS[n][0]):
+                    self.assertIsNone(sim.WEEK_OF[n])
+                    self.assertIsNotNone(sim.BRACKET_CAL.week_of[n])
+
+    def test_swapping_a_body_for_its_own_twin_moves_nothing(self):
+        """Common random numbers, in the bracket path too. Without them the
+        two rosters draw different availability and a no-op swap prints a
+        `Delta P(title)` several times what a real one is worth"""
+        full = sim.basis()
+        p = sim.our_roster()[0]
+        twin = sim.star(p["avg"], p["gp"], p["elig"], p["tm"], "TWIN")
+        self.assertEqual(sim.bracket_weeks(full, trials=8),
+                         sim.bracket_weeks(sim.swap(full, [p["n"]], [twin]),
+                                           trials=8))
+
+
+class TitleProbability(unittest.TestCase):
+    """`Delta P(title)`: the same counterfactual `Delta w` uses, priced in the
+    only currency the bracket pays in (`Eval Definitions`). Reported under
+    every seed band, because which rounds bind is what the answer turns on"""
+
+    def test_exactly_one_of_the_eight_seeds_wins_the_title(self):
+        """The whole draw at once: each projected seed priced from its own
+        slot, against the survivors of the parts of the bracket it is not in.
+        Those eight are one bracket's outcomes and have to sum to 1. Priced
+        against the field's MEAN instead, each seed is measured in a bracket of
+        its own and the eight sum to whatever they sum to"""
+        with cheap_monte_carlo(8):
+            total = sum(sim.seed_title(t.mus, k + 1, path=t.path)
+                        for k, t in enumerate(sim.field()))
+        self.assertAlmostEqual(total, 1.0, places=9)
+
+    def test_a_starter_is_worth_more_than_the_body_that_replaces_him(self):
+        full = sim.basis()
+        with cheap_monte_carlo(20):
+            got, = sim.player_title(full, ["Jalen Suggs"], blocks=2).values()
+        for band in sim.BANDS:
+            with self.subTest(band=band.label):
+                mean, sd, blocks = got[band.label]
+                self.assertGreater(mean, 0.0)
+                self.assertLess(mean, 1.0)
+                self.assertEqual(len(blocks), 2)
+                self.assertGreater(sd, 0.0)
+
+    def test_he_is_priced_against_a_replacement_of_his_own_slot_group(self):
+        """The counterfactual is the whole meaning of the number (`Eval
+        Definitions §Δw`). A center priced against a forward's R is the
+        single-R error, applied to the column a bracket-week call reads"""
+        full = sim.basis()
+        with cheap_monte_carlo(20):
+            R = sim.group_replacement(full)
+            base = sim.bracket_weeks(full)
+            own = sim.bracket_weeks(sim.swap(
+                full, ["Jakob Poeltl"], [sim.group_body("center", R["center"])]))
+            forward = sim.bracket_weeks(sim.swap(
+                full, ["Jakob Poeltl"], [sim.group_body("forward", R["forward"])]))
+            got, = sim.player_title(full, ["Jakob Poeltl"], blocks=1,
+                                    R=R).values()
+            # Priced inside the block: `title_prob` reads the league's own sim
+            # for the opponent level, so it is a measurement at these trials
+            want = {b.label: sim.title_prob(base, b) - sim.title_prob(own, b)
+                    for b in sim.BANDS}
+        for band in sim.BANDS:
+            with self.subTest(band=band.label):
+                self.assertAlmostEqual(got[band.label][0], want[band.label],
+                                       places=9)
+        self.assertNotEqual(own, forward, "this roster cannot tell the two "
+                            "counterfactuals apart -- pick another player")
+
+    def test_a_side_of_a_deal_is_priced_in_one_joint_run(self):
+        """`Eval Definitions §ΔP(title)` gives a multi-piece side one joint
+        run and forbids added rows, and `Delta w` has `incoming_wins` for
+        exactly that. Where the two paths overlap -- a change of ONE body --
+        they are the same measurement on the same blocks and have to agree to
+        the digit, which is what makes the joint number readable against the
+        per-player column above it"""
+        with cheap_monte_carlo(8):
+            full, R = sim.basis(), flat_R()
+            name = sim.our_roster()[0]["n"]
+            body, = [p for p in full if p["n"] == name]
+            without = sim.swap(full, [name],
+                               [sim.group_body(sim.slot_group(body["elig"]),
+                                               R[sim.slot_group(body["elig"])])])
+            row, = sim.player_title(full, [name], blocks=2, R=R).values()
+            joint = sim.roster_title(full, without, blocks=2)
+        for band in sim.BANDS:
+            with self.subTest(band=band.label):
+                self.assertEqual(joint[band.label], row[band.label])
+
+    def test_the_import_path_prices_a_counterparty_as_the_cli_does(self):
+        """The two documented ways to price a counterparty's bracket week --
+        `--roster their.json playoffs` and `sim.player_title(sim.basis(
+        "their.json"), names)` (`sim.py` module docstring, `trades` step 5) --
+        are about the same team and have to answer the same. Left to read the
+        module global the import path seeds a projected 2-seed against a
+        bracket that still contains it, drops the one seed it could not avoid,
+        and prints that under the counterparty's name"""
+        theirs = "roster-161018-2025-26.json"
+        with cheap_monte_carlo(8):
+            full = sim.basis(theirs)
+            name = sim.our_roster(theirs)[0]["n"]
+            got, = sim.player_title(full, [name], blocks=1, R=flat_R(),
+                                    path=theirs).values()
+            was = roster_mod.ROSTER
+            try:
+                roster_mod.ROSTER = theirs
+                cli_side, = sim.player_title(full, [name], blocks=1,
+                                             R=flat_R()).values()
+            finally:
+                roster_mod.ROSTER = was
+            ours_loaded, = sim.player_title(full, [name], blocks=1,
+                                            R=flat_R()).values()
+        for band in sim.BANDS:
+            with self.subTest(band=band.label):
+                self.assertEqual(got[band.label], cli_side[band.label])
+        self.assertNotEqual(got, ours_loaded, "this counterparty is priced the "
+                            "same either way -- pick one inside the field")
+
+    def test_a_name_not_on_the_roster_is_refused(self):
+        with cheap_monte_carlo(4, blocks=1):
+            with self.assertRaises(KeyError):
+                sim.player_title(sim.basis(), ["Nobody At All"], blocks=1,
+                                 R=flat_R())
+
+
+class OneDraw(unittest.TestCase):
+    """`P(title)`, `by seed` and the multiplier are single UNPAIRED draws of
+    twelve rosters. Nothing in them cancels the way the `Delta P` column's
+    paired blocks do, so measuring their spread means re-drawing the whole
+    basis -- ours and the field's -- on one seed at a time"""
+
+    def test_the_draw_the_report_publishes_is_the_one_its_own_seed_gives(self):
+        """The published figures come off `bracket.SEED0` and the error bar off
+        re-draws of the same thing. A re-draw that lands somewhere else on that
+        seed is measuring the spread of a bracket nobody published"""
+        pinned = {t.path: t.mus for t in bracket.league()}
+        with bracket.draw(bracket.SEED0):
+            self.assertEqual({t.path: t.mus for t in bracket.league()}, pinned)
+
+    def test_a_re_draw_moves_the_field_and_not_only_the_loaded_roster(self):
+        """`sigma`, `field_mean` and every opponent level are the field's own
+        weeks. Re-drawing ours against a pinned field prices each round against
+        a draw it was not scored on, and books the loaded roster's noise as the
+        whole error"""
+        pinned = {t.path: t.mus for t in bracket.league()}
+        with bracket.draw(bracket.SEED0 + engine.TRIALS):
+            moved = {t.path: t.mus for t in bracket.league()}
+        self.assertEqual(set(moved), set(pinned))
+        for path in sorted(pinned):
+            with self.subTest(team=path):
+                self.assertNotEqual(moved[path], pinned[path])
+
+    def test_the_field_is_back_on_its_own_draw_afterwards(self):
+        """Every other report in the run reads `league()` too"""
+        pinned = {t.path: t.mus for t in bracket.league()}
+        with bracket.draw(bracket.SEED0 + engine.TRIALS):
+            pass
+        self.assertEqual({t.path: t.mus for t in bracket.league()}, pinned)
+
+
+class WeeksReport(unittest.TestCase):
+    """`W20`-`W23` alone, for any roster. A rate times NBA games times a GP
+    share is arithmetic off the roster file and the schedule, so the columns
+    every team eval carries must not cost a bracket Monte Carlo to print"""
+
+    ROW = re.compile(r"^  (\S.*?)" + r" +(\d+/\d+|-)" * 4 + r" *(.*)$", re.M)
+
+    def test_it_prices_a_bracket_week_without_running_the_monte_carlo(self):
+        """The whole reason it is a separate report. `playoffs` costs ~350
+        simulated seasons for the same four columns, and eleven of twelve evals
+        want only the columns"""
+        with mock.patch.object(sim.engine, "run",
+                               side_effect=AssertionError("ran the sim")):
+            out = render("weeks")
+        self.assertIn("W20", out)
+
+    def test_every_rostered_player_gets_a_cell_per_bracket_round(self):
+        out = render("weeks")
+        rows = {m[0]: m[1:] for m in self.ROW.findall(out)}
+        ours = sim.our_roster()
+        self.assertEqual(set(rows), {p["n"] for p in ours}, out)
+        for p in ours:
+            if sim.unsigned(p["tm"]) or sim.projected_rate(p["n"]) is None:
+                continue
+            with self.subTest(player=p["n"]):
+                for w, pts in enumerate(sim.week_points(p)):
+                    self.assertEqual(rows[p["n"]][w], "%.0f/%d"
+                                     % (pts, sim.bracket_games(p["tm"])[w]))
+
+    def test_it_answers_about_a_counterparty(self):
+        out = render("weeks", ROOKIE_ROSTER)
+        self.assertEqual(
+            {m[0] for m in self.ROW.findall(out)},
+            {p["n"] for p in sim.our_roster(ROOKIE_ROSTER)}, out)
+
+
+class PlayoffsReport(unittest.TestCase):
+    """The report `Eval Definitions §ΔP(title)`, `eval-team` and `trades` all
+    send a reader to. It answers about any team -- the opponent distribution is
+    the league's, not our weekly scores -- so `--roster` has to serve it"""
+
+    ROW = re.compile(r"^  (\S.*?) +(\S+) +(\S+) +(\S+) +(\S+)"
+                     + r" +([-+][\d.]+) +\+-([\d.]+)" * 3 + r" *(.*)$", re.M)
+
+    def test_every_player_gets_a_week_column_per_round_and_a_band_per_seed(self):
+        out = render("playoffs")
+        rows = {m[0]: m[1:] for m in self.ROW.findall(out)}
+        ours = sim.our_roster()
+        self.assertEqual(set(rows), {p["n"] for p in ours}, out)
+        for i in sim.BRACKET:
+            self.assertIn("W%d" % sim.PERIODS[i]["ordinal"], out)
+        for band in sim.BANDS:
+            self.assertIn(band.label, out)
+        for p in ours:
+            if sim.unsigned(p["tm"]) or sim.projected_rate(p["n"]) is None:
+                continue
+            with self.subTest(player=p["n"]):
+                for w, pts in enumerate(sim.week_points(p)):
+                    cell = rows[p["n"]][w]
+                    self.assertEqual(cell, "%.0f/%d"
+                                     % (pts, sim.bracket_games(p["tm"])[w]))
+
+    def test_the_legend_above_it_states_the_unit_of_its_own_table(self):
+        """One legend prints above every report and it is the first thing a
+        reader meets. Wins, scored-period PF and a per-game rate are the other
+        thirteen tables' units and none of the three is a column here -- so the
+        one report whose standing rule is that its number is never read in wins
+        opened by defining wins, and never named percentage points of a title
+        at all"""
+        legend = one_line("\n".join(render("playoffs").splitlines()[:2]))
+        self.assertTrue(legend.startswith("units:"), legend)
+        self.assertNotIn("wins", legend)
+        self.assertIn("percentage points of title probability", legend)
+
+    def test_the_projected_field_names_its_teams(self):
+        """The one table here that ranks the whole league listed twelve file
+        names. Which of them is the counterparty under discussion, and which is
+        us, was a question only the `team-info` skill could answer"""
+        out = render("playoffs")
+        teams = json.loads(read_text(
+            os.path.join(sim.HERE, "teams-%s.json" % fetch_data.SEASON_TAG)))
+        for name in teams.values():
+            self.assertIn(name, out)
+
+    def test_a_body_with_no_nba_schedule_prints_no_week_columns(self):
+        """`fa` runs on the sim's synthetic schedule so its `Delta w` exists,
+        but `W20`-`W23` are that player's own games and he has none (`Eval
+        Definitions §Columns`). Printing LAC's is a fact about the fetch date
+        published as a fact about the player"""
+        path = roster_file(
+            {"n": "Nobody Signed", "tm": sim.UNSIGNED, "avg": 30.0, "tot": 0.0,
+             "gp": 60, "posLabel": "C", "elig": ["C"]},
+            {"n": "Victor Wembanyama", "tm": "SAS", "avg": 50.0, "tot": 0.0,
+             "gp": 60, "posLabel": "C", "elig": ["C"]})
+        rows = dict((m[0], m[1:]) for m in self.ROW.findall(render("playoffs", path)))
+        self.assertEqual(list(rows["Nobody Signed"][:len(sim.BRACKET)]),
+                         ["-"] * len(sim.BRACKET))
+        self.assertNotIn("-", rows["Victor Wembanyama"][:len(sim.BRACKET)])
+
+    def test_a_row_with_no_week_columns_carries_the_flag_that_explains_them(self):
+        """Every body on the roster is priced for `Delta P(title)`, including
+        one with no NBA team, so a row can print four blank W columns beside a
+        percentage point of a title -- which reads as a player worth that while
+        playing no bracket games. `players` answers it with the same `fa` and
+        `noproj` (`Eval Template §Flags`), and the blanks are unreadable without
+        them"""
+        path = roster_file(
+            {"n": "Nobody Signed", "tm": sim.UNSIGNED, "avg": 30.0, "tot": 0.0,
+             "gp": 60, "posLabel": "C", "elig": ["C"]},
+            {"n": "Victor Wembanyama", "tm": "SAS", "avg": 50.0, "tot": 0.0,
+             "gp": 60, "posLabel": "C", "elig": ["C"]})
+        rows = dict((m[0], m[1:]) for m in self.ROW.findall(render("playoffs", path)))
+        self.assertIn("fa", rows["Nobody Signed"][-1].split())
+        self.assertEqual(rows["Victor Wembanyama"][-1], "")
+
+    def test_the_sigma_bound_is_taken_off_the_title_ladder_alone(self):
+        """Single elimination: 8 seeds play 7 games for the title, and the 8th
+        seeded pairing in those periods is two ELIMINATED seeds playing for
+        third. Both-sides-seeded separated last season's tanked games only
+        because every one of those happened to draw a non-seed, and a draw that
+        pairs two eliminated seeds puts a game neither is trying to win inside
+        the margin sd this bound is printed from"""
+        out = render("playoffs")
+        n, = re.findall(r"The (\d+) bracket games actually played", out)
+        self.assertEqual(int(n), len(sim.BRACKET_TEAMS) - 1)
+
+    ROUND = re.compile(
+        r"^ +(\d+-\d+) +(W\d+) +(\d+) +(\d+) +(\d+) +(\d+) +(\d+) +([\d.]+)$",
+        re.M)
+
+    def test_the_basis_footer_states_what_the_probabilities_were_built_on(self):
+        """A `P(round)` is only readable against the opponent level and the
+        margin sd behind it, so every round of every band prints all three and
+        the printed probability is the one they imply -- a footer describing
+        some other run is worse than none.
+
+        Not to the last digit: `P(round)` mixes `Phi` over the opponents the
+        draw can produce and `mu_opp` is that mixture's MEAN, so the two differ
+        by the curvature of `Phi` across it. That gap is what the tolerance
+        here bounds"""
+        out = render("playoffs")
+        rows = self.ROUND.findall(out)
+        self.assertEqual(
+            [(r[0], r[1]) for r in rows],
+            [(b.label, "W%d" % sim.PERIODS[i]["ordinal"])
+             for b in sim.BANDS for i in b.periods], out)
+        for band, label, _, mu_us, mu_opp, _, sd, p in rows:
+            with self.subTest(band=band, round=label):
+                z = (float(mu_us) - float(mu_opp)) / float(sd)
+                self.assertAlmostEqual(float(p),
+                                       0.5 * (1 + math.erf(z / math.sqrt(2))),
+                                       delta=0.015)
+        self.assertIn("x a regular-season game", out)
+
+    def test_the_footer_names_every_team_the_opponent_level_is_measured_on(self):
+        """`mu_opp` is 11 other roster files run through this same sim, and
+        which teams those are is the whole basis. A level with no field under
+        it is unauditable -- and the reader has to see the loaded team excluded
+        from the bar it is measured against"""
+        out = render("playoffs")
+        for path in committed_rosters():
+            with self.subTest(team=os.path.basename(path)):
+                self.assertIn(os.path.basename(path), out)
+        marked, = [l for l in out.splitlines() if "<- loaded" in l]
+        self.assertIn(os.path.basename(roster_mod.ROSTER), marked)
+
+    def test_each_band_carries_its_own_error_bar(self):
+        """One `+-` per row cannot serve three bands. All three are transforms
+        of ONE simulated week, so they move together: the widest band's noise
+        is not the middle one's, and a reader comparing two bands is reading
+        the number he was given against a spread nothing measured"""
+        with cheap_monte_carlo():
+            out = render("playoffs")
+            name = sim.our_roster()[0]["n"]
+            full = sim.basis()
+            got, = sim.player_title(full, [name],
+                                    R=sim.group_replacement(full)).values()
+        row, = [m for m in self.ROW.findall(out) if m[0] == name]
+        for k, band in enumerate(sim.BANDS):
+            mean, sd, blocks = got[band.label]
+            with self.subTest(band=band.label):
+                self.assertAlmostEqual(float(row[5 + 2 * k]), 100 * mean,
+                                       places=2)
+                self.assertAlmostEqual(float(row[6 + 2 * k]),
+                                       100 * sim.se_mean(blocks), places=2)
+
+    def test_the_error_bar_it_publishes_is_measured_on_enough_blocks(self):
+        """An sd on 2 dof carries ~50% of itself as error -- published, it
+        reads as a measurement of a spread nobody measured. The row's own
+        blocks are what it is computed from, so the count printed above the
+        table is the count that ran"""
+        out = render("playoffs")
+        self.assertGreaterEqual(bracket.TITLE_BLOCKS - 1, 5)
+        self.assertIn("averaged over %d shared" % bracket.TITLE_BLOCKS, out)
+        with cheap_monte_carlo(4):
+            full = sim.basis()
+            got, = sim.player_title(full, [sim.our_roster()[0]["n"]],
+                                    R=flat_R()).values()
+        self.assertEqual(len(got[sim.BANDS[0].label][2]), bracket.TITLE_BLOCKS)
+
+    SUMMARY = re.compile(r"^ +(\d+-\d+) +([\d.]+) +\+-([\d.]+)"
+                         r" +([\d.]+)-([\d.]+) +\+-([\d.]+)"
+                         r" +(\d+) +([\d.]+) \+-([\d.]+) \(", re.M)
+
+    def test_the_unpaired_band_figures_carry_an_error_bar_too(self):
+        """These three sit directly under a table whose every `Delta P` row
+        carries a `+-`, and they are the ones that need it most: a `Delta P` is
+        a paired difference at matched seeds and the opponent noise cancels out
+        of it, while `P(title)` is one unpaired draw of twelve rosters. Bolded
+        into `findings.md` bare, they read as the tighter of the two"""
+        rows = self.SUMMARY.findall(render("playoffs"))
+        self.assertEqual([r[0] for r in rows], [b.label for b in sim.BANDS])
+        for row in rows:
+            with self.subTest(band=row[0]):
+                for k, what in ((2, "P(title)"), (5, "by seed"),
+                                (8, "the multiplier")):
+                    self.assertGreater(float(row[k]), 0,
+                                       "%s printed a bar nothing measured"
+                                       % what)
+
+    def test_what_it_publishes_is_the_draw_the_basis_above_it_states(self):
+        """The bar is measured by re-drawing the whole basis, and the figure
+        beside it stays the draw the `mu_us` and `sigma` rows above were printed
+        from -- a block mean there would describe a bracket no row on the page
+        was built on"""
+        out = render("playoffs")
+        with cheap_monte_carlo():
+            mus = sim.bracket_weeks(sim.basis(), seed0=bracket.SEED0)
+            want = [sim.title_prob(mus, b) for b in sim.BANDS]
+        for row, band, p in zip(self.SUMMARY.findall(out), sim.BANDS, want):
+            with self.subTest(band=band.label):
+                self.assertAlmostEqual(float(row[1]), p, places=3)
+
+    def test_the_week_headers_sit_over_the_columns_they_name(self):
+        """The four rounds are not interchangeable -- a 1-2 seed never plays
+        W20 at all -- so a header shifted or reordered off its own data prints
+        one period's points under another's name, and the reader books a
+        bracket week the player does not have"""
+        lines = render("playoffs").splitlines()
+        head, = [l for l in lines if l.strip().startswith("player")]
+        row = next(l for l in lines[lines.index(head) + 1:]
+                   if len(re.findall(r"\d+/\d+", l)) == len(sim.BRACKET))
+        at = 0
+        for i in sim.BRACKET:
+            col = "W%d" % sim.PERIODS[i]["ordinal"]
+            with self.subTest(column=col):
+                at = re.compile(r"\d+/\d+").search(row, at).end()
+                self.assertEqual(re.search(r"\b%s\b" % col, head).end(), at,
+                                 "`%s` does not end over its own column:\n%s\n%s"
+                                 % (col, head, row))
+
+    def test_the_rows_are_ordered_on_the_band_the_preamble_names(self):
+        """28 rows is a list a reader reads the top of. The three bands
+        disagree about the order -- which of two bodies matters more depends on
+        how many rounds you have to win -- so an order taken off one band and
+        announced as another's is a ranking of a question nobody asked"""
+        out = render("playoffs")
+        self.assertIn("Sorted on the %s band." % sim.BANDS[0].label,
+                      one_line(out))
+        col = [float(m[5]) for m in self.ROW.findall(out)]
+        self.assertEqual(col, sorted(col, reverse=True))
+
+    REG = re.compile(r"^ +reg +([\d.]+) +(\d+) +(\d+) +(\d+) +(\d+) +([\d.]+)"
+                     r"  <- one regular period$", re.M)
+
+    def test_the_sigma_column_is_the_level_times_the_spread_the_prose_names(self):
+        """Two different opponents are priced on this table. A bracket round
+        NAMES both teams, so their levels are in `mu_us` and `mu_opp` already
+        and only the week-to-week deviation is left; the `reg` row -- the
+        denominator the multiplier beside it divides by -- draws its opponent
+        unidentified out of the league and carries that field's level spread on
+        top. One spread for both prices a regular season's uncertainty into a
+        bracket game, and the multiplier moves with it"""
+        out = render("playoffs")
+        self.assertIn("%.4f of the level" % sim.MARGIN_CV, out)
+        self.assertIn("%.4f. Both off last season's wire" % sim.FIELD_MARGIN_CV,
+                      out)
+        for band, label, _, _, _, field, sd, _ in self.ROUND.findall(out):
+            with self.subTest(band=band, round=label):
+                self.assertAlmostEqual(float(sd),
+                                       sim.MARGIN_CV * float(field), delta=1.0)
+        reg, = self.REG.findall(out)
+        _, mu_us, mu_opp, field, sd, p = (float(x) for x in reg)
+        self.assertEqual(mu_opp, field, "the drawn opponent is the field's own "
+                         "mean, not a survivor above it")
+        self.assertAlmostEqual(sd, sim.FIELD_MARGIN_CV * field, delta=1.0)
+        z = (mu_us - mu_opp) / sd
+        self.assertAlmostEqual(p, 0.5 * (1 + math.erf(z / math.sqrt(2))),
+                               delta=0.005)
+
+    BAND = re.compile(r"^ +(\d+-\d+) +([\d.]+) +\+-[\d.]+"
+                      r" +([\d.]+)-([\d.]+) +\+-[\d.]+ +(\d+)"
+                      r" +([\d.]+) \+-[\d.]+ \(([\d.]+)-([\d.]+) by round\)$",
+                      re.M)
+
+    def test_each_band_figure_sits_inside_the_spread_printed_beside_it(self):
+        """A band is a SEED RANGE and the figure is the mean over it, so both
+        headlines are quoted with the spread they were averaged from and have
+        to sit inside it. A headline outside its own range is averaging a
+        different set of seeds or rounds from the one the range describes --
+        and the range is the column a decision that turns on WHICH seed is
+        told to read instead"""
+        rows = self.BAND.findall(render("playoffs"))
+        self.assertEqual([r[0] for r in rows], [b.label for b in sim.BANDS])
+        for row, band in zip(rows, sim.BANDS):
+            p, lo, hi, rounds, mult, mlo, mhi = (float(x) for x in row[1:])
+            with self.subTest(band=band.label):
+                self.assertEqual(rounds, len(band.periods))
+                self.assertLessEqual(lo, hi)
+                self.assertLessEqual(mlo, mhi)
+                # Each end is printed to the headline's own precision, so a
+                # tie sits within one rounded step of it.
+                self.assertTrue(lo - 0.0005 <= p <= hi + 0.0005,
+                                "P(title) %.3f is outside its own %.3f-%.3f"
+                                % (p, lo, hi))
+                self.assertTrue(mlo - 0.05 <= mult <= mhi + 0.05,
+                                "the multiplier %.1f is outside its own "
+                                "%.1f-%.1f by round" % (mult, mlo, mhi))
+
+    SENSITIVITY = re.compile(
+        r"sigma sensitivity\. The \d+ bracket games actually played give a "
+        r"margin sd of (\d+) against the (\d+)-(\d+) above; at that sigma the "
+        r"(\S+) band reads ([\d.]+) rather than ([\d.]+)\.")
+
+    def test_the_sigma_sensitivity_reads_against_the_table_it_sits_under(self):
+        """The one paragraph on the page that quotes a `P(title)` this run did
+        not publish, and it is only readable as a distance from the one it did:
+        both the sd it is compared against and the figure it displaces are
+        columns printed above it. Sourced anywhere else the reader is handed a
+        bound on a run he cannot see, in the direction he cannot check"""
+        out = render("playoffs")
+        m = self.SENSITIVITY.search(one_line(out))
+        self.assertIsNotNone(m, out)
+        tight, lo, hi, band, alt, basis = m.groups()
+        sds = [float(r[6]) for r in self.ROUND.findall(out)]
+        self.assertEqual((float(lo), float(hi)), (min(sds), max(sds)))
+        published = {r[0]: float(r[1]) for r in self.BAND.findall(out)}
+        self.assertEqual(float(basis), published[band])
+        self.assertLess(float(tight), min(sds), "not the tighter read it is "
+                        "printed as -- the direction below is backwards")
+        self.assertGreater(float(alt), float(basis))
+
+    def test_the_draw_it_prints_is_the_one_it_climbed(self):
+        """The half a seed cannot meet before the final is the whole reason
+        `mu_opp` is a survivor rather than the field's mean, and this line is
+        where a reader checks which half he is in. Printed off anything but
+        the ladders the rounds were climbed on, the audit passes on a bracket
+        nobody was priced in"""
+        halves = re.search(r"draw is seeds (\S+) \| (\S+), each half climbed",
+                           one_line(render("playoffs")))
+        self.assertIsNotNone(halves)
+        self.assertEqual([[int(s) for s in h.split("-")]
+                          for h in halves.groups()],
+                         [list(l) for l in sim.LADDERS])
+
+    def test_a_counterparty_is_banded_on_his_own_weeks(self):
+        """`--roster` has to reach the `P(title)` block and not only the rows.
+        A band is the LOADED roster placed at a seed, so a run that prices his
+        players and then publishes our title odds under his name reads as a
+        rebuilding team a coin flip from a title. He projects outside the
+        field entirely here, and every band says so"""
+        out = render("playoffs", THEIR_ROSTER)
+        marked, = [l for l in out.splitlines() if "<- loaded" in l]
+        self.assertIn(THEIR_ROSTER, marked)
+        ours = {r[0]: float(r[1]) for r in self.BAND.findall(render("playoffs"))}
+        theirs = {r[0]: float(r[1]) for r in self.BAND.findall(out)}
+        self.assertEqual(sorted(theirs), sorted(ours))
+        for band in sim.BANDS:
+            with self.subTest(band=band.label):
+                self.assertLess(theirs[band.label], ours[band.label])
+
+    def test_the_cli_serves_it_for_a_counterparty(self):
+        status, out = cli("--roster", THEIR_ROSTER, "playoffs")
+        self.assertEqual(status, 0, out)
+        self.assertIn(THEIR_ROSTER, out)
+        self.assertNotIn("playoffs", sim.OURS_ONLY)
+        for name in {p["n"] for p in sim.our_roster(THEIR_ROSTER)}:
+            self.assertIn(name, out)
 
 
 if __name__ == "__main__":

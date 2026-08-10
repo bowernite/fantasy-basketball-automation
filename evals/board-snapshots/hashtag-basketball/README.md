@@ -7,8 +7,8 @@ this directory no published eval can be re-checked.
 
 - **Sources:** `https://hashtagbasketball.com/keeper` ·
   `https://hashtagbasketball.com/fantasy-basketball-dynasty-rankings`
-- **Snapshotted:** 2026-07-29 (`manifest.csv`'s `fetched_utc` is UTC, so it reads 07-30)
-- **Boards' own update stamps:** crowd `29 July 2026` ·
+- **Snapshotted:** 2026-08-08 (`manifest.csv`'s `fetched_utc` is UTC)
+- **Boards' own update stamps:** crowd `08 August 2026` ·
   expert `02 July 2026 by Joseph Mamone`
 - **Live fetch:** `hashtag-basketball` Skill. Use that first; fall back here only if
   the site is unreachable, and say you're citing a snapshot.
@@ -60,7 +60,7 @@ not vary by expert view.
   distorted in both directions — worked numbers in `evals/board-snapshots/Boards 2026-07-29.md`.
   A blank field is the only clean state for those 8 rows.
 - **`rank` is not the row index.** Ties and server-side skips both break it: 759
-  crowd rows span 1–764 (ordinals 134, 136, 140–142 are absent from the page
+  crowd rows span 1–764 (ordinals 131–135 are absent from the page
   itself), 766 expert cards span 1–772. Read `rank`, never a line number.
 - **The expert board ships duplicate cards** — 766 cards, 764 distinct players in
   this snapshot (`Chaz Lanier` at 402 and 412, `Nigel Hayes` twice at 485). Dedupe

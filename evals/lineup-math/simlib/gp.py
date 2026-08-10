@@ -86,8 +86,8 @@ GP_KNOT = 30.0
 
 
 # Below this rate a season's GP measures ROLE, not health (`Eval Definitions
-# §LATE`), so it is also the bar a season clears to count as evidence that the
-# player holds a rotation spot at all -- which is what `rate_evidence` counts.
+# §Durability`), so it is also the bar a season clears to count as evidence that
+# the player holds a rotation spot at all -- which is what `rate_evidence` counts.
 ROTATION_RATE = 15.0
 
 
@@ -262,7 +262,7 @@ def evidence_flags(name, season=SEASON_STR):
 
     Those four plus `fa` and `noproj` are the whole vocabulary `sim.py players`
     prints. Both of those are facts about the ROSTER ROW rather than about the
-    pool, so `report_players` adds them there; the rest of §Output's codes --
+    pool, so `report_players` adds them there; the rest of `Eval Template §Flags` --
     `split`, `1brd`, `stale`, `bear` -- are judgment or board data and nothing
     here can derive them.
     """

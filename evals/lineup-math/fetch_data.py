@@ -3,13 +3,22 @@
     python3 fetch_data.py            # schedule + league (fast, ~30 requests)
     python3 fetch_data.py pool       # + players-<season>.json (~20 min, resumable)
     python3 fetch_data.py roster 160941 161020    # any team, for `sim.py --roster`
+    python3 fetch_data.py roster                  # all 12
 
-`roster-<team_id>-<season>.json`  one team's roster in the schema `sim.py`
-    prices: `{n, tm, avg, tot, gp, posLabel, elig}` -- see `roster_rows`. OURS is
-    written by the same command (`roster 161025`), so re-fetching after a trade
-    executes lands on the file `sim.ROSTER` reads. Body counts differ between
-    teams and trail the live roster, so pad to a common count (`sim.pad`) before
-    comparing R or WINS across two teams.
+`roster-<team_id>-<season>.json`  one team's LIVE roster in the schema `sim.py`
+    prices: `{n, tm, avg, tot, gp, posLabel, elig}`. Membership comes from
+    `FetchLeagueRosters` and only the rates from `FetchRoster?season=` -- see
+    `merged_rows` for why reading membership off the season endpoint quietly
+    priced four teams off bodies they no longer owned. OURS is written by the
+    same command (`roster 161025`), so re-fetching after a trade executes lands
+    on the file `sim.ROSTER` reads. Body counts still differ between teams, so
+    pad to a common count (`sim.pad`) before comparing R or WINS across two.
+
+`teams-<season>.json`  `{team_id: team name}` for all 12, written by the same
+    `roster` run whatever ids it was given. Its only job is labelling output:
+    every table `sim.py` prints names the roster it priced, and a bare
+    `roster-161020-2025-26.json` is a team only to a reader holding the
+    `team-info` table. Absent is not fatal -- the id is printed alone.
 
 `nba-schedule-*.json`  ET date -> NBA teams playing. From ESPN's scoreboard API
     (`site.api.espn.com/.../basketball/nba/scoreboard?dates=YYYYMM`); the NBA CDN
@@ -148,21 +157,112 @@ def roster_rows(payload):
     return out
 
 
-def team_roster(team_id):
-    """One counterparty roster, priceable by `sim.py --roster`.
+def merged_rows(league, team_id, snapshot, pool):
+    """One team's LIVE roster in the priceable schema.
 
-    `season=` is REQUIRED for rates: omit it and `seasonAverage` disappears from
-    every row. It also makes the response a snapshot as of the season's last
-    lineup period, so the body count can trail the live roster -- pad to a common
-    count (`sim.pad`) before comparing R or WINS against another team's.
+    MEMBERSHIP off `FetchLeagueRosters`, rates off `FetchRoster?season=`, and
+    the split is the whole point. The season endpoint answers as of the season's
+    LAST LINEUP PERIOD (~end of March): every add after it is missing and every
+    drop is still on it, silently. Four teams were priced for months off bodies
+    they no longer owned, so membership is never the season endpoint's to state.
+
+    A body the snapshot has no line for played the season for somebody else, so
+    his line comes off the player pool (`players-<season>.json`, already on
+    disk) rather than reading 0. `our_roster` takes the RATE from the projection
+    -- but a player the feed does not carry keeps this one and prints `noproj`,
+    and a zero there prices a real producer as an empty body. A player neither
+    source has is 0/0, which is the `nopool` path `our_roster` documents.
+
+    MEMBERSHIP and rates join on Fleaflicker's player id, never on the name:
+    the league has rostered two Jaylin Williamses. The POOL fallback above is
+    the exception and joins on the name, because `player_pool` keys on it --
+    two players spelled the same share one entry there and so one `seasons`
+    history, wherever the pool is read (`simlib.board.pool`).
+
+    `tm`/`posLabel`/`elig` come off the LIVE feed, which is the fresher of the
+    two for an NBA team that changed after March.
+    """
+    rated = {}
+    for g in snapshot["groups"]:
+        for s in g["slots"]:
+            lp = s.get("leaguePlayer")
+            if lp:
+                rated[lp["proPlayer"]["id"]] = lp
+    live = [t for t in league["rosters"] if t["team"]["id"] == team_id]
+    if not live:
+        raise KeyError("team %d is not in league %d -- ids are in the "
+                       "`team-info` Skill" % (team_id, LEAGUE))
+    # In the SNAPSHOT's order, adds on the end. Order is the rng draw order
+    # (`sim.swap`, `sim.pad`), so taking the live feed's would re-roll every
+    # player on a roster nobody traded on and move every published figure
+    # inside its own noise.
+    order = list(rated).index
+    players = sorted(live[0]["players"],
+                     key=lambda p: order(p["proPlayer"]["id"])
+                     if p["proPlayer"]["id"] in rated else len(rated))
+    out = []
+    for p in players:
+        pro = p["proPlayer"]
+        lp = rated.get(pro["id"], {})
+        avg = lp.get("seasonAverage", {}).get("value") or 0.0
+        tot = lp.get("seasonTotal", {}).get("value") or 0.0
+        gp = round(tot / avg) if avg else 0
+        if not avg:
+            avg, gp = pool.get(pro["nameFull"], {}).get(
+                "seasons", {}).get(str(SEASON), (0.0, 0))
+            tot = avg * gp
+        out.append({"n": pro["nameFull"],
+                    "tm": pro.get("proTeamAbbreviation", "FA"),
+                    "avg": avg, "tot": tot, "gp": gp,
+                    "posLabel": pro.get("position", ""),
+                    "elig": sorted(pro.get("positionEligibility", []))})
+    return out
+
+
+def league_rosters():
+    """LIVE ownership for all 12 teams, in ONE request.
+
+    No `season=`. The param is not ignored: with it the response is the same
+    end-of-March snapshot `FetchRoster?season=` returns, which is the thing this
+    call exists to correct. It carries no stat line of any kind, so the season
+    endpoint is still what supplies rates.
+    """
+    return get("https://www.fleaflicker.com/api/FetchLeagueRosters?sport=NBA"
+               "&league_id=%d" % LEAGUE)
+
+
+def team_roster(team_id, league, pool):
+    """One roster, live and priceable by `sim.py --roster`. See `merged_rows`.
+
+    `season=` is REQUIRED here for rates: omit it and `seasonAverage` disappears
+    from every row. Body counts still differ between teams, so pad to a common
+    count (`sim.pad`) before comparing R or WINS across two.
     """
     d = get("https://www.fleaflicker.com/api/FetchRoster?sport=NBA"
             "&league_id=%d&team_id=%d&season=%d" % (LEAGUE, team_id, SEASON))
-    name = next((t["name"] for t in d.get("eligibleTeams", [])
-                 if t["id"] == team_id), "?")
-    rows = roster_rows(d)
-    print("  team %d (%s): %d bodies" % (team_id, name, len(rows)))
+    name = next((t["team"]["name"] for t in league["rosters"]
+                 if t["team"]["id"] == team_id), "?")
+    rows = merged_rows(league, team_id, d, pool)
+    snap = {q["n"] for q in roster_rows(d)}
+    off_pool = [r["n"] for r in rows if r["avg"] and r["n"] not in snap]
+    blank = [r["n"] for r in rows if not r["avg"]]
+    print("  team %d (%s): %d bodies%s%s"
+          % (team_id, name, len(rows),
+             "; off the pool: " + ", ".join(off_pool) if off_pool else "",
+             "; no last-season line: " + ", ".join(blank) if blank else ""))
     return rows
+
+
+def load_pool():
+    """`players-<season>.json` if it is there. Absent is not fatal -- it costs
+    a March add his last-season line, and `merged_rows` says what that means."""
+    path = os.path.join(HERE, "players-%s.json" % SEASON_TAG)
+    if not os.path.exists(path):
+        print("  no %s -- a body the season snapshot lacks will read 0/0"
+              % os.path.basename(path))
+        return {}
+    with open(path) as f:
+        return json.load(f)
 
 
 POOL_SEASONS = [SEASON - i for i in range(5)]
@@ -252,24 +352,94 @@ def player_pool(path=None):
     return out
 
 
+USAGE = """usage: python3 fetch_data.py [pool]
+       python3 fetch_data.py roster [team id ...]
+       python3 fetch_data.py teams
+
+Rebuilds the data files sim.py reads, beside this script.
+
+  (no argument)   nba-schedule-<season>.json + league-<season>.json  (~30 requests)
+  pool            + players-<season>.json                    (~20 min, resumable)
+  roster [ids]    roster-<id>-<season>.json per team, all 12 if no ids, and
+                  teams-<season>.json
+  teams           teams-<season>.json alone: the id -> team name labels
+
+Every file it writes is announced by absolute path. Exits non-zero on an
+unrecognised argument rather than falling through to a re-scrape."""
+
+
+def write(name, build, **dump):
+    """Build FIRST, write second, and land it by rename.
+
+    `open(path, "w")` around the build truncated the good file and then let a
+    transport error out of it, so a failed re-scrape left a ZERO-BYTE
+    `league-<season>.json` where the season was. Every `sim.py` run after that
+    died on a JSON decode error naming nothing that had happened.
+    """
+    data = build()
+    path = os.path.join(HERE, name)
+    tmp = path + ".part"
+    with open(tmp, "w") as f:
+        json.dump(data, f, **dump)
+    os.replace(tmp, path)
+    print("wrote", path)
+
+
+def team_names(league):
+    """`{team_id: name}`, all 12, for labelling every table `sim.py` prints."""
+    return {str(t["team"]["id"]): t["team"]["name"] for t in league["rosters"]}
+
+
 if __name__ == "__main__":
     import sys
     args = sys.argv[1:]
-    if args[:1] == ["roster"]:
-        if not args[1:]:
-            sys.exit("usage: fetch_data.py roster <team_id> [team_id ...]"
-                     "   (ids in the `team-info` Skill)")
-        for t in args[1:]:
-            name = "roster-%s-%s.json" % (t, SEASON_TAG)
-            with open(os.path.join(HERE, name), "w") as f:
-                json.dump(team_roster(int(t)), f)   # key order is the schema
-            print("wrote", name)
+    if {"-h", "--help", "help"} & set(args):
+        print(USAGE)
         sys.exit(0)
-    files = [("nba-schedule-%s.json" % SEASON_TAG, nba_schedule),
-             ("league-%s.json" % SEASON_TAG, fantasy_calendar)]
+    if args[:1] == ["teams"] and len(args) == 1:
+        write("teams-%s.json" % SEASON_TAG,
+              lambda: team_names(league_rosters()), indent=0, sort_keys=True)
+        sys.exit(0)
+    if args[:1] == ["roster"]:
+        # Every id validated BEFORE the first request: `roster abc` used to make
+        # a league call, truncate a roster file and only then die on `int()`.
+        bad = [t for t in args[1:] if not t.isdigit()]
+        if bad:
+            sys.exit("not a team id: %s\nids are numeric (`team-info`); "
+                     "`roster` with none re-cuts all 12.\n\n%s"
+                     % (", ".join(bad), USAGE))
+        # ONE league call for membership, then one snapshot call per team. No
+        # ids means all 12: they drift independently and a team you did not
+        # re-cut is a team priced off whoever it owned in March.
+        league, pool = league_rosters(), load_pool()
+        # All 12 names whichever ids were asked for -- the labels cost nothing
+        # extra and a partial map makes the output of one report inconsistent
+        # with the next.
+        write("teams-%s.json" % SEASON_TAG, lambda: team_names(league),
+              indent=0, sort_keys=True)
+        ids = args[1:] or sorted(team_names(league))
+        unknown = [t for t in ids if t not in team_names(league)]
+        if unknown:
+            sys.exit("no such team in league %d: %s\nthe league carries: %s"
+                     % (LEAGUE, ", ".join(unknown),
+                        ", ".join("%s (%s)" % (i, n)
+                                  for i, n in sorted(team_names(league).items()))))
+        for t in ids:
+            # key order is the schema
+            write("roster-%s-%s.json" % (t, SEASON_TAG),
+                  lambda t=t: team_roster(int(t), league, pool))
+            time.sleep(1.1)                          # sustained requests 403
+        sys.exit(0)
+    # Anything unrecognised REFUSES rather than falling through: `fetch_data.py
+    # rosters` (plural), `fetch_data.py 161025` and `fetch_data.py players` each
+    # re-scraped the schedule and the calendar, printed `wrote ...` and exited 0.
+    unknown = [a for a in args if a != "pool"]
+    if unknown:
+        sys.exit("unrecognised argument: %s\n\n%s" % (", ".join(unknown), USAGE))
+    write("nba-schedule-%s.json" % SEASON_TAG, nba_schedule,
+          indent=0, sort_keys=True)
+    write("league-%s.json" % SEASON_TAG, fantasy_calendar,
+          indent=0, sort_keys=True)
     if "pool" in args:
-        files.append(("players-%s.json" % SEASON_TAG, player_pool))
-    for name, build in files:
-        with open(os.path.join(HERE, name), "w") as f:
-            json.dump(build(), f, indent=0, sort_keys=True)
-        print("wrote", name)
+        write("players-%s.json" % SEASON_TAG, player_pool,
+              indent=0, sort_keys=True)
