@@ -7,14 +7,17 @@ export type ScoreWeightingDebugInfo = ReturnType<
 >[1];
 
 export function getPlayerPredictedScore(player: Player) {
-  const [weightedScore, weightedScoreDebugInfo] =
+  const [blendedScore, weightedScoreDebugInfo] =
     getPlayerWeightedScore(player);
-  if (isNaN(weightedScore) && !player.isIr) {
+  if (isNaN(blendedScore) && !player.isIr) {
     console.error(`NaN weighted score for ${player.playerName}`);
     alert(`NaN weighted score for ${player.playerName}`);
   }
+  const displayWeightedScore = isOffseason()
+    ? (weightedScoreDebugInfo.seasonProjectionAvg ?? 20)
+    : blendedScore;
   const [adjustedForOpponent, opponentAdjustmentDebugInfo] =
-    adjustPredictedScoreBasedOnOpponent(weightedScore, player.opponentInfo);
+    adjustPredictedScoreBasedOnOpponent(blendedScore, player.opponentInfo);
   const [adjustedForInjury, injuryAdjustmentDebugInfo] =
     adjustPredictedScoreForInjury(adjustedForOpponent, player);
   return [
@@ -23,11 +26,17 @@ export function getPlayerPredictedScore(player: Player) {
       ...weightedScoreDebugInfo,
       ...opponentAdjustmentDebugInfo,
       ...injuryAdjustmentDebugInfo,
-      weightedScore,
-      beforeOpponentAdjustment: weightedScore,
+      weightedScore: displayWeightedScore,
+      beforeOpponentAdjustment: blendedScore,
       beforeInjuryAdjustment: adjustedForOpponent,
     },
   ] as const;
+}
+
+function isOffseason(date: Date = new Date()) {
+  const month = date.getMonth();
+  const day = date.getDate();
+  return month > 3 && (month < 9 || (month === 9 && day <= 20));
 }
 
 function getPlayerWeightedScore(player: Player) {
