@@ -1,6 +1,7 @@
 """The simulator: who is available on a night, what a season scores, and the
 Monte Carlo `run` every figure in the study comes out of."""
 import collections, random, statistics
+from . import shard
 from .data import NIGHTS, SCORED_CAL
 from .lineups import SLOTS, lineup
 from .schedule import games_on, team_nights
@@ -157,17 +158,43 @@ TRIALS = 200
 
 
 def run(roster, trials=TRIALS, bursty=False, seed0=101, surprise=0.0,
-        cal=SCORED_CAL):
+        cal=SCORED_CAL, workers=None):
     """-> dict(pf, wk_mean, wk_sd, cv, wk, by_night)
 
     Per-player figures come off `season`, which returns `starts` and `pts` for a
     single season. `wk` is the mean of each `cal` bucket separately.
+
+    `workers` shards trials across processes (`shard`), sequential under
+    `shard.SHARD_FLOOR` trials and one process per core above. Job 0 holds the
+    first trials and job 1 the next, and chunks come back in job order, so
+    flattening them is trial order and the dict is the sequential one digit for
+    digit rather than close to it.
     """
+    n = shard.n_workers(workers, trials)
+    jobs = [TrialJob(roster, seed0, start, count, bursty, surprise, cal)
+            for start, count in shard.chunks(trials, n)]
+    chunked = shard.mapped(_trial_chunk, jobs, n)
+    return _collect([row for chunk in chunked for row in chunk], trials, cal)
+
+
+TrialJob = collections.namedtuple(
+    "TrialJob", "roster seed0 start count bursty surprise cal")
+
+
+def _trial_chunk(job):
+    out = []
+    for t in range(job.start, job.start + job.count):
+        weeks, _, _, bn = season(job.roster, job.seed0 + t, job.bursty,
+                                 job.surprise, job.cal)
+        out.append((weeks, bn))
+    return out
+
+
+def _collect(results, trials, cal):
     allweeks = []
     agg = collections.defaultdict(lambda: [0, 0, 0.0, 0])
-    for t in range(trials):
-        w, _, _, bn = season(roster, seed0 + t, bursty, surprise, cal)
-        allweeks += w
+    for weeks, bn in results:
+        allweeks += weeks
         for n in bn:
             a = agg[n.size]
             a[0] += n.avail; a[1] += n.filled; a[2] += n.pf; a[3] += 1

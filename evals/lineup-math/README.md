@@ -61,7 +61,7 @@ says which:
 
 | | |
 |---|---|
-| `data` `lineups` `stats` | the NBA calendar and our real scores; the 9 slots and the matching; the line fits and block summaries |
+| `data` `lineups` `stats` `shard` | the NBA calendar and our real scores; the 9 slots and the matching; the line fits and block summaries; trials split across processes |
 | `schedule` `wins` | light nights and coverage; the one PF→wins constant |
 | `board` `projections` `gp` | rank↔rate; the projected rate; expected games played |
 | `engine` `roster` | `season`/`run`; loading, projecting, padding, `swap` |
