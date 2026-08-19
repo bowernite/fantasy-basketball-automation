@@ -1,9 +1,9 @@
 """Rebuild the data files `sim.py` reads. Bump `SEASON`, then run.
 
-    python3 fetch_data.py            # schedule + league (fast, ~30 requests)
-    python3 fetch_data.py pool       # + players-<season>.json (~20 min, resumable)
-    python3 fetch_data.py roster 160941 161020    # any team, for `sim.py --roster`
-    python3 fetch_data.py roster                  # all 12
+    ./run fetch_data.py            # schedule + league (fast, ~30 requests)
+    ./run fetch_data.py pool       # + players-<season>.json (~20 min, resumable)
+    ./run fetch_data.py roster 160941 161020    # any team, for `./run sim.py --roster`
+    ./run fetch_data.py roster                  # all 12
 
 `roster-<team_id>-<season>.json`  one team's LIVE roster in the schema `sim.py`
     prices: `{n, tm, avg, tot, gp, posLabel, elig}`. Membership comes from
@@ -352,9 +352,9 @@ def player_pool(path=None):
     return out
 
 
-USAGE = """usage: python3 fetch_data.py [pool]
-       python3 fetch_data.py roster [team id ...]
-       python3 fetch_data.py teams
+USAGE = """usage: ./run fetch_data.py [pool]
+       ./run fetch_data.py roster [team id ...]
+       ./run fetch_data.py teams
 
 Rebuilds the data files sim.py reads, beside this script.
 

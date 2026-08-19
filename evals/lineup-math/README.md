@@ -15,11 +15,13 @@ Durable valuation rules live in `Eval Definitions`; how to apply them, `eval-tea
 here restates either.
 
 ```
-python3 sim.py --help        # every report, what it answers, and which take --roster
-python3 sim.py <report ...>  # runs each, in the order named
-python3 -m unittest test_sim
-python3 fetch_data.py --help # every file it writes and what each argument costs
+./run sim.py --help          # every report, what it answers, and which take --roster
+./run sim.py <report ...>    # runs each, in the order named
+./run -m unittest test_sim
+./run fetch_data.py --help   # every file it writes and what each argument costs
 ```
+
+`./run` is pypy3.11 (`brew install pypy3.11` if missing). `python3 sim.py` for a digit-for-digit match with a previous CPython figure.
 
 **The report list is `--help`'s, not this file's** — it is generated from the registry the
 CLI dispatches on, so it cannot drift. Same for units and column meanings: every table
@@ -89,11 +91,11 @@ holds a rotation spot at all.
 ## Pricing a counterparty
 
 ```
-python3 fetch_data.py roster 160941      # -> roster-160941-2025-26.json
-python3 sim.py --roster roster-160941-2025-26.json players replacement
-python3 fetch_data.py roster 161025      # OURS is the same command, same schema.
+./run fetch_data.py roster 160941        # -> roster-160941-2025-26.json
+./run sim.py --roster roster-160941-2025-26.json players replacement
+./run fetch_data.py roster 161025        # OURS is the same command, same schema.
                                          # Re-run it after any trade EXECUTES.
-python3 fetch_data.py roster             # all 12, ~20s. Cheap; do it before a
+./run fetch_data.py roster               # all 12, ~20s. Cheap; do it before a
                                          # session rather than trusting the files.
 ```
 

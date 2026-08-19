@@ -3,12 +3,12 @@
 Answers "what is a player actually worth to us?" under the 9-slot daily cap,
 on the real NBA schedule. Stdlib only (no scipy/numpy).
 
-    python3 sim.py [report ...]          # any of REPORTS; default `calibration`
-    python3 -m unittest test_sim         # invariants findings.md's claims rest on
-    python3 fetch_data.py [pool]         # rebuild the data files
+    ./run sim.py [report ...]            # any of REPORTS; default `calibration`
+    ./run -m unittest test_sim           # invariants findings.md's claims rest on
+    ./run fetch_data.py [pool]           # rebuild the data files
 
-    python3 fetch_data.py roster 160941            # any team -> a roster file
-    python3 sim.py --roster roster-160941-2025-26.json players
+    ./run fetch_data.py roster 160941            # any team -> a roster file
+    ./run sim.py --roster roster-160941-2025-26.json players
 
 Every table in findings.md is one of REPORTS. Add the report before the table.
 `--roster` serves every report but four, which are built on our own player names
@@ -191,7 +191,7 @@ def _usage():
     """What this command offers, as the command itself. A caller who has to open
     README.md to find out which of fourteen names answers his question is one
     the two files can drift apart under."""
-    out = ["usage: python3 sim.py [--roster <file>] [report ...]",
+    out = ["usage: ./run sim.py [--roster <file>] [report ...]",
            "",
            "Prices a roster in expected wins on the real %s NBA calendar."
            % fetch_data.SEASON_TAG,
@@ -205,7 +205,7 @@ def _usage():
     out += ["",
             "--roster <file>  price another team's roster instead of ours. The",
             "                 file is resolved beside sim.py, not in the",
-            "                 directory you are standing in; `python3",
+            "                 directory you are standing in; `./run",
             "                 fetch_data.py roster <team id>` writes one. The",
             "                 four reports marked (ours only) are built on our",
             "                 own player names and weekly scores and refuse it.",
@@ -241,7 +241,7 @@ if __name__ == "__main__":
         # An EMPTY value too, not just a missing one: `--roster=` satisfies an
         # argv count and then loads the data directory itself.
         if i + 1 >= len(args) or not args[i + 1]:
-            sys.exit("--roster takes a roster file: --roster %s\n`python3 "
+            sys.exit("--roster takes a roster file: --roster %s\n`./run "
                      "fetch_data.py roster <team id>` writes one (`team-info`)."
                      % roster.ROSTER)
         # On `roster`, the module `basis` reads it out of. `sim.ROSTER` forwards
@@ -255,7 +255,7 @@ if __name__ == "__main__":
         # directory, which is not the shell's cwd.
         path = os.path.join(HERE, roster.ROSTER)
         if not os.path.isfile(path):
-            sys.exit("no roster file at %s\n`python3 fetch_data.py roster <team "
+            sys.exit("no roster file at %s\n`./run fetch_data.py roster <team "
                      "id>` writes one beside sim.py (`team-info`); a bare name is"
                      " resolved there, not in the directory you are standing in."
                      % path)
@@ -266,7 +266,7 @@ if __name__ == "__main__":
         try:
             roster.our_roster(roster.ROSTER)
         except ValueError as e:
-            sys.exit("%s is not a roster file this can price: %s\n`python3 "
+            sys.exit("%s is not a roster file this can price: %s\n`./run "
                      "fetch_data.py roster <team id>` writes the schema (a list "
                      "of {n, tm, avg, tot, gp, posLabel, elig})." % (path, e))
         del args[i:i + 2]
@@ -278,7 +278,7 @@ if __name__ == "__main__":
         theirs = [a for a in args if a in OURS_ONLY]
         if theirs:
             sys.exit("--roster cannot serve %s: built on our own player names and "
-                     "weekly scores.\nany roster: %s\n`python3 sim.py --help` "
+                     "weekly scores.\nany roster: %s\n`./run sim.py --help` "
                      "describes all %d."
                      % (", ".join(theirs),
                         " ".join(sorted(set(REPORTS) - OURS_ONLY)), len(REPORTS)))
@@ -288,7 +288,7 @@ if __name__ == "__main__":
     # before recommending a deal.
     unknown = [a for a in args if a not in REPORTS]
     if unknown:
-        sys.exit("unknown report: %s\navailable: %s\n`python3 sim.py --help` "
+        sys.exit("unknown report: %s\navailable: %s\n`./run sim.py --help` "
                  "says what each one answers."
                  % (", ".join(unknown), " ".join(sorted(REPORTS))))
     # On EVERY header, not once at the top of the run: a single banner on line 1

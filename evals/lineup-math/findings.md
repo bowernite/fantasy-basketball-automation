@@ -463,7 +463,7 @@ chasing 3 (11 and 6 on the live 28, which is a different roster from the one mea
 
 §*The slot-fill curve* is the mechanism; this is the size of it, and
 `Eval Definitions §Where our format pulls off consensus` 5 is the rule that spends it.
-**`python3 sim.py schedules` emits every table below**; `--roster` gives another
+**`./run sim.py schedules` emits every table below**; `--roster` gives another
 team's answer, which is a different one.
 
 **Steering the seven September auction bodies on schedule is worth +0.095 ± 0.015 wins** —

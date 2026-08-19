@@ -85,9 +85,8 @@ BLURB = {
 # team a measurement of nobody.
 ROSTER_FREE = {"market"}
 
-# The two that run for minutes rather than seconds, so a caller can tell a slow
-# report from a hung one before he kills it.
-SLOW = {"breakevens": "~3 min", "schedules": "~3 min"}
+# Wall clock on the default runner, so a caller can tell a slow report from a hung one.
+SLOW = {"breakevens": "~8s", "schedules": "~20s"}
 
 # Built on OUR player names or OUR real weekly scores, so they answer nothing
 # about another team: `scenarios`/`breakevens` trade `deals.FILLER`, `durability`

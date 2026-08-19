@@ -315,7 +315,7 @@ def field():
     teams = league()
     assert len(teams) >= len(BRACKET_TEAMS), (
         "%d roster files beside sim.py for a %d-team bracket: a short field is "
-        "a lower opponent level, not a smaller league. `python3 fetch_data.py "
+        "a lower opponent level, not a smaller league. `./run fetch_data.py "
         "roster` writes all of them (`team-info`)"
         % (len(teams), len(BRACKET_TEAMS)))
     return teams[:len(BRACKET_TEAMS)]

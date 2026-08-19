@@ -1,4 +1,4 @@
-"""python3 -m unittest test_sim -v"""
+"""./run -m unittest test_sim -v"""
 import collections
 import contextlib
 import glob
@@ -601,6 +601,30 @@ class CLI(unittest.TestCase):
         self.assertEqual(status, 0, out)
         self.assertIn("NIGHTS", out)
         self.assertIn("FORMULA", out)
+
+    def test_the_directory_runner_says_how_to_invoke_each_thing_in_here(self):
+        """The first command a human or an agent types in this directory. With
+        no arguments it has to name sim.py, fetch_data.py and the test module,
+        or the reader opens README.md to find the other two"""
+        for argv in (["./run"], ["./run", "-h"], ["./run", "--help"]):
+            with self.subTest(argv=argv):
+                p = subprocess.run(argv, cwd=sim.HERE, capture_output=True,
+                                   text=True)
+                self.assertNotEqual(p.returncode, 0)
+                out = p.stdout + p.stderr
+                self.assertIn("sim.py", out)
+                self.assertIn("fetch_data.py", out)
+                self.assertIn("test_sim", out)
+
+    @unittest.skipUnless(shutil.which("pypy3.11"), "pypy3.11 not installed")
+    def test_the_directory_runner_is_the_command_that_lists_the_reports(self):
+        """`--help` is how an agent learns the surface. It has to come off
+        `./run sim.py`, not a python3 invocation the README no longer leads with"""
+        p = subprocess.run(["./run", "sim.py", "--help"], cwd=sim.HERE,
+                           capture_output=True, text=True)
+        self.assertEqual(p.returncode, 0, p.stderr)
+        self.assertEqual(sorted(re.findall(r"^  (\w[\w-]*) ", p.stdout, re.M)),
+                         sorted(sim.REPORTS))
 
 
 class EveryReportRunsEndToEnd(unittest.TestCase):

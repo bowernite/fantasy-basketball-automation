@@ -83,7 +83,7 @@ def our_roster(path=None, projected=True):
         # an empty table -- it reads as 38 auction bodies, and every figure
         # measured on them prints as a measurement of that team. A fetch that
         # reached nobody writes `[]`, so this is the shape a stale re-fetch takes.
-        raise ValueError("%s carries no players -- re-run `python3 fetch_data.py"
+        raise ValueError("%s carries no players -- re-run `./run fetch_data.py"
                          " roster <team id>` (`team-info`)" % (path or ROSTER))
     out = []
     for p in rows:

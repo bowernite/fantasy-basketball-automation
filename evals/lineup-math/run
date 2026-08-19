@@ -1,0 +1,19 @@
+#!/bin/sh
+# Default runner for this directory. pypy3.11. From anywhere:
+#   evals/lineup-math/run sim.py --help
+set -e
+HERE=$(CDPATH= cd -- "$(dirname "$0")" && pwd)
+cd "$HERE"
+if [ $# -eq 0 ] || [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
+    echo "usage: ./run sim.py [--roster <file>] [report ...]"
+    echo "       ./run fetch_data.py [pool | roster [id ...]]"
+    echo "       ./run -m unittest test_sim"
+    echo "       ./run <script.py>"
+    echo "./run sim.py --help lists reports."
+    exit 2
+fi
+if ! command -v pypy3.11 >/dev/null 2>&1; then
+    echo "pypy3.11 is the default runner here. brew install pypy3.11" >&2
+    exit 127
+fi
+exec pypy3.11 "$@"
