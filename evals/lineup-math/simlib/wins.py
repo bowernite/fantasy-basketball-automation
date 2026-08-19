@@ -1,7 +1,7 @@
 """PF -> wins. One conversion constant, measured off the real margin
 distribution, and the band around it."""
 import random, statistics
-from .data import MARGINS, MARGINS_BY_WEEK, REAL_MATCHUPS, WEEKS
+from .data import MARGINS, MARGINS_BY_WEEK, DELTA_W_MATCHUPS, REAL_MATCHUPS, WEEKS
 from .stats import cdf, phi
 
 
@@ -51,6 +51,28 @@ def pf_per_win_band(n=2000, seed=7, lo=0.025, hi=0.975):
     return out[int(lo * n)], out[int(hi * n)]
 
 
+# PF of WEEKLY edge that buys one win in ONE matchup -- `PF_PER_WIN` with the
+# season and the matchup count it was quoted against divided back out. THE
+# conversion, because a PF delta and the matchups it is priced over come off
+# different calendars: `PF_PER_WIN` alone is only right for a delta accumulated
+# over `WEEKS` periods and spent on `REAL_MATCHUPS` of them.
+PF_PER_WIN_WEEK = PF_PER_WIN * REAL_MATCHUPS / WEEKS
+
+
+def pf_wins(dpf, periods=WEEKS, games=None):
+    """Extra wins per `games` matchups from `dpf` PF gained over `periods`
+    scored periods.
+
+    `periods` IS THE BASIS AND IT IS NOT `games`: `DELTA_W_CAL` already leaves
+    W20 out, so its PF total is 19 periods of edge, and cutting it to 19
+    matchups on top haircuts the same week twice. Defaulted to `WEEKS` because
+    a raw PF figure in this package is a standings-basis season PF unless it
+    came out of a run on another calendar.
+    """
+    games = DELTA_W_MATCHUPS if games is None else games
+    return dpf / periods / PF_PER_WIN_WEEK * games
+
+
 def wins(res, baseline, games=None):
     """Extra wins per `games` matchups vs a baseline `run`.
 
@@ -58,6 +80,15 @@ def wins(res, baseline, games=None):
     the sim's own weekly mean: the sim's absolute level is a calibration artifact,
     and pwin() out in the tail compresses deltas non-uniformly, which distorts the
     ordering rather than just the scale.
+
+    The basis comes off the runs themselves -- `wk` is one entry per period the
+    `cal` scored -- so the caller cannot price a delta over a calendar it was
+    not measured on.
     """
-    games = REAL_MATCHUPS if games is None else games
-    return (res["pf"] - baseline["pf"]) / PF_PER_WIN * (games / REAL_MATCHUPS)
+    if len(res["wk"]) != len(baseline["wk"]):
+        raise ValueError(
+            "a %d-period run against a %d-period baseline: most of that "
+            "difference is the periods one of them scored and the other did "
+            "not, and it reads as the roster change. Run both on one `cal`."
+            % (len(res["wk"]), len(baseline["wk"])))
+    return pf_wins(res["pf"] - baseline["pf"], len(res["wk"]), games)

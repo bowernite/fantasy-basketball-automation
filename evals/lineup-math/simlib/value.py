@@ -2,10 +2,11 @@
 break-even rate an N-for-1 needs."""
 import collections
 from . import engine
+from .data import DELTA_W_CAL
 from .engine import TRIALS
 from .roster import GROUPS, PAD_NAMES, slot_group, star, swap
 from .schedule import SIM_TM
-from .stats import block_stats, slope
+from .stats import block_stats, false_position, slope
 from .wins import wins
 
 
@@ -29,6 +30,21 @@ def thin(roster, n, R=None):
     v = value_key(roster, R)
     keep = set(sorted(range(len(roster)), key=lambda i: -v(roster[i]))[:n])
     return [p for i, p in enumerate(roster) if i in keep]
+
+
+def bottom(roster, n, R=None):
+    """The `n` bodies `roster` prices lowest by `value_key`, cheapest first.
+
+    Pads are out. An invented slot (`pad`) is not a body anybody can ship, and
+    pads are graded at the bottom of the auction, so they fill the cheapest seats
+    on any padded roster and a caller would trade nobody.
+
+    The order is not a ranking: `replacement`'s line goes negative below R while
+    the truth does not, so which of the cheapest is worse than which is not a
+    claim this makes.
+    """
+    v = value_key(roster, R)
+    return sorted((p for p in roster if p["n"] not in PAD_NAMES), key=v)[:n]
 
 
 class OutOfBracket(ValueError):
@@ -64,35 +80,43 @@ def breakeven_cell(*a, **kw):
 
 
 def breakeven(roster, out_names, gp=68, elig=("SF", "PF"), tm=SIM_TM,
-              lo=20.0, hi=90.0, tol=0.15, dead=None):
+              lo=20.0, hi=90.0, tol=0.15, dead=None, base=None):
     """Incoming rate at which trading `out_names` away is PF-neutral.
 
     GP and eligibility are ARGUMENTS, not incidentals: the break-even for a
     65-GP center is several points above the one for a 68-GP forward, and a
     reader who compares a real player's rate to the wrong row gets the sign of
     the deal wrong. `dead` is the backfill grade -- see swap().
+
+    `base` is `roster`'s own PF, measured here when omitted so the single-cell
+    import path stays one call. A caller pricing SEVERAL cells against one roster
+    should measure it once and pass it, or pay for the same run per cell.
     """
-    base = engine.run(roster)["pf"]
+    base = engine.run(roster)["pf"] if base is None else base
 
     def d(rate):
         return engine.run(swap(roster, out_names,
                         [star(rate, gp, elig, tm)], dead))["pf"] - base
-    # BRACKET FIRST. Bisection with no sign check converges on whichever END of
+    # BRACKET FIRST. A search with no sign check converges on whichever END of
     # its own bracket is nearer and returns it looking measured -- and `lo` sits
     # right in the middle of the rates we trade at, so nothing about the number
     # gives it away. Out of bracket is a real answer -- say it.
-    if d(lo) >= 0:
+    dlo = d(lo)
+    if dlo >= 0:
         raise OutOfBracket("%s is already PF-neutral below %g: the deal does not "
                            "need an incoming rate, it needs a body"
                            % ("+".join(out_names), lo), "<%g" % lo)
-    if d(hi) < 0:
+    dhi = d(hi)
+    if dhi < 0:
         raise OutOfBracket("%s does not break even by %g -- no such player "
                            "exists, so the deal is unbuyable at any price"
                            % ("+".join(out_names), hi), ">%g" % hi)
-    while hi - lo > tol:
-        mid = (lo + hi) / 2
-        lo, hi = (mid, hi) if d(mid) < 0 else (lo, mid)
-    return (lo + hi) / 2
+    # `d` meets `false_position`'s convexity precondition: a night's points are
+    # the max of a matching over lineups affine in the incoming rate, so `d` is
+    # convex in it and piecewise affine -- one piece per start count, and ONE
+    # piece all the way to `hi` above the rate at which the body starts every
+    # night he is available.
+    return false_position(d, lo, hi, dlo, dhi, tol)
 
 
 def group_fits(roster, gp=68):
@@ -169,7 +193,8 @@ def player_wins(roster, names, blocks=None, trials=TRIALS, seed0=101, R=None):
     than either varies on its own, and only the paired differences see that.
     """
     seeds, R = _sampling(roster, blocks, trials, seed0, R)
-    base = [engine.run(roster, trials=trials, seed0=s) for s in seeds]
+    base = [engine.run(roster, trials=trials, seed0=s, cal=DELTA_W_CAL)
+            for s in seeds]
     by_name = {p["n"]: p for p in roster}
     # Refused HERE, not left to `swap` inside the loop: the slot-group lookup
     # reads `by_name` first, so a mistyped name dies on a bare KeyError carrying
@@ -182,7 +207,7 @@ def player_wins(roster, names, blocks=None, trials=TRIALS, seed0=101, R=None):
     for n in names:
         g = slot_group(by_name[n]["elig"])
         w = [wins(base[i], engine.run(swap(roster, [n], [group_body(g, R[g])]),
-                               trials=trials, seed0=s))
+                               trials=trials, seed0=s, cal=DELTA_W_CAL))
              for i, s in enumerate(seeds)]
         out[n] = block_stats(w)
     return out
@@ -247,8 +272,10 @@ def incoming_wins(roster, players, blocks=None, trials=TRIALS, seed0=101, R=None
         g = slot_group(p["elig"])
         if g not in ref:
             body = group_body(g, R[g], "REPL")
-            ref[g] = [engine.run(room + [body], trials=trials, seed0=s) for s in seeds]
-        w = [wins(engine.run(room + [p], trials=trials, seed0=s), ref[g][i])
+            ref[g] = [engine.run(room + [body], trials=trials, seed0=s,
+                                 cal=DELTA_W_CAL) for s in seeds]
+        w = [wins(engine.run(room + [p], trials=trials, seed0=s,
+                             cal=DELTA_W_CAL), ref[g][i])
              for i, s in enumerate(seeds)]
         out[p["n"]] = block_stats(w)
     return out

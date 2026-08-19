@@ -4,7 +4,7 @@ Answers "what is a player actually worth to us?" under the 9-slot daily cap,
 on the real NBA schedule. Stdlib only (no scipy/numpy).
 
     ./run sim.py [report ...]            # any of REPORTS; default `calibration`
-    ./run -m unittest test_sim           # invariants findings.md's claims rest on
+    ./run test                           # invariants findings.md's claims rest on
     ./run fetch_data.py [pool]           # rebuild the data files
 
     ./run fetch_data.py roster 160941            # any team -> a roster file
@@ -24,11 +24,12 @@ import instead -- this is the supported path and `trades` step 5 depends on it:
 
     import sim
     full = sim.basis()                   # or sim.basis("roster-160941-2025-26.json")
-    base = sim.run(full)
-    deal = sim.run(sim.swap(full, ["Jalen Suggs"], [sim.star(48, 70, ("C",))]))
-    sim.wins(deal, base)                 # +wins over 20 matchups. ARG ORDER IS THE
-                                         # SIGN: (after, before). Reversed it reads
-                                         # "wins lost".
+    base = sim.run(full, cal=sim.DELTA_W_CAL)
+    deal = sim.run(sim.swap(full, ["Jalen Suggs"], [sim.star(48, 70, ("C",))]),
+                   cal=sim.DELTA_W_CAL)
+    sim.wins(deal, base)                 # +wins over 19 regular matchups (excl.
+                                         # W20). ARG ORDER IS THE SIGN: (after,
+                                         # before). Reversed it reads "wins lost".
     sim.breakeven(full, ["Jalen Suggs", "Coby White"], gp=70, elig=("C",))
 
 `Δw` for a counterparty's players comes in two flavours and they are different
@@ -42,19 +43,29 @@ against or converted into `Δw` (`Eval Definitions §ΔP(title)`). `sim.py
 playoffs` is the report, `sim.week_points(p)` the W20-W23 columns, and the
 import path is:
 
-    sim.player_title(sim.basis("their.json"), names, path="their.json")
-    sim.roster_title(after, before, path="their.json")   # ONE joint run
+    sim.player_title(sim.basis(), names)                 # ours, on roster
+    sim.incoming_title(sim.basis(), sim.our_roster("their.json"))  # ΔP OURS
+    sim.roster_title(after, before)                      # ONE joint run
 
     # a multi-piece side, priced the one way §ΔP(title) allows
     full = sim.basis()
     sim.roster_title(sim.swap(full, ["A", "B"], [sim.star(48, 70, ("C",))]), full)
 
+`P(title)` UNCONDITIONAL -- the seed simulated instead of assumed -- is a third
+quantity and neither of the two above. `sim.py title` is the report; the import
+path re-measures the loaded roster and leaves the other eleven alone:
+
+    after, before = sim.swap_odds(sim.swap(full, ["A"], [sim.star(48, 70)]),
+                                 full)
+    after.title - before.title           # ONE joint change, paired draws
+    sim.full_season()[sim.ROSTER].seeds  # P(each seed), all 12 teams
+
 PASS `path` WHENEVER THE ROSTER CAME FROM `basis(path)`. It is who the bracket
 seeds -- `basis` reads a file without moving `sim.ROSTER`, so left out, a
 counterparty is drawn against a bracket still holding a clone of himself and the
 seed he cannot avoid drops out of it. Silently. The opponent level is every
-roster file in this directory run through this same sim (`sim.league`), so
-re-fetch all 12 before quoting one.
+roster file in this directory run through this same sim
+(`sim.team_levels`), so re-fetch all 12 before quoting one.
 
 Roster JSON format (list of dicts) -- LAST SEASON as it happened, written by
 `fetch_data.roster_rows`, which is the schema of record:
@@ -74,7 +85,8 @@ import fetch_data
 
 from simlib import engine, gp, roster, value
 from simlib.data import (
-    BRACKET, BRACKET_CAL, BRACKET_NIGHTS, FF2ESPN, FULL_FIELD, HERE, MARGINS,
+    BRACKET, BRACKET_CAL, BRACKET_NIGHTS, DELTA_W_CAL, DELTA_W_MATCHUPS,
+    DELTA_W_SCORED, FF2ESPN, FULL_FIELD, HERE, MARGINS,
     MARGINS_BY_WEEK, NIGHTS, OURS, PERIODS, REAL_MATCHUPS, REAL_WK_MEAN,
     REAL_WK_SD, REGULAR, SCORED, SCORED_CAL, SCORES, SCORING_NIGHTS, SEASON_STR,
     US, WEEK_OF, WEEKS, _load, period_nights)
@@ -85,7 +97,8 @@ from simlib.schedule import (
     is_light, light_nights, period_games, team_light_nights, team_nights,
     unsigned)
 from simlib.wins import (
-    MARGIN_MEAN, MARGIN_SD, PF_PER_WIN, margin_pwin, pf_per_win_band, wins)
+    MARGIN_MEAN, MARGIN_SD, PF_PER_WIN, margin_pwin, pf_per_win_band, pf_wins,
+    wins)
 from simlib.engine import TRIALS, absence_blocks, season, unfilled_slots, _onsets
 from simlib.board import (
     BOARD_DIR, BOARD_SUFFIX, POOL, board_rates, newest_board, pool, pool_seasons)
@@ -104,12 +117,15 @@ from simlib.value import (
     value_key)
 from simlib.bracket import (
     BANDS, BRACKET_TEAMS, FIELD_LEVEL_CV, FIELD_MARGIN_CV, LADDERS, LEVEL_CV,
-    MARGIN_CV,
-    WITHIN_CV, Band, Team, bracket_weeks, field, field_mean, ladder_games,
-    league, loaded, opp_dist,
-    opp_mean, opponents, player_title, reg_mean, reg_week, roster_title,
-    round_pwin, seed_title, sigma,
-    title_prob, title_slope, week_points)
+    MARGIN_CV, WITHIN_CV, Band, Team, bracket_weeks, field, field_mean,
+    incoming_title, ladder_games, loaded, measure, opp_dist, opp_mean,
+    opponents, player_title, reg_mean, reg_week, roster_title, round_pwin,
+    seed_title, sigma, team_levels, title_prob, title_slope, week_points)
+# NOT `SEASON_TRIALS`: it is a knob a test turns down, and re-exported here it
+# would be a reference bound at import -- read back stale under the very patch
+# it exists for. `_LIVE` below is the shape a settable name has to take.
+from simlib.title import (
+    PAIRINGS, bracket_odds, full_season, season_run, swap_odds)
 from simlib.reports import BLURB, OURS_ONLY, REPORTS, ROSTER_FREE, SLOW
 
 # Looked up LIVE on the module that defines them, never bound here. Everything

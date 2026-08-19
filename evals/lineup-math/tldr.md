@@ -2,7 +2,7 @@
 
 Every number a trade decision reads, and the caveats that flip a sign. **`findings.md` is the full file — the error bars, the derivations, the unordered pairs and the re-cut warnings. Open it only when a call turns on one of those, or when you need a table not here. It should be rare** `method.md` owns the basis; `README.md` owns the commands.
 
-**Re-run rather than quote.** Measured 2026-08-03 (§*Bracket weeks* 2026-08-08), our 28 bodies padded to 38.
+**Re-run rather than quote.** Measured 2026-08-03 (§*Bracket weeks* 2026-08-08), then 28 bodies padded to 38. Roster is now 32 post-overlay (`Pending Trades.md`) — figures below are pre-overlay.
 
 # PF → wins
 
@@ -116,6 +116,21 @@ We project **1st of 12** on season PF (30,231), so **band 1–2 applies to us**.
 - ⚠️ **It scales with `P(title)`, so it is a fact about the roster loaded, not the format** — a rebuilding team reads **0.0–1.3×**. **Re-run per roster**, and never sum, net or convert `ΔP(title)` against `Δw` (`Eval Definitions §ΔP(title)`).
 - ⚠️ **A band is a seed range and the draw splits it** (6 and 7 sit on the 2-seed's side, 5 and 8 on the 1-seed's). A call that turns on the spread needs the seed.
 - **A bracket week is not four games for everybody.** W22+W23 runs **8 games for 11 teams and 6 for 5** — a third of a bracket week between otherwise identical bodies, and nothing in a season rate says so.
+
+# Title odds — the season simulated end to end
+
+`sim.py title`, 2026-08-13. §*Bracket weeks* prices a round **given** a seed; this earns it first, so **`P(title)` is unconditional and the twelve teams sum to 1.**
+
+| | us | Yao | Jesus | Pascals | rest |
+|---|---:|---:|---:|---:|---:|
+| **P(title)** | **0.652** | 0.176 | 0.116 | 0.029 | ≤0.012 |
+| expected wins of 19 | 16.2 | 14.0 | 13.0 | 11.5 | |
+
+- **We take the 1-seed in 81% of seasons** and make the bracket in ~100%.
+- **Having to earn the seed costs us 5.8 points** against being handed the 1-seed (0.710 → 0.652), and pays every team below.
+- ⚠️ **A third currency.** Never summed, netted or converted against `Δw` or banded `ΔP(title)` — it carries the seeding channel those two exist to keep apart (`Eval Definitions §ΔP(title)`).
+- ⚠️ **Matchups are decided on the wire's spread (0.1005), not the engine's own draws (0.040)** — availability is all that moves in the engine. Calibration: simulated standings spread 4.36 against the wire's 4.17.
+- ⚠️ **The 19-period schedule is last season's shape, re-dealt every season.** Next season's does not exist yet.
 
 # Sept '26 expansion
 

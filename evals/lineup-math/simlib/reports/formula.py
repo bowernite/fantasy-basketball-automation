@@ -1,23 +1,27 @@
 import statistics
 from .. import engine
+from ..data import DELTA_W_CAL, DELTA_W_MATCHUPS
 from ..roster import (
     GROUPS, basis, group_slots, our_roster, pure_bodies, slot_group, star, swap)
 from ..schedule import SIM_TM
 from ..stats import slope
 from ..value import group_body, group_fits, replacement, thin
-from ..wins import PF_PER_WIN, wins
+from ..wins import pf_wins, wins
 
 
 def report_replacement():
     full = basis()
     print("value of an added 68-GP forward, fitted as c*(rate-R)*GP over rates")
-    print("30/40/50/65. K = PF per win / c, so wins = (rate-R)*GP / K.")
+    print("30/40/50/65. K is the rate-point-GP a win costs -- the c above run")
+    print("through the same PF->wins the sim column uses -- so wins =")
+    print("(rate-R)*GP / K, on the %d-matchup basis of the legend."
+          % DELTA_W_MATCHUPS)
     print("Rows are thin(basis(),n) -- the best n of the PADDED 38, so the 28 row")
     print("is not the live file's R. Measure a live roster with replacement() on it.")
     print("  %6s %10s %8s %8s" % ("thin to", "R", "c", "K"))
     for n in (38, 28):        # the only two roster sizes that exist
         R, c = replacement(thin(full, n))
-        print("  %6d %10.1f %8.3f %8.0f" % (n, R, c, PF_PER_WIN / c))
+        print("  %6d %10.1f %8.3f %8.0f" % (n, R, c, 1.0 / pf_wins(c)))
 
     print("\nR IS POSITION-DEPENDENT, and this is a third of the formula's error.")
     print("  %8s %8s %8s %8s" % ("group", "R", "c", "K"))
@@ -25,7 +29,7 @@ def report_replacement():
     Rs = {}
     for lab, (R, c) in fits.items():
         Rs[lab] = R
-        print("  %8s %8.1f %8.3f %8.0f" % (lab, R, c, PF_PER_WIN / c))
+        print("  %8s %8.1f %8.3f %8.0f" % (lab, R, c, 1.0 / pf_wins(c)))
     # Numbers AND cause DERIVED off the LOADED roster, which `--roster` serves for
     # every team: a fixed sentence naming one group as the crowded one prints our
     # own roster's explanation over somebody else's deltas.
@@ -93,9 +97,13 @@ def report_positions():
 def report_formula():
     """Does (rate - R) x GP predict what the sim measures? For whom?"""
     full = basis()
-    base = engine.run(full)
+    base = engine.run(full, cal=DELTA_W_CAL)
     R, c = replacement(full)
-    K = PF_PER_WIN / c
+    # Through `pf_wins`, not `PF_PER_WIN / c`: `replacement` fits `c` on the
+    # STANDINGS calendar and the `sim` column beside this one is measured on
+    # `DELTA_W_CAL`, so a K that skipped the basis would grade the formula
+    # against a column 5% away from it and print the gap as formula error.
+    K = 1.0 / pf_wins(c)
     print("formula: (rate - %.1f) x GP / %.0f = wins, tested as 1-for-1s against"
           % (R, K))
     # The SAME swap `players` prices -- a 68-GP body of his own slot group. The two
@@ -113,11 +121,12 @@ def report_formula():
     rows = []
     for p in sorted(our_roster(), key=lambda q: -(q["avg"] - R) * q["gp"])[:12]:
         g = slot_group(p["elig"])
-        r = engine.run(swap(full, [p["n"]], [group_body(g, grp[g][0])]))
+        r = engine.run(swap(full, [p["n"]], [group_body(g, grp[g][0])]),
+                       cal=DELTA_W_CAL)
         sim_w = wins(base, r)
         pred = (p["avg"] - R) * p["gp"] / K
         Rp, cp = grp[g]
-        predp = (p["avg"] - Rp) * p["gp"] / (PF_PER_WIN / cp)
+        predp = (p["avg"] - Rp) * p["gp"] * pf_wins(cp)
         rows.append((p["n"], sim_w, pred, predp))
         print("  %-22s %5.1f %4d %+8.2f %+8.2f %+6.0f%% %+6.0f%%"
               % (p["n"], p["avg"], p["gp"], sim_w, pred,

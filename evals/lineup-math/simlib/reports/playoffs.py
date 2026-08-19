@@ -2,9 +2,9 @@ import statistics
 from .. import bracket, engine
 from ..bracket import (
     BANDS, BRACKET_TEAMS, LADDERS, FIELD_MARGIN_CV, MARGIN_CV, bracket_weeks,
-    field_mean, ladder_games, league, loaded, opp_mean, reg_mean, reg_week,
+    field_mean, ladder_games, loaded, opp_mean, reg_mean, reg_week, team_levels,
     round_pwin, seed_title, sigma, title_prob, title_slope, week_points)
-from ..data import BRACKET, PERIODS, REAL_MATCHUPS, REGULAR
+from ..data import BRACKET, DELTA_W_MATCHUPS, PERIODS, REGULAR
 from ..engine import TRIALS
 from ..projections import projected_rate
 from .. import roster
@@ -41,7 +41,7 @@ def _week_legend():
     print("same haircut the sim draws behind Delta P, so never add the two:")
     print("that counts availability twice AND mixes currencies. Points, so")
     print("never read against the 0.1-win floor -- that floor is wins over a")
-    print("%d-matchup regular season (`method.md`)." % REAL_MATCHUPS)
+    print("%d-matchup regular season (`method.md`)." % DELTA_W_MATCHUPS)
 
 
 def _week_flag_legend():
@@ -195,7 +195,7 @@ def report_playoffs():
     print("beside us here, which is where a #1 projection can read band 5-8.")
     print("Projected field -- the league on season PF, cut at the bracket's %d:"
           % len(BRACKET_TEAMS))
-    for k, t in enumerate(league()):
+    for k, t in enumerate(team_levels()):
         print("  %2d %-58s %7.0f  %s"
               % (k + 1, roster.label(t.path), t.pf,
                  "<- loaded" if t.path == loaded() else
@@ -210,7 +210,7 @@ def report_playoffs():
           % MARGIN_CV)
     print("in mu_us and mu_opp, so only that spread is left. The reg row's")
     print("opponent is drawn rather than named, out of all %d others and not"
-          % (len(league()) - 1))
+          % (len(team_levels()) - 1))
     print("the %d seeds, so it carries that whole field's level spread too, at"
           % len(BRACKET_TEAMS))
     print("%.4f. Both off last season's wire (`method.md`)." % FIELD_MARGIN_CV)
@@ -282,6 +282,6 @@ def report_playoffs():
     print("  the consolation half, and third place once both sides are out --")
     print("  run %.0f-%.0f and are excluded from every figure here."
           % (min(aside), max(aside)))
-    print("  Period %d is bracket R1 AND inside the study's scored basis, so"
+    print("  Period %d is bracket R1. Standings PF still counts it; `Delta w`"
           % PERIODS[BRACKET[0]]["ordinal"])
-    print("  it is the one week `Delta w` and `Delta P(title)` share.")
+    print("  does not, so `W20` is not priced twice beside `Delta P(title)`.")

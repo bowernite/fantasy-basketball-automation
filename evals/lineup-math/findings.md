@@ -426,7 +426,7 @@ docstring and is not re-derived on every run — re-measure before quoting a fig
 **The share columns are price-invariant** — quote those.
 
 ⚠️ **Every cell above is a 200-trial Monte-Carlo mean at `sim.py`'s fixed seed**, so
-`sim.py nights` reproduces it exactly but a lower-trial cut does not — `test_sim.py` runs 40
+`sim.py nights` reproduces it exactly but a lower-trial cut does not — `tests/` runs 40
 and carries a ±0.03 tolerance on the shares for that reason. **A share that disagrees with
 this table by a point is a different trial count, not a finding** — re-run the report.
 
@@ -640,9 +640,9 @@ at the bracket's 8 — so **1–8 are the field and 9–12 are outside it**:
 | 5 | Matthew the Apostle | 27,155 | 11 | Pharaoh Mattankhamun-Ra | 24,170 |
 | 6 | King Christopher of Bavaria | 26,968 | 12 | The Han Dybantsy | 23,311 |
 
-⚠️ **This is not `../Team Projections.md`'s finish order** — that one is last season's record
-and judgment about next; this is one sim of today's 12 roster files. Read the two against each
-other, never as one measurement.
+⚠️ **`../Team Projections.md`'s '26-27 column is this PF order** (finish prior). Its '27-28 /
+'28-29 columns are age-window judgment only — not a re-sim. H2H record can still move a
+year-1 draft slot off this PF ranking.
 
 **μ_opp is the round's survivor.** The draw is two halves, **8-5-4-1 | 7-6-3-2** (`league-info`
 §Matchup periods), so who a seed can meet is structure: a 1-seed's W22 opponent comes out of
@@ -703,6 +703,80 @@ Re-run it per roster.
 band figure carries its own standard error — **±0.05–0.36** across the 28 rows — and that is
 the noise on that figure alone. **Bands and rows share seed blocks**, so a gap between any two
 cells is a paired difference the table does not carry: no ordering claim off two printed cells.
+
+# Title odds — the season simulated end to end
+
+**Measured 2026-08-13**, `sim.py title`, all 12 roster files, our 32 padded to 38. §*Bracket
+weeks* above prices a round **given** a seed; this one earns the seed first — 19 head-to-head
+periods → standings → the bracket with its byes — so **`P(title)` is unconditional, every team
+has one, and the twelve sum to 1.**
+
+⚠️ **A third quantity, and it replaces neither of the other two.** `Δw` is regular-season wins
+and `ΔP(title)` is the banded bracket read; this carries the **seeding channel**, which is
+exactly what those two are defined to keep apart (`Eval Definitions §ΔP(title)`). It is not a
+conversion between them and does not license one.
+
+| team | wins | bracket | 1–2 | 3–4 | 5–8 | P(title) |
+|---|---:|---:|---:|---:|---:|---:|
+| **Bathroom club (us)** | **16.2** | 1.000 | 0.953 | 0.044 | 0.003 | **0.652 ±0.003** |
+| Yao Ming Dynasty | 14.0 | 1.000 | 0.593 | 0.338 | 0.069 | 0.176 ±0.003 |
+| Jesus Christ and his Disciples | 13.0 | 0.999 | 0.299 | 0.528 | 0.172 | 0.116 ±0.002 |
+| Pascals of Pangea | 11.5 | 0.986 | 0.079 | 0.434 | 0.473 | 0.029 |
+| Matthew the Apostle | 10.8 | 0.967 | 0.039 | 0.281 | 0.647 | 0.010 |
+| King Christopher of Bavaria | 10.4 | 0.949 | 0.026 | 0.216 | 0.708 | 0.012 |
+| The Gutes of Gotland | 9.4 | 0.876 | 0.009 | 0.107 | 0.760 | 0.002 |
+| Mongol Khans Freak Militia | 8.6 | 0.756 | 0.002 | 0.046 | 0.708 | 0.002 |
+| The Don | 6.8 | 0.296 | | 0.005 | 0.291 | 0.000 |
+| SGA-the-Great | 5.8 | 0.134 | | 0.001 | 0.133 | 0.000 |
+| The Han Dybantsy | 4.4 | 0.032 | | | 0.032 | 0.000 |
+| Pharaoh Mattankhamun-Ra | 3.2 | 0.005 | | | 0.005 | 0.000 |
+
+The ± is binomial on 20,000 seasons and is the **only** bar on the table — the basis under it
+is one draw of twelve rosters, whose spread §*Bracket weeks* carries.
+
+**Where ours comes from.** We take the 1-seed in **81%** of seasons and reach the bracket in
+essentially all of them, so the seeding question is nearly settled before it is asked:
+
+| seed | P(seed) | P(title \| seed) | contribution | closed form |
+|---:|---:|---:|---:|---:|
+| 1 | 0.810 | 0.664 | 0.537 | 0.710 |
+| 2 | 0.143 | 0.630 | 0.090 | 0.624 |
+| 3 | 0.036 | 0.533 | 0.019 | 0.557 |
+
+⚠️ **`P(title | seed)` and the closed form are different questions.** The closed form is
+`seed_title` — that seed against the **projected** field in its **projected order**, which is
+what §*Bracket weeks* prices. The simulated column's opponents are whoever actually finished
+there, which is a weaker field at the top seeds and a stronger one below.
+
+**Earning the seed costs the favourite and pays everyone else.** Pinning every team at the
+seat its projected PF claims and playing only the bracket:
+
+| | pinned | simulated | delta |
+|---|---:|---:|---:|
+| **Bathroom club (us)** | 0.710 | **0.652** | **−0.058** |
+| Jesus Christ and his Disciples | 0.073 | 0.116 | +0.043 |
+| Yao Ming Dynasty | 0.166 | 0.176 | +0.010 |
+| King Christopher of Bavaria | 0.003 | 0.012 | +0.009 |
+
+**5.8 points of title probability is what standing 1st in a projection is worth over having to
+finish there** — and it is the part §*Bracket weeks* cannot see, because a band is handed to
+you there.
+
+**How a matchup is decided.** Levels are `team_levels()`'s — every team's roster file,
+projected, padded to 38, one engine — so **injuries arrive as each roster's own projected-GP
+haircut**, per regular period and per bracket round alike. The week-to-week deviation is drawn
+at **`WITHIN_CV` 0.1005 of the period's level**, which is `σ`'s decomposition from §*Bracket
+weeks* and **not the engine's own draws**: those spread **0.040**, because availability is all
+that moves in the engine.
+
+**Calibration, and the only one available:** a simulated season's twelve win totals spread
+**4.36** against last season's actual **4.17**, on a level cv of **0.0937** against **0.0909**.
+Both realised, so both carry matchup luck — but **one league-season is a bound, not a fit**, and
+the wider projected spread makes every figure above that much too concentrated.
+
+⚠️ **The 19-period schedule is last season's *shape*, re-dealt every season** — next season's
+does not exist in August. That, and the rest of what this does not carry, is `method.md`
+§*The season end to end*.
 
 # Sept '26 expansion
 

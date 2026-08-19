@@ -11,8 +11,9 @@ from .nights import report_nights
 from .playoffs import report_playoffs, report_weeks
 from .schedules import report_schedules
 from .tables import report_extras, report_players
+from .title import report_title
 
-from ..data import REAL_MATCHUPS, SCORED
+from ..data import BRACKET, DELTA_W_MATCHUPS, PERIODS, REGULAR, SCORED
 
 # The three units every table here is denominated in, above every one of them.
 # `+2.01` on a row said nothing about whether it was a season, a week or a
@@ -21,7 +22,7 @@ from ..data import REAL_MATCHUPS, SCORED
 UNITS = ("units: `wins` = extra wins over a %d-matchup regular season · `PF` = "
          "fantasy points\n       over the %d scored periods · `rate` = FPts per "
          "game PLAYED, not per night."
-         % (REAL_MATCHUPS, len(SCORED)))
+         % (DELTA_W_MATCHUPS, len(SCORED)))
 
 
 # `playoffs` is denominated in none of the three: a bracket week pays in title
@@ -35,6 +36,16 @@ OWN_UNITS = {
                 "in that bracket period.",
     "weeks": "units: `W20`-`W23` = EXPECTED fantasy points in that bracket "
              "period.",
+    "title": "units: every column but `wins` is a PROBABILITY over simulated "
+             "seasons\n       · `wins` = matchups won of the %d-matchup "
+             "regular season, a COUNT\n       and never `Delta w`, which is a "
+             "DIFFERENCE over that same basis." % len(REGULAR),
+    "scenarios": "units: `wins` = extra wins over a %d-matchup regular season "
+                 "· `dPF` = fantasy\n       points over those SAME %d periods, "
+                 "not the %d-period season PF quoted\n       elsewhere: period "
+                 "%d is bracket R1, and `Delta w` leaves it out."
+                 % (DELTA_W_MATCHUPS, DELTA_W_MATCHUPS, len(SCORED),
+                    PERIODS[BRACKET[0]]["ordinal"]),
 }
 
 
@@ -56,7 +67,7 @@ REPORTS = {name: _labelled(name, fn) for name, fn in (
     ("extras", report_extras), ("players", report_players),
     ("market", report_market), ("gp", report_gp),
     ("schedules", report_schedules), ("playoffs", report_playoffs),
-    ("weeks", report_weeks))}
+    ("weeks", report_weeks), ("title", report_title))}
 
 # One line per report, for `sim.py --help`. The CLI is the only place a caller
 # meets these names, so the description has to arrive with them: a bare list of
@@ -78,6 +89,8 @@ BLURB = {
     "schedules": "what steering the Sept '26 auction on the NBA calendar buys",
     "playoffs": "W20-W23 and seed-banded Delta P(title) per player",
     "weeks": "W20-W23 per player, closed form -- no bracket Monte Carlo",
+    "title": "the whole season simulated: standings -> seeds -> bracket -> "
+             "P(title)",
 }
 
 # Reads the board and the pool and no roster at all, so its table is identical
@@ -85,7 +98,9 @@ BLURB = {
 # team a measurement of nobody.
 ROSTER_FREE = {"market"}
 
-# Wall clock on the default runner, so a caller can tell a slow report from a hung one.
+# Wall clock, so a caller can tell a slow report from a hung one before he kills
+# it. Rounded up from 18 cores; `engine.run` shards trials across them, so a
+# smaller box is slower still.
 SLOW = {"breakevens": "~8s", "schedules": "~20s"}
 
 # Built on OUR player names or OUR real weekly scores, so they answer nothing

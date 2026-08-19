@@ -10,7 +10,9 @@ from .projections import projected_rate
 from .schedule import SIM_TM
 
 
-# The 10 slots that take us 28 -> 38 in Sept '26: 3 rookie picks + 7 FA auction.
+# The 10 slots Sept '26 fills: 3 rookie picks + a 7-man FA auction. A SCHEDULE
+# of grades, not a slate: `pad` takes only as many as the roster in hand is short
+# of 38, so a 32-man roster gets six of them and bids for three FA slots.
 #
 # HAND-TYPED, and `pad`/`basis` give the SAME ten to every team regardless of what
 # picks it actually holds, so a counterparty's padded R is an upper bound on how
@@ -38,8 +40,8 @@ PAD_POS = (["PG", "SG"], ["SF", "PF"], ["C"])
 
 
 # Ours, written by the SAME command as any counterparty's (`fetch_data.py roster
-# 161025`), so re-fetching it after a trade executes lands on the file that is
-# actually read. `--roster PATH` overrides it.
+# 161025`). Assumed-through overlays land on the file `sim.ROSTER` reads.
+# `--roster PATH` overrides it.
 ROSTER = "roster-%d-%s.json" % (TEAM, SEASON_TAG)
 
 
@@ -197,10 +199,12 @@ def pad(roster, n=38):
     his R lands ~7 rate points high and every player he owns reads cheap.
 
     Appends, so the real bodies keep their order and therefore their rng draws
-    (see thin()). `pad(our_roster(), 38)` IS `our_roster() + EXPANSION`, which is
-    what every 38-man figure in findings.md is measured on. Past those 10 fixed
-    slots the grade is the bottom of the auction, spread over slot groups and NBA
-    schedules so padding invents neither a positional hole nor a stacking one.
+    (see thin()). A COUNT, not `+ EXPANSION`: it takes the first `n - len(roster)`
+    of those grades, so the two coincide only at 28 live bodies. Assumed-through
+    overlays put us at 32 and `+ EXPANSION` builds a 42-man roster nobody can
+    field. Past the 10 fixed slots the grade is the bottom of the auction, spread
+    over slot groups and NBA schedules so padding invents neither a positional
+    hole nor a stacking one.
     """
     out = list(roster)
     for i in range(max(0, n - len(out))):
@@ -258,6 +262,7 @@ def basis(path=None):
     """THE roster every report measures on: whoever is loaded, padded to 38.
 
     A body COUNT, not `+ EXPANSION`: that is 10 bodies, so it lands on 38 only for
-    our own 28 and quietly measured a 26-man counterparty at 36.
+    a 28-man roster -- it quietly measured a 26-man counterparty at 36, and our
+    own 32 live bodies at 42.
     """
     return pad(our_roster(path))

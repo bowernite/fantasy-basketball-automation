@@ -5,14 +5,16 @@
     ./run fetch_data.py roster 160941 161020    # any team, for `./run sim.py --roster`
     ./run fetch_data.py roster                  # all 12
 
-`roster-<team_id>-<season>.json`  one team's LIVE roster in the schema `sim.py`
+`roster-<team_id>-<season>.json`  one team's roster in the schema `sim.py`
     prices: `{n, tm, avg, tot, gp, posLabel, elig}`. Membership comes from
     `FetchLeagueRosters` and only the rates from `FetchRoster?season=` -- see
     `merged_rows` for why reading membership off the season endpoint quietly
-    priced four teams off bodies they no longer owned. OURS is written by the
-    same command (`roster 161025`), so re-fetching after a trade executes lands
-    on the file `sim.ROSTER` reads. Body counts still differ between teams, so
-    pad to a common count (`sim.pad`) before comparing R or WINS across two.
+    priced four teams off bodies they no longer owned. Then
+    `assumed_trades.apply_all` overlays deals we treat as done
+    (`evals/Pending Trades.md`) even when the wire still shows pending or has
+    no record. OURS is written by the same command (`roster 161025`). Body
+    counts still differ between teams, so pad to a common count (`sim.pad`)
+    before comparing R or WINS across two.
 
 `teams-<season>.json`  `{team_id: team name}` for all 12, written by the same
     `roster` run whatever ids it was given. Its only job is labelling output:
@@ -48,6 +50,8 @@ import os
 import time
 import urllib.request
 import zoneinfo
+
+import assumed_trades
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ET = zoneinfo.ZoneInfo("America/New_York")
@@ -361,7 +365,9 @@ Rebuilds the data files sim.py reads, beside this script.
   (no argument)   nba-schedule-<season>.json + league-<season>.json  (~30 requests)
   pool            + players-<season>.json                    (~20 min, resumable)
   roster [ids]    roster-<id>-<season>.json per team, all 12 if no ids, and
-                  teams-<season>.json
+                  teams-<season>.json. Applies assumed-through overlays
+                  (`assumed_trades`; terms in evals/Pending Trades.md). A team
+                  in one of those deals re-cuts every side.
   teams           teams-<season>.json alone: the id -> team name labels
 
 Every file it writes is announced by absolute path. Exits non-zero on an
@@ -415,20 +421,33 @@ if __name__ == "__main__":
         # All 12 names whichever ids were asked for -- the labels cost nothing
         # extra and a partial map makes the output of one report inconsistent
         # with the next.
-        write("teams-%s.json" % SEASON_TAG, lambda: team_names(league),
+        names = team_names(league)
+        write("teams-%s.json" % SEASON_TAG, lambda: names,
               indent=0, sort_keys=True)
-        ids = args[1:] or sorted(team_names(league))
-        unknown = [t for t in ids if t not in team_names(league)]
+        ids = args[1:] or sorted(names)
+        unknown = [t for t in ids if t not in names]
         if unknown:
             sys.exit("no such team in league %d: %s\nthe league carries: %s"
                      % (LEAGUE, ", ".join(unknown),
                         ", ".join("%s (%s)" % (i, n)
-                                  for i, n in sorted(team_names(league).items()))))
-        for t in ids:
+                                  for i, n in sorted(names.items()))))
+        asked = [int(t) for t in ids]
+        fetch_ids = assumed_trades.expand_ids(asked)
+        extra = [i for i in fetch_ids if i not in asked]
+        if extra:
+            print("  assumed overlay: also re-cutting %s"
+                  % ", ".join("%s (%s)" % (i, names[str(i)]) for i in extra))
+        built = {}
+        for t in fetch_ids:
+            built[t] = team_roster(t, league, pool)
+            time.sleep(1.1)                          # sustained requests 403
+        nchg = assumed_trades.apply_all(built)
+        if nchg:
+            print("  assumed overlay: moved bodies on %d roster(s)" % nchg)
+        for t in fetch_ids:
             # key order is the schema
             write("roster-%s-%s.json" % (t, SEASON_TAG),
-                  lambda t=t: team_roster(int(t), league, pool))
-            time.sleep(1.1)                          # sustained requests 403
+                  lambda t=t: built[t])
         sys.exit(0)
     # Anything unrecognised REFUSES rather than falling through: `fetch_data.py
     # rosters` (plural), `fetch_data.py 161025` and `fetch_data.py players` each

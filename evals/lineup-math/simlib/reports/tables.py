@@ -6,7 +6,7 @@ from ..roster import basis, our_roster
 from ..schedule import SIM_TM, unsigned
 from ..stats import se_mean
 from ..value import group_replacement
-from ..wins import PF_PER_WIN
+from ..wins import pf_wins
 
 
 def report_extras():
@@ -17,7 +17,7 @@ def report_extras():
     print("filling %d -> %d bodies with auction-grade filler (`pad`'s EXPANSION"
           % (len(our_roster()), len(full)))
     print("grades), against the same roster at its live count.")
-    print("  %+5.0f PF = %+.2f wins" % (d, d / PF_PER_WIN))
+    print("  %+5.0f PF = %+.2f wins" % (d, pf_wins(d)))
     print("  Costs nothing in trade: the slots arrive with the expansion and the")
     print("  bodies come off the auction, so every team gets this. It is a level")
     print("  shift, not an edge -- do not book it as one.")
@@ -68,7 +68,7 @@ def report_players():
               % (p["n"], p["avg"], p["gp"], "/".join(p["elig"]), m, sd, nxt, flag))
     print("\nThe rate above is PROJECTED (`projections`); `gp` is projected off the")
     print("pool. The flag column is what the GP projection rests on (`Eval")
-    print("Output §Flags`): `frag` a <=%d game season, `miss` a whole season"
+    print("Template §Flags`): `frag` a <=%d game season, `miss` a whole season"
           % FRAGMENT_GP)
     print("gone from the pool, `rotN` fewer than 3 seasons at rate >= %g, `nopool`"
           % ROTATION_RATE)

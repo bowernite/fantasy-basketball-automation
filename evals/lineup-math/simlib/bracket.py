@@ -7,7 +7,7 @@ from . import engine, roster as roster_mod
 from .data import (
     BRACKET, BRACKET_CAL, HERE, PERIODS, REGULAR, SCORED, SCORES)
 from .engine import TRIALS
-from .roster import basis, slot_group, swap
+from .roster import PAD_NAMES, basis, slot_group, swap
 from .schedule import bracket_games, team_nights
 from .stats import block_stats, cdf, phi
 from .value import _sampling, group_body, seed_blocks
@@ -21,9 +21,11 @@ Band = collections.namedtuple("Band", "label slots seeds periods")
 
 
 # One league team on the study's own basis: the roster file it was measured
-# from, its projected season PF, its `mu` in one REGULAR period, and its `mu` in
-# each bracket round.
-Team = collections.namedtuple("Team", "path pf reg mus")
+# from, its projected season PF, its `mu` in each REGULAR period, and its `mu`
+# in each bracket round. No mean-of-`regs` field beside them: stored, it is a
+# second copy of the same quantity that every fabricated `Team` in a test has
+# to remember to keep consistent, and `reg_mean` is its only reader.
+Team = collections.namedtuple("Team", "path pf regs mus")
 
 
 def _record(i):
@@ -103,7 +105,7 @@ def _ladders():
     `_bands` derived independently and what the assert below holds them to.
 
     STRUCTURE, not an average: a 1-seed's penultimate opponent comes out of {4,
-    5, 8} and can never be the 2 or the 3. `test_sim.py` walks every game of
+    5, 8} and can never be the 2 or the 3. `tests/` walks every game of
     last season's bracket through this.
     """
     half = ([], [])
@@ -153,7 +155,7 @@ def _spread(teams):
     each team's deviations are taken from its own measured level rather than
     its true one, which costs a degree of freedom per team against the `T*n -
     1` `stdev` divides by. Uncorrected the estimate lands ~9% low and every
-    `sigma` below carries it -- `test_sim.py` holds the recombined split to the
+    `sigma` below carries it -- `tests/` holds the recombined split to the
     pair margins it was taken from, which is the check that sees it.
 
     A team's measured level is a mean of `len(REGULAR)` weeks and so carries
@@ -222,6 +224,19 @@ def ladder_games():
     return played, aside
 
 
+def reg_weeks(wk):
+    """The REGULAR periods' own means, in period order, off a `SCORED`-basis
+    weekly list.
+
+    The per-period column a head-to-head schedule is played on.
+    Periods run 28-56 NBA games and no two rosters spread over the calendar
+    alike, so one team's light period is another's heavy one and the mean below
+    cannot stand in for it.
+    """
+    keep = set(REGULAR)
+    return tuple(x for i, x in zip(SCORED, wk) if i in keep)
+
+
 def reg_week(wk):
     """Mean PF over the REGULAR periods, off a `SCORED`-basis weekly list.
 
@@ -231,8 +246,7 @@ def reg_week(wk):
     denominator beside it are counted over `REGULAR`, so the row would be three
     quantities on two bases.
     """
-    keep = set(REGULAR)
-    return statistics.mean(x for i, x in zip(SCORED, wk) if i in keep)
+    return statistics.mean(reg_weeks(wk))
 
 
 # The Monte Carlo draw every published figure here is on, and the one
@@ -255,26 +269,35 @@ def _pinned():
     process. A team whose file is missing is simply not in the league here --
     re-cut it with `fetch_data.py roster <id>`.
     """
-    out = []
-    for path in sorted(glob.glob(os.path.join(HERE, ROSTERS))):
-        r = basis(path)
-        res = engine.run(r)
-        out.append(Team(os.path.basename(path), res["pf"], reg_week(res["wk"]),
-                        bracket_weeks(r)))
+    out = [measure(basis(path), os.path.basename(path))
+           for path in sorted(glob.glob(os.path.join(HERE, ROSTERS)))]
     return tuple(sorted(out, key=lambda t: -t.pf))
+
+
+def measure(roster, path):
+    """One roster as a `Team` on the study's own basis.
+
+    THE definition of that basis, and it has two callers: `_pinned` above for
+    a roster on file, and `title.swap_odds` for one that is not. Split in two,
+    a field added here reaches the twelve and not the deal being priced, and
+    the two are compared in the same draw.
+    """
+    res = engine.run(roster)
+    return Team(path, res["pf"], reg_weeks(res["wk"]), bracket_weeks(roster))
 
 
 # The re-draw `draw` is inside, or None for the pinned one.
 _DRAWN = None
 
 
-def league():
+def team_levels():
     """The twelve teams every figure here is measured against."""
     return _pinned() if _DRAWN is None else _DRAWN
 
 
-# `league` is the name every caller holds, so the cache control belongs on it.
-league.cache_clear = _pinned.cache_clear
+# `team_levels` is the name every caller holds, so the cache control belongs
+# on it.
+team_levels.cache_clear = _pinned.cache_clear
 
 
 @contextlib.contextmanager
@@ -288,7 +311,7 @@ def draw(seed0):
     error bar on `P(title)`, `by seed` and the multiplier, which are single
     unpaired figures no differencing cancels anything out of.
 
-    The seeding ORDER does not move with it: `pf` and `reg` stay `_pinned`'s.
+    The seeding ORDER does not move with it: `pf` and `regs` stay `_pinned`'s.
     Which 8 teams seed, and in what order, is a projection whose own error bar
     `method.md` states separately -- rolled in here it would be counted twice.
     """
@@ -312,7 +335,7 @@ def field():
     league's own seeding rule (PF, `league-info`) is run forward on the same
     basis as everything else rather than last season's finish being reused.
     """
-    teams = league()
+    teams = team_levels()
     assert len(teams) >= len(BRACKET_TEAMS), (
         "%d roster files beside sim.py for a %d-team bracket: a short field is "
         "a lower opponent level, not a smaller league. `./run fetch_data.py "
@@ -408,7 +431,8 @@ def reg_mean(path=None):
     """`mu_opp` for one REGULAR matchup: the rest of the league's projected PF
     per regular period. All 11, not the 8 seeds -- the regular season is played
     against everybody."""
-    return statistics.mean(t.reg for t in league() if t.path != loaded(path))
+    return statistics.mean(statistics.mean(t.regs) for t in team_levels()
+                           if t.path != loaded(path))
 
 
 def field_mean(w):
@@ -529,6 +553,45 @@ def player_title(roster, names, blocks=None, trials=TRIALS, seed0=SEED0,
                                  trials=trials, seed0=s)
                    for s in seeds]
         out[n] = _bands_delta(base, without, path)
+    return out
+
+
+def incoming_title(roster, players, blocks=None, trials=TRIALS, seed0=SEED0,
+                   R=None, path=None):
+    """name -> {band label: (mean `Delta P(title)`, sd, per-block)} for
+    acquiring each player onto `roster` (typically `basis()`).
+
+    THE `Delta P(title)` ours read for a counterparty's players — mirror
+    `value.incoming_wins` (`Bracket value.md`). Same pad slot, same slot-group
+    replacement counterfactual. Never sum rows; multi-piece sides use
+    `roster_title`.
+    """
+    dupes = collections.Counter(p["n"] for p in players)
+    twice = sorted(n for n, c in dupes.items() if c > 1)
+    if twice:
+        raise ValueError("%s: two bodies of one name -- the column is keyed by "
+                         "name, so one row would silently replace the other. "
+                         "Rename the row you mean." % ", ".join(twice))
+    seeds, R = _sampling(roster, TITLE_BLOCKS if blocks is None else blocks,
+                         trials, seed0, R)
+    pads = [i for i, p in enumerate(roster) if p["n"] in PAD_NAMES]
+    if not pads:
+        raise ValueError("%d bodies and none of them padded: 'add him and "
+                         "re-pad' has no invented slot to spend, and which of "
+                         "ours is dropped is a decision, not a default. Pass "
+                         "the 37 you would field -- or `basis()`, if this was "
+                         "meant to be padded at all." % len(roster))
+    room = roster[:pads[-1]] + roster[pads[-1] + 1:]
+    ref, out = {}, {}
+    for p in players:
+        g = slot_group(p["elig"])
+        if g not in ref:
+            body = group_body(g, R[g], "REPL")
+            ref[g] = [bracket_weeks(room + [body], trials=trials, seed0=s)
+                      for s in seeds]
+        with_mus = [bracket_weeks(room + [p], trials=trials, seed0=s)
+                    for s in seeds]
+        out[p["n"]] = _bands_delta(with_mus, ref[g], path)
     return out
 
 

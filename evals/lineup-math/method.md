@@ -29,7 +29,7 @@ Read this before quoting anything in `findings.md`.
 - **Derive periods from the API, never from arithmetic.** Real periods run 4–7 nights and
   **28–56 games** (CV 16.8%); even buckets erase most of the weekly variance the sim
   exists to explain.
-- **`test_sim.py` guards what these claims rest on** — **its docstrings are the specifics;
+- **`tests/` guards what these claims rest on** — **its docstrings are the specifics;
   this is the outline:**
   - schedule integrity and the single-schedule basis; an NBA abbreviation the schedule
     cannot resolve is **refused** rather than served `SIM_TM`;
@@ -50,6 +50,10 @@ Read this before quoting anything in `findings.md`.
     against the NBA schedule, the seed bands against who actually played each round, and
     `ΔP(title)`'s counterfactual and sign — with a one-body joint run agreeing to the digit
     with the per-player row;
+  - **the season end to end**: the schedule skeleton seating all 12 in every period, the seeding
+    rule, a seed playing exactly the rounds its band names and the top seed unable to lose one it
+    byes, an equal league seeding at random, and the pinned-seed Monte Carlo reproducing
+    `seed_title`;
   - **the draw**: every game of last season's bracket walked through it in seed terms, the
     half a seed cannot meet before the final being exactly the half it meets in it, the final's
     opponent sitting above the field, and the eight seeds' title probabilities summing to 1;
@@ -117,10 +121,9 @@ them: variance from any normal trade is well under **0.1 wins** in every scenari
 report publishes that figure, so re-measure before quoting it** — hence **≤0.1 regular-season
 wins never moves a decision.**
 
-⚠️ **That floor is denominated in regular-season wins over the 20-matchup basis, and does not
-carry into a bracket week.** Every `Δw` here is built on the 20 periods Fleaflicker scores as
-regular, so periods 21–23 sit outside all of them — and **period 20 is bracket R1**
-(`league-info`), priced here as a regular-season period. Pricing a bracket-week game in these
+⚠️ **That floor is denominated in regular-season wins over the 19-matchup `Delta w` basis, and does not
+carry into a bracket week.** Every `Δw` here is built on scored periods 1–19 — period 20 is bracket R1
+(`league-info`) and sits outside all of them, alongside periods 21–23. Pricing a bracket-week game in these
 units and reading it against the floor is a currency error, not a conservative approximation.
 `Eval Definitions §ΔP(title)` owns what the bracket currency is and what it may decide;
 **`sim.py playoffs` is the only source of the number** and re-runs it per roster.
@@ -131,7 +134,7 @@ either here** (`league-info`).
 
 **One basis, both sides.** μ_us and μ_opp are the same measurement of different rosters — all
 12 roster files, projected rates, padded to 38, one engine — so the body count, the projections
-and the sim's own optimism cancel out of the margin instead of booking as an edge. `test_sim.py`
+and the sim's own optimism cancel out of the margin instead of booking as an edge. `tests/`
 pins it: inflate every team's rates 10% together and no band's `P(title)` moves more than
 **0.008**. ⚠️ **Not exactly zero, and the residual is ours** — `pad`'s ten bodies carry fixed
 grades no rate feed reaches, so the team holding the most real bodies (us, 28) rescales hardest.
@@ -172,3 +175,33 @@ Its error bars, in the order they bite:
   sd across re-draws of the entire basis beside every one (`findings.md` §*Bracket weeks*).
   ⚠️ **Both sides re-draw together** — our weeks re-seeded against a pinned field measure a
   mismatch on top of the sampling noise and read wider than the truth.
+
+# The season end to end
+
+`sim.py title` plays the 19 regular periods head to head, seeds off the result and runs the
+bracket out (`findings.md` §*Title odds*). It inherits every bar above — same rosters, same
+projections, same one snapshot of the field — and adds these:
+
+- ⚠️ **A matchup is decided on the wire's weekly spread, never on the engine's own draws.** The
+  level in a period is `engine.run`'s **mean**; the deviation around it is drawn at `WITHIN_CV`
+  0.1005 of that period's level — the same decomposition `σ` prices a bracket round with, so
+  pinning the seeds reproduces `seed_title`. The engine's own relative weekly spread is
+  **0.040**, because **availability is the only thing that moves in it**: scored off single
+  engine seasons the favourite wins nearly every week and the standings never shuffle.
+- **Injuries reach it as each roster's own projected-GP haircut**, per regular period and per
+  bracket round. ⚠️ **What it does not carry is one injury persisting into the bracket** — the
+  engine's regular-to-bracket correlation is **−0.40**, a GP budget spent early rather than a
+  durable absence, so resampling whole engine seasons would import that artifact instead.
+- ⚠️ **The schedule is last season's *shape*.** Next season's does not exist in August. The
+  skeleton is real — 6 games a period, every pair meeting at least once and 8 of 11 twice — and
+  the twelve franchises are **re-dealt onto it every season**, so no team carries last season's
+  opponents forward as though they were next season's.
+- **Calibration, and the only one available:** a simulated season's twelve win totals spread
+  **4.36** against last season's actual **4.17**, on a projected level cv of **0.0937** against
+  the wire's **0.0909**. Both realised, so both carry matchup luck. **One league-season is a
+  bound, not a fit** — a team that stopped setting lineups is inside the 4.17, and a projected
+  spread slightly wider than the wire's makes every `P(title)` that much too concentrated.
+- ⚠️ **`P(title)` is a third currency** and the standing rule against mixing `Δw` with
+  `ΔP(title)` binds it too (`Eval Definitions §ΔP(title)`). It is the only figure here that
+  prices a regular-season win *through* the seed it buys — which is why it may not be netted
+  against either of the two that deliberately do not.

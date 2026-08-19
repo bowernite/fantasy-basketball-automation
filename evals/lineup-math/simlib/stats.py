@@ -58,6 +58,35 @@ def ols(rows, feat, ys):
     return [A[i][k] / A[i][i] for i in range(k)]
 
 
+def false_position(f, lo, hi, flo, fhi, tol):
+    """Where `f` crosses zero inside a STRADDLING bracket, by interpolation.
+
+    `flo`/`fhi` are the end values the caller has already paid for, and they must
+    straddle: this finds a root, it does not go looking for one. Sign-checking the
+    ends is the caller's job because only the caller can say what falling off
+    either end MEANS.
+
+    Only for an `f` that is CONVEX and increasing. That is what makes this
+    terminate: the interpolated root of a convex `f` never overshoots, so the
+    estimate rises monotonically and `hi` may never move -- which is why `tol`
+    bounds the last STEP here and not a bracket width. On an `f` that is neither,
+    the step can go small a long way from the root and the answer is quietly
+    wrong; halve instead.
+    """
+    x = prev = None
+    while True:
+        prev, x = x, (lo * fhi - hi * flo) / (fhi - flo)
+        # tol/2, so the accuracy claim is the one a bracket of width `tol`
+        # returning its midpoint makes.
+        if prev is not None and abs(x - prev) <= tol / 2:
+            return x
+        fx = f(x)
+        if fx < 0:
+            lo, flo = x, fx
+        else:
+            hi, fhi = x, fx
+
+
 def phi(z):
     """Standard normal density."""
     return math.exp(-z * z / 2) / math.sqrt(2 * math.pi)

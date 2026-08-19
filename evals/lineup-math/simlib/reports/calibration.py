@@ -1,12 +1,13 @@
 import collections, math, statistics
 from .. import engine
 from ..data import (
-    MARGINS, NIGHTS, REAL_MATCHUPS, REAL_WK_MEAN, REAL_WK_SD, SCORED_ORDINALS,
-    SCORES, SCORING_NIGHTS, US, WEEK_OF, WEEKS)
+    DELTA_W_MATCHUPS, MARGINS, NIGHTS, REAL_WK_MEAN, REAL_WK_SD,
+    SCORED_ORDINALS, SCORES, SCORING_NIGHTS, US, WEEK_OF, WEEKS)
 from ..roster import our_roster
 from ..schedule import games_on
 from ..wins import (
-    MARGIN_MEAN, MARGIN_SD, PF_PER_WIN, margin_pwin, pf_per_win, pf_per_win_band)
+    MARGIN_MEAN, MARGIN_SD, PF_PER_WIN, margin_pwin, pf_per_win, pf_per_win_band,
+    pf_wins)
 
 
 def report_calibration():
@@ -79,11 +80,18 @@ def report_calibration():
     # the study's. The constant above is the curve's SLOPE at 0, so `wins()` --
     # which every Delta w here runs through -- reads off the straight line, and
     # printing the curve alone under "1 win = N PF" invites subtracting them.
-    print("  the curve, and the straight line `wins()` actually divides by:")
+    print("  the curve, and the straight line `wins()` actually divides by,")
+    # BOTH rows on the legend's %d-matchup basis, and through `pf_wins` rather
+    # than `PF_PER_WIN` directly: the constant is quoted per season PF over the
+    # %d matchups it was MEASURED on, so dividing by it prints wins over 20
+    # under a legend promising 19 -- 5% high, in the one table a reader comes to
+    # to check a `Delta w` against the conversion.
+    print("  both over the %d matchups the legend names, off a %d-period PF:"
+          % (DELTA_W_MATCHUPS, WEEKS))
     shifts = (250, 500, 1000, 2000, 3000)
     print("  %6s %s" % ("+PF", "  ".join("%6d" % d for d in shifts)))
     print("  %6s %s" % ("curve", "  ".join(
-        "%+6.2f" % (REAL_MATCHUPS * (margin_pwin(d / WEEKS) - margin_pwin()))
+        "%+6.2f" % (DELTA_W_MATCHUPS * (margin_pwin(d / WEEKS) - margin_pwin()))
         for d in shifts)))
-    print("  %6s %s" % ("wins()", "  ".join("%+6.2f" % (d / PF_PER_WIN)
+    print("  %6s %s" % ("wins()", "  ".join("%+6.2f" % pf_wins(d)
                                             for d in shifts)))

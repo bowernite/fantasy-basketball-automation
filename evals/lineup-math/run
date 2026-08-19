@@ -7,7 +7,7 @@ cd "$HERE"
 if [ $# -eq 0 ] || [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
     echo "usage: ./run sim.py [--roster <file>] [report ...]"
     echo "       ./run fetch_data.py [pool | roster [id ...]]"
-    echo "       ./run -m unittest test_sim"
+    echo "       ./run test"
     echo "       ./run <script.py>"
     echo "./run sim.py --help lists reports."
     exit 2
@@ -15,5 +15,9 @@ fi
 if ! command -v pypy3.11 >/dev/null 2>&1; then
     echo "pypy3.11 is the default runner here. brew install pypy3.11" >&2
     exit 127
+fi
+if [ "$1" = "test" ]; then
+    shift
+    exec pypy3.11 -m unittest discover -s tests -t . "$@"
 fi
 exec pypy3.11 "$@"

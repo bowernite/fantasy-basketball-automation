@@ -17,7 +17,7 @@ here restates either.
 ```
 ./run sim.py --help          # every report, what it answers, and which take --roster
 ./run sim.py <report ...>    # runs each, in the order named
-./run -m unittest test_sim
+./run test
 ./run fetch_data.py --help   # every file it writes and what each argument costs
 ```
 
@@ -36,7 +36,7 @@ import sim
 full = sim.basis()                        # whoever is loaded, padded to 38 bodies
 base = sim.run(full)
 deal = sim.run(sim.swap(full, ["Jalen Suggs", "Coby White"], [sim.star(48, 70, ("C",))]))
-sim.wins(deal, base)                      # +wins over 20 matchups
+sim.wins(deal, base)                      # +wins over 19 regular matchups (excl. W20)
 sim.breakeven(full, ["Jalen Suggs", "Coby White"], gp=70, elig=("C",))
 sim.player_wins(full, ["Jalen Suggs"])    # -> {name: (Δw, sd, per-block values)}
 ```
@@ -44,6 +44,19 @@ sim.player_wins(full, ["Jalen Suggs"])    # -> {name: (Δw, sd, per-block values
 `sim.wins(after, before)` — **the argument order is the sign.** Reversed it reads "wins
 lost", which is a legitimate call (the `formula` report makes it), so nothing can guard it;
 name which one you mean.
+
+**Unconditional title odds — the seed simulated rather than assumed** — are `sim.py title`
+(`findings.md` §*Title odds*). One joint roster change, paired on the same draws:
+
+```python
+after, before = sim.swap_odds(sim.swap(full, ["Jalen Suggs"], [sim.star(48, 70)]), full)
+after.title - before.title      # ΔP(title) THROUGH the seeding channel too
+sim.full_season()[sim.ROSTER]   # wins · P(each seed) · P(bracket) · P(title), any team
+```
+
+⚠️ **That is a third currency, not a conversion.** `Δw`, banded `ΔP(title)` and this one are
+never summed, netted or exchanged (`Eval Definitions §ΔP(title)`); this one is the only one of
+the three that prices a regular-season win *through* the seed it buys.
 
 ⚠️ **What the import surface refuses.** Each of these raises rather than hand back a number
 you would publish. Fix the call — there is no flag to pass.
@@ -53,6 +66,7 @@ you would publish. Fix the call — there is no flag to pass.
 | `swap` | a name not on the file · a name on it **twice** · one name **sent twice** (a body leaves once, so the deal is a piece shorter than you typed) · **more bodies in than out** (the roster is capped — name the drops yourself) |
 | `breakeven` | a break-even outside its 20–90 search bracket. `OutOfBracket.mark` (`<20` / `>90`) is the answer; `breakeven_value` returns it instead of raising |
 | `incoming_wins` | **two arrivals of one name** (rows are keyed by name, so one would silently replace the other) · a roster with **nothing padded**, since the slot an arrival takes is a padded one |
+| `incoming_title` | same as `incoming_wins` |
 | `our_roster` (so `basis` too) | a roster file carrying **nobody** — it pads to 38, so an empty file is 38 bodies of filler, not an empty table |
 
 ## Where the code lives
@@ -69,11 +83,12 @@ says which:
 | `engine` `roster` | `season`/`run`; loading, projecting, padding, `swap` |
 | `auction` `value` | steering the September auction; replacement, `Δw`, break-evens |
 | `bracket` | the seed bands and the draw, the projected field a bracket week is played against, `ΔP(title)` |
+| `title` | the season end to end — head-to-head standings, seeding, the bracket played out, `P(title)` |
 | `reports/` | one module per group of reports, plus the `REPORTS` registry |
 
 No module imports a row below its own, so the layering is checkable by reading the import
 lines. In a test, **patch the module that DEFINES a function** — see `cheap_monte_carlo` in
-`test_sim.py`. `sim.run`, `sim.player_wins`, `sim.gp_bootstrap`, `sim.PLAYER_BLOCKS` and
+`tests/harness.py`. `sim.run`, `sim.player_wins`, `sim.gp_bootstrap`, `sim.PLAYER_BLOCKS` and
 `sim.ROSTER` read *and* write through to those modules, so the facade is a live seam rather
 than a snapshot; every other name it exports is a plain re-export.
 
@@ -94,16 +109,19 @@ holds a rotation spot at all.
 ./run fetch_data.py roster 160941        # -> roster-160941-2025-26.json
 ./run sim.py --roster roster-160941-2025-26.json players replacement
 ./run fetch_data.py roster 161025        # OURS is the same command, same schema.
-                                         # Re-run it after any trade EXECUTES.
+                                         # Re-run after a trade executes. Assumed-
+                                         # through overlays (`Pending Trades.md`)
+                                         # are applied even when the wire lags.
 ./run fetch_data.py roster               # all 12, ~20s. Cheap; do it before a
                                          # session rather than trusting the files.
 ```
 
-**`playoffs` reads all 12 files, not just the loaded one** — the opponent level is the rest of
-the league simulated the same way, and their projected order is the draw itself (`findings.md`
-§*Bracket weeks*), so a stale or missing roster file moves μ_opp for every team. Re-fetch all
-12 before quoting a `ΔP(title)`. The set is the season's own: `roster-<id>-<season>.json`, and
-a roll leaves the previous season's beside it.
+**`playoffs` and `title` read all 12 files, not just the loaded one** — the opponent level is the
+rest of the league simulated the same way, and their projected order is the draw itself
+(`findings.md` §*Bracket weeks*), so a stale or missing roster file moves μ_opp for every team.
+Re-fetch all 12 before quoting a `ΔP(title)` or a `P(title)`. The set is the season's own:
+`roster-<id>-<season>.json`, and a roll leaves the previous season's beside it. `title`
+**refuses** a league short a file rather than forfeiting that team's 19 games.
 
 **Import it and the file has to be named twice.** `sim.basis(path)` reads a roster without
 moving `sim.ROSTER`, so `player_title`/`roster_title` take a `path=` of their own — omitted,
@@ -117,6 +135,7 @@ separate run, on *our* roster, and it is one import call:
 
 ```python
 sim.incoming_wins(sim.basis(), sim.our_roster("roster-160941-2025-26.json"))
+sim.incoming_title(sim.basis(), sim.our_roster("roster-160941-2025-26.json"))
 ```
 
 Same counterfactual *shape* as `player_wins` (a replacement 68-GP body of his **own slot
@@ -145,7 +164,7 @@ valuable.** Measured **2026-08-03**, **forward group** throughout: ours **14.6 l
 12.1/12.9/11.6 guard/forward/center). Those 4.2 rate points are **~0.3 wins on every player he
 owns** — ten times the gaps the σ column is there to police. `sim.basis()` pads to 38 for
 exactly this reason. **14.6 is the *live file*; `findings.md` §*Valuation formula*'s 28 row is
-a different 28 and reads 15.1.** Both figures need a fresh cut — re-run `fetch_data.py roster
+a different 28 and reads 15.1.** Both figures need a fresh cut — re-run `./run fetch_data.py roster
 <id>` and re-measure before quoting either.
 
 ⚠️ **`R` is a property of a roster's shape at a moment, not a constant.** It moves on a trade,
@@ -158,9 +177,10 @@ our roster; what they give up prices on theirs.**
 ⚠️ **Membership is live; only the rates are last season's.** `FetchRoster?season=` answers as
 of the season's **last lineup period** (~end of March), so read as a roster it is months
 stale in both directions — an add after it is missing, a drop is still on it, silently.
-`fetch_data.py roster` therefore takes the bodies from `FetchLeagueRosters` and only
-`avg`/`tot`/`gp` from the season endpoint; **re-cut the files rather than trusting a count in
-a written eval**, and never hand-patch a file for a trade.
+`./run fetch_data.py roster` therefore takes the bodies from `FetchLeagueRosters` and only
+`avg`/`tot`/`gp` from the season endpoint, then applies assumed-through overlays
+(`assumed_trades.py`; terms in `evals/Pending Trades.md`). **Re-cut the files rather
+than trusting a count in a written eval.** Do not hand-patch around the overlay.
 
 A body the season snapshot has no line for played for somebody else, so his line comes off
 `players-2025-26.json` — the same numbers to ~0.01 (`viewingActualPoints` against

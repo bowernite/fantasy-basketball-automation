@@ -2,7 +2,7 @@ from .. import engine
 from ..engine import TRIALS, absence_blocks
 from ..roster import EXPANSION, basis, star
 from ..value import replacement, value_key
-from ..wins import PF_PER_WIN
+from ..wins import pf_wins
 
 
 # The one player every row here reshapes. Named once: the GP curve, the lock-in
@@ -55,7 +55,7 @@ def report_durability():
           % (SUBJECT, sub["avg"], sub["gp"], PROBE))
     print("  %5s %s" % ("gp", "  ".join("%8d" % g for g in PROBE_GP)))
     print("  %5s %s" % ("wins", "  ".join(
-        "%+8.2f" % ((pf(PROBE, g) - base["pf"]) / PF_PER_WIN)
+        "%+8.2f" % pf_wins(pf(PROBE, g) - base["pf"])
         for g in PROBE_GP)))
 
     print("\nfraction of a healthy(82 GP) season retained; a board implies gp/82:")
@@ -81,7 +81,7 @@ def report_durability():
     for s in (0.10, 0.25, 0.40):
         d = engine.run(full, bursty=True, surprise=s)["pf"] - bbase
         print("    %2d%% surprised: %+6.0f PF = %+.2f wins"
-              % (100 * s, d, d / PF_PER_WIN))
+              % (100 * s, d, pf_wins(d)))
     print("  carried by ONE 45-rate player as a share of HIS OWN value (measured")
     print("  1-for-1 against a %.1f-rate body). A board charges gp/82 and stops;" % R)
     print("  this column is what it does not charge:")
@@ -95,8 +95,8 @@ def report_durability():
     worst = []          # the costliest lock-in share at each GP, for the bound
     for gp in (41, 55, 70, 82):
         clean = one(gp, 0.0)
-        val = (clean - repl) / PF_PER_WIN
-        cells = [(one(gp, s) - clean) / PF_PER_WIN for s in LOCK_INS]
+        val = pf_wins(clean - repl)
+        cells = [pf_wins(one(gp, s) - clean) for s in LOCK_INS]
         worst.append(max(abs(d) / val for d in cells))
         print("    %5d %+11.2f %s" % (gp, val, "  ".join(
             "%+8.2f %4.0f%%" % (d, 100 * abs(d) / val) for d in cells)))
@@ -114,7 +114,7 @@ def report_durability():
     for p in EXPANSION[-4:]:
         d = engine.run([q for q in full if q["n"] != p["n"]])["pf"] - base["pf"]
         print("  drop %s (%.0f FPts/%d GP): %+5.0f PF = %+.3f wins"
-              % (p["n"], p["avg"], p["gp"], d, d / PF_PER_WIN))
+              % (p["n"], p["avg"], p["gp"], d, pf_wins(d)))
 
     print("\nfragility at CONSTANT (rate-%.1f)xGP, top 6 / top 12. Weekly sd raw:"
           % R)

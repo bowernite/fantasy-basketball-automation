@@ -140,6 +140,14 @@ def _calendar(buckets):
 SCORED_CAL = Calendar(SCORING_NIGHTS, WEEK_OF, WEEKS)
 
 
+# ONE basis for every `Delta w` figure: scored periods minus bracket R1 (period
+# 20 / W20). Standings PF still counts R1; pricing it again in wins would
+# double-count the week `Bracket value.md` prices in `W20`-`W23`.
+DELTA_W_SCORED = [i for i in SCORED if i not in BRACKET[:1]]
+DELTA_W_MATCHUPS = len(DELTA_W_SCORED)
+DELTA_W_CAL = _calendar([period_nights(i) for i in DELTA_W_SCORED])
+
+
 BRACKET_CAL = _calendar(BRACKET_NIGHTS)
 
 
