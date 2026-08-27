@@ -7,8 +7,10 @@ import collections, json, os, statistics
 from fetch_data import SEASON, SEASON_TAG
 
 
-# The data files sit beside `sim.py`, one level up from this package.
+# Package root (one level up). JSON lives in `data/` and `rosters/`.
 HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DATA_DIR = os.path.join(HERE, "data")
+ROSTER_DIR = os.path.join(HERE, "rosters")
 
 
 SEASON_STR = str(SEASON)          # the pool keys seasons as strings
@@ -19,8 +21,27 @@ FF2ESPN = {"GSW": "GS", "NOP": "NO", "WAS": "WSH", "UTA": "UTAH",
            "NYK": "NY", "SAS": "SA", "BRK": "BKN"}
 
 
+def _path(name):
+    """Bare `roster-*` -> rosters/; other bare names -> data/; abs as-is."""
+    if os.path.isabs(name):
+        return name
+    if os.path.dirname(name):
+        return os.path.join(HERE, name)
+    folder = ROSTER_DIR if name.startswith("roster-") else DATA_DIR
+    return os.path.join(folder, name)
+
+
+def roster_path(name):
+    """`--roster` resolve: bare name in rosters/, abs as-is, else off HERE."""
+    if os.path.isabs(name):
+        return name
+    if os.path.dirname(name):
+        return os.path.join(HERE, name)
+    return os.path.join(ROSTER_DIR, name)
+
+
 def _load(name):
-    with open(os.path.join(HERE, name)) as f:
+    with open(_path(name)) as f:
         return json.load(f)
 
 

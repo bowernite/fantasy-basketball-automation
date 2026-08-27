@@ -41,15 +41,17 @@ SNAPSHOT = os.path.join(sim.HERE, os.pardir, "board-snapshots", "projections",
 def cheap_monte_carlo(trials=4, blocks=1, seasons=200):
     """A trial count that answers whether a report runs, not what it says
 
-    The three lambdas bind their sample size as a default at import, so
+    The four lambdas bind their sample size as a default at import, so
     lowering `TRIALS` alone changes nothing; `PLAYER_BLOCKS` and
     `SEASON_TRIALS` are module constants read at call time. Patched on the
     module that defines each one, since `sim` forwards them both ways
     """
-    real_run, real_wins, real_boot = (engine.run, value.player_wins,
-                                      gp.gp_bootstrap)
+    real_run, real_many, real_wins, real_boot = (
+        engine.run, engine.run_many, value.player_wins, gp.gp_bootstrap)
     was_blocks, was_seasons = value.PLAYER_BLOCKS, title.SEASON_TRIALS
     engine.run = lambda roster, **kw: real_run(roster, **dict(kw, trials=trials))
+    engine.run_many = lambda rosters, **kw: real_many(
+        rosters, **dict(kw, trials=trials))
     value.player_wins = lambda roster, names, **kw: real_wins(
         roster, names, **dict(kw, trials=trials))
     gp.gp_bootstrap = lambda rows, **kw: real_boot(rows, **dict(kw, n=50))
@@ -59,8 +61,8 @@ def cheap_monte_carlo(trials=4, blocks=1, seasons=200):
     try:
         yield
     finally:
-        engine.run, value.player_wins, gp.gp_bootstrap = (real_run, real_wins,
-                                                          real_boot)
+        engine.run, engine.run_many, value.player_wins, gp.gp_bootstrap = (
+            real_run, real_many, real_wins, real_boot)
         value.PLAYER_BLOCKS, title.SEASON_TRIALS = was_blocks, was_seasons
         bracket.team_levels.cache_clear()
 
@@ -136,7 +138,7 @@ def committed_rosters():
     """Every roster file in the tree for THIS season. The league is 12 and they
     are re-cut with `fetch_data.py roster <id>`, so the set is the directory's
     to state -- and the previous season's files sit beside them"""
-    return sorted(glob.glob(os.path.join(sim.HERE, bracket.ROSTERS)))
+    return sorted(glob.glob(os.path.join(sim.ROSTER_DIR, bracket.ROSTERS)))
 
 
 def rostered(name, path=None, projected=True):

@@ -2,9 +2,9 @@ import unittest
 from tests.harness import *
 
 class PlayoffsReport(unittest.TestCase):
-    """The report `Eval Definitions §ΔP(title)`, `eval-team` and `trades` all
-    send a reader to. It answers about any team -- the opponent distribution is
-    the league's, not our weekly scores -- so `--roster` has to serve it"""
+    """Seed-conditional `P(title|seed)`. The eval column is unconditional
+    `title.player_title`. `--roster` has to serve this -- the opponent
+    distribution is the league's, not our weekly scores."""
 
     ROW = re.compile(r"^  (\S.*?) +(\S+) +(\S+) +(\S+) +(\S+)"
                      + r" +([-+][\d.]+) +\+-([\d.]+)" * 3 + r" *(.*)$", re.M)
@@ -45,7 +45,7 @@ class PlayoffsReport(unittest.TestCase):
         us, was a question only the `team-info` skill could answer"""
         out = render("playoffs")
         teams = json.loads(read_text(
-            os.path.join(sim.HERE, "teams-%s.json" % fetch_data.SEASON_TAG)))
+            os.path.join(sim.DATA_DIR, "teams-%s.json" % fetch_data.SEASON_TAG)))
         for name in teams.values():
             self.assertIn(name, out)
 
@@ -140,7 +140,7 @@ class PlayoffsReport(unittest.TestCase):
             out = render("playoffs")
             name = sim.our_roster()[0]["n"]
             full = sim.basis()
-            got, = sim.player_title(full, [name],
+            got, = bracket.player_title(full, [name],
                                     R=sim.group_replacement(full)).values()
         row, = [m for m in self.ROW.findall(out) if m[0] == name]
         for k, band in enumerate(sim.BANDS):
@@ -161,7 +161,7 @@ class PlayoffsReport(unittest.TestCase):
         self.assertIn("averaged over %d shared" % bracket.TITLE_BLOCKS, out)
         with cheap_monte_carlo(4):
             full = sim.basis()
-            got, = sim.player_title(full, [sim.our_roster()[0]["n"]],
+            got, = bracket.player_title(full, [sim.our_roster()[0]["n"]],
                                     R=flat_R()).values()
         self.assertEqual(len(got[sim.BANDS[0].label][2]), bracket.TITLE_BLOCKS)
 

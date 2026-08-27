@@ -38,10 +38,10 @@ columns (`Eval Definitions §Δw`) -- neither substitutes for the other:
     sim.player_wins(sim.basis("their.json"), names)         # Δw THEIRS
     sim.incoming_wins(sim.basis(), sim.our_roster("their.json"))   # Δw OURS
 
-`ΔP(title)` is the bracket-week currency and is NEVER summed with, netted
-against or converted into `Δw` (`Eval Definitions §ΔP(title)`). `sim.py
-playoffs` is the report, `sim.week_points(p)` the W20-W23 columns, and the
-import path is:
+`ΔP(title)` is unconditional title probability -- regular season, seeds, bracket
+-- and is NEVER summed with, netted against or converted into `Δw` (`Eval
+Definitions §ΔP(title)`). `sim.py title` is the roster `P(title)` report,
+`sim.week_points(p)` the W20-W23 columns, and the import path is:
 
     sim.player_title(sim.basis(), names)                 # ours, on roster
     sim.incoming_title(sim.basis(), sim.our_roster("their.json"))  # ΔP OURS
@@ -51,20 +51,15 @@ import path is:
     full = sim.basis()
     sim.roster_title(sim.swap(full, ["A", "B"], [sim.star(48, 70, ("C",))]), full)
 
-`P(title)` UNCONDITIONAL -- the seed simulated instead of assumed -- is a third
-quantity and neither of the two above. `sim.py title` is the report; the import
-path re-measures the loaded roster and leaves the other eleven alone:
-
     after, before = sim.swap_odds(sim.swap(full, ["A"], [sim.star(48, 70)]),
                                  full)
-    after.title - before.title           # ONE joint change, paired draws
+    after.title - before.title           # same joint change, as Odds
     sim.full_season()[sim.ROSTER].seeds  # P(each seed), all 12 teams
 
-PASS `path` WHENEVER THE ROSTER CAME FROM `basis(path)`. It is who the bracket
-seeds -- `basis` reads a file without moving `sim.ROSTER`, so left out, a
-counterparty is drawn against a bracket still holding a clone of himself and the
-seed he cannot avoid drops out of it. Silently. The opponent level is every
-roster file in this directory run through this same sim
+PASS `path` WHENEVER THE ROSTER CAME FROM `basis(path)`. It is whose seat in
+the twelve is re-measured -- `basis` reads a file without moving `sim.ROSTER`,
+so left out, a counterparty is priced in our seat. Silently. The opponent
+level is every roster file in rosters/ run through this same sim
 (`sim.team_levels`), so re-fetch all 12 before quoting one.
 
 Roster JSON format (list of dicts) -- LAST SEASON as it happened, written by
@@ -85,11 +80,11 @@ import fetch_data
 
 from simlib import engine, gp, roster, value
 from simlib.data import (
-    BRACKET, BRACKET_CAL, BRACKET_NIGHTS, DELTA_W_CAL, DELTA_W_MATCHUPS,
+    BRACKET, BRACKET_CAL, BRACKET_NIGHTS, DATA_DIR, DELTA_W_CAL, DELTA_W_MATCHUPS,
     DELTA_W_SCORED, FF2ESPN, FULL_FIELD, HERE, MARGINS,
     MARGINS_BY_WEEK, NIGHTS, OURS, PERIODS, REAL_MATCHUPS, REAL_WK_MEAN,
-    REAL_WK_SD, REGULAR, SCORED, SCORED_CAL, SCORES, SCORING_NIGHTS, SEASON_STR,
-    US, WEEK_OF, WEEKS, _load, period_nights)
+    REAL_WK_SD, REGULAR, ROSTER_DIR, SCORED, SCORED_CAL, SCORES, SCORING_NIGHTS,
+    SEASON_STR, US, WEEK_OF, WEEKS, _load, period_nights, roster_path)
 from simlib.lineups import SLOTS, lineup
 from simlib.stats import block_stats, ols, se_mean, slope
 from simlib.schedule import (
@@ -118,14 +113,15 @@ from simlib.value import (
 from simlib.bracket import (
     BANDS, BRACKET_TEAMS, FIELD_LEVEL_CV, FIELD_MARGIN_CV, LADDERS, LEVEL_CV,
     MARGIN_CV, WITHIN_CV, Band, Team, bracket_weeks, field, field_mean,
-    incoming_title, ladder_games, loaded, measure, opp_dist, opp_mean,
-    opponents, player_title, reg_mean, reg_week, roster_title, round_pwin,
+    ladder_games, loaded, measure, opp_dist, opp_mean,
+    opponents, reg_mean, reg_week, round_pwin,
     seed_title, sigma, team_levels, title_prob, title_slope, week_points)
 # NOT `SEASON_TRIALS`: it is a knob a test turns down, and re-exported here it
 # would be a reference bound at import -- read back stale under the very patch
 # it exists for. `_LIVE` below is the shape a settable name has to take.
 from simlib.title import (
-    PAIRINGS, bracket_odds, full_season, season_run, swap_odds)
+    PAIRINGS, bracket_odds, full_season, incoming_title, player_title,
+    roster_title, season_run, swap_odds)
 from simlib.reports import BLURB, OURS_ONLY, REPORTS, ROSTER_FREE, SLOW
 
 # Looked up LIVE on the module that defines them, never bound here. Everything
@@ -220,7 +216,7 @@ def _usage():
                       "  (%s)" % SLOW[name] if name in SLOW else ""))
     out += ["",
             "--roster <file>  price another team's roster instead of ours. The",
-            "                 file is resolved beside sim.py, not in the",
+            "                 file is resolved in rosters/, not in the",
             "                 directory you are standing in; `./run",
             "                 fetch_data.py roster <team id>` writes one. The",
             "                 four reports marked (ours only) are built on our",
@@ -267,12 +263,12 @@ if __name__ == "__main__":
         # Checked HERE, where the flag is read, rather than left to the first
         # report's own `basis()`: a wrong path is the commonest way to mistype
         # this flag, and a report that dies part-built has already printed a
-        # header that reads as a started run. The path resolves against the DATA
-        # directory, which is not the shell's cwd.
-        path = os.path.join(HERE, roster.ROSTER)
+        # header that reads as a started run. The path resolves against
+        # rosters/, which is not the shell's cwd.
+        path = roster_path(roster.ROSTER)
         if not os.path.isfile(path):
             sys.exit("no roster file at %s\n`./run fetch_data.py roster <team "
-                     "id>` writes one beside sim.py (`team-info`); a bare name is"
+                     "id>` writes one in rosters/ (`team-info`); a bare name is"
                      " resolved there, not in the directory you are standing in."
                      % path)
         # READABLE, not merely present. Existence alone let a half-written fetch

@@ -38,7 +38,7 @@ def _week_legend():
     """What a `W` cell is, above every table that carries one."""
     print("W columns are FPts/Gp x that player's NBA games in the period x his")
     print("projected share of the season (GPp / his NBA team's games) -- the")
-    print("same haircut the sim draws behind Delta P, so never add the two:")
+    print("same haircut the sim draws behind Delta P(title), so never add:")
     print("that counts availability twice AND mixes currencies. Points, so")
     print("never read against the 0.1-win floor -- that floor is wins over a")
     print("%d-matchup regular season (`method.md`)." % DELTA_W_MATCHUPS)
@@ -57,9 +57,8 @@ def report_weeks():
 
     A `W` cell is a rate times NBA games times a GP share, all three off the
     roster file and the schedule, so the columns every team eval carries are
-    arithmetic. `playoffs` prices the title beside them and costs ~350
-    simulated seasons to do it; the eleven evals that want only the columns run
-    this instead.
+    arithmetic. `title.player_title` prices `Delta P(title)`; the eleven evals
+    that want only the columns run this instead.
     """
     ours = our_roster()
     print("Bracket: %d rounds, periods %s (%s to %s)."
@@ -128,8 +127,8 @@ def _spread(xs):
 
 
 def report_playoffs():
-    """`W20`-`W23` and `Delta P(title)` per player, all three seed bands
-    (`Eval Definitions §ΔP(title)`)."""
+    """`W20`-`W23` and seed-conditional `Delta P(title|seed)` per player.
+    The eval column is unconditional `title.player_title`."""
     full = basis()
     ours = our_roster()
     R = group_replacement(full)
@@ -142,10 +141,11 @@ def report_playoffs():
     reg_mu, reg_opp, reg_sd, reg_p = draws[0]["reg"]
     reg_games = statistics.mean(period_games(i) for i in REGULAR)
 
-    print("Delta P(title) per player, against a replacement 68-GP body OF HIS")
-    print("OWN SLOT GROUP -- the counterfactual `players` prices (`Eval")
-    print("Definitions §Delta w`), in the only currency a bracket week pays in.")
-    print("NEVER summed with, netted against or converted into `Delta w`.")
+    print("Delta P(title|seed) per player, against a replacement 68-GP body OF")
+    print("HIS OWN SLOT GROUP -- seed HELD. Diagnostic, not the eval column:")
+    print("that is unconditional `sim.player_title` (`Eval Definitions")
+    print("§Delta P(title)`). NEVER summed with, netted against or converted")
+    print("into `Delta w`.")
     print("%d-man roster: %s." % (len(full), ", ".join(
         "%s %.1f" % (g, R[g]) for g in sorted(R))))
     print("Bracket: %d rounds, periods %s (%s to %s), %d of %d teams."
@@ -284,4 +284,4 @@ def report_playoffs():
           % (min(aside), max(aside)))
     print("  Period %d is bracket R1. Standings PF still counts it; `Delta w`"
           % PERIODS[BRACKET[0]]["ordinal"])
-    print("  does not, so `W20` is not priced twice beside `Delta P(title)`.")
+    print("  does not, so `W20` is not priced twice inside `Delta w`.")

@@ -119,8 +119,10 @@ def report_schedules():
     print("(OKC) at rate %d -- so the mean's slope is the only honest denominator."
           % SWEEP_RATES[0])
     grid = sorted({r + d for r in SWEEP_RATES for d in (-SWEEP_H, 0, SWEEP_H)})
-    sweep = {r: [engine.run(full + [star(r, gp, ("SF", "PF"), t, "ADD")])["pf"]
-                 - base["pf"] for t in NBA_TEAMS] for r in grid}
+    swept = engine.run_many([full + [star(r, gp, ("SF", "PF"), t, "ADD")]
+                             for r in grid for t in NBA_TEAMS])
+    pf_iter = iter(res["pf"] - base["pf"] for res in swept)
+    sweep = {r: [next(pf_iter) for _ in NBA_TEAMS] for r in grid}
     print("  %6s %9s %8s %9s %9s %9s"
           % ("rate", "meanPF", "sdPF", "sd wins", "sdRate", "spanRate"))
     ratepts = {}
@@ -158,19 +160,31 @@ def report_schedules():
           % (STEER_DRAWS, n))
     print("ends exactly on the best-%d headline instead of contradicting it." % n)
 
-    def pf(tms):
-        return engine.run(steer(full, tms))["pf"]
-
     rng = random.Random(13)
     draws = [[rng.choice(NBA_TEAMS) for _ in range(n)]
              for _ in range(STEER_DRAWS)]
+    offers = [rng.sample(NBA_TEAMS, OFFER_N) for _ in range(STEER_DRAWS)]
     best = coverage_picks(n)
     worst = coverage_picks(n, best=False)
-    top = pf(best)
+    deep = max(NBA_TEAMS, key=lambda t: per_team[t])
+    stack = [deep] * n
+    # ONE sharded batch for every steered roster this section measures --
+    # `best`/`worst`/`stack`, the ladder's PAIRED rungs and the random offers
+    # -- rather than one reshard per configuration.
+    offer_picks = [coverage_picks(n, teams=o) for o in offers]
+    tms_list = ([best, worst, stack]
+               + [best[:k] + d[k:] for d in draws for k in range(n)]
+               + offer_picks)
+    pf_vals = [res["pf"] for res in
+              engine.run_many([steer(full, tms) for tms in tms_list])]
+    top, worst_pf, stack_pf = pf_vals[:3]
+    ladder_pf, got = (pf_vals[3:3 + STEER_DRAWS * n],
+                      pf_vals[3 + STEER_DRAWS * n:])
     # PAIRED down the ladder: rung k and rung k-1 share the draw AND the seeds, so
     # the increment is a within-draw quantity with an sd 3-5x smaller than either
     # rung's -- the rungs' own spread buries increments under the lottery
-    rows = [[pf(best[:k] + d[k:]) for k in range(n)] + [top] for d in draws]
+    rows = [[ladder_pf[i * n + k] for k in range(n)] + [top]
+            for i in range(STEER_DRAWS)]
     idle = statistics.mean(r[0] for r in rows)   # THE baseline for every row
     lottery = [r[0] for r in rows]
     cum = [[r[k] - r[0] for r in rows] for k in range(1, n + 1)]
@@ -199,7 +213,6 @@ def report_schedules():
         for k in range(1, n + 1))))
     peak = max(range(n), key=lambda i: w[i])
     print("  picks: %s" % " ".join(best))
-    worst_pf = pf(worst)
     print("  best %d, all %d teams on offer : %+.3f wins"
           % (n, len(NBA_TEAMS), w[-1]))
     print("  worst %d (greedy-min: a stack) : %+.3f wins"
@@ -234,8 +247,6 @@ def report_schedules():
     print("  %+.2f to %+.2f wins against the best %d (sd %.3f), so what ignoring"
           % (pf_wins(min(lottery) - top), pf_wins(max(lottery) - top), n, sd))
     print("  schedule costs swings by +-%.2f wins on its own." % sd)
-    offers = [rng.sample(NBA_TEAMS, OFFER_N) for _ in range(STEER_DRAWS)]
-    got = [pf(coverage_picks(n, teams=o)) for o in offers]
     print("  best %d of a random %d-team offer  : %+.3f +- %.3f wins -- the"
           % (n, OFFER_N, vs_idle(statistics.mean(got)), se_wins(got)))
     print("  realistic figure, since no auction puts all %d up." % len(NBA_TEAMS))
@@ -243,9 +254,6 @@ def report_schedules():
     print("\nCOVERAGE, NOT A SUMMED NIGHT COUNT. A second body on a night already")
     print("covered chases the slot the first one took, so the two quantities")
     print("disagree hardest on the one shape that matters -- a stack:")
-    deep = max(NBA_TEAMS, key=lambda t: per_team[t])
-    stack = [deep] * n
-    stack_pf = pf(stack)
     print("  all %d on %s : %d body-nights summed, %d distinct, %+.3f wins"
           % (n, deep, n * per_team[deep], coverage(stack), vs_idle(stack_pf)))
     print("  spread best %d : %d body-nights summed, %d distinct, %+.3f wins"

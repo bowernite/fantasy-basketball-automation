@@ -110,7 +110,7 @@ class AssumedTradesReachTheFilesTheSimPrices(unittest.TestCase):
         return p
 
     def names(self, team):
-        with open(os.path.join(self.dir, "roster-%d-%s.json"
+        with open(os.path.join(self.dir, "rosters", "roster-%d-%s.json"
                                % (team, fetch_data.SEASON_TAG))) as f:
             return [r["n"] for r in json.load(f)]
 
@@ -120,7 +120,7 @@ class AssumedTradesReachTheFilesTheSimPrices(unittest.TestCase):
         the league's PF stops summing to itself"""
         self.fetch("roster", str(self.at.MOVES[0][1]))
         self.assertEqual(
-            sorted(f for f in os.listdir(self.dir) if f.startswith("roster-")),
+            sorted(os.listdir(os.path.join(self.dir, "rosters"))),
             sorted("roster-%d-%s.json" % (t, fetch_data.SEASON_TAG)
                    for t in self.at.INVOLVED))
 

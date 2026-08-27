@@ -56,6 +56,12 @@ import assumed_trades
 HERE = os.path.dirname(os.path.abspath(__file__))
 ET = zoneinfo.ZoneInfo("America/New_York")
 
+
+def dest_path(name):
+    """roster-* -> rosters/; everything else -> data/."""
+    folder = "rosters" if os.path.basename(name).startswith("roster-") else "data"
+    return os.path.join(HERE, folder, os.path.basename(name))
+
 # THE season constant, for both files -- `sim.py` imports it from here rather
 # than the other way round, because `sim.py` loads these data files at import and
 # so cannot be imported before they exist. Every data filename carries the tag,
@@ -260,7 +266,7 @@ def team_roster(team_id, league, pool):
 def load_pool():
     """`players-<season>.json` if it is there. Absent is not fatal -- it costs
     a March add his last-season line, and `merged_rows` says what that means."""
-    path = os.path.join(HERE, "players-%s.json" % SEASON_TAG)
+    path = dest_path("players-%s.json" % SEASON_TAG)
     if not os.path.exists(path):
         print("  no %s -- a body the season snapshot lacks will read 0/0"
               % os.path.basename(path))
@@ -297,7 +303,7 @@ def player_pool(path=None):
     cache does not silently go stale.
     """
     out = {}
-    path = path or os.path.join(HERE, "players-%s.json" % SEASON_TAG)
+    path = path or dest_path("players-%s.json" % SEASON_TAG)
     if os.path.exists(path):
         with open(path) as f:
             out = json.load(f)
@@ -360,7 +366,7 @@ USAGE = """usage: ./run fetch_data.py [pool]
        ./run fetch_data.py roster [team id ...]
        ./run fetch_data.py teams
 
-Rebuilds the data files sim.py reads, beside this script.
+Rebuilds the data files sim.py reads, into rosters/ and data/.
 
   (no argument)   nba-schedule-<season>.json + league-<season>.json  (~30 requests)
   pool            + players-<season>.json                    (~20 min, resumable)
@@ -383,7 +389,8 @@ def write(name, build, **dump):
     died on a JSON decode error naming nothing that had happened.
     """
     data = build()
-    path = os.path.join(HERE, name)
+    path = dest_path(name)
+    os.makedirs(os.path.dirname(path), exist_ok=True)
     tmp = path + ".part"
     with open(tmp, "w") as f:
         json.dump(data, f, **dump)

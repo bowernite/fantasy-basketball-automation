@@ -22,16 +22,18 @@ _POOL_N = 0
 SHARD_FLOOR = 50
 
 
-def n_workers(workers, units):
+def n_workers(workers, units, floor=SHARD_FLOOR):
     """How many processes `units` pieces of work are worth, `None` to decide.
 
     Capped at `units`, because a worker with nothing to do still costs an
-    interpreter.
+    interpreter. `floor` is `SHARD_FLOOR` by default; a caller whose unit is
+    far heavier than one trial (a whole player's measure-and-delta, say) is
+    worth forking for well below it and passes its own.
     """
     if units < 2:
         return 1
     if workers is None:
-        workers = (os.cpu_count() or 1) if units >= SHARD_FLOOR else 1
+        workers = (os.cpu_count() or 1) if units >= floor else 1
     return max(1, min(int(workers), units))
 
 

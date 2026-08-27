@@ -96,7 +96,7 @@ Read this before quoting anything in `findings.md`.
 - **Year-specific:** which NBA teams play 10 vs 12 games in a window, playoff-week dates,
   the opponent distribution, the calibration constant, **and the positional premium** —
   that last one is a fact about our roster, not about the format.
-- **Data**, all built by `fetch_data.py` and named for the season — `SEASON` there is the one
+- **Data**, all built by `fetch_data.py` into `data/` and `rosters/`, named for the season — `SEASON` there is the one
   constant to bump, and a roll writes new files instead of overwriting last year's.
   `nba-schedule-*`: ESPN scoreboard, 165 nights, **1,231 games**, 7.46/night, postponed
   dropped, NBA Cup final kept as a real 83rd game for NY/SA; '26-27 was unreleased.
@@ -125,8 +125,8 @@ wins never moves a decision.**
 carry into a bracket week.** Every `Δw` here is built on scored periods 1–19 — period 20 is bracket R1
 (`league-info`) and sits outside all of them, alongside periods 21–23. Pricing a bracket-week game in these
 units and reading it against the floor is a currency error, not a conservative approximation.
-`Eval Definitions §ΔP(title)` owns what the bracket currency is and what it may decide;
-**`sim.py playoffs` is the only source of the number** and re-runs it per roster.
+`Eval Definitions §ΔP(title)` owns what the title currency is and what it may decide;
+**`sim.player_title` / `sim.py title` is the source of the number** and re-runs it per roster.
 
 **The multiplier.** `findings.md` §*Bracket weeks* carries the measured tables, per band and
 per roster. **Take the window and the round count from the period data — never hardcode
@@ -140,8 +140,8 @@ pins it: inflate every team's rates 10% together and no band's `P(title)` moves 
 grades no rate feed reaches, so the team holding the most real bodies (us, 28) rescales hardest.
 
 ⚠️ **A level error that hits one roster and not the field does not cancel**, and nothing here
-is a paired difference against a fixed opponent: `P(title)`, the multiplier and `ΔP(title)` all
-scale with the loaded roster's own level. Read them per roster — the same run over a rebuilding
+is a paired difference against a fixed opponent: `P(title)`, the multiplier and seed-conditional
+`ΔP` all scale with the loaded roster's own level. Read them per roster — the same run over a rebuilding
 one prices a bracket game at a twentieth of ours or less (`findings.md` §*Bracket weeks*).
 
 Its error bars, in the order they bite:
@@ -201,7 +201,5 @@ projections, same one snapshot of the field — and adds these:
   the wire's **0.0909**. Both realised, so both carry matchup luck. **One league-season is a
   bound, not a fit** — a team that stopped setting lineups is inside the 4.17, and a projected
   spread slightly wider than the wire's makes every `P(title)` that much too concentrated.
-- ⚠️ **`P(title)` is a third currency** and the standing rule against mixing `Δw` with
-  `ΔP(title)` binds it too (`Eval Definitions §ΔP(title)`). It is the only figure here that
-  prices a regular-season win *through* the seed it buys — which is why it may not be netted
-  against either of the two that deliberately do not.
+- ⚠️ **`P(title)` is title-probability currency** and the standing rule against mixing `Δw` with
+  `ΔP(title)` binds it (`Eval Definitions §ΔP(title)`). Never netted against `Δw`.

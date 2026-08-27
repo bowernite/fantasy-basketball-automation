@@ -156,7 +156,7 @@ class CLI(unittest.TestCase):
         it labels should not send its reader to a skill file to find out whose
         roster he is looking at"""
         teams = json.loads(read_text(
-            os.path.join(sim.HERE, "teams-%s.json" % fetch_data.SEASON_TAG)))
+            os.path.join(sim.DATA_DIR, "teams-%s.json" % fetch_data.SEASON_TAG)))
         status, out = cli("--roster", THEIR_ROSTER, "positions")
         self.assertEqual(status, 0, out)
         self.assertIn(teams[THEIR_ROSTER.split("-")[1]], out.splitlines()[1])

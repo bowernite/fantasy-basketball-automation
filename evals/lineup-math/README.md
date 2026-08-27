@@ -45,18 +45,18 @@ sim.player_wins(full, ["Jalen Suggs"])    # -> {name: (Δw, sd, per-block values
 lost", which is a legitimate call (the `formula` report makes it), so nothing can guard it;
 name which one you mean.
 
-**Unconditional title odds — the seed simulated rather than assumed** — are `sim.py title`
-(`findings.md` §*Title odds*). One joint roster change, paired on the same draws:
+**Title odds** — regular season, seeds, bracket — are `sim.py title`
+(`findings.md` §*Title odds*). Per-player `ΔP(title)` is the same model:
 
 ```python
+sim.player_title(sim.basis(), ["Jalen Suggs"])
+sim.incoming_title(sim.basis(), sim.our_roster("their.json"))
 after, before = sim.swap_odds(sim.swap(full, ["Jalen Suggs"], [sim.star(48, 70)]), full)
-after.title - before.title      # ΔP(title) THROUGH the seeding channel too
-sim.full_season()[sim.ROSTER]   # wins · P(each seed) · P(bracket) · P(title), any team
+after.title - before.title
+sim.full_season()[sim.ROSTER]   # wins · P(each seed) · P(bracket) · P(title)
 ```
 
-⚠️ **That is a third currency, not a conversion.** `Δw`, banded `ΔP(title)` and this one are
-never summed, netted or exchanged (`Eval Definitions §ΔP(title)`); this one is the only one of
-the three that prices a regular-season win *through* the seed it buys.
+⚠️ **Never summed, netted or exchanged against `Δw`** (`Eval Definitions §ΔP(title)`).
 
 ⚠️ **What the import surface refuses.** Each of these raises rather than hand back a number
 you would publish. Fix the call — there is no flag to pass.
@@ -82,8 +82,8 @@ says which:
 | `board` `projections` `gp` | rank↔rate; the projected rate; expected games played |
 | `engine` `roster` | `season`/`run`; loading, projecting, padding, `swap` |
 | `auction` `value` | steering the September auction; replacement, `Δw`, break-evens |
-| `bracket` | the seed bands and the draw, the projected field a bracket week is played against, `ΔP(title)` |
-| `title` | the season end to end — head-to-head standings, seeding, the bracket played out, `P(title)` |
+| `bracket` | the seed bands and the draw, the projected field a bracket week is played against, `P(title|seed)` |
+| `title` | the season end to end — head-to-head standings, seeding, the bracket played out, `ΔP(title)` |
 | `reports/` | one module per group of reports, plus the `REPORTS` registry |
 
 No module imports a row below its own, so the layering is checkable by reading the import
@@ -106,7 +106,7 @@ holds a rotation spot at all.
 ## Pricing a counterparty
 
 ```
-./run fetch_data.py roster 160941        # -> roster-160941-2025-26.json
+./run fetch_data.py roster 160941        # -> rosters/roster-160941-2025-26.json
 ./run sim.py --roster roster-160941-2025-26.json players replacement
 ./run fetch_data.py roster 161025        # OURS is the same command, same schema.
                                          # Re-run after a trade executes. Assumed-
@@ -120,13 +120,12 @@ holds a rotation spot at all.
 rest of the league simulated the same way, and their projected order is the draw itself
 (`findings.md` §*Bracket weeks*), so a stale or missing roster file moves μ_opp for every team.
 Re-fetch all 12 before quoting a `ΔP(title)` or a `P(title)`. The set is the season's own:
-`roster-<id>-<season>.json`, and a roll leaves the previous season's beside it. `title`
+`rosters/roster-<id>-<season>.json`, and a roll leaves the previous season's beside it. `title`
 **refuses** a league short a file rather than forfeiting that team's 19 games.
 
 **Import it and the file has to be named twice.** `sim.basis(path)` reads a roster without
 moving `sim.ROSTER`, so `player_title`/`roster_title` take a `path=` of their own — omitted,
-the bracket seeds whoever `sim.ROSTER` says, which puts a counterparty in a draw containing
-himself. The CLI's `--roster` sets both.
+the draw seats whoever `sim.ROSTER` says. The CLI's `--roster` sets both.
 
 **Two different Δw columns, and the CLI only prints one.** `--roster their.json players`
 prices his players **on his roster** — that is `Δw theirs`. `Δw ours` for those same

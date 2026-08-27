@@ -1,7 +1,7 @@
 """What a body is worth: replacement level, `Delta w` in both directions, and the
 break-even rate an N-for-1 needs."""
-import collections
-from . import engine
+import collections, os
+from . import engine, shard
 from .data import DELTA_W_CAL
 from .engine import TRIALS
 from .roster import GROUPS, PAD_NAMES, slot_group, star, swap
@@ -159,10 +159,9 @@ PLAYER_BLOCKS = 3
 def _sampling(roster, blocks, trials, seed0, R):
     """The `(seeds, R)` every per-player column runs on, resolved the one way.
 
-    Shared so they cannot drift: both `Delta w` columns and `bracket`'s
-    `Delta P(title)` are read against each other, and a column sampled on
-    different seeds or fitted on a different R is not the comparison the reports
-    print it as.
+    Shared so they cannot drift: both `Delta w` columns are read against each
+    other, and a column sampled on different seeds or fitted on a different R
+    is not the comparison the reports print it as.
 
     `PLAYER_BLOCKS` is resolved HERE at call time, never bound as a default:
     `players` prints the block count as a caveat on the table, and a default
@@ -174,7 +173,50 @@ def _sampling(roster, blocks, trials, seed0, R):
                        trials, seed0), R
 
 
-def player_wins(roster, names, blocks=None, trials=TRIALS, seed0=101, R=None):
+# Below this many `(roster, seed)` jobs, a job's own pool round-trip costs
+# more than `engine.run`'s own trial-shard already buys -- see `_run_jobs`.
+JOB_FLOOR = 8
+
+
+def _run_jobs(specs, workers):
+    """[engine.run(roster, trials=t, seed0=s, cal=c) for (roster, t, s, c) in
+    specs], SHARDED BY JOB rather than by trial.
+
+    `player_wins` and `incoming_wins` each price dozens of independent
+    counterfactuals per report -- one `engine.run` per name per seed block --
+    and today pay one pool round-trip PER counterfactual, all of them the
+    same size. This pays one round-trip for the whole batch instead.
+
+    Below `JOB_FLOOR` this calls `engine.run` directly, in order, and lets IT
+    shard trials the normal way -- the shard this replaces, not a second one
+    stacked under it: a caller pricing one or two names is still on the fast
+    path it always was. Every job that DOES leave this process runs on
+    `workers=1`: a job that opened its OWN pool would fork one from inside a
+    process this pool already forked, which deadlocks on this machine.
+    """
+    nw = 1
+    if len(specs) >= JOB_FLOOR:
+        nw = shard.n_workers(
+            workers if workers is not None else (os.cpu_count() or 1), len(specs))
+    if nw == 1:
+        return [engine.run(r, trials=t, seed0=s, cal=c, workers=workers)
+               for r, t, s, c in specs]
+    shard.retire()  # a fresh pool for THIS batch, not `engine.run`'s own
+    # CHUNKED, not one job per spec: `ProcessPoolExecutor.map`'s default
+    # chunksize is 1, so a flat 99-spec list is 99 round trips through the
+    # task queue rather than `nw` -- the same overhead this exists to avoid,
+    # just moved one level down.
+    chunks = [specs[s:s + c] for s, c in shard.chunks(len(specs), nw)]
+    return [r for chunk in shard.mapped(_run_chunk, chunks, nw) for r in chunk]
+
+
+def _run_chunk(chunk):
+    return [engine.run(r, trials=t, seed0=s, cal=c, workers=1)
+           for r, t, s, c in chunk]
+
+
+def player_wins(roster, names, blocks=None, trials=TRIALS, seed0=101, R=None,
+                workers=None):
     """name -> (mean wins lost if swapped for a replacement 68-GP body OF HIS OWN
     SLOT GROUP, sd across `blocks` independent seed blocks, the per-block values).
 
@@ -191,10 +233,12 @@ def player_wins(roster, names, blocks=None, trials=TRIALS, seed0=101, R=None):
     1st" is how a seed became a finding. The per-block values are returned as
     well, because the blocks are SHARED across rows: two rows differ by far less
     than either varies on its own, and only the paired differences see that.
+
+    `workers` shards the per-name jobs across processes (`_run_jobs`) rather
+    than the trials inside any one of them; `None` decides off the job count
+    the way `engine.run` decides off the trial count.
     """
     seeds, R = _sampling(roster, blocks, trials, seed0, R)
-    base = [engine.run(roster, trials=trials, seed0=s, cal=DELTA_W_CAL)
-            for s in seeds]
     by_name = {p["n"]: p for p in roster}
     # Refused HERE, not left to `swap` inside the loop: the slot-group lookup
     # reads `by_name` first, so a mistyped name dies on a bare KeyError carrying
@@ -203,17 +247,22 @@ def player_wins(roster, names, blocks=None, trials=TRIALS, seed0=101, R=None):
     missing = [n for n in names if n not in by_name]
     if missing:
         raise KeyError("not on this roster: %s" % ", ".join(missing))
+    groups = {n: slot_group(by_name[n]["elig"]) for n in names}
+    specs = [(roster, trials, s, DELTA_W_CAL) for s in seeds]
+    specs += [(swap(roster, [n], [group_body(groups[n], R[groups[n]])]),
+              trials, s, DELTA_W_CAL)
+             for n in names for s in seeds]
+    results = _run_jobs(specs, workers)
+    base, rest = results[:len(seeds)], iter(results[len(seeds):])
     out = {}
     for n in names:
-        g = slot_group(by_name[n]["elig"])
-        w = [wins(base[i], engine.run(swap(roster, [n], [group_body(g, R[g])]),
-                               trials=trials, seed0=s, cal=DELTA_W_CAL))
-             for i, s in enumerate(seeds)]
+        w = [wins(base[i], next(rest)) for i in range(len(seeds))]
         out[n] = block_stats(w)
     return out
 
 
-def incoming_wins(roster, players, blocks=None, trials=TRIALS, seed0=101, R=None):
+def incoming_wins(roster, players, blocks=None, trials=TRIALS, seed0=101, R=None,
+                  workers=None):
     """name -> (mean wins ADDED to `roster` by acquiring him, sd, per-block).
 
     THE `Δw ours` column for a counterparty's roster (`Eval Definitions
@@ -244,6 +293,9 @@ def incoming_wins(roster, players, blocks=None, trials=TRIALS, seed0=101, R=None
     Somebody we field would have to go, the candidates sit a rate point apart on
     a line `replacement` says does not rank down there, and a column of coin
     flips still prints as measured.
+
+    `workers` shards the per-player jobs across processes (`_run_jobs`) rather
+    than the trials inside any one of them; see `player_wins`.
     """
     dupes = collections.Counter(p["n"] for p in players)
     twice = sorted(n for n, c in dupes.items() if c > 1)
@@ -267,16 +319,25 @@ def incoming_wins(roster, players, blocks=None, trials=TRIALS, seed0=101, R=None
                          "the 37 you would field -- or `basis()`, if this was "
                          "meant to be padded at all." % len(roster))
     room = roster[:pads[-1]] + roster[pads[-1] + 1:]
-    ref, out = {}, {}
+    # Groups DEDUPED in first-seen order: each needs exactly one reference job
+    # per seed block, however many players share it.
+    groups = []
     for p in players:
         g = slot_group(p["elig"])
-        if g not in ref:
-            body = group_body(g, R[g], "REPL")
-            ref[g] = [engine.run(room + [body], trials=trials, seed0=s,
-                                 cal=DELTA_W_CAL) for s in seeds]
-        w = [wins(engine.run(room + [p], trials=trials, seed0=s,
-                             cal=DELTA_W_CAL), ref[g][i])
-             for i, s in enumerate(seeds)]
+        if g not in groups:
+            groups.append(g)
+    specs = [(room + [group_body(g, R[g], "REPL")], trials, s, DELTA_W_CAL)
+             for g in groups for s in seeds]
+    specs += [(room + [p], trials, s, DELTA_W_CAL)
+             for p in players for s in seeds]
+    results = _run_jobs(specs, workers)
+    ref = {g: results[i * len(seeds):(i + 1) * len(seeds)]
+          for i, g in enumerate(groups)}
+    rest = iter(results[len(groups) * len(seeds):])
+    out = {}
+    for p in players:
+        g = slot_group(p["elig"])
+        w = [wins(next(rest), ref[g][i]) for i in range(len(seeds))]
         out[p["n"]] = block_stats(w)
     return out
 

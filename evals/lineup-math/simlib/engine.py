@@ -209,6 +209,31 @@ def _collect(results, trials, cal):
     }
 
 
+def run_many(rosters, trials=TRIALS, bursty=False, seed0=101, surprise=0.0,
+             cal=SCORED_CAL, workers=None):
+    """[run(r, ...) for r in rosters], sharded by ROSTER rather than by trial.
+
+    A report that runs hundreds of near-identical rosters at one trial count
+    (`schedules`) otherwise reshards trials once per roster, paying pool-
+    dispatch overhead on a chunk too small for it hundreds of times over.
+    Digit-for-digit against calling `run(r, trials, ..., workers=1)` on each
+    roster in turn -- same reasoning as `run` itself, `_collect`'s sums are
+    exact regardless of how the work was split.
+    """
+    n = shard.n_workers(workers, len(rosters))
+    jobs = [(rosters[s:s + c], trials, bursty, seed0, surprise, cal)
+            for s, c in shard.chunks(len(rosters), n)]
+    chunked = shard.mapped(_run_many_chunk, jobs, n)
+    return [r for chunk in chunked for r in chunk]
+
+
+def _run_many_chunk(job):
+    rosters, trials, bursty, seed0, surprise, cal = job
+    return [_collect(_trial_chunk(TrialJob(r, seed0, 0, trials, bursty,
+                                          surprise, cal)), trials, cal)
+            for r in rosters]
+
+
 def unfilled_slots(res):
     """{night size: starting slot-nights left empty} off a `run` result.
 

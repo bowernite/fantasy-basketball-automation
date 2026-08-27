@@ -117,6 +117,37 @@ class ParallelTrials(unittest.TestCase):
         self.assertEqual(sim.run(full, trials=60, workers=4), seq)
         self.assertEqual(sim.run(full, trials=60, workers=4), seq)
 
+class BatchedRosters(unittest.TestCase):
+    """`run_many` shards the ROSTER LIST, not trials -- built for `schedules`,
+    which used to reshard trials once per one of ~500 near-identical rosters
+    and paid pool-dispatch overhead hundreds of times over on work too small
+    to be worth it."""
+
+    def test_a_batch_of_one_matches_a_direct_run(self):
+        full = sim.basis()
+        self.assertEqual(engine.run_many([full], trials=25, workers=1),
+                         [sim.run(full, trials=25, workers=1)])
+
+    def test_sharding_by_roster_matches_sequential_by_roster_digit_for_digit(
+            self):
+        full = sim.basis()
+        swapped = sim.swap(full, [full[0]["n"]], [dict(full[0], avg=99.0)])
+        rosters = [full, swapped, full, swapped]
+        seq = engine.run_many(rosters, trials=25, workers=1)
+        par = engine.run_many(rosters, trials=25, workers=2)
+        self.assertEqual(seq, par)
+        self.assertEqual(seq, [sim.run(r, trials=25, workers=1)
+                               for r in rosters])
+
+    @unittest.skipIf((os.cpu_count() or 1) < 2, "one core shards into one chunk")
+    def test_the_default_batch_actually_puts_more_than_one_process_to_work(
+            self):
+        shard.retire()
+        before = {c.pid for c in multiprocessing.active_children()}
+        engine.run_many([sim.basis()] * 60, trials=2)
+        started = {c.pid for c in multiprocessing.active_children()} - before
+        self.assertGreater(len(started), 1, "the batch never left this process")
+
 class ShardedReports(unittest.TestCase):
     """The two reports the sharding was built for, printed both ways.
 
@@ -134,16 +165,20 @@ class ShardedReports(unittest.TestCase):
         last-digit reassembly noise is `ParallelTrials`' to catch on the dict;
         what this reaches past that is a report driving the pool hundreds of
         times over and the answer arriving as a table rather than a traceback"""
-        real, was_blocks = engine.run, value.PLAYER_BLOCKS
-        engine.run = lambda roster, **kw: real(
+        real_run, real_many, was_blocks = (engine.run, engine.run_many,
+                                          value.PLAYER_BLOCKS)
+        engine.run = lambda roster, **kw: real_run(
             roster, **dict(kw, trials=trials, workers=workers))
+        engine.run_many = lambda rosters, **kw: real_many(
+            rosters, **dict(kw, trials=trials, workers=workers))
         value.PLAYER_BLOCKS = 1
         buf = io.StringIO()
         try:
             with contextlib.redirect_stdout(buf):
                 sim.REPORTS[report]()
         finally:
-            engine.run, value.PLAYER_BLOCKS = real, was_blocks
+            engine.run, engine.run_many, value.PLAYER_BLOCKS = (
+                real_run, real_many, was_blocks)
         return buf.getvalue()
 
     def test_the_breakevens_table_is_the_same_table_sharded(self):

@@ -67,13 +67,13 @@ class MatchedBasis(unittest.TestCase):
         directory. Read season-blind the league is 24 teams, one franchise can
         take two seats in `field()`, and the bracket that comes out is a draw
         nobody plays -- with no short-field guard to trip"""
-        stale = os.path.join(sim.HERE, "roster-161025-2020-21.json")
+        stale = os.path.join(sim.ROSTER_DIR, "roster-161025-2020-21.json")
         with open(stale, "w") as f:
-            f.write(read_text(os.path.join(sim.HERE, roster_mod.ROSTER)))
+            f.write(read_text(os.path.join(sim.ROSTER_DIR, roster_mod.ROSTER)))
         try:
             with cheap_monte_carlo(4):
                 teams = json.loads(read_text(os.path.join(
-                    sim.HERE, "teams-%s.json" % fetch_data.SEASON_TAG)))
+                    sim.DATA_DIR, "teams-%s.json" % fetch_data.SEASON_TAG)))
                 self.assertEqual(len(sim.team_levels()), len(teams))
         finally:
             os.remove(stale)

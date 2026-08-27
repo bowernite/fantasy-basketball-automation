@@ -699,7 +699,7 @@ about the format**: the same run over Pharaoh Mattankhamun-Ra's 25 bodies (11th 
 **0.0–1.3×** by round, band means 1.1 / 0.2 / 0.0, on a `P(title)` of 0.012 / 0.002 / 0.000.
 Re-run it per roster.
 
-**Per-player `ΔP(title)` tops out at +15.6 percentage points** (Amen Thompson, band 1–2). Every
+**Per-player `P(title|seed)` tops out at +15.6 percentage points** (Amen Thompson, band 1–2). The eval column is unconditional `ΔP(title)` (`sim.player_title`). Every
 band figure carries its own standard error — **±0.05–0.36** across the 28 rows — and that is
 the noise on that figure alone. **Bands and rows share seed blocks**, so a gap between any two
 cells is a paired difference the table does not carry: no ordering claim off two printed cells.
@@ -711,10 +711,7 @@ weeks* above prices a round **given** a seed; this one earns the seed first — 
 periods → standings → the bracket with its byes — so **`P(title)` is unconditional, every team
 has one, and the twelve sum to 1.**
 
-⚠️ **A third quantity, and it replaces neither of the other two.** `Δw` is regular-season wins
-and `ΔP(title)` is the banded bracket read; this carries the **seeding channel**, which is
-exactly what those two are defined to keep apart (`Eval Definitions §ΔP(title)`). It is not a
-conversion between them and does not license one.
+⚠️ **The published `ΔP(title)` column is this run.** `Δw` is regular-season wins; this is title probability with the seed earned, not assumed (`Eval Definitions §ΔP(title)`). Never summed, netted or converted against `Δw`. `playoffs` above is `P(title|seed)` — diagnostic.
 
 | team | wins | bracket | 1–2 | 3–4 | 5–8 | P(title) |
 |---|---:|---:|---:|---:|---:|---:|

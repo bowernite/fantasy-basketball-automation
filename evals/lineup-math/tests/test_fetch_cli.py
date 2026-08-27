@@ -16,7 +16,8 @@ class FetchDataCLI(unittest.TestCase):
         the default branch, spent 30 requests overwriting the schedule and the
         calendar, printed `wrote ...` and exited 0"""
         before = {p: os.path.getmtime(p)
-                  for p in glob.glob(os.path.join(sim.HERE, "*.json"))}
+                  for p in (glob.glob(os.path.join(sim.DATA_DIR, "*.json"))
+                            + glob.glob(os.path.join(sim.ROSTER_DIR, "*.json")))}
         p = self.fetch("rosters")
         self.assertNotEqual(p.returncode, 0)
         self.assertNotIn("wrote", p.stdout)
@@ -47,7 +48,9 @@ class DataFileWrites(unittest.TestCase):
         season was, and every `sim.py` run after it died on a JSON decode error
         naming nothing that had happened"""
         d = tempfile.mkdtemp()
-        with open(os.path.join(d, "league-x.json"), "w") as f:
+        dest = os.path.join(d, "data")
+        os.makedirs(dest)
+        with open(os.path.join(dest, "league-x.json"), "w") as f:
             f.write('{"periods": [1, 2, 3]}')
 
         def transport_error():
@@ -60,9 +63,9 @@ class DataFileWrites(unittest.TestCase):
                 fetch_data.write("league-x.json", transport_error)
         finally:
             fetch_data.HERE = was
-        self.assertEqual(read_text(os.path.join(d, "league-x.json")),
+        self.assertEqual(read_text(os.path.join(dest, "league-x.json")),
                          '{"periods": [1, 2, 3]}')
-        self.assertEqual(os.listdir(d), ["league-x.json"],
+        self.assertEqual(os.listdir(dest), ["league-x.json"],
                          "a half-written file was left behind to be read next")
 
 class FetchDataWritesWhatSimReads(unittest.TestCase):
@@ -96,7 +99,8 @@ class FetchDataWritesWhatSimReads(unittest.TestCase):
             cwd=self.dir, capture_output=True, text=True, timeout=60)
 
     def rosters(self):
-        return sorted(f for f in os.listdir(self.dir) if f.startswith("roster-"))
+        d = os.path.join(self.dir, "rosters")
+        return sorted(os.listdir(d)) if os.path.isdir(d) else []
 
     def test_naming_no_team_re_cuts_all_twelve(self):
         """They drift independently, so a team left un-recut is a team priced
@@ -112,7 +116,8 @@ class FetchDataWritesWhatSimReads(unittest.TestCase):
         of it, so a key renamed on either side shows up nowhere else"""
         self.assertEqual(self.fetch("roster", "161001").returncode, 0)
         rows = json.loads(read_text(os.path.join(
-            self.dir, "roster-161001-%s.json" % fetch_data.SEASON_TAG)))
+            self.dir, "rosters", "roster-161001-%s.json"
+            % fetch_data.SEASON_TAG)))
         self.assertEqual(rows, [
             {"n": "Starter 161001", "tm": "LAC", "avg": 30.0, "tot": 1500.0,
              "gp": 50, "posLabel": "G", "elig": ["PG", "SG"]},
@@ -124,7 +129,7 @@ class FetchDataWritesWhatSimReads(unittest.TestCase):
         one report inconsistent with the next"""
         self.assertEqual(self.fetch("roster", "161001").returncode, 0)
         teams = json.loads(read_text(os.path.join(
-            self.dir, "teams-%s.json" % fetch_data.SEASON_TAG)))
+            self.dir, "data", "teams-%s.json" % fetch_data.SEASON_TAG)))
         self.assertEqual(teams, {str(t): "Team %d" % t for t in self.ids})
 
     def test_a_team_id_the_league_lacks_stops_the_run_before_any_roster(self):
@@ -144,6 +149,6 @@ class FetchDataWritesWhatSimReads(unittest.TestCase):
         wrote = [os.path.realpath(l.split(None, 1)[1])
                  for l in p.stdout.splitlines() if l.startswith("wrote ")]
         self.assertEqual(wrote, [os.path.realpath(os.path.join(
-            self.dir, "teams-%s.json" % fetch_data.SEASON_TAG))])
+            self.dir, "data", "teams-%s.json" % fetch_data.SEASON_TAG))])
         self.assertTrue(os.path.exists(wrote[0]))
         self.assertEqual(self.rosters(), [], "`teams` re-cut a roster")

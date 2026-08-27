@@ -3,7 +3,7 @@ and build the synthetic bodies a trade swaps in."""
 import collections, itertools, os
 from fetch_data import SEASON_TAG, TEAM
 from .board import pool_seasons
-from .data import _load
+from .data import _load, roster_path
 from .gp import project_gp
 from .lineups import SLOTS
 from .projections import projected_rate
@@ -79,7 +79,7 @@ def our_roster(path=None, projected=True):
     there would recalibrate the study against itself; no ratio is quoted here,
     because the file is re-cut after every trade and it drifts (`calibration`).
     """
-    rows = _load(path or ROSTER)
+    rows = _load(roster_path(path or ROSTER))
     if not rows:
         # `pad` tops a short roster up to 38, so an empty file does not read as
         # an empty table -- it reads as 38 auction bodies, and every figure

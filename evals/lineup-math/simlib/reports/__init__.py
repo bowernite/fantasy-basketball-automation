@@ -25,15 +25,13 @@ UNITS = ("units: `wins` = extra wins over a %d-matchup regular season · `PF` = 
          % (DELTA_W_MATCHUPS, len(SCORED)))
 
 
-# `playoffs` is denominated in none of the three: a bracket week pays in title
-# probability and its `W` columns are one period's points. Its own legend, in
-# the same place above the same table, because a legend defining three units
-# the table below does not carry is worse than none -- and this is the one
-# table whose standing rule is that its number is never read in wins.
+# `playoffs` is denominated in none of the three: a bracket week pays in
+# title-given-seed probability and its `W` columns are one period's points.
+# The eval column is unconditional `Delta P(title)` off `title`.
 OWN_UNITS = {
-    "playoffs": "units: `Delta P(title)` = percentage points of title "
-                "probability\n       · `W20`-`W23` = EXPECTED fantasy points "
-                "in that bracket period.",
+    "playoffs": "units: `Delta P(title|seed)` = percentage points of title "
+                "probability given a seed band\n       · `W20`-`W23` = EXPECTED "
+                "fantasy points in that bracket period.",
     "weeks": "units: `W20`-`W23` = EXPECTED fantasy points in that bracket "
              "period.",
     "title": "units: every column but `wins` is a PROBABILITY over simulated "
@@ -87,7 +85,7 @@ BLURB = {
     "market": "board rank <-> FPts/G, and how much of a GP season carries forward",
     "gp": "expected GP: what predicts it, and what does not",
     "schedules": "what steering the Sept '26 auction on the NBA calendar buys",
-    "playoffs": "W20-W23 and seed-banded Delta P(title) per player",
+    "playoffs": "W20-W23 and seed-conditional P(title|seed) per player",
     "weeks": "W20-W23 per player, closed form -- no bracket Monte Carlo",
     "title": "the whole season simulated: standings -> seeds -> bracket -> "
              "P(title)",
@@ -101,7 +99,7 @@ ROSTER_FREE = {"market"}
 # Wall clock, so a caller can tell a slow report from a hung one before he kills
 # it. Rounded up from 18 cores; `engine.run` shards trials across them, so a
 # smaller box is slower still.
-SLOW = {"breakevens": "~8s", "schedules": "~20s"}
+SLOW = {"breakevens": "~4s", "schedules": "~8s"}
 
 # Built on OUR player names or OUR real weekly scores, so they answer nothing
 # about another team: `scenarios`/`breakevens` trade `deals.FILLER`, `durability`

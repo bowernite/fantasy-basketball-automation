@@ -84,7 +84,7 @@ class SeedingRule(unittest.TestCase):
 
 class BracketByes(unittest.TestCase):
     """Seeds 1-2 are double-byed and 3-4 byed once, so which rounds a seed
-    plays is the whole reason `Delta P(title)` is banded. A bye that is not
+    plays is the whole reason `P(title|seed)` is banded. A bye that is not
     modelled is a game the top seed can lose"""
 
     def test_a_seed_plays_exactly_the_rounds_its_band_names(self):

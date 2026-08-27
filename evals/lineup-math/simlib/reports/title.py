@@ -38,9 +38,8 @@ def _preamble(trials):
     print("THE DIFFERENCE FROM `playoffs`: there the seed is an assumption and")
     print("every figure is conditional on a band. Here it is simulated, so")
     print("P(title) is unconditional, every team has one and the twelve sum to")
-    print("1. It is a THIRD quantity beside `Delta w` and banded")
-    print("`Delta P(title)` and replaces neither: it carries the seeding")
-    print("channel those two are defined to keep apart (`Bracket value.md`).")
+    print("1. Per-player `Delta P(title)` is `player_title` / `incoming_title`")
+    print("on this same run (`Eval Definitions §Delta P(title)`).")
     print()
     print("Levels are `team_levels()`'s -- every team's own roster file,")
     print("projected, padded to 38, one engine -- so injuries reach this as")
@@ -166,10 +165,9 @@ def _checks(trials, spread):
 def report_title():
     """P(title) with the seed simulated rather than assumed, for all 12 teams.
 
-    The end-to-end run: regular season, standings, seeds, bracket. `playoffs`
-    is the same bracket priced one seed band at a time and is the report a
-    per-player column comes off; this one answers what the roster's odds
-    actually are.
+    The end-to-end run: regular season, standings, seeds, bracket. Per-player
+    `Delta P(title)` is `player_title` on this same model. `playoffs` prices
+    the same bracket one seed band at a time.
     """
     # Read off the module at call time, never bound as a default: the table
     # prints its own season count and its own error bars, and a count

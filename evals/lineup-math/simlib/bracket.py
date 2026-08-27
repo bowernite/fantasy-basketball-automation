@@ -1,11 +1,11 @@
 """The bracket: seeds and rounds, the opponent level a round is played against,
-and `Delta P(title)` per player. `Eval Definitions §ΔP(title)` owns the
-definition and the currency rule; this module is the derivation."""
+and `P(title|seed)` -- what a round is worth given a seed. The eval column is
+unconditional `Delta P(title)` in `title` (`Eval Definitions §ΔP(title)`)."""
 import collections, contextlib, functools, glob, math, os, statistics
 from fetch_data import SEASON_TAG
 from . import engine, roster as roster_mod
 from .data import (
-    BRACKET, BRACKET_CAL, HERE, PERIODS, REGULAR, SCORED, SCORES)
+    BRACKET, BRACKET_CAL, PERIODS, REGULAR, ROSTER_DIR, SCORED, SCORES)
 from .engine import TRIALS
 from .roster import PAD_NAMES, basis, slot_group, swap
 from .schedule import bracket_games, team_nights
@@ -270,20 +270,25 @@ def _pinned():
     re-cut it with `fetch_data.py roster <id>`.
     """
     out = [measure(basis(path), os.path.basename(path))
-           for path in sorted(glob.glob(os.path.join(HERE, ROSTERS)))]
+           for path in sorted(glob.glob(os.path.join(ROSTER_DIR, ROSTERS)))]
     return tuple(sorted(out, key=lambda t: -t.pf))
 
 
-def measure(roster, path):
+def measure(roster, path, workers=None):
     """One roster as a `Team` on the study's own basis.
 
     THE definition of that basis, and it has two callers: `_pinned` above for
     a roster on file, and `title.swap_odds` for one that is not. Split in two,
     a field added here reaches the twelve and not the deal being priced, and
     the two are compared in the same draw.
+
+    `workers=1` from inside a per-player worker (`title._run_jobs`) -- a
+    worker opening its own pool after the shared one has already served a
+    different job shape hangs (`title._delta`).
     """
-    res = engine.run(roster)
-    return Team(path, res["pf"], reg_weeks(res["wk"]), bracket_weeks(roster))
+    res = engine.run(roster, workers=workers)
+    return Team(path, res["pf"], reg_weeks(res["wk"]),
+               bracket_weeks(roster, workers=workers))
 
 
 # The re-draw `draw` is inside, or None for the pinned one.
@@ -318,7 +323,7 @@ def draw(seed0):
     global _DRAWN
     was = _DRAWN
     _DRAWN = tuple(
-        t._replace(mus=bracket_weeks(basis(os.path.join(HERE, t.path)),
+        t._replace(mus=bracket_weeks(basis(os.path.join(ROSTER_DIR, t.path)),
                                      seed0=seed0))
         for t in _pinned())
     try:
@@ -337,7 +342,7 @@ def field():
     """
     teams = team_levels()
     assert len(teams) >= len(BRACKET_TEAMS), (
-        "%d roster files beside sim.py for a %d-team bracket: a short field is "
+        "%d roster files in rosters/ for a %d-team bracket: a short field is "
         "a lower opponent level, not a smaller league. `./run fetch_data.py "
         "roster` writes all of them (`team-info`)"
         % (len(teams), len(BRACKET_TEAMS)))
@@ -477,10 +482,11 @@ def seed_title(mus, seed, sd=None, path=None):
     return out
 
 
-def bracket_weeks(roster, trials=TRIALS, seed0=SEED0):
+def bracket_weeks(roster, trials=TRIALS, seed0=SEED0, workers=None):
     """`mu_us` per bracket round: `engine.run` restricted to each round's own
     nights, one mean per round."""
-    return engine.run(roster, trials=trials, seed0=seed0, cal=BRACKET_CAL)["wk"]
+    return engine.run(roster, trials=trials, seed0=seed0, cal=BRACKET_CAL,
+                      workers=workers)["wk"]
 
 
 def title_prob(mus, band, sd=None, path=None):
