@@ -33,61 +33,37 @@ def report_calibration():
     print("  real standings PF   : %8.0f  (%d scored periods)"
           % (REAL_WK_MEAN * WEEKS, WEEKS))
     print("  ratio               : %8.3f" % (a["pf"] / (REAL_WK_MEAN * WEEKS)))
-    print("    NOT a model error: the numerator is the roster file as it stands")
-    print("    and the denominator is what the PRE-trade roster really scored.")
-    print("    The file is re-cut after every trade, so this drifts on its own.")
-    print("    A sanity bound, never a scale factor to divide by.")
     print("  weekly mean / sd    : %.0f / %.0f   real %.0f / %.0f"
           % (a["wk_mean"], a["wk_sd"], REAL_WK_MEAN, REAL_WK_SD))
     print("  weekly CV           : %.1f%%          real %.1f%%"
           % (100 * a["cv"], 100 * REAL_WK_SD / REAL_WK_MEAN))
-    # DERIVED, never asserted: a projection refresh can flip which CV is larger,
-    # and a fixed sentence would then print a negative gap under a claim that the
-    # gap goes the other way
-    noise = 100 * (a["cv"] / (REAL_WK_SD / REAL_WK_MEAN) - 1)
-    print("    sim CV %s real with ZERO per-game scoring noise, so the"
-          % ("EXCEEDS" if noise > 0 else "FALLS SHORT OF"))
-    print("    availability draw is ~%.0f%% %s than it should be:"
-          % (abs(noise), "NOISIER" if noise > 0 else "quieter"))
-    print("    'variance is third-order' survives by %s."
-          % ("an over-statement, not a measurement" if noise > 0
-             else "a measurement after all -- re-read this"))
+    print("  sim/real CV - 1     : %+.0f%%"
+          % (100 * (a["cv"] / (REAL_WK_SD / REAL_WK_MEAN) - 1)))
     b = engine.run(raw, bursty=True)
     print("  bursty absences     : %+.2f%% of PF (EV only)"
           % (100 * (b["pf"] / a["pf"] - 1)))
 
-    print("\nPF -> WINS. Real per-matchup margins vs the 11 other teams, pooled")
-    print("over the %d scored periods (n=%d): mean %+.0f, sd %.0f -> P(win) %.3f"
+    print("\nPF -> WINS")
+    print("  margins over %d scored periods (n=%d): mean %+.0f, sd %.0f, "
+          "P(win) %.3f"
           % (WEEKS, len(MARGINS), MARGIN_MEAN, MARGIN_SD, margin_pwin()))
-    # SCORED, like everything else here: MARGIN_SD is over the scored periods
-    # alone, so pooling the opponents over every period would compare two
-    # different seasons and print the answer as a fact about independence
+    # scored periods only, matching MARGIN_SD -- pooling over every period
+    # would compare two different seasons
     scored = set(SCORED_ORDINALS)
     ind = math.sqrt(REAL_WK_SD ** 2 + statistics.stdev(
         [v for t, s in SCORES.items() if t != US
          for p, v in s.items() if p in scored]) ** 2)
-    print("  assuming independence instead gives sd %.0f (%.2fx too wide):"
-          % (ind, ind / MARGIN_SD))
-    print("  our weekly score and our opponent's share the NBA calendar,")
-    print("  correlation rho = %.2f. 1 win = %.0f PF, not %.0f."
-          % (1 - MARGIN_SD ** 2 / ind ** 2, PF_PER_WIN,
-             pf_per_win(MARGIN_MEAN, ind)))
+    print("  independence instead: sd %.0f (%.2fx), correlation rho = %.2f"
+          % (ind, ind / MARGIN_SD, 1 - MARGIN_SD ** 2 / ind ** 2))
+    print("  1 win = %.0f PF, independent %.0f"
+          % (PF_PER_WIN, pf_per_win(MARGIN_MEAN, ind)))
     blo, bhi = pf_per_win_band()
-    print("  band, bootstrap CLUSTERED ON PERIOD: [%.0f, %.0f] = +-%.0f%%."
+    print("  band, bootstrap clustered on period: [%.0f, %.0f] = +-%.0f%%"
           % (blo, bhi, 100 * max(bhi - PF_PER_WIN, PF_PER_WIN - blo) / PF_PER_WIN))
-    print("  Quote the band, not the point: `eval-team` reads it from here.")
-    # BOTH rows, because they are different conversions and only one of them is
-    # the study's. The constant above is the curve's SLOPE at 0, so `wins()` --
-    # which every Delta w here runs through -- reads off the straight line, and
-    # printing the curve alone under "1 win = N PF" invites subtracting them.
-    print("  the curve, and the straight line `wins()` actually divides by,")
-    # BOTH rows on the legend's %d-matchup basis, and through `pf_wins` rather
-    # than `PF_PER_WIN` directly: the constant is quoted per season PF over the
-    # %d matchups it was MEASURED on, so dividing by it prints wins over 20
-    # under a legend promising 19 -- 5% high, in the one table a reader comes to
-    # to check a `Delta w` against the conversion.
-    print("  both over the %d matchups the legend names, off a %d-period PF:"
-          % (DELTA_W_MATCHUPS, WEEKS))
+    # through `pf_wins`, not `PF_PER_WIN` directly -- the constant is quoted
+    # per season PF over DELTA_W_MATCHUPS, so dividing raw PF by it would be
+    # ~5% off that matchup basis
+    print("  %d matchups off a %d-period PF:" % (DELTA_W_MATCHUPS, WEEKS))
     shifts = (250, 500, 1000, 2000, 3000)
     print("  %6s %s" % ("+PF", "  ".join("%6d" % d for d in shifts)))
     print("  %6s %s" % ("curve", "  ".join(

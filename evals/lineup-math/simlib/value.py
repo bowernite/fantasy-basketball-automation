@@ -1,5 +1,5 @@
-"""What a body is worth: replacement level, `Delta w` in both directions, and the
-break-even rate an N-for-1 needs."""
+"""What a body is worth: replacement level, `Delta w` in both directions, and
+the break-even rate an N-for-1 needs."""
 import collections, os
 from . import engine, shard
 from .data import DELTA_W_CAL
@@ -11,45 +11,25 @@ from .wins import wins
 
 
 def value_key(roster, R=None):
-    """`p -> (rate - R) * gp` on `roster`'s OWN replacement level.
-
-    R is the x-intercept of value in rate, so it moves with the body count by
-    construction; deriving it is the only way it cannot go stale.
-    """
     R = replacement(roster)[0] if R is None else R
     return lambda p: (p["avg"] - R) * p["gp"]
 
 
 def thin(roster, n, R=None):
-    """Best `n` bodies by `value_key`, IN THE ORIGINAL ORDER.
-
-    Returning them sorted would be a different measurement of the same roster:
-    order drives the per-season rng draw order, so `thin(r, len(r))` would not
-    reproduce `r`.
-    """
+    """Best `n` bodies by `value_key`, in ORIGINAL order -- order drives the
+    per-season rng draw order, so sorting would change what `roster` means"""
     v = value_key(roster, R)
     keep = set(sorted(range(len(roster)), key=lambda i: -v(roster[i]))[:n])
     return [p for i, p in enumerate(roster) if i in keep]
 
 
 def bottom(roster, n, R=None):
-    """The `n` bodies `roster` prices lowest by `value_key`, cheapest first.
-
-    Pads are out. An invented slot (`pad`) is not a body anybody can ship, and
-    pads are graded at the bottom of the auction, so they fill the cheapest seats
-    on any padded roster and a caller would trade nobody.
-
-    The order is not a ranking: `replacement`'s line goes negative below R while
-    the truth does not, so which of the cheapest is worse than which is not a
-    claim this makes.
-    """
     v = value_key(roster, R)
     return sorted((p for p in roster if p["n"] not in PAD_NAMES), key=v)[:n]
 
 
 class OutOfBracket(ValueError):
-    """`breakeven` refusing to invent an answer, carrying `mark` -- which end of
-    its own bracket the deal fell off, as a table cell would print it."""
+    """`mark` is which end of the bracket the deal fell off ("<20", ">90")"""
 
     def __init__(self, msg, mark):
         ValueError.__init__(self, msg)
@@ -57,10 +37,6 @@ class OutOfBracket(ValueError):
 
 
 def breakeven_value(*a, **kw):
-    """`breakeven` as a VALUE: the rate as a float, or the `OutOfBracket` `.mark`
-    ("<20", ">90") as a string. Out of bracket is a real answer about that deal,
-    so callers that want the number get it without re-deriving it from a formatted
-    cell."""
     try:
         return breakeven(*a, **kw)
     except OutOfBracket as e:
@@ -68,132 +44,61 @@ def breakeven_value(*a, **kw):
 
 
 def breakeven_fmt(v):
-    """One `breakeven_value` as a table cell, %7s wide."""
     return "%7.1f" % v if isinstance(v, float) else "%7s" % v
 
 
 def breakeven_cell(*a, **kw):
-    """`breakeven_value` as ONE table cell, %7s wide: the rate, or the bracket end
-    it fell off. Out of bracket is a real answer about that cell, not a dead
-    row."""
     return breakeven_fmt(breakeven_value(*a, **kw))
 
 
 def breakeven(roster, out_names, gp=68, elig=("SF", "PF"), tm=SIM_TM,
               lo=20.0, hi=90.0, tol=0.15, dead=None, base=None):
-    """Incoming rate at which trading `out_names` away is PF-neutral.
-
-    GP and eligibility are ARGUMENTS, not incidentals: the break-even for a
-    65-GP center is several points above the one for a 68-GP forward, and a
-    reader who compares a real player's rate to the wrong row gets the sign of
-    the deal wrong. `dead` is the backfill grade -- see swap().
-
-    `base` is `roster`'s own PF, measured here when omitted so the single-cell
-    import path stays one call. A caller pricing SEVERAL cells against one roster
-    should measure it once and pass it, or pay for the same run per cell.
-    """
     base = engine.run(roster)["pf"] if base is None else base
 
     def d(rate):
         return engine.run(swap(roster, out_names,
                         [star(rate, gp, elig, tm)], dead))["pf"] - base
-    # BRACKET FIRST. A search with no sign check converges on whichever END of
-    # its own bracket is nearer and returns it looking measured -- and `lo` sits
-    # right in the middle of the rates we trade at, so nothing about the number
-    # gives it away. Out of bracket is a real answer -- say it.
     dlo = d(lo)
     if dlo >= 0:
-        raise OutOfBracket("%s is already PF-neutral below %g: the deal does not "
-                           "need an incoming rate, it needs a body"
+        raise OutOfBracket("%s is already PF-neutral below %g"
                            % ("+".join(out_names), lo), "<%g" % lo)
     dhi = d(hi)
     if dhi < 0:
-        raise OutOfBracket("%s does not break even by %g -- no such player "
-                           "exists, so the deal is unbuyable at any price"
+        raise OutOfBracket("%s does not break even by %g"
                            % ("+".join(out_names), hi), ">%g" % hi)
-    # `d` meets `false_position`'s convexity precondition: a night's points are
-    # the max of a matching over lineups affine in the incoming rate, so `d` is
-    # convex in it and piecewise affine -- one piece per start count, and ONE
-    # piece all the way to `hi` above the rate at which the body starts every
-    # night he is available.
     return false_position(d, lo, hi, dlo, dhi, tol)
 
 
 def group_fits(roster, gp=68):
-    """{group: (R, c)} on `roster` -- the `replacement` fit per slot group.
-
-    R is position-dependent by roughly 2-3 rate points on any real roster
-    (`report_replacement` calls that a third of the formula's error), so ONE R is
-    a different counterfactual for a center than for a forward. `c` comes back
-    with it because the reports price with both, and a second comprehension over
-    GROUPS is the same fit measured twice.
-    """
     return {g: replacement(roster, gp, e) for g, e in GROUPS.items()}
 
 
 def group_replacement(roster, gp=68):
-    """{group: R} on `roster` -- the R column of `group_fits`."""
     return {g: R for g, (R, _) in group_fits(roster, gp).items()}
 
 
 def group_body(g, rate, n=None):
-    """A replacement 68-GP body of slot group `g` at `rate` -- the counterfactual
-    `player_wins`, `incoming_wins` and `report_formula` all price against. One
-    helper so the GP, the eligibility and the team cannot drift apart between
-    them and make their columns incomparable."""
     return star(rate, 68, GROUPS[g], SIM_TM, n)
 
 
 def seed_blocks(blocks, trials, seed0):
-    """The seed of each independent block, spaced by `trials` so no two blocks
-    draw the same numbers -- and identical across rows, because the paired
-    differences depend on the blocks being SHARED."""
-    return [seed0 + b * trials for b in range(blocks)]
+    return [seed0 + b * trials for b in range(blocks)]  # spaced so blocks don't overlap
 
 
-# Independent seed blocks behind every per-player row. +-0.02 on a delta is fine
-# for a scenario and far too coarse for an ORDERING -- see `player_wins`.
 PLAYER_BLOCKS = 3
 
 
 def _sampling(roster, blocks, trials, seed0, R):
-    """The `(seeds, R)` every per-player column runs on, resolved the one way.
-
-    Shared so they cannot drift: both `Delta w` columns are read against each
-    other, and a column sampled on different seeds or fitted on a different R
-    is not the comparison the reports print it as.
-
-    `PLAYER_BLOCKS` is resolved HERE at call time, never bound as a default:
-    `players` prints the block count as a caveat on the table, and a default
-    snapshotted at import lets that caveat describe a measurement this path did
-    not make.
-    """
+    # shared so both `Delta w` columns are drawn and fitted the same way
     R = group_replacement(roster) if R is None else R
     return seed_blocks(PLAYER_BLOCKS if blocks is None else blocks,
                        trials, seed0), R
 
 
-# Below this many `(roster, seed)` jobs, a job's own pool round-trip costs
-# more than `engine.run`'s own trial-shard already buys -- see `_run_jobs`.
 JOB_FLOOR = 8
 
 
 def _run_jobs(specs, workers):
-    """[engine.run(roster, trials=t, seed0=s, cal=c) for (roster, t, s, c) in
-    specs], SHARDED BY JOB rather than by trial.
-
-    `player_wins` and `incoming_wins` each price dozens of independent
-    counterfactuals per report -- one `engine.run` per name per seed block --
-    and today pay one pool round-trip PER counterfactual, all of them the
-    same size. This pays one round-trip for the whole batch instead.
-
-    Below `JOB_FLOOR` this calls `engine.run` directly, in order, and lets IT
-    shard trials the normal way -- the shard this replaces, not a second one
-    stacked under it: a caller pricing one or two names is still on the fast
-    path it always was. Every job that DOES leave this process runs on
-    `workers=1`: a job that opened its OWN pool would fork one from inside a
-    process this pool already forked, which deadlocks on this machine.
-    """
     nw = 1
     if len(specs) >= JOB_FLOOR:
         nw = shard.n_workers(
@@ -201,49 +106,22 @@ def _run_jobs(specs, workers):
     if nw == 1:
         return [engine.run(r, trials=t, seed0=s, cal=c, workers=workers)
                for r, t, s, c in specs]
-    shard.retire()  # a fresh pool for THIS batch, not `engine.run`'s own
-    # CHUNKED, not one job per spec: `ProcessPoolExecutor.map`'s default
-    # chunksize is 1, so a flat 99-spec list is 99 round trips through the
-    # task queue rather than `nw` -- the same overhead this exists to avoid,
-    # just moved one level down.
+    shard.retire()
     chunks = [specs[s:s + c] for s, c in shard.chunks(len(specs), nw)]
     return [r for chunk in shard.mapped(_run_chunk, chunks, nw) for r in chunk]
 
 
 def _run_chunk(chunk):
+    # workers=1: a worker opening its own pool inside one already forked by
+    # `_run_jobs` deadlocks on this machine
     return [engine.run(r, trials=t, seed0=s, cal=c, workers=1)
            for r, t, s, c in chunk]
 
 
 def player_wins(roster, names, blocks=None, trials=TRIALS, seed0=101, R=None,
                 workers=None):
-    """name -> (mean wins lost if swapped for a replacement 68-GP body OF HIS OWN
-    SLOT GROUP, sd across `blocks` independent seed blocks, the per-block values).
-
-    Own group, not a forward every time: R runs several rate points apart across
-    groups, so pricing a center against a forward's alternative is the single-R
-    error `report_replacement` calls a third of the formula's, applied to the
-    table the framework actually decides on. `R` is a {group: rate} mapping; it is
-    fitted on `roster` if omitted.
-
-    The sd is not decoration. Common random numbers make ONE block's delta stable
-    to ~0.02 wins, which is fine for a scenario but not for an ORDERING: the top
-    rows here sit ~0.01 wins apart, so a single block picks the winner of the top
-    pair essentially at random -- and picking one and publishing "X moved 4th to
-    1st" is how a seed became a finding. The per-block values are returned as
-    well, because the blocks are SHARED across rows: two rows differ by far less
-    than either varies on its own, and only the paired differences see that.
-
-    `workers` shards the per-name jobs across processes (`_run_jobs`) rather
-    than the trials inside any one of them; `None` decides off the job count
-    the way `engine.run` decides off the trial count.
-    """
     seeds, R = _sampling(roster, blocks, trials, seed0, R)
     by_name = {p["n"]: p for p in roster}
-    # Refused HERE, not left to `swap` inside the loop: the slot-group lookup
-    # reads `by_name` first, so a mistyped name dies on a bare KeyError carrying
-    # nothing but the name -- and this is the documented import path (`trades`
-    # step 5), where the name is typed by hand.
     missing = [n for n in names if n not in by_name]
     if missing:
         raise KeyError("not on this roster: %s" % ", ".join(missing))
@@ -263,64 +141,20 @@ def player_wins(roster, names, blocks=None, trials=TRIALS, seed0=101, R=None,
 
 def incoming_wins(roster, players, blocks=None, trials=TRIALS, seed0=101, R=None,
                   workers=None):
-    """name -> (mean wins ADDED to `roster` by acquiring him, sd, per-block).
-
-    THE `Δw ours` column for a counterparty's roster (`Eval Definitions
-    §Columns`: "not yet ours -> add him to our roster file, re-run"). Feed it
-    `our_roster(their_file)` against `basis()`:
-
-        sim.incoming_wins(sim.basis(), sim.our_roster("roster-160941-...json"))
-
-    `--roster their.json players` is a different column -- that is `Δw theirs`,
-    priced on THEIR roster -- and the gap between the two is most of why a deal
-    is worth making.
-
-    Exactly `player_wins`' counterfactual, mirrored: a replacement 68-GP body of
-    his own slot group, in, out. So the two columns are comparable and their
-    signs mean the same thing -- both positive for a player worth having. Never
-    SUM these across a multi-piece deal (§Δw): price that with one joint
-    `engine.run(swap(...))`.
-
-    He arrives at `roster`'s OWN body count, taking a PADDED slot rather than a
-    new one: the roster is capped, `player_wins` prices a departure at 38 and
-    `swap` refuses a 39th body outright, so pricing an arrival at 39 compared two
-    counts (§Δw). The slot is the LAST pad because `pad` appends, which makes the
-    room he joins our real bodies re-padded one shallower -- exactly what "add
-    him to our roster file and re-pad to 38" spends, and no body off a roster
-    file is touched.
-
-    At 38 real bodies (ours from Sept '26) there is no pad and this REFUSES.
-    Somebody we field would have to go, the candidates sit a rate point apart on
-    a line `replacement` says does not rank down there, and a column of coin
-    flips still prints as measured.
-
-    `workers` shards the per-player jobs across processes (`_run_jobs`) rather
-    than the trials inside any one of them; see `player_wins`.
-    """
+    """Never sum rows across a multi-piece deal -- price with one joint
+    `engine.run(swap(...))`. Takes the LAST padded slot, not an arbitrary
+    one."""
     dupes = collections.Counter(p["n"] for p in players)
     twice = sorted(n for n, c in dupes.items() if c > 1)
     if twice:
-        # The rows are keyed by name, so a second body of one name overwrites the
-        # first: one plausible number under a name two bodies answer to. A blank
-        # would at least read as zero (§Δw); this reads as measured. Refuse, the
-        # way `swap` refuses an ambiguous name on the way out.
-        raise ValueError("%s: two bodies of one name -- the column is keyed by "
-                         "name, so one row would silently replace the other. "
-                         "Rename the row you mean." % ", ".join(twice))
+        raise ValueError("%s: two bodies of one name -- rename the row you "
+                         "mean" % ", ".join(twice))
     seeds, R = _sampling(roster, blocks, trials, seed0, R)
-    # Taken in place rather than filtered out, so every body around it keeps its
-    # order and therefore its rng draws.
     pads = [i for i, p in enumerate(roster) if p["n"] in PAD_NAMES]
     if not pads:
-        # `swap` refuses the same decision on the way out, in the same words.
-        raise ValueError("%d bodies and none of them padded: 'add him and "
-                         "re-pad' has no invented slot to spend, and which of "
-                         "ours is dropped is a decision, not a default. Pass "
-                         "the 37 you would field -- or `basis()`, if this was "
-                         "meant to be padded at all." % len(roster))
+        raise ValueError("%d bodies and none of them padded -- pass the 37 "
+                         "you would field, or `basis()`"  % len(roster))
     room = roster[:pads[-1]] + roster[pads[-1] + 1:]
-    # Groups DEDUPED in first-seen order: each needs exactly one reference job
-    # per seed block, however many players share it.
     groups = []
     for p in players:
         g = slot_group(p["elig"])
@@ -343,15 +177,9 @@ def incoming_wins(roster, players, blocks=None, trials=TRIALS, seed0=101, R=None
 
 
 def replacement(roster, gp=68, elig=("SF", "PF"), rates=(30, 40, 50, 65)):
-    """-> (R, c): value of an added body is ~ c * (rate - R) * gp PF.
-
-    R is the x-INTERCEPT of a line fitted over `rates`. It is not the rate at
-    which a body is worth zero -- no such rate exists, because adding a body can
-    never LOWER your PF. Value in rate is convex, so this line goes negative below
-    R while the truth stays positive: that, not noise, is why the formula cannot
-    be used on sub-25 players. Two different `rates` grids give two different
-    x-intercepts; quote the one from the grid you fitted.
-    """
+    """R is the x-intercept of a line fit over `rates`, not the rate at which
+    a body is worth zero -- value in rate is convex, so this cannot be used
+    on sub-25 players."""
     base = engine.run(roster)["pf"]
     v = [engine.run(roster + [star(r, gp, elig, SIM_TM, "ADD")])["pf"] - base
          for r in rates]

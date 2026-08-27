@@ -12,46 +12,35 @@ from ..wins import pf_wins, wins
 def report_replacement():
     full = basis()
     print("value of an added 68-GP forward, fitted as c*(rate-R)*GP over rates")
-    print("30/40/50/65. K is the rate-point-GP a win costs -- the c above run")
-    print("through the same PF->wins the sim column uses -- so wins =")
-    print("(rate-R)*GP / K, on the %d-matchup basis of the legend."
-          % DELTA_W_MATCHUPS)
-    print("Rows are thin(basis(),n) -- the best n of the PADDED 38, so the 28 row")
-    print("is not the live file's R. Measure a live roster with replacement() on it.")
+    print("30/40/50/65, on the %d-matchup basis." % DELTA_W_MATCHUPS)
     print("  %6s %10s %8s %8s" % ("thin to", "R", "c", "K"))
     for n in (38, 28):        # the only two roster sizes that exist
         R, c = replacement(thin(full, n))
         print("  %6d %10.1f %8.3f %8.0f" % (n, R, c, 1.0 / pf_wins(c)))
 
-    print("\nR IS POSITION-DEPENDENT, and this is a third of the formula's error.")
+    print("\nR by slot group")
     print("  %8s %8s %8s %8s" % ("group", "R", "c", "K"))
     fits = group_fits(full)
     Rs = {}
     for lab, (R, c) in fits.items():
         Rs[lab] = R
         print("  %8s %8.1f %8.3f %8.0f" % (lab, R, c, 1.0 / pf_wins(c)))
-    # Numbers AND cause DERIVED off the LOADED roster, which `--roster` serves for
-    # every team: a fixed sentence naming one group as the crowded one prints our
-    # own roster's explanation over somebody else's deltas.
-    #
-    # Counts off `full` -- the SAME padded bodies R was fitted on. Off the live
-    # file they are 4-8 bodies per group short of the roster being explained, and
-    # padding does not add them evenly (4 guards, 3 forwards, 3 centers).
+    # derived off the LOADED roster, not hardcoded -- `--roster` serves every
+    # team, and counts off `full` (the same padded bodies R was fitted on),
+    # not the live file, which is short by an uneven number of bodies per group
     print("  R against forwards: guard %+.1f, center %+.1f."
           % (Rs["guard"] - Rs["forward"], Rs["center"] - Rs["forward"]))
     byR = sorted(Rs, key=lambda g: -Rs[g])
     counts = {g: (pure_bodies(full, e), group_slots(e)) for g, e in GROUPS.items()}
     crowd = {g: b / s for g, (b, s) in counts.items()}
-    print("  crowding on those same %d bodies -- pure bodies / slots: %s."
+    print("  pure bodies / slots on those same %d: %s"
           % (len(full), ", ".join("%s %d/%d" % ((g,) + counts[g]) for g in byR)))
-    print("  Highest R is %s. Crowding %s the three here, so read the R column"
+    print("  highest R %s, crowding %s the three"
           % (byR[0], "orders" if all(crowd[a] > crowd[b]
                                      for a, b in zip(byR, byR[1:]))
              else "does NOT order"))
-    print("  itself -- a property of THIS roster's shape, re-measured when the")
-    print("  shape moves, never inferred from a body count.")
 
-    print("\nvalue in rate is LINEAR above ~30, not a power law.")
+    print("\nadded PF by rate")
     base = engine.run(full)["pf"]
     rates = list(range(20, 70, 5))
     v = [engine.run(full + [star(r, 68, ("SF", "PF"), SIM_TM, "ADD")])["pf"] - base
@@ -64,25 +53,19 @@ def report_replacement():
     mx, my, a = slope([r for r, _ in hi], [y for _, y in hi])
     print("  fit over rate>=30: %.1f PF per rate point, x-intercept %.1f."
           % (a, mx - my / a))
-    print("  The x-intercept of THIS line is not R: R is fitted over 30/40/50/65")
-    print("  and printed above, this one over 30..65 in fives. They differ, and")
-    print("  quoting either as 'the' replacement level invites the mismatch.")
-    print("  Constant increments => NO convexity above 30. The real convexity is")
-    print("  confined to rate < 30, which is exactly what makes the linear")
-    print("  formula unusable down there.")
 
 
 def report_positions():
     full = basis()
     base = engine.run(full)["pf"]
-    print("value of an ADDED body of each eligibility, vs the same rate as a")
-    # Counted on `full`, the roster the body is ADDED to. The live file is a
-    # different shape -- padding adds 4 guards, 3 forwards and 3 centers.
-    print("guard. this %d-man roster's %d pure PG/SG chase at most %d"
+    print("value of an ADDED body of each eligibility, vs a guard at the same "
+          "rate.")
+    # counted on `full`, the roster the body is added to, not the live file
+    print("%d-man roster: %d pure PG/SG chase at most %d guard-eligible slots; "
+          "%d pure centers chase %d."
           % (len(full), pure_bodies(full, GROUPS["guard"]),
-             group_slots(GROUPS["guard"])))
-    print("guard-eligible slots; %d pure centers chase %d."
-          % (pure_bodies(full, GROUPS["center"]), group_slots(GROUPS["center"])))
+             group_slots(GROUPS["guard"]),
+             pure_bodies(full, GROUPS["center"]), group_slots(GROUPS["center"])))
     print("  %6s %10s %10s %10s" % ("rate", "guard PF", "forward", "center"))
     for rate in (25, 35, 45):
         v = {}
@@ -95,26 +78,18 @@ def report_positions():
 
 
 def report_formula():
-    """Does (rate - R) x GP predict what the sim measures? For whom?"""
     full = basis()
     base = engine.run(full, cal=DELTA_W_CAL)
     R, c = replacement(full)
-    # Through `pf_wins`, not `PF_PER_WIN / c`: `replacement` fits `c` on the
-    # STANDINGS calendar and the `sim` column beside this one is measured on
-    # `DELTA_W_CAL`, so a K that skipped the basis would grade the formula
-    # against a column 5% away from it and print the gap as formula error.
+    # through `pf_wins`, not `PF_PER_WIN / c` -- `replacement` fits `c` on the
+    # standings calendar, and `sim` below is measured on `DELTA_W_CAL`; skipping
+    # the basis conversion would grade the formula ~5% off and read as its error
     K = 1.0 / pf_wins(c)
     print("formula: (rate - %.1f) x GP / %.0f = wins, tested as 1-for-1s against"
           % (R, K))
-    # The SAME swap `players` prices -- a 68-GP body of his own slot group. The two
-    # reports must grade ONE counterfactual, or the posR column is scored against a
-    # `sim` column with the very error it exists to fix baked into it.
-    print("a replacement 68-GP body OF HIS OWN SLOT GROUP -- the counterfactual")
-    print("`players` prices, so the two reports grade the same swap.")
-    print("`sim` is what the sim measured; `1R` the formula on the ONE roster-wide")
-    print("R printed above; `err` and `posR err` are (formula / sim - 1), the")
-    print("second using the per-slot-group R from `replacement`. Signed: + means")
-    print("the formula pays him more than the sim does.\n")
+    # same swap `players` prices -- both reports must grade one counterfactual,
+    # or posR is scored against a `sim` column with its own error baked in
+    print("a replacement 68-GP body OF HIS OWN SLOT GROUP.\n")
     grp = group_fits(full)
     print("  %-22s %5s %4s %8s %8s %7s %7s" %
           ("player", "rate", "gp", "sim", "1R", "err", "posR err"))
@@ -134,22 +109,17 @@ def report_formula():
                  100 * (predp / sim_w - 1) if sim_w else 0))
     err = [abs(pr / s - 1) for _, s, pr, _ in rows if s > 0.1]
     errp = [abs(pp / s - 1) for _, s, _, pp in rows if s > 0.1]
-    print("\n  |error| median %.0f%%, worst %.0f%%. It is NOT a 1%% formula."
+    print("\n  |error| median %.0f%%, worst %.0f%%"
           % (100 * statistics.median(err), 100 * max(err)))
-    print("  With a PER-POSITION R: median %.0f%%, worst %.0f%%. A third of the"
+    print("  with per-position R: median %.0f%%, worst %.0f%%"
           % (100 * statistics.median(errp), 100 * max(errp)))
-    print("  error is a fixable constant, not irreducible roster shape -- use the")
-    print("  per-position R from `replacement` when you sort with this.")
     by_sim = [n for n, _, _, _ in sorted(rows, key=lambda r: -r[1])][:5]
     by_f = [n for n, _, _, _ in sorted(rows, key=lambda r: -r[2])][:5]
     by_fp = [n for n, _, _, _ in sorted(rows, key=lambda r: -r[3])][:5]
     print("  top 5 by sim         : %s" % ", ".join(by_sim))
     print("  top 5 by formula     : %s" % ", ".join(by_f))
     print("  top 5 by formula+posR: %s" % ", ".join(by_fp))
-    # DERIVED, never asserted: every ordering claim here is a comparison of the
-    # three lists above, so it cannot contradict them.
+    # derived, not hardcoded -- a comparison of the three lists above
     print("  posR %s the top-5 order, and it %s the sim's."
           % ("leaves" if by_f == by_fp else "changes",
              "matches" if by_fp == by_sim else "still differs from"))
-    print("  Judge any such difference against the per-block sd in `players`")
-    print("  before reading it as a mis-ranking either R fixes.")

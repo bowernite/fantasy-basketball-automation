@@ -2,10 +2,6 @@ import unittest
 from tests.harness import *
 
 class ParallelPlayerWins(unittest.TestCase):
-    """`player_wins`'s per-player loop shards ACROSS players and blocks now,
-    the way `engine.run` shards trials inside one -- the two paths have to
-    answer the same dict, not merely a close one."""
-
     def test_a_sharded_batch_matches_the_sequential_one(self):
         full = sim.basis()
         names = [p["n"] for p in sim.our_roster()]
@@ -15,9 +11,6 @@ class ParallelPlayerWins(unittest.TestCase):
         self.assertEqual(seq, par)
 
     def test_a_short_call_never_leaves_this_process(self):
-        """Below the job floor a job's own pool round-trip is not worth
-        avoiding -- `engine.run` already shards ITS OWN trials, and forking a
-        second pool over one whole job is pure overhead on top of that one."""
         shard.retire()
         full = sim.basis()
         before = {c.pid for c in multiprocessing.active_children()}
@@ -37,8 +30,6 @@ class ParallelPlayerWins(unittest.TestCase):
 
 
 class ParallelIncomingWins(unittest.TestCase):
-    """Mirrors `ParallelPlayerWins` for `incoming_wins`'s per-player loop."""
-
     def test_a_sharded_batch_matches_the_sequential_one(self):
         full = sim.basis()
         players = sim.our_roster(THEIR_ROSTER)

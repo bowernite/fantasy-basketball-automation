@@ -6,36 +6,22 @@ from ..value import bottom, breakeven_cell, breakeven_fmt, breakeven_value
 from ..wins import PF_PER_WIN, wins
 
 
-# A scenario's FILLER, not a bucket, a surplus list or a recommendation: held
-# fixed so the only variable down a ladder is body count. Two of these price as
-# Core, where shipping one is a walk-away trigger (`trades`). Buckets live in
-# `evals/teams/my-team/My Team.md`; this list is not one and must not be read as one.
-#
-# ONE list, because the two reports below are read against each other: a second
-# copy asserting in prose that it is "the same filler" is a comparison that can
-# drift into two different trades without either table saying so.
+# held fixed so the only variable down a ladder is body count -- not a bucket
+# or a recommendation (those live in `evals/teams/my-team/My Team.md`); shared
+# by both reports below so they price the same trade
 FILLER = ["Jalen Suggs", "Coby White", "Myles Turner", "Jakob Poeltl",
           "Naz Reid"]
 
-# The bottom-of-roster row both reports run, for the same reason FILLER is one
-# list: `scenarios` prices the 3-for-1 and `breakevens` prints what it would have
-# to bring back, and they are only the same trade while they are the same three
-# names. The prose below is derived off it too -- a hand-typed "(Melton, Simons,
-# Ellis)" beside a list is a caption that can stop describing its own table.
-#
-# NOT the `bottom-up` row's three, which `bottom` derives: these are a trade-VALUE
-# judgment off board prices the sim does not carry, and a body the board prices at
-# nothing is not the body the sim prices lowest.
+# shared by both reports below, same reason as FILLER; NOT the `bottom-up`
+# row's three, which `bottom` derives off board prices the sim doesn't carry
 DREGS = ["De'Anthony Melton", "Anfernee Simons", "Keon Ellis"]
 
-# The generous end of the backfill bracket, once. `scenarios` cites it as the
-# grade `breakevens` reports out to and `breakevens` labels a band row with it,
-# so it is one cross-table claim rather than three prints that have to agree.
+# generous end of the backfill bracket -- one constant `scenarios` cites and
+# `breakevens` labels a row with, so both stay in agreement
 GENEROUS = {"tm": "MIA", "avg": 14.0, "gp": 55, "elig": ["PG", "SG"]}
 
 
 def grade(body):
-    """A backfill body's rate/GP label, the way every row names one."""
     return "%.0f/%d" % (body["avg"], body["gp"])
 
 
@@ -50,17 +36,14 @@ def report_scenarios():
                        "bottom-up row derives its own three)."
                        % ", ".join(left))
     base = engine.run(full, cal=DELTA_W_CAL)
-    # Jokic priced on SIM_TM like every other incoming body, NOT on DEN. His real
-    # schedule is 1.0 sd BELOW the 30-team mean, which charged him ~76 PF of
-    # handicap that the ladder then read as body count.
-    #
-    # The rate rides in the same dict as the rest of his shape: five rungs is
-    # five chances for one of them to price a different center.
+    # priced on SIM_TM like every other incoming body, NOT on DEN -- his real
+    # schedule is 1.0 sd below the 30-team mean, which would charge him ~76 PF
+    # of handicap that the ladder would then read as body count
     JOKIC = dict(rate=65.2, gp=65, elig=("C",), tm=SIM_TM)
     BOTTOM = [p["n"] for p in bottom(full, 3)]
     SC = [
-        # Body count held fixed at 1 incoming, GP and position held fixed too,
-        # so the ONLY variable down this ladder is how many bodies you pay.
+        # GP and position held fixed too, so the ONLY variable down this
+        # ladder is how many bodies you pay
         ("Jokic 1-for-1  (Suggs)", FILLER[:1], [star(**JOKIC)]),
         ("Jokic 2-for-1  (+Coby White)", FILLER[:2], [star(**JOKIC)]),
         ("Jokic 3-for-1  (+Turner)", FILLER[:3], [star(**JOKIC)]),
@@ -73,9 +56,8 @@ def report_scenarios():
         ("3-for-1  -> 50", FILLER[:3], [star(50)]),
         ("3-for-1  dregs -> 45", DREGS, [star(45)]),
         ("3-for-1  -> fragile 55 @40gp", FILLER[:3], [star(55, 40)]),
-        # Same 68 GP as every other row: three separate swaps, not one. Spread
-        # over SIM_TMS so neither a schedule nor a stacking effect is booked as
-        # body count, which is the one thing this ladder measures.
+        # spread over SIM_TMS so neither a schedule nor a stacking effect is
+        # booked as body count, which is the one thing this ladder measures
         ("three separate 1-for-1s -> 42s", FILLER[:3],
          [star(42, 68, ("SF", "PF"), SIM_TMS[0], "S1"),
           star(42, 68, ("PG", "SG"), SIM_TMS[1], "S2"),
@@ -92,37 +74,21 @@ def report_scenarios():
           "%.1f%%.\n1 win = %.0f PF."
           % (len(full), base["pf"], DELTA_W_MATCHUPS, 100 * base["cv"],
              PF_PER_WIN))
-    print("Every incoming body is on %s (multi-body rows spread over %s) -- one"
+    print("incoming on %s (multi-body rows spread over %s)."
           % (SIM_TM, "/".join(SIM_TMS)))
-    print("schedule, because which NBA team a body sits on is worth up to 3.7")
-    print("rate points and is not a fact about the trade.")
-    print("BACKFILL ASSUMPTION, stated here rather than in a footnote: outgoing")
-    print("bodies 2..N come back at %.0f FPts / %d GP. That is the post-auction"
-          % (DEAD["avg"], DEAD["gp"]))
-    print("open-FA grade. `breakevens` reports the bracket to a %s refund."
-          % grade(GENEROUS))
-    # STATED, because `breakevens` ten lines down states it -- "GP and position
-    # are STATED because they move the answer several points" -- and a row here
-    # labelled bare is the row a reader compares a real 50-rate center against.
-    # Every shape read off the bodies actually priced: the exceptions are the
-    # rows a label has no room for, so a hand-typed sentence describes them until
-    # one of them changes.
-    #
-    # `n=` on the shape read, because `star`'s default name identifies a body:
-    # calling it for its defaults alone burns one and leaves a gap in the run.
+    print("backfill: outgoing bodies 2..N refunded at %.0f FPts / %d GP, the "
+          "post-auction\nopen-FA grade; `breakevens` reports the bracket to a "
+          "%s refund." % (DEAD["avg"], DEAD["gp"], grade(GENEROUS)))
+    # `n=` passed since `star`'s default name burns a counter value otherwise
     dflt = star(0, n="-")
     multi = sorted({b["gp"] for _, _, adds in SC if len(adds) > 1 for b in adds})
-    print("Incoming is a %d-GP %s where the label says nothing else. The Jokic"
-          % (dflt["gp"], "/".join(dflt["elig"])))
-    print("rows are a %d-GP %s, and the multi-body rows put each body in a"
-          % (JOKIC["gp"], "/".join(JOKIC["elig"])))
-    print("different slot group, at %s GP."
-          % " and ".join("%d" % g for g in multi))
-    print("The bottom-up row is not a typed trio: it ships whoever the roster")
-    print("prices lowest as loaded -- today %s." % ", ".join(BOTTOM))
-    print("`dPF` is season PF against the baseline above, `CV` the WEEKLY "
-          "coefficient\nof variation of PF after the swap (the baseline's is on "
-          "line 1), `wins` the\ndPF converted at the PF-per-win above.")
+    print("shapes: %d-GP %s unless the label says otherwise; Jokic rows %d-GP "
+          "%s;\nmulti-body rows one per slot group at %s GP."
+          % (dflt["gp"], "/".join(dflt["elig"]), JOKIC["gp"],
+             "/".join(JOKIC["elig"]),
+             " and ".join("%d" % g for g in multi)))
+    print("bottom-up row ships whoever the roster prices lowest as loaded: %s."
+          % ", ".join(BOTTOM))
     print("%-30s %9s %7s %8s" % ("scenario", "dPF", "CV", "wins"))
     for label, out, adds in SC:
         r = engine.run(swap(full, out, adds), cal=DELTA_W_CAL)
@@ -131,13 +97,10 @@ def report_scenarios():
 
 
 def report_breakevens():
-    print("break-even incoming rate for an N-for-1, by roster size. GP and")
-    print("position are STATED because they move the answer several points:")
-    print("compare a real player against the row that matches him.")
+    print("break-even incoming rate for an N-for-1, by roster size.")
     full, ours = basis(), our_roster()
-    print("Two counts: padded to %d (the common basis, and ours from Sept '26)"
-          % len(full))
-    print("and the file as it stands. Every incoming body is on %s." % SIM_TM)
+    print("two counts: padded to %d, and the file as it stands. incoming on %s."
+          % (len(full), SIM_TM))
     shapes = [("68 GP forward", 68, ("SF", "PF")),
               ("65 GP center", 65, ("C",)),
               ("78 GP forward", 78, ("SF", "PF"))]
@@ -157,15 +120,11 @@ def report_breakevens():
           % (len(DREGS), ", ".join(n.split()[-1] for n in DREGS), len(full),
              breakeven_cell(full, DREGS, base=full_base)))
 
-    print("\nBACKFILL GRADE. Every row above refunds outgoing bodies 2..N at some")
-    print("rate/GP. Honest bracket: %s is post-auction open FA (all 10 fixed"
-          % grade(DEAD))
-    print("auction+rookie slots already spent); %s is generous -- a body must"
-          % grade(GENEROUS))
-    # MEASURED off the roster in hand: a typed range describes whoever the file
-    # carried the day it was typed, and `our_roster` re-projects on every feed.
-    print("be FIELDED at 456 owned, and our own worst KEPT body rates %.1f."
-          % min(p["avg"] for p in ours))
+    # measured off the roster in hand, not typed -- `our_roster` re-projects
+    # on every feed
+    print("\nBACKFILL GRADE. bracket: %s post-auction open FA, %s generous; our "
+          "worst KEPT body rates %.1f."
+          % (grade(DEAD), grade(GENEROUS), min(p["avg"] for p in ours)))
     print("    %-16s %s" % ("refund grade", "  ".join(
         "%d-for-1" % k for k in range(2, 6))))
     band = {}
@@ -177,21 +136,12 @@ def report_breakevens():
                      for k in range(2, 6)]
         print("    %-16s %s"
               % (lab, "  ".join(breakeven_fmt(v) for v in band[lab])))
-    # `strict`/`generous`, not `lo`/`hi`: the STRICTER refund is the one that
-    # demands the HIGHER incoming rate, so the DEAD column holds the bigger
-    # numbers and a `lo`/`hi` pair would name them the wrong way round.
     strict, generous = band[grade(DEAD)], band[grade(GENEROUS)]
 
     def spread(a, b):
-        """The gap between two grades, or `-` where either cell is out of
-        bracket: a difference of two bounds is not a rate-point spread.
-
-        On the VALUES, not the printed cells -- recovering a measurement by
-        `float()`-ing a column back out of its own %7s formatting makes the
-        display width load-bearing arithmetic.
-        """
+        # `-` where either cell is out of bracket -- a difference of two
+        # bounds is not a rate-point spread
         both = isinstance(a, float) and isinstance(b, float)
         return "%.1f" % (a - b) if both else "-"
-    print("  band across the honest bracket: %s rate points at 2..5-for-1."
+    print("  band across that bracket: %s rate points at 2..5-for-1."
           % "/".join(spread(a, b) for a, b in zip(strict, generous)))
-    print("  Cap-at-3-for-1 survives every grade. A modifier, not a sign flip.")

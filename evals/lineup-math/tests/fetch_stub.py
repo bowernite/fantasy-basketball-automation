@@ -1,21 +1,14 @@
-"""Canned Fleaflicker payloads for fetch tests."""
-
 def pro_player(name, pid, tm="LAC", pos="G", elig=("PG", "SG")):
     return {"id": pid, "nameFull": name, "position": pos,
             "proTeamAbbreviation": tm, "positionEligibility": list(elig)}
 
 def snapshot_payload(*rows):
-    """`FetchRoster?season=` for a whole team, one (proPlayer, FPts/G, total)
-    per body"""
     return {"groups": [{"slots": [
         {"leaguePlayer": {"proPlayer": p, "seasonAverage": {"value": avg},
                           "seasonTotal": {"value": tot}}}
         for p, avg, tot in rows]}]}
 
 def league_payload(*teams):
-    """`FetchLeagueRosters` with no `season=`: live ownership for all 12 teams
-    as a flat player list per team, and -- the whole reason the snapshot is
-    still fetched -- no stat line anywhere on it"""
     return {"rosters": [{"team": {"id": tid, "name": "Team %d" % tid},
                          "players": [{"proPlayer": p} for p in pros]}
                         for tid, pros in teams]}

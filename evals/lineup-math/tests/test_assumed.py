@@ -3,9 +3,6 @@ from tests.harness import *
 from tests.fetch_stub import *
 
 class AssumedTradesOverlay(unittest.TestCase):
-    """Pending / handshake deals are treated as done on the roster files.
-    A re-fetch that skipped this would price Amen on us and Hunter on Henry."""
-
     def test_moves_and_the_drop_and_a_second_pass_is_a_noop(self):
         import assumed_trades as at
         hunter = {"n": "De'Andre Hunter", "tm": "SAC"}
@@ -38,10 +35,6 @@ class AssumedTradesOverlay(unittest.TestCase):
         self.assertEqual(set(at.expand_ids([at.US])), at.INVOLVED)
 
     def test_a_drop_only_empties_the_roster_it_was_dropped_from(self):
-        """A drop is one team releasing one body, and the row says which team.
-        Applied league-wide it matches on NAME alone -- and this league has
-        carried two Jaylin Williamses, so the other team loses a player it
-        still owns and the overlay is the only thing that could say so"""
         import assumed_trades as at
         name, src = at.DROPS[0]
         other = min(t for t in at.INVOLVED if t != src)
@@ -52,12 +45,6 @@ class AssumedTradesOverlay(unittest.TestCase):
         self.assertEqual([r["tm"] for r in rosters[other]], ["PHX"])
 
     def test_a_moved_body_a_third_team_still_holds_is_refused(self):
-        """`expand_ids` re-cuts every side so the files cannot double-own a
-        body, and this is the only place that can keep that promise: an
-        incoming name is resolved across the whole league, so a deal whose
-        source no longer holds him copies the row off whoever does -- and that
-        team keeps him. Two files then own one body and the sim reads his level
-        twice, in a league whose PF is supposed to sum to itself"""
         import assumed_trades as at
         name, src, dst = at.MOVES[0]
         third = min(t for t in at.INVOLVED if t not in (src, dst))
@@ -69,12 +56,6 @@ class AssumedTradesOverlay(unittest.TestCase):
         self.assertEqual([r["n"] for r in rosters[third]], [name])
 
 class AssumedTradesReachTheFilesTheSimPrices(unittest.TestCase):
-    """The overlay's only caller is `fetch_data.py roster`, and the files it
-    lands are what every counterparty table is then priced off. `apply_all` over
-    a dict it was handed cannot see the fetch pick which teams to re-cut, nor
-    what reaches disk -- and a deal that is applied to a roster nobody writes is
-    a trade the reader was told is already done"""
-
     def setUp(self):
         import assumed_trades as at
         self.at = at
@@ -115,9 +96,6 @@ class AssumedTradesReachTheFilesTheSimPrices(unittest.TestCase):
             return [r["n"] for r in json.load(f)]
 
     def test_naming_one_side_of_a_deal_re_cuts_every_team_it_touches(self):
-        """The one side asked for, cut alone, is the side that gains a body --
-        and the file it came off still carries him. Two files own one body and
-        the league's PF stops summing to itself"""
         self.fetch("roster", str(self.at.MOVES[0][1]))
         self.assertEqual(
             sorted(os.listdir(os.path.join(self.dir, "rosters"))),
@@ -126,9 +104,6 @@ class AssumedTradesReachTheFilesTheSimPrices(unittest.TestCase):
 
     def test_every_moved_body_lands_on_the_file_of_the_team_that_traded_for_him(
             self):
-        """The whole point of the overlay, read off disk rather than off the
-        dict it was applied to: the wire lags a handshake deal, so the row the
-        sim prices has to be the post-deal one on both sides at once"""
         self.fetch("roster")
         for name, src, dst in self.at.MOVES:
             with self.subTest(player=name):
@@ -136,8 +111,6 @@ class AssumedTradesReachTheFilesTheSimPrices(unittest.TestCase):
                 self.assertNotIn(name, self.names(src))
 
     def test_a_dropped_body_is_on_no_file_the_fetch_writes(self):
-        """A drop is not a move, so nobody gains him -- and left on the file he
-        is priced as an asset that no longer exists in the league"""
         self.fetch("roster")
         for name, src in self.at.DROPS:
             with self.subTest(player=name):

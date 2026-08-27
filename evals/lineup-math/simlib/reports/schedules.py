@@ -29,71 +29,48 @@ TIGHT_GAMES = 3                 # reported only, to show how thin a light night 
 
 
 def report_schedules():
-    """What steering the Sept '26 auction on the NBA calendar buys.
-
-    Sized off the LOADED roster, never off `AUCTION_N`: the auction is a 7-man
-    one, but `pad` invents an FA slot only where a roster is short of 38, so a
-    team carrying 32 live bodies bids for three of them. Seven typed against
-    those three raises out of `steer` rather than pricing an auction we get.
-
-    ONE baseline and ONE selection rule for every win figure here. The baseline
-    is NOT CARING -- the mean over `STEER_DRAWS` random full-slate draws -- and
-    the rule is `coverage_picks`, which is prefix-consistent, so the saturation
-    ladder's last rung IS the best-slate headline rather than a second cut of
-    the same choice. Two cuts and the ladder can total above the slate it ends
-    at.
-
-    Not in OURS_ONLY: no player of ours is named. Every win figure here still
-    goes through `pf_wins`, which is derived entirely from OUR margins -- that is
-    true of every win figure in the package, including the ones `--roster` is
-    for, so it is not what sets these four apart. What the answer DOES depend on
-    is the loaded roster's spread of NBA teams -- which light nights are already
-    reached -- so `--roster` gives that team's answer, and neither team's is
-    transferable to the other.
-    """
+    # sized off the LOADED roster, not `AUCTION_N` -- `pad` invents an FA slot
+    # only where a roster is short of 38, so a team carrying 32 bodies bids
+    # for three, not seven
     full = basis()
     base = engine.run(full)
-    # The swept body is the body the auction actually hands you, read off `pad`
-    # rather than retyped: a grade change in EXPANSION has to move this table,
-    # because the whole table is about what THOSE slots are worth.
+    # read off `pad`, not retyped -- a grade change in EXPANSION must move this
+    # table
     slots = set(auction_slots(full))
     fa = [p for i, p in enumerate(full) if i in slots]
     held = [p for i, p in enumerate(full) if i not in slots]
     held_tms = {p["tm"] for p in held}
     if not fa:
-        # RAISED, not `sys.exit`: from inside a report that killed every later
-        # report in the same run with no sign that any were skipped, and it is
-        # reachable from the import path too, where an exit is not an answer.
+        # raised, not `sys.exit`, since an exit here would kill every later
+        # report in the same run with no sign any were skipped
         raise ValueError(
-            "this roster is already full at %d bodies, so the September auction "
-            "fills nothing. This report is about what THAT auction's schedules "
-            "buy -- there is nothing to steer." % len(full))
-    # THE slate. Every count below is this one -- the ladder, the draws, the
-    # stack and the offer -- so a roster with three FA slots is priced on three.
+            "this roster is already full at %d bodies; the September auction "
+            "fills nothing" % len(full))
+    # every count below is `n` -- ladder, draws, stack, offer
     n = len(fa)
     gp = max(p["gp"] for p in fa)
     light, tight = light_nights(), light_nights(TIGHT_GAMES)
     per_team = {t: len(team_light_nights(t)) for t in NBA_TEAMS}
     scored = collections.Counter(t for i in SCORING_NIGHTS for t in NIGHTS[i][1])
-    print("light night = a scored night of <=%d NBA games, where the %d-slot cap"
-          % (LIGHT_GAMES, len(SLOTS)))
     lost = unfilled_slots(base)
-    print("binds: `nights` puts %d%% of the season's unfilled slots on them."
-          % round(100 * sum(v for g, v in lost.items() if g <= LIGHT_GAMES)
-                  / sum(lost.values())))
-    print("\nSCORED PERIODS ONLY -- %d of %d nights, %d of %d games. The fantasy"
+    print("light night = a scored night of <=%d NBA games on the %s calendar, "
+          "where\nthe %d-slot cap binds: `nights` puts %d%% of the season's "
+          "unfilled slots on them."
+          % (LIGHT_GAMES, SEASON_TAG, len(SLOTS),
+             round(100 * sum(v for g, v in lost.items() if g <= LIGHT_GAMES)
+                   / sum(lost.values()))))
+    print("\nSCORED PERIODS ONLY -- %d of %d nights, %d of %d games."
           % (len(SCORING_NIGHTS), len(NIGHTS), sum(scored.values()) // 2,
              sum(len(t) for _, t in NIGHTS) // 2))
     calendar = [tms for _, tms in NIGHTS if is_light(tms)]
     whole = collections.Counter(t for tms in calendar for t in tms)
     shift = max(whole[t] - per_team[t] for t in NBA_TEAMS)
-    print("season ends before the NBA's, so light nights in April are worth 0:")
-    print("counting the whole calendar finds %d light nights, not %d, and moves a"
-          % (len(calendar), len(light)))
-    print("team by up to %d (%s)."
-          % (shift, ", ".join("%s %d->%d" % (t, whole[t], per_team[t])
-                              for t in NBA_TEAMS
-                              if whole[t] - per_team[t] == shift)))
+    print("whole calendar instead: %d light nights, not %d, and up to %d per "
+          "team (%s)."
+          % (len(calendar), len(light), shift,
+             ", ".join("%s %d->%d" % (t, whole[t], per_team[t])
+                       for t in NBA_TEAMS
+                       if whole[t] - per_team[t] == shift)))
     print("  %d of the %d scored nights are light; %d carry <=%d games."
           % (len(light), len(SCORING_NIGHTS), len(tight), TIGHT_GAMES))
     print("  light nights per team: mean %.2f, sd %.2f, %d to %d."
@@ -103,21 +80,15 @@ def report_schedules():
     for c in sorted(set(per_team.values()), reverse=True):
         print("  %5d  %s" % (c, " ".join(t for t in NBA_TEAMS
                                          if per_team[t] == c)))
-    print("  scored-period GAMES per team run %d-%d, so the choice buys light"
+    print("  scored-period GAMES per team: %d-%d"
           % (min(scored.values()), max(scored.values())))
-    print("  nights, not games -- do not read this table as a strength of schedule.")
 
     print("\nPER BODY. One added %d-GP forward-eligible body, swept across all %d"
           % (gp, len(NBA_TEAMS)))
-    print("schedules on the %d-man roster. `sdRate` converts that PF sd at the"
+    print("schedules on the %d-man roster. `sdRate` = that PF sd over the MEASURED"
           % len(full))
-    print("MEASURED PF-per-rate-point slope of the same %d-schedule MEAN (central"
-          % len(NBA_TEAMS))
-    print("difference, +-%d): the schedule in the units a board prices in. The"
-          % SWEEP_H)
-    print("slope is a property of the schedule too -- it runs 2.5 (BKN) to 8.0")
-    print("(OKC) at rate %d -- so the mean's slope is the only honest denominator."
-          % SWEEP_RATES[0])
+    print("PF-per-rate-point slope of the same %d-schedule MEAN (central "
+          "difference, +-%d)." % (len(NBA_TEAMS), SWEEP_H))
     grid = sorted({r + d for r in SWEEP_RATES for d in (-SWEEP_H, 0, SWEEP_H)})
     swept = engine.run_many([full + [star(r, gp, ("SF", "PF"), t, "ADD")]
                              for r in grid for t in NBA_TEAMS])
@@ -128,8 +99,8 @@ def report_schedules():
     ratepts = {}
     for r in SWEEP_RATES:
         v, sd = sweep[r], statistics.stdev(sweep[r])
-        # A central difference of the schedule MEAN, not `stats.slope`'s
-        # least-squares fit: same word, different quantity.
+        # central difference of the schedule MEAN, not `stats.slope`'s
+        # least-squares fit -- same word, different quantity
         pf_per_rate = (statistics.mean(sweep[r + SWEEP_H])
                        - statistics.mean(sweep[r - SWEEP_H])) / (2.0 * SWEEP_H)
         ratepts[r] = sd / pf_per_rate
@@ -137,28 +108,22 @@ def report_schedules():
               % (r, statistics.mean(v), sd, pf_wins(sd), sd / pf_per_rate,
                  (max(v) - min(v)) / pf_per_rate))
     lo, hi = SWEEP_RATES[0], SWEEP_RATES[-1]
-    print("  SUB-PROPORTIONAL: the body grows %.0fx from rate %d to %d while the"
-          % (statistics.mean(sweep[hi]) / statistics.mean(sweep[lo]), lo, hi))
-    print("  schedule sd under it grows only %.0fx, so the schedule is worth"
-          % (statistics.stdev(sweep[hi]) / statistics.stdev(sweep[lo])))
-    print("  %.1f rate points at %d and %.1f at %d." % (ratepts[lo], lo,
-                                                        ratepts[hi], hi))
-    # The threshold that MATTERS is the one at the grade it is applied at -- the
-    # auction fills at 8-14 -- so quoting the rate-40 figure as "the" threshold
-    # under-prices the only case the rule is ever spent in
-    print("  Quote the row that matches the body: the auction grades are %.0f-%.0f"
-          % (min(p["avg"] for p in fa), max(p["avg"] for p in fa)))
-    print("  FPts, so ~%.1f rate points is the threshold this rule is spent at."
-          % ratepts[lo])
+    print("  body %.1fx from rate %d to %d, schedule sd %.1fx: %.2f rate points"
+          " at %d, %.2f at %d"
+          % (statistics.mean(sweep[hi]) / statistics.mean(sweep[lo]), lo, hi,
+             statistics.stdev(sweep[hi]) / statistics.stdev(sweep[lo]),
+             ratepts[lo], lo, ratepts[hi], hi))
+    print("  auction grades %.0f-%.0f FPts; threshold ~%.2f rate points"
+          % (min(p["avg"] for p in fa), max(p["avg"] for p in fa), ratepts[lo]))
 
     print("\nSTEERING THE AUCTION. %d bodies (`pad`'s FA grades at %d GP); the"
           % (len(fa), gp))
-    print("other %d stay where they are, and %d of the %d light nights are already"
-          % (len(held), coverage(held_tms), len(light)))
-    print("reached by them. Selection rule: greedy on `coverage`. ONE baseline --")
-    print("NOT CARING, the mean of %d random %d-team draws -- so the ladder below"
+    print("other %d stay where they are on %d NBA teams, and %d of the %d light"
+          % (len(held), sum(1 for t in held_tms if not unsigned(t)),
+             coverage(held_tms), len(light)))
+    print("nights are already reached by them. Selection rule: greedy on")
+    print("`coverage`. Baseline NOT CARING = mean of %d random %d-team draws."
           % (STEER_DRAWS, n))
-    print("ends exactly on the best-%d headline instead of contradicting it." % n)
 
     rng = random.Random(13)
     draws = [[rng.choice(NBA_TEAMS) for _ in range(n)]
@@ -168,9 +133,8 @@ def report_schedules():
     worst = coverage_picks(n, best=False)
     deep = max(NBA_TEAMS, key=lambda t: per_team[t])
     stack = [deep] * n
-    # ONE sharded batch for every steered roster this section measures --
-    # `best`/`worst`/`stack`, the ladder's PAIRED rungs and the random offers
-    # -- rather than one reshard per configuration.
+    # one sharded batch for every roster measured here -- best/worst/stack,
+    # the ladder's paired rungs, the random offers -- not one reshard each
     offer_picks = [coverage_picks(n, teams=o) for o in offers]
     tms_list = ([best, worst, stack]
                + [best[:k] + d[k:] for d in draws for k in range(n)]
@@ -180,23 +144,19 @@ def report_schedules():
     top, worst_pf, stack_pf = pf_vals[:3]
     ladder_pf, got = (pf_vals[3:3 + STEER_DRAWS * n],
                       pf_vals[3 + STEER_DRAWS * n:])
-    # PAIRED down the ladder: rung k and rung k-1 share the draw AND the seeds, so
-    # the increment is a within-draw quantity with an sd 3-5x smaller than either
-    # rung's -- the rungs' own spread buries increments under the lottery
+    # paired down the ladder: rung k and rung k-1 share the draw AND the seeds,
+    # so the increment is a within-draw quantity, sd 3-5x smaller than either
+    # rung's own spread
     rows = [[ladder_pf[i * n + k] for k in range(n)] + [top]
             for i in range(STEER_DRAWS)]
-    idle = statistics.mean(r[0] for r in rows)   # THE baseline for every row
+    idle = statistics.mean(r[0] for r in rows)
     lottery = [r[0] for r in rows]
     cum = [[r[k] - r[0] for r in rows] for k in range(1, n + 1)]
 
     def vs_idle(total):
-        """A configuration's PF as wins over NOT CARING. Every win figure below
-        goes through here, so the ONE baseline this report promises is structural
-        rather than retyped."""
         return pf_wins(total - idle)
 
     def se_wins(xs):
-        """Standard error of the mean of `xs` PF, in wins."""
         return pf_wins(se_mean(xs))
 
     w = [pf_wins(statistics.mean(c)) for c in cum]
@@ -217,66 +177,43 @@ def report_schedules():
           % (n, len(NBA_TEAMS), w[-1]))
     print("  worst %d (greedy-min: a stack) : %+.3f wins"
           % (n, vs_idle(worst_pf)))
-    # DERIVED. "The last pick buys nothing" is where a reader stops steering, and
-    # the ladder peaks wherever it peaks -- on a counterparty file the peak can be
-    # the last rung
     last = w[-1] - w[-2]
     se = se_wins([a - b for a, b in zip(cum[-1], cum[-2])])
     sat = next(k for k in range(1, n + 1)
                if coverage(best[:k]) == coverage(best))
-    print("  It PEAKS at %d of %d picks (%+.3f), and coverage saturates at %d"
-          % (peak + 1, n, w[peak], sat))
-    print("  (%d of %d nights). Past that the rule can only REPEAT itself -- its"
-          % (coverage(best), len(light)))
-    print("  %dth pick is %s again. That pick buys %+.3f against a paired +-%.3f,"
+    print("  peaks at %d of %d picks (%+.3f); coverage saturates at %d (%d of "
+          "%d nights)" % (peak + 1, n, w[peak], sat, coverage(best), len(light)))
+    print("  %dth pick is %s again, and buys %+.3f against a paired +-%.3f"
           % (n, best[-1], last, se))
-    print("  which is %s." % ("nothing measurable" if abs(last) < 2 * se else
-                              "a REAL increment -- the rule pays past "
-                              "saturation here, so re-read this ladder"))
-    # Halfway to the peak, which is rung 3 of a seven-slot ladder ending there
-    # and rung 1 of a three-slot one. The sentence is "most of it arrives early"
-    # -- a hard-typed 3 and 4 reads off the end of a ladder shorter than four.
     early = max(1, (peak + 1) // 2)
-    print("  %d pick%s buy%s %.0f%% of the peak and %d buy %.0f%%."
+    print("  %d pick%s buy%s %.0f%% of the peak, %d buy %.0f%%"
           % (early, "" if early == 1 else "s", "s" if early == 1 else "",
              100 * w[early - 1] / w[peak], early + 1,
              100 * w[early] / w[peak]))
-    sd = pf_wins(statistics.stdev(lottery))
-    print("  NOT CARING IS ITSELF A LOTTERY, not a neutral draw: the %d draws land"
-          % STEER_DRAWS)
-    print("  %+.2f to %+.2f wins against the best %d (sd %.3f), so what ignoring"
-          % (pf_wins(min(lottery) - top), pf_wins(max(lottery) - top), n, sd))
-    print("  schedule costs swings by +-%.2f wins on its own." % sd)
-    print("  best %d of a random %d-team offer  : %+.3f +- %.3f wins -- the"
+    print("  %d random draws land %+.2f to %+.2f wins against the best %d, "
+          "sd %.3f"
+          % (STEER_DRAWS, pf_wins(min(lottery) - top),
+             pf_wins(max(lottery) - top), n,
+             pf_wins(statistics.stdev(lottery))))
+    print("  best %d of a random %d-team offer  : %+.3f +- %.3f wins"
           % (n, OFFER_N, vs_idle(statistics.mean(got)), se_wins(got)))
-    print("  realistic figure, since no auction puts all %d up." % len(NBA_TEAMS))
 
-    print("\nCOVERAGE, NOT A SUMMED NIGHT COUNT. A second body on a night already")
-    print("covered chases the slot the first one took, so the two quantities")
-    print("disagree hardest on the one shape that matters -- a stack:")
+    print("\nCOVERAGE, NOT A SUMMED NIGHT COUNT.")
     print("  all %d on %s : %d body-nights summed, %d distinct, %+.3f wins"
           % (n, deep, n * per_team[deep], coverage(stack), vs_idle(stack_pf)))
     print("  spread best %d : %d body-nights summed, %d distinct, %+.3f wins"
           % (n, sum(per_team[t] for t in best), coverage(best), w[-1]))
     print("  %dx%d is the CEILING on that sum, and the shape that reaches it"
           % (n, per_team[deep]))
-    print("  lands %s not caring. Diversification is not a separate principle:"
-          % ("BELOW" if stack_pf < idle else "above"))
-    print("  it is a proxy for coverage.")
+    print("  lands %s not caring." % ("BELOW" if stack_pf < idle else "above"))
 
-    # ONE row per configuration, not one per `run`: the ladder alone is n rungs x
-    # STEER_DRAWS near-identical rosters, and letting those in makes the fit a
-    # statement about the ladder rather than about coverage
+    # one row per configuration, not per `run` -- the ladder alone is n rungs x
+    # STEER_DRAWS near-identical rosters, which would make the fit a statement
+    # about the ladder rather than about coverage
     configs = ([(d, r[0]) for d, r in zip(draws, rows)] + list(zip(offers, got))
                + [(best, top), (worst, worst_pf), (stack, stack_pf)])
 
     def fit(metric):
-        """(slope, R2) of PF on `metric` over every configuration measured above.
-
-        Through `stats.ols` rather than a second hand-rolled normal equation:
-        the same solver the GP models are fitted with, so there is one place a
-        regression in this package can be wrong.
-        """
         xs, ys = [metric(t) for t, _ in configs], [y for _, y in configs]
         a, b = ols(xs, lambda v: (v,), ys)
         my = statistics.mean(ys)
@@ -290,15 +227,6 @@ def report_schedules():
           % (len(configs), min(covs), max(covs)))
     print("    on nights COVERED  : %5.1f PF/night, R2 %.2f" % (cb, cr2))
     print("    on nights SUMMED   : %5.1f PF/night, R2 %.2f" % (sb, sr2))
-    print("  Coverage %s that comparison, which is the whole of the claim. It is"
-          % ("wins" if cr2 > sr2 else "LOSES"))
-    print("  still only a PROXY -- neither explains the spread inside the realistic")
-    print("  band (a random %d covers %.0f of %d), where the %d-slot mechanics on"
-          " the" % (n, statistics.mean(coverage(d) for d in draws), len(light),
-                    len(SLOTS)))
-    print("  nights you do cover carry the rest. Steer on it; do not model with it.")
-    print("\nRE-CUT EVERY SEASON. Measured on the %s calendar at %d bodies against"
-          % (SEASON_TAG, len(full)))
-    print("this roster's spread of %d NBA teams; which nights are already covered"
-          % sum(1 for t in held_tms if not unsigned(t)))
-    print("sets every figure above. Never carry one forward.")
+    print("  Coverage %s that comparison. A random %d covers %.0f of %d."
+          % ("wins" if cr2 > sr2 else "LOSES", n,
+             statistics.mean(coverage(d) for d in draws), len(light)))

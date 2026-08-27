@@ -7,17 +7,13 @@ from .lineups import SLOTS, lineup
 from .schedule import games_on, team_nights
 
 
-# One scoring night as `season` books it, and the same night averaged over trials
-# as `run` reports it. Separate types because slot 0 is not the same quantity:
-# `season` carries the night SIZE, which `run` has already spent as the key it
-# groups on. Named rather than positional because `by_night` is read in three
-# other modules, where `v[1]` and `v[3]` carry no clue which is which.
+# `Night` is one scoring night as `season` books it; `NightAvg` is the same
+# averaged over trials, after `size` has been spent as the key `run` groups on.
 Night = collections.namedtuple("Night", "size avail filled pf")
 NightAvg = collections.namedtuple("NightAvg", "avail filled pf nights")
 
 
 def _availability(p, rng, bursty):
-    """Night indices this player actually suits up for."""
     idxs = team_nights(p["tm"])
     tg = len(idxs)
     play = min(p["gp"], tg)
@@ -25,16 +21,11 @@ def _availability(p, rng, bursty):
         return set(rng.sample(idxs, play))
     miss, out = tg - play, set()                        # contiguous IL blocks
     while miss > 0 and len(out) < tg:
-        # gauss(9, 6) goes <=0 about 7% of the time and is TRUNCATED to 1 here,
-        # so the realised block length is not 9: it is a right-shifted normal
-        # with a spike of 1-game blocks. Deliberate -- a 1-night absence is real
-        # and a negative one is not -- and it is why `mean_block` is MEASURED off
-        # this same draw (`absence_blocks`) rather than quoted as 9.
+        # truncated to >=1: gauss(9, 6) goes negative ~7% of the time and a
+        # negative absence block isn't real
         blk = max(1, min(int(rng.gauss(9, 6)), miss))
-        # place CIRCULARLY. Constraining starts to [0, tg-blk] makes mid-season
-        # games ~blk x likelier to be covered than edge games, which inflates
-        # October/April availability ~15pts and spuriously synchronises
-        # absences across players.
+        # placed circularly so mid-season games aren't likelier to be covered
+        # than edge games (`_onsets` assumes the same wraparound)
         s = rng.randrange(0, tg)
         out.update((s + j) % tg for j in range(blk))
         miss = (tg - play) - len(out)
@@ -42,38 +33,17 @@ def _availability(p, rng, bursty):
 
 
 def _onsets(idxs, played):
-    """Absence nights that BEGIN a contiguous absence run, from `idxs`.
-
-    The only nights a scratch can surprise you on. `idxs` is the player's own
-    team-game nights in order; from the second night of a block on he is on the
-    public injury report and you simply do not start him. Sampling every absence
-    night instead scales the lock-in by the mean block length -- `absence_blocks`
-    measures that factor on the roster in hand.
-
-    CIRCULAR, because `_availability` places blocks circularly: a block that wraps
-    the end of the season is one block. `idxs[j - 1]` at j=0 is the last night by
-    construction. Scanning strictly left-to-right split those in two -- ~26% of
-    player-seasons -- and over-counted onsets ~9%.
-    """
+    """Absence nights that begin a contiguous absence run -- the only nights a
+    scratch can surprise you on. Circular, matching `_availability`'s block
+    placement"""
     if not played:
-        # never suits up: one block, and opening night is it. Listed, because
-        # `idxs` is a tuple and the other branch is a comprehension
-        return list(idxs[:1])
+        return list(idxs[:1])       # never suits up: opening night is the block
     return [i for j, i in enumerate(idxs)
             if i not in played and idxs[j - 1] in played]
 
 
 def absence_blocks(roster, seeds=40, seed0=101):
-    """-> {nights, blocks, mean_block}: how absences ARRIVE on this roster.
-
-    `mean_block` is the whole of the lock-in correction: drawing the surprise from
-    every absence night rather than each block's first night over-states the
-    penalty by exactly this factor. It is a property of the roster's projected GP,
-    so it has to be measured on the roster in hand -- hard-coding it is how a
-    stale triple survived three revisions under a heading naming a roster that
-    never produced it. Uses the same `_availability`/`_onsets` pair `season()`
-    does, so the factor cannot drift from the model that applies it.
-    """
+    """Measured off the same `_availability`/`_onsets` pair `season()` uses"""
     nights = blocks = 0
     for s in range(seeds):
         rng = random.Random(seed0 + s)
@@ -87,20 +57,8 @@ def absence_blocks(roster, seeds=40, seed0=101):
 
 
 def season(roster, seed, bursty=False, surprise=0.0, cal=SCORED_CAL):
-    """`surprise`: share of a player's absence BLOCKS he is started into.
-
-    `cal` selects which nights are scored and how they bucket. Availability is
-    drawn over the whole season regardless of `cal`: GP/82 is a season-long rate.
-
-    Lineups lock before tip, so a late scratch does not free the slot -- you have
-    started a player who scores 0 and cannot refill. Everything else here assumes
-    perfect foreknowledge of who plays, which is the study's one structural
-    over-statement of a fragile player's worth.
-
-    Only meaningful with `bursty=True`: independent per-night absences are their
-    own onsets, so the correction is a near no-op against a draw that is not how
-    injuries arrive.
-    """
+    """Lineups lock before tip, so a late scratch does not free the slot -- a
+    started player who is out scores 0 rather than being replaced"""
     rng = random.Random(seed)
     sched = [_availability(p, rng, bursty) for p in roster]
     ghosts = []
@@ -108,16 +66,12 @@ def season(roster, seed, bursty=False, surprise=0.0, cal=SCORED_CAL):
         q = p.get("surprise", surprise)     # per-player override
         g = set()
         if q:                              # `durability` alone; skip the scan
-            # Independent per block, NOT round(q * blocks): a typical player has
-            # 2-3 absence blocks, so the deterministic count floors to zero and a
-            # 10% rate becomes 0% for most of the roster.
+            # independent per block, NOT round(q * blocks): most rosters have
+            # 2-3 blocks/player, so a deterministic count floors to zero
             g = {i for i in _onsets(team_nights(p["tm"]), sched[k])
                  if rng.random() < q}
         ghosts.append(g)
         sched[k] |= g                      # started, but will score nothing
-    # Read once per roster, not once per player per night: rebuilding the
-    # eligibility set on each of the ~131 scoring nights is the largest cost in
-    # the loop below after the solver itself.
     eligs = [set(p["elig"]) for p in roster]
     avgs = [p["avg"] for p in roster]
     names = [p["n"] for p in roster]
@@ -126,22 +80,14 @@ def season(roster, seed, bursty=False, surprise=0.0, cal=SCORED_CAL):
     by_night = []
     for i in cal.nights:
         tms = NIGHTS[i][1]
-        # Keyed on the ROSTER INDEX, never the name. Two bodies can share a name
-        # -- two `star()`s in one deal, or the league's two Jaylin Williamses --
-        # and the night has to score both.
+        # keyed on roster INDEX, never name -- two bodies can share a name
         av = [(avgs[k], eligs[k], k) for k, on in enumerate(sched) if i in on]
         if not av:
             by_night.append(Night(games_on(tms), 0, 0, 0.0))
             continue
         _, filled, who = lineup(av)
-        # Scored over the <=9 STARTERS, not over everyone available: a ghost is
-        # ranked on his real rate (you started him believing he plays) and only
-        # scores nothing, so the zeroing belongs here and nowhere earlier.
-        #
-        # Through `sum`, never a `+=` accumulator: builtin `sum` compensates its
-        # float error and a hand-rolled loop does not, so the two disagree in the
-        # last ulp on ~38% of nights -- which is enough to move a published Δw in
-        # its 13th digit.
+        # scored over the <=9 starters: a ghost is ranked on his real rate and
+        # only scores nothing, so zeroing happens here and nowhere earlier
         scored = [0.0 if i in ghosts[w] else avgs[w] for w in who]
         total = sum(scored)
         weeks[cal.week_of[i]] += total
@@ -152,24 +98,15 @@ def season(roster, seed, bursty=False, surprise=0.0, cal=SCORED_CAL):
     return weeks, starts, pts, by_night
 
 
-# Deltas are stable to +-0.02 wins from ~50 up now that swap() preserves common
-# random numbers.
-TRIALS = 200
+TRIALS = 200  # deltas stable to +-0.02 wins from ~50 now that swap() shares rng
 
 
 def run(roster, trials=TRIALS, bursty=False, seed0=101, surprise=0.0,
         cal=SCORED_CAL, workers=None):
     """-> dict(pf, wk_mean, wk_sd, cv, wk, by_night)
 
-    Per-player figures come off `season`, which returns `starts` and `pts` for a
-    single season. `wk` is the mean of each `cal` bucket separately.
-
-    `workers` shards trials across processes (`shard`), sequential under
-    `shard.SHARD_FLOOR` trials and one process per core above. Job 0 holds the
-    first trials and job 1 the next, and chunks come back in job order, so
-    flattening them is trial order and the dict is the sequential one digit for
-    digit rather than close to it.
-    """
+    `workers` shards trials across processes (`shard`); chunks come back in
+    job order, so the result is digit-for-digit the sequential one."""
     n = shard.n_workers(workers, trials)
     jobs = [TrialJob(roster, seed0, start, count, bursty, surprise, cal)
             for start, count in shard.chunks(trials, n)]
@@ -211,15 +148,8 @@ def _collect(results, trials, cal):
 
 def run_many(rosters, trials=TRIALS, bursty=False, seed0=101, surprise=0.0,
              cal=SCORED_CAL, workers=None):
-    """[run(r, ...) for r in rosters], sharded by ROSTER rather than by trial.
-
-    A report that runs hundreds of near-identical rosters at one trial count
-    (`schedules`) otherwise reshards trials once per roster, paying pool-
-    dispatch overhead on a chunk too small for it hundreds of times over.
-    Digit-for-digit against calling `run(r, trials, ..., workers=1)` on each
-    roster in turn -- same reasoning as `run` itself, `_collect`'s sums are
-    exact regardless of how the work was split.
-    """
+    """[run(r, ...) for r in rosters], sharded by ROSTER rather than by trial
+    -- digit-for-digit against calling `run` on each roster in turn"""
     n = shard.n_workers(workers, len(rosters))
     jobs = [(rosters[s:s + c], trials, bursty, seed0, surprise, cal)
             for s, c in shard.chunks(len(rosters), n)]
@@ -235,11 +165,5 @@ def _run_many_chunk(job):
 
 
 def unfilled_slots(res):
-    """{night size: starting slot-nights left empty} off a `run` result.
-
-    THE quantity both `nights` and `schedules` argue from -- the first to say
-    where empty slots sit, the second to say that light nights are where they
-    sit -- so the two cannot drift apart on how an empty slot is counted.
-    """
     return {g: (len(SLOTS) - v.filled) * v.nights
             for g, v in res["by_night"].items()}

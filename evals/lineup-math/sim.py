@@ -10,38 +10,27 @@ on the real NBA schedule. Stdlib only (no scipy/numpy).
     ./run fetch_data.py roster 160941            # any team -> a roster file
     ./run sim.py --roster roster-160941-2025-26.json players
 
-Every table in findings.md is one of REPORTS. Add the report before the table.
 `--roster` serves every report but four, which are built on our own player names
 and weekly scores and refuse it: calibration, scenarios, breakevens, durability.
-Most of the rest build their roster with `basis()`, which pads whatever is
-loaded to 38 bodies, because R and every per-player win figure move with the body
-COUNT and no two live rosters share one. `gp` reads it unpadded -- it reports on
-the bodies a team actually holds. `market` reads no roster at all, and its header
-says so.
 
-The CLI only knows fixed report names. For an actual trade under negotiation,
-import instead -- this is the supported path and `trades` step 5 depends on it:
+For an actual trade under negotiation, import instead:
 
     import sim
     full = sim.basis()                   # or sim.basis("roster-160941-2025-26.json")
     base = sim.run(full, cal=sim.DELTA_W_CAL)
     deal = sim.run(sim.swap(full, ["Jalen Suggs"], [sim.star(48, 70, ("C",))]),
                    cal=sim.DELTA_W_CAL)
-    sim.wins(deal, base)                 # +wins over 19 regular matchups (excl.
-                                         # W20). ARG ORDER IS THE SIGN: (after,
-                                         # before). Reversed it reads "wins lost".
+    sim.wins(deal, base)                 # (after, before) -- reversed reads "wins lost"
     sim.breakeven(full, ["Jalen Suggs", "Coby White"], gp=70, elig=("C",))
 
-`Δw` for a counterparty's players comes in two flavours and they are different
-columns (`Eval Definitions §Δw`) -- neither substitutes for the other:
+`Δw` for a counterparty's players comes in two flavours (`Eval Definitions
+§Δw`), not interchangeable:
 
     sim.player_wins(sim.basis("their.json"), names)         # Δw THEIRS
     sim.incoming_wins(sim.basis(), sim.our_roster("their.json"))   # Δw OURS
 
-`ΔP(title)` is unconditional title probability -- regular season, seeds, bracket
--- and is NEVER summed with, netted against or converted into `Δw` (`Eval
-Definitions §ΔP(title)`). `sim.py title` is the roster `P(title)` report,
-`sim.week_points(p)` the W20-W23 columns, and the import path is:
+`ΔP(title)` (`Eval Definitions §ΔP(title)`) is unconditional title probability
+and is never summed with, netted against or converted into `Δw`:
 
     sim.player_title(sim.basis(), names)                 # ours, on roster
     sim.incoming_title(sim.basis(), sim.our_roster("their.json"))  # ΔP OURS
@@ -56,23 +45,14 @@ Definitions §ΔP(title)`). `sim.py title` is the roster `P(title)` report,
     after.title - before.title           # same joint change, as Odds
     sim.full_season()[sim.ROSTER].seeds  # P(each seed), all 12 teams
 
-PASS `path` WHENEVER THE ROSTER CAME FROM `basis(path)`. It is whose seat in
-the twelve is re-measured -- `basis` reads a file without moving `sim.ROSTER`,
-so left out, a counterparty is priced in our seat. Silently. The opponent
-level is every roster file in rosters/ run through this same sim
-(`sim.team_levels`), so re-fetch all 12 before quoting one.
+Pass `path` whenever the roster came from `basis(path)` -- omitted, a
+counterparty is silently priced in our seat (`sim.ROSTER`).
 
-Roster JSON format (list of dicts) -- LAST SEASON as it happened, written by
-`fetch_data.roster_rows`, which is the schema of record:
+Roster JSON (list of dicts), written by `fetch_data.roster_rows`:
     {"n": name, "tm": FF pro-team abbrev, "avg": FPts/G, "tot": season FPts,
      "gp": games played, "posLabel": display position,
      "elig": ["PG","SG"] | ["SF","PF"] | ["C"] | ["C","PF"] | ...,
      "surprise": optional per-player share of absence BLOCKS started into}
-
-`our_roster` replaces `avg` with the projected rate (`projections`) wherever the
-feed carries one and projects `gp` forward, for every player on every roster;
-`projected=False` gives the raw season, which the calibration is measured
-against.
 """
 import os, statistics, sys, types
 
@@ -116,65 +96,51 @@ from simlib.bracket import (
     ladder_games, loaded, measure, opp_dist, opp_mean,
     opponents, reg_mean, reg_week, round_pwin,
     seed_title, sigma, team_levels, title_prob, title_slope, week_points)
-# NOT `SEASON_TRIALS`: it is a knob a test turns down, and re-exported here it
-# would be a reference bound at import -- read back stale under the very patch
-# it exists for. `_LIVE` below is the shape a settable name has to take.
+# NOT `SEASON_TRIALS` -- re-exporting it would bind a stale reference under
+# the very patch it exists for; `_LIVE` below is the shape a settable name needs
 from simlib.title import (
     PAIRINGS, bracket_odds, full_season, incoming_title, player_title,
     roster_title, season_run, swap_odds)
 from simlib.reports import BLURB, OURS_ONLY, REPORTS, ROSTER_FREE, SLOW
 
-# Looked up LIVE on the module that defines them, never bound here. Everything
-# above is a value; these five are state a caller can REPLACE -- the roster the
-# reports load, and the four knobs a test turns down to shrink a run. Bound as a
-# reference, `sim.run` would be a stale snapshot: patching it would leave every
-# caller inside `simlib` on the real one, and reading it back would hand out the
-# real one after a patch. Both fail silently, in opposite directions.
+# State a caller can REPLACE, looked up live on the module that defines it --
+# bound as a plain reference here, `sim.run = x` would patch this module only
+# and every caller inside `simlib` would stay on the real one
 _LIVE = {"run": engine, "PLAYER_BLOCKS": value, "player_wins": value,
          "gp_bootstrap": gp, "ROSTER": roster}
 
 
-# Every name the imports above BOUND: a reference snapshotted at import, which is
-# the shape `__setattr__` must refuse. Derived from the module dict, NOT from
-# `__all__`: that drops the `_`-prefixed names, and `_load`, `_onsets` and
-# `_projections` are re-exported on exactly the same terms as the other hundred.
-# `sys`, `types` and the `simlib` handles are this file's own tools, not
-# re-exports.
+# Every name bound above, derived from the module dict rather than `__all__`,
+# which drops the `_`-prefixed re-exports (`_load`, `_onsets`, `_projections`).
+# Excludes `sys`/`types`/the `simlib` module handles, this file's own tools
 _BOUND = frozenset(n for n, v in globals().items()
                    if not n.startswith("__")
                    and not isinstance(v, types.ModuleType)
                    and n != "_LIVE")
 
 
-# What this facade OFFERS, for `from sim import *` and for `dir`. A star import
-# copies the module dict, which holds neither the five live names -- they are
-# served by `__getattr__`, so `run` came out of one as a NameError -- nor the
-# module handles, which would rebind the caller's own `roster`/`value`.
+# `from sim import *` copies the module dict, which holds neither the five live
+# names (served by `__getattr__`) nor the module handles (would rebind the
+# caller's own `roster`/`value`) -- both must be added explicitly
 __all__ = sorted([n for n in _BOUND if not n.startswith("_")] + list(_LIVE))
 
 
-# The set the refusal below is about: everything bound here, plus the five served
-# live. Asking `globals()` at write time would name the facade's own dict, which
-# `ModuleType.__setattr__` writes into -- so a name nothing re-exports was
-# settable once and refused the second time, citing a `simlib` name that does not
-# exist.
+# `globals()` at write time would name this facade's own dict, which
+# `ModuleType.__setattr__` writes into -- letting an unexported name through
+# once and refusing it the second time
 _EXPORTED = _BOUND | frozenset(_LIVE)
 
 
 class _Facade(types.ModuleType):
-    """The whole seam, in one place: reads AND writes of the five land on the
-    module that defines them.
+    """Reads and writes of the five live names land on the module that defines
+    them, not on this facade.
 
-    A plain module `__getattr__` fires only when normal lookup fails, and an
-    assignment is what stops it failing: `sim.ROSTER = path` landed in this
-    module's own dict, read back the caller's value and left every reader inside
-    `simlib` on the real one. A seam that resolves reads live and writes locally
-    is worse than no seam -- both sides have to reach the same place.
+    A plain module `__getattr__` only fires when lookup fails, so `sim.ROSTER =
+    path` would otherwise land in this module's own dict and leave every reader
+    inside `simlib` on the stale value.
 
-    Every OTHER name above is a reference bound at import, so `sim.SLOTS = x` has
-    exactly that broken shape with no seam behind it. Those RAISE rather than
-    shadow: five names are worth forwarding, the hundred-odd others are worth
-    refusing, and silently diverging is the one thing neither may do.
+    Every other bound name is a reference snapshotted at import, so those RAISE
+    on assignment rather than silently diverge.
     """
 
     def __getattr__(self, name):
@@ -187,9 +153,8 @@ class _Facade(types.ModuleType):
             setattr(_LIVE[name], name, val)
         elif name in _EXPORTED:
             raise AttributeError(
-                "sim.%s is re-exported from simlib, not owned here: assigning it"
-                " reaches nobody inside simlib. Set it on the module that "
-                "defines it, or pass it as an argument." % name)
+                "sim.%s is re-exported from simlib, not owned here -- set it "
+                "on the module that defines it" % name)
         else:
             types.ModuleType.__setattr__(self, name, val)
 
@@ -200,9 +165,6 @@ class _Facade(types.ModuleType):
 sys.modules[__name__].__class__ = _Facade
 
 def _usage():
-    """What this command offers, as the command itself. A caller who has to open
-    README.md to find out which of fourteen names answers his question is one
-    the two files can drift apart under."""
     out = ["usage: ./run sim.py [--roster <file>] [report ...]",
            "",
            "Prices a roster in expected wins on the real %s NBA calendar."
@@ -232,49 +194,36 @@ def _usage():
 
 
 if __name__ == "__main__":
-    # Line-buffered, always. Python block-buffers a pipe, which is exactly how a
-    # caller captures this, so `sim.py schedules | tee` emitted ZERO bytes for
-    # three minutes -- indistinguishable from a hang, from a crash, and from a
-    # command that was never going to print.
-    # `reconfigure` is a text-stream method; an in-process caller redirecting to
-    # a StringIO has nothing to buffer and nothing to reconfigure.
+    # Force line buffering -- block-buffered pipe output made `sim.py x | tee`
+    # print nothing for minutes. `hasattr` guard: a StringIO redirect has none
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(line_buffering=True)
     if {"-h", "--help", "help"} & set(sys.argv[1:]):
         print(_usage())
         sys.exit(0)
-    # One flag, both spellings. Matching the bare word alone sent `--roster=x`
-    # whole into the report check, which then complained about an unknown REPORT.
+    # handle `--roster=x`, not just bare `--roster x`
     args = [t for a in sys.argv[1:]
             for t in (a.split("=", 1) if a.startswith("--roster=") else [a])]
     theirs_loaded = "--roster" in args
     if theirs_loaded:
         i = args.index("--roster")
-        # An EMPTY value too, not just a missing one: `--roster=` satisfies an
-        # argv count and then loads the data directory itself.
+        # also refuse `--roster=` -- an empty value would load the data dir itself
         if i + 1 >= len(args) or not args[i + 1]:
             sys.exit("--roster takes a roster file: --roster %s\n`./run "
                      "fetch_data.py roster <team id>` writes one (`team-info`)."
                      % roster.ROSTER)
-        # On `roster`, the module `basis` reads it out of. `sim.ROSTER` forwards
-        # here too, but one hop is one fewer thing to be wrong about the file
-        # every report below is about to load.
+        # set on `roster` directly (which `basis` reads), one fewer hop than
+        # going through `sim.ROSTER`
         roster.ROSTER = args[i + 1]
-        # Checked HERE, where the flag is read, rather than left to the first
-        # report's own `basis()`: a wrong path is the commonest way to mistype
-        # this flag, and a report that dies part-built has already printed a
-        # header that reads as a started run. The path resolves against
-        # rosters/, which is not the shell's cwd.
+        # checked here, not left to the first report's `basis()` -- by then a
+        # header has already printed, so a bad path reads as a started run
         path = roster_path(roster.ROSTER)
         if not os.path.isfile(path):
             sys.exit("no roster file at %s\n`./run fetch_data.py roster <team "
-                     "id>` writes one in rosters/ (`team-info`); a bare name is"
-                     " resolved there, not in the directory you are standing in."
+                     "id>` writes one in rosters/ (`team-info`)"
                      % path)
-        # READABLE, not merely present. Existence alone let a half-written fetch
-        # -- or a path to some other file entirely -- through to the first
-        # report, which died on a JSON decode error under a header that reads as
-        # a started run.
+        # confirms the file is readable, not just present -- existence alone let
+        # a half-written fetch through to the first report to die on a JSON error
         try:
             roster.our_roster(roster.ROSTER)
         except ValueError as e:
@@ -282,9 +231,8 @@ if __name__ == "__main__":
                      "fetch_data.py roster <team id>` writes the schema (a list "
                      "of {n, tm, avg, tot, gp, posLabel, elig})." % (path, e))
         del args[i:i + 2]
-    # Defaulted BEFORE the refusal below, never after: naming no report at all
-    # ran `calibration` -- the report `--roster` refuses when you DO name it --
-    # over a counterparty's file and our own standings, and exited 0.
+    # defaulted before the OURS_ONLY refusal below -- naming no report used to
+    # run `calibration` (one of the reports --roster refuses) and exit 0
     args = args or ["calibration"]
     if theirs_loaded:
         theirs = [a for a in args if a in OURS_ONLY]
@@ -294,20 +242,15 @@ if __name__ == "__main__":
                      "describes all %d."
                      % (", ".join(theirs),
                         " ".join(sorted(set(REPORTS) - OURS_ONLY)), len(REPORTS)))
-    # Fail LOUDLY on an unrecognised name. Filtering argv down to known reports
-    # and defaulting to `calibration` meant `sim.py breakeven` (singular) exited
-    # 0 having printed a table nobody asked for, and two skills mandate a sim run
-    # before recommending a deal.
+    # fail loudly on an unrecognised name -- a silent fallback to `calibration`
+    # used to print a table nobody asked for and exit 0
     unknown = [a for a in args if a not in REPORTS]
     if unknown:
         sys.exit("unknown report: %s\navailable: %s\n`./run sim.py --help` "
                  "says what each one answers."
                  % (", ".join(unknown), " ".join(sorted(REPORTS))))
-    # On EVERY header, not once at the top of the run: a single banner on line 1
-    # leaves thousands of lines between it and the last table, and one table
-    # lifted out of the run -- which is how these get quoted -- then names no
-    # team at all. Printed AFTER every refusal above; before them it announces a
-    # roster for a run that is about to be refused.
+    # printed before every report, not once at the top -- a lifted-out table
+    # (how these get quoted) would otherwise name no team
     for i, name in enumerate(args):
         print(("\n" if i else "") + "=" * 72 + "\n"
               + "%s  --  %s" % (name.upper(),
@@ -318,17 +261,13 @@ if __name__ == "__main__":
         try:
             REPORTS[name]()
         except statistics.StatisticsError:
-            # A ValueError, and so inside the clause below unless it is taken
-            # out here. It is the one arrival there that is NOT authored -- an
-            # empty `mean` or a one-point `stdev` somewhere in the sim -- and
-            # dressed as a refusal it reads as an answer.
+            # re-raised, not caught below -- it's a ValueError subclass, but the
+            # one arrival here that's a bug, not an authored refusal
             raise
         except (ValueError, KeyError, OSError, RuntimeError) as e:
-            # Every one of these is written as prose for exactly this moment --
-            # a missing board snapshot, a name the pool never saw, a roster with
-            # nothing to auction. Delivered as a stack trace they read as the
-            # command being broken rather than as the answer. Only here: the
-            # import path (`trades` step 5) still raises.
+            # each of these is authored prose for this moment (missing board
+            # snapshot, unknown name, empty auction) -- only here; the import
+            # path still raises
             sys.exit("\n%s could not be produced on %s:\n  %s%s"
                      % (name, roster.label(), e,
                         "\nnot run: %s" % " ".join(args[i + 1:])

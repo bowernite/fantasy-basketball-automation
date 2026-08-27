@@ -5,26 +5,17 @@ from ..value import replacement, value_key
 from ..wins import pf_wins
 
 
-# The one player every row here reshapes. Named once: the GP curve, the lock-in
-# column and the replacement reference are all measured on the SAME body, and
-# three literals is three chances for one of them to be about somebody else.
+# named once -- the GP curve, lock-in column and replacement reference all
+# measure this SAME body
 SUBJECT = "Jalen Suggs"
-# The rate the GP row probes at; `findings.md` quotes it in prose.
+# quoted in prose in findings.md
 PROBE = 48.9
-# The GPs that row is measured at, and the surprise rates the lock-in column is
-# measured at. One tuple each, for the same reason SUBJECT is one name: a header
-# typed apart from its own row is a column labelled at what was not measured.
+# one tuple each so a header can't drift from the row it labels
 PROBE_GP = (36, 45, 55, 65)
 LOCK_INS = (0.15, 0.30)
 
 
 def report_durability():
-    """Does OUR format penalise a missed game differently from a dynasty board?
-
-    A board prices roughly expected production: any multiplicative model
-    (rate x GP, or convex(rate) x GP) has GP-elasticity exactly 1 -- lose 30% of
-    your games, lose 30% of your value. Measure ours against that.
-    """
     full = basis()
     base = engine.run(full)
     bbase = engine.run(full, bursty=True)["pf"]      # lock-in is a block phenomenon
@@ -33,25 +24,15 @@ def report_durability():
           % (len(full), base["pf"], TRIALS))
 
     def reshaped(body):
-        """`full` with SUBJECT's row replaced by `body`, in place.
-
-        The three rows below reshape the same player, and each typing its own
-        comprehension is three chances for one of them to reshape somebody else
-        -- the reason SUBJECT is a constant in the first place. In place, so the
-        untouched bodies keep their order and their rng draws.
-        """
+        # in place, so untouched bodies keep their index and their rng draws
         return [body if p["n"] == SUBJECT else p for p in full]
 
     def pf(rate, gp):
         return engine.run(reshaped(star(rate, gp)))["pf"]
 
-    # Off the roster in hand, never typed: `our_roster` re-projects both the
-    # rate and the GP whenever the feed moves, so a literal line here describes
-    # whoever this roster carried the day it was typed while the row below is
-    # measured on today's.
+    # off the roster in hand, not typed -- `our_roster` re-projects on every feed
     sub, = [p for p in full if p["n"] == SUBJECT]
-    print("\nGP is the input we are worst at. What one player's GP is worth,")
-    print("1-for-1 for %s (%.1f @ %d), for a %.1f-rate forward:"
+    print("\nGP swept 1-for-1 for %s (%.1f @ %d), incoming a %.1f-rate forward:"
           % (SUBJECT, sub["avg"], sub["gp"], PROBE))
     print("  %5s %s" % ("gp", "  ".join("%8d" % g for g in PROBE_GP)))
     print("  %5s %s" % ("wins", "  ".join(
@@ -67,24 +48,17 @@ def report_durability():
             print("  %5d %5d %9.3f %9.3f %+7.1f%%"
                   % (rate, gp, gp / 82, ours, 100 * (ours / (gp / 82) - 1)))
 
-    print("\nTHE LOCK-IN. Measured on BLOCK absences with the surprise restricted")
-    print("to a block's FIRST night, which is the only night it can be one -- from")
-    print("night 2 he is on the public injury report and you do not start him.")
-    print("`surprise` = share of a player's absence BLOCKS he is started into.")
+    print("\nTHE LOCK-IN. BLOCK absences, surprise on a block's FIRST night only.")
     ab = absence_blocks(full)
-    print("MEASURED on this roster, not quoted: absences arrive as %.0f nights in"
-          % ab["nights"])
-    print("%.0f blocks of %.2f. Drawing the surprise from every absence NIGHT"
-          % (ab["blocks"], ab["mean_block"]))
-    print("instead multiplies the penalty by that %.2f." % ab["mean_block"])
+    print("on this roster: %.0f absence nights in %.0f blocks of %.2f."
+          % (ab["nights"], ab["blocks"], ab["mean_block"]))
     print("  whole %d-man roster:" % len(full))
     for s in (0.10, 0.25, 0.40):
         d = engine.run(full, bursty=True, surprise=s)["pf"] - bbase
         print("    %2d%% surprised: %+6.0f PF = %+.2f wins"
               % (100 * s, d, pf_wins(d)))
-    print("  carried by ONE 45-rate player as a share of HIS OWN value (measured")
-    print("  1-for-1 against a %.1f-rate body). A board charges gp/82 and stops;" % R)
-    print("  this column is what it does not charge:")
+    print("  ONE 45-rate player, as a share of his own value 1-for-1 against a")
+    print("  %.1f-rate body:" % R)
     print("    %5s %11s %s" % ("gp", "wins", "  ".join(
         "%14s" % ("lock-in @%d%%" % (100 * s)) for s in LOCK_INS)))
 
@@ -100,26 +74,18 @@ def report_durability():
         worst.append(max(abs(d) / val for d in cells))
         print("    %5d %+11.2f %s" % (gp, val, "  ".join(
             "%+8.2f %4.0f%%" % (d, 100 * abs(d) / val) for d in cells)))
-    # DERIVED off the rows above, never asserted: this bound is what "do not levy
-    # a fragility discount" rests on, so a table that moved past it has to say so.
-    print("  <=%.1f%% of value at any plausible input, and %s in GP. The shape that"
+    # derived, not hardcoded -- this bound is what "do not levy a fragility
+    # discount" rests on
+    print("  bound: <=%.1f%% of value at any input, %s in GP"
           % (100 * max(worst), "FLAT" if worst[-1] <= worst[0] else "RISING"))
-    print("  costs most is a high-GP veteran resting scattered single games, where")
-    print("  every absence IS its own onset. Not a fragility discount; do not levy")
-    print("  one. And the slate-wide-lock premise is unverified, which can only")
-    print("  make this smaller.")
 
-    print("\ndead-slot cost: at 38 with an empty pool a season-long absence also")
-    print("burns a roster spot. Marginal last bodies:")
+    print("\ndead-slot cost, marginal last bodies:")
     for p in EXPANSION[-4:]:
         d = engine.run([q for q in full if q["n"] != p["n"]])["pf"] - base["pf"]
         print("  drop %s (%.0f FPts/%d GP): %+5.0f PF = %+.3f wins"
               % (p["n"], p["avg"], p["gp"], d, pf_wins(d)))
 
-    print("\nfragility at CONSTANT (rate-%.1f)xGP, top 6 / top 12. Weekly sd raw:"
-          % R)
-    print("  independent absences do not synchronise, so concentrating glass")
-    print("  jaws neither helps nor hurts materially.")
+    print("\nfragility at CONSTANT (rate-%.1f)xGP, top 6 / top 12:" % R)
     v = value_key(full, R)
     for k in (6, 12):
         names = {p["n"] for p in sorted(full, key=lambda p: -v(p))[:k]}

@@ -1,7 +1,3 @@
-"""The fixed report names the CLI knows, and which of them are ours alone.
-
-Every table in `findings.md` is one of these. Add the report before the table.
-"""
 from .calibration import report_calibration
 from .deals import report_breakevens, report_scenarios
 from .durability import report_durability
@@ -13,64 +9,18 @@ from .schedules import report_schedules
 from .tables import report_extras, report_players
 from .title import report_title
 
-from ..data import BRACKET, DELTA_W_MATCHUPS, PERIODS, REGULAR, SCORED
 
-# The three units every table here is denominated in, above every one of them.
-# `+2.01` on a row said nothing about whether it was a season, a week or a
-# matchup, and the denominator lived only in `sim.py`'s module docstring and in
-# findings.md -- two files a reader in a terminal does not have open.
-UNITS = ("units: `wins` = extra wins over a %d-matchup regular season · `PF` = "
-         "fantasy points\n       over the %d scored periods · `rate` = FPts per "
-         "game PLAYED, not per night."
-         % (DELTA_W_MATCHUPS, len(SCORED)))
-
-
-# `playoffs` is denominated in none of the three: a bracket week pays in
-# title-given-seed probability and its `W` columns are one period's points.
-# The eval column is unconditional `Delta P(title)` off `title`.
-OWN_UNITS = {
-    "playoffs": "units: `Delta P(title|seed)` = percentage points of title "
-                "probability given a seed band\n       · `W20`-`W23` = EXPECTED "
-                "fantasy points in that bracket period.",
-    "weeks": "units: `W20`-`W23` = EXPECTED fantasy points in that bracket "
-             "period.",
-    "title": "units: every column but `wins` is a PROBABILITY over simulated "
-             "seasons\n       · `wins` = matchups won of the %d-matchup "
-             "regular season, a COUNT\n       and never `Delta w`, which is a "
-             "DIFFERENCE over that same basis." % len(REGULAR),
-    "scenarios": "units: `wins` = extra wins over a %d-matchup regular season "
-                 "· `dPF` = fantasy\n       points over those SAME %d periods, "
-                 "not the %d-period season PF quoted\n       elsewhere: period "
-                 "%d is bracket R1, and `Delta w` leaves it out."
-                 % (DELTA_W_MATCHUPS, DELTA_W_MATCHUPS, len(SCORED),
-                    PERIODS[BRACKET[0]]["ordinal"]),
+REPORTS = {
+    "calibration": report_calibration, "nights": report_nights,
+    "scenarios": report_scenarios, "breakevens": report_breakevens,
+    "replacement": report_replacement, "positions": report_positions,
+    "formula": report_formula, "durability": report_durability,
+    "extras": report_extras, "players": report_players,
+    "market": report_market, "gp": report_gp,
+    "schedules": report_schedules, "playoffs": report_playoffs,
+    "weeks": report_weeks, "title": report_title,
 }
 
-
-def _labelled(name, fn):
-    """One legend above every report, from one place. Left to each report, the
-    units were on six of fourteen and worded differently on each."""
-    def run():
-        print(OWN_UNITS.get(name, UNITS))
-        return fn()
-    run.__name__, run.__doc__ = fn.__name__, fn.__doc__
-    return run
-
-
-REPORTS = {name: _labelled(name, fn) for name, fn in (
-    ("calibration", report_calibration), ("nights", report_nights),
-    ("scenarios", report_scenarios), ("breakevens", report_breakevens),
-    ("replacement", report_replacement), ("positions", report_positions),
-    ("formula", report_formula), ("durability", report_durability),
-    ("extras", report_extras), ("players", report_players),
-    ("market", report_market), ("gp", report_gp),
-    ("schedules", report_schedules), ("playoffs", report_playoffs),
-    ("weeks", report_weeks), ("title", report_title))}
-
-# One line per report, for `sim.py --help`. The CLI is the only place a caller
-# meets these names, so the description has to arrive with them: a bare list of
-# fourteen words sends the reader to README.md to find out which one answers his
-# question, and the two files then drift.
 BLURB = {
     "calibration": "NBA calendar, sim vs reality, PF -> wins and its band",
     "nights": "where the 9-slot cap bites, by night type",
@@ -91,18 +41,15 @@ BLURB = {
              "P(title)",
 }
 
-# Reads the board and the pool and no roster at all, so its table is identical
-# whatever `--roster` says. A header naming a team over it attributes to that
-# team a measurement of nobody.
+# Reads the board and the pool, not the roster, so its table doesn't change
+# under `--roster`
 ROSTER_FREE = {"market"}
 
-# Wall clock, so a caller can tell a slow report from a hung one before he kills
-# it. Rounded up from 18 cores; `engine.run` shards trials across them, so a
-# smaller box is slower still.
+# rounded up from an 18-core box; `engine.run` shards trials across cores, so a
+# smaller box runs slower than this
 SLOW = {"breakevens": "~4s", "schedules": "~8s"}
 
-# Built on OUR player names or OUR real weekly scores, so they answer nothing
-# about another team: `scenarios`/`breakevens` trade `deals.FILLER`, `durability`
-# reshapes `durability.SUBJECT`, `calibration` divides by our standings PF. Named
-# by constant rather than by player, which drifts. `--roster` refuses them.
+# Named by constant, not by player (`deals.FILLER`, `durability.SUBJECT`,
+# `calibration`'s standings PF) -- built on OUR names/scores, so `--roster`
+# refuses them
 OURS_ONLY = {"calibration", "scenarios", "breakevens", "durability"}

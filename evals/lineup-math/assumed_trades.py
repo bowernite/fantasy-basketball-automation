@@ -34,13 +34,9 @@ def expand_ids(ids):
 
 
 def _index(rosters):
-    """name -> (team holding him, row).
-
-    The OWNER is half the answer. An incoming name resolved across the league
-    by name alone comes off whoever happens to hold it, and if that is not the
-    source `MOVES` names, the file being emptied is not the file being copied
-    from -- two teams then own one body.
-    """
+    """name -> (team holding him, row) -- the owner matters: resolved by name
+    alone, an incoming name could come off the wrong team's file, doubling
+    ownership."""
     out = {}
     for tid, rows in rosters.items():
         for r in rows:
@@ -82,11 +78,9 @@ def apply_all(rosters):
             owner, row = found
             if owner != incoming[n]:
                 raise ValueError(
-                    "%s is on %s, not on %s where MOVES has him coming from. "
-                    "Copied onto %s he stays on %s as well, so two roster "
-                    "files own one body and the sim reads his level twice. "
-                    "Retype the deal against the live wire (`evals/Pending "
-                    "Trades.md`)." % (n, owner, incoming[n], tid, owner))
+                    "%s is on %s, but MOVES has him coming from %s -- retype "
+                    "the deal against the live wire (`evals/Pending "
+                    "Trades.md`)." % (n, owner, incoming[n]))
             new.append(row)
             have.add(n)
         if missing:

@@ -2,30 +2,17 @@ import unittest
 from tests.harness import *
 
 class OutputIsSelfDescribing(unittest.TestCase):
-    """A caller reads these tables in a terminal, not next to findings.md. A
-    figure whose units live in another file is a figure he has to go and look
-    up -- and the commonest way that ends is that he does not"""
-
-    def test_every_report_opens_with_the_units_its_numbers_are_in(self):
-        """`+2.01` is per 19-matchup regular season. Nothing on stdout said so,
-        so it read equally well as per week, per matchup or per game -- and a
-        legend that arrives BELOW the table it explains is one a reader who
-        scrolled to his row never sees"""
+    def test_no_report_spends_its_first_line_on_a_units_legend(self):
         for name in sorted(sim.REPORTS):
             with self.subTest(report=name):
-                raw = render(name)
-                legend = reports.OWN_UNITS.get(name, reports.UNITS)
-                self.assertTrue(raw.startswith(legend),
-                                "%s opens with:\n%s" % (name, raw[:200]))
-                if "win" not in one_line(raw).lower():
-                    continue
-                self.assertRegex(one_line(raw), r"%d-matchup regular season"
-                                 % sim.DELTA_W_MATCHUPS)
+                first = render(name).strip().splitlines()[0]
+                self.assertNotRegex(first, r"^units:")
+
+    def test_the_positional_slot_loss_is_flagged_as_the_bound_it_is(self):
+        row, = [l for l in render("nights").splitlines() if "no legal slot" in l]
+        self.assertIn("upper bound", row)
 
     def test_the_consolidation_ladder_converts_at_the_rate_it_prints(self):
-        """`wins` is `dPF` through the PF-per-win on line 1, and the note above
-        the table says so. It is the one place these tables cross from points
-        into wins, and every scenario in `trades` is quoted out of this column"""
         out = render("scenarios")
         pf_per_win = float(re.search(r"1 win = (\d+) PF", out).group(1))
         rows = re.findall(r"([-+]\d+) +\d+\.\d% +([-+]\d+\.\d\d)$", out, re.M)
@@ -35,12 +22,6 @@ class OutputIsSelfDescribing(unittest.TestCase):
                                    delta=0.01, msg=out)
 
     def test_every_table_converts_pf_to_wins_on_the_basis_its_legend_names(self):
-        """The legend promises wins over a 19-matchup regular season. A report
-        that divides a 20-period season PF by the season constant alone is
-        quoting wins over 20 -- 5% high, in the same column, under a legend
-        saying otherwise, and nothing in the row gives it away"""
-        # Wins per matchup per PF of weekly edge, off the real margin
-        # distribution rather than off the constant the reports divide by
         h = 1e-4
         per_pf = (sim.margin_pwin(h) - sim.margin_pwin(-h)) / (2 * h)
 
@@ -55,11 +36,6 @@ class OutputIsSelfDescribing(unittest.TestCase):
                                            delta=0.006)
 
     def test_the_row_labelled_wins_is_what_wins_actually_returns(self):
-        """`calibration` prints the linearisation beside the curve under "the
-        straight line `wins()` actually divides by", which is where a reader
-        goes to check a `Delta w` against the constant. Quoted over 20 matchups
-        both rows are 5% above the legend's basis -- in the one table whose job
-        is to BE the conversion every other table's column went through"""
         out = render("calibration")
         rows = {}
         for label in ("+PF", "curve", "wins()"):
@@ -77,10 +53,6 @@ class OutputIsSelfDescribing(unittest.TestCase):
                     delta=0.005)
 
     def test_the_shorthands_own_constant_buys_a_win_at_the_legends_price(self):
-        """`replacement` prints `c` (PF per rate-point-GP) and `K` (rate-point-
-        GP per win) side by side, and a reader multiplies them back out to a
-        PF-per-win. On a 20-matchup K that product is 5% off the one every
-        `Delta w` in the package is quoted at, and both numbers look right"""
         h = 1e-4
         per_pf = (sim.margin_pwin(h) - sim.margin_pwin(-h)) / (2 * h)
         rows = re.findall(r"^ +\S+ +\d+\.\d +(\d+\.\d{3}) +(\d+)$",
@@ -92,10 +64,7 @@ class OutputIsSelfDescribing(unittest.TestCase):
                     float(c) * float(K),
                     sim.WEEKS / (sim.DELTA_W_MATCHUPS * per_pf), delta=6)
 
-    def test_the_formula_error_is_signed_the_way_its_own_note_says(self):
-        """`+ means the formula pays him more than the sim does`. The direction
-        is what a reader books -- reversed, the bodies the shorthand overpays
-        read as the ones it underpays, and he sorts on it backwards"""
+    def test_the_formula_error_column_is_signed_against_the_sim_column(self):
         out = render("formula")
         rows = re.findall(r"([-+]\d+\.\d\d) +([-+]\d+\.\d\d) +([-+]\d+)% +"
                           r"([-+]\d+)%$", out, re.M)
@@ -104,18 +73,19 @@ class OutputIsSelfDescribing(unittest.TestCase):
             self.assertEqual(float(err) > 0, float(one_r) > float(sim_w),
                              "%s vs %s reads as err %s%%" % (one_r, sim_w, err))
 
+    def test_the_per_player_table_states_the_seed_blocks_behind_its_sd(self):
+        out = render("players")
+        m = re.search(r"blocks: (\d+) x (\d+) trials", out)
+        self.assertIsNotNone(m, out)
+        self.assertEqual(int(m.group(2)), engine.TRIALS)
+
     def test_the_per_player_table_names_its_columns(self):
-        """Seven columns, no header row: `+-0.001` and a trailing `48.5` next to
-        a name reads as two more scores"""
         out = render("players")
         head, = [l for l in out.splitlines() if l.strip().startswith("player")]
         for col in ("rate", "gp", "elig", "wins", "sd", "next", "flags"):
             self.assertIn(col, head)
 
     def test_the_per_player_header_sits_over_the_numbers_it_names(self):
-        """Naming the columns is only half of it -- a header shifted off its own
-        data reads `sd` over the wins figure, and the reader books the wrong
-        column"""
         lines = render("players").splitlines()
         head, = [l for l in lines if l.strip().startswith("player")]
         row = lines[lines.index(head) + 1]

@@ -2,11 +2,6 @@ import unittest
 from tests.harness import *
 
 class UnprojectedRates(unittest.TestCase):
-    """`Eval Template.md` says a player the projection feed does not
-    carry keeps LAST SEASON's average, which is a different kind of number from
-    every other row in the column. Nothing in the rate itself says so, so the
-    row has to carry `noproj` or a stale average reads as a projection"""
-
     UNPROJECTED = {"n": "Chaney Johnson", "tm": "BKN", "avg": 19.1,
                    "tot": 343.0, "gp": 18, "posLabel": "SG/SF",
                    "elig": ["SF", "SG"]}
@@ -23,20 +18,10 @@ class UnprojectedRates(unittest.TestCase):
         self.assertNotIn("noproj", row)
 
     def test_an_unprojected_rate_is_last_seasons_average_untouched(self):
-        """The flag says the rate is last season's, nothing says it still IS. A
-        fallback that regressed or part-projected him would be a third kind of
-        number in the column with only two labels for it"""
         p, = sim.our_roster(roster_file(self.UNPROJECTED))
         self.assertEqual(p["avg"], self.UNPROJECTED["avg"])
 
 class ProjectionSnapshot(unittest.TestCase):
-    """The rate every `Δw` runs on is assembled across two directories and a
-    file on disk. `projections` writes a snapshot of someone else's stat lines
-    and `sim` joins it by name and scores it under our rules (`Eval Definitions
-    §Δw`). Every other test here checks only whether a row was projected AT
-    ALL, so the number itself could arrive halved, stale, hand-set or scored as
-    one night's line and nothing would print differently"""
-
     def test_the_rate_on_a_roster_row_is_the_committed_snapshots_line_scored(self):
         stats = {r["name"]: r["stats"]
                  for r in json.loads(read_text(SNAPSHOT))["rows"]}
@@ -50,22 +35,12 @@ class ProjectionSnapshot(unittest.TestCase):
         self.assertAlmostEqual(p["avg"], giddey, places=6)
 
     def test_the_join_reaches_essentially_the_whole_roster(self):
-        """A join that rots, a normalisation change or a feed re-cut or a moved
-        snapshot, puts last season's average back under every row it drops.
-        `noproj` makes that visible one row at a time, and only a count makes
-        it visible when it happens wholesale"""
         ours = sim.our_roster()
         missing = [p["n"] for p in ours if sim.projected_rate(p["n"]) is None]
         self.assertGreater(len(ours), 20)
         self.assertGreaterEqual(1 - len(missing) / len(ours), 0.93, missing)
 
 class UnusableSnapshot(unittest.TestCase):
-    """A snapshot that cannot be read is indistinguishable, row by row, from a
-    feed that carries nobody. Every rate falls back to last season's average
-    and every row flags `noproj`, which is the whole study re-cut onto the
-    basis `projections` exists to replace, and every report but `players`
-    prints no flag column at all"""
-
     def test_a_missing_snapshot_is_refused_rather_than_repricing_everybody(self):
         with projection_snapshot(None):
             with self.assertRaises(RuntimeError) as e:
@@ -73,18 +48,11 @@ class UnusableSnapshot(unittest.TestCase):
         self.assertIn("sleeper-2026.json", str(e.exception))
 
     def test_a_snapshot_carrying_nobody_is_refused_too(self):
-        """It parses, so nothing upstream complains, and a feed re-cut that
-        breaks `projected_rows` writes exactly this file. Zero rows is not a
-        thin feed, it is no feed"""
         with projection_snapshot(sleeper_rows()):
             with self.assertRaises(RuntimeError):
                 sim.our_roster()
 
     def test_a_feed_that_simply_misses_a_player_still_prices_everyone_else(self):
-        """The refusal is about the SNAPSHOT and must not swallow the one case
-        that is a fact about a player, a usable feed that does not carry him.
-        He keeps last season's average, everybody in the feed is priced off it,
-        and only his row says so"""
         with projection_snapshot(sleeper_rows(
                 ("Josh Giddey", {"pts": 30.0, "reb": 10.0, "dreb": 7.0,
                                  "ast": 10.0, "stl": 1.0, "blk": 0.5, "to": 3.0,
@@ -98,11 +66,6 @@ class UnusableSnapshot(unittest.TestCase):
         self.assertEqual(priced["Desmond Bane"], raw["Desmond Bane"])
 
 class ProjectedRateReachesTheWinFigure(unittest.TestCase):
-    """The snapshot is joined, scored and stapled onto a roster row four files
-    away from the thing that consumes it. Every other test here stops at the
-    roster row, so a rate that never actually reached the nightly lineup, or a
-    GP that moved when the projection did, would read as a clean pass"""
-
     def _snapshot_with(self, name, stats):
         snap = json.loads(read_text(SNAPSHOT))
         for r in snap["rows"]:

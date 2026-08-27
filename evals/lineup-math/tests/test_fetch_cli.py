@@ -3,18 +3,12 @@ from tests.harness import *
 from tests.fetch_stub import *
 
 class FetchDataCLI(unittest.TestCase):
-    """The other half of the command surface. It WRITES the files every report
-    reads, so its failure modes are quieter and cost more"""
-
     def fetch(self, *args):
         return subprocess.run([sys.executable, "fetch_data.py"] + list(args),
                               cwd=sim.HERE, capture_output=True, text=True,
                               timeout=30)
 
     def test_an_unrecognised_argument_refuses_instead_of_re_scraping(self):
-        """`rosters` (plural), `players`, a bare team id -- each fell through to
-        the default branch, spent 30 requests overwriting the schedule and the
-        calendar, printed `wrote ...` and exited 0"""
         before = {p: os.path.getmtime(p)
                   for p in (glob.glob(os.path.join(sim.DATA_DIR, "*.json"))
                             + glob.glob(os.path.join(sim.ROSTER_DIR, "*.json")))}
@@ -24,8 +18,6 @@ class FetchDataCLI(unittest.TestCase):
         self.assertEqual({q: os.path.getmtime(q) for q in before}, before)
 
     def test_a_non_numeric_team_id_is_caught_before_any_request(self):
-        """`int(t)` raised only after a league call had been made and a roster
-        file already truncated"""
         p = self.fetch("roster", "brett")
         self.assertNotEqual(p.returncode, 0)
         self.assertNotIn("Traceback", p.stderr)
@@ -38,15 +30,7 @@ class FetchDataCLI(unittest.TestCase):
             self.assertIn(word, p.stdout)
 
 class DataFileWrites(unittest.TestCase):
-    """One function lands every file `sim.py` reads, and none of them is
-    re-fetchable at will: the pool is a 20-minute scrape and the season it
-    describes is over"""
-
     def test_a_rebuild_that_dies_mid_scrape_leaves_the_good_file_alone(self):
-        """Opening the path for writing AROUND the build truncated it first, so
-        a transport error left a zero-byte `league-<season>.json` where the
-        season was, and every `sim.py` run after it died on a JSON decode error
-        naming nothing that had happened"""
         d = tempfile.mkdtemp()
         dest = os.path.join(d, "data")
         os.makedirs(dest)
@@ -69,12 +53,6 @@ class DataFileWrites(unittest.TestCase):
                          "a half-written file was left behind to be read next")
 
 class FetchDataWritesWhatSimReads(unittest.TestCase):
-    """`fetch_data.py roster` is the sole writer of the twelve files every
-    counterparty table is priced off, and of the id -> name map that labels
-    them. Driven against a canned league so the files it lands can be read
-    back, which is the only thing that shows the fetch and the sim agree on a
-    schema"""
-
     def setUp(self):
         self.dir = tempfile.mkdtemp()
         self.addCleanup(shutil.rmtree, self.dir, True)
@@ -103,8 +81,6 @@ class FetchDataWritesWhatSimReads(unittest.TestCase):
         return sorted(os.listdir(d)) if os.path.isdir(d) else []
 
     def test_naming_no_team_re_cuts_all_twelve(self):
-        """They drift independently, so a team left un-recut is a team priced
-        off whoever owned him in March -- which is how four went stale"""
         p = self.fetch("roster")
         self.assertEqual(p.returncode, 0, p.stdout + p.stderr)
         self.assertEqual(self.rosters(),
@@ -112,8 +88,6 @@ class FetchDataWritesWhatSimReads(unittest.TestCase):
                                 for t in self.ids))
 
     def test_the_rows_it_lands_are_the_rows_sim_prices(self):
-        """The schema is this file's to state and `--roster` is the only reader
-        of it, so a key renamed on either side shows up nowhere else"""
         self.assertEqual(self.fetch("roster", "161001").returncode, 0)
         rows = json.loads(read_text(os.path.join(
             self.dir, "rosters", "roster-161001-%s.json"
@@ -125,16 +99,12 @@ class FetchDataWritesWhatSimReads(unittest.TestCase):
              "gp": 40, "posLabel": "C", "elig": ["C"]}])
 
     def test_asking_for_one_team_still_writes_all_twelve_labels(self):
-        """The labels cost nothing extra, and a partial map makes the header of
-        one report inconsistent with the next"""
         self.assertEqual(self.fetch("roster", "161001").returncode, 0)
         teams = json.loads(read_text(os.path.join(
             self.dir, "data", "teams-%s.json" % fetch_data.SEASON_TAG)))
         self.assertEqual(teams, {str(t): "Team %d" % t for t in self.ids})
 
     def test_a_team_id_the_league_lacks_stops_the_run_before_any_roster(self):
-        """Re-cutting eleven and dying on the twelfth leaves the directory half
-        stale, and nothing downstream can tell which half"""
         p = self.fetch("roster", "161001", "999999")
         self.assertNotEqual(p.returncode, 0)
         self.assertNotIn("Traceback", p.stderr)
@@ -142,8 +112,6 @@ class FetchDataWritesWhatSimReads(unittest.TestCase):
         self.assertEqual(self.rosters(), [])
 
     def test_the_file_it_says_it_wrote_is_the_file_it_wrote(self):
-        """`wrote teams-2025-26.json` says nothing about where, and the answer
-        is never the directory the caller is standing in"""
         p = self.fetch("teams")
         self.assertEqual(p.returncode, 0, p.stdout + p.stderr)
         wrote = [os.path.realpath(l.split(None, 1)[1])

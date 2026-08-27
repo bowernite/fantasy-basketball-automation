@@ -5,43 +5,27 @@
     ./run fetch_data.py roster 160941 161020    # any team, for `./run sim.py --roster`
     ./run fetch_data.py roster                  # all 12
 
-`roster-<team_id>-<season>.json`  one team's roster in the schema `sim.py`
-    prices: `{n, tm, avg, tot, gp, posLabel, elig}`. Membership comes from
-    `FetchLeagueRosters` and only the rates from `FetchRoster?season=` -- see
-    `merged_rows` for why reading membership off the season endpoint quietly
-    priced four teams off bodies they no longer owned. Then
-    `assumed_trades.apply_all` overlays deals we treat as done
-    (`evals/Pending Trades.md`) even when the wire still shows pending or has
-    no record. OURS is written by the same command (`roster 161025`). Body
-    counts still differ between teams, so pad to a common count (`sim.pad`)
-    before comparing R or WINS across two.
+`roster-<team_id>-<season>.json`  schema `sim.py` prices: `{n, tm, avg, tot,
+    gp, posLabel, elig}`. Membership from `FetchLeagueRosters`, rates from
+    `FetchRoster?season=` (see `merged_rows` -- the season endpoint's
+    membership goes stale after March). `assumed_trades.apply_all` then
+    overlays deals we treat as done even if the wire still shows them pending.
 
-`teams-<season>.json`  `{team_id: team name}` for all 12, written by the same
-    `roster` run whatever ids it was given. Its only job is labelling output:
-    every table `sim.py` prints names the roster it priced, and a bare
-    `roster-161020-2025-26.json` is a team only to a reader holding the
-    `team-info` table. Absent is not fatal -- the id is printed alone.
+`teams-<season>.json`  `{team_id: team name}`, written by the same `roster` run.
 
-`nba-schedule-*.json`  ET date -> NBA teams playing. From ESPN's scoreboard API
-    (`site.api.espn.com/.../basketball/nba/scoreboard?dates=YYYYMM`); the NBA CDN
-    and data.nba.com both 403. Postponed games are dropped -- ESPN lists them at
-    BOTH the original and the makeup date, which is what put 10 teams on 83 games
-    in the first version of this file. All-Star is dropped. The NBA Cup final is
-    kept: it is an 83rd game for its two participants and it produces real box
-    scores, so it scores in fantasy.
+`nba-schedule-*.json`  ET date -> NBA teams playing, from ESPN's scoreboard API
+    (NBA CDN and data.nba.com both 403). Postponed games dropped -- ESPN lists
+    them at both the original and makeup date. All-Star dropped; NBA Cup final
+    kept (real box scores).
 
-`league-<season>.json`  the fantasy calendar and the real weekly scores, from
-    Fleaflicker. `periods` comes from `eligibleSchedulePeriods` -- do NOT assume
-    7-day weeks or 23 of them. Each period's `games` are [away, awayPF, home,
-    homePF], which calibrates the sim, prices PF in wins, and keeps the
-    head-to-head pairing so the margin distribution is auditable both pooled and
-    per actual opponent.
+`league-<season>.json`  fantasy calendar + real weekly scores, from
+    Fleaflicker. `periods` comes from `eligibleSchedulePeriods` -- do not
+    assume 7-day weeks or 23 of them.
 
-`players-<season>.json`  every player Fleaflicker has data for, with FPts/G and
-    GP for five past seasons plus a birthday. Two things depend on it and nothing
-    else can supply them: the **board-rank -> FPts/G bridge** (is a scenario
-    purchasable at all?) and a **measured** expected-GP prior (the input `sim.py`
-    calls dominant). Re-running is cheap -- it only fetches what it lacks.
+`players-<season>.json`  every player Fleaflicker has data for: FPts/G and GP
+    for five past seasons plus a birthday. Feeds the board-rank -> FPts/G
+    bridge and the expected-GP prior. Re-running is cheap -- only fetches
+    what's missing.
 """
 import collections
 import datetime
@@ -62,11 +46,9 @@ def dest_path(name):
     folder = "rosters" if os.path.basename(name).startswith("roster-") else "data"
     return os.path.join(HERE, folder, os.path.basename(name))
 
-# THE season constant, for both files -- `sim.py` imports it from here rather
-# than the other way round, because `sim.py` loads these data files at import and
-# so cannot be imported before they exist. Every data filename carries the tag,
-# so rolling the season writes new files instead of overwriting last season's
-# under last season's name. Bump this, re-run, then bump nothing else.
+# `sim.py` imports SEASON from here, not vice versa, since it loads these data
+# files at import time. Filenames carry the tag so bumping this writes new
+# files instead of overwriting last season's
 SEASON = 2025                                  # Fleaflicker start-year: '25-26
 SEASON_TAG = "%d-%02d" % (SEASON, (SEASON + 1) % 100)
 
@@ -78,8 +60,8 @@ ALLSTAR = {"STARS", "STRIPES", "WORLD"}
 
 
 def get(url, tries=5):
-    """Retries. A ~700-request serial pull hits a transient TLS/socket error often
-    enough that one kills the run, and dropping a page silently biases the pool."""
+    """Retries -- a ~700-request serial pull hits transient TLS/socket errors
+    often enough to kill the run."""
     for i in range(tries):
         try:
             return json.load(urllib.request.urlopen(url, timeout=60))
@@ -139,15 +121,13 @@ def fantasy_calendar():
 
 
 def roster_rows(payload):
-    """`FetchRoster?season=` -> the roster rows `sim.our_roster` reads.
+    """`FetchRoster?season=` -> roster rows `sim.our_roster` reads.
 
-    `elig` off `proPlayer.positionEligibility`, NOT `rankFantasy.positions[]`:
-    the two agree on every row that played, but `rankFantasy` is keyed to season
-    TOTALS and is absent entirely for a player who missed the season, which is
-    how two guards reached the roster file with `elig: []`.
+    `elig` from `proPlayer.positionEligibility`, not `rankFantasy.positions[]`,
+    which is absent for a player who missed the season.
 
-    GP is `seasonTotal / seasonAverage` -- the only place GP appears on this
-    endpoint. Fleaflicker omits zero fields, so absent stats mean 0 games.
+    GP = `seasonTotal / seasonAverage` -- the only place GP appears here.
+    Fleaflicker omits zero fields, so absent stats mean 0 games.
     """
     out = []
     for g in payload["groups"]:
@@ -170,27 +150,18 @@ def roster_rows(payload):
 def merged_rows(league, team_id, snapshot, pool):
     """One team's LIVE roster in the priceable schema.
 
-    MEMBERSHIP off `FetchLeagueRosters`, rates off `FetchRoster?season=`, and
-    the split is the whole point. The season endpoint answers as of the season's
-    LAST LINEUP PERIOD (~end of March): every add after it is missing and every
-    drop is still on it, silently. Four teams were priced for months off bodies
-    they no longer owned, so membership is never the season endpoint's to state.
+    Membership from `FetchLeagueRosters`, rates from `FetchRoster?season=` --
+    the season endpoint's membership is stale as of its last lineup period
+    (~end of March), so it's never the source of truth for who's on a roster.
 
-    A body the snapshot has no line for played the season for somebody else, so
-    his line comes off the player pool (`players-<season>.json`, already on
-    disk) rather than reading 0. `our_roster` takes the RATE from the projection
-    -- but a player the feed does not carry keeps this one and prints `noproj`,
-    and a zero there prices a real producer as an empty body. A player neither
-    source has is 0/0, which is the `nopool` path `our_roster` documents.
+    A body missing from the snapshot played for somebody else last season, so
+    his rate comes off the player pool instead of reading 0.
 
-    MEMBERSHIP and rates join on Fleaflicker's player id, never on the name:
-    the league has rostered two Jaylin Williamses. The POOL fallback above is
-    the exception and joins on the name, because `player_pool` keys on it --
-    two players spelled the same share one entry there and so one `seasons`
-    history, wherever the pool is read (`simlib.board.pool`).
+    Joins on Fleaflicker's player id, not name -- the league has rostered two
+    Jaylin Williamses. The pool fallback joins on name, since `player_pool`
+    keys on it.
 
-    `tm`/`posLabel`/`elig` come off the LIVE feed, which is the fresher of the
-    two for an NBA team that changed after March.
+    `tm`/`posLabel`/`elig` come from the live feed, the fresher of the two.
     """
     rated = {}
     for g in snapshot["groups"]:
@@ -202,10 +173,9 @@ def merged_rows(league, team_id, snapshot, pool):
     if not live:
         raise KeyError("team %d is not in league %d -- ids are in the "
                        "`team-info` Skill" % (team_id, LEAGUE))
-    # In the SNAPSHOT's order, adds on the end. Order is the rng draw order
-    # (`sim.swap`, `sim.pad`), so taking the live feed's would re-roll every
-    # player on a roster nobody traded on and move every published figure
-    # inside its own noise.
+    # snapshot order, adds appended -- this seeds `sim.swap`/`sim.pad`'s rng
+    # draw, so the live feed's order would re-roll every player and shift
+    # published figures within noise
     order = list(rated).index
     players = sorted(live[0]["players"],
                      key=lambda p: order(p["proPlayer"]["id"])
@@ -230,12 +200,11 @@ def merged_rows(league, team_id, snapshot, pool):
 
 
 def league_rosters():
-    """LIVE ownership for all 12 teams, in ONE request.
+    """LIVE ownership for all 12 teams, in one request.
 
-    No `season=`. The param is not ignored: with it the response is the same
-    end-of-March snapshot `FetchRoster?season=` returns, which is the thing this
-    call exists to correct. It carries no stat line of any kind, so the season
-    endpoint is still what supplies rates.
+    No `season=` -- with it, the response is the same stale end-of-March
+    snapshot `FetchRoster?season=` returns. Carries no stat line; rates still
+    come from the season endpoint.
     """
     return get("https://www.fleaflicker.com/api/FetchLeagueRosters?sport=NBA"
                "&league_id=%d" % LEAGUE)
@@ -244,9 +213,8 @@ def league_rosters():
 def team_roster(team_id, league, pool):
     """One roster, live and priceable by `sim.py --roster`. See `merged_rows`.
 
-    `season=` is REQUIRED here for rates: omit it and `seasonAverage` disappears
-    from every row. Body counts still differ between teams, so pad to a common
-    count (`sim.pad`) before comparing R or WINS across two.
+    `season=` is required here for rates -- omit it and `seasonAverage`
+    disappears from every row.
     """
     d = get("https://www.fleaflicker.com/api/FetchRoster?sport=NBA"
             "&league_id=%d&team_id=%d&season=%d" % (LEAGUE, team_id, SEASON))
@@ -264,8 +232,8 @@ def team_roster(team_id, league, pool):
 
 
 def load_pool():
-    """`players-<season>.json` if it is there. Absent is not fatal -- it costs
-    a March add his last-season line, and `merged_rows` says what that means."""
+    """`players-<season>.json` if present. Absent is not fatal -- it costs a
+    March add his last-season line."""
     path = dest_path("players-%s.json" % SEASON_TAG)
     if not os.path.exists(path):
         print("  no %s -- a body the season snapshot lacks will read 0/0"
@@ -282,25 +250,18 @@ SEASON_DONE = 300          # a fully paged season yields ~450 player-seasons
 def player_pool(path=None):
     """name -> {id, tm, elig, born, seasons: {season: [FPts/G, GP]}}.
 
-    Read `viewingActualPoints` / `viewingActualPointsAverage`, NOT
-    `seasonAverage` / `seasonTotal`. The latter exist only for seasons the league
-    itself has run (`sortSeasons.eligibleValues`), so they are empty for every
-    prior season -- and even for the current one they disagree slightly with the
-    game log, while `viewingActualPoints` reconciles to it exactly. Historical
-    points come back re-scored under our CURRENT rules, so a year-over-year
-    comparison is apples-to-apples.
+    Reads `viewingActualPoints(Average)`, not `seasonAverage`/`seasonTotal`,
+    which are empty for any season the league itself hasn't run and disagree
+    slightly with the game log even for the current one. Totals are
+    regular-season only -- `FetchPlayerProfile`'s game log is not, so it's
+    the wrong GP source.
 
-    `sort=` only works for a season with `seasonAverage` populated; for prior
-    seasons the sort silently does nothing, so page the whole pool. `resultTotal`
-    (1300) understates it and the server clamps the offset, so walk to 1330.
-    Totals here are regular season only -- `FetchPlayerProfile`'s game log is not
-    (96 rows for a 2025 starter), so it is the wrong source for GP.
+    `sort=` only works for the season with `seasonAverage` populated, so page
+    the whole pool regardless. `resultTotal` (1300) understates it and the
+    server clamps the offset, so walk to 1330.
 
-    INCREMENTAL AND RESUMABLE. ~1 req/s serial, so five seasons plus one profile
-    call per player is ~20 min: it reloads `path`, skips any season already
-    complete and any player whose birthday is already known, and checkpoints so
-    an interrupt costs one season rather than the run. `born` (not `age`) so the
-    cache does not silently go stale.
+    Incremental and resumable -- reloads `path`, skips seasons/players already
+    cached, and checkpoints so an interrupt costs one season, not the run.
     """
     out = {}
     path = path or dest_path("players-%s.json" % SEASON_TAG)
@@ -313,8 +274,8 @@ def player_pool(path=None):
             json.dump(out, f, indent=0, sort_keys=True)
 
     for season in POOL_SEASONS:
-        # `id` gates too: the birthday pass needs one per player, and a file
-        # written before ids were stored has the seasons but not the ids.
+        # gates on `id` too -- a file written before ids existed has seasons
+        # but no id
         have = [v for v in out.values() if str(season) in v["seasons"]]
         if len(have) >= SEASON_DONE and all(v.get("id") for v in have):
             print("  season %d: cached" % season)
@@ -328,8 +289,8 @@ def player_pool(path=None):
             for p in r.get("players", []):
                 pro, avg = p["proPlayer"], p.get("viewingActualPointsAverage", {})
                 tot = p.get("viewingActualPoints", {})
-                # Absent stats are `{"formatted": "-"}` with no `.value`, so test
-                # for `value`; key presence is a false positive.
+                # absent stats are `{"formatted": "-"}` with no `.value` --
+                # key presence alone is a false positive
                 if "value" not in avg or "value" not in tot or not avg["value"]:
                     continue
                 e = out.setdefault(pro["nameFull"], {
@@ -349,8 +310,8 @@ def player_pool(path=None):
         d = get("https://www.fleaflicker.com/api/FetchPlayerProfile?sport=NBA"
                 "&league_id=%d&player_id=%d" % (LEAGUE, out[name]["id"])
                 ).get("detail", {})
-        # UTC, not local: `date.fromtimestamp` puts a midnight-UTC dob on the
-        # previous day west of Greenwich, which is machine-dependent.
+        # UTC, not local -- `date.fromtimestamp` would put a midnight-UTC dob
+        # on the previous day west of Greenwich
         out[name]["born"] = (datetime.datetime.fromtimestamp(
             int(d["dob"]) / 1000, datetime.timezone.utc).date().isoformat()
             if d.get("dob") else None)
@@ -368,26 +329,16 @@ USAGE = """usage: ./run fetch_data.py [pool]
 
 Rebuilds the data files sim.py reads, into rosters/ and data/.
 
-  (no argument)   nba-schedule-<season>.json + league-<season>.json  (~30 requests)
-  pool            + players-<season>.json                    (~20 min, resumable)
-  roster [ids]    roster-<id>-<season>.json per team, all 12 if no ids, and
-                  teams-<season>.json. Applies assumed-through overlays
-                  (`assumed_trades`; terms in evals/Pending Trades.md). A team
-                  in one of those deals re-cuts every side.
-  teams           teams-<season>.json alone: the id -> team name labels
-
-Every file it writes is announced by absolute path. Exits non-zero on an
-unrecognised argument rather than falling through to a re-scrape."""
+  (no argument)   nba-schedule + league  (~30 requests)
+  pool            + players  (~20 min, resumable)
+  roster [ids]    roster + teams files, all 12 if no ids. Applies
+                  assumed-through overlays (`assumed_trades`)
+  teams           teams file alone: id -> team name labels"""
 
 
 def write(name, build, **dump):
-    """Build FIRST, write second, and land it by rename.
-
-    `open(path, "w")` around the build truncated the good file and then let a
-    transport error out of it, so a failed re-scrape left a ZERO-BYTE
-    `league-<season>.json` where the season was. Every `sim.py` run after that
-    died on a JSON decode error naming nothing that had happened.
-    """
+    """Build first, write second, land by rename -- so a failed re-scrape
+    can't leave a zero-byte file where a good one was."""
     data = build()
     path = dest_path(name)
     os.makedirs(os.path.dirname(path), exist_ok=True)
@@ -414,20 +365,16 @@ if __name__ == "__main__":
               lambda: team_names(league_rosters()), indent=0, sort_keys=True)
         sys.exit(0)
     if args[:1] == ["roster"]:
-        # Every id validated BEFORE the first request: `roster abc` used to make
-        # a league call, truncate a roster file and only then die on `int()`.
+        # validated before the first request -- `roster abc` used to make a
+        # league call and truncate a roster file before dying on `int()`
         bad = [t for t in args[1:] if not t.isdigit()]
         if bad:
             sys.exit("not a team id: %s\nids are numeric (`team-info`); "
                      "`roster` with none re-cuts all 12.\n\n%s"
                      % (", ".join(bad), USAGE))
-        # ONE league call for membership, then one snapshot call per team. No
-        # ids means all 12: they drift independently and a team you did not
-        # re-cut is a team priced off whoever it owned in March.
         league, pool = league_rosters(), load_pool()
-        # All 12 names whichever ids were asked for -- the labels cost nothing
-        # extra and a partial map makes the output of one report inconsistent
-        # with the next.
+        # all 12 names whichever ids were asked for -- a partial map makes one
+        # report's header inconsistent with the next
         names = team_names(league)
         write("teams-%s.json" % SEASON_TAG, lambda: names,
               indent=0, sort_keys=True)
@@ -456,9 +403,7 @@ if __name__ == "__main__":
             write("roster-%s-%s.json" % (t, SEASON_TAG),
                   lambda t=t: built[t])
         sys.exit(0)
-    # Anything unrecognised REFUSES rather than falling through: `fetch_data.py
-    # rosters` (plural), `fetch_data.py 161025` and `fetch_data.py players` each
-    # re-scraped the schedule and the calendar, printed `wrote ...` and exited 0.
+    # unrecognised args refuse rather than falling through to a re-scrape
     unknown = [a for a in args if a != "pool"]
     if unknown:
         sys.exit("unrecognised argument: %s\n\n%s" % (", ".join(unknown), USAGE))

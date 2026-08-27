@@ -7,11 +7,9 @@ from .data import SEASON_STR
 from .stats import ols, slope
 
 
-#
-# GP is the dominant input here (~10x any format effect) and the only one with no
-# market price: boards supply BASE, nothing supplies GP. So it needs a defensible
-# input, not precision. Candidates are ranked out of sample in `report_gp` and the
-# winner is what `project_gp` does. Gated to the rotation players we trade.
+# GP is the dominant input here and the only one with no market price, so it
+# needs a defensible input, not precision. Candidates are ranked out of sample
+# in `report_gp`; gated to the rotation players we trade.
 GP_MIN_RATE = 20.0
 
 
@@ -19,22 +17,14 @@ SEASONS = [str(SEASON - i) for i in range(4, -1, -1)]   # oldest first
 
 
 def age_at(born, season):
-    """Age on Feb 1 of `season`'s back half -- the NBA's own season-age convention.
-
-    A fixed point INSIDE the season, never `detail.age`: that is age-as-scraped,
-    which re-labels every historical row each time the file is read.
-    """
+    """Age on Feb 1 of `season`'s back half -- NOT `detail.age`, which
+    re-labels every historical row each time the file is read"""
     b = datetime.date.fromisoformat(born)
     return (datetime.date(int(season) + 1, 2, 1) - b).days / 365.2425
 
 
 def gp_fit(min_rate=GP_MIN_RATE):
-    """(a, b, n): next-season GP ~= a + b * this-season GP.
-
-    b is the share of a GP deviation that persists. It is SMALL, and that is the
-    finding: taking one season's GP literally is the largest error available here.
-    Kept as the one-season BASELINE the richer models have to beat.
-    """
+    """(a, b, n): next-season GP ~= a + b * this-season GP"""
     xy = []
     for v in pool().values():
         s = v["seasons"]
@@ -46,18 +36,8 @@ def gp_fit(min_rate=GP_MIN_RATE):
 
 
 def gp_rows(min_rate=GP_MIN_RATE, min_hist=1):
-    """One row per (player, predicted season):
-    {name, season, y, hist, seasons, rate, age}.
-
-    `hist` is prior-season GP, MOST RECENT FIRST, and `seasons` is where it came
-    from -- strictly earlier than `season`, which is what keeps the comparison
-    honest. Gated on the rate in the most recent prior season, so the population
-    is the rotation-quality players we actually trade.
-
-    CENSORED, and it matters: the pool only holds seasons a player actually
-    appeared in, so a player who misses a whole year or leaves the league is
-    absent rather than a 0. Every figure here is expected GP GIVEN he plays.
-    """
+    """Censored: a player who misses a whole year or leaves the league is
+    absent rather than a 0, so every `y` here is expected GP GIVEN he plays"""
     rows = []
     for name, v in pool().items():
         if not v.get("born"):
@@ -77,33 +57,22 @@ def _avg(xs):
     return sum(xs) / len(xs)
 
 
-# Where the rate term stops buying games. Empirical mean next-season GP by last
-# season's rate is CONCAVE and PEAKS around 30-40, so a linear term keeps paying past
-# the peak and over-projects the stars every headline table rests on (+6.6 GP of
-# bias at rate>=45). Knots 20-35 all sit inside each other's noise; 30 is the CV
-# optimum and the only one that beats the unknotted form on a clustered bootstrap.
+# Empirical GP-by-rate is concave and peaks ~30-40; the knot stops a linear
+# term from over-projecting stars past that peak.
 GP_KNOT = 30.0
 
 
 # Below this rate a season's GP measures ROLE, not health (`Eval Definitions
-# §Durability`), so it is also the bar a season clears to count as evidence that
-# the player holds a rotation spot at all -- which is what `rate_evidence` counts.
+# §Durability`), and is what `rate_evidence` counts as rotation evidence.
 ROTATION_RATE = 15.0
 
 
-# A season this short is the only evidence the GP model has, and it is a bad one
-# (`Eval Definitions §Durability` -- flag it, don't patch it).
-FRAGMENT_GP = 25
+FRAGMENT_GP = 25  # a season this short is the only (weak) evidence GP has
 
 
-# Six models, and between them they make every argument this section makes: the
-# flat prior one season must beat, that season, whether more history buys
-# anything, whether age does, and whether the knot earns its place. Nothing
-# richer beats `gp1` by more than its own uncertainty.
-#
-# Every model is scored on the SAME rows, so a k-season model averages whatever
-# history a row has up to k -- which is what a real projection must do. No row
-# here carries more than 4 prior seasons, so `gp5` never sees a 5th.
+# Six models between them cover the arguments this section makes: the flat
+# prior a model must beat, whether more history buys anything, whether age
+# does, and whether the knot earns its place.
 GP_MODELS = {
     "mean":      lambda r: (),
     "age":       lambda r: (r["age"],),
@@ -118,15 +87,9 @@ GP_FOLDS = 5
 
 
 def gp_sq_errors(rows, models=None, folds=GP_FOLDS, seed=None):
-    """model -> per-row out-of-sample squared error, k-fold CV GROUPED BY PLAYER.
-
-    Grouped, not row-wise. A player contributes several target seasons, so a
-    row-wise split puts his own durability level on both sides of it and flatters
-    every history-based model -- which is exactly the model class under suspicion.
-
-    Per ROW rather than reduced straight to RMSE, because the uncertainty that
-    matters is over PLAYERS and you cannot resample players out of a scalar.
-    """
+    """model -> per-row out-of-sample squared error, k-fold CV grouped BY
+    PLAYER (a row-wise split would leak a player's own durability level
+    across folds)"""
     names = sorted({r["name"] for r in rows})
     if seed is not None:
         random.Random(seed).shuffle(names)
@@ -134,17 +97,13 @@ def gp_sq_errors(rows, models=None, folds=GP_FOLDS, seed=None):
     out = {}
     for name in (models or GP_MODELS):
         feat = GP_MODELS[name]
-        se = [float("nan")] * len(rows)   # a row left unscored must poison `_rmse`
+        se = [float("nan")] * len(rows)   # poisons `_rmse` if left unscored
         for f in range(folds):
             tr = [r for r in rows if fold[r["name"]] != f]
             beta = ols(tr, feat, [r["y"] for r in tr]) if tr else None
             if beta is None:
-                # Never skipped. A model scored on the folds it managed would be
-                # ranked against competitors scored on all of them, and
-                # `gp_bootstrap` would difference two RMSEs over different rows.
                 raise ValueError(
-                    "%s: fold %d of %d has no least-squares fit, so it cannot be "
-                    "scored on the same rows as the other models -- drop the "
+                    "%s: fold %d of %d has no least-squares fit -- drop the "
                     "model or the fold, do not compare them" % (name, f, folds))
             for i, r in enumerate(rows):
                 if fold[r["name"]] == f:
@@ -159,7 +118,6 @@ def _rmse(se):
 
 
 def gp_models(rows, folds=GP_FOLDS, seed=None):
-    """model -> out-of-sample RMSE over `rows`. See `gp_sq_errors`."""
     return {k: _rmse(v)
             for k, v in gp_sq_errors(rows, folds=folds, seed=seed).items()}
 
@@ -172,18 +130,10 @@ GP_BOOT = 2000
 
 def gp_bootstrap(rows, models=None, ref="gp1", n=GP_BOOT, seed=11,
                  shuffles=GP_SHUFFLES):
-    """model -> {rmse, delta, lo, hi, p}: RMSE and its gap to `ref`, with a 95%
-    interval from a bootstrap CLUSTERED ON PLAYER. `p` is P(model beats ref).
-
-    This is the uncertainty a gap between two models has to be judged against.
-    Sampling error over the PLAYERS runs ~0.14 RMSE against gaps of 0.1-0.7, so an
-    interval straddling zero is the answer and not a ranking. The sd across FOLD
-    SHUFFLES is ~0.01 and prices only reproducibility of the split, so ranking on
-    it turns a 0.15 gap into "more seasons is WORSE".
-
-    Errors are averaged over `shuffles` shuffles first, so the split is integrated
-    out and what remains is the player sampling the interval prices.
-    """
+    """model -> {rmse, delta, lo, hi, p}: RMSE and its gap to `ref`, with a
+    95% interval from a bootstrap clustered on player. `p` is P(model beats
+    ref). Errors are averaged over `shuffles` fold-shuffles first, so the
+    interval prices player sampling rather than split reproducibility."""
     models = list(models or GP_MODELS)
     if ref not in models:
         models = models + [ref]
@@ -197,8 +147,6 @@ def gp_bootstrap(rows, models=None, ref="gp1", n=GP_BOOT, seed=11,
     rng = random.Random(seed)
     picks = [[i for nm in (rng.choice(names) for _ in names) for i in byname[nm]]
              for _ in range(n)]
-    # The reference RMSE depends on the resample alone, so it is one per pick and
-    # not one per pick per model.
     ref_rmse = [_rmse([se[ref][i] for i in idx]) for idx in picks]
     ref_full = _rmse(se[ref])
     out = {}
@@ -219,36 +167,20 @@ PROJECT_GP_NOTE = ("one prior season of GP shrunk toward the pool, plus scoring 
 
 @functools.lru_cache(maxsize=1)
 def gp_model():
-    """(a, b_gp, b_rate) for next-season GP, the rate term knotted at GP_KNOT.
-    What survived `report_gp`.
-
-    Fit UNGATED, because it has to price a bench body as well as a starter and
-    that is the whole job of the rate term: expected GP runs ~40 at rate <10
-    against ~63 at rate 30-40. The knot is what stops that same term running on
-    past the peak -- see GP_KNOT.
-    """
+    """Fit UNGATED -- it must price a bench body as well as a starter"""
     rows = gp_rows(min_rate=0.0)
     a, b, c = ols(rows, GP_MODELS["gp1+knot"], [r["y"] for r in rows])
     return a, b, c
 
 
 def rate_evidence(name, season=SEASON_STR):
-    """What the rate `Δw` runs on actually rests on.
-
-    `our_roster` carries a rate forward at face value -- no shrinkage, no
-    sample-size weighting -- and `Δwₜ` is flat across a productive window, so a
-    rate posted over a fragment is charged to every season in that window. The
-    games behind it is the evidence the window is set from.
-    """
     s = pool_seasons(name)
     if not s:
         raise KeyError("no pool season for %r -- check the spelling against %s"
                        % (name, POOL))
     _, gp = season_or_latest(s, season)
     years = sorted(int(y) for y in s)
-    # A gap INSIDE his history, or `season` itself missing. The second is the
-    # censoring the GP fit is blindest to and it is not an interior gap, so
-    # checking only the span silently passes every Kyrie on the board.
+    # a gap inside his history, or `season` itself missing
     missed = len(years) < years[-1] - years[0] + 1 or season not in s
     return {"gp": gp,
             "missed": missed,
@@ -256,16 +188,10 @@ def rate_evidence(name, season=SEASON_STR):
 
 
 def evidence_flags(name, season=SEASON_STR):
-    """EVERY flag code this player's POOL HISTORY earns, not a subset of it:
-    `frag` (§Durability's fragment band), `miss`, `rotN` (fewer than 3 seasons at
-    rate >= ROTATION_RATE) and `nopool`.
-
-    Those four plus `fa` and `noproj` are the whole vocabulary `sim.py players`
-    prints. Both of those are facts about the ROSTER ROW rather than about the
-    pool, so `report_players` adds them there; the rest of `Eval Template §Flags` --
-    `split`, `1brd`, `stale`, `bear` -- are judgment or board data and nothing
-    here can derive them.
-    """
+    """Every flag code this player's pool history earns: `frag`
+    (§Durability's fragment band), `miss`, `rotN` (fewer than 3 seasons at
+    rate >= ROTATION_RATE), `nopool`. `report_players` adds `fa`/`noproj`,
+    which are facts about the roster row rather than the pool."""
     try:
         e = rate_evidence(name, season)
     except KeyError:
@@ -281,21 +207,11 @@ def evidence_flags(name, season=SEASON_STR):
 
 
 def project_gp(name, season=SEASON_STR, gp=None, rate=None):
-    """Expected GP next season. THE projection this study uses, for every player on
-    every roster -- ours and a counterparty's, through the same `our_roster`.
+    """Expected GP next season, off the player's most recent pool season.
 
-    Reads the player's most recent pool season, which is why a player who missed
-    all of `season` is handled without being special-cased: his last season that
-    exists is the one used.
-
-    `rate` OVERRIDES the pool when given -- as a mere fallback it would be a
-    silent no-op for every player the pool has seen, i.e. for all of ours.
-    `gp` is a FALLBACK only, used for a player the pool has never seen: the
-    pool's GP is what this model was fitted on, and a roster file's GP is the
-    same season rounded differently. A name the pool does not have and you gave no
-    fallback for RAISES, rather than returning a None that surfaces frames away as
-    a TypeError under `round()`.
-    """
+    `rate` OVERRIDES the pool when given; `gp` is a FALLBACK used only when
+    the pool has never seen this player. Raises rather than silently
+    returning None if neither the pool nor a fallback is available."""
     s = pool_seasons(name)
     if s:
         pool_rate, gp = season_or_latest(s, season)
