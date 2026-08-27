@@ -1,4 +1,6 @@
-# Base
+# Base (WIP)
+
+⚠️ **WIP draft, not authoritative.** The shipped definition is `Eval Definitions §BASE` → `BASE.md`.
 
 Blended points-format dynasty board rank and nothing else. Keep in mind this is general fantasy basketball value, and doesn't necessarily reflect our league's format and how that might change certain players' value. I _believe_ that should be noted elsewhere.
 

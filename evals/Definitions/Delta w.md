@@ -1,0 +1,20 @@
+# `Δw` — wins added, sim-measured
+
+Expands `Eval Definitions §Δw`.
+
+`sim.py` prices a roster change in **expected wins over the 19 regular-season matchups Fleaflicker scores before the bracket**, on the real NBA calendar, with optimal nightly lineups and projected `GP` on both sides. ⚠️ **Period 20 is still "regular" on the wire and counts toward standings PF**, but it is bracket R1 (`league-info` §*Matchup periods*) — excluded here so `W20` is not priced twice beside `Bracket value.md`. `evals/lineup-math/method.md` and `findings.md` own the method, the measurements, the error bars and what that basis costs — re-run it, never quote a remembered figure.
+
+- **One season, one roster.** Multi-year value is BASE's, entirely. Never sum `Δw` over future seasons, never discount it, and never apply an aging term or age haircut inside a win delta.
+- **Compute it for every rostered player on every roster touched — never a shortlist, either side** (`evals/lineup-math/run sim.py --roster <team>.json players`). A blank reads as zero regardless of the caveat next to it; `–` must not appear in the column for a rostered player.
+- **A player who is not ours yet gets `incoming_wins`, never a hand-edited roster file.** `sim.incoming_wins(sim.basis(), sim.our_roster("their.json"))` seats him in one of `basis()`'s padded slots and prices him against the same replacement body of his own slot group that `player_wins` prices a departure against — one counterfactual and one sign, so both columns read positive for a player worth having. ⚠️ **That is not comparability.** Each is fitted against its own roster's `R` and those run rate points apart between teams, so **`Δw ours` is the only cross-team-comparable column** and the theirs−ours gap is not a number: never rank, sort or shortlist a target on it. **It refuses on a roster with no pad left**: with every slot real, somebody we field has to go, and the candidates sit a rate point apart down where `replacement`'s line no longer ranks them — a coin flip that would still print as measured. Pass the roster you would actually field, and name the body you dropped.
+- **Never sum `Δw` across pieces.** It is marginal against the roster as it stands and sub-additive under the 9-slot cap — price a multi-piece side with one joint `sim.run(sim.swap(...))`, never by adding rows. A pick has BASE and no `Δw`: it enters a deal through `ΔBASE` alone (`eval-pick`).
+- **Always state the counterfactual.** "If he vanished and the slot went empty" and "if we swapped X for him" differ by the whole value of X.
+- **Compare rosters only at a common body count** — pad both to the `roster_size` being valued (`sim.basis()`). A roster measured short has a low replacement level and every player on it reads too valuable.
+- **`Δw theirs` prices only what they give up inside a concrete deal.** It predicts neither our gain nor what they will accept — never target, sort or shortlist off it, and never call a low figure "cheap to buy".
+- **The rate behind `Δw` is projected, never posted** — a sourced per-game stat line scored under our rules (`projections`). It already prices a changed role, a returning injury and a rookie's step forward, so **never adjust it by hand for any of those**. A player the feed does not carry keeps last season's average and must publish `no projection`.
+- **One source is a house view, not a market.** Where a projection and last season's `FPts/G` diverge widely, say which one the read leans on.
+- **`Δw` still under-rates ascending youth** — one season, and a projection is a next-season forecast rather than a career curve. Never read a low `Δw` on a young player as a sell signal.
+- **A high-`Δw`/low-BASE row is either a format/roster edge or a rate the boards doubt.** Check the flags and the per-board ranks before calling it a buy — **a gap you cannot explain is a finding about our inputs, not about the market.**
+- **Team-specific, never a price.** What to pay comes from negotiation, not from any column on their table.
+
+**Untouchable is not an excuse to skip `Δw`** — compute it for names with no realistic path too.

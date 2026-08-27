@@ -1,91 +1,91 @@
 // https://hashtagbasketball.com/import-v2/rank-point-custom.aspx?lid=8dcf442b31615fc
 export const PLAYER_DATA = {
   "Cade Cunningham": {
-    projectedSeasonAvg: 46.5,
+    projectedSeasonAvg: 41.5,
   },
   "Amen Thompson": {
-    projectedSeasonAvg: 39.7,
+    projectedSeasonAvg: 40.6,
   },
   "Josh Giddey": {
-    projectedSeasonAvg: 39.5,
+    projectedSeasonAvg: 42.1,
   },
   "Kawhi Leonard": {
-    projectedSeasonAvg: 34.3,
+    projectedSeasonAvg: 39.5,
   },
   "Jimmy Butler": {
-    projectedSeasonAvg: 35.4,
+    projectedSeasonAvg: 34.5,
   },
   "Jalen Duren": {
-    projectedSeasonAvg: 33.6,
+    projectedSeasonAvg: 32.1,
   },
   "Darius Garland": {
-    projectedSeasonAvg: 33.1,
+    projectedSeasonAvg: 33.2,
   },
   "Jakob Poeltl": {
-    projectedSeasonAvg: 32.8,
+    projectedSeasonAvg: 28.1,
   },
   "Kyrie Irving": {
-    projectedSeasonAvg: 31.1,
+    projectedSeasonAvg: 27.6,
   },
   "Desmond Bane": {
-    projectedSeasonAvg: 30.9,
+    projectedSeasonAvg: 32.1,
   },
   "Coby White": {
-    projectedSeasonAvg: 30.4,
+    projectedSeasonAvg: 33.4,
   },
   "Zach Edey": {
-    projectedSeasonAvg: 30.1,
+    projectedSeasonAvg: 33.6,
   },
   "Myles Turner": {
-    projectedSeasonAvg: 28.9,
+    projectedSeasonAvg: 31.5,
   },
   "Naz Reid": {
-    projectedSeasonAvg: 27.7,
+    projectedSeasonAvg: 26.8,
   },
   "Jalen Suggs": {
-    projectedSeasonAvg: 26.9,
+    projectedSeasonAvg: 28.9,
   },
   "Anfernee Simons": {
-    projectedSeasonAvg: 25.1,
+    projectedSeasonAvg: 29.2,
   },
   "Fred VanVleet": {
-    projectedSeasonAvg: 24.8,
+    projectedSeasonAvg: 15.6,
   },
   "Khris Middleton": {
-    projectedSeasonAvg: 24.4,
+    projectedSeasonAvg: 21.4,
   },
   "Dillon Brooks": {
-    projectedSeasonAvg: 21.1,
+    projectedSeasonAvg: 24.2,
   },
   "Lonzo Ball": {
-    projectedSeasonAvg: 20.5,
+    projectedSeasonAvg: 20.1,
   },
   "Jay Huff": {
-    projectedSeasonAvg: 19.4,
+    projectedSeasonAvg: 17.6,
   },
   "Keon Ellis": {
-    projectedSeasonAvg: 18.9,
+    projectedSeasonAvg: 18.2,
   },
   "Nick Richards": {
-    projectedSeasonAvg: 18.3,
+    projectedSeasonAvg: 19.4,
   },
   "Vince Williams": {
-    projectedSeasonAvg: 16.2,
+    projectedSeasonAvg: 16.0,
   },
   "Karlo Matković": {
-    projectedSeasonAvg: 15.3,
+    projectedSeasonAvg: 12.9,
   },
   "Khaman Maluach": {
-    projectedSeasonAvg: 14.5,
+    projectedSeasonAvg: 19.0,
   },
   "Julian Strawther": {
-    projectedSeasonAvg: 13.6,
+    projectedSeasonAvg: 10.0,
   },
   "DaRon Holmes": {
-    projectedSeasonAvg: 12.7,
+    projectedSeasonAvg: 9.7,
   },
   "Nolan Traore": {
-    projectedSeasonAvg: 11.2,
+    projectedSeasonAvg: 9.3,
   },
   
 

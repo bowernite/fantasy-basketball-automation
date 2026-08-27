@@ -24,11 +24,3 @@ Handshake. Not on Fleaflicker. Executes **immediately after Sept '26 expansion, 
 Bodies after both deals: **us 32**, Pharaoh 21. Then expansion is 38, so 6 open slots.
 
 **Draft / FA:** make any rookie picks we still hold at that time (2.09; 3.09 is Henry's). Bid only on the FA slots that remain after those picks (5 if 2.09 is made). Do not pick or bid into a roster that would then be unable to receive the Amen package.
-
-# Still open
-
-## Hlina — Duren for a wing
-
-Not agreed. Duren is still here. His price is **Duren + a 1st** for either Jalen Williams or Paolo; a 2nd "doesn't do anything" for him. **Brandon Miller straight up** is his standing offer — pass at a 36–40 Duren. **Melton rejected** 2026-08-14. Don't park 2.09. Don't offer the Paolo 2-for-1 (arms him from 36 up).
-
-Priced shapes, 36–40 rate, Y2–Y4 scratch: [Duren sims.md](teams/hlina/Duren%20sims.md).
