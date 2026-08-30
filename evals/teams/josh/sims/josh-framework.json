@@ -1,0 +1,383 @@
+{
+  "sections": [
+    {
+      "kind": "trade-screen",
+      "their_roster": 161024,
+      "their_label": "Josh",
+      "deals": [
+        {
+          "label": "Sharpe+Kuminga -> Porzingis+Gordon",
+          "out_us": [
+            "Shaedon Sharpe",
+            "Jonathan Kuminga"
+          ],
+          "in_from_them": [
+            "Kristaps Porzi\u0146\u0123is",
+            "Aaron Gordon"
+          ],
+          "out_them": [
+            "Kristaps Porzi\u0146\u0123is",
+            "Aaron Gordon"
+          ],
+          "in_from_us": [
+            "Shaedon Sharpe",
+            "Jonathan Kuminga"
+          ],
+          "results": {
+            "delta_base_us": -167,
+            "dw_us": 0.26,
+            "dp_title_us": 1.8,
+            "dw_them": -0.36,
+            "dp_title_them": -3.4,
+            "dp_title_note": "both rosters change in the 12-team field"
+          }
+        },
+        {
+          "label": "Vassell+Kuminga -> Porzingis+Gordon",
+          "out_us": [
+            "Devin Vassell",
+            "Jonathan Kuminga"
+          ],
+          "in_from_them": [
+            "Kristaps Porzi\u0146\u0123is",
+            "Aaron Gordon"
+          ],
+          "out_them": [
+            "Kristaps Porzi\u0146\u0123is",
+            "Aaron Gordon"
+          ],
+          "in_from_us": [
+            "Devin Vassell",
+            "Jonathan Kuminga"
+          ],
+          "results": {
+            "delta_base_us": -152,
+            "dw_us": 0.37,
+            "dp_title_us": 5.3,
+            "dw_them": -0.29,
+            "dp_title_them": -5.4,
+            "dp_title_note": "both rosters change in the 12-team field"
+          }
+        },
+        {
+          "label": "Eason+Kuminga -> Porzingis+Gordon",
+          "out_us": [
+            "Tari Eason",
+            "Jonathan Kuminga"
+          ],
+          "in_from_them": [
+            "Kristaps Porzi\u0146\u0123is",
+            "Aaron Gordon"
+          ],
+          "out_them": [
+            "Kristaps Porzi\u0146\u0123is",
+            "Aaron Gordon"
+          ],
+          "in_from_us": [
+            "Tari Eason",
+            "Jonathan Kuminga"
+          ],
+          "results": {
+            "delta_base_us": -122,
+            "dw_us": 0.43,
+            "dp_title_us": 4.6,
+            "dw_them": -0.37,
+            "dp_title_them": -4.7,
+            "dp_title_note": "both rosters change in the 12-team field"
+          }
+        },
+        {
+          "label": "Sharpe+Eason -> Dame+Gordon",
+          "out_us": [
+            "Shaedon Sharpe",
+            "Tari Eason"
+          ],
+          "in_from_them": [
+            "Damian Lillard",
+            "Aaron Gordon"
+          ],
+          "out_them": [
+            "Damian Lillard",
+            "Aaron Gordon"
+          ],
+          "in_from_us": [
+            "Shaedon Sharpe",
+            "Tari Eason"
+          ],
+          "results": {
+            "delta_base_us": -1021,
+            "dw_us": 0.52,
+            "dp_title_us": 5.4,
+            "dw_them": -0.5,
+            "dp_title_them": -5.2,
+            "dp_title_note": "both rosters change in the 12-team field"
+          }
+        },
+        {
+          "label": "Dame+Gordon -> Coby",
+          "out_us": [
+            "Coby White"
+          ],
+          "in_from_them": [
+            "Damian Lillard",
+            "Aaron Gordon"
+          ],
+          "out_them": [
+            "Damian Lillard",
+            "Aaron Gordon"
+          ],
+          "in_from_us": [
+            "Coby White"
+          ],
+          "results": {
+            "delta_base_us": -35,
+            "dw_us": 0.78,
+            "dp_title_us": 10.6,
+            "dw_them": -0.97,
+            "dp_title_them": -8.8,
+            "dp_title_note": "both rosters change in the 12-team field"
+          }
+        },
+        {
+          "label": "Porzingis+Gordon -> Coby",
+          "out_us": [
+            "Coby White"
+          ],
+          "in_from_them": [
+            "Kristaps Porzi\u0146\u0123is",
+            "Aaron Gordon"
+          ],
+          "out_them": [
+            "Kristaps Porzi\u0146\u0123is",
+            "Aaron Gordon"
+          ],
+          "in_from_us": [
+            "Coby White"
+          ],
+          "results": {
+            "delta_base_us": 211,
+            "dw_us": 0.31,
+            "dp_title_us": 3.8,
+            "dw_them": -0.34,
+            "dp_title_them": -3.7,
+            "dp_title_note": "both rosters change in the 12-team field"
+          }
+        },
+        {
+          "label": "LaVine+Gordon -> Sharpe",
+          "out_us": [
+            "Shaedon Sharpe"
+          ],
+          "in_from_them": [
+            "Zach LaVine",
+            "Aaron Gordon"
+          ],
+          "out_them": [
+            "Zach LaVine",
+            "Aaron Gordon"
+          ],
+          "in_from_us": [
+            "Shaedon Sharpe"
+          ],
+          "results": {
+            "delta_base_us": 481,
+            "dw_us": 0.11,
+            "dp_title_us": 0.6,
+            "dw_them": -0.28,
+            "dp_title_them": -1.9,
+            "dp_title_note": "both rosters change in the 12-team field"
+          }
+        },
+        {
+          "label": "Dame+Gordon -> Sharpe",
+          "out_us": [
+            "Shaedon Sharpe"
+          ],
+          "in_from_them": [
+            "Damian Lillard",
+            "Aaron Gordon"
+          ],
+          "out_them": [
+            "Damian Lillard",
+            "Aaron Gordon"
+          ],
+          "in_from_us": [
+            "Shaedon Sharpe"
+          ],
+          "results": {
+            "delta_base_us": 136,
+            "dw_us": 0.82,
+            "dp_title_us": 9.4,
+            "dw_them": -1.09,
+            "dp_title_them": -8.9,
+            "dp_title_note": "both rosters change in the 12-team field"
+          }
+        },
+        {
+          "label": "Porzingis+Gordon -> Sharpe",
+          "out_us": [
+            "Shaedon Sharpe"
+          ],
+          "in_from_them": [
+            "Kristaps Porzi\u0146\u0123is",
+            "Aaron Gordon"
+          ],
+          "out_them": [
+            "Kristaps Porzi\u0146\u0123is",
+            "Aaron Gordon"
+          ],
+          "in_from_us": [
+            "Shaedon Sharpe"
+          ],
+          "results": {
+            "delta_base_us": 382,
+            "dw_us": 0.28,
+            "dp_title_us": 1.9,
+            "dw_them": -0.51,
+            "dp_title_them": -4.4,
+            "dp_title_note": "both rosters change in the 12-team field"
+          }
+        },
+        {
+          "label": "Gordon+Sexton -> Vassell",
+          "out_us": [
+            "Devin Vassell"
+          ],
+          "in_from_them": [
+            "Aaron Gordon",
+            "Collin Sexton"
+          ],
+          "out_them": [
+            "Aaron Gordon",
+            "Collin Sexton"
+          ],
+          "in_from_us": [
+            "Devin Vassell"
+          ],
+          "results": {
+            "delta_base_us": -129,
+            "dw_us": 0.46,
+            "dp_title_us": 7.7,
+            "dw_them": -0.51,
+            "dp_title_them": -7.2,
+            "dp_title_note": "both rosters change in the 12-team field"
+          }
+        },
+        {
+          "label": "Dame+Sexton -> Sharpe+Matkovic",
+          "out_us": [
+            "Shaedon Sharpe"
+          ],
+          "in_from_them": [
+            "Damian Lillard",
+            "Collin Sexton"
+          ],
+          "out_them": [
+            "Damian Lillard",
+            "Collin Sexton"
+          ],
+          "in_from_us": [
+            "Shaedon Sharpe",
+            "Karlo Matkovi\u0107"
+          ],
+          "results": {
+            "delta_base_us": -186,
+            "dw_us": 0.74,
+            "dp_title_us": 11.3,
+            "dw_them": -1.16,
+            "dp_title_them": -9.2,
+            "dp_title_note": "both rosters change in the 12-team field"
+          }
+        },
+        {
+          "label": "Williams+Kuminga -> Porzingis+Gordon",
+          "out_us": [
+            "Mark Williams",
+            "Jonathan Kuminga"
+          ],
+          "in_from_them": [
+            "Kristaps Porzi\u0146\u0123is",
+            "Aaron Gordon"
+          ],
+          "out_them": [
+            "Kristaps Porzi\u0146\u0123is",
+            "Aaron Gordon"
+          ],
+          "in_from_us": [
+            "Mark Williams",
+            "Jonathan Kuminga"
+          ],
+          "results": {
+            "delta_base_us": -255,
+            "dw_us": 0.38,
+            "dp_title_us": -1.2,
+            "dw_them": -0.28,
+            "dp_title_them": -0.3,
+            "dp_title_note": "both rosters change in the 12-team field"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "player-effects",
+      "their_roster": 161024,
+      "their_label": "Josh",
+      "groups": [
+        {
+          "label": "our_youth_on_josh",
+          "source": "us",
+          "names": [
+            "Shaedon Sharpe",
+            "Devin Vassell",
+            "Tari Eason",
+            "Jonathan Kuminga",
+            "Keegan Murray",
+            "Mark Williams"
+          ]
+        }
+      ],
+      "player_results": [
+        {
+          "label": "our_youth_on_josh",
+          "seat": "Josh",
+          "players": [
+            {
+              "player": "Shaedon Sharpe",
+              "dw": 0.4,
+              "dp_title": 3.7
+            },
+            {
+              "player": "Devin Vassell",
+              "dw": 0.35,
+              "dp_title": 1.5
+            },
+            {
+              "player": "Mark Williams",
+              "dw": 0.29,
+              "dp_title": 6.6
+            },
+            {
+              "player": "Tari Eason",
+              "dw": 0.21,
+              "dp_title": 1.9
+            },
+            {
+              "player": "Keegan Murray",
+              "dw": 0.16,
+              "dp_title": 1.6
+            },
+            {
+              "player": "Jonathan Kuminga",
+              "dw": -0.09,
+              "dp_title": -0.6
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "simmed": "2026-08-28",
+    "dp_title_note": "both rosters change in the 12-team field"
+  }
+}

@@ -19,7 +19,7 @@ Expands `Eval Definitions §ΔP(title)` and §*Counterparty title reads*.
 
 - **What it may do:** decide a title-odds question — which of two comparable bodies to field, hold or acquire when the rest of the read is level.
 - **What it may not do:** reprice BASE, adjust `Δw`, resize a row, or stand in for either decision column in VERDICT.
-- **One season, one roster**, as `Δw`. A multi-piece side gets one joint run — `sim.roster_title(after, before)` — never added rows.
+- **One season, one roster**, as `Δw`. A multi-piece side on one roster gets one joint run — `sim.roster_title(after, before)` — never added rows. A two-team deal: both rosters in one field (`sim.deal_odds` / `trade-screen`) — that row's Δw is the same run's wins.
 - Moot at `SIT` tanking.
 - **Table column** after `Δw`, before `W20`–`W23` — **`ΔP(title)`** on our roster, **`ΔP(title) ours`** on a counterparty's. **`# Title odds`** names roster `P(title)` only.
 

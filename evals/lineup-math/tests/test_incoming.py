@@ -26,7 +26,8 @@ class IncomingWins(unittest.TestCase):
 
     def test_the_roster_an_arrival_joins_is_the_one_the_recipe_re_pads(self):
         full = sim.basis()
-        recipe = [p["n"] for p in sim.pad(sim.our_roster(), len(full) - 1)]
+        recipe = [p["n"] for p in sim.pad(sim.our_roster(), len(full) - 1,
+                                          path=sim.ROSTER)]
         R = {"guard": 18.0, "forward": 17.0, "center": 20.0}
         with recorded_rosters() as seen:
             sim.incoming_wins(full, [sim.star(40.0, 68, ("SF", "PF"), n="IN")],

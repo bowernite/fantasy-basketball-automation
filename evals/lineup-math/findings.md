@@ -316,7 +316,8 @@ What survives:
 counterparty's file):
 
 ```
-GP = 25.7 + 0.368 × last season's GP + 0.432 × min(last season's FPts/G, 30)
+GP_map = 25.7 + 0.368 × last season's GP + 0.432 × min(last season's FPts/G, 30)
+GPp    = mean(Hashtag, FanScout) when both hit; the one feed if only one; GP_map if neither
 ```
 
 The rate term separates a bench body from a starter — expected GP ~40 at rate < 10 against
@@ -338,19 +339,13 @@ above 70, on a population whose real seasons run 2 to 82. The level is right (bi
 the ordering is not (Spearman 0.35), so the error is concentrated in the tails: an iron-man
 reads too low and a genuinely fragile starter too high.
 
-⚠️ **External GP feeds do not fix it.** Backtested out of sample against '25-26 actuals,
-they tie or lose overall and **lose clearly on rate ≥ 25** — the rows every table here is
-built on — carrying **+5 to +15 games of optimism** and an sd that collapses to ~9 against a
-true 18.8. A 50/50 blend does win, by **0.88 MAE [0.30, 1.47]** — below this section's own
-"never argue a trade on a few games" threshold, and not worth a second data dependency.
-
-⚠️ **The `rate` is projected, the `GP` is fitted, and the flags are about the GP.** A rate
+⚠️ **The `rate` is projected, `GPp` is the feeds-then-map rule (`Eval Definitions §Durability`), and the flags are about the GP.** A rate
 posted over 15 games is replaced by the projection, but that same 15-game season is still
-the GP fit's main input (`README.md` §Flags).
+the map's main input (`README.md` §Flags).
 
-⚠️ **Weakest on a fragment season.** Edey's 11-game '25-26 projects 43 GP, Chaney's 17-game
-41, Holmes's 25-game 38: a fragment is the only evidence the model has. Read those rows off
-`sim.py gp`, which prints the **pool** GP the projection actually used — the roster file
+⚠️ **Weakest on a fragment season.** Edey's 11-game '25-26 maps 43 GP, Chaney's 17-game
+41, Holmes's 25-game 38: a fragment is the only evidence the map has. Read those rows off
+`sim.py gp`, which prints the **pool** GP the map used — the roster file
 rounds some seasons a game differently. Flag those rows; don't patch them.
 
 Same finding sideways (`sim.py market`): persistence `b` is 0.45 pool-wide and
@@ -771,9 +766,9 @@ that moves in the engine.
 Both realised, so both carry matchup luck — but **one league-season is a bound, not a fit**, and
 the wider projected spread makes every figure above that much too concentrated.
 
-⚠️ **The 19-period schedule is last season's *shape*, re-dealt every season** — next season's
-does not exist in August. That, and the rest of what this does not carry, is `method.md`
-§*The season end to end*.
+⚠️ **The slate is this year's** — 19 pairings, seats not re-dealt. Period 20 is R1
+and still a generated full slate; 21–23 have dates only. The rest of what this
+does not carry is `method.md` §*The season end to end*.
 
 # Sept '26 expansion
 

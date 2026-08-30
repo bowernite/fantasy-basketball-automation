@@ -52,7 +52,7 @@ The basis, the counterfactual, `incoming_wins`, and every prohibition on summing
 
 ## Durability
 
-Expected `GP`, regressed and applied identically on both sides of every deal. **No format-derived injury adjustment and no fragility discount** — never accept less production to buy durability.
+Expected `GP`: mean(Hashtag, FanScout) when both hit; the one feed if only one hits; durability map only if neither. Map is fallback, not a vote. **No format-derived injury adjustment and no fragility discount** — never accept less production to buy durability.
 
 Where `GP` comes from, what may not feed it, and the two blind spots that get flagged rather than patched: `Durability.md`.
 
@@ -87,7 +87,7 @@ Which report to run for whom, the two ΔP reads (`player_title` vs `incoming_tit
 
 ## VERDICT
 
-The accept/reject judgment for a concrete deal: `ΔBASE` — banded per §BASE where the shape calls for it — and joint-sim `Δw` published side by side and read against our `SIT`, never folded into one number.
+The accept/reject judgment for a concrete deal: `ΔBASE` — banded per §BASE where the shape calls for it — and `Δw` published side by side and read against our `SIT`, never folded into one number.
 
 The rule by `SIT`, both tie rules, and how to rank two offers: `VERDICT.md`.
 

@@ -68,19 +68,19 @@ class GPProjection(unittest.TestCase):
         self.assertAlmostEqual(per_rate, 0.432, delta=0.005)
 
     def test_an_outlier_injury_season_regresses_upward(self):
-        self.assertGreater(sim.project_gp("Joel Embiid"), 45)
+        self.assertGreater(sim.mapped_gp("Joel Embiid"), 45)
 
     def test_an_iron_man_season_regresses_downward(self):
-        self.assertLess(sim.project_gp("Desmond Bane"), 75)
+        self.assertLess(sim.mapped_gp("Desmond Bane"), 75)
 
     def test_the_durable_player_still_projects_above_the_fragile_one(self):
-        self.assertGreater(sim.project_gp("Nikola Jokić"),
-                           sim.project_gp("Joel Embiid"))
+        self.assertGreater(sim.mapped_gp("Nikola Jokić"),
+                           sim.mapped_gp("Joel Embiid"))
 
     def test_a_superstar_rate_does_not_buy_more_games_than_an_all_star_rate(self):
-        self.assertLessEqual(sim.project_gp("nobody", gp=65, rate=65.0),
-                             sim.project_gp("nobody", gp=65, rate=35.0) + 0.5)
+        self.assertLessEqual(sim.mapped_gp("nobody", gp=65, rate=65.0),
+                             sim.mapped_gp("nobody", gp=65, rate=35.0) + 0.5)
 
     def test_a_fringe_player_projects_fewer_games_than_a_starter_at_the_same_gp(self):
-        self.assertGreater(sim.project_gp("Desmond Bane"),
-                           sim.project_gp("Sion James") + 4)
+        self.assertGreater(sim.mapped_gp("Desmond Bane"),
+                           sim.mapped_gp("Sion James") + 4)

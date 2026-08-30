@@ -27,7 +27,7 @@ Read this before quoting anything in `findings.md`.
   Absence *blocks* draw a length from `gauss(9, 6)` truncated at 1, so the realised block is
   not 9 — which is why `mean_block` is measured off the same draw rather than quoted.
 - **Derive periods from the API, never from arithmetic.** Real periods run 4–7 nights and
-  **28–56 games** (CV 16.8%); even buckets erase most of the weekly variance the sim
+  **14–55 games**; even buckets erase most of the weekly variance the sim
   exists to explain.
 - **`tests/` guards what these claims rest on** — **its docstrings are the specifics;
   this is the outline:**
@@ -70,11 +70,12 @@ Read this before quoting anything in `findings.md`.
   - the published constants, so a re-scrape cannot move them silently: `PF_PER_WIN`, the
     fitted `project_gp` coefficients, the slot-fill shares, and how few players clear
     45/50/60 FPts/G.
-- **Padding to 38 hands every team the same ten bodies** (`EXPANSION`: 3 rookie grades + 7
-  auction grades), **hand-typed and regardless of the picks that team actually holds.**
-  Nothing here measures how much that assumption is worth, so a cross-team `R` gap of a
-  rate point or two is **not resolved** by these files, and changing a grade re-measures
-  every table in `findings.md`.
+- **Padding to 38 appends that team's held Sept '26 picks** (`data/draft-2026.json`, a
+  one-off) as the Dizzle-prefix prospect at his `projected_rate` (GP 60 — the feed
+  has none), or the late-pick grade if the feed misses him, then the shared FA
+  ladder for whatever slots remain. A deeper live roster or fewer picks means
+  fewer leftover slots and a shorter, better FA fill. Changing a name, a rate, or
+  the draft file re-measures every table in `findings.md`.
 - **GP is fitted** (`sim.py gp`) for every player on every roster. **Rates are projected**
   (`projections`), never posted and never hand-set, and never haircut on top
   (`Eval Definitions §Δw`).
@@ -98,10 +99,12 @@ Read this before quoting anything in `findings.md`.
   that last one is a fact about our roster, not about the format.
 - **Data**, all built by `fetch_data.py` into `data/` and `rosters/`, named for the season — `SEASON` there is the one
   constant to bump, and a roll writes new files instead of overwriting last year's.
-  `nba-schedule-*`: ESPN scoreboard, 165 nights, **1,231 games**, 7.46/night, postponed
-  dropped, NBA Cup final kept as a real 83rd game for NY/SA; '26-27 was unreleased.
-  `league-*`: periods from `eligibleSchedulePeriods` plus every team's PF in every period, so
-  every win figure is auditable. `players-*`: FPts/G and GP for **'21–'25** plus a
+  `LIVE_TAG` is the season being simulated (`nba-schedule-*`, `league-*` dates and
+  pairings). `SEASON_TAG` keeps roster files and last season's scores (`PF_PER_WIN`,
+  calibration). ESPN's '26-27 daymap is 156 nights, **1,200 games**, 80/team; Cup
+  knockouts are still TBD and those nights are dropped. `league-*` live file is
+  periods from `eligibleSchedulePeriods`; scores stay on last season's file so
+  every win figure stays auditable. `players-*`: FPts/G and GP for **'21–'25** plus a
   **birthday** for **684 players**, re-scored under current rules. Which endpoint and field
   is safe to read — and the traps in each — is `get-league-info`'s; check it there before
   changing a fetch.
@@ -136,8 +139,9 @@ either here** (`league-info`).
 12 roster files, projected rates, padded to 38, one engine — so the body count, the projections
 and the sim's own optimism cancel out of the margin instead of booking as an edge. `tests/`
 pins it: inflate every team's rates 10% together and no band's `P(title)` moves more than
-**0.008**. ⚠️ **Not exactly zero, and the residual is ours** — `pad`'s ten bodies carry fixed
-grades no rate feed reaches, so the team holding the most real bodies (us, 28) rescales hardest.
+**0.008**. ⚠️ **Not exactly zero, and the residual is ours** — `pad`'s leftover FA/PAD
+bodies carry fixed grades no rate feed reaches, so the team holding the most real
+bodies rescales hardest.
 
 ⚠️ **A level error that hits one roster and not the field does not cancel**, and nothing here
 is a paired difference against a fixed opponent: `P(title)`, the multiplier and seed-conditional
@@ -192,10 +196,10 @@ projections, same one snapshot of the field — and adds these:
   bracket round. ⚠️ **What it does not carry is one injury persisting into the bracket** — the
   engine's regular-to-bracket correlation is **−0.40**, a GP budget spent early rather than a
   durable absence, so resampling whole engine seasons would import that artifact instead.
-- ⚠️ **The schedule is last season's *shape*.** Next season's does not exist in August. The
-  skeleton is real — 6 games a period, every pair meeting at least once and 8 of 11 twice — and
-  the twelve franchises are **re-dealt onto it every season**, so no team carries last season's
-  opponents forward as though they were next season's.
+- ⚠️ **The slate is this year's.** 19 regular pairings from `league-2026-27.json`,
+  seats not re-dealt. Period 20 is R1 on the wire (`league-info`) and still a
+  generated full slate; 21–23 have dates and no games. NBA nights are
+  `nba-schedule-2026-27.json` (80 games/team until Cup knockouts fill).
 - **Calibration, and the only one available:** a simulated season's twelve win totals spread
   **4.36** against last season's actual **4.17**, on a projected level cv of **0.0937** against
   the wire's **0.0909**. Both realised, so both carry matchup luck. **One league-season is a

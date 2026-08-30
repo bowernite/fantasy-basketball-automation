@@ -2,6 +2,25 @@ import unittest
 from tests.harness import *
 
 class Pad(unittest.TestCase):
+    def test_pad_does_not_invent_rookies_beyond_held_picks(self):
+        ours = sim.our_roster()
+        added = [p["n"] for p in sim.basis()[len(ours):]]
+        with open(os.path.join(sim.DATA_DIR, "draft-2026.json")) as f:
+            picks = json.load(f)["161025"]
+        self.assertEqual(len(picks), 1)
+        self.assertEqual(added[0], "RK0")
+        self.assertTrue(all(n.startswith("FA") for n in added[1:]), added)
+        self.assertEqual(len(added), 38 - len(ours))
+
+    def test_a_team_with_more_picks_gets_more_rookie_pad_bodies(self):
+        with open(os.path.join(sim.DATA_DIR, "draft-2026.json")) as f:
+            board = json.load(f)
+        us = sum(1 for p in sim.basis() if p["n"].startswith("RK"))
+        them = sum(1 for p in sim.basis(ROOKIE_ROSTER) if p["n"].startswith("RK"))
+        self.assertEqual(us, len(board["161025"]))
+        self.assertEqual(them, len(board["160941"]))
+        self.assertGreater(them, us)
+
     def test_the_real_bodies_survive_padding_in_their_own_order(self):
         their = sim.our_roster(THEIR_ROSTER)
         padded = sim.pad(their, 38)
@@ -14,20 +33,45 @@ class Pad(unittest.TestCase):
         self.assertEqual(len(sim.basis(THEIR_ROSTER)), 38)
         self.assertEqual(len(sim.basis()), 38)
 
-    def test_padding_stops_at_38_bodies_rather_than_at_the_end_of_EXPANSION(self):
+    def test_padding_stops_at_38_bodies_rather_than_at_the_end_of_the_fill(self):
         ours = sim.our_roster()
-        padded = sim.pad(ours, 38)
-        short = 38 - len(ours)
+        padded = sim.basis()
         self.assertEqual(len(padded), 38)
-        self.assertEqual([p["n"] for p in padded[len(ours):]],
-                         [p["n"] for p in sim.EXPANSION[:short]])
         self.assertEqual(sim.run(padded, trials=8)["pf"],
-                         sim.run(ours + sim.EXPANSION[:short], trials=8)["pf"])
+                         sim.run(sim.pad(ours, 38, path=sim.ROSTER),
+                                 trials=8)["pf"])
 
     def test_padding_to_the_count_you_already_have_measures_the_same_roster(self):
         their = sim.our_roster(THEIR_ROSTER)
         self.assertEqual(sim.run(sim.pad(their, len(their)), trials=8)["pf"],
                          sim.run(their, trials=8)["pf"])
+
+    def test_a_held_pick_sits_at_its_projected_rate(self):
+        rk = next(p for p in sim.basis() if p["n"] == "RK0")
+        self.assertAlmostEqual(rk["avg"], sim.projected_rate("Karim Lopez"))
+        self.assertEqual(rk["gp"], 60)
+
+    def test_a_better_pick_sits_above_a_worse_one(self):
+        ours = next(p for p in sim.basis() if p["n"] == "RK0")
+        todd = next(p for p in sim.basis("roster-161022-2025-26.json")
+                    if p["n"] == "RK0")
+        self.assertAlmostEqual(todd["avg"], sim.projected_rate("Cameron Boozer"))
+        self.assertGreater(todd["avg"], ours["avg"] + 15)
+
+    def test_a_held_pick_brings_its_own_team_and_eligibility(self):
+        rk = next(p for p in sim.basis() if p["n"] == "RK0")
+        self.assertEqual(rk["tm"], "MEM")
+        self.assertEqual(rk["elig"], ["SF", "PF"])
+
+    def test_a_pick_the_feed_misses_stays_a_late_pick_body(self):
+        with open(os.path.join(sim.DATA_DIR, "draft-2026.json")) as f:
+            picks = json.load(f)["161020"]
+        self.assertEqual(picks[-1]["name"], "Ryan Conwell")
+        self.assertIsNone(sim.projected_rate("Ryan Conwell"))
+        rk = next(p for p in sim.basis(THEIR_ROSTER)
+                  if p["n"] == "RK%d" % (len(picks) - 1))
+        self.assertEqual(rk["avg"], 10.0)
+        self.assertEqual(rk["gp"], 60)
 
 class Backfill(unittest.TestCase):
     def test_a_richer_backfill_grade_lowers_the_breakeven(self):
@@ -108,10 +152,10 @@ class SlotFillCurve(unittest.TestCase):
         lost = {g: (9 - v[1]) * v[3] for g, v in self.by_night.items()}
         tot = sum(lost.values())
         share = lambda upto: sum(v for g, v in lost.items() if g <= upto) / tot
-        self.assertAlmostEqual(share(3), 0.68, delta=0.03)
-        self.assertAlmostEqual(share(5), 0.89, delta=0.03)
-        self.assertAlmostEqual(tot / (9 * len(sim.SCORING_NIGHTS)), 0.091,
-                               delta=0.005)
+        self.assertAlmostEqual(share(3), 0.54, delta=0.03)
+        self.assertAlmostEqual(share(5), 0.89, delta=0.05)
+        self.assertAlmostEqual(tot / (9 * len(sim.SCORING_NIGHTS)), 0.061,
+                               delta=0.01)
 
     def test_far_more_slots_go_empty_for_want_of_a_body_than_a_position(self):
         vals = self.by_night.values()

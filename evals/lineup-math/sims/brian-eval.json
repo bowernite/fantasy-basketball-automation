@@ -1,0 +1,55 @@
+{
+  "sections": [
+    {
+      "kind": "reports",
+      "names": ["title", "weeks", "players", "replacement"],
+      "roster": 161018
+    },
+    {
+      "kind": "title-column",
+      "their_roster": 161018,
+      "include": ["their_incoming"]
+    },
+    {
+      "kind": "player-effects",
+      "their_roster": 161018,
+      "their_label": "Brian",
+      "groups": [
+        {
+          "label": "roster",
+          "source": "their",
+          "names": [
+            "Brandin Podziemski",
+            "Jared McCain",
+            "Kevin Porter",
+            "Tobias Harris",
+            "Julius Randle",
+            "Alex Caruso",
+            "Mitchell Robinson",
+            "Jerami Grant",
+            "Jeremy Sochan",
+            "LaMelo Ball",
+            "Payton Pritchard",
+            "Cam Spencer",
+            "Jordan Miller",
+            "Tyler Herro",
+            "Christian Braun",
+            "Trey Murphy",
+            "Zion Williamson",
+            "Royce O'Neale",
+            "Isaiah Jackson",
+            "Leaky Black",
+            "Nikola Jokić",
+            "Deandre Ayton",
+            "Yang Hansen",
+            "Wendell Carter",
+            "Bradley Beal",
+            "Max Strus",
+            "Nikola Jović",
+            "Jusuf Nurkić"
+          ]
+        }
+      ]
+    }
+  ]
+}

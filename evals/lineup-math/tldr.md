@@ -58,7 +58,8 @@ Value in rate is **linear above ~30** (~52 PF per rate point on a 68-GP body); t
 # GP is the dominant input — and one season of it is enough
 
 ```
-GP = 25.7 + 0.368 × last season's GP + 0.432 × min(last season's FPts/G, 30)
+GP_map = 25.7 + 0.368 × last season's GP + 0.432 × min(last season's FPts/G, 30)
+GPp    = mean(Hashtag, FanScout) when both hit; the one feed if only one; GP_map if neither
 ```
 
 Applied by `our_roster` to **both sides of any trade**, so a counterparty's injured star cannot be priced at his worst season while ours ride forward.
@@ -66,7 +67,7 @@ Applied by `our_roster` to **both sides of any trade**, so a counterparty's inju
 - **One season beats a flat prior; more history does not add; age never helps** — keep age out of GP, and no report here measures an age curve.
 - **The whole exercise is worth ~4% of the error.** GP is a defensible input, not a precise one: **never argue a trade on a few games of GP.**
 - ⚠️ **Over-shrunk** (sd 9.8 against a true 20.5, Spearman 0.35): an iron-man reads too low, a fragile starter too high. **Censored** — a whole missed season is absent from the pool, so every figure is expected GP *given he plays at all*.
-- ⚠️ **Weakest on a fragment season**, where the fragment is the model's only evidence. Flag those rows; don't patch them. External GP feeds do not fix any of this.
+- ⚠️ **Weakest on a fragment season**, where the fragment is the model's only evidence. Flag those rows; don't patch them. Map is fallback when neither feed hits (`Eval Definitions §Durability`).
 - Persistence is low: everyone converges to **~59–62 GP**.
 
 # Durability
@@ -130,7 +131,7 @@ We project **1st of 12** on season PF (30,231), so **band 1–2 applies to us** 
 - **Having to earn the seed costs us 5.8 points** against being handed the 1-seed (0.710 → 0.652), and pays every team below.
 - ⚠️ **Never summed, netted or converted against `Δw`** (`Eval Definitions §ΔP(title)`).
 - ⚠️ **Matchups are decided on the wire's spread (0.1005), not the engine's own draws (0.040)** — availability is all that moves in the engine. Calibration: simulated standings spread 4.36 against the wire's 4.17.
-- ⚠️ **The 19-period schedule is last season's shape, re-dealt every season.** Next season's does not exist yet.
+- ⚠️ **The slate is this year's** — 19 pairings, seats not re-dealt. Period 20 is R1 and still a generated full slate; 21–23 have dates only.
 
 # Sept '26 expansion
 

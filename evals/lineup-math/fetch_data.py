@@ -1,4 +1,4 @@
-"""Rebuild the data files `sim.py` reads. Bump `SEASON`, then run.
+"""Rebuild the data files `sim.py` reads. Bump `SEASON` after a season ends
 
     ./run fetch_data.py            # schedule + league (fast, ~30 requests)
     ./run fetch_data.py pool       # + players-<season>.json (~20 min, resumable)
@@ -16,11 +16,12 @@
 `nba-schedule-*.json`  ET date -> NBA teams playing, from ESPN's scoreboard API
     (NBA CDN and data.nba.com both 403). Postponed games dropped -- ESPN lists
     them at both the original and makeup date. All-Star dropped; NBA Cup final
-    kept (real box scores).
+    kept (real box scores). The engine reads `LIVE_TAG`.
 
 `league-<season>.json`  fantasy calendar + real weekly scores, from
     Fleaflicker. `periods` comes from `eligibleSchedulePeriods` -- do not
-    assume 7-day weeks or 23 of them.
+    assume 7-day weeks or 23 of them. The engine's dates and pairings are
+    `LIVE_TAG`; scores stay on `SEASON_TAG`.
 
 `players-<season>.json`  every player Fleaflicker has data for: FPts/G and GP
     for five past seasons plus a birthday. Feeds the board-rank -> FPts/G
@@ -49,8 +50,10 @@ def dest_path(name):
 # `sim.py` imports SEASON from here, not vice versa, since it loads these data
 # files at import time. Filenames carry the tag so bumping this writes new
 # files instead of overwriting last season's
-SEASON = 2025                                  # Fleaflicker start-year: '25-26
+SEASON = 2025                                  # Fleaflicker start-year: last completed
 SEASON_TAG = "%d-%02d" % (SEASON, (SEASON + 1) % 100)
+LIVE_SEASON = SEASON + 1
+LIVE_TAG = "%d-%02d" % (LIVE_SEASON, (LIVE_SEASON + 1) % 100)
 
 MONTHS = (["%d%02d" % (SEASON, m) for m in (10, 11, 12)]
           + ["%d%02d" % (SEASON + 1, m) for m in (1, 2, 3, 4)])
@@ -111,8 +114,10 @@ def fantasy_calendar():
         for g in r["games"]:                     # dedupe on game id
             kinds.add("playoff" if g.get("isPlayoffs") else
                       "consolation" if g.get("isConsolation") else "regular")
-            games[g["id"]] = [g["away"]["name"], g["awayScore"]["score"]["value"],
-                              g["home"]["name"], g["homeScore"]["score"]["value"]]
+            games[g["id"]] = [g["away"]["name"],
+                              g["awayScore"]["score"].get("value", 0.0),
+                              g["home"]["name"],
+                              g["homeScore"]["score"].get("value", 0.0)]
         periods.append({"ordinal": p["ordinal"], "start": day("low"),
                         "end": day("high"), "kinds": sorted(kinds),
                         "games": [games[k] for k in sorted(games)]})

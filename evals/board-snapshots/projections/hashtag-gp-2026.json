@@ -1,0 +1,2160 @@
+{
+ "season": "2026-27",
+ "source": "hashtag basketball projections",
+ "duration": "0",
+ "duration_label": "2026-27 Rest of Season Projections",
+ "updated": "29 August 2026 by Joseph Mamone",
+ "depth": 430,
+ "rows": [
+  {
+   "name": "Nikola Jokic",
+   "gp": 72.0,
+   "team": "DEN"
+  },
+  {
+   "name": "Victor Wembanyama",
+   "gp": 66.0,
+   "team": "SA"
+  },
+  {
+   "name": "Shai Gilgeous-Alexander",
+   "gp": 71.0,
+   "team": "OKC"
+  },
+  {
+   "name": "Luka Doncic",
+   "gp": 68.0,
+   "team": "LAL"
+  },
+  {
+   "name": "Cade Cunningham",
+   "gp": 68.0,
+   "team": "DET"
+  },
+  {
+   "name": "Jayson Tatum",
+   "gp": 68.0,
+   "team": "BOS"
+  },
+  {
+   "name": "Anthony Edwards",
+   "gp": 74.0,
+   "team": "MIN"
+  },
+  {
+   "name": "Tyrese Maxey",
+   "gp": 70.0,
+   "team": "PHI"
+  },
+  {
+   "name": "Stephen Curry",
+   "gp": 60.0,
+   "team": "GS"
+  },
+  {
+   "name": "Kevin Durant",
+   "gp": 70.0,
+   "team": "HOU"
+  },
+  {
+   "name": "Anthony Davis",
+   "gp": 65.0,
+   "team": "WAS"
+  },
+  {
+   "name": "Donovan Mitchell",
+   "gp": 72.0,
+   "team": "CLE"
+  },
+  {
+   "name": "Tyrese Haliburton",
+   "gp": 63.0,
+   "team": "IND"
+  },
+  {
+   "name": "Jamal Murray",
+   "gp": 73.0,
+   "team": "DEN"
+  },
+  {
+   "name": "Karl-Anthony Towns",
+   "gp": 73.0,
+   "team": "NY"
+  },
+  {
+   "name": "Cooper Flagg",
+   "gp": 72.0,
+   "team": "DAL"
+  },
+  {
+   "name": "Kawhi Leonard",
+   "gp": 65.0,
+   "team": "TOR"
+  },
+  {
+   "name": "Jalen Johnson",
+   "gp": 72.0,
+   "team": "ATL"
+  },
+  {
+   "name": "Trae Young",
+   "gp": 70.0,
+   "team": "WAS"
+  },
+  {
+   "name": "Trey Murphy III",
+   "gp": 68.0,
+   "team": "NO"
+  },
+  {
+   "name": "Scottie Barnes",
+   "gp": 80.0,
+   "team": "TOR"
+  },
+  {
+   "name": "Chet Holmgren",
+   "gp": 70.0,
+   "team": "OKC"
+  },
+  {
+   "name": "James Harden",
+   "gp": 72.0,
+   "team": "CLE"
+  },
+  {
+   "name": "Austin Reaves",
+   "gp": 70.0,
+   "team": "LAL"
+  },
+  {
+   "name": "Kyrie Irving",
+   "gp": 55.0,
+   "team": "DAL"
+  },
+  {
+   "name": "Jaren Jackson Jr.",
+   "gp": 67.0,
+   "team": "UTA"
+  },
+  {
+   "name": "Amen Thompson",
+   "gp": 76.0,
+   "team": "HOU"
+  },
+  {
+   "name": "Evan Mobley",
+   "gp": 72.0,
+   "team": "CLE"
+  },
+  {
+   "name": "Dejounte Murray",
+   "gp": 65.0,
+   "team": "NO"
+  },
+  {
+   "name": "Devin Booker",
+   "gp": 68.0,
+   "team": "PHO"
+  },
+  {
+   "name": "Lauri Markkanen",
+   "gp": 65.0,
+   "team": "UTA"
+  },
+  {
+   "name": "Desmond Bane",
+   "gp": 76.0,
+   "team": "ORL"
+  },
+  {
+   "name": "Giannis Antetokounmpo",
+   "gp": 69.0,
+   "team": "MIA"
+  },
+  {
+   "name": "Josh Giddey",
+   "gp": 70.0,
+   "team": "CHI"
+  },
+  {
+   "name": "Zach Edey",
+   "gp": 65.0,
+   "team": "MEM"
+  },
+  {
+   "name": "Jalen Duren",
+   "gp": 70.0,
+   "team": "DET"
+  },
+  {
+   "name": "Darius Garland",
+   "gp": 68.0,
+   "team": "LAC"
+  },
+  {
+   "name": "Jalen Williams",
+   "gp": 68.0,
+   "team": "OKC"
+  },
+  {
+   "name": "Domantas Sabonis",
+   "gp": 70.0,
+   "team": "SAC"
+  },
+  {
+   "name": "LeBron James",
+   "gp": 60.0,
+   "team": "PHI"
+  },
+  {
+   "name": "Derrick White",
+   "gp": 75.0,
+   "team": "BOS"
+  },
+  {
+   "name": "Tyler Herro",
+   "gp": 64.0,
+   "team": "MIL"
+  },
+  {
+   "name": "Jalen Brunson",
+   "gp": 72.0,
+   "team": "NY"
+  },
+  {
+   "name": "Nickeil Alexander-Walker",
+   "gp": 76.0,
+   "team": "ATL"
+  },
+  {
+   "name": "Franz Wagner",
+   "gp": 64.0,
+   "team": "ORL"
+  },
+  {
+   "name": "Walker Kessler",
+   "gp": 68.0,
+   "team": "LAL"
+  },
+  {
+   "name": "Onyeka Okongwu",
+   "gp": 74.0,
+   "team": "ATL"
+  },
+  {
+   "name": "LaMelo Ball",
+   "gp": 65.0,
+   "team": "MIN"
+  },
+  {
+   "name": "Joel Embiid",
+   "gp": 52.0,
+   "team": "PHI"
+  },
+  {
+   "name": "Kel'el Ware",
+   "gp": 74.0,
+   "team": "MIL"
+  },
+  {
+   "name": "Paul George",
+   "gp": 58.0,
+   "team": "BOS"
+  },
+  {
+   "name": "Bam Adebayo",
+   "gp": 74.0,
+   "team": "MIA"
+  },
+  {
+   "name": "Jalen Suggs",
+   "gp": 60.0,
+   "team": "ORL"
+  },
+  {
+   "name": "Brandon Miller",
+   "gp": 69.0,
+   "team": "CHA"
+  },
+  {
+   "name": "Matas Buzelis",
+   "gp": 75.0,
+   "team": "CHI"
+  },
+  {
+   "name": "Alperen Seng\u00fcn",
+   "gp": 72.0,
+   "team": "HOU"
+  },
+  {
+   "name": "Kon Knueppel",
+   "gp": 74.0,
+   "team": "CHA"
+  },
+  {
+   "name": "OG Anunoby",
+   "gp": 68.0,
+   "team": "NY"
+  },
+  {
+   "name": "Kristaps Porzingis",
+   "gp": 51.0,
+   "team": "GS"
+  },
+  {
+   "name": "Damian Lillard",
+   "gp": 55.0,
+   "team": "POR"
+  },
+  {
+   "name": "Brandon Ingram",
+   "gp": 72.0,
+   "team": "LAC"
+  },
+  {
+   "name": "Jimmy Butler III",
+   "gp": 25.0,
+   "team": "GS"
+  },
+  {
+   "name": "Donovan Clingan",
+   "gp": 74.0,
+   "team": "POR"
+  },
+  {
+   "name": "Cameron Boozer",
+   "gp": 70.0,
+   "team": "MEM"
+  },
+  {
+   "name": "Ty Jerome",
+   "gp": 60.0,
+   "team": "MEM"
+  },
+  {
+   "name": "Naz Reid",
+   "gp": 74.0,
+   "team": "CHA"
+  },
+  {
+   "name": "Ryan Rollins",
+   "gp": 72.0,
+   "team": "MIL"
+  },
+  {
+   "name": "Ivica Zubac",
+   "gp": 72.0,
+   "team": "IND"
+  },
+  {
+   "name": "Pascal Siakam",
+   "gp": 72.0,
+   "team": "IND"
+  },
+  {
+   "name": "Jaden McDaniels",
+   "gp": 74.0,
+   "team": "MIN"
+  },
+  {
+   "name": "Zach LaVine",
+   "gp": 68.0,
+   "team": "SAC"
+  },
+  {
+   "name": "John Collins",
+   "gp": 70.0,
+   "team": "DET"
+  },
+  {
+   "name": "Mark Williams",
+   "gp": 62.0,
+   "team": "PHO"
+  },
+  {
+   "name": "Immanuel Quickley",
+   "gp": 70.0,
+   "team": "TOR"
+  },
+  {
+   "name": "Michael Porter Jr.",
+   "gp": 60.0,
+   "team": "BKN"
+  },
+  {
+   "name": "Jaylen Brown",
+   "gp": 70.0,
+   "team": "PHI"
+  },
+  {
+   "name": "Deni Avdija",
+   "gp": 68.0,
+   "team": "POR"
+  },
+  {
+   "name": "De'Aaron Fox",
+   "gp": 72.0,
+   "team": "SA"
+  },
+  {
+   "name": "Dyson Daniels",
+   "gp": 75.0,
+   "team": "ATL"
+  },
+  {
+   "name": "Day'Ron Sharpe",
+   "gp": 68.0,
+   "team": "BKN"
+  },
+  {
+   "name": "Jarrett Allen",
+   "gp": 70.0,
+   "team": "CLE"
+  },
+  {
+   "name": "Ja Morant",
+   "gp": 62.0,
+   "team": "POR"
+  },
+  {
+   "name": "Keyonte George",
+   "gp": 70.0,
+   "team": "UTA"
+  },
+  {
+   "name": "Josh Hart",
+   "gp": 68.0,
+   "team": "NY"
+  },
+  {
+   "name": "Julius Randle",
+   "gp": 75.0,
+   "team": "BKN"
+  },
+  {
+   "name": "VJ Edgecombe",
+   "gp": 74.0,
+   "team": "PHI"
+  },
+  {
+   "name": "Andrew Wiggins",
+   "gp": 68.0,
+   "team": "MIA"
+  },
+  {
+   "name": "Payton Pritchard",
+   "gp": 77.0,
+   "team": "BOS"
+  },
+  {
+   "name": "Ajay Mitchell",
+   "gp": 68.0,
+   "team": "OKC"
+  },
+  {
+   "name": "Jakob Poeltl",
+   "gp": 58.0,
+   "team": "TOR"
+  },
+  {
+   "name": "Isaiah Hartenstein",
+   "gp": 68.0,
+   "team": "OKC"
+  },
+  {
+   "name": "Keegan Murray",
+   "gp": 72.0,
+   "team": "SAC"
+  },
+  {
+   "name": "Cameron Johnson",
+   "gp": 60.0,
+   "team": "DEN"
+  },
+  {
+   "name": "Coby White",
+   "gp": 72.0,
+   "team": "CHA"
+  },
+  {
+   "name": "Myles Turner",
+   "gp": 70.0,
+   "team": "MIL"
+  },
+  {
+   "name": "Norman Powell",
+   "gp": 65.0,
+   "team": "CHI"
+  },
+  {
+   "name": "Neemias Queta",
+   "gp": 75.0,
+   "team": "BOS"
+  },
+  {
+   "name": "Derik Queen",
+   "gp": 80.0,
+   "team": "NO"
+  },
+  {
+   "name": "Paolo Banchero",
+   "gp": 73.0,
+   "team": "ORL"
+  },
+  {
+   "name": "Ausar Thompson",
+   "gp": 74.0,
+   "team": "DET"
+  },
+  {
+   "name": "Mikal Bridges",
+   "gp": 80.0,
+   "team": "NY"
+  },
+  {
+   "name": "Cason Wallace",
+   "gp": 78.0,
+   "team": "OKC"
+  },
+  {
+   "name": "Sandro Mamukelashvili",
+   "gp": 74.0,
+   "team": "LAL"
+  },
+  {
+   "name": "Zion Williamson",
+   "gp": 60.0,
+   "team": "NO"
+  },
+  {
+   "name": "Dylan Harper",
+   "gp": 72.0,
+   "team": "SA"
+  },
+  {
+   "name": "Miles Bridges",
+   "gp": 72.0,
+   "team": "PHO"
+  },
+  {
+   "name": "Rudy Gobert",
+   "gp": 74.0,
+   "team": "MIN"
+  },
+  {
+   "name": "Collin Murray-Boyles",
+   "gp": 68.0,
+   "team": "TOR"
+  },
+  {
+   "name": "Alexandre Sarr",
+   "gp": 68.0,
+   "team": "WAS"
+  },
+  {
+   "name": "Christian Braun",
+   "gp": 72.0,
+   "team": "DEN"
+  },
+  {
+   "name": "Tre Jones",
+   "gp": 68.0,
+   "team": "CHI"
+  },
+  {
+   "name": "Brandin Podziemski",
+   "gp": 78.0,
+   "team": "GS"
+  },
+  {
+   "name": "De'Andre Hunter",
+   "gp": 65.0,
+   "team": "SAC"
+  },
+  {
+   "name": "Jabari Smith Jr.",
+   "gp": 75.0,
+   "team": "HOU"
+  },
+  {
+   "name": "Caleb Wilson",
+   "gp": 72.0,
+   "team": "CHI"
+  },
+  {
+   "name": "Cedric Coward",
+   "gp": 70.0,
+   "team": "MEM"
+  },
+  {
+   "name": "Reed Sheppard",
+   "gp": 74.0,
+   "team": "HOU"
+  },
+  {
+   "name": "Paul Reed",
+   "gp": 69.0,
+   "team": "DET"
+  },
+  {
+   "name": "Kevin Porter Jr.",
+   "gp": 60.0,
+   "team": "MIL"
+  },
+  {
+   "name": "Quentin Grimes",
+   "gp": 74.0,
+   "team": "LAL"
+  },
+  {
+   "name": "Draymond Green",
+   "gp": 68.0,
+   "team": "GS"
+  },
+  {
+   "name": "Toumani Camara",
+   "gp": 80.0,
+   "team": "POR"
+  },
+  {
+   "name": "Collin Gillespie",
+   "gp": 75.0,
+   "team": "PHO"
+  },
+  {
+   "name": "Cam Spencer",
+   "gp": 65.0,
+   "team": "MEM"
+  },
+  {
+   "name": "Gui Santos",
+   "gp": 72.0,
+   "team": "GS"
+  },
+  {
+   "name": "Jrue Holiday",
+   "gp": 54.0,
+   "team": "POR"
+  },
+  {
+   "name": "DeMar DeRozan",
+   "gp": 72.0,
+   "team": "DEN"
+  },
+  {
+   "name": "Devin Vassell",
+   "gp": 68.0,
+   "team": "SA"
+  },
+  {
+   "name": "Saddiq Bey",
+   "gp": 72.0,
+   "team": "NO"
+  },
+  {
+   "name": "Aaron Nesmith",
+   "gp": 69.0,
+   "team": "IND"
+  },
+  {
+   "name": "CJ McCollum",
+   "gp": 73.0,
+   "team": "ATL"
+  },
+  {
+   "name": "Robert Williams III",
+   "gp": 60.0,
+   "team": "POR"
+  },
+  {
+   "name": "Fred VanVleet",
+   "gp": 60.0,
+   "team": "HOU"
+  },
+  {
+   "name": "Andrew Nembhard",
+   "gp": 64.0,
+   "team": "IND"
+  },
+  {
+   "name": "Egor Demin",
+   "gp": 69.0,
+   "team": "BKN"
+  },
+  {
+   "name": "Peyton Watson",
+   "gp": 70.0,
+   "team": "CLE"
+  },
+  {
+   "name": "Jalen Green",
+   "gp": 69.0,
+   "team": "PHO"
+  },
+  {
+   "name": "Mitchell Robinson",
+   "gp": 65.0,
+   "team": "BOS"
+  },
+  {
+   "name": "Kyshawn George",
+   "gp": 68.0,
+   "team": "WAS"
+  },
+  {
+   "name": "Jusuf Nurkic",
+   "gp": 58.0,
+   "team": "UTA"
+  },
+  {
+   "name": "Anthony Black",
+   "gp": 68.0,
+   "team": "ORL"
+  },
+  {
+   "name": "P.J. Washington",
+   "gp": 68.0,
+   "team": "DAL"
+  },
+  {
+   "name": "Ayo Dosunmu",
+   "gp": 73.0,
+   "team": "MIN"
+  },
+  {
+   "name": "Aaron Gordon",
+   "gp": 58.0,
+   "team": "DEN"
+  },
+  {
+   "name": "Tari Eason",
+   "gp": 60.0,
+   "team": "HOU"
+  },
+  {
+   "name": "Malik Monk",
+   "gp": 68.0,
+   "team": "SAC"
+  },
+  {
+   "name": "Bobby Portis",
+   "gp": 68.0,
+   "team": "MIA"
+  },
+  {
+   "name": "Jaime Jaquez Jr.",
+   "gp": 72.0,
+   "team": "MIL"
+  },
+  {
+   "name": "Nicolas Claxton",
+   "gp": 70.0,
+   "team": "CHI"
+  },
+  {
+   "name": "Wendell Carter Jr.",
+   "gp": 70.0,
+   "team": "ORL"
+  },
+  {
+   "name": "Stephon Castle",
+   "gp": 70.0,
+   "team": "SA"
+  },
+  {
+   "name": "Tobias Harris",
+   "gp": 65.0,
+   "team": "SA"
+  },
+  {
+   "name": "Dereck Lively II",
+   "gp": 55.0,
+   "team": "DAL"
+  },
+  {
+   "name": "Darryn Peterson",
+   "gp": 68.0,
+   "team": "UTA"
+  },
+  {
+   "name": "Isaiah Stewart",
+   "gp": 64.0,
+   "team": "MEM"
+  },
+  {
+   "name": "Santi Aldama",
+   "gp": 64.0,
+   "team": "DAL"
+  },
+  {
+   "name": "Jaylin Williams",
+   "gp": 68.0,
+   "team": "OKC"
+  },
+  {
+   "name": "Joan Beringer",
+   "gp": 69.0,
+   "team": "MIN"
+  },
+  {
+   "name": "Isaiah Joe",
+   "gp": 70.0,
+   "team": "DET"
+  },
+  {
+   "name": "Julian Champagnie",
+   "gp": 75.0,
+   "team": "SA"
+  },
+  {
+   "name": "Naji Marshall",
+   "gp": 72.0,
+   "team": "DAL"
+  },
+  {
+   "name": "Obi Toppin",
+   "gp": 60.0,
+   "team": "IND"
+  },
+  {
+   "name": "Bradley Beal",
+   "gp": 50.0,
+   "team": "LAC"
+  },
+  {
+   "name": "Grayson Allen",
+   "gp": 64.0,
+   "team": "CHA"
+  },
+  {
+   "name": "Collin Sexton",
+   "gp": 70.0,
+   "team": "LAL"
+  },
+  {
+   "name": "Moussa Diabat\u00e9",
+   "gp": 72.0,
+   "team": "CHA"
+  },
+  {
+   "name": "Herbert Jones",
+   "gp": 68.0,
+   "team": "NO"
+  },
+  {
+   "name": "Yanic Konan Niederhauser",
+   "gp": 50.0,
+   "team": "LAC"
+  },
+  {
+   "name": "RJ Barrett",
+   "gp": 58.0,
+   "team": "TOR"
+  },
+  {
+   "name": "Kelly Oubre Jr.",
+   "gp": 64.0,
+   "team": "IND"
+  },
+  {
+   "name": "Max Christie",
+   "gp": 75.0,
+   "team": "DAL"
+  },
+  {
+   "name": "Davion Mitchell",
+   "gp": 73.0,
+   "team": "MIA"
+  },
+  {
+   "name": "Dillon Brooks",
+   "gp": 63.0,
+   "team": "PHO"
+  },
+  {
+   "name": "Ace Bailey",
+   "gp": 72.0,
+   "team": "UTA"
+  },
+  {
+   "name": "Yaxel Lendeborg",
+   "gp": 72.0,
+   "team": "GS"
+  },
+  {
+   "name": "Jay Huff",
+   "gp": 74.0,
+   "team": "IND"
+  },
+  {
+   "name": "Scotty Pippen Jr.",
+   "gp": 50.0,
+   "team": "MEM"
+  },
+  {
+   "name": "Nikola Vucevic",
+   "gp": 64.0,
+   "team": "ORL"
+  },
+  {
+   "name": "De'Anthony Melton",
+   "gp": 55.0,
+   "team": "GS"
+  },
+  {
+   "name": "Max Strus",
+   "gp": 68.0,
+   "team": "LAC"
+  },
+  {
+   "name": "Daniel Gafford",
+   "gp": 64.0,
+   "team": "DAL"
+  },
+  {
+   "name": "Daniss Jenkins",
+   "gp": 72.0,
+   "team": "DET"
+  },
+  {
+   "name": "Anfernee Simons",
+   "gp": 67.0,
+   "team": "PHI"
+  },
+  {
+   "name": "Royce O'Neale",
+   "gp": 70.0,
+   "team": "CHA"
+  },
+  {
+   "name": "Ryan Kalkbrenner",
+   "gp": 68.0,
+   "team": "CHA"
+  },
+  {
+   "name": "Duncan Robinson",
+   "gp": 76.0,
+   "team": "DET"
+  },
+  {
+   "name": "Jerami Grant",
+   "gp": 50.0,
+   "team": "MEM"
+  },
+  {
+   "name": "Luke Kornet",
+   "gp": 68.0,
+   "team": "SA"
+  },
+  {
+   "name": "Jared McCain",
+   "gp": 72.0,
+   "team": "OKC"
+  },
+  {
+   "name": "Alex Caruso",
+   "gp": 58.0,
+   "team": "OKC"
+  },
+  {
+   "name": "Rui Hachimura",
+   "gp": 70.0,
+   "team": "LAC"
+  },
+  {
+   "name": "Kris Dunn",
+   "gp": 72.0,
+   "team": "LAC"
+  },
+  {
+   "name": "Sam Merrill",
+   "gp": 65.0,
+   "team": "CLE"
+  },
+  {
+   "name": "Mikel Brown Jr.",
+   "gp": 69.0,
+   "team": "BKN"
+  },
+  {
+   "name": "Darius Acuff Jr.",
+   "gp": 72.0,
+   "team": "SAC"
+  },
+  {
+   "name": "Derrick Jones Jr.",
+   "gp": 58.0,
+   "team": "LAC"
+  },
+  {
+   "name": "Maxime Raynaud",
+   "gp": 72.0,
+   "team": "SAC"
+  },
+  {
+   "name": "Shaedon Sharpe",
+   "gp": 44.0,
+   "team": "POR"
+  },
+  {
+   "name": "Scoot Henderson",
+   "gp": 60.0,
+   "team": "POR"
+  },
+  {
+   "name": "Allen Graves",
+   "gp": 70.0,
+   "team": "TOR"
+  },
+  {
+   "name": "Jeremiah Fears",
+   "gp": 74.0,
+   "team": "NO"
+  },
+  {
+   "name": "Matisse Thybulle",
+   "gp": 50.0,
+   "team": "LAL"
+  },
+  {
+   "name": "Dru Smith",
+   "gp": 72.0,
+   "team": "MIA"
+  },
+  {
+   "name": "Aaron Wiggins",
+   "gp": 64.0,
+   "team": "ATL"
+  },
+  {
+   "name": "Brook Lopez",
+   "gp": 60.0,
+   "team": "LAC"
+  },
+  {
+   "name": "Bilal Coulibaly",
+   "gp": 60.0,
+   "team": "WAS"
+  },
+  {
+   "name": "Brice Sensabaugh",
+   "gp": 74.0,
+   "team": "UTA"
+  },
+  {
+   "name": "Jonathan Kuminga",
+   "gp": 70.0,
+   "team": "MIN"
+  },
+  {
+   "name": "Marcus Smart",
+   "gp": 60.0,
+   "team": "HOU"
+  },
+  {
+   "name": "Bennedict Mathurin",
+   "gp": 60.0,
+   "team": "NO"
+  },
+  {
+   "name": "Deandre Ayton",
+   "gp": 68.0,
+   "team": "WAS"
+  },
+  {
+   "name": "Jordan Goodwin",
+   "gp": 60.0,
+   "team": "PHO"
+  },
+  {
+   "name": "Keldon Johnson",
+   "gp": 76.0,
+   "team": "SA"
+  },
+  {
+   "name": "Miles McBride",
+   "gp": 68.0,
+   "team": "NY"
+  },
+  {
+   "name": "Bones Hyland",
+   "gp": 72.0,
+   "team": "MIN"
+  },
+  {
+   "name": "Jalen Smith",
+   "gp": 58.0,
+   "team": "CHI"
+  },
+  {
+   "name": "Tim Hardaway Jr.",
+   "gp": 78.0,
+   "team": "MIA"
+  },
+  {
+   "name": "Keon Ellis",
+   "gp": 68.0,
+   "team": "BKN"
+  },
+  {
+   "name": "Gary Payton II",
+   "gp": 74.0,
+   "team": "GS"
+  },
+  {
+   "name": "Will Richard",
+   "gp": 72.0,
+   "team": "GS"
+  },
+  {
+   "name": "Moses Moody",
+   "gp": 30.0,
+   "team": "GS"
+  },
+  {
+   "name": "Ja'Kobe Walter",
+   "gp": 74.0,
+   "team": "TOR"
+  },
+  {
+   "name": "Dennis Schr\u00f6der",
+   "gp": 70.0,
+   "team": "CHA"
+  },
+  {
+   "name": "Jaylen Wells",
+   "gp": 70.0,
+   "team": "MEM"
+  },
+  {
+   "name": "Al Horford",
+   "gp": 53.0,
+   "team": "GS"
+  },
+  {
+   "name": "T.J. McConnell",
+   "gp": 50.0,
+   "team": "IND"
+  },
+  {
+   "name": "Charles Bassey",
+   "gp": 55.0,
+   "team": "GS"
+  },
+  {
+   "name": "Andre Drummond",
+   "gp": 68.0,
+   "team": "NY"
+  },
+  {
+   "name": "Goga Bitadze",
+   "gp": 65.0,
+   "team": "ORL"
+  },
+  {
+   "name": "Adem Bona",
+   "gp": 72.0,
+   "team": "PHI"
+  },
+  {
+   "name": "Jaylon Tyson",
+   "gp": 70.0,
+   "team": "CLE"
+  },
+  {
+   "name": "Danny Wolf",
+   "gp": 67.0,
+   "team": "BKN"
+  },
+  {
+   "name": "Luke Kennard",
+   "gp": 70.0,
+   "team": "PHO"
+  },
+  {
+   "name": "Zaccharie Risacher",
+   "gp": 70.0,
+   "team": "DAL"
+  },
+  {
+   "name": "Jarace Walker",
+   "gp": 72.0,
+   "team": "IND"
+  },
+  {
+   "name": "Sam Hauser",
+   "gp": 74.0,
+   "team": "BOS"
+  },
+  {
+   "name": "Luguentz Dort",
+   "gp": 68.0,
+   "team": "ATL"
+  },
+  {
+   "name": "Yves Missi",
+   "gp": 68.0,
+   "team": "NO"
+  },
+  {
+   "name": "Jordan Poole",
+   "gp": 50.0,
+   "team": "NO"
+  },
+  {
+   "name": "Kyle Anderson",
+   "gp": 61.0,
+   "team": "TOR"
+  },
+  {
+   "name": "AJ Dybantsa",
+   "gp": 70.0,
+   "team": "WAS"
+  },
+  {
+   "name": "Jamal Shead",
+   "gp": 76.0,
+   "team": "TOR"
+  },
+  {
+   "name": "Noah Clowney",
+   "gp": 64.0,
+   "team": "BKN"
+  },
+  {
+   "name": "Zach Collins",
+   "gp": 40.0,
+   "team": "CHI"
+  },
+  {
+   "name": "Pelle Larsson",
+   "gp": 71.0,
+   "team": "MIA"
+  },
+  {
+   "name": "Dylan Cardwell",
+   "gp": 50.0,
+   "team": "SAC"
+  },
+  {
+   "name": "Isaac Okoro",
+   "gp": 68.0,
+   "team": "CHI"
+  },
+  {
+   "name": "Ron Holland II",
+   "gp": 76.0,
+   "team": "DET"
+  },
+  {
+   "name": "Precious Achiuwa",
+   "gp": 72.0,
+   "team": "SAC"
+  },
+  {
+   "name": "Brayden Burries",
+   "gp": 69.0,
+   "team": "MIL"
+  },
+  {
+   "name": "Kevin Huerter",
+   "gp": 60.0,
+   "team": "DET"
+  },
+  {
+   "name": "Moritz Wagner",
+   "gp": 60.0,
+   "team": "BKN"
+  },
+  {
+   "name": "Nique Clifford",
+   "gp": 72.0,
+   "team": "SAC"
+  },
+  {
+   "name": "Jake LaRavia",
+   "gp": 70.0,
+   "team": "LAL"
+  },
+  {
+   "name": "Justin Champagnie",
+   "gp": 60.0,
+   "team": "WAS"
+  },
+  {
+   "name": "Ziaire Williams",
+   "gp": 65.0,
+   "team": "LAL"
+  },
+  {
+   "name": "Kasparas Jakucionis",
+   "gp": 60.0,
+   "team": "MIL"
+  },
+  {
+   "name": "Keaton Wagler",
+   "gp": 70.0,
+   "team": "LAC"
+  },
+  {
+   "name": "Tre Johnson",
+   "gp": 65.0,
+   "team": "WAS"
+  },
+  {
+   "name": "Leonard Miller",
+   "gp": 50.0,
+   "team": "CHI"
+  },
+  {
+   "name": "Tristan da Silva",
+   "gp": 70.0,
+   "team": "ORL"
+  },
+  {
+   "name": "Kyle Filipowski",
+   "gp": 70.0,
+   "team": "UTA"
+  },
+  {
+   "name": "Marvin Bagley III",
+   "gp": 58.0,
+   "team": "DEN"
+  },
+  {
+   "name": "Klay Thompson",
+   "gp": 60.0,
+   "team": "MIA"
+  },
+  {
+   "name": "Isaiah Jackson",
+   "gp": 50.0,
+   "team": "LAC"
+  },
+  {
+   "name": "Javon Small",
+   "gp": 40.0,
+   "team": "MEM"
+  },
+  {
+   "name": "Karlo Matkovic",
+   "gp": 60.0,
+   "team": "NO"
+  },
+  {
+   "name": "Kobe Sanders",
+   "gp": 65.0,
+   "team": "LAC"
+  },
+  {
+   "name": "Quinten Post",
+   "gp": 64.0,
+   "team": "MEM"
+  },
+  {
+   "name": "Grant Williams",
+   "gp": 50.0,
+   "team": "CHA"
+  },
+  {
+   "name": "Walter Clayton Jr.",
+   "gp": 64.0,
+   "team": "MEM"
+  },
+  {
+   "name": "Jarred Vanderbilt",
+   "gp": 67.0,
+   "team": "LAL"
+  },
+  {
+   "name": "Dominick Barlow",
+   "gp": 65.0,
+   "team": "PHI"
+  },
+  {
+   "name": "Harrison Barnes",
+   "gp": 64.0,
+   "team": "SA"
+  },
+  {
+   "name": "Mouhamed Gueye",
+   "gp": 70.0,
+   "team": "ATL"
+  },
+  {
+   "name": "Thomas Bryant",
+   "gp": 60.0,
+   "team": "CLE"
+  },
+  {
+   "name": "Jaxson Hayes",
+   "gp": 64.0,
+   "team": "UTA"
+  },
+  {
+   "name": "Kentavious Caldwell-Pope",
+   "gp": 68.0,
+   "team": "PHI"
+  },
+  {
+   "name": "Jordan Walsh",
+   "gp": 67.0,
+   "team": "BOS"
+  },
+  {
+   "name": "Luka Garza",
+   "gp": 65.0,
+   "team": "BOS"
+  },
+  {
+   "name": "Ryan Dunn",
+   "gp": 70.0,
+   "team": "PHO"
+  },
+  {
+   "name": "Dean Wade",
+   "gp": 65.0,
+   "team": "PHI"
+  },
+  {
+   "name": "Kenrich Williams",
+   "gp": 60.0,
+   "team": "OKC"
+  },
+  {
+   "name": "AJ Green",
+   "gp": 65.0,
+   "team": "MIL"
+  },
+  {
+   "name": "Khris Middleton",
+   "gp": 40.0,
+   "team": "WAS"
+  },
+  {
+   "name": "Landry Shamet",
+   "gp": 65.0,
+   "team": "NY"
+  },
+  {
+   "name": "Terance Mann",
+   "gp": 55.0,
+   "team": "BKN"
+  },
+  {
+   "name": "Khaman Maluach",
+   "gp": 60.0,
+   "team": "PHO"
+  },
+  {
+   "name": "Jordan Miller",
+   "gp": 20.0,
+   "team": "LAC"
+  },
+  {
+   "name": "Craig Porter Jr.",
+   "gp": 60.0,
+   "team": "CLE"
+  },
+  {
+   "name": "Hugo Gonz\u00e1lez",
+   "gp": 72.0,
+   "team": "BOS"
+  },
+  {
+   "name": "Josh Minott",
+   "gp": 48.0,
+   "team": "BKN"
+  },
+  {
+   "name": "Simone Fontecchio",
+   "gp": 72.0,
+   "team": "MIA"
+  },
+  {
+   "name": "Bub Carrington",
+   "gp": 74.0,
+   "team": "WAS"
+  },
+  {
+   "name": "Kyle Kuzma",
+   "gp": 60.0,
+   "team": "MIL"
+  },
+  {
+   "name": "Morez Johnson Jr.",
+   "gp": 50.0,
+   "team": "DAL"
+  },
+  {
+   "name": "Javonte Green",
+   "gp": 70.0,
+   "team": "DET"
+  },
+  {
+   "name": "Isaiah Collier",
+   "gp": 65.0,
+   "team": "UTA"
+  },
+  {
+   "name": "Nikola Jovic",
+   "gp": 61.0,
+   "team": "MIA"
+  },
+  {
+   "name": "Taylor Hendricks",
+   "gp": 60.0,
+   "team": "MEM"
+  },
+  {
+   "name": "Spencer Jones",
+   "gp": 68.0,
+   "team": "DEN"
+  },
+  {
+   "name": "V\u00edt Krejc\u00ed",
+   "gp": 60.0,
+   "team": "POR"
+  },
+  {
+   "name": "Tyus Jones",
+   "gp": 72.0,
+   "team": "DEN"
+  },
+  {
+   "name": "GG Jackson II",
+   "gp": 40.0,
+   "team": "MEM"
+  },
+  {
+   "name": "Jock Landale",
+   "gp": 67.0,
+   "team": "ATL"
+  },
+  {
+   "name": "Jose Alvarado",
+   "gp": 70.0,
+   "team": "NY"
+  },
+  {
+   "name": "Jevon Carter",
+   "gp": 60.0,
+   "team": "ORL"
+  },
+  {
+   "name": "Nolan Traor\u00e9",
+   "gp": 64.0,
+   "team": "BKN"
+  },
+  {
+   "name": "Jeremy Sochan",
+   "gp": 50.0,
+   "team": "POR"
+  },
+  {
+   "name": "Nae'Qwan Tomlin",
+   "gp": 65.0,
+   "team": "CLE"
+  },
+  {
+   "name": "Julian Strawther",
+   "gp": 68.0,
+   "team": "DEN"
+  },
+  {
+   "name": "Tristan Vukcevic",
+   "gp": 40.0,
+   "team": "WAS"
+  },
+  {
+   "name": "Svi Mykhailiuk",
+   "gp": 40.0,
+   "team": "UTA"
+  },
+  {
+   "name": "Steven Adams",
+   "gp": 55.0,
+   "team": "HOU"
+  },
+  {
+   "name": "Cam Whitmore",
+   "gp": 50.0,
+   "team": "CLE"
+  },
+  {
+   "name": "Jordan Clarkson",
+   "gp": 68.0,
+   "team": "NY"
+  },
+  {
+   "name": "Rasheer Fleming",
+   "gp": 69.0,
+   "team": "PHO"
+  },
+  {
+   "name": "Clint Capela",
+   "gp": 55.0,
+   "team": "HOU"
+  },
+  {
+   "name": "Will Riley",
+   "gp": 68.0,
+   "team": "WAS"
+  },
+  {
+   "name": "Ben Sheppard",
+   "gp": 64.0,
+   "team": "IND"
+  },
+  {
+   "name": "Daeqwon Plowden",
+   "gp": 30.0,
+   "team": "SAC"
+  },
+  {
+   "name": "Trey Lyles",
+   "gp": 50.0,
+   "team": "MIN"
+  },
+  {
+   "name": "Dailyn Swain",
+   "gp": 50.0,
+   "team": "CHI"
+  },
+  {
+   "name": "Buddy Hield",
+   "gp": 44.0,
+   "team": "ATL"
+  },
+  {
+   "name": "Cameron Carr",
+   "gp": 68.0,
+   "team": "LAL"
+  },
+  {
+   "name": "Terrence Shannon Jr.",
+   "gp": 68.0,
+   "team": "MIN"
+  },
+  {
+   "name": "Oso Ighodaro",
+   "gp": 72.0,
+   "team": "PHO"
+  },
+  {
+   "name": "Patrick Williams",
+   "gp": 70.0,
+   "team": "CHI"
+  },
+  {
+   "name": "Baylor Scheierman",
+   "gp": 70.0,
+   "team": "BOS"
+  },
+  {
+   "name": "Justin Edwards",
+   "gp": 60.0,
+   "team": "PHI"
+  },
+  {
+   "name": "Quenton Jackson",
+   "gp": 30.0,
+   "team": "IND"
+  },
+  {
+   "name": "Carter Bryant",
+   "gp": 70.0,
+   "team": "SA"
+  },
+  {
+   "name": "Noah Penda",
+   "gp": 60.0,
+   "team": "ORL"
+  },
+  {
+   "name": "Mike Conley",
+   "gp": 40.0,
+   "team": "BOS"
+  },
+  {
+   "name": "Aday Mara",
+   "gp": 44.0,
+   "team": "OKC"
+  },
+  {
+   "name": "Bogdan Bogdanovic",
+   "gp": 40.0,
+   "team": "HOU"
+  },
+  {
+   "name": "Josh Okogie",
+   "gp": 60.0,
+   "team": "UTA"
+  },
+  {
+   "name": "Zeke Nnaji",
+   "gp": 50.0,
+   "team": "DEN"
+  },
+  {
+   "name": "Drake Powell",
+   "gp": 60.0,
+   "team": "BKN"
+  },
+  {
+   "name": "Caris LeVert",
+   "gp": 50.0,
+   "team": "MIL"
+  },
+  {
+   "name": "Sion James",
+   "gp": 68.0,
+   "team": "CHA"
+  },
+  {
+   "name": "Oscar Tshiebwe",
+   "gp": 20.0,
+   "team": "HOU"
+  },
+  {
+   "name": "Tyrese Proctor",
+   "gp": 50.0,
+   "team": "CLE"
+  },
+  {
+   "name": "Jaylen Clark",
+   "gp": 67.0,
+   "team": "MIN"
+  },
+  {
+   "name": "Rob Dillingham",
+   "gp": 60.0,
+   "team": "CHI"
+  },
+  {
+   "name": "Christian Anderson",
+   "gp": 68.0,
+   "team": "CHA"
+  },
+  {
+   "name": "Nate Ament",
+   "gp": 50.0,
+   "team": "MIL"
+  },
+  {
+   "name": "Taurean Prince",
+   "gp": 30.0,
+   "team": "DET"
+  },
+  {
+   "name": "Ryan Nembhard",
+   "gp": 50.0,
+   "team": "ATL"
+  },
+  {
+   "name": "Mohamed Diawara",
+   "gp": 70.0,
+   "team": "NY"
+  },
+  {
+   "name": "Bryce McGowens",
+   "gp": 44.0,
+   "team": "NO"
+  },
+  {
+   "name": "Marcus Sasser",
+   "gp": 50.0,
+   "team": "DAL"
+  },
+  {
+   "name": "Karim Lopez",
+   "gp": 50.0,
+   "team": "MEM"
+  },
+  {
+   "name": "Moussa Cisse",
+   "gp": 44.0,
+   "team": "DAL"
+  },
+  {
+   "name": "Larry Nance Jr.",
+   "gp": 40.0,
+   "team": "IND"
+  },
+  {
+   "name": "Labaron Philon Jr.",
+   "gp": 50.0,
+   "team": "PHI"
+  },
+  {
+   "name": "Kingston Flemings",
+   "gp": 50.0,
+   "team": "ATL"
+  },
+  {
+   "name": "Jase Richardson",
+   "gp": 58.0,
+   "team": "ORL"
+  },
+  {
+   "name": "Kevon Looney",
+   "gp": 20.0,
+   "team": "LAL"
+  },
+  {
+   "name": "Gradey Dick",
+   "gp": 68.0,
+   "team": "LAC"
+  },
+  {
+   "name": "DaRon Holmes II",
+   "gp": 40.0,
+   "team": "DEN"
+  },
+  {
+   "name": "Micah Peavy",
+   "gp": 60.0,
+   "team": "NO"
+  },
+  {
+   "name": "Gary Trent Jr.",
+   "gp": 40.0,
+   "team": "MIL"
+  },
+  {
+   "name": "Jericho Sims",
+   "gp": 35.0,
+   "team": "MIL"
+  },
+  {
+   "name": "John Konchar",
+   "gp": 30.0,
+   "team": "MIN"
+  },
+  {
+   "name": "Ron Harper Jr.",
+   "gp": 40.0,
+   "team": "BOS"
+  },
+  {
+   "name": "Olivier-Maxence Prosper",
+   "gp": 30.0,
+   "team": "MEM"
+  },
+  {
+   "name": "Trayce Jackson-Davis",
+   "gp": 44.0,
+   "team": "TOR"
+  },
+  {
+   "name": "Hannes Steinbach",
+   "gp": 50.0,
+   "team": "CHA"
+  },
+  {
+   "name": "Ben Saraf",
+   "gp": 50.0,
+   "team": "BKN"
+  },
+  {
+   "name": "Tyler Kolek",
+   "gp": 40.0,
+   "team": "NY"
+  },
+  {
+   "name": "Pat Spencer",
+   "gp": 20.0,
+   "team": "PHO"
+  },
+  {
+   "name": "Micah Potter",
+   "gp": 40.0,
+   "team": "POR"
+  },
+  {
+   "name": "Johnny Furphy",
+   "gp": 40.0,
+   "team": "IND"
+  },
+  {
+   "name": "Josh Green",
+   "gp": 50.0,
+   "team": "UTA"
+  },
+  {
+   "name": "Jamal Cain",
+   "gp": 20.0,
+   "team": "ORL"
+  },
+  {
+   "name": "Jordan Hawkins",
+   "gp": 40.0,
+   "team": "NO"
+  },
+  {
+   "name": "Sergio de Larrea",
+   "gp": 40.0,
+   "team": "DAL"
+  },
+  {
+   "name": "Ousmane Dieng",
+   "gp": 40.0,
+   "team": "MIL"
+  },
+  {
+   "name": "Tre Mann",
+   "gp": 40.0,
+   "team": "WAS"
+  },
+  {
+   "name": "Branden Carlson",
+   "gp": 40.0,
+   "team": "POR"
+  },
+  {
+   "name": "Sidy Cissoko",
+   "gp": 60.0,
+   "team": "POR"
+  },
+  {
+   "name": "Meleek Thomas",
+   "gp": 30.0,
+   "team": "CLE"
+  },
+  {
+   "name": "Corey Kispert",
+   "gp": 40.0,
+   "team": "ATL"
+  },
+  {
+   "name": "Myron Gardner",
+   "gp": 30.0,
+   "team": "MIA"
+  },
+  {
+   "name": "Ariel Hukporti",
+   "gp": 40.0,
+   "team": "PHI"
+  },
+  {
+   "name": "Dalton Knecht",
+   "gp": 50.0,
+   "team": "LAL"
+  },
+  {
+   "name": "Nikola Topic",
+   "gp": 20.0,
+   "team": "OKC"
+  },
+  {
+   "name": "Tidjane Sala\u00fcn",
+   "gp": 40.0,
+   "team": "CHA"
+  },
+  {
+   "name": "Asa Newell",
+   "gp": 34.0,
+   "team": "ATL"
+  },
+  {
+   "name": "Dorian Finney-Smith",
+   "gp": 40.0,
+   "team": "CHA"
+  },
+  {
+   "name": "Jabari Walker",
+   "gp": 20.0,
+   "team": "PHI"
+  },
+  {
+   "name": "Malevy Leons",
+   "gp": 20.0,
+   "team": "GS"
+  },
+  {
+   "name": "Cody Williams",
+   "gp": 55.0,
+   "team": "MIN"
+  },
+  {
+   "name": "Caleb Martin",
+   "gp": 40.0,
+   "team": "DAL"
+  },
+  {
+   "name": "Jamison Battle",
+   "gp": 50.0,
+   "team": "TOR"
+  },
+  {
+   "name": "Bruce Thornton",
+   "gp": 30.0,
+   "team": "HOU"
+  },
+  {
+   "name": "L.J. Cryer",
+   "gp": 20.0,
+   "team": "GS"
+  },
+  {
+   "name": "Adou Thiero",
+   "gp": 50.0,
+   "team": "LAL"
+  },
+  {
+   "name": "Emanuel Sharp",
+   "gp": 40.0,
+   "team": "SAC"
+  },
+  {
+   "name": "Rayan Rupert",
+   "gp": 30.0,
+   "team": "PHI"
+  },
+  {
+   "name": "Alex Karaban",
+   "gp": 40.0,
+   "team": "SAC"
+  },
+  {
+   "name": "Devin Carter",
+   "gp": 30.0,
+   "team": "ATL"
+  },
+  {
+   "name": "Jaden Hardy",
+   "gp": 30.0,
+   "team": "LAL"
+  },
+  {
+   "name": "Jamaree Bouyea",
+   "gp": 20.0,
+   "team": "PHO"
+  },
+  {
+   "name": "Baba Miller",
+   "gp": 20.0,
+   "team": "LAC"
+  },
+  {
+   "name": "Jae'Sean Tate",
+   "gp": 40.0,
+   "team": "HOU"
+  },
+  {
+   "name": "Chris Cenac Jr.",
+   "gp": 40.0,
+   "team": "BOS"
+  },
+  {
+   "name": "Yang Hansen",
+   "gp": 58.0,
+   "team": "POR"
+  },
+  {
+   "name": "Joshua Jefferson",
+   "gp": 10.0,
+   "team": "BKN"
+  },
+  {
+   "name": "Ryan Conwell",
+   "gp": 30.0,
+   "team": "MIA"
+  },
+  {
+   "name": "Bronny James Jr.",
+   "gp": 30.0,
+   "team": "LAL"
+  },
+  {
+   "name": "Isaiah Evans",
+   "gp": 30.0,
+   "team": "MIN"
+  },
+  {
+   "name": "Jordan McLaughlin",
+   "gp": 20.0,
+   "team": "SA"
+  },
+  {
+   "name": "Tarris Reed Jr.",
+   "gp": 20.0,
+   "team": "SA"
+  },
+  {
+   "name": "Trevon Brazile",
+   "gp": 40.0,
+   "team": "DEN"
+  },
+  {
+   "name": "DeAndre Jordan",
+   "gp": 10.0,
+   "team": "NO"
+  },
+  {
+   "name": "Caleb Love",
+   "gp": 20.0,
+   "team": "PHI"
+  },
+  {
+   "name": "Zuby Ejiofor",
+   "gp": 20.0,
+   "team": "ATL"
+  },
+  {
+   "name": "Bennett Stirtz",
+   "gp": 20.0,
+   "team": "OKC"
+  },
+  {
+   "name": "Pac\u00f4me Dadiet",
+   "gp": 40.0,
+   "team": "NY"
+  },
+  {
+   "name": "Caleb Houstan",
+   "gp": 20.0,
+   "team": "NO"
+  },
+  {
+   "name": "Alijah Martin",
+   "gp": 20.0,
+   "team": "TOR"
+  },
+  {
+   "name": "Cam Christie",
+   "gp": 30.0,
+   "team": "LAC"
+  },
+  {
+   "name": "Andre Jackson Jr.",
+   "gp": 30.0,
+   "team": "TOR"
+  },
+  {
+   "name": "Koa Peat",
+   "gp": 40.0,
+   "team": "PHO"
+  },
+  {
+   "name": "KJ Simpson",
+   "gp": 20.0,
+   "team": "DEN"
+  },
+  {
+   "name": "Chaz Lanier",
+   "gp": 40.0,
+   "team": "DET"
+  },
+  {
+   "name": "Jayden Quaintance",
+   "gp": 20.0,
+   "team": "SA"
+  },
+  {
+   "name": "Noa Essengue",
+   "gp": 20.0,
+   "team": "CHI"
+  }
+ ]
+}

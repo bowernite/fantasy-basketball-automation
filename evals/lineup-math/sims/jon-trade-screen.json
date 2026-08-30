@@ -1,0 +1,120 @@
+{
+  "sections": [
+    {
+      "kind": "trade-screen",
+      "their_roster": 161015,
+      "their_label": "Jon",
+      "deals": [
+        {
+          "label": "Cade -> SGA",
+          "out_us": ["Cade Cunningham"],
+          "in_from_them": ["Shai Gilgeous-Alexander"],
+          "out_them": ["Shai Gilgeous-Alexander"],
+          "in_from_us": ["Cade Cunningham"]
+        },
+        {
+          "label": "Jon counter: SGA+Jaylin -> Cade",
+          "out_us": ["Cade Cunningham", "Keon Ellis"],
+          "in_from_them": ["Shai Gilgeous-Alexander", "Jaylin Williams"],
+          "out_them": ["Shai Gilgeous-Alexander", "Jaylin Williams"],
+          "in_from_us": ["Cade Cunningham"]
+        },
+        {
+          "label": "Brett alt: SGA+Jaylin -> Cade+Edey",
+          "out_us": ["Cade Cunningham", "Zach Edey"],
+          "in_from_them": ["Shai Gilgeous-Alexander", "Jaylin Williams"],
+          "out_them": ["Shai Gilgeous-Alexander", "Jaylin Williams"],
+          "in_from_us": ["Cade Cunningham", "Zach Edey"]
+        },
+        {
+          "label": "SGA+Jaylin -> Giddey+Edey",
+          "out_us": ["Josh Giddey", "Zach Edey"],
+          "in_from_them": ["Shai Gilgeous-Alexander", "Jaylin Williams"],
+          "out_them": ["Shai Gilgeous-Alexander", "Jaylin Williams"],
+          "in_from_us": ["Josh Giddey", "Zach Edey"]
+        },
+        {
+          "label": "SGA -> Cade+Edey",
+          "out_us": ["Cade Cunningham", "Zach Edey"],
+          "in_from_them": ["Shai Gilgeous-Alexander"],
+          "out_them": ["Shai Gilgeous-Alexander", "Josh Minott"],
+          "in_from_us": ["Cade Cunningham", "Zach Edey"]
+        },
+        {
+          "label": "SGA -> Giddey+Duren",
+          "out_us": ["Josh Giddey", "Jalen Duren"],
+          "in_from_them": ["Shai Gilgeous-Alexander"],
+          "out_them": ["Shai Gilgeous-Alexander", "Josh Minott"],
+          "in_from_us": ["Josh Giddey", "Jalen Duren"]
+        },
+        {
+          "label": "SGA+Jaylin -> Cade+Garland",
+          "out_us": ["Cade Cunningham", "Darius Garland"],
+          "in_from_them": ["Shai Gilgeous-Alexander", "Jaylin Williams"],
+          "out_them": ["Shai Gilgeous-Alexander", "Jaylin Williams"],
+          "in_from_us": ["Cade Cunningham", "Darius Garland"]
+        },
+        {
+          "label": "SGA -> Cade+2nd-tier (Bane)",
+          "out_us": ["Cade Cunningham", "Desmond Bane"],
+          "in_from_them": ["Shai Gilgeous-Alexander"],
+          "out_them": ["Shai Gilgeous-Alexander", "Josh Minott"],
+          "in_from_us": ["Cade Cunningham", "Desmond Bane"]
+        },
+        {
+          "label": "Sengun -> Cade+Duren",
+          "out_us": ["Cade Cunningham", "Jalen Duren"],
+          "in_from_them": ["Alperen Şengün"],
+          "out_them": ["Alperen Şengün", "Josh Minott"],
+          "in_from_us": ["Cade Cunningham", "Jalen Duren"]
+        },
+        {
+          "label": "SGA+Jaylin -> Cade+2.09 (players only)",
+          "out_us": ["Cade Cunningham", "Keon Ellis"],
+          "in_from_them": ["Shai Gilgeous-Alexander", "Jaylin Williams"],
+          "out_them": ["Shai Gilgeous-Alexander", "Jaylin Williams"],
+          "in_from_us": ["Cade Cunningham"]
+        }
+      ]
+    },
+    {
+      "kind": "player-effects",
+      "their_roster": 161015,
+      "their_label": "Jon",
+      "groups": [
+        {
+          "label": "their_stars",
+          "source": "their",
+          "names": [
+            "Shai Gilgeous-Alexander",
+            "Alperen Şengün",
+            "Day'Ron Sharpe"
+          ]
+        },
+        {
+          "label": "their_filler",
+          "source": "their",
+          "names": [
+            "Jaylin Williams",
+            "Jaylen Wells",
+            "Justin Champagnie",
+            "Peyton Watson"
+          ]
+        },
+        {
+          "label": "our_chips",
+          "source": "us",
+          "names": [
+            "Cade Cunningham",
+            "Josh Giddey",
+            "Jalen Duren",
+            "Zach Edey",
+            "Darius Garland",
+            "Desmond Bane",
+            "Kawhi Leonard"
+          ]
+        }
+      ]
+    }
+  ]
+}

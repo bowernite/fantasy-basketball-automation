@@ -1,0 +1,90 @@
+{
+  "kind": "trade-screen",
+  "their_roster": 161024,
+  "their_label": "Josh",
+  "deals": [
+    {
+      "label": "Kawhi -> Bridges+Gordon (Josh offer)",
+      "out_us": [
+        "Kawhi Leonard"
+      ],
+      "in_from_them": [
+        "Miles Bridges",
+        "Aaron Gordon"
+      ],
+      "out_them": [
+        "Miles Bridges",
+        "Aaron Gordon"
+      ],
+      "in_from_us": [
+        "Kawhi Leonard"
+      ],
+      "results": {
+        "delta_base_us": 155,
+        "dw_us": 0.0,
+        "dp_title_us": 5.4,
+        "dw_them": 0.14,
+        "dp_title_them": -4.0,
+        "dp_title_note": "both rosters change in the 12-team field"
+      }
+    },
+    {
+      "label": "Kawhi -> Bridges+Gordon+Sexton",
+      "out_us": [
+        "Kawhi Leonard"
+      ],
+      "in_from_them": [
+        "Miles Bridges",
+        "Aaron Gordon",
+        "Collin Sexton"
+      ],
+      "out_them": [
+        "Miles Bridges",
+        "Aaron Gordon",
+        "Collin Sexton"
+      ],
+      "in_from_us": [
+        "Kawhi Leonard"
+      ],
+      "results": {
+        "delta_base_us": 523,
+        "dw_us": 0.39,
+        "dp_title_us": 12.1,
+        "dw_them": -0.52,
+        "dp_title_them": -9.8,
+        "dp_title_note": "both rosters change in the 12-team field"
+      }
+    },
+    {
+      "label": "Kawhi -> Bridges+Porzingis+Gordon",
+      "out_us": [
+        "Kawhi Leonard"
+      ],
+      "in_from_them": [
+        "Miles Bridges",
+        "Kristaps Porzi\u0146\u0123is",
+        "Aaron Gordon"
+      ],
+      "out_them": [
+        "Miles Bridges",
+        "Kristaps Porzi\u0146\u0123is",
+        "Aaron Gordon"
+      ],
+      "in_from_us": [
+        "Kawhi Leonard"
+      ],
+      "results": {
+        "delta_base_us": 1049,
+        "dw_us": 0.29,
+        "dp_title_us": 10.1,
+        "dw_them": -0.48,
+        "dp_title_them": -9.0,
+        "dp_title_note": "both rosters change in the 12-team field"
+      }
+    }
+  ],
+  "meta": {
+    "simmed": "2026-08-28",
+    "dp_title_note": "both rosters change in the 12-team field"
+  }
+}

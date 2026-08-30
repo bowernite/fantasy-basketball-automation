@@ -55,7 +55,7 @@ def _seats(teams):
     missing = sorted({n for per in PAIRINGS for g in per for n in g}
                      - set(by_name))
     if missing:
-        raise KeyError("%s play in last season's schedule with no roster "
+        raise KeyError("%s play in the schedule with no roster "
                        "file among the %d loaded -- `./run fetch_data.py "
                        "roster` writes all of them"
                        % (", ".join(missing), len(teams)))
@@ -118,7 +118,6 @@ def _champ_from_draws(seat, period_z, bracket_z, teams, seats, reg_lvl,
 
 def _trial_draws(rng, n):
     seat = list(range(n))
-    rng.shuffle(seat)
     period_z = [_shock_z(rng, n) for _ in range(len(PAIRINGS))]
     bracket_z = [_shock_z(rng, n) for _ in range(len(BRACKET))]
     return seat, period_z, bracket_z
@@ -279,6 +278,24 @@ def swap_odds(after, before, path=None, trials=None, seed0=SEED0):
         swapped[at] = measure(r, who)
         out.append(full_season(tuple(swapped), trials, seed0)[who])
     return tuple(out)
+
+
+def deal_field(after_us, after_them, their_path):
+    who_us, teams, at_us = _seat(None)
+    who_them, _, at_them = _seat(their_path)
+    swapped = list(teams)
+    swapped[at_us] = measure(after_us, who_us)
+    swapped[at_them] = measure(after_them, who_them)
+    return tuple(swapped), who_us, who_them
+
+
+def deal_odds(after_us, after_them, their_path, trials=None, seed0=SEED0,
+              before=None):
+    field, who_us, who_them = deal_field(after_us, after_them, their_path)
+    if before is None:
+        before = full_season(trials=trials, seed0=seed0)
+    after = full_season(field, trials, seed0)
+    return after[who_us], before[who_us], after[who_them], before[who_them]
 
 
 ODDS_BLOCKS = 3

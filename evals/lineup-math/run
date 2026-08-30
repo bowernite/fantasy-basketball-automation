@@ -6,6 +6,7 @@ HERE=$(CDPATH= cd -- "$(dirname "$0")" && pwd)
 cd "$HERE"
 if [ $# -eq 0 ] || [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
     echo "usage: ./run sim.py [--roster <file>] [report ...]"
+    echo "       ./run sim_run.py <config.json>"
     echo "       ./run fetch_data.py [pool | roster [id ...]]"
     echo "       ./run test"
     echo "       ./run <script.py>"

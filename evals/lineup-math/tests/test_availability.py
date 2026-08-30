@@ -20,7 +20,9 @@ class SurpriseScratches(unittest.TestCase):
             self.assertEqual(pts["GLASS"], 0.0)
 
     def test_a_lone_scattered_absence_is_still_a_surprise(self):
-        rester = [dict(sim.star(45, 81, ("SF", "PF"), "LAL", "REST"), surprise=1.0)]
+        tg = len(sim.team_nights("LAL"))
+        rester = [dict(sim.star(45, tg - 1, ("SF", "PF"), "LAL", "REST"),
+                       surprise=1.0)]
         wasted = 0
         for seed in range(101, 121):
             _, starts, pts, _ = sim.season(rester, seed=seed, bursty=True)

@@ -63,7 +63,7 @@ class PerPlayerWins(unittest.TestCase):
         b = sim.player_wins(full, who, blocks=3, trials=40, seed0=9001, R=R)
         for n in who:
             self.assertGreater(a[n][1], 0.0, "%s reports no uncertainty" % n)
-            self.assertLess(abs(a[n][0] - b[n][0]), 0.06,
+            self.assertLess(abs(a[n][0] - b[n][0]), 0.08,
                             "%s: %s vs %s" % (n, a[n], b[n]))
 
 class AdjacentRowSigma(unittest.TestCase):

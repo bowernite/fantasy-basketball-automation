@@ -1,0 +1,48 @@
+{
+  "sections": [
+    {
+      "kind": "reports",
+      "names": ["title", "weeks", "players", "replacement"],
+      "roster": 160941
+    },
+    {
+      "kind": "title-column",
+      "their_roster": 160941,
+      "include": ["their_incoming"]
+    },
+    {
+      "kind": "player-effects",
+      "their_roster": 160941,
+      "their_label": "Matthew",
+      "groups": [
+        {
+          "label": "roster",
+          "source": "their",
+          "names": [
+            "Bub Carrington",
+            "Dylan Harper",
+            "Scottie Barnes",
+            "Victor Wembanyama",
+            "Kasparas Jakučionis",
+            "Anthony Black",
+            "Ben Sheppard",
+            "Sidy Cissoko",
+            "Rob Dillingham",
+            "Ausar Thompson",
+            "Gradey Dick",
+            "Jalen Johnson",
+            "Cody Williams",
+            "Olivier-Maxence Prosper",
+            "Ousmane Dieng",
+            "Noah Clowney",
+            "Cam Whitmore",
+            "Thomas Sorber",
+            "Khaman Maluach",
+            "Sion James",
+            "Amen Thompson"
+          ]
+        }
+      ]
+    }
+  ]
+}

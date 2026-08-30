@@ -30,8 +30,7 @@ TIGHT_GAMES = 3                 # reported only, to show how thin a light night 
 
 def report_schedules():
     # sized off the LOADED roster, not `AUCTION_N` -- `pad` invents an FA slot
-    # only where a roster is short of 38, so a team carrying 32 bodies bids
-    # for three, not seven
+    # only after held picks, so leftover auction slots shrink with live count
     full = basis()
     base = engine.run(full)
     # read off `pad`, not retyped -- a grade change in EXPANSION must move this
@@ -186,10 +185,11 @@ def report_schedules():
     print("  %dth pick is %s again, and buys %+.3f against a paired +-%.3f"
           % (n, best[-1], last, se))
     early = max(1, (peak + 1) // 2)
-    print("  %d pick%s buy%s %.0f%% of the peak, %d buy %.0f%%"
+    shown = [float("%+.3f" % x) for x in w]
+    print("  %d pick%s buy%s %d%% of the peak, %d buy %d%%"
           % (early, "" if early == 1 else "s", "s" if early == 1 else "",
-             100 * w[early - 1] / w[peak], early + 1,
-             100 * w[early] / w[peak]))
+             round(100 * shown[early - 1] / shown[peak]), early + 1,
+             round(100 * shown[early] / shown[peak])))
     print("  %d random draws land %+.2f to %+.2f wins against the best %d, "
           "sd %.3f"
           % (STEER_DRAWS, pf_wins(min(lottery) - top),

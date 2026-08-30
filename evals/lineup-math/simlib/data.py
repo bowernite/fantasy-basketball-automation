@@ -1,7 +1,7 @@
 """The league's raw facts: the NBA calendar, the scoring periods that count
 toward the standings, and our real weekly scores and margins."""
 import collections, json, os, statistics
-from fetch_data import SEASON, SEASON_TAG
+from fetch_data import LIVE_TAG, SEASON, SEASON_TAG
 
 
 HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -40,11 +40,13 @@ def _load(name):
         return json.load(f)
 
 
-NIGHTS = [(d, set(tms)) for d, tms in sorted(_load(
-    "nba-schedule-%s.json" % SEASON_TAG)["daymap"].items())]
+NIGHTS = [(d, set(tms) - {"TBD"}) for d, tms in sorted(_load(
+    "nba-schedule-%s.json" % LIVE_TAG)["daymap"].items())
+          if set(tms) - {"TBD"}]
 
 
-PERIODS = _load("league-%s.json" % SEASON_TAG)["periods"]  # eligibleSchedulePeriods
+HIST_PERIODS = _load("league-%s.json" % SEASON_TAG)["periods"]
+PERIODS = _load("league-%s.json" % LIVE_TAG)["periods"]
 
 
 def _scores(periods):
@@ -56,7 +58,7 @@ def _scores(periods):
     return out
 
 
-SCORES = _scores(PERIODS)
+SCORES = _scores(HIST_PERIODS)
 
 
 US = "Bathroom club"
@@ -74,16 +76,25 @@ FULL_FIELD = max(len(p["games"]) for p in PERIODS)  # games in a full-field peri
 
 
 def _bracket():
-    """Period indices of the bracket: the trailing run of short-field periods"""
+    """Period indices of the bracket: the trailing run of short-field periods
+
+    Unscheduled R1 still carries a generated full slate, so the week in front of the empty short run is R1
+    """
     out = []
     for i in reversed(range(len(PERIODS))):
         if len(PERIODS[i]["games"]) == FULL_FIELD:
             break
         out.append(i)
     out.reverse()
+    if out and not PERIODS[out[0]]["games"] and out[0] > 0:
+        prev = out[0] - 1
+        if (len(PERIODS[prev]["games"]) == FULL_FIELD
+                and "regular" in PERIODS[prev]["kinds"]):
+            out.insert(0, prev)
     short = [i for i, p in enumerate(PERIODS) if len(p["games"]) < FULL_FIELD]
-    assert out == short, "short-field periods are not one trailing run"
-    assert out, "no bracket in league-%s.json" % SEASON_TAG
+    assert out == short or out[1:] == short, (
+        "short-field periods are not one trailing run")
+    assert out, "no bracket in league-%s.json" % LIVE_TAG
     flagged = {i for i, p in enumerate(PERIODS) if "playoff" in p["kinds"]}
     assert flagged <= set(out), "playoff-flagged periods fall outside the bracket window"
     return out

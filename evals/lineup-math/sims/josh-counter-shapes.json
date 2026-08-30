@@ -1,0 +1,180 @@
+{
+  "kind": "trade-screen",
+  "their_roster": 161024,
+  "their_label": "Josh",
+  "deals": [
+    {
+      "label": "Turner -> Bridges",
+      "out_us": [
+        "Myles Turner"
+      ],
+      "in_from_them": [
+        "Miles Bridges"
+      ],
+      "out_them": [
+        "Miles Bridges"
+      ],
+      "in_from_us": [
+        "Myles Turner"
+      ],
+      "results": {
+        "delta_base_us": 20,
+        "dw_us": 0.54,
+        "dp_title_us": 7.6,
+        "dw_them": -0.56,
+        "dp_title_them": -5.9,
+        "dp_title_note": "each side priced with only that roster changing; not bilateral"
+      }
+    },
+    {
+      "label": "Turner+Matkovic -> Bridges",
+      "out_us": [
+        "Myles Turner",
+        "Karlo Matkovi\u0107"
+      ],
+      "in_from_them": [
+        "Miles Bridges"
+      ],
+      "out_them": [
+        "Miles Bridges",
+        "Gary Payton"
+      ],
+      "in_from_us": [
+        "Myles Turner",
+        "Karlo Matkovi\u0107"
+      ],
+      "results": {
+        "delta_base_us": -101,
+        "dw_us": 0.44,
+        "dp_title_us": 6.1,
+        "dw_them": -0.5,
+        "dp_title_them": -4.6,
+        "dp_title_note": "each side priced with only that roster changing; not bilateral"
+      }
+    },
+    {
+      "label": "Turner+Matkovic -> Bridges+Gordon",
+      "out_us": [
+        "Myles Turner",
+        "Karlo Matkovi\u0107"
+      ],
+      "in_from_them": [
+        "Miles Bridges",
+        "Aaron Gordon"
+      ],
+      "out_them": [
+        "Miles Bridges",
+        "Aaron Gordon"
+      ],
+      "in_from_us": [
+        "Myles Turner",
+        "Karlo Matkovi\u0107"
+      ],
+      "results": {
+        "delta_base_us": 589,
+        "dw_us": 0.98,
+        "dp_title_us": 12.4,
+        "dw_them": -0.89,
+        "dp_title_them": -8.8,
+        "dp_title_note": "each side priced with only that roster changing; not bilateral"
+      }
+    },
+    {
+      "label": "Turner+Melton -> Bridges",
+      "out_us": [
+        "Myles Turner",
+        "De'Anthony Melton"
+      ],
+      "in_from_them": [
+        "Miles Bridges"
+      ],
+      "out_them": [
+        "Miles Bridges",
+        "Gary Payton"
+      ],
+      "in_from_us": [
+        "Myles Turner",
+        "De'Anthony Melton"
+      ],
+      "results": {
+        "delta_base_us": -323,
+        "dw_us": 0.17,
+        "dp_title_us": 5.1,
+        "dw_them": -0.2,
+        "dp_title_them": -3.4,
+        "dp_title_note": "each side priced with only that roster changing; not bilateral"
+      }
+    },
+    {
+      "label": "Gordon -> Turner",
+      "out_us": [
+        "Myles Turner"
+      ],
+      "in_from_them": [
+        "Aaron Gordon"
+      ],
+      "out_them": [
+        "Aaron Gordon"
+      ],
+      "in_from_us": [
+        "Myles Turner"
+      ],
+      "results": {
+        "delta_base_us": -444,
+        "dw_us": 0.07,
+        "dp_title_us": 5.1,
+        "dw_them": -0.02,
+        "dp_title_them": -2.9,
+        "dp_title_note": "each side priced with only that roster changing; not bilateral"
+      }
+    },
+    {
+      "label": "Sexton -> Turner",
+      "out_us": [
+        "Myles Turner"
+      ],
+      "in_from_them": [
+        "Collin Sexton"
+      ],
+      "out_them": [
+        "Collin Sexton"
+      ],
+      "in_from_us": [
+        "Myles Turner"
+      ],
+      "results": {
+        "delta_base_us": -766,
+        "dw_us": 0.02,
+        "dp_title_us": -0.4,
+        "dw_them": -0.3,
+        "dp_title_them": -2.4,
+        "dp_title_note": "each side priced with only that roster changing; not bilateral"
+      }
+    },
+    {
+      "label": "Gordon+Sexton -> Turner",
+      "out_us": [
+        "Myles Turner"
+      ],
+      "in_from_them": [
+        "Aaron Gordon",
+        "Collin Sexton"
+      ],
+      "out_them": [
+        "Aaron Gordon",
+        "Collin Sexton",
+        "Gary Payton"
+      ],
+      "in_from_us": [
+        "Myles Turner"
+      ],
+      "results": {
+        "error": "2 in for 1 out: name the 1 body/bodies dropped in `out_names`"
+      }
+    }
+  ],
+  "meta": {
+    "simmed": "2026-08-28",
+    "dp_title_note": "\u0394P(title) per side: only that team changes in the 12-team field, not bilateral"
+  }
+}

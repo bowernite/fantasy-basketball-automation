@@ -1,0 +1,226 @@
+===== START hlina-eval 20:16:14 =====
+========================================================================
+TITLE  --  roster: roster-161021-2025-26.json (Matthew the Apostle)
+========================================================================
+19 head-to-head periods on the league's own schedule shape, standings
+by record then points-for, then the 8-of-12 bracket over periods 20-23.
+20000 seasons. draw: seeds 8-5-4-1 | 7-6-3-2, each half climbed worst seed first,
+so seeds 1, 2 enter in the last round they can.
+week-to-week spread around a level: 0.1005 of the period's level.
+
+  team                                                           wins bracket    1-2    3-4    5-8 P(title)      +-
+  roster-161025-2025-26.json (Bathroom club)                     14.6   1.000  0.757  0.194  0.049    0.325 +-0.003
+  roster-161021-2025-26.json (Matthew the Apostle)               13.5   0.999  0.542  0.317  0.139    0.294 +-0.003
+  roster-161024-2025-26.json (Jesus Christ and his Disciples)    12.0   0.992  0.197  0.375  0.419    0.127 +-0.002
+  roster-161016-2025-26.json (Pascals of Pangea)                 12.0   0.992  0.190  0.376  0.426    0.105 +-0.002
+  roster-161020-2025-26.json (The Don)                           10.8   0.972  0.061  0.229  0.682    0.078 +-0.002
+  roster-161018-2025-26.json (Yao Ming Dynasty)                  12.5   0.995  0.232  0.396  0.366    0.050 +-0.002
+  roster-161017-2025-26.json (The Gutes of Gotland)               9.6   0.881  0.019  0.094  0.767    0.019 +-0.001
+  roster-161022-2025-26.json (The Han Dybantsy)                   7.2   0.417  0.000  0.006  0.410    0.001 +-0.000
+  roster-161014-2025-26.json (King Christopher of Bavaria)        6.4   0.232  0.000  0.003  0.228    0.001 +-0.000
+  roster-161019-2025-26.json (Mongol Khans Freak Militia)         7.4   0.489  0.001  0.008  0.480    0.000 +-0.000
+  roster-160941-2025-26.json (Pharaoh Mattankhamun-Ra)            4.1   0.022  0.000  0.000  0.022    0.000 +-0.000
+  roster-161015-2025-26.json (Shai Gilgeous-Alexander the Great)  3.7   0.011  0.000  0.000  0.011    0.000 +-0.000
+  `wins` is matchups won of the 19; the band columns sum to `bracket`.
+  P(title) sums to 1.000 over the league.
+
+roster-161021-2025-26.json (Matthew the Apostle): P(title) 0.294, by seed.
+  seed   P(seed)  P(title|seed)  contribution  closed form
+     1     0.260          0.393         0.102        0.419
+     2     0.283          0.377         0.106        0.339
+     3     0.191          0.222         0.043        0.202
+     4     0.126          0.191         0.024        0.152
+     5     0.078          0.144         0.011        0.134
+     6     0.040          0.127         0.005        0.122
+     7     0.016          0.119         0.002        0.122
+     8     0.004              -         0.001        0.082
+   out     0.001          0.000         0.000
+  contribution sums to P(title); a seed reached fewer than 200 times
+  prints `-`. `closed form` is `seed_title` against the PROJECTED
+  field in its projected order.
+
+Seeding, priced. `pinned` hands every team the seed its projected
+PF says it gets and plays only the bracket; `simulated` is the table
+above.
+  team                                                            pinned  simulated   delta
+  roster-161021-2025-26.json (Matthew the Apostle)                 0.420      0.294  -0.126  <- loaded
+  roster-161025-2025-26.json (Bathroom club)                       0.304      0.325  +0.021  
+  roster-161024-2025-26.json (Jesus Christ and his Disciples)      0.122      0.127  +0.005  
+  roster-161016-2025-26.json (Pascals of Pangea)                   0.074      0.105  +0.031  
+  roster-161018-2025-26.json (Yao Ming Dynasty)                    0.031      0.050  +0.019  
+  roster-161020-2025-26.json (The Don)                             0.041      0.078  +0.037  
+  roster-161017-2025-26.json (The Gutes of Gotland)                0.007      0.019  +0.012  
+  roster-161019-2025-26.json (Mongol Khans Freak Militia)          0.001      0.000  -0.000  
+  roster-161022-2025-26.json (The Han Dybantsy)                    0.000      0.001  +0.001  (outside the field)
+  roster-161014-2025-26.json (King Christopher of Bavaria)         0.000      0.001  +0.001  (outside the field)
+  roster-160941-2025-26.json (Pharaoh Mattankhamun-Ra)             0.000      0.000  +0.000  (outside the field)
+  roster-161015-2025-26.json (Shai Gilgeous-Alexander the Great)   0.000      0.000  +0.000  (outside the field)
+
+Checks.
+  standings spread: sim sd 4.11, wire 4.17 over 19 periods
+  level spread: projected season PF cv 0.0736, wire 0.0909
+  bracket agreement: seeds pinned, sigma 246-256 by round
+
+========================================================================
+WEEKS  --  roster: roster-161021-2025-26.json (Matthew the Apostle)
+========================================================================
+Bracket: 4 rounds, periods 20-23 (2027-03-01 to 2027-03-28).
+  player                      W20    W21    W22    W23  flags
+  Stephon Castle             94/3   94/3  125/4   94/3  
+  VJ Edgecombe              125/4   94/3  125/4  125/4  
+  Cedric Coward              90/3  121/4  121/4  121/4  
+  Jaylon Tyson               52/3   70/4   52/3   35/2  
+  Jabari Smith              107/4   80/3   80/3  107/4  
+  Andre Drummond             63/3   63/3   63/3   84/4  
+  Jaime Jaquez               85/3   85/3   85/3  113/4  
+  Ajay Mitchell              67/3   90/4   67/3   90/4  
+  Jalen Green                80/3  107/4  107/4  107/4  
+  Saddiq Bey                 98/4   98/4   98/4   73/3  
+  Kevin Huerter              48/3   64/4   48/3   64/4  
+  Jalen Williams             97/3  129/4   97/3  129/4  
+  Noah Penda                 26/3   26/3   35/4   35/4  
+  Paolo Banchero            115/3  115/3  153/4  153/4  
+  Matas Buzelis             135/4  101/3  101/3  135/4  
+  Toumani Camara             99/4   74/3   99/4   74/3  
+  Brandon Miller             63/2  127/4   95/3  127/4  
+  Julian Champagnie          56/3   56/3   74/4   56/3  
+  Jake LaRavia               83/4   62/3   83/4   62/3  
+  Rasheer Fleming            23/3   31/4   31/4   31/4  
+  Joan Beringer              43/3   57/4   29/2   57/4  
+  Alex Sarr                 101/4   76/3   76/3  101/4  
+  Luke Kornet                45/3   45/3   60/4   45/3  
+  Tyrese Maxey              151/4  113/3  151/4  151/4  
+  Johnny Furphy              12/3   12/3   15/4   12/3  
+  Noa Essengue                  -      -      -      -  noproj
+  Dereck Lively              31/2   61/4   61/4   61/4  
+  Kyshawn George             92/4   69/3   69/3   92/4  
+
+========================================================================
+PLAYERS  --  roster: roster-161021-2025-26.json (Matthew the Apostle)
+========================================================================
+wins lost if swapped for a replacement-level 68-GP body OF HIS OWN
+SLOT GROUP, 38-man roster: center 19.5, forward 21.7, guard 21.6.
+blocks: 3 x 200 trials
+  player                    rate    gp  elig    wins       sd   next  flags
+  Tyrese Maxey              41.9    72  PG/SG  +1.63  +-0.005   10.8  
+  Paolo Banchero            41.9    73  PF/SF  +1.59  +-0.005   87.7  
+  Matas Buzelis             36.4    74  PF/SF  +1.12  +-0.009    5.5  rot2
+  Jalen Williams            37.9    68  SF/SG  +1.09  +-0.002   75.7  
+  Brandon Miller            37.2    68  PF/SF  +1.00  +-0.003    6.8  
+  Stephon Castle            36.2    69  PG/SG  +0.97  +-0.006  110.2  rot2
+  VJ Edgecombe              33.7    74  PG/SG  +0.94  +-0.006   50.5  rot1
+  Cedric Coward             33.5    72  PG/SG  +0.71  +-0.006    5.9  rot1
+  Alex Sarr                 29.7    68  C      +0.69  +-0.001   78.0  rot2
+  Jalen Green               30.1    71  PG/SG  +0.48  +-0.005    3.4  
+  Jaime Jaquez              31.4    72  PG/SG  +0.46  +-0.007   14.8  
+  Jabari Smith              28.9    74  PF/SF  +0.43  +-0.005    0.9  
+  Toumani Camara            26.0    76  PF/SF  +0.43  +-0.008   12.0  
+  Saddiq Bey                27.2    72  SF/SG  +0.31  +-0.013   12.0  miss
+  Kyshawn George            27.0    68  PF/SF  +0.22  +-0.004   10.3  rot2
+  Andre Drummond            24.0    70  C      +0.16  +-0.010    4.0  
+  Jaylon Tyson              19.4    72  SF/SG  +0.13  +-0.003    3.0  rot1
+  Dereck Lively             24.5    50  C      +0.11  +-0.011    2.3  frag
+  Ajay Mitchell             25.7    70  PG/SG  +0.10  +-0.005    2.0  rot1
+  Jake LaRavia              23.0    72  PF/SF  +0.09  +-0.014    9.4  
+  Kevin Huerter             19.9    64  SF/SG  -0.00  +-0.008   31.9  
+  Luke Kornet               17.6    68  C/PF   -0.06  +-0.005    1.2  
+  Julian Champagnie         20.1    74  PF/SF  -0.08  +-0.016    8.6  
+  Joan Beringer             16.2    71  PF/SF  -0.16  +-0.004    4.9  rot0
+  Noah Penda                10.5    66  SF/SG  -0.19  +-0.010   11.4  rot0
+  Rasheer Fleming            8.7    71  PF/SF  -0.22  +-0.010    9.4  rot0
+  Johnny Furphy             11.4    27  PG/SG  -0.25  +-0.008    2.2  rot0
+  Noa Essengue               0.9    32  PF/SF  -0.26  +-0.010         frag rot0 noproj
+
+========================================================================
+REPLACEMENT  --  roster: roster-161021-2025-26.json (Matthew the Apostle)
+========================================================================
+value of an added 68-GP forward, fitted as c*(rate-R)*GP over rates
+30/40/50/65, on the 19-matchup basis.
+  thin to          R        c        K
+      38       21.7    0.762      825
+      28       20.6    0.760      826
+
+R by slot group
+     group        R        c        K
+     guard     21.6    0.761      826
+   forward     21.7    0.762      825
+    center     19.5    0.766      821
+  R against forwards: guard -0.1, center -2.2.
+  pure bodies / slots on those same 38: forward 15/5, guard 12/5, center 5/3
+  highest R forward, crowding orders the three
+
+added PF by rate
+    rate   addedPF   increment
+      20       120           -
+      25       240         120
+      30       434         194
+      35       685         251
+      40       945         260
+      45      1205         260
+      50      1466         260
+      55      1726         260
+      60      1986         260
+      65      2246         260
+  fit over rate>=30: 51.9 PF per rate point, x-intercept 21.7.
+
+THEIR_INCOMING incoming_title
+Stephon Castle	+0.0847	0.0025
+VJ Edgecombe	+0.0908	0.0011
+Cedric Coward	+0.0519	0.0003
+Jaylon Tyson	+0.0078	0.0012
+Jabari Smith	+0.0525	0.0022
+Andre Drummond	+0.0107	0.0023
+Jaime Jaquez	+0.0258	0.0012
+Ajay Mitchell	+0.0254	0.0009
+Jalen Green	+0.0699	0.0023
+Saddiq Bey	+0.0606	0.0029
+Kevin Huerter	+0.0029	0.0022
+Jalen Williams	+0.1169	0.0024
+Noah Penda	-0.0033	0.0026
+Paolo Banchero	+0.1530	0.0034
+Matas Buzelis	+0.1081	0.0006
+Toumani Camara	+0.0582	0.0041
+Brandon Miller	+0.0864	0.0020
+Julian Champagnie	+0.0136	0.0031
+Jake LaRavia	+0.0402	0.0021
+Rasheer Fleming	-0.0004	0.0022
+Joan Beringer	-0.0028	0.0008
+Alex Sarr	+0.0175	0.0029
+Luke Kornet	+0.0066	0.0028
+Tyrese Maxey	+0.1490	0.0048
+Johnny Furphy	-0.0070	0.0006
+Noa Essengue	-0.0078	0.0006
+Dereck Lively	+0.0135	0.0028
+Kyshawn George	+0.0211	0.0013
+
+=== roster (Hlina on ours roster) ===
+player	Δw ours	ΔP(title)
+Paolo Banchero	+1.65	+15.3%
+Tyrese Maxey	+1.56	+14.9%
+Jalen Williams	+1.26	+11.7%
+Matas Buzelis	+1.20	+10.8%
+Brandon Miller	+1.02	+8.6%
+Stephon Castle	+1.00	+8.5%
+VJ Edgecombe	+0.86	+9.1%
+Cedric Coward	+0.60	+5.2%
+Toumani Camara	+0.51	+5.8%
+Jaime Jaquez	+0.45	+2.6%
+Saddiq Bey	+0.42	+6.1%
+Kyshawn George	+0.40	+2.1%
+Jabari Smith	+0.39	+5.3%
+Alex Sarr	+0.35	+1.7%
+Jalen Green	+0.33	+7.0%
+Jake LaRavia	+0.18	+4.0%
+Ajay Mitchell	+0.18	+2.5%
+Andre Drummond	+0.15	+1.1%
+Jaylon Tyson	+0.15	+0.8%
+Julian Champagnie	+0.11	+1.4%
+Kevin Huerter	+0.05	+0.3%
+Luke Kornet	+0.03	+0.7%
+Dereck Lively	+0.02	+1.3%
+Joan Beringer	-0.04	-0.3%
+Noah Penda	-0.12	-0.3%
+Rasheer Fleming	-0.14	-0.0%
+Johnny Furphy	-0.15	-0.7%
+Noa Essengue	-0.18	-0.8%
+hlina-eval  exit=0  elapsed_s=446.33

@@ -1,0 +1,247 @@
+{
+  "kind": "trade-screen",
+  "their_roster": 161024,
+  "their_label": "Josh",
+  "deals": [
+    {
+      "label": "Dame+Gordon -> Coby (he dumps vets, gets Coby)",
+      "out_us": [
+        "Coby White",
+        "Keon Ellis"
+      ],
+      "in_from_them": [
+        "Damian Lillard",
+        "Aaron Gordon"
+      ],
+      "out_them": [
+        "Damian Lillard",
+        "Aaron Gordon",
+        "Gary Payton"
+      ],
+      "in_from_us": [
+        "Coby White"
+      ],
+      "results": {
+        "delta_base_us": -284,
+        "dw_us": 0.58,
+        "dp_title_us": 5.7,
+        "dw_them": -0.76,
+        "dp_title_them": -9.4,
+        "dp_title_note": "each side priced with only that roster changing; not bilateral"
+      }
+    },
+    {
+      "label": "Dame+Sexton -> Turner",
+      "out_us": [
+        "Myles Turner",
+        "Keon Ellis"
+      ],
+      "in_from_them": [
+        "Damian Lillard",
+        "Collin Sexton"
+      ],
+      "out_them": [
+        "Damian Lillard",
+        "Collin Sexton",
+        "Gary Payton"
+      ],
+      "in_from_us": [
+        "Myles Turner"
+      ],
+      "results": {
+        "delta_base_us": -367,
+        "dw_us": 0.71,
+        "dp_title_us": 6.1,
+        "dw_them": -1.57,
+        "dp_title_them": -12.0,
+        "dp_title_note": "each side priced with only that roster changing; not bilateral"
+      }
+    },
+    {
+      "label": "Porzingis+Gordon -> Coby",
+      "out_us": [
+        "Coby White",
+        "Keon Ellis"
+      ],
+      "in_from_them": [
+        "Kristaps Porzi\u0146\u0123is",
+        "Aaron Gordon"
+      ],
+      "out_them": [
+        "Kristaps Porzi\u0146\u0123is",
+        "Aaron Gordon",
+        "Gary Payton"
+      ],
+      "in_from_us": [
+        "Coby White"
+      ],
+      "results": {
+        "delta_base_us": -38,
+        "dw_us": 0.32,
+        "dp_title_us": 2.1,
+        "dw_them": -0.48,
+        "dp_title_them": -6.2,
+        "dp_title_note": "each side priced with only that roster changing; not bilateral"
+      }
+    },
+    {
+      "label": "Porzingis+Gordon+3.02 -> 2.09 (pick+shed bigs)",
+      "out_us": [
+        "Keon Ellis"
+      ],
+      "in_from_them": [
+        "Kristaps Porzi\u0146\u0123is",
+        "Aaron Gordon"
+      ],
+      "out_them": [
+        "Kristaps Porzi\u0146\u0123is",
+        "Aaron Gordon",
+        "Gary Payton"
+      ],
+      "in_from_us": [
+        "Keon Ellis"
+      ],
+      "results": {
+        "error": "2 in for 1 out: name the 1 body/bodies dropped in `out_names`"
+      }
+    },
+    {
+      "label": "LaVine+Gordon -> Coby",
+      "out_us": [
+        "Coby White",
+        "Keon Ellis"
+      ],
+      "in_from_them": [
+        "Zach LaVine",
+        "Aaron Gordon"
+      ],
+      "out_them": [
+        "Zach LaVine",
+        "Aaron Gordon",
+        "Gary Payton"
+      ],
+      "in_from_us": [
+        "Coby White"
+      ],
+      "results": {
+        "delta_base_us": 61,
+        "dw_us": 0.12,
+        "dp_title_us": 3.8,
+        "dw_them": -0.23,
+        "dp_title_them": -3.8,
+        "dp_title_note": "each side priced with only that roster changing; not bilateral"
+      }
+    },
+    {
+      "label": "Vassell+Kuminga -> Porzingis+Sexton",
+      "out_us": [
+        "Devin Vassell",
+        "Jonathan Kuminga"
+      ],
+      "in_from_them": [
+        "Kristaps Porzi\u0146\u0123is",
+        "Collin Sexton"
+      ],
+      "out_them": [
+        "Kristaps Porzi\u0146\u0123is",
+        "Collin Sexton",
+        "Gary Payton"
+      ],
+      "in_from_us": [
+        "Devin Vassell",
+        "Jonathan Kuminga"
+      ],
+      "results": {
+        "delta_base_us": -474,
+        "dw_us": 0.31,
+        "dp_title_us": 3.9,
+        "dw_them": -0.7,
+        "dp_title_them": -6.5,
+        "dp_title_note": "each side priced with only that roster changing; not bilateral"
+      }
+    },
+    {
+      "label": "Sharpe+Kuminga -> Porzingis+Gordon",
+      "out_us": [
+        "Shaedon Sharpe",
+        "Jonathan Kuminga"
+      ],
+      "in_from_them": [
+        "Kristaps Porzi\u0146\u0123is",
+        "Aaron Gordon"
+      ],
+      "out_them": [
+        "Kristaps Porzi\u0146\u0123is",
+        "Aaron Gordon",
+        "Gary Payton"
+      ],
+      "in_from_us": [
+        "Shaedon Sharpe",
+        "Jonathan Kuminga"
+      ],
+      "results": {
+        "delta_base_us": -167,
+        "dw_us": 0.54,
+        "dp_title_us": 7.0,
+        "dw_them": -0.67,
+        "dp_title_them": -5.8,
+        "dp_title_note": "each side priced with only that roster changing; not bilateral"
+      }
+    },
+    {
+      "label": "Williams+Matkovic -> Porzingis",
+      "out_us": [
+        "Mark Williams",
+        "Karlo Matkovi\u0107"
+      ],
+      "in_from_them": [
+        "Kristaps Porzi\u0146\u0123is"
+      ],
+      "out_them": [
+        "Kristaps Porzi\u0146\u0123is",
+        "Gary Payton"
+      ],
+      "in_from_us": [
+        "Mark Williams",
+        "Karlo Matkovi\u0107"
+      ],
+      "results": {
+        "delta_base_us": -517,
+        "dw_us": -0.08,
+        "dp_title_us": -3.6,
+        "dw_them": -0.04,
+        "dp_title_them": -0.4,
+        "dp_title_note": "each side priced with only that roster changing; not bilateral"
+      }
+    },
+    {
+      "label": "Queta+2.09 -> Gordon+3.10 (sell pick frame)",
+      "out_us": [
+        "Neemias Queta",
+        "Keon Ellis"
+      ],
+      "in_from_them": [
+        "Aaron Gordon"
+      ],
+      "out_them": [
+        "Aaron Gordon",
+        "Gary Payton"
+      ],
+      "in_from_us": [
+        "Neemias Queta"
+      ],
+      "results": {
+        "delta_base_us": -106,
+        "dw_us": 0.06,
+        "dp_title_us": 1.8,
+        "dw_them": 0.01,
+        "dp_title_them": -0.9,
+        "dp_title_note": "each side priced with only that roster changing; not bilateral"
+      }
+    }
+  ],
+  "meta": {
+    "simmed": "2026-08-28",
+    "dp_title_note": "\u0394P(title) per side: only that team changes in the 12-team field, not bilateral"
+  }
+}

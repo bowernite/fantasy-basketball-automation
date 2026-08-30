@@ -5,8 +5,8 @@ class BracketWindow(unittest.TestCase):
     def test_the_wire_flags_fewer_rounds_than_are_actually_played(self):
         flagged = {i for i, p in enumerate(sim.PERIODS)
                    if "playoff" in p["kinds"]}
-        self.assertTrue(flagged)
         self.assertLess(len(flagged), len(sim.BRACKET))
+        self.assertTrue(flagged <= set(sim.BRACKET))
 
     def test_it_matches_the_window_league_info_states(self):
         text = one_line(read_text(skills_path("league-info", "SKILL.md")))
@@ -31,9 +31,9 @@ class BracketGames(unittest.TestCase):
     def test_the_weeks_are_not_flat_across_teams(self):
         per = {t: sim.bracket_games(t) for t in sim.NBA_TEAMS}
         self.assertEqual((min(min(c) for c in per.values()),
-                          max(max(c) for c in per.values())), (2, 5))
+                          max(max(c) for c in per.values())), (2, 4))
         pair = [sum(c[-2:]) for c in per.values()]
-        self.assertEqual((min(pair), max(pair)), (6, 8))
+        self.assertEqual((min(pair), max(pair)), (5, 8))
 
     def test_the_nba_schedule_covers_the_whole_window(self):
         for i, nights in zip(sim.BRACKET, sim.BRACKET_NIGHTS):
@@ -100,12 +100,12 @@ class TheDraw(unittest.TestCase):
                 nxt, o = order[ladder[r + 1] - 1], sim.PERIODS[i]["ordinal"]
                 with self.subTest(period=o, seeds=(ladder[r + 1], ladder[:r + 1])):
                     self.assertIn({cur, nxt}, [{a, h} for a, _, h, _
-                                               in sim.PERIODS[i]["games"]])
+                                               in sim.HIST_PERIODS[i]["games"]])
                 cur = max((cur, nxt), key=lambda t: sim.SCORES[t][o])
             held.append(cur)
         self.assertIn(set(held),
                       [{a, h} for a, _, h, _
-                       in sim.PERIODS[sim.BRACKET[-1]]["games"]])
+                       in sim.HIST_PERIODS[sim.BRACKET[-1]]["games"]])
 
     def test_every_seed_climbs_in_from_the_round_its_band_enters(self):
         entry = {s: sim.BRACKET.index(b.periods[0])

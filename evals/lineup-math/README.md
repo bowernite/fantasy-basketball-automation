@@ -1,6 +1,6 @@
 # Lineup math — running the sim
 
-Prices a roster change in **expected wins** on the real '25-26 NBA calendar. Come here for a
+Prices a roster change in **expected wins** on the real '26-27 NBA calendar. Come here for a
 number and **re-run rather than quote it.**
 
 - **`method.md`** — the basis, the calibration, and where to distrust the model. Read it
@@ -17,6 +17,7 @@ here restates either.
 ```
 ./run sim.py --help          # every report, what it answers, and which take --roster
 ./run sim.py <report ...>    # runs each, in the order named
+./run sim_run.py <config>    # JSON trade screens, player effects, batched reports
 ./run test
 ./run fetch_data.py --help   # every file it writes and what each argument costs
 ```
@@ -53,6 +54,7 @@ sim.player_title(sim.basis(), ["Jalen Suggs"])
 sim.incoming_title(sim.basis(), sim.our_roster("their.json"))
 after, before = sim.swap_odds(sim.swap(full, ["Jalen Suggs"], [sim.star(48, 70)]), full)
 after.title - before.title
+sim.deal_odds(after_us, after_them, "their.json")  # Δw and ΔP(title), both seats
 sim.full_season()[sim.ROSTER]   # wins · P(each seed) · P(bracket) · P(title)
 ```
 

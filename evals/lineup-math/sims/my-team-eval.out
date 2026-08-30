@@ -1,0 +1,209 @@
+========================================================================
+TITLE  --  roster: roster-161025-2025-26.json (Bathroom club)
+========================================================================
+19 head-to-head periods on the league's own schedule shape, standings
+by record then points-for, then the 8-of-12 bracket over periods 20-23.
+20000 seasons. draw: seeds 8-5-4-1 | 7-6-3-2, each half climbed worst seed first,
+so seeds 1, 2 enter in the last round they can.
+week-to-week spread around a level: 0.1005 of the period's level.
+
+  team                                                           wins bracket    1-2    3-4    5-8 P(title)      +-
+  roster-161025-2025-26.json (Bathroom club)                     14.6   1.000  0.757  0.194  0.049    0.325 +-0.003
+  roster-161021-2025-26.json (Matthew the Apostle)               13.5   0.999  0.542  0.317  0.139    0.294 +-0.003
+  roster-161024-2025-26.json (Jesus Christ and his Disciples)    12.0   0.992  0.197  0.375  0.419    0.127 +-0.002
+  roster-161016-2025-26.json (Pascals of Pangea)                 12.0   0.992  0.190  0.376  0.426    0.105 +-0.002
+  roster-161020-2025-26.json (The Don)                           10.8   0.972  0.061  0.229  0.682    0.078 +-0.002
+  roster-161018-2025-26.json (Yao Ming Dynasty)                  12.5   0.995  0.232  0.396  0.366    0.050 +-0.002
+  roster-161017-2025-26.json (The Gutes of Gotland)               9.6   0.881  0.019  0.094  0.767    0.019 +-0.001
+  roster-161022-2025-26.json (The Han Dybantsy)                   7.2   0.417  0.000  0.006  0.410    0.001 +-0.000
+  roster-161014-2025-26.json (King Christopher of Bavaria)        6.4   0.232  0.000  0.003  0.228    0.001 +-0.000
+  roster-161019-2025-26.json (Mongol Khans Freak Militia)         7.4   0.489  0.001  0.008  0.480    0.000 +-0.000
+  roster-160941-2025-26.json (Pharaoh Mattankhamun-Ra)            4.1   0.022  0.000  0.000  0.022    0.000 +-0.000
+  roster-161015-2025-26.json (Shai Gilgeous-Alexander the Great)  3.7   0.011  0.000  0.000  0.011    0.000 +-0.000
+  `wins` is matchups won of the 19; the band columns sum to `bracket`.
+  P(title) sums to 1.000 over the league.
+
+roster-161025-2025-26.json (Bathroom club): P(title) 0.325, by seed.
+  seed   P(seed)  P(title|seed)  contribution  closed form
+     1     0.511          0.369         0.189        0.382
+     2     0.246          0.348         0.085        0.300
+     3     0.131          0.235         0.031        0.207
+     4     0.063          0.210         0.013        0.155
+     5     0.032          0.139         0.004        0.133
+     6     0.013          0.141         0.002        0.117
+     7     0.004              -         0.001        0.117
+     8     0.001              -         0.000        0.070
+   out     0.000          0.000         0.000
+  contribution sums to P(title); a seed reached fewer than 200 times
+  prints `-`. `closed form` is `seed_title` against the PROJECTED
+  field in its projected order.
+
+Seeding, priced. `pinned` hands every team the seed its projected
+PF says it gets and plays only the bracket; `simulated` is the table
+above.
+  team                                                            pinned  simulated   delta
+  roster-161021-2025-26.json (Matthew the Apostle)                 0.420      0.294  -0.126  
+  roster-161025-2025-26.json (Bathroom club)                       0.304      0.325  +0.021  <- loaded
+  roster-161024-2025-26.json (Jesus Christ and his Disciples)      0.122      0.127  +0.005  
+  roster-161016-2025-26.json (Pascals of Pangea)                   0.074      0.105  +0.031  
+  roster-161018-2025-26.json (Yao Ming Dynasty)                    0.031      0.050  +0.019  
+  roster-161020-2025-26.json (The Don)                             0.041      0.078  +0.037  
+  roster-161017-2025-26.json (The Gutes of Gotland)                0.007      0.019  +0.012  
+  roster-161019-2025-26.json (Mongol Khans Freak Militia)          0.001      0.000  -0.000  
+  roster-161022-2025-26.json (The Han Dybantsy)                    0.000      0.001  +0.001  (outside the field)
+  roster-161014-2025-26.json (King Christopher of Bavaria)         0.000      0.001  +0.001  (outside the field)
+  roster-160941-2025-26.json (Pharaoh Mattankhamun-Ra)             0.000      0.000  +0.000  (outside the field)
+  roster-161015-2025-26.json (Shai Gilgeous-Alexander the Great)   0.000      0.000  +0.000  (outside the field)
+
+Checks.
+  standings spread: sim sd 4.11, wire 4.17 over 19 periods
+  level spread: projected season PF cv 0.0736, wire 0.0909
+  bracket agreement: seeds pinned, sigma 246-256 by round
+
+========================================================================
+WEEKS  --  roster: roster-161025-2025-26.json (Bathroom club)
+========================================================================
+Bracket: 4 rounds, periods 20-23 (2027-03-01 to 2027-03-28).
+  player                      W20    W21    W22    W23  flags
+  Darius Garland             92/3  123/4   92/3  123/4  
+  Jalen Suggs                64/3   64/3   85/4   85/4  
+  Desmond Bane               91/3   91/3  121/4  121/4  
+  Kawhi Leonard              98/3  131/4   98/3  131/4  
+  Chaney Johnson             17/4   12/3   17/4   12/3  
+  Jakob Poeltl               53/3   53/3   71/4   71/4  
+  Jay Huff                   39/3   39/3   52/4   39/3  
+  Coby White                 57/2  113/4   85/3  113/4  
+  Cade Cunningham           121/3  162/4  121/3  162/4  
+  Josh Giddey               145/4  109/3  109/3  145/4  
+  Anfernee Simons            74/4   56/3   74/4   74/4  
+  De'Anthony Melton          77/4   77/4   58/3   77/4  
+  Keon Ellis                 47/4   35/3   47/4   35/3  
+  Khris Middleton            52/4   39/3   39/3   52/4  
+  Adem Bona                  62/4   47/3   62/4   62/4  
+  Jalen Duren               101/3  134/4  101/3  134/4  
+  Naz Reid                   55/2  111/4   83/3  111/4  
+  Myles Turner               69/3   69/3   69/3   92/4  
+  Karlo Matković             49/4   49/4   49/4   37/3  
+  Kyrie Irving               47/2   93/4   93/4   93/4  
+  Fred VanVleet              79/4   60/3   60/3   79/4  
+  Jimmy Butler               37/4   37/4   28/3   37/4  
+  Zach Edey                  76/3  101/4  101/4  101/4  
+  Jarace Walker              54/3   54/3   72/4   54/3  
+  Neemias Queta              71/3   94/4   71/3   94/4  
+  Mark Williams              69/3   92/4   92/4   92/4  
+  De'Andre Hunter            47/3   63/4   63/4   47/3  
+  Devin Vassell              63/3   63/3   84/4   63/3  
+  Jonathan Kuminga              -      -      -      -  fa
+  Keegan Murray              75/3  100/4  100/4   75/3  
+  Shaedon Sharpe             41/4   31/3   41/4   31/3  
+  Tari Eason                 84/4   63/3   63/3   84/4  
+
+========================================================================
+PLAYERS  --  roster: roster-161025-2025-26.json (Bathroom club)
+========================================================================
+wins lost if swapped for a replacement-level 68-GP body OF HIS OWN
+SLOT GROUP, 38-man roster: center 25.4, forward 23.1, guard 25.3.
+blocks: 3 x 200 trials
+  player                    rate    gp  elig    wins       sd   next  flags
+  Cade Cunningham           47.5    68  PG/SG  +1.82  +-0.011   39.4  
+  Josh Giddey               42.0    69  PG/SG  +1.44  +-0.006   16.9  
+  Kawhi Leonard             41.0    64  PF/SF  +1.26  +-0.013   25.5  
+  Jalen Duren               38.9    69  C      +1.16  +-0.008   48.1  
+  Darius Garland            36.8    67  PG/SG  +0.78  +-0.006   18.9  
+  Naz Reid                  30.0    74  C/PF   +0.66  +-0.008    2.7  
+  Zach Edey                 34.8    58  C      +0.64  +-0.009    3.1  frag rot2
+  Desmond Bane              32.7    74  PG/SG  +0.63  +-0.002   15.2  
+  Kyrie Irving              34.5    54  PG/SG  +0.56  +-0.007   10.7  miss
+  Coby White                32.4    70  PG/SG  +0.51  +-0.002   53.3  
+  Keegan Murray             27.9    72  PF/SF  +0.38  +-0.004    3.1  frag
+  Devin Vassell             24.8    68  SF/SG  +0.38  +-0.003    8.9  
+  Neemias Queta             25.5    74  C      +0.33  +-0.009  109.0  rot2
+  Mark Williams             28.8    64  C      +0.29  +-0.008   52.6  
+  Tari Eason                26.3    64  PF/SF  +0.24  +-0.008    0.7  
+  Myles Turner              25.5    72  C/PF   +0.24  +-0.008    2.9  
+  De'Anthony Melton         24.9    62  PG/SG  +0.21  +-0.024    0.4  
+  Jalen Suggs               29.4    58  PG/SG  +0.21  +-0.021    2.1  
+  Anfernee Simons           21.2    70  PG/SG  +0.18  +-0.002   13.2  
+  Fred VanVleet             26.5    60  PG/SG  +0.11  +-0.007    1.2  miss
+  Jarace Walker             19.9    72  PF/SF  +0.10  +-0.008    0.7  rot1
+  Shaedon Sharpe            27.2    30  PG/SG  +0.09  +-0.007    0.7  
+  Jimmy Butler              28.4    26  PF/SF  +0.09  +-0.005    0.2  
+  Adem Bona                 17.3    72  PF/SF  +0.09  +-0.012    8.8  rot0
+  Jakob Poeltl              22.6    63  C      +0.05  +-0.016    1.1  
+  Khris Middleton           20.2    52  PF/SF  +0.03  +-0.017   11.2  
+  Karlo Matković            15.0    66  C/PF   -0.06  +-0.012    1.4  rot1
+  Jay Huff                  14.0    74  C      -0.06  +-0.012    0.8  rot2
+  De'Andre Hunter           19.1    66  SF/SG  -0.07  +-0.002    5.8  
+  Keon Ellis                13.5    70  PG/SG  -0.09  +-0.004    3.1  rot1
+  Jonathan Kuminga          19.2    69  PF/SF  -0.10  +-0.003    2.1  fa
+  Chaney Johnson             8.1    41  SF/SG  -0.13  +-0.023         frag rot1
+
+========================================================================
+REPLACEMENT  --  roster: roster-161025-2025-26.json (Bathroom club)
+========================================================================
+value of an added 68-GP forward, fitted as c*(rate-R)*GP over rates
+30/40/50/65, on the 19-matchup basis.
+  thin to          R        c        K
+      38       23.1    0.760      827
+      28       22.1    0.764      823
+
+R by slot group
+     group        R        c        K
+     guard     25.3    0.747      842
+   forward     23.1    0.760      827
+    center     25.4    0.748      841
+  R against forwards: guard +2.3, center +2.4.
+  pure bodies / slots on those same 38: center 7/3, guard 14/5, forward 11/5
+  highest R center, crowding does NOT order the three
+
+added PF by rate
+    rate   addedPF   increment
+      20        54           -
+      25       150          96
+      30       359         209
+      35       617         259
+      40       876         259
+      45      1135         259
+      50      1393         259
+      55      1652         259
+      60      1910         259
+      65      2169         259
+  fit over rate>=30: 51.7 PF per rate point, x-intercept 23.1.
+OURS player_title
+Darius Garland	+0.0658	0.0084
+Jalen Suggs	+0.0189	0.0036
+Desmond Bane	+0.0577	0.0060
+Kawhi Leonard	+0.1122	0.0058
+Chaney Johnson	-0.0024	0.0016
+Jakob Poeltl	+0.0299	0.0039
+Jay Huff	-0.0029	0.0016
+Coby White	+0.0431	0.0067
+Cade Cunningham	+0.1570	0.0063
+Josh Giddey	+0.1259	0.0056
+Anfernee Simons	+0.0275	0.0017
+De'Anthony Melton	+0.0274	0.0076
+Keon Ellis	+0.0049	0.0005
+Khris Middleton	+0.0049	0.0023
+Adem Bona	+0.0257	0.0004
+Jalen Duren	+0.0960	0.0046
+Naz Reid	+0.0585	0.0067
+Myles Turner	+0.0159	0.0025
+Karlo Matković	+0.0138	0.0019
+Kyrie Irving	+0.0738	0.0077
+Fred VanVleet	+0.0263	0.0052
+Jimmy Butler	+0.0160	0.0050
+Zach Edey	+0.0673	0.0076
+Jarace Walker	+0.0146	0.0026
+Neemias Queta	+0.0380	0.0061
+Mark Williams	+0.0631	0.0079
+De'Andre Hunter	+0.0113	0.0008
+Devin Vassell	+0.0381	0.0060
+Jonathan Kuminga	-0.0054	0.0008
+Keegan Murray	+0.0547	0.0048
+Shaedon Sharpe	+0.0215	0.0027
+Tari Eason	+0.0391	0.0060
+
+ROSTER_ODDS
+P_TITLE	0.3250
+PF	29616
+WINS	14.6

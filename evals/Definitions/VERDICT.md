@@ -7,7 +7,7 @@ Objective: **maximise `Σ P(title)` over the seasons we intend to contend** (`CL
 For a concrete deal, publish both deltas and judge them against our `SIT` — never fold them into one number:
 
 - **`ΔBASE`** — both sides on the same curve, picks included (`eval-pick`); a swept band wherever `BASE.md` §*Summing across a package* calls for one.
-- **`Δw`** — one joint sim run per side of the actual pieces (`Delta w.md`): ours on our roster, theirs on theirs.
+- **`Δw`** — `trade-screen` / `deal_odds` field wins on the actual pieces, both rosters in. Not summed table rows (`Delta w.md`).
 
 The rule, by our `SIT`:
 

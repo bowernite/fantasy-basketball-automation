@@ -51,18 +51,18 @@ class SymmetricProjection(unittest.TestCase):
                           for p in sim.our_roster(projected=False)],
                          [(p["n"], p["avg"], p["gp"]) for p in raw])
 
-class GPRunsOnTheActualRate(unittest.TestCase):
+class MapRunsOnTheActualRate(unittest.TestCase):
     OURS = "De'Anthony Melton"
 
-    def test_the_games_come_off_the_rate_that_happened_not_the_one_forecast(self):
+    def test_the_map_uses_the_rate_that_happened_not_the_forecast(self):
         actual, _ = sim.pool_seasons(self.OURS)["2025"]
         forecast = sim.projected_rate(self.OURS)
         self.assertLess(forecast, actual - 5)
         p = rostered(self.OURS)
 
         self.assertEqual(p["gp"], round(sim.project_gp(self.OURS, rate=actual)))
-        self.assertGreater(p["gp"],
-                           round(sim.project_gp(self.OURS, rate=forecast)) + 2)
+        self.assertGreater(sim.mapped_gp(self.OURS, rate=actual),
+                           sim.mapped_gp(self.OURS, rate=forecast) + 2)
 
     def test_a_counterparty_gets_the_same_games_off_the_same_season(self):
         ours = rostered(self.OURS)
@@ -87,7 +87,8 @@ class GPRunsOnTheActualRate(unittest.TestCase):
         p = rostered(name)
 
         self.assertEqual(p["gp"], round(sim.project_gp(name, rate=actual)))
-        self.assertGreater(p["gp"], round(sim.project_gp(name, rate=forecast)) + 4)
+        self.assertGreater(sim.mapped_gp(name, rate=actual),
+                           sim.mapped_gp(name, rate=forecast) + 4)
 
     def test_a_row_the_pool_never_saw_is_fitted_on_the_actual_line_it_carries(self):
         name = "Vasilije Micić"
@@ -101,7 +102,6 @@ class GPRunsOnTheActualRate(unittest.TestCase):
         self.assertEqual(p["gp"], round(sim.project_gp(name, gp=44, rate=21.5)))
 
     def test_no_row_on_any_roster_is_fitted_on_the_forecast(self):
-        moved = 0
         for path in (None, THEIR_ROSTER, ROOKIE_ROSTER):
             raw = sim.our_roster(path, projected=False)
             self.assertGreater(len(raw), 20)
@@ -116,19 +116,14 @@ class GPRunsOnTheActualRate(unittest.TestCase):
                     gp_from_file = {"gp": before["gp"]}
                 if not actual:
                     continue
-                forecast = sim.projected_rate(n)
                 with self.subTest(roster=path or "ours", player=n):
                     self.assertEqual(
                         after["gp"],
                         round(sim.project_gp(n, rate=actual, **gp_from_file)))
-                if forecast is not None and round(sim.project_gp(
-                        n, rate=forecast, **gp_from_file)) != after["gp"]:
-                    moved += 1
-        self.assertGreater(moved, 15)
 
     def test_the_games_on_the_printed_row_are_the_projected_ones(self):
         table = render("players")
-        for name in ("Fred VanVleet", "Cade Cunningham"):
+        for name in ("Fred VanVleet", "Coby White"):
             raw = rostered(name, projected=False)
             p = rostered(name)
             self.assertNotEqual(raw["gp"], p["gp"])

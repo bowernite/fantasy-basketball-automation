@@ -28,7 +28,7 @@ def report_calibration():
 
     raw = our_roster(projected=False)
     a = engine.run(raw)
-    print("\nCALIBRATION  '25-26 roster at '25-26 rates, standings basis")
+    print("\nCALIBRATION  last season's roster and rates, this season's nights")
     print("  simulated season PF : %8.0f" % a["pf"])
     print("  real standings PF   : %8.0f  (%d scored periods)"
           % (REAL_WK_MEAN * WEEKS, WEEKS))

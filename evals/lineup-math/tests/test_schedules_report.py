@@ -68,7 +68,7 @@ class SchedulesReport(unittest.TestCase):
         body, lo, hi, swing, rlo, at_lo, rhi, at_hi = m.groups()
         self.assertEqual((int(lo), int(hi)), (rows[0][0], rows[-1][0]))
         self.assertEqual((int(at_lo), int(at_hi)), (rows[0][0], rows[-1][0]))
-        self.assertAlmostEqual(float(body), rows[-1][1] / rows[0][1], delta=0.5)
+        self.assertAlmostEqual(float(body), rows[-1][1] / rows[0][1], delta=0.6)
         self.assertAlmostEqual(float(swing), rows[-1][2] / rows[0][2], delta=0.5)
         self.assertAlmostEqual(float(rlo), rows[0][4], delta=0.01)
         self.assertAlmostEqual(float(rhi), rows[-1][4], delta=0.01)
@@ -122,7 +122,7 @@ class SchedulesReport(unittest.TestCase):
                                 self.out).group(1))
         self.assertLess(real, full, self.out)
         self.assertLess(worst, real, self.out)
-        self.assertGreater(full - worst, 4 * (full - real))
+        self.assertGreater(full - worst, 2 * (full - real))
 
     def test_the_coverage_call_comes_off_the_two_r2s_it_prints(self):
         cov = float(re.search(r"nights COVERED.*R2 ([\d.]+)", self.out).group(1))

@@ -100,7 +100,9 @@ class RosterScopedReports(unittest.TestCase):
     def test_the_light_night_premise_is_the_loaded_rosters_own(self):
         flat = one_line(render("schedules", THEIR_ROSTER))
         full = sim.basis(THEIR_ROSTER)
-        moved_a, moved_b = sim.steer(full, ["BKN"] * 7), sim.steer(full, ["CHI"] * 7)
+        n_fa = len(sim.auction_slots(full))
+        moved_a, moved_b = (sim.steer(full, ["BKN"] * n_fa),
+                            sim.steer(full, ["CHI"] * n_fa))
         kept = [p["tm"] for p, x, y in zip(full, moved_a, moved_b)
                 if p["tm"] == x["tm"] == y["tm"]]
         self.assertIn("the other %d stay where they are on %d NBA teams, and %d "

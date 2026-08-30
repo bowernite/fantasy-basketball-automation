@@ -3,12 +3,12 @@ evidence flags saying how much history a projection actually rests on."""
 import collections, datetime, functools, math, random, statistics
 from fetch_data import SEASON
 from .board import POOL, pool, pool_seasons, season_or_latest
+from .projections import projected_gp
 from .data import SEASON_STR
 from .stats import ols, slope
 
 
-# GP is the dominant input here and the only one with no market price, so it
-# needs a defensible input, not precision. Candidates are ranked out of sample
+# GP is the dominant input here. Candidates are ranked out of sample
 # in `report_gp`; gated to the rotation players we trade.
 GP_MIN_RATE = 20.0
 
@@ -161,7 +161,8 @@ def gp_bootstrap(rows, models=None, ref="gp1", n=GP_BOOT, seed=11,
 
 
 PROJECT_GP_NOTE = ("one prior season of GP shrunk toward the pool, plus scoring "
-                   "rate knotted at GP_KNOT. More history and age were both "
+                   "rate knotted at GP_KNOT, used only when neither Hashtag nor "
+                   "FanScout carries him. More history and age were both "
                    "tested; NOTHING beat one season, so one season on Occam.")
 
 
@@ -206,12 +207,12 @@ def evidence_flags(name, season=SEASON_STR):
     return flags
 
 
-def project_gp(name, season=SEASON_STR, gp=None, rate=None):
-    """Expected GP next season, off the player's most recent pool season.
+def mapped_gp(name, season=SEASON_STR, gp=None, rate=None):
+    """Expected GP next season, off the player's most recent pool season
 
     `rate` OVERRIDES the pool when given; `gp` is a FALLBACK used only when
     the pool has never seen this player. Raises rather than silently
-    returning None if neither the pool nor a fallback is available."""
+    returning None if neither the pool nor a fallback is available"""
     s = pool_seasons(name)
     if s:
         pool_rate, gp = season_or_latest(s, season)
@@ -221,3 +222,11 @@ def project_gp(name, season=SEASON_STR, gp=None, rate=None):
                        " spelling against %s" % (name, POOL))
     a, b, c = gp_model()
     return a + b * gp + c * min(rate, GP_KNOT)
+
+
+def project_gp(name, season=SEASON_STR, gp=None, rate=None):
+    """`gp` and `rate` only apply when neither Hashtag nor FanScout hits"""
+    feed_gp = projected_gp(name)
+    if feed_gp is not None:
+        return feed_gp
+    return mapped_gp(name, season=season, gp=gp, rate=rate)

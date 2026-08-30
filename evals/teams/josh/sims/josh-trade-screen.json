@@ -1,0 +1,899 @@
+{
+  "sections": [
+    {
+      "kind": "trade-screen",
+      "their_roster": 161024,
+      "their_label": "Josh",
+      "deals": [
+        {
+          "label": "Gordon -> Coby White",
+          "out_us": [
+            "Coby White"
+          ],
+          "in_from_them": [
+            "Aaron Gordon"
+          ],
+          "out_them": [
+            "Aaron Gordon"
+          ],
+          "in_from_us": [
+            "Coby White"
+          ],
+          "results": {
+            "delta_base_us": -683,
+            "dw_us": -0.03,
+            "dp_title_us": -0.9,
+            "dw_them": 0.25,
+            "dp_title_them": 2.7,
+            "dp_title_note": "both rosters change in the 12-team field"
+          }
+        },
+        {
+          "label": "Gordon -> Bane",
+          "out_us": [
+            "Desmond Bane"
+          ],
+          "in_from_them": [
+            "Aaron Gordon"
+          ],
+          "out_them": [
+            "Aaron Gordon"
+          ],
+          "in_from_us": [
+            "Desmond Bane"
+          ],
+          "results": {
+            "delta_base_us": -1612,
+            "dw_us": -0.29,
+            "dp_title_us": -5.9,
+            "dw_them": 0.63,
+            "dp_title_them": 7.4,
+            "dp_title_note": "both rosters change in the 12-team field"
+          }
+        },
+        {
+          "label": "Gillespie -> Coby White",
+          "out_us": [
+            "Coby White"
+          ],
+          "in_from_them": [
+            "Collin Gillespie"
+          ],
+          "out_them": [
+            "Collin Gillespie"
+          ],
+          "in_from_us": [
+            "Coby White"
+          ],
+          "results": {
+            "delta_base_us": -768,
+            "dw_us": -0.18,
+            "dp_title_us": 3.4,
+            "dw_them": 0.12,
+            "dp_title_them": -2.2,
+            "dp_title_note": "both rosters change in the 12-team field"
+          }
+        },
+        {
+          "label": "Sexton -> Coby White",
+          "out_us": [
+            "Coby White"
+          ],
+          "in_from_them": [
+            "Collin Sexton"
+          ],
+          "out_them": [
+            "Collin Sexton"
+          ],
+          "in_from_us": [
+            "Coby White"
+          ],
+          "results": {
+            "delta_base_us": -1005,
+            "dw_us": -0.08,
+            "dp_title_us": 1.9,
+            "dw_them": 0.07,
+            "dp_title_them": 0.0,
+            "dp_title_note": "both rosters change in the 12-team field"
+          }
+        },
+        {
+          "label": "Sexton -> Queta",
+          "out_us": [
+            "Neemias Queta"
+          ],
+          "in_from_them": [
+            "Collin Sexton"
+          ],
+          "out_them": [
+            "Collin Sexton"
+          ],
+          "in_from_us": [
+            "Neemias Queta"
+          ],
+          "results": {
+            "delta_base_us": -179,
+            "dw_us": 0.01,
+            "dp_title_us": 3.1,
+            "dw_them": 0.01,
+            "dp_title_them": -1.8,
+            "dp_title_note": "both rosters change in the 12-team field"
+          }
+        },
+        {
+          "label": "Grayson Allen -> Suggs",
+          "out_us": [
+            "Jalen Suggs"
+          ],
+          "in_from_them": [
+            "Grayson Allen"
+          ],
+          "out_them": [
+            "Grayson Allen"
+          ],
+          "in_from_us": [
+            "Jalen Suggs"
+          ],
+          "results": {
+            "delta_base_us": -1169,
+            "dw_us": -0.27,
+            "dp_title_us": -4.2,
+            "dw_them": 0.38,
+            "dp_title_them": 4.8,
+            "dp_title_note": "both rosters change in the 12-team field"
+          }
+        },
+        {
+          "label": "LaVine -> Suggs",
+          "out_us": [
+            "Jalen Suggs"
+          ],
+          "in_from_them": [
+            "Zach LaVine"
+          ],
+          "out_them": [
+            "Zach LaVine"
+          ],
+          "in_from_us": [
+            "Jalen Suggs"
+          ],
+          "results": {
+            "delta_base_us": -692,
+            "dw_us": -0.28,
+            "dp_title_us": -2.8,
+            "dw_them": 0.33,
+            "dp_title_them": 4.1,
+            "dp_title_note": "both rosters change in the 12-team field"
+          }
+        },
+        {
+          "label": "Gordon -> Turner",
+          "out_us": [
+            "Myles Turner"
+          ],
+          "in_from_them": [
+            "Aaron Gordon"
+          ],
+          "out_them": [
+            "Aaron Gordon"
+          ],
+          "in_from_us": [
+            "Myles Turner"
+          ],
+          "results": {
+            "delta_base_us": -444,
+            "dw_us": 0.1,
+            "dp_title_us": 1.9,
+            "dw_them": 0.04,
+            "dp_title_them": -1.0,
+            "dp_title_note": "both rosters change in the 12-team field"
+          }
+        },
+        {
+          "label": "Bridges -> Bane",
+          "out_us": [
+            "Desmond Bane"
+          ],
+          "in_from_them": [
+            "Miles Bridges"
+          ],
+          "out_them": [
+            "Miles Bridges"
+          ],
+          "in_from_us": [
+            "Desmond Bane"
+          ],
+          "results": {
+            "delta_base_us": -1148,
+            "dw_us": 0.02,
+            "dp_title_us": 5.9,
+            "dw_them": 0.04,
+            "dp_title_them": -3.2,
+            "dp_title_note": "both rosters change in the 12-team field"
+          }
+        },
+        {
+          "label": "Bridges -> Coby White",
+          "out_us": [
+            "Coby White"
+          ],
+          "in_from_them": [
+            "Miles Bridges"
+          ],
+          "out_them": [
+            "Miles Bridges"
+          ],
+          "in_from_us": [
+            "Coby White"
+          ],
+          "results": {
+            "delta_base_us": -219,
+            "dw_us": 0.26,
+            "dp_title_us": 10.3,
+            "dw_them": -0.39,
+            "dp_title_them": -7.3,
+            "dp_title_note": "both rosters change in the 12-team field"
+          }
+        },
+        {
+          "label": "Bridges -> Garland",
+          "out_us": [
+            "Darius Garland"
+          ],
+          "in_from_them": [
+            "Miles Bridges"
+          ],
+          "out_them": [
+            "Miles Bridges"
+          ],
+          "in_from_us": [
+            "Darius Garland"
+          ],
+          "results": {
+            "delta_base_us": -2127,
+            "dw_us": 0.06,
+            "dp_title_us": 6.5,
+            "dw_them": -0.0,
+            "dp_title_them": -4.6,
+            "dp_title_note": "both rosters change in the 12-team field"
+          }
+        },
+        {
+          "label": "Porzingis -> Naz Reid",
+          "out_us": [
+            "Naz Reid"
+          ],
+          "in_from_them": [
+            "Kristaps Porzi\u0146\u0123is"
+          ],
+          "out_them": [
+            "Kristaps Porzi\u0146\u0123is"
+          ],
+          "in_from_us": [
+            "Naz Reid"
+          ],
+          "results": {
+            "delta_base_us": -759,
+            "dw_us": -0.34,
+            "dp_title_us": -2.2,
+            "dw_them": 0.34,
+            "dp_title_them": 1.7,
+            "dp_title_note": "both rosters change in the 12-team field"
+          }
+        },
+        {
+          "label": "Porzingis -> Turner",
+          "out_us": [
+            "Myles Turner"
+          ],
+          "in_from_them": [
+            "Kristaps Porzi\u0146\u0123is"
+          ],
+          "out_them": [
+            "Kristaps Porzi\u0146\u0123is"
+          ],
+          "in_from_us": [
+            "Myles Turner"
+          ],
+          "results": {
+            "delta_base_us": -240,
+            "dw_us": -0.01,
+            "dp_title_us": 2.2,
+            "dw_them": 0.01,
+            "dp_title_them": -2.1,
+            "dp_title_note": "both rosters change in the 12-team field"
+          }
+        },
+        {
+          "label": "Cam Johnson -> Naz Reid",
+          "out_us": [
+            "Naz Reid"
+          ],
+          "in_from_them": [
+            "Cameron Johnson"
+          ],
+          "out_them": [
+            "Cameron Johnson"
+          ],
+          "in_from_us": [
+            "Naz Reid"
+          ],
+          "results": {
+            "delta_base_us": -1007,
+            "dw_us": -0.38,
+            "dp_title_us": -3.9,
+            "dw_them": 0.5,
+            "dp_title_them": 5.3,
+            "dp_title_note": "both rosters change in the 12-team field"
+          }
+        },
+        {
+          "label": "Cam Johnson -> Coby White",
+          "out_us": [
+            "Coby White"
+          ],
+          "in_from_them": [
+            "Cameron Johnson"
+          ],
+          "out_them": [
+            "Cameron Johnson"
+          ],
+          "in_from_us": [
+            "Coby White"
+          ],
+          "results": {
+            "delta_base_us": -727,
+            "dw_us": -0.18,
+            "dp_title_us": -2.8,
+            "dw_them": 0.38,
+            "dp_title_them": 4.8,
+            "dp_title_note": "both rosters change in the 12-team field"
+          }
+        },
+        {
+          "label": "Bridges -> Bane+Melton",
+          "out_us": [
+            "Desmond Bane",
+            "De'Anthony Melton"
+          ],
+          "in_from_them": [
+            "Miles Bridges"
+          ],
+          "out_them": [
+            "Miles Bridges"
+          ],
+          "in_from_us": [
+            "Desmond Bane",
+            "De'Anthony Melton"
+          ],
+          "results": {
+            "delta_base_us": -1491,
+            "dw_us": -0.27,
+            "dp_title_us": 2.2,
+            "dw_them": 0.39,
+            "dp_title_them": -0.6,
+            "dp_title_note": "both rosters change in the 12-team field"
+          }
+        },
+        {
+          "label": "Porzingis -> Reid+Matkovic",
+          "out_us": [
+            "Naz Reid"
+          ],
+          "in_from_them": [
+            "Kristaps Porzi\u0146\u0123is"
+          ],
+          "out_them": [
+            "Kristaps Porzi\u0146\u0123is"
+          ],
+          "in_from_us": [
+            "Naz Reid",
+            "Karlo Matkovi\u0107"
+          ],
+          "results": {
+            "delta_base_us": -759,
+            "dw_us": -0.35,
+            "dp_title_us": -2.7,
+            "dw_them": 0.44,
+            "dp_title_them": 3.0,
+            "dp_title_note": "both rosters change in the 12-team field"
+          }
+        },
+        {
+          "label": "Gordon+Sexton -> Coby White",
+          "out_us": [
+            "Coby White"
+          ],
+          "in_from_them": [
+            "Aaron Gordon",
+            "Collin Sexton"
+          ],
+          "out_them": [
+            "Aaron Gordon",
+            "Collin Sexton"
+          ],
+          "in_from_us": [
+            "Coby White"
+          ],
+          "results": {
+            "delta_base_us": -315,
+            "dw_us": 0.39,
+            "dp_title_us": 6.6,
+            "dw_them": -0.37,
+            "dp_title_them": -5.2,
+            "dp_title_note": "both rosters change in the 12-team field"
+          }
+        },
+        {
+          "label": "Gordon+Gillespie -> Bane",
+          "out_us": [
+            "Desmond Bane"
+          ],
+          "in_from_them": [
+            "Aaron Gordon",
+            "Collin Gillespie"
+          ],
+          "out_them": [
+            "Aaron Gordon",
+            "Collin Gillespie"
+          ],
+          "in_from_us": [
+            "Desmond Bane"
+          ],
+          "results": {
+            "delta_base_us": -1007,
+            "dw_us": 0.06,
+            "dp_title_us": 3.6,
+            "dw_them": 0.11,
+            "dp_title_them": -2.7,
+            "dp_title_note": "both rosters change in the 12-team field"
+          }
+        },
+        {
+          "label": "Bane -> KAT",
+          "out_us": [
+            "Desmond Bane"
+          ],
+          "in_from_them": [
+            "Karl-Anthony Towns"
+          ],
+          "out_them": [
+            "Karl-Anthony Towns"
+          ],
+          "in_from_us": [
+            "Desmond Bane"
+          ],
+          "results": {
+            "delta_base_us": 1340,
+            "dw_us": 0.6,
+            "dp_title_us": 7.2,
+            "dw_them": -0.8,
+            "dp_title_them": -6.2,
+            "dp_title_note": "both rosters change in the 12-team field"
+          }
+        },
+        {
+          "label": "Williams -> Embiid",
+          "out_us": [
+            "Mark Williams"
+          ],
+          "in_from_them": [
+            "Joel Embiid"
+          ],
+          "out_them": [
+            "Joel Embiid"
+          ],
+          "in_from_us": [
+            "Mark Williams"
+          ],
+          "results": {
+            "delta_base_us": 338,
+            "dw_us": 0.63,
+            "dp_title_us": 6.3,
+            "dw_them": -0.96,
+            "dp_title_them": -6.0,
+            "dp_title_note": "both rosters change in the 12-team field"
+          }
+        },
+        {
+          "label": "Garland -> Murray",
+          "out_us": [
+            "Darius Garland"
+          ],
+          "in_from_them": [
+            "Jamal Murray"
+          ],
+          "out_them": [
+            "Jamal Murray"
+          ],
+          "in_from_us": [
+            "Darius Garland"
+          ],
+          "results": {
+            "delta_base_us": 224,
+            "dw_us": 0.59,
+            "dp_title_us": 5.6,
+            "dw_them": -0.61,
+            "dp_title_them": -5.6,
+            "dp_title_note": "both rosters change in the 12-team field"
+          }
+        },
+        {
+          "label": "Reid -> KAT",
+          "out_us": [
+            "Naz Reid"
+          ],
+          "in_from_them": [
+            "Karl-Anthony Towns"
+          ],
+          "out_them": [
+            "Karl-Anthony Towns"
+          ],
+          "in_from_us": [
+            "Naz Reid"
+          ],
+          "results": {
+            "delta_base_us": 1989,
+            "dw_us": 0.69,
+            "dp_title_us": 10.4,
+            "dw_them": -1.05,
+            "dp_title_them": -8.6,
+            "dp_title_note": "both rosters change in the 12-team field"
+          }
+        },
+        {
+          "label": "Coby+Turner -> Bridges+Gordon",
+          "out_us": [
+            "Coby White",
+            "Myles Turner"
+          ],
+          "in_from_them": [
+            "Miles Bridges",
+            "Aaron Gordon"
+          ],
+          "out_them": [
+            "Miles Bridges",
+            "Aaron Gordon"
+          ],
+          "in_from_us": [
+            "Coby White",
+            "Myles Turner"
+          ],
+          "results": {
+            "delta_base_us": -663,
+            "dw_us": 0.36,
+            "dp_title_us": 11.3,
+            "dw_them": -0.34,
+            "dp_title_them": -7.5,
+            "dp_title_note": "both rosters change in the 12-team field"
+          }
+        },
+        {
+          "label": "Bane+Queta -> Bridges+Gordon",
+          "out_us": [
+            "Desmond Bane",
+            "Neemias Queta"
+          ],
+          "in_from_them": [
+            "Miles Bridges",
+            "Aaron Gordon"
+          ],
+          "out_them": [
+            "Miles Bridges",
+            "Aaron Gordon"
+          ],
+          "in_from_us": [
+            "Desmond Bane",
+            "Neemias Queta"
+          ],
+          "results": {
+            "delta_base_us": -1005,
+            "dw_us": 0.07,
+            "dp_title_us": 6.1,
+            "dw_them": 0.2,
+            "dp_title_them": -2.9,
+            "dp_title_note": "both rosters change in the 12-team field"
+          }
+        },
+        {
+          "label": "White+Matkovic -> Porzingis",
+          "out_us": [
+            "Coby White"
+          ],
+          "in_from_them": [
+            "Kristaps Porzi\u0146\u0123is"
+          ],
+          "out_them": [
+            "Kristaps Porzi\u0146\u0123is"
+          ],
+          "in_from_us": [
+            "Coby White",
+            "Karlo Matkovi\u0107"
+          ],
+          "results": {
+            "delta_base_us": -479,
+            "dw_us": -0.15,
+            "dp_title_us": -1.0,
+            "dw_them": 0.28,
+            "dp_title_them": 2.6,
+            "dp_title_note": "both rosters change in the 12-team field"
+          }
+        },
+        {
+          "label": "Duren -> KAT",
+          "out_us": [
+            "Jalen Duren"
+          ],
+          "in_from_them": [
+            "Karl-Anthony Towns"
+          ],
+          "out_them": [
+            "Karl-Anthony Towns"
+          ],
+          "in_from_us": [
+            "Jalen Duren"
+          ],
+          "results": {
+            "delta_base_us": 33,
+            "dw_us": 0.25,
+            "dp_title_us": 5.9,
+            "dw_them": -0.24,
+            "dp_title_them": -4.5,
+            "dp_title_note": "both rosters change in the 12-team field"
+          }
+        },
+        {
+          "label": "Duren -> Embiid",
+          "out_us": [
+            "Jalen Duren"
+          ],
+          "in_from_them": [
+            "Joel Embiid"
+          ],
+          "out_them": [
+            "Joel Embiid"
+          ],
+          "in_from_us": [
+            "Jalen Duren"
+          ],
+          "results": {
+            "delta_base_us": -1981,
+            "dw_us": -0.04,
+            "dp_title_us": 4.9,
+            "dw_them": 0.11,
+            "dp_title_them": -3.4,
+            "dp_title_note": "both rosters change in the 12-team field"
+          }
+        },
+        {
+          "label": "Duren -> Mitchell",
+          "out_us": [
+            "Jalen Duren"
+          ],
+          "in_from_them": [
+            "Donovan Mitchell"
+          ],
+          "out_them": [
+            "Donovan Mitchell"
+          ],
+          "in_from_us": [
+            "Jalen Duren"
+          ],
+          "results": {
+            "delta_base_us": 1007,
+            "dw_us": 0.48,
+            "dp_title_us": -0.1,
+            "dw_them": -0.37,
+            "dp_title_them": -0.9,
+            "dp_title_note": "both rosters change in the 12-team field"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "player-effects",
+      "their_roster": 161024,
+      "their_label": "Josh",
+      "groups": [
+        {
+          "label": "movable",
+          "source": "their",
+          "names": [
+            "Aaron Gordon",
+            "Collin Gillespie",
+            "Collin Sexton",
+            "Grayson Allen",
+            "Zach LaVine",
+            "Miles Bridges",
+            "Kristaps Porzi\u0146\u0123is",
+            "Cameron Johnson",
+            "Damian Lillard"
+          ]
+        },
+        {
+          "label": "stars",
+          "source": "their",
+          "names": [
+            "Karl-Anthony Towns",
+            "Donovan Mitchell",
+            "Jamal Murray",
+            "Joel Embiid",
+            "RJ Barrett",
+            "Jarrett Allen"
+          ]
+        },
+        {
+          "label": "our_chips",
+          "source": "us",
+          "names": [
+            "Desmond Bane",
+            "Darius Garland",
+            "Naz Reid",
+            "Coby White",
+            "Neemias Queta",
+            "Myles Turner",
+            "Jalen Suggs",
+            "Mark Williams",
+            "De'Anthony Melton",
+            "Karlo Matkovi\u0107",
+            "Jalen Duren"
+          ]
+        }
+      ],
+      "player_results": [
+        {
+          "label": "movable",
+          "seat": "ours",
+          "players": [
+            {
+              "player": "Damian Lillard",
+              "dw": 0.81,
+              "dp_title": 8.8
+            },
+            {
+              "player": "Miles Bridges",
+              "dw": 0.74,
+              "dp_title": 11.7
+            },
+            {
+              "player": "Aaron Gordon",
+              "dw": 0.43,
+              "dp_title": 3.3
+            },
+            {
+              "player": "Kristaps Porzi\u0146\u0123is",
+              "dw": 0.36,
+              "dp_title": 3.4
+            },
+            {
+              "player": "Collin Sexton",
+              "dw": 0.27,
+              "dp_title": 5.6
+            },
+            {
+              "player": "Cameron Johnson",
+              "dw": 0.26,
+              "dp_title": 2.1
+            },
+            {
+              "player": "Collin Gillespie",
+              "dw": 0.15,
+              "dp_title": 5.9
+            },
+            {
+              "player": "Zach LaVine",
+              "dw": -0.02,
+              "dp_title": 1.7
+            },
+            {
+              "player": "Grayson Allen",
+              "dw": -0.02,
+              "dp_title": -0.2
+            }
+          ]
+        },
+        {
+          "label": "stars",
+          "seat": "ours",
+          "players": [
+            {
+              "player": "Donovan Mitchell",
+              "dw": 1.65,
+              "dp_title": 7.6
+            },
+            {
+              "player": "Karl-Anthony Towns",
+              "dw": 1.52,
+              "dp_title": 12.4
+            },
+            {
+              "player": "Jamal Murray",
+              "dw": 1.38,
+              "dp_title": 9.9
+            },
+            {
+              "player": "Joel Embiid",
+              "dw": 1.18,
+              "dp_title": 12.3
+            },
+            {
+              "player": "RJ Barrett",
+              "dw": 0.51,
+              "dp_title": 9.2
+            },
+            {
+              "player": "Jarrett Allen",
+              "dw": 0.5,
+              "dp_title": 1.8
+            }
+          ]
+        },
+        {
+          "label": "our_chips",
+          "seat": "Josh",
+          "players": [
+            {
+              "player": "Jalen Duren",
+              "dw": 1.23,
+              "dp_title": 10.0
+            },
+            {
+              "player": "Desmond Bane",
+              "dw": 0.89,
+              "dp_title": 9.0
+            },
+            {
+              "player": "Darius Garland",
+              "dw": 0.84,
+              "dp_title": 7.9
+            },
+            {
+              "player": "Naz Reid",
+              "dw": 0.52,
+              "dp_title": 5.0
+            },
+            {
+              "player": "Coby White",
+              "dw": 0.51,
+              "dp_title": 5.0
+            },
+            {
+              "player": "Jalen Suggs",
+              "dw": 0.5,
+              "dp_title": 5.3
+            },
+            {
+              "player": "Neemias Queta",
+              "dw": 0.36,
+              "dp_title": 3.3
+            },
+            {
+              "player": "Mark Williams",
+              "dw": 0.29,
+              "dp_title": 6.6
+            },
+            {
+              "player": "Myles Turner",
+              "dw": 0.26,
+              "dp_title": 2.1
+            },
+            {
+              "player": "De'Anthony Melton",
+              "dw": 0.15,
+              "dp_title": 1.1
+            },
+            {
+              "player": "Karlo Matkovi\u0107",
+              "dw": -0.13,
+              "dp_title": -0.5
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "simmed": "2026-08-28",
+    "dp_title_note": "both rosters change in the 12-team field"
+  }
+}

@@ -4,7 +4,8 @@ import collections, contextlib, functools, glob, math, os, statistics
 from fetch_data import SEASON_TAG
 from . import engine, roster as roster_mod
 from .data import (
-    BRACKET, BRACKET_CAL, PERIODS, REGULAR, ROSTER_DIR, SCORED, SCORES)
+    BRACKET, BRACKET_CAL, FULL_FIELD, HIST_PERIODS, PERIODS, REGULAR,
+    ROSTER_DIR, SCORED, SCORES)
 from .engine import TRIALS
 from .roster import PAD_NAMES, basis, slot_group, swap
 from .schedule import bracket_games, team_nights
@@ -18,9 +19,9 @@ Band = collections.namedtuple("Band", "label slots seeds periods")
 Team = collections.namedtuple("Team", "path pf regs mus")
 
 
-def _record(i):
+def _record(i, periods=HIST_PERIODS):
     w, pf = collections.Counter(), collections.Counter()
-    for p in (PERIODS[k] for k in i):
+    for p in (periods[k] for k in i):
         for away, away_pf, home, home_pf in p["games"]:
             pf[away] += away_pf
             pf[home] += home_pf
@@ -36,6 +37,13 @@ def _seeded():
     return sorted(rec, key=lambda t: (-rec[t][0], -rec[t][1]))
 
 
+def _r1_games():
+    n = len(PERIODS[BRACKET[0]]["games"])
+    if n == 0 or n == FULL_FIELD:
+        return 2
+    return n
+
+
 def _bands():
     """Sizes derived off BRACKET's own round count and R1's field -- never
     hardcode, the bracket shape isn't fixed"""
@@ -43,7 +51,7 @@ def _bands():
     assert rounds >= 2, (
         "%d bracket round(s) in league-%s: a final and a bye is the smallest "
         "bracket this can band" % (rounds, PERIODS[BRACKET[0]]["ordinal"]))
-    sizes = [2] * (rounds - 2) + [2 * len(PERIODS[BRACKET[0]]["games"])]
+    sizes = [2] * (rounds - 2) + [2 * _r1_games()]
     assert sizes[-1] == 4, (
         "%d teams in period %d -- expected 4 entering a %d-round ladder two "
         "at a time; a consolation half sharing the period is one way this "
@@ -129,7 +137,7 @@ def ladder_games():
     consolation ladder in the same periods"""
     seeds, beaten, played, aside = set(BRACKET_TEAMS), set(), [], []
     for i in BRACKET:
-        for away, away_pf, home, home_pf in PERIODS[i]["games"]:
+        for away, away_pf, home, home_pf in HIST_PERIODS[i]["games"]:
             if {away, home} <= seeds and not {away, home} & beaten:
                 played.append(away_pf - home_pf)
                 beaten.add(home if away_pf > home_pf else away)

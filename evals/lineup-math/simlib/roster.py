@@ -10,13 +10,13 @@ from .projections import projected_rate
 from .schedule import SIM_TM
 
 
-# The 10 slots Sept '26 fills: 3 rookie picks + a 7-man FA auction. `pad` takes
-# only as many of these as a roster is short of 38, so every team is padded on
-# the SAME schedule of grades regardless of what picks it actually holds.
+# Sept '26 one-off. Held picks (draft-2026.json) sit at the Dizzle-prefix
+# prospect's projected rate, then leftover slots take these FA grades in
+# order — fewer leftover slots means fewer, better auction bodies. Same FA
+# ladder for every team.
+PICK = {"avg": 10.0, "gp": 60}  # feed miss, and the GP every named pick sits at
+PICK_TMS = ("SAC", "UTA", "POR")
 EXPANSION = [
-    {"n": "RK0", "tm": "SAC", "avg": 18.0, "gp": 60, "elig": ["SF", "PF"]},
-    {"n": "RK1", "tm": "UTA", "avg": 13.0, "gp": 60, "elig": ["PG", "SG"]},
-    {"n": "RK2", "tm": "POR", "avg": 10.0, "gp": 60, "elig": ["C"]},
     {"n": "FA0", "tm": "MIN", "avg": 14.0, "gp": 55, "elig": ["PG", "SG"]},
     {"n": "FA1", "tm": "OKC", "avg": 13.0, "gp": 55, "elig": ["C"]},
     {"n": "FA2", "tm": "BOS", "avg": 12.0, "gp": 55, "elig": ["SF", "PF"]},
@@ -25,6 +25,7 @@ EXPANSION = [
     {"n": "FA5", "tm": "SAS", "avg": 9.0, "gp": 55, "elig": ["C"]},
     {"n": "FA6", "tm": "NYK", "avg": 8.0, "gp": 55, "elig": ["PG", "SG"]},
 ]
+DRAFT = "draft-2026.json"
 
 
 DEAD = {"tm": "MIA", "avg": 6.0, "gp": 40, "elig": ["PG", "SG"]}  # backfill grade for a shipped-out body
@@ -34,6 +35,7 @@ PAD_POS = (["PG", "SG"], ["SF", "PF"], ["C"])  # slot groups for padding without
 
 
 ROSTER = "roster-%d-%s.json" % (TEAM, SEASON_TAG)  # ours; `--roster PATH` overrides
+MAX_WIRE = 38  # wire cap today and post Sept '26 expansion
 
 
 def label(path=None):
@@ -83,6 +85,49 @@ def star(rate, gp=68, elig=("SF", "PF"), tm=SIM_TM, n=None):
             "avg": float(rate), "gp": gp, "elig": list(elig)}
 
 
+def apply_trade(roster, out_names, adds, max_bodies=MAX_WIRE):
+    """Apply a trade to a wire roster (unpadded). Net +bodies is allowed while the
+    result stays at or under `max_bodies`; net -bodies drops vacated slots. Name
+    explicit cuts in `out_names` only when the post-trade count would exceed the cap."""
+    have = collections.Counter(p["n"] for p in roster)
+    missing = [n for n in out_names if not have[n]]
+    if missing:
+        raise KeyError("not on this roster: %s" % ", ".join(missing))
+    dupes = [n for n in out_names if have[n] > 1]
+    if dupes:
+        raise KeyError("%s: on this roster more than once -- rename the row "
+                       "you mean before trading it" % ", ".join(sorted(set(dupes))))
+    twice = [n for n, c in collections.Counter(out_names).items() if c > 1]
+    if twice:
+        raise ValueError("%s: named twice in out_names" % ", ".join(sorted(twice)))
+    out_set = set(out_names)
+    seen_out = set()
+    out = []
+    add_queue = list(adds)
+    for p in roster:
+        if p["n"] in out_set:
+            if p["n"] in seen_out:
+                continue
+            seen_out.add(p["n"])
+            if add_queue:
+                out.append(add_queue.pop(0))
+        else:
+            out.append(p)
+    out.extend(add_queue)
+    if len(out) > max_bodies:
+        raise ValueError("%d bodies after trade (%d in, %d out on %d-man roster): "
+                         "name %d cut(s) in out_names"
+                         % (len(out), len(adds), len(out_names), len(roster),
+                            len(out) - max_bodies))
+    return out
+
+
+def basis_after_trade(path, out_names, adds):
+    """Wire roster after the trade, then padded to 38 for pricing."""
+    src = path or ROSTER
+    return pad(apply_trade(our_roster(src), out_names, adds), path=src)
+
+
 def swap(roster, out_names, adds, dead=None):
     """Each incoming body takes a vacated roster INDEX, in ROSTER order (not
     `out_names` order) -- order drives per-season rng draws, so appending
@@ -115,12 +160,47 @@ def swap(roster, out_names, adds, dead=None):
     return out
 
 
-def pad(roster, n=38):
-    """Appends, so real bodies keep their order (and rng draws)"""
+def _team_id(path):
+    parts = os.path.basename(path).split("-")
+    if len(parts) > 1 and parts[1].isdigit():
+        return int(parts[1])
+    return None
+
+
+def held_picks(path):
+    tid = _team_id(path)
+    if tid is None:
+        return []
+    board = _load(DRAFT)
+    key = str(tid)
+    if key not in board:
+        raise KeyError("%s has no row in %s -- the Sept '26 board is a "
+                       "one-off file, not a live fetch" % (key, DRAFT))
+    return board[key]
+
+
+def _pick_body(i, pick=None):
+    pick = pick or {}
+    body = dict(PICK, n="RK%d" % i,
+                tm=pick.get("tm") or PICK_TMS[i % len(PICK_TMS)],
+                elig=list(pick.get("elig") or PAD_POS[i % len(PAD_POS)]))
+    rate = projected_rate(pick["name"]) if pick.get("name") else None
+    if rate is not None:
+        body["avg"] = rate
+    return body
+
+
+def pad(roster, n=38, path=None):
+    """Appends, so real bodies keep their order (and rng draws). `path`
+    missing means no held picks — FA fill only. `basis` always passes one."""
     out = list(roster)
-    for i in range(max(0, n - len(out))):
+    need = max(0, n - len(out))
+    picks = held_picks(path) if path else []
+    n_picks = min(need, len(picks))
+    for i in range(n_picks):
+        out.append(_pick_body(i, picks[i]))
+    for i in range(need - n_picks):
         if i < len(EXPANSION):
-            # copy elig, don't alias EXPANSION's own list
             out.append(dict(EXPANSION[i], elig=list(EXPANSION[i]["elig"])))
         else:
             out.append({"n": "PAD%d" % i,
@@ -130,10 +210,21 @@ def pad(roster, n=38):
     return out
 
 
-PAD_NAMES = frozenset(p["n"] for p in pad([]))  # off `pad` itself, so the two can't drift
+class _PadNames:
+    def __contains__(self, n):
+        return isinstance(n, str) and n.startswith(("RK", "FA", "PAD"))
+
+    def __and__(self, other):
+        return {n for n in other if n in self}
+
+    def __rand__(self, other):
+        return self & other
 
 
-AUCTION_NAMES = frozenset(n for n in PAD_NAMES if n.startswith("FA"))
+PAD_NAMES = _PadNames()
+
+
+AUCTION_NAMES = frozenset(p["n"] for p in EXPANSION)
 
 
 GROUPS = {"guard": ("PG", "SG"), "forward": ("SF", "PF"), "center": ("C",)}
@@ -158,4 +249,5 @@ def group_slots(elig):
 
 
 def basis(path=None):
-    return pad(our_roster(path))
+    src = path or ROSTER
+    return pad(our_roster(path), path=src)

@@ -6,10 +6,7 @@ from .data import HERE
 @functools.lru_cache(maxsize=1)
 def _projections():
     """(module, index) for the `projections` snapshot; raises if unusable"""
-    skill = os.path.join(HERE, os.pardir, os.pardir, ".claude", "skills",
-                         "projections")
-    if skill not in sys.path:
-        sys.path.insert(0, skill)
+    _ensure_skill()
     import sleeper
     try:
         idx = sleeper.index(sleeper.load())
@@ -27,3 +24,36 @@ def projected_rate(name):
     """Projected FPts/G, or None if the feed doesn't carry `name`"""
     mod, idx = _projections()
     return mod.lookup(name, idx)
+
+
+def projected_gp(name):
+    gps = [g for g in (_lookup_gp(name, "hashtag_gp"),
+                        _lookup_gp(name, "fanscout_gp"))
+           if g is not None]
+    if not gps:
+        return None
+    return sum(gps) / len(gps)
+
+
+def _lookup_gp(name, mod_name):
+    idx = _feed_gp_index(mod_name)
+    if not idx:
+        return None
+    return __import__(mod_name).lookup(name, idx)
+
+
+@functools.lru_cache(maxsize=2)
+def _feed_gp_index(mod_name):
+    _ensure_skill()
+    mod = __import__(mod_name)
+    try:
+        return mod.index(mod.load())
+    except FileNotFoundError:
+        return {}
+
+
+def _ensure_skill():
+    skill = os.path.join(HERE, os.pardir, os.pardir, ".claude", "skills",
+                         "projections")
+    if skill not in sys.path:
+        sys.path.insert(0, skill)

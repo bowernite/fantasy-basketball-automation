@@ -19,7 +19,7 @@ def coverage_picks(n, teams=None, best=True):
     return picks
 
 
-AUCTION_N = 7  # 3 rookie picks + a 7-man FA auction fill Sept '26 (league-info)
+AUCTION_N = 7  # max FA fill; leftover slots after held picks may be fewer
 
 
 def auction_slots(roster):

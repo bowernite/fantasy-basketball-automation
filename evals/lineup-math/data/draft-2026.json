@@ -1,0 +1,448 @@
+{
+  "160941": [
+    {
+      "round": 1,
+      "slot": 5,
+      "overall": 5,
+      "name": "Darius Acuff Jr.",
+      "tm": "SAC",
+      "elig": [
+        "PG"
+      ],
+      "chart": "1.05"
+    },
+    {
+      "round": 1,
+      "slot": 6,
+      "overall": 6,
+      "name": "Keaton Wagler",
+      "tm": "LAC",
+      "elig": [
+        "PG",
+        "SG"
+      ],
+      "chart": "1.06"
+    },
+    {
+      "round": 2,
+      "slot": 5,
+      "overall": 17,
+      "name": "Cameron Carr",
+      "tm": "LAL",
+      "elig": [
+        "SG",
+        "SF"
+      ],
+      "chart": "1.17"
+    },
+    {
+      "round": 3,
+      "slot": 5,
+      "overall": 29,
+      "name": "Chris Cenac Jr.",
+      "tm": "BOS",
+      "elig": [
+        "PF",
+        "C"
+      ],
+      "chart": "1.29"
+    }
+  ],
+  "161014": [
+    {
+      "round": 3,
+      "slot": 7,
+      "overall": 31,
+      "name": "Jayden Quaintance",
+      "tm": "SAS",
+      "elig": [
+        "C"
+      ],
+      "chart": "2.01"
+    }
+  ],
+  "161015": [
+    {
+      "round": 1,
+      "slot": 2,
+      "overall": 2,
+      "name": "AJ Dybantsa",
+      "tm": "WAS",
+      "elig": [
+        "SG",
+        "SF"
+      ],
+      "chart": "1.02"
+    },
+    {
+      "round": 1,
+      "slot": 11,
+      "overall": 11,
+      "name": "Aday Mara",
+      "tm": "OKC",
+      "elig": [
+        "C"
+      ],
+      "chart": "1.11"
+    },
+    {
+      "round": 2,
+      "slot": 1,
+      "overall": 13,
+      "name": "Ebuka Okorie",
+      "tm": "DET",
+      "elig": [
+        "PG",
+        "SG"
+      ],
+      "chart": "1.13"
+    },
+    {
+      "round": 2,
+      "slot": 2,
+      "overall": 14,
+      "name": "Hannes Steinbach",
+      "tm": "CHA",
+      "elig": [
+        "PF",
+        "C"
+      ],
+      "chart": "1.14"
+    },
+    {
+      "round": 2,
+      "slot": 10,
+      "overall": 22,
+      "name": "Tarris Reed Jr.",
+      "tm": "SAS",
+      "elig": [
+        "C"
+      ],
+      "chart": "1.22"
+    }
+  ],
+  "161016": [
+    {
+      "round": 1,
+      "slot": 12,
+      "overall": 12,
+      "name": "Morez Johnson Jr.",
+      "tm": "DAL",
+      "elig": [
+        "PF",
+        "C"
+      ],
+      "chart": "1.12"
+    },
+    {
+      "round": 2,
+      "slot": 11,
+      "overall": 23,
+      "name": "Allen Graves",
+      "tm": "TOR",
+      "elig": [
+        "PF"
+      ],
+      "chart": "1.23"
+    },
+    {
+      "round": 2,
+      "slot": 12,
+      "overall": 24,
+      "name": "Bruce Thornton",
+      "tm": "HOU",
+      "elig": [
+        "PG",
+        "SG"
+      ],
+      "chart": "1.24"
+    },
+    {
+      "round": 3,
+      "slot": 12,
+      "overall": 36,
+      "name": "Henri Veesaar",
+      "tm": "ATL",
+      "elig": [
+        "C"
+      ],
+      "chart": "2.06"
+    }
+  ],
+  "161017": [
+    {
+      "round": 1,
+      "slot": 7,
+      "overall": 7,
+      "name": "Mikel Brown Jr.",
+      "tm": "BKN",
+      "elig": [
+        "PG",
+        "SG"
+      ],
+      "chart": "1.07"
+    },
+    {
+      "round": 2,
+      "slot": 7,
+      "overall": 19,
+      "name": "Labaron Philon",
+      "tm": "PHI",
+      "elig": [
+        "PG",
+        "SG"
+      ],
+      "chart": "1.19"
+    }
+  ],
+  "161018": [
+    {
+      "round": 3,
+      "slot": 8,
+      "overall": 32,
+      "name": "Isaiah Evans",
+      "tm": "MIN",
+      "elig": [
+        "SG",
+        "SF"
+      ],
+      "chart": "2.02"
+    }
+  ],
+  "161019": [
+    {
+      "round": 3,
+      "slot": 4,
+      "overall": 28,
+      "name": "Meleek Thomas",
+      "tm": "CLE",
+      "elig": [
+        "SG"
+      ],
+      "chart": "1.28"
+    },
+    {
+      "round": 3,
+      "slot": 9,
+      "overall": 33,
+      "name": "Richie Saunders",
+      "tm": "MEM",
+      "elig": [
+        "SG",
+        "SF"
+      ],
+      "chart": "2.03"
+    }
+  ],
+  "161020": [
+    {
+      "round": 1,
+      "slot": 3,
+      "overall": 3,
+      "name": "Darryn Peterson",
+      "tm": "UTA",
+      "elig": [
+        "PG",
+        "SG"
+      ],
+      "chart": "1.03"
+    },
+    {
+      "round": 1,
+      "slot": 4,
+      "overall": 4,
+      "name": "Caleb Wilson",
+      "tm": "CHI",
+      "elig": [
+        "SF",
+        "PF"
+      ],
+      "chart": "1.04"
+    },
+    {
+      "round": 1,
+      "slot": 8,
+      "overall": 8,
+      "name": "Kingston Flemings",
+      "tm": "ATL",
+      "elig": [
+        "PG",
+        "SG"
+      ],
+      "chart": "1.08"
+    },
+    {
+      "round": 1,
+      "slot": 9,
+      "overall": 9,
+      "name": "Brayden Burries",
+      "tm": "MIL",
+      "elig": [
+        "PG",
+        "SG"
+      ],
+      "chart": "1.09"
+    },
+    {
+      "round": 1,
+      "slot": 10,
+      "overall": 10,
+      "name": "Yaxel Lendeborg",
+      "tm": "GSW",
+      "elig": [
+        "PF"
+      ],
+      "chart": "1.10"
+    },
+    {
+      "round": 2,
+      "slot": 3,
+      "overall": 15,
+      "name": "Bennett Stirtz",
+      "tm": "OKC",
+      "elig": [
+        "PG",
+        "SG"
+      ],
+      "chart": "1.15"
+    },
+    {
+      "round": 3,
+      "slot": 11,
+      "overall": 35,
+      "name": "Ryan Conwell",
+      "tm": "MIA",
+      "elig": [
+        "SG"
+      ],
+      "chart": "2.05"
+    }
+  ],
+  "161021": [
+    {
+      "round": 2,
+      "slot": 6,
+      "overall": 18,
+      "name": "Christian Anderson",
+      "tm": "CHA",
+      "elig": [
+        "PG",
+        "SG"
+      ],
+      "chart": "1.18"
+    },
+    {
+      "round": 3,
+      "slot": 6,
+      "overall": 30,
+      "name": "Joshua Jefferson",
+      "tm": "BKN",
+      "elig": [
+        "SF",
+        "PF"
+      ],
+      "chart": "1.30"
+    }
+  ],
+  "161022": [
+    {
+      "round": 1,
+      "slot": 1,
+      "overall": 1,
+      "name": "Cameron Boozer",
+      "tm": "MEM",
+      "elig": [
+        "PF",
+        "C"
+      ],
+      "chart": "1.01"
+    },
+    {
+      "round": 2,
+      "slot": 4,
+      "overall": 16,
+      "name": "Dailyn Swain",
+      "tm": "CHI",
+      "elig": [
+        "SG",
+        "SF"
+      ],
+      "chart": "1.16"
+    },
+    {
+      "round": 2,
+      "slot": 8,
+      "overall": 20,
+      "name": "Nate Ament",
+      "tm": "MIL",
+      "elig": [
+        "SF",
+        "PF"
+      ],
+      "chart": "1.20"
+    },
+    {
+      "round": 3,
+      "slot": 1,
+      "overall": 25,
+      "name": "Sergio De Larrea",
+      "tm": "DAL",
+      "elig": [
+        "PG",
+        "SG"
+      ],
+      "chart": "1.25"
+    },
+    {
+      "round": 3,
+      "slot": 3,
+      "overall": 27,
+      "name": "Koa Peat",
+      "tm": "PHX",
+      "elig": [
+        "PF"
+      ],
+      "chart": "1.27"
+    }
+  ],
+  "161024": [
+    {
+      "round": 3,
+      "slot": 2,
+      "overall": 26,
+      "name": "Zuby Ejiofor",
+      "tm": "ATL",
+      "elig": [
+        "PF",
+        "C"
+      ],
+      "chart": "1.26"
+    },
+    {
+      "round": 3,
+      "slot": 10,
+      "overall": 34,
+      "name": "Alex Karaban",
+      "tm": "SAC",
+      "elig": [
+        "SF",
+        "PF"
+      ],
+      "chart": "2.04"
+    }
+  ],
+  "161025": [
+    {
+      "round": 2,
+      "slot": 9,
+      "overall": 21,
+      "name": "Karim Lopez",
+      "tm": "MEM",
+      "elig": [
+        "SF",
+        "PF"
+      ],
+      "chart": "1.21"
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 # Team projections — where each team finishes, and where its picks land
 
-Evaluated **2026-08-13**. Keyed to who **produces** a pick, not who holds it. Slots written `1.01`–`1.12`.
+Evaluated **2026-08-29**. Keyed to who **produces** a pick, not who holds it. Slots written `1.01`–`1.12`.
 
 | Column | Source |
 | --- | --- |
@@ -13,56 +13,56 @@ Evaluated **2026-08-13**. Keyed to who **produces** a pick, not who holds it. Sl
 
 | Team | '26-27 | Sept '27 | '27-28 | Sept '28 | '28-29 | Sept '29 |
 | --- | --- | --- | --- | --- | --- | --- |
-| Bathroom club (us) | **1** | **1.12** | **2** | **1.11** | **4** | **1.09** |
-| Yao Ming Dynasty | **2** | **1.11** | **3** | **1.10** | **7** | 1.03–1.10 (prior) |
+| Bathroom club (us) | **2** | **1.11** | **2** | **1.11** | **4** | **1.09** |
+| Yao Ming Dynasty | **5** | 1.05–1.11 (prior) | **3** | **1.10** | **7** | 1.03–1.10 (prior) |
 | Jesus Christ and Disciples | **3** | **1.10** | **7** | 1.03–1.10 (prior) | **9** | 1.02–1.09 (prior) |
 | Pascals of Pangea | **4** | **1.09** | **8** | 1.03–1.09 (prior) | **11** | 1.01–1.08 (prior) |
-| Matthew the Apostle | **5** | 1.05–1.11 (prior) | **1** | **1.12** | **3** | **1.10** |
-| King Christopher of Bavaria | **6** | 1.05–1.11 (prior) | **12** | 1.01–1.07 (prior) | **12** | 1.01–1.07 (prior) |
+| Matthew the Apostle | **1** | **1.12** | **1** | **1.12** | **3** | **1.10** |
+| King Christopher of Bavaria | **10** | 1.02–1.09 (prior) | **12** | 1.01–1.07 (prior) | **12** | 1.01–1.07 (prior) |
 | The Gutes of Gotland | **7** | 1.03–1.10 (prior) | **10** | 1.02–1.09 (prior) | **8** | 1.03–1.09 (prior) |
 | Mongol Khans | **8** | 1.03–1.09 (prior) | **6** | 1.05–1.11 (prior) | **5** | 1.04–1.10 (prior) |
-| The Don | **9** | 1.02–1.09 (prior) | **4** | **1.09** | **2** | **1.11** |
-| SGA-the-Great | **10** | 1.02–1.09 (prior) | **9** | 1.02–1.09 (prior) | **6** | 1.05–1.11 (prior) |
-| The Han Dybantsy | **11** | 1.01–1.08 (prior) | **11** | 1.01–1.08 (prior) | **10** | 1.02–1.09 (prior) |
-| Pharaoh Mattankhamun-Ra | **12** | 1.01–1.07 (prior) | **5** | 1.05–1.11 (prior) | **1** | **1.12** |
+| The Don | **6** | 1.05–1.11 (prior) | **4** | **1.09** | **2** | **1.11** |
+| SGA-the-Great | **12** | 1.01–1.07 (prior) | **9** | 1.02–1.09 (prior) | **6** | 1.05–1.11 (prior) |
+| The Han Dybantsy | **9** | 1.02–1.09 (prior) | **11** | 1.01–1.08 (prior) | **10** | 1.02–1.09 (prior) |
+| Pharaoh Mattankhamun-Ra | **11** | 1.01–1.08 (prior) | **5** | 1.05–1.11 (prior) | **1** | **1.12** |
 
 ## Year-1 sim (PF)
 
-Measured 2026-08-13, overlay on disk, `sim.team_levels()`:
+Measured 2026-08-29, overlay on disk, `sim.team_levels()`:
 
 | rank | team | PF |
 | ---: | --- | ---: |
-| 1 | Bathroom club (us) | **31,049** |
-| 2 | Yao Ming Dynasty | 29,297 |
-| 3 | Jesus Christ and his Disciples | 28,510 |
-| 4 | Pascals of Pangea | 27,541 |
-| 5 | Matthew the Apostle | 27,155 |
-| 6 | King Christopher of Bavaria | 26,968 |
-| 7 | The Gutes of Gotland | 26,488 |
-| 8 | Mongol Khans Freak Militia | 26,041 |
-| 9 | The Don | 24,915 |
-| 10 | Shai Gilgeous-Alexander the Great | 24,322 |
-| 11 | The Han Dybantsy | 23,311 |
-| 12 | Pharaoh Mattankhamun-Ra | 22,514 |
+| 1 | Matthew the Apostle | **31,450** |
+| 2 | Bathroom club (us) | 31,414 |
+| 3 | Jesus Christ and his Disciples | 30,568 |
+| 4 | Pascals of Pangea | 30,450 |
+| 5 | Yao Ming Dynasty | 30,223 |
+| 6 | The Don | 30,017 |
+| 7 | The Gutes of Gotland | 29,029 |
+| 8 | Mongol Khans Freak Militia | 27,795 |
+| 9 | The Han Dybantsy | 27,615 |
+| 10 | King Christopher of Bavaria | 26,985 |
+| 11 | Pharaoh Mattankhamun-Ra | 25,641 |
+| 12 | Shai Gilgeous-Alexander the Great | 25,494 |
 
 ## Title odds (this year)
 
-`sim.py title`, 2026-08-24. Unconditional `P(title)` — regular season, then the bracket. Not the PF-rank finish prior above.
+`sims/team-projections.json` → `sim.py title`, 2026-08-29. Unconditional `P(title)` — regular season, then the bracket. Not the PF-rank finish prior above.
 
 | Team | P(title) |
 | --- | ---: |
-| Bathroom club (us) | **47.7%** |
-| Jesus Christ and Disciples | 20.4% |
-| Yao Ming Dynasty | 13.3% |
-| Matthew the Apostle | 12.8% |
-| Pascals of Pangea | 5.1% |
-| Mongol Khans | 0.2% |
-| The Gutes of Gotland | 0.2% |
+| Bathroom club (us) | **32.5%** |
+| Matthew the Apostle | 29.4% |
+| Jesus Christ and Disciples | 12.7% |
+| Pascals of Pangea | 10.5% |
+| The Don | 7.8% |
+| Yao Ming Dynasty | 5.0% |
+| The Gutes of Gotland | 1.9% |
+| The Han Dybantsy | 0.1% |
 | King Christopher of Bavaria | 0.1% |
-| The Don | 0.1% |
-| SGA-the-Great | 0.0% |
-| The Han Dybantsy | 0.0% |
+| Mongol Khans | 0.0% |
 | Pharaoh Mattankhamun-Ra | 0.0% |
+| SGA-the-Great | 0.0% |
 
 ## Years 2–3 (judgment)
 

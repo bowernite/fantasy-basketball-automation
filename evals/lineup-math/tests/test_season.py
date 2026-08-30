@@ -38,6 +38,28 @@ class HeadToHeadSchedule(unittest.TestCase):
         self.assertEqual(min(met.values()), 1)
         self.assertEqual(max(met.values()), 2)
 
+    def test_meeting_the_best_team_twice_costs_wins(self):
+        names = sim._load("teams-%s.json" % fetch_data.SEASON_TAG)
+        teams = flat_league([1000.0] * len(bracket.team_levels()))
+        at = {names[os.path.basename(t.path).split("-")[1]]: k
+              for k, t in enumerate(teams)}
+        stacked = "Yao Ming Dynasty"
+        met = collections.Counter()
+        for per in sim.PAIRINGS:
+            for a, h in per:
+                if stacked in (a, h):
+                    met[h if a == stacked else a] += 1
+        twice = at[next(n for n, c in met.items() if c == 2)]
+        once = at[next(n for n, c in met.items() if c == 1)]
+        boosted = list(teams)
+        t = boosted[at[stacked]]
+        boosted[at[stacked]] = t._replace(
+            regs=tuple(x + 400 for x in t.regs), pf=t.pf + 400 * len(t.regs))
+        with cheap_monte_carlo(4, seasons=2500):
+            odds = sim.full_season(tuple(boosted), trials=2500)
+        self.assertLess(odds[teams[twice].path].wins,
+                        odds[teams[once].path].wins)
+
     def test_a_league_short_a_roster_file_is_refused(self):
         with cheap_monte_carlo(4, seasons=20):
             with self.assertRaises(KeyError):

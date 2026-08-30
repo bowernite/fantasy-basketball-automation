@@ -1,0 +1,372 @@
+{
+  "sections": [
+    {
+      "kind": "trade-screen",
+      "their_roster": 161021,
+      "their_label": "Hlina",
+      "deals": [
+        {
+          "label": "Duren -> Miller",
+          "out_us": ["Jalen Duren"],
+          "in_from_them": ["Brandon Miller"],
+          "out_them": ["Brandon Miller"],
+          "in_from_us": ["Jalen Duren"]
+        },
+        {
+          "label": "Duren -> Jalen Williams",
+          "out_us": ["Jalen Duren"],
+          "in_from_them": ["Jalen Williams"],
+          "out_them": ["Jalen Williams"],
+          "in_from_us": ["Jalen Duren"]
+        },
+        {
+          "label": "Duren -> Buzelis",
+          "out_us": ["Jalen Duren"],
+          "in_from_them": ["Matas Buzelis"],
+          "out_them": ["Matas Buzelis"],
+          "in_from_us": ["Jalen Duren"]
+        },
+        {
+          "label": "Duren -> Castle",
+          "out_us": ["Jalen Duren"],
+          "in_from_them": ["Stephon Castle"],
+          "out_them": ["Stephon Castle"],
+          "in_from_us": ["Jalen Duren"]
+        },
+        {
+          "label": "Mark Williams -> Miller",
+          "out_us": ["Mark Williams"],
+          "in_from_them": ["Brandon Miller"],
+          "out_them": ["Brandon Miller"],
+          "in_from_us": ["Mark Williams"]
+        },
+        {
+          "label": "Mark Williams -> Jalen Williams",
+          "out_us": ["Mark Williams"],
+          "in_from_them": ["Jalen Williams"],
+          "out_them": ["Jalen Williams"],
+          "in_from_us": ["Mark Williams"]
+        },
+        {
+          "label": "Mark Williams -> Buzelis",
+          "out_us": ["Mark Williams"],
+          "in_from_them": ["Matas Buzelis"],
+          "out_them": ["Matas Buzelis"],
+          "in_from_us": ["Mark Williams"]
+        },
+        {
+          "label": "Edey -> Miller",
+          "out_us": ["Zach Edey"],
+          "in_from_them": ["Brandon Miller"],
+          "out_them": ["Brandon Miller"],
+          "in_from_us": ["Zach Edey"]
+        },
+        {
+          "label": "Edey -> Jalen Williams",
+          "out_us": ["Zach Edey"],
+          "in_from_them": ["Jalen Williams"],
+          "out_them": ["Jalen Williams"],
+          "in_from_us": ["Zach Edey"]
+        },
+        {
+          "label": "Bane -> Castle",
+          "out_us": ["Desmond Bane"],
+          "in_from_them": ["Stephon Castle"],
+          "out_them": ["Stephon Castle"],
+          "in_from_us": ["Desmond Bane"]
+        },
+        {
+          "label": "Bane -> Edgecombe",
+          "out_us": ["Desmond Bane"],
+          "in_from_them": ["VJ Edgecombe"],
+          "out_them": ["VJ Edgecombe"],
+          "in_from_us": ["Desmond Bane"]
+        },
+        {
+          "label": "Garland -> Castle",
+          "out_us": ["Darius Garland"],
+          "in_from_them": ["Stephon Castle"],
+          "out_them": ["Stephon Castle"],
+          "in_from_us": ["Darius Garland"]
+        },
+        {
+          "label": "Garland -> Edgecombe",
+          "out_us": ["Darius Garland"],
+          "in_from_them": ["VJ Edgecombe"],
+          "out_them": ["VJ Edgecombe"],
+          "in_from_us": ["Darius Garland"]
+        },
+        {
+          "label": "Coby -> Edgecombe",
+          "out_us": ["Coby White"],
+          "in_from_them": ["VJ Edgecombe"],
+          "out_them": ["VJ Edgecombe"],
+          "in_from_us": ["Coby White"]
+        },
+        {
+          "label": "Coby -> Coward",
+          "out_us": ["Coby White"],
+          "in_from_them": ["Cedric Coward"],
+          "out_them": ["Cedric Coward"],
+          "in_from_us": ["Coby White"]
+        },
+        {
+          "label": "Reid -> Jabari Smith",
+          "out_us": ["Naz Reid"],
+          "in_from_them": ["Jabari Smith"],
+          "out_them": ["Jabari Smith"],
+          "in_from_us": ["Naz Reid"]
+        },
+        {
+          "label": "Turner -> Jabari Smith",
+          "out_us": ["Myles Turner"],
+          "in_from_them": ["Jabari Smith"],
+          "out_them": ["Jabari Smith"],
+          "in_from_us": ["Myles Turner"]
+        },
+        {
+          "label": "Suggs -> Edgecombe",
+          "out_us": ["Jalen Suggs"],
+          "in_from_them": ["VJ Edgecombe"],
+          "out_them": ["VJ Edgecombe"],
+          "in_from_us": ["Jalen Suggs"]
+        },
+        {
+          "label": "Butler -> Jaquez",
+          "out_us": ["Jimmy Butler"],
+          "in_from_them": ["Jaime Jaquez"],
+          "out_them": ["Jaime Jaquez"],
+          "in_from_us": ["Jimmy Butler"]
+        },
+        {
+          "label": "Vassell -> Camara",
+          "out_us": ["Devin Vassell"],
+          "in_from_them": ["Toumani Camara"],
+          "out_them": ["Toumani Camara"],
+          "in_from_us": ["Devin Vassell"]
+        },
+        {
+          "label": "Murray -> Maxey",
+          "out_us": ["Keegan Murray"],
+          "in_from_them": ["Tyrese Maxey"],
+          "out_them": ["Tyrese Maxey"],
+          "in_from_us": ["Keegan Murray"]
+        },
+        {
+          "label": "Murray -> Miller",
+          "out_us": ["Keegan Murray"],
+          "in_from_them": ["Brandon Miller"],
+          "out_them": ["Brandon Miller"],
+          "in_from_us": ["Keegan Murray"]
+        },
+        {
+          "label": "Sharpe -> Castle",
+          "out_us": ["Shaedon Sharpe"],
+          "in_from_them": ["Stephon Castle"],
+          "out_them": ["Stephon Castle"],
+          "in_from_us": ["Shaedon Sharpe"]
+        },
+        {
+          "label": "Eason -> Buzelis",
+          "out_us": ["Tari Eason"],
+          "in_from_them": ["Matas Buzelis"],
+          "out_them": ["Matas Buzelis"],
+          "in_from_us": ["Tari Eason"]
+        },
+        {
+          "label": "Duren+Kuminga -> Miller+Jabari",
+          "out_us": ["Jalen Duren", "Jonathan Kuminga"],
+          "in_from_them": ["Brandon Miller", "Jabari Smith"],
+          "out_them": ["Brandon Miller", "Jabari Smith", "Noah Penda"],
+          "in_from_us": ["Jalen Duren", "Jonathan Kuminga"]
+        },
+        {
+          "label": "Duren+Melton -> Miller+Camara",
+          "out_us": ["Jalen Duren", "De'Anthony Melton"],
+          "in_from_them": ["Brandon Miller", "Toumani Camara"],
+          "out_them": ["Brandon Miller", "Toumani Camara", "Johnny Furphy"],
+          "in_from_us": ["Jalen Duren", "De'Anthony Melton"]
+        },
+        {
+          "label": "Duren+Vassell -> Miller+Jabari",
+          "out_us": ["Jalen Duren", "Devin Vassell"],
+          "in_from_them": ["Brandon Miller", "Jabari Smith"],
+          "out_them": ["Brandon Miller", "Jabari Smith", "Noah Penda"],
+          "in_from_us": ["Jalen Duren", "Devin Vassell"]
+        },
+        {
+          "label": "Duren+Walker -> Miller",
+          "out_us": ["Jalen Duren", "Jarace Walker"],
+          "in_from_them": ["Brandon Miller"],
+          "out_them": ["Brandon Miller"],
+          "in_from_us": ["Jalen Duren", "Jarace Walker"]
+        },
+        {
+          "label": "Mark+Poeltl -> Jalen Williams+Tyson",
+          "out_us": ["Mark Williams", "Jakob Poeltl"],
+          "in_from_them": ["Jalen Williams", "Jaylon Tyson"],
+          "out_them": ["Jalen Williams", "Jaylon Tyson", "Rasheer Fleming"],
+          "in_from_us": ["Mark Williams", "Jakob Poeltl"]
+        },
+        {
+          "label": "Mark+Edey -> Jalen Williams",
+          "out_us": ["Mark Williams", "Zach Edey"],
+          "in_from_them": ["Jalen Williams"],
+          "out_them": ["Jalen Williams"],
+          "in_from_us": ["Mark Williams", "Zach Edey"]
+        },
+        {
+          "label": "Bane+Turner -> Castle+Edgecombe",
+          "out_us": ["Desmond Bane", "Myles Turner"],
+          "in_from_them": ["Stephon Castle", "VJ Edgecombe"],
+          "out_them": ["Stephon Castle", "VJ Edgecombe", "Johnny Furphy"],
+          "in_from_us": ["Desmond Bane", "Myles Turner"]
+        },
+        {
+          "label": "Garland+Coby -> Castle+Coward",
+          "out_us": ["Darius Garland", "Coby White"],
+          "in_from_them": ["Stephon Castle", "Cedric Coward"],
+          "out_them": ["Stephon Castle", "Cedric Coward", "Noah Penda"],
+          "in_from_us": ["Darius Garland", "Coby White"]
+        },
+        {
+          "label": "Reid+Matkovic -> Jabari+Champagnie",
+          "out_us": ["Naz Reid", "Karlo Matković"],
+          "in_from_them": ["Jabari Smith", "Julian Champagnie"],
+          "out_them": ["Jabari Smith", "Julian Champagnie", "Rasheer Fleming"],
+          "in_from_us": ["Naz Reid", "Karlo Matković"]
+        },
+        {
+          "label": "Duren+Kuminga -> Paolo",
+          "out_us": ["Jalen Duren", "Jonathan Kuminga"],
+          "in_from_them": ["Paolo Banchero"],
+          "out_them": ["Paolo Banchero"],
+          "in_from_us": ["Jalen Duren", "Jonathan Kuminga"]
+        },
+        {
+          "label": "Duren+Melton -> Paolo",
+          "out_us": ["Jalen Duren", "De'Anthony Melton"],
+          "in_from_them": ["Paolo Banchero"],
+          "out_them": ["Paolo Banchero"],
+          "in_from_us": ["Jalen Duren", "De'Anthony Melton"]
+        },
+        {
+          "label": "Duren+Vassell -> Paolo+Jabari",
+          "out_us": ["Jalen Duren", "Devin Vassell"],
+          "in_from_them": ["Paolo Banchero", "Jabari Smith"],
+          "out_them": ["Paolo Banchero", "Jabari Smith", "Noah Penda"],
+          "in_from_us": ["Jalen Duren", "Devin Vassell"]
+        },
+        {
+          "label": "Bane+Poeltl -> Buzelis+Camara",
+          "out_us": ["Desmond Bane", "Jakob Poeltl"],
+          "in_from_them": ["Matas Buzelis", "Toumani Camara"],
+          "out_them": ["Matas Buzelis", "Toumani Camara", "Johnny Furphy"],
+          "in_from_us": ["Desmond Bane", "Jakob Poeltl"]
+        },
+        {
+          "label": "Garland+Suggs -> Castle+Mitchell",
+          "out_us": ["Darius Garland", "Jalen Suggs"],
+          "in_from_them": ["Stephon Castle", "Ajay Mitchell"],
+          "out_them": ["Stephon Castle", "Ajay Mitchell", "Noah Penda"],
+          "in_from_us": ["Darius Garland", "Jalen Suggs"]
+        },
+        {
+          "label": "Murray+Eason -> Miller",
+          "out_us": ["Keegan Murray", "Tari Eason"],
+          "in_from_them": ["Brandon Miller"],
+          "out_them": ["Brandon Miller"],
+          "in_from_us": ["Keegan Murray", "Tari Eason"]
+        },
+        {
+          "label": "Duren -> Miller + 2.06",
+          "out_us": ["Jalen Duren"],
+          "in_from_them": ["Brandon Miller", "2027 2.06 Hlina own"],
+          "out_them": ["Brandon Miller"],
+          "in_from_us": ["Jalen Duren"]
+        },
+        {
+          "label": "Mark Williams -> Jalen Williams + 2.06",
+          "out_us": ["Mark Williams"],
+          "in_from_them": ["Jalen Williams", "2027 2.06 Hlina own"],
+          "out_them": ["Jalen Williams"],
+          "in_from_us": ["Mark Williams"]
+        }
+      ]
+    },
+    {
+      "kind": "player-effects",
+      "their_roster": 161021,
+      "their_label": "Hlina",
+      "groups": [
+        {
+          "label": "wings_stars",
+          "source": "their",
+          "names": [
+            "Jalen Williams",
+            "Brandon Miller",
+            "Matas Buzelis",
+            "Paolo Banchero",
+            "Tyrese Maxey"
+          ]
+        },
+        {
+          "label": "wings_young",
+          "source": "their",
+          "names": [
+            "Stephon Castle",
+            "VJ Edgecombe",
+            "Cedric Coward",
+            "Jaime Jaquez",
+            "Jalen Green"
+          ]
+        },
+        {
+          "label": "frontcourt",
+          "source": "their",
+          "names": [
+            "Jabari Smith",
+            "Toumani Camara",
+            "Alex Sarr",
+            "Andre Drummond"
+          ]
+        },
+        {
+          "label": "our_centers",
+          "source": "us",
+          "names": [
+            "Jalen Duren",
+            "Mark Williams",
+            "Zach Edey",
+            "Jakob Poeltl",
+            "Neemias Queta"
+          ]
+        },
+        {
+          "label": "our_wings_guards",
+          "source": "us",
+          "names": [
+            "Desmond Bane",
+            "Darius Garland",
+            "Coby White",
+            "Jalen Suggs",
+            "Devin Vassell",
+            "Shaedon Sharpe",
+            "Tari Eason",
+            "Keegan Murray"
+          ]
+        },
+        {
+          "label": "our_big_wing",
+          "source": "us",
+          "names": [
+            "Naz Reid",
+            "Myles Turner",
+            "Jimmy Butler",
+            "Jarace Walker"
+          ]
+        }
+      ]
+    }
+  ]
+}

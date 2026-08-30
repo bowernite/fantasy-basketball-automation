@@ -100,6 +100,32 @@ def projection_snapshot(text):
         sim._projections.cache_clear()
 
 
+def _gp_overlay_file(pairs):
+    path = os.path.join(tempfile.mkdtemp(), "gp-overlay.json")
+    if pairs is not None:
+        with open(path, "w") as f:
+            json.dump({"season": "2026-27", "source": "test", "updated": "",
+                       "depth": len(pairs),
+                       "rows": [{"name": n, "gp": g} for n, g in pairs]}, f)
+    return path
+
+
+@contextlib.contextmanager
+def gp_snapshot(pairs, fanscout=()):
+    hashtag_gp = skill_module("projections", "hashtag_gp")
+    fanscout_gp = skill_module("projections", "fanscout_gp")
+    hpath, fpath = _gp_overlay_file(pairs), _gp_overlay_file(fanscout)
+    was_h, hashtag_gp.SNAPSHOT = hashtag_gp.SNAPSHOT, hpath
+    was_f, fanscout_gp.SNAPSHOT = fanscout_gp.SNAPSHOT, fpath
+    sim._feed_gp_index.cache_clear()
+    try:
+        yield
+    finally:
+        hashtag_gp.SNAPSHOT = was_h
+        fanscout_gp.SNAPSHOT = was_f
+        sim._feed_gp_index.cache_clear()
+
+
 def sleeper_rows(*lines):
     return json.dumps({"season": "2026", "source": "test", "updated": 0,
                        "depth": len(lines),

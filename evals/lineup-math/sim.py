@@ -4,6 +4,7 @@ Answers "what is a player actually worth to us?" under the 9-slot daily cap,
 on the real NBA schedule. Stdlib only (no scipy/numpy).
 
     ./run sim.py [report ...]            # any of REPORTS; default `calibration`
+    ./run sim_run.py <config.json>       # trade screens, player effects, batched reports
     ./run test                           # invariants findings.md's claims rest on
     ./run fetch_data.py [pool]           # rebuild the data files
 
@@ -34,9 +35,10 @@ and is never summed with, netted against or converted into `Δw`:
 
     sim.player_title(sim.basis(), names)                 # ours, on roster
     sim.incoming_title(sim.basis(), sim.our_roster("their.json"))  # ΔP OURS
-    sim.roster_title(after, before)                      # ONE joint run
+    sim.roster_title(after, before)                      # one roster, joint pieces
+    sim.deal_odds(after_us, after_them, "their.json")    # Δw and ΔP(title), both seats
 
-    # a multi-piece side, priced the one way §ΔP(title) allows
+    # a multi-piece side on one roster
     full = sim.basis()
     sim.roster_title(sim.swap(full, ["A", "B"], [sim.star(48, 70, ("C",))]), full)
 
@@ -61,7 +63,7 @@ import fetch_data
 from simlib import engine, gp, roster, value
 from simlib.data import (
     BRACKET, BRACKET_CAL, BRACKET_NIGHTS, DATA_DIR, DELTA_W_CAL, DELTA_W_MATCHUPS,
-    DELTA_W_SCORED, FF2ESPN, FULL_FIELD, HERE, MARGINS,
+    DELTA_W_SCORED, FF2ESPN, FULL_FIELD, HERE, HIST_PERIODS, MARGINS,
     MARGINS_BY_WEEK, NIGHTS, OURS, PERIODS, REAL_MATCHUPS, REAL_WK_MEAN,
     REAL_WK_SD, REGULAR, ROSTER_DIR, SCORED, SCORED_CAL, SCORES, SCORING_NIGHTS,
     SEASON_STR, US, WEEK_OF, WEEKS, _load, period_nights, roster_path)
@@ -80,11 +82,12 @@ from simlib.board import (
 from simlib.gp import (
     FRAGMENT_GP, GP_BOOT, GP_FOLDS, GP_KNOT, GP_MIN_RATE, GP_MODELS, GP_SHUFFLES,
     PROJECT_GP_NOTE, ROTATION_RATE, SEASONS, age_at, evidence_flags,
-    gp_fit, gp_model, gp_models, gp_rows, gp_sq_errors, project_gp, rate_evidence)
-from simlib.projections import projected_rate, _projections
+    gp_fit, gp_model, gp_models, gp_rows, gp_sq_errors, mapped_gp, project_gp, rate_evidence)
+from simlib.projections import (
+    projected_rate, projected_gp, _projections, _feed_gp_index)
 from simlib.roster import (
-    DEAD, EXPANSION, GROUPS, PAD_POS, basis, group_slots, our_roster, pad,
-    pure_bodies, slot_group, star, swap)
+    DEAD, EXPANSION, GROUPS, MAX_WIRE, PAD_POS, apply_trade, basis, basis_after_trade,
+    group_slots, our_roster, pad, pure_bodies, slot_group, star, swap)
 from simlib.auction import AUCTION_N, auction_slots, coverage_picks, steer
 from simlib.value import (
     OutOfBracket, breakeven, breakeven_cell, breakeven_fmt, breakeven_value,
@@ -99,7 +102,7 @@ from simlib.bracket import (
 # NOT `SEASON_TRIALS` -- re-exporting it would bind a stale reference under
 # the very patch it exists for; `_LIVE` below is the shape a settable name needs
 from simlib.title import (
-    PAIRINGS, bracket_odds, full_season, incoming_title, player_title,
+    PAIRINGS, bracket_odds, deal_odds, full_season, incoming_title, player_title,
     roster_title, season_run, swap_odds)
 from simlib.reports import BLURB, OURS_ONLY, REPORTS, ROSTER_FREE, SLOW
 

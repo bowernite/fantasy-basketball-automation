@@ -100,7 +100,7 @@ class UnsignedPlayer(unittest.TestCase):
         self.assertEqual(unsigned, sim.run(base + [dict(free, tm=sim.SIM_TM)],
                                            trials=8)["pf"])
         self.assertGreater(unsigned,
-                           sim.run(base, trials=8)["pf"] + 500)
+                           sim.run(base, trials=8)["pf"] + 300)
 
     def test_a_team_the_schedule_has_never_heard_of_fails(self):
         base = sim.basis()

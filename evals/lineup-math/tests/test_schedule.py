@@ -2,21 +2,30 @@ import unittest
 from tests.harness import *
 
 class Schedule(unittest.TestCase):
-    def test_every_team_plays_82_games(self):
+    def test_the_nba_calendar_is_this_season(self):
+        self.assertGreaterEqual(sim.NIGHTS[0][0], "2026-10-01")
+        self.assertLessEqual(sim.NIGHTS[-1][0], "2027-04-30")
+
+    def test_every_team_plays_the_same_number_of_games(self):
         played = collections.Counter()
         for _, tms in sim.NIGHTS:
             for t in tms:
                 played[t] += 1
         self.assertEqual(sorted(collections.Counter(played.values()).items()),
-                         [(82, 28), (83, 2)])
+                         [(80, 30)])
 
 class FantasyCalendar(unittest.TestCase):
+    def test_scoring_nights_fall_on_this_seasons_nba_calendar(self):
+        self.assertTrue(sim.SCORING_NIGHTS)
+        self.assertGreaterEqual(sim.NIGHTS[sim.SCORING_NIGHTS[0]][0],
+                                "2026-10-01")
+
     def test_games_per_period_matches_the_real_spread(self):
         games = collections.Counter()
         for (_, tms), w in zip(sim.NIGHTS, sim.WEEK_OF):
             if w is not None:
                 games[w] += len(tms) // 2
-        self.assertEqual((min(games.values()), max(games.values())), (28, 56))
+        self.assertEqual((min(games.values()), max(games.values())), (14, 55))
 
 class NightToPeriodMapping(unittest.TestCase):
     def test_the_scoring_nights_are_exactly_the_scored_periods_nights_in_order(self):
@@ -111,9 +120,9 @@ class LightNights(unittest.TestCase):
 
 class Coverage(unittest.TestCase):
     def test_seven_bodies_on_one_team_only_get_you_that_teams_nights(self):
-        deepest = max(light_nights_per_team().values())
-        self.assertEqual(deepest, 12)
-        self.assertEqual(sim.coverage(["LAC"] * 7), 12)
+        per = light_nights_per_team()
+        tm = max(per, key=per.get)
+        self.assertEqual(sim.coverage([tm] * 7), per[tm])
 
     def test_spreading_the_same_seven_out_covers_way_more_nights(self):
         spread = sim.coverage(["OKC", "LAC", "UTAH", "SA", "NY", "MIN", "BOS"])

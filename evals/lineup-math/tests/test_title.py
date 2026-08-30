@@ -240,3 +240,27 @@ class ParallelTitle(unittest.TestCase):
             shard.retire()
             par = sim.incoming_title(sim.basis(), bodies, blocks=2)
         self.assertEqual(seq, par)
+
+
+class DealOdds(unittest.TestCase):
+    def test_unchanged_rosters_move_by_exactly_nothing(self):
+        with cheap_monte_carlo(4, seasons=300):
+            after_us, before_us, after_them, before_them = sim.deal_odds(
+                sim.basis(), sim.basis(THEIR_ROSTER), THEIR_ROSTER)
+        self.assertEqual(after_us, before_us)
+        self.assertEqual(after_them, before_them)
+
+    def test_field_seats_both_after_rosters(self):
+        ours = sim.basis()
+        theirs = sim.basis(THEIR_ROSTER)
+        deni = rostered("Deni Avdija", THEIR_ROSTER)
+        suggs = rostered("Jalen Suggs")
+        after_us = sim.swap(ours, ["Jalen Suggs"], [deni])
+        after_them = sim.swap(theirs, ["Deni Avdija"], [suggs])
+        with cheap_monte_carlo():
+            field, who_us, who_them = title.deal_field(
+                after_us, after_them, THEIR_ROSTER)
+            us = next(t for t in field if t.path == who_us)
+            them = next(t for t in field if t.path == who_them)
+            self.assertEqual(us, sim.measure(after_us, who_us))
+            self.assertEqual(them, sim.measure(after_them, who_them))

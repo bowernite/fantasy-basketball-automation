@@ -1,0 +1,180 @@
+{
+  "kind": "trade-screen",
+  "their_roster": 161024,
+  "their_label": "Josh",
+  "deals": [
+    {
+      "label": "Turner -> Bridges",
+      "out_us": [
+        "Myles Turner"
+      ],
+      "in_from_them": [
+        "Miles Bridges"
+      ],
+      "out_them": [
+        "Miles Bridges"
+      ],
+      "in_from_us": [
+        "Myles Turner"
+      ],
+      "results": {
+        "delta_base_us": 20,
+        "dw_us": 0.43,
+        "dp_title_us": 12.5,
+        "dw_them": -0.57,
+        "dp_title_them": -9.3,
+        "dp_title_note": "both rosters change in the 12-team field"
+      }
+    },
+    {
+      "label": "Turner+Matkovic -> Bridges",
+      "out_us": [
+        "Myles Turner"
+      ],
+      "in_from_them": [
+        "Miles Bridges"
+      ],
+      "out_them": [
+        "Miles Bridges"
+      ],
+      "in_from_us": [
+        "Myles Turner",
+        "Karlo Matkovi\u0107"
+      ],
+      "results": {
+        "delta_base_us": 20,
+        "dw_us": 0.44,
+        "dp_title_us": 12.3,
+        "dw_them": -0.47,
+        "dp_title_them": -8.4,
+        "dp_title_note": "both rosters change in the 12-team field"
+      }
+    },
+    {
+      "label": "Turner+Matkovic -> Bridges+Gordon",
+      "out_us": [
+        "Myles Turner"
+      ],
+      "in_from_them": [
+        "Miles Bridges",
+        "Aaron Gordon"
+      ],
+      "out_them": [
+        "Miles Bridges",
+        "Aaron Gordon"
+      ],
+      "in_from_us": [
+        "Myles Turner",
+        "Karlo Matkovi\u0107"
+      ],
+      "results": {
+        "delta_base_us": 710,
+        "dw_us": 0.82,
+        "dp_title_us": 16.1,
+        "dw_them": -1.01,
+        "dp_title_them": -11.6,
+        "dp_title_note": "both rosters change in the 12-team field"
+      }
+    },
+    {
+      "label": "Turner+Melton -> Bridges",
+      "out_us": [
+        "Myles Turner",
+        "De'Anthony Melton"
+      ],
+      "in_from_them": [
+        "Miles Bridges"
+      ],
+      "out_them": [
+        "Miles Bridges"
+      ],
+      "in_from_us": [
+        "Myles Turner",
+        "De'Anthony Melton"
+      ],
+      "results": {
+        "delta_base_us": -323,
+        "dw_us": 0.2,
+        "dp_title_us": 8.9,
+        "dw_them": -0.19,
+        "dp_title_them": -6.8,
+        "dp_title_note": "both rosters change in the 12-team field"
+      }
+    },
+    {
+      "label": "Gordon -> Turner",
+      "out_us": [
+        "Myles Turner"
+      ],
+      "in_from_them": [
+        "Aaron Gordon"
+      ],
+      "out_them": [
+        "Aaron Gordon"
+      ],
+      "in_from_us": [
+        "Myles Turner"
+      ],
+      "results": {
+        "delta_base_us": -444,
+        "dw_us": 0.1,
+        "dp_title_us": 1.9,
+        "dw_them": 0.04,
+        "dp_title_them": -1.0,
+        "dp_title_note": "both rosters change in the 12-team field"
+      }
+    },
+    {
+      "label": "Sexton -> Turner",
+      "out_us": [
+        "Myles Turner"
+      ],
+      "in_from_them": [
+        "Collin Sexton"
+      ],
+      "out_them": [
+        "Collin Sexton"
+      ],
+      "in_from_us": [
+        "Myles Turner"
+      ],
+      "results": {
+        "delta_base_us": -766,
+        "dw_us": 0.02,
+        "dp_title_us": 4.3,
+        "dw_them": -0.16,
+        "dp_title_them": -3.3,
+        "dp_title_note": "both rosters change in the 12-team field"
+      }
+    },
+    {
+      "label": "Gordon+Sexton -> Turner",
+      "out_us": [
+        "Myles Turner"
+      ],
+      "in_from_them": [
+        "Aaron Gordon",
+        "Collin Sexton"
+      ],
+      "out_them": [
+        "Aaron Gordon",
+        "Collin Sexton"
+      ],
+      "in_from_us": [
+        "Myles Turner"
+      ],
+      "results": {
+        "delta_base_us": -76,
+        "dw_us": 0.49,
+        "dp_title_us": 8.9,
+        "dw_them": -0.65,
+        "dp_title_them": -7.7,
+        "dp_title_note": "both rosters change in the 12-team field"
+      }
+    }
+  ],
+  "meta": {
+    "simmed": "2026-08-28",
+    "dp_title_note": "both rosters change in the 12-team field"
+  }
+}

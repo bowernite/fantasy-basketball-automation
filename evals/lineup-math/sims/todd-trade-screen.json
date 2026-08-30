@@ -1,0 +1,213 @@
+{
+  "sections": [
+    {
+      "kind": "player-effects",
+      "their_roster": 161022,
+      "their_label": "Todd",
+      "groups": [
+        {
+          "label": "their_stars",
+          "source": "their",
+          "names": [
+            "Jalen Brunson",
+            "Jayson Tatum",
+            "Michael Porter",
+            "Tyrese Haliburton"
+          ]
+        },
+        {
+          "label": "their_secondary",
+          "source": "their",
+          "names": [
+            "Nickeil Alexander-Walker",
+            "Rudy Gobert",
+            "Nic Claxton",
+            "Ja Morant",
+            "Ayo Dosunmu",
+            "Aaron Nesmith"
+          ]
+        },
+        {
+          "label": "our_chips",
+          "source": "us",
+          "names": [
+            "Jalen Duren",
+            "Darius Garland",
+            "Desmond Bane",
+            "Jalen Suggs",
+            "Naz Reid",
+            "Jarace Walker",
+            "Zach Edey",
+            "Coby White",
+            "Myles Turner",
+            "Shaedon Sharpe",
+            "Tari Eason",
+            "Devin Vassell",
+            "Keegan Murray"
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "trade-screen",
+      "their_roster": 161022,
+      "their_label": "Todd",
+      "deals": [
+        {
+          "label": "Porter -> Duren",
+          "out_us": ["Jalen Duren"],
+          "in_from_them": ["Michael Porter"],
+          "out_them": ["Michael Porter"],
+          "in_from_us": ["Jalen Duren"]
+        },
+        {
+          "label": "Porter -> Garland",
+          "out_us": ["Darius Garland"],
+          "in_from_them": ["Michael Porter"],
+          "out_them": ["Michael Porter"],
+          "in_from_us": ["Darius Garland"]
+        },
+        {
+          "label": "Porter -> Walker",
+          "out_us": ["Jarace Walker"],
+          "in_from_them": ["Michael Porter"],
+          "out_them": ["Michael Porter"],
+          "in_from_us": ["Jarace Walker"]
+        },
+        {
+          "label": "Brunson -> Duren",
+          "out_us": ["Jalen Duren"],
+          "in_from_them": ["Jalen Brunson"],
+          "out_them": ["Jalen Brunson"],
+          "in_from_us": ["Jalen Duren"]
+        },
+        {
+          "label": "Brunson -> Duren+Bane",
+          "out_us": ["Jalen Duren", "Desmond Bane"],
+          "in_from_them": ["Jalen Brunson"],
+          "out_them": ["Jalen Brunson", "Taurean Prince"],
+          "in_from_us": ["Jalen Duren", "Desmond Bane"]
+        },
+        {
+          "label": "Brunson -> Duren+Garland",
+          "out_us": ["Jalen Duren", "Darius Garland"],
+          "in_from_them": ["Jalen Brunson"],
+          "out_them": ["Jalen Brunson", "Jordan Clarkson"],
+          "in_from_us": ["Jalen Duren", "Darius Garland"]
+        },
+        {
+          "label": "Tatum -> Duren+Reid",
+          "out_us": ["Jalen Duren", "Naz Reid"],
+          "in_from_them": ["Jayson Tatum"],
+          "out_them": ["Jayson Tatum", "Corey Kispert"],
+          "in_from_us": ["Jalen Duren", "Naz Reid"]
+        },
+        {
+          "label": "Tatum -> Duren+Bane",
+          "out_us": ["Jalen Duren", "Desmond Bane"],
+          "in_from_them": ["Jayson Tatum"],
+          "out_them": ["Jayson Tatum", "Taurean Prince"],
+          "in_from_us": ["Jalen Duren", "Desmond Bane"]
+        },
+        {
+          "label": "Haliburton -> Duren+Walker",
+          "out_us": ["Jalen Duren", "Jarace Walker"],
+          "in_from_them": ["Tyrese Haliburton"],
+          "out_them": ["Tyrese Haliburton", "Amari Williams"],
+          "in_from_us": ["Jalen Duren", "Jarace Walker"]
+        },
+        {
+          "label": "Haliburton -> Duren+Garland",
+          "out_us": ["Jalen Duren", "Darius Garland"],
+          "in_from_them": ["Tyrese Haliburton"],
+          "out_them": ["Tyrese Haliburton", "Moritz Wagner"],
+          "in_from_us": ["Jalen Duren", "Darius Garland"]
+        },
+        {
+          "label": "NAW -> Garland",
+          "out_us": ["Darius Garland"],
+          "in_from_them": ["Nickeil Alexander-Walker"],
+          "out_them": ["Nickeil Alexander-Walker"],
+          "in_from_us": ["Darius Garland"]
+        },
+        {
+          "label": "NAW -> Suggs",
+          "out_us": ["Jalen Suggs"],
+          "in_from_them": ["Nickeil Alexander-Walker"],
+          "out_them": ["Nickeil Alexander-Walker"],
+          "in_from_us": ["Jalen Suggs"]
+        },
+        {
+          "label": "Gobert -> Duren",
+          "out_us": ["Jalen Duren"],
+          "in_from_them": ["Rudy Gobert"],
+          "out_them": ["Rudy Gobert"],
+          "in_from_us": ["Jalen Duren"]
+        },
+        {
+          "label": "Porter+Claxton -> Duren+Turner",
+          "out_us": ["Jalen Duren", "Myles Turner"],
+          "in_from_them": ["Michael Porter", "Nic Claxton"],
+          "out_them": ["Michael Porter", "Nic Claxton"],
+          "in_from_us": ["Jalen Duren", "Myles Turner"]
+        },
+        {
+          "label": "Brunson -> Duren+Edey",
+          "out_us": ["Jalen Duren", "Zach Edey"],
+          "in_from_them": ["Jalen Brunson"],
+          "out_them": ["Jalen Brunson", "Taurean Prince"],
+          "in_from_us": ["Jalen Duren", "Zach Edey"]
+        },
+        {
+          "label": "Porter -> Reid+Walker",
+          "out_us": ["Naz Reid", "Jarace Walker"],
+          "in_from_them": ["Michael Porter"],
+          "out_them": ["Michael Porter", "Corey Kispert"],
+          "in_from_us": ["Naz Reid", "Jarace Walker"]
+        },
+        {
+          "label": "Porter -> White+Ellis",
+          "out_us": ["Coby White", "Keon Ellis"],
+          "in_from_them": ["Michael Porter"],
+          "out_them": ["Michael Porter", "Isaac Okoro"],
+          "in_from_us": ["Coby White", "Keon Ellis"]
+        },
+        {
+          "label": "Brunson -> Giddey+Duren (no)",
+          "out_us": ["Josh Giddey", "Jalen Duren"],
+          "in_from_them": ["Jalen Brunson"],
+          "out_them": ["Jalen Brunson", "Jordan Clarkson"],
+          "in_from_us": ["Josh Giddey", "Jalen Duren"]
+        },
+        {
+          "label": "Tatum -> Kawhi+Duren (no)",
+          "out_us": ["Kawhi Leonard", "Jalen Duren"],
+          "in_from_them": ["Jayson Tatum"],
+          "out_them": ["Jayson Tatum", "Taurean Prince"],
+          "in_from_us": ["Kawhi Leonard", "Jalen Duren"]
+        },
+        {
+          "label": "Porter -> Sharpe+Walker",
+          "out_us": ["Shaedon Sharpe", "Jarace Walker"],
+          "in_from_them": ["Michael Porter"],
+          "out_them": ["Michael Porter", "Amari Williams"],
+          "in_from_us": ["Shaedon Sharpe", "Jarace Walker"]
+        },
+        {
+          "label": "Morant -> Garland",
+          "out_us": ["Darius Garland"],
+          "in_from_them": ["Ja Morant"],
+          "out_them": ["Ja Morant"],
+          "in_from_us": ["Darius Garland"]
+        },
+        {
+          "label": "Brunson+Porter -> Duren+Bane+Turner",
+          "out_us": ["Jalen Duren", "Desmond Bane", "Myles Turner"],
+          "in_from_them": ["Jalen Brunson", "Michael Porter"],
+          "out_them": ["Jalen Brunson", "Michael Porter", "Jordan Clarkson"],
+          "in_from_us": ["Jalen Duren", "Desmond Bane", "Myles Turner"]
+        }
+      ]
+    }
+  ]
+}
