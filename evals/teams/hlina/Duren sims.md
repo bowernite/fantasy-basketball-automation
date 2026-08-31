@@ -11,12 +11,12 @@ Rosters: `Matt Hlina's Team.md`, `evals/teams/my-team/My Team.md`. Rule: `VERDIC
 | Out | In | **ΔBASE us** | **Δw us** | **ΔP(title) us** | **Δw him** |
 | --- | --- | ---: | ---: | ---: | ---: |
 | Duren + Vassell | Paolo + Jabari | +855 … +1,237 | +0.69 | **+7.3%** | **−0.71** |
-| Duren + Kuminga | Miller + Jabari | **+458** | **+0.81** | +5.9% | **−0.73** |
+| Duren + Kuminga | Miller + Jabari | **−280** | **+0.81** | +5.9% | **−0.73** |
 | Duren + Melton | Paolo | +251 … +534 | +0.73 | +5.7% | −0.52 |
 | Duren + Kuminga | Paolo | −104 … +394 | +0.51 | +5.3% | −0.04 |
-| Duren + Kuminga | Miller + Camara | **−155** | +0.52 | +5.5% | −0.28 |
+| Duren + Kuminga | Miller + Camara | **−432** | +0.52 | +5.5% | −0.28 |
 | Duren + Walker | Paolo | −80 … +401 | +0.40 | +5.6% | −0.00 |
-| Duren | Miller | −434 | +0.53 | +3.2% | −0.30 |
+| Duren | Miller | −856 | +0.53 | +3.2% | −0.30 |
 | Duren + own '27 1st | Paolo | −1,480 … −110 | +0.79 | +5.9% | −0.47 |
 
 Vassell / Kuminga: agree-now, execute after expansion. Melton / Walker: ours today. Melton **rejected** 2026-08-14. Don't park 2.09.
@@ -66,7 +66,7 @@ All figures above run Duren at RotoWire **32.1** (Sleeper snapshot `evals/board-
 | **RW 2026-27** | **12.8** | **7.8** | **29.0** | — | **32.1** |
 | BBR SPS @ 29 min | 17.5 | 10.4 | 29.0 | — | **38.9** |
 
-RW's 7.83 FGA is playoff volume, not a minutes haircut. BBR SPS (per-36, scaled to 29) is last year's player. Miller's two sources agree (RW 36.4, BBR 36.2). BASE did not follow RW (Duren 3609 vs Miller 3175).
+RW's 7.83 FGA is playoff volume, not a minutes haircut. BBR SPS (per-36, scaled to 29) is last year's player. Miller's two sources agree (RW 36.4, BBR 36.2). BASE did not follow RW (Duren 3636 vs Miller 2780).
 
 ## Duren at 36–40 (in-memory)
 

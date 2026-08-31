@@ -6,7 +6,7 @@ Alongside BASE, never folded in. Sources: `get-league-info`.
 
 | Col       | Source                                |                                                                                                                                                             |
 | --------- | ------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Boards`  | §BASE's three boards                  | each board's rank for that player, blend order, one cell — so outliers stay traceable                                                                       |
+| `Boards`  | §BASE's three boards                  | each board's rank for that player, print order, one cell — so outliers stay traceable                                                                       |
 | `FPts/G proj (last)` | `projections` · `FetchRoster?season=` `seasonAverage` | `FPts/Gp` then `FPts/G` in parens, one cell, so the divergence is visible. The projection is **the rate `Δw` runs on**; the actual is reporting only |
 | `GP proj (last)` | `sim.project_gp` · `seasonTotal / seasonAverage` | `GPp` then `GP` in parens, one cell. The projection is what `Δw` runs on; the actual is reporting only                                       |
 | `Δw ours` | `sim.py players` · `sim.incoming_wins` | sim-measured. Already ours → `players`. Not yet ours → `incoming_wins` against `basis()`, never a hand-edited roster file (`Eval Definitions §Δw`)           |

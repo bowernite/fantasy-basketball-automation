@@ -1,7 +1,7 @@
 # Hashtag Basketball — local snapshot
 
-Offline copy of the two hashtagbasketball.com boards that carry 60% of BASE
-(`eval-team`). Neither is reproducible upstream: the crowd board is re-voted daily,
+Offline copy of the two hashtagbasketball.com boards. Expert Points is 35% of BASE
+(`eval-team`); crowd is printed on `Boards`, not blended. Neither is reproducible upstream: the crowd board is re-voted daily,
 and the expert board is a dated snapshot that gets overwritten in place. Without
 this directory no published eval can be re-checked.
 
@@ -23,12 +23,12 @@ showing. Compare `board_updated` against a live pull before trusting anything he
 | File | Rows | What |
 |---|---|---|
 | `expert-dynasty-points.csv` | 766 | **Expert board, `DDTYPE=POINT` — our format.** 35% of BASE |
-| `crowd-keeper.csv` | 759 | Crowd `/keeper` board, pick bands inline. 25% of BASE |
+| `crowd-keeper.csv` | 759 | Crowd `/keeper` board, pick bands inline. Printed on `Boards`, not blended |
 | `manifest.csv` | 2 | Provenance + staleness fields, one row per board |
 
 Row counts exclude the header. Both boards reach well past `D` = 12 × 38 = 456, so
-absence from either is a real 0 — never renormalise a weight off these two
-(`eval-team` → *Depth and absence*).
+absence from expert Points is a real 0. Crowd is printed, not blended — never
+renormalise a weight off a crowd miss (`eval-team` → *Depth and absence*).
 
 Only the expert Points view is snapshotted; `OVERALL` / `CONTEND` / `REBUILD` /
 `ROOKIE` are one postback each off the Skill and enter no blend.
