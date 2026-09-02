@@ -1,0 +1,204 @@
+{
+  "sections": [
+    {
+      "label": "josh-offers-post-hlina",
+      "kind": "trade-screen",
+      "their_roster": 161024,
+      "their_label": "Josh",
+      "deals": [
+        {
+          "label": "Coby + Turner -> Bridges",
+          "out_us": [
+            "Coby White",
+            "Myles Turner"
+          ],
+          "in_from_them": [
+            "Miles Bridges"
+          ],
+          "out_them": [
+            "Miles Bridges"
+          ],
+          "in_from_us": [
+            "Coby White",
+            "Myles Turner"
+          ],
+          "results": {
+            "delta_base_us": -1449,
+            "fdw_us": -0.07,
+            "dw_us": -0.25,
+            "dp_title_us": 4.7,
+            "fdw_them": 0.31,
+            "dw_them": 0.29,
+            "dp_title_them": -2.2,
+            "dp_title_note": "both rosters change in the 12-team field",
+            "simmed": "9/1/26"
+          }
+        },
+        {
+          "label": "Kawhi -> Bridges + Gordon",
+          "out_us": [
+            "Kawhi Leonard"
+          ],
+          "in_from_them": [
+            "Miles Bridges",
+            "Aaron Gordon"
+          ],
+          "out_them": [
+            "Miles Bridges",
+            "Aaron Gordon"
+          ],
+          "in_from_us": [
+            "Kawhi Leonard"
+          ],
+          "results": {
+            "delta_base_us": 281,
+            "fdw_us": -0.29,
+            "dw_us": -0.03,
+            "dp_title_us": 3.9,
+            "fdw_them": 0.11,
+            "dw_them": 0.08,
+            "dp_title_them": -3.3,
+            "dp_title_note": "both rosters change in the 12-team field",
+            "simmed": "9/1/26"
+          }
+        },
+        {
+          "label": "K+T -> B+G + Porzingis",
+          "out_us": [
+            "Kawhi Leonard",
+            "Myles Turner"
+          ],
+          "in_from_them": [
+            "Miles Bridges",
+            "Aaron Gordon",
+            "Kristaps Porzi\u0146\u0123is"
+          ],
+          "out_them": [
+            "Miles Bridges",
+            "Aaron Gordon",
+            "Kristaps Porzi\u0146\u0123is"
+          ],
+          "in_from_us": [
+            "Kawhi Leonard",
+            "Myles Turner"
+          ],
+          "results": {
+            "delta_base_us": 194,
+            "fdw_us": -0.13,
+            "dw_us": -0.04,
+            "dp_title_us": 5.7,
+            "fdw_them": 0.01,
+            "dw_them": 0.03,
+            "dp_title_them": -4.0,
+            "dp_title_note": "both rosters change in the 12-team field",
+            "simmed": "9/1/26"
+          }
+        },
+        {
+          "label": "K+T -> B+G + Collins",
+          "out_us": [
+            "Kawhi Leonard",
+            "Myles Turner"
+          ],
+          "in_from_them": [
+            "Miles Bridges",
+            "Aaron Gordon",
+            "John Collins"
+          ],
+          "out_them": [
+            "Miles Bridges",
+            "Aaron Gordon",
+            "John Collins"
+          ],
+          "in_from_us": [
+            "Kawhi Leonard",
+            "Myles Turner"
+          ],
+          "results": {
+            "delta_base_us": -147,
+            "fdw_us": -0.02,
+            "dw_us": 0.2,
+            "dp_title_us": 6.4,
+            "fdw_them": -0.16,
+            "dw_them": -0.38,
+            "dp_title_them": -4.9,
+            "dp_title_note": "both rosters change in the 12-team field",
+            "simmed": "9/1/26"
+          }
+        },
+        {
+          "label": "K+T -> B+G + Gillespie",
+          "out_us": [
+            "Kawhi Leonard",
+            "Myles Turner"
+          ],
+          "in_from_them": [
+            "Miles Bridges",
+            "Aaron Gordon",
+            "Collin Gillespie"
+          ],
+          "out_them": [
+            "Miles Bridges",
+            "Aaron Gordon",
+            "Collin Gillespie"
+          ],
+          "in_from_us": [
+            "Kawhi Leonard",
+            "Myles Turner"
+          ],
+          "results": {
+            "delta_base_us": -127,
+            "fdw_us": -0.3,
+            "dw_us": -0.08,
+            "dp_title_us": 6.9,
+            "fdw_them": 0.06,
+            "dw_them": -0.07,
+            "dp_title_them": -6.1,
+            "dp_title_note": "both rosters change in the 12-team field",
+            "simmed": "9/1/26"
+          }
+        },
+        {
+          "label": "K+T -> B+G + Wiggins",
+          "out_us": [
+            "Kawhi Leonard",
+            "Myles Turner"
+          ],
+          "in_from_them": [
+            "Miles Bridges",
+            "Aaron Gordon",
+            "Andrew Wiggins"
+          ],
+          "out_them": [
+            "Miles Bridges",
+            "Aaron Gordon",
+            "Andrew Wiggins"
+          ],
+          "in_from_us": [
+            "Kawhi Leonard",
+            "Myles Turner"
+          ],
+          "results": {
+            "delta_base_us": -317,
+            "fdw_us": -0.04,
+            "dw_us": 0.07,
+            "dp_title_us": 9.0,
+            "fdw_them": -0.14,
+            "dw_them": -0.11,
+            "dp_title_them": -5.9,
+            "dp_title_note": "both rosters change in the 12-team field",
+            "simmed": "9/1/26"
+          }
+        }
+      ],
+      "meta": {
+        "simmed": "9/1/26",
+        "dp_title_note": "both rosters change in the 12-team field"
+      }
+    }
+  ],
+  "meta": {
+    "simmed": "9/1/26",
+    "dp_title_note": "both rosters change in the 12-team field"
+  }
+}
