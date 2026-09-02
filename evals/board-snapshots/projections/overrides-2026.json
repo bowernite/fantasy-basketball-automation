@@ -1,0 +1,10 @@
+{
+ "season": "2026-27",
+ "note": "Manual overrides when feeds lag injury news. Survives projection refresh.",
+ "players": {
+  "Shaedon Sharpe": {
+   "gp": 0,
+   "reason": "out for season"
+  }
+ }
+}

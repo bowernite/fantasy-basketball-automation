@@ -24,3 +24,7 @@ class ProjectedSeasonGP(unittest.TestCase):
         with gp_snapshot([("Nikola Jokić", 72)]):
             p, = sim.our_roster(roster_file(self.ROW))
             self.assertEqual(p["gp"], mapped)
+
+    def test_a_manual_override_wins_over_both_feeds(self):
+        with gp_snapshot([("Shaedon Sharpe", 44)], fanscout=[("Shaedon Sharpe", 15)]):
+            self.assertEqual(sim.projected_gp("Shaedon Sharpe"), 0.0)

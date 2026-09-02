@@ -22,11 +22,21 @@ def _projections():
 
 def projected_rate(name):
     """Projected FPts/G, or None if the feed doesn't carry `name`"""
+    _ensure_skill()
+    import overrides
+    o = overrides.lookup_rate(name)
+    if o is not None:
+        return o
     mod, idx = _projections()
     return mod.lookup(name, idx)
 
 
 def projected_gp(name):
+    _ensure_skill()
+    import overrides
+    o = overrides.lookup_gp(name)
+    if o is not None:
+        return o
     gps = [g for g in (_lookup_gp(name, "hashtag_gp"),
                         _lookup_gp(name, "fanscout_gp"))
            if g is not None]
