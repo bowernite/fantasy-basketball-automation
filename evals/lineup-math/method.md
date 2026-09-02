@@ -78,7 +78,7 @@ Read this before quoting anything in `findings.md`.
   the draft file re-measures every table in `findings.md`.
 - **GP is fitted** (`sim.py gp`) for every player on every roster. **Rates are projected**
   (`projections`), never posted and never hand-set, and never haircut on top
-  (`Eval Definitions §Δw`).
+  (`Eval Definitions §Δw (season)`).
 - **No in-season waiver streaming**, understating an open roster spot before expansion closes
   the pool. **Opponent distribution is fixed** at last year's and the league is rising
   (`../Team Projections.md`), so real win totals run below these.

@@ -5,11 +5,8 @@ number and **re-run rather than quote it.**
 
 - **`method.md`** — the basis, the calibration, and where to distrust the model. Read it
   before quoting anything.
-- **`tldr.md`** — the headline number and sign-flipping caveat from each section below.
+- **`findings.md`** — the headline number and sign-flipping caveat from each section below.
   What a trade reads.
-- **`findings.md`** — every measured table, with its error bars and derivation: PF→wins, the
-  consolidation ladder, break-evens, the valuation formula, GP, durability, the slot-fill
-  curve, positional premium, light-night coverage, bracket weeks, the Sept '26 expansion.
 
 Durable valuation rules live in `Eval Definitions`; how to apply them, `eval-team`. Nothing
 here restates either.
@@ -101,7 +98,7 @@ than a snapshot; every other name it exports is a plain re-export.
 the whole of what the sim publishes. `Eval Template.md` defines them — and the other
 four an eval may carry — once; cite it, and carry the flag with the row.
 
-**Those rows are where `Δw` is an upper bound, not a measurement** (`Eval Definitions §Δw`),
+**Those rows are where `Δw (season)` is an upper bound, not a measurement** (`Eval Definitions §Δw (season)`),
 and the flags are the only thing the sim publishes that speaks to whether a player still
 holds a rotation spot at all.
 
