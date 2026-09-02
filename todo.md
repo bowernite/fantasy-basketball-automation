@@ -1,0 +1,1 @@
+- [x] Delta w for just PF / in general, vs for this season simmed — see `Eval Definitions §Δw` vs `§Δw (season)`
