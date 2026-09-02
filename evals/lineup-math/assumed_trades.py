@@ -4,7 +4,7 @@
 Fleaflicker matches. Amen is not on the wire at all until expansion.
 """
 
-US, HENRY, MATTHEW = 161025, 161019, 160941
+US, HENRY, MATTHEW, HLINA, JOSH = 161025, 161019, 160941, 161021, 161024
 
 # (name, from, to)
 MOVES = (
@@ -16,6 +16,11 @@ MOVES = (
     ("Tari Eason", MATTHEW, US),
     ("Devin Vassell", MATTHEW, US),
     ("Jonathan Kuminga", MATTHEW, US),
+    ("Kawhi Leonard", US, JOSH),
+    ("Myles Turner", US, JOSH),
+    ("Miles Bridges", JOSH, US),
+    ("Aaron Gordon", JOSH, US),
+    ("John Collins", JOSH, US),
 )
 
 # (name, from) — gone from the league, not a move
