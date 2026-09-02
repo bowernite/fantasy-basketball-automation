@@ -2,22 +2,77 @@
 import json
 import os
 import re
+import tempfile
 from datetime import date
 
 import sim
-from fetch_data import SEASON_TAG
+from fetch_data import SEASON_TAG, season_dw_tag
 from simlib import roster
 from simlib.data import HERE
 from simlib.reports import OURS_ONLY, REPORTS
 
 EVAL_BASE = {
     "us": os.path.join(HERE, "..", "teams", "my-team", "My Team.md"),
+    "161021": os.path.join(HERE, "..", "teams", "hlina", "Matt Hlina's Team.md"),
     "161024": os.path.join(HERE, "..", "teams", "josh", "Josh's Team.md"),
 }
 
 _BASE_CACHE = {}
 
 KINDS = ("reports", "trade-screen", "player-effects", "title-column")
+WRITEBACK_KINDS = frozenset(("trade-screen", "player-effects"))
+
+TEAM_SLUG = {
+    161025: "my-team",
+    161016: "bonin",
+    161024: "josh",
+    161014: "chris",
+    161018: "brian",
+    161017: "joe",
+    161021: "hlina",
+    160941: "matthew",
+    161019: "henry",
+    161015: "jon",
+    161020: "mitch",
+    161022: "todd",
+}
+
+TEAM_SIM_LABEL = {
+    "my-team": "My Team",
+    "bonin": "Bonin",
+    "josh": "Josh",
+    "chris": "Chris",
+    "brian": "Brian",
+    "joe": "Joe",
+    "hlina": "Hlina",
+    "matthew": "Matthew",
+    "henry": "Henry",
+    "jon": "Jon",
+    "mitch": "Mitch",
+    "todd": "Todd",
+}
+
+
+def team_trade_shapes_path(owner):
+    if isinstance(owner, int) or (isinstance(owner, str) and owner.isdigit()):
+        slug = TEAM_SLUG[int(owner)]
+    else:
+        slug = str(owner)
+    label = TEAM_SIM_LABEL.get(slug, slug.title())
+    return os.path.join(HERE, "..", "teams", slug, "%s Trade Shapes.md" % label)
+
+
+def team_sims_path(owner):
+    return team_trade_shapes_path(owner)
+
+
+def team_sim_path(owner):
+    return team_trade_shapes_path(owner)
+
+
+def sim_tmp_path(tag):
+    safe = re.sub(r"[^\w.-]+", "-", str(tag).strip()).strip("-") or "run"
+    return os.path.join(tempfile.gettempdir(), "ff-sim-%s.json" % safe)
 
 
 def resolve_roster(ref):
@@ -97,6 +152,11 @@ def bodies(names, roster_rows):
 TITLE_NOTE = "both rosters change in the 12-team field"
 
 
+def _simmed_date(when=None):
+    d = when or date.today()
+    return "%d/%d/%d" % (d.month, d.day, d.year % 100)
+
+
 def price_deal(deal, their, our_proj, their_proj, before=None):
     after_ours = sim.basis_after_trade(
         None, deal["out_us"], bodies(deal["in_from_them"], their_proj))
@@ -104,9 +164,16 @@ def price_deal(deal, their, our_proj, their_proj, before=None):
         their, deal["out_them"], bodies(deal["in_from_us"], our_proj))
     after_us, before_us, after_them, before_them = sim.deal_odds(
         after_ours, after_theirs, their, before=before)
+    in_us = bodies(deal["in_from_them"], their_proj)
+    out_us = bodies(deal["out_us"], our_proj)
+    in_them = bodies(deal["in_from_us"], our_proj)
+    out_them = bodies(deal["out_them"], their_proj)
+    fdw_us = sim.deal_formula_wins(in_us, out_us, sim.basis())
+    fdw_them = sim.deal_formula_wins(in_them, out_them, sim.basis(their))
     return (after_us.wins - before_us.wins, after_us.title - before_us.title,
             after_them.wins - before_them.wins,
-            after_them.title - before_them.title)
+            after_them.title - before_them.title,
+            fdw_us, fdw_them)
 
 
 def _load_base(path):
@@ -150,35 +217,54 @@ def deal_delta_base(deal, their_roster):
     key = str(their_roster) if isinstance(their_roster, int) else "161024"
     their_path = EVAL_BASE.get(key, EVAL_BASE["161024"])
     try:
-        return (_player_base(deal["in_from_them"], their_path)
-                - _player_base(deal["out_us"], EVAL_BASE["us"]))
+        out = _player_base(deal["out_us"], EVAL_BASE["us"])
+        inc = _player_base(deal["in_from_them"], their_path)
+        out += int(deal.get("out_us_extra_base") or 0)
+        inc += int(deal.get("in_from_us_extra_base") or 0)
+        return inc - out
     except KeyError:
         return None
 
 
-def _trade_screen_results(sec):
+def _deal_key(deal):
+    return deal.get("label") or "deal"
+
+
+def _deals_needing_run(sec, force=False):
+    if force or sec.get("refresh"):
+        return sec["deals"]
+    return [d for d in sec["deals"] if "results" not in d]
+
+
+def _trade_screen_results(sec, deals=None):
     their = resolve_roster(sec["their_roster"])
     label = sec.get("their_label") or their
     our_proj = sim.our_roster()
     their_proj = sim.our_roster(their)
     before = sim.full_season()
     rows = []
-    for deal in sec["deals"]:
+    for deal in deals if deals is not None else sec["deals"]:
         name = deal.get("label") or "deal"
         row = {"label": name}
         try:
-            dw_us, dt_us, dw_them, dt_them = price_deal(
+            dw_us, dt_us, dw_them, dt_them, fdw_us, fdw_them = price_deal(
                 deal, their, our_proj, their_proj, before)
             row["results"] = {
                 "delta_base_us": deal_delta_base(deal, sec["their_roster"]),
+                "fdw_us": round(fdw_us, 2),
                 "dw_us": round(dw_us, 2),
                 "dp_title_us": round(dt_us * 100, 1),
+                "fdw_them": round(fdw_them, 2),
                 "dw_them": round(dw_them, 2),
                 "dp_title_them": round(dt_them * 100, 1),
                 "dp_title_note": TITLE_NOTE,
+                "simmed": _simmed_date(),
             }
         except (KeyError, ValueError) as e:
-            row["results"] = {"error": str(e)}
+            row["results"] = {
+                "error": str(e),
+                "simmed": _simmed_date(),
+            }
         rows.append(row)
     return rows, label
 
@@ -199,65 +285,113 @@ def _player_effects_results(sec):
         else:
             raw = player_rows(theirs, their, group["names"], our_proj)
             seat = label
-        players = [{"player": n, "dw": round(dw, 2), "dp_title": round(dt * 100, 1)}
-                   for n, dw, dt in sorted(raw, key=lambda r: -r[1])]
+        players = [{"player": n, "fdw": round(fdw, 2), "dw": round(dw, 2),
+                    "dp_title": round(dt * 100, 1)}
+                   for n, fdw, dw, dt in sorted(raw, key=lambda r: -r[2])]
         out_groups.append({"label": gname, "seat": seat, "players": players})
     return out_groups, label
 
 
-def run_trade_screen(sec):
-    their = resolve_roster(sec["their_roster"])
-    label = sec.get("their_label") or their
-    our_proj = sim.our_roster()
-    their_proj = sim.our_roster(their)
-    before = sim.full_season()
+def _print_trade_screen(rows, label):
     print("=== JOINT DEALS (%s) ===" % label)
-    hdr = "label\tΔw us\tΔP(title) us\tΔw %s\tΔP(title) %s" % (label, label)
+    stag = season_dw_tag()
+    hdr = ("label\tΔBASE us\tΔw us\tΔw %s us\tΔP(title) us\t"
+           "Δw %s\tΔw %s %s\tΔP(title) %s"
+           % (stag, stag, stag, label, label))
     print(hdr)
-    for deal in sec["deals"]:
-        name = deal.get("label") or "deal"
-        try:
-            dw_us, dt_us, dw_them, dt_them = price_deal(
-                deal, their, our_proj, their_proj, before)
-        except (KeyError, ValueError) as e:
-            print("%s\tERROR\t%s" % (name, e))
+    for row in rows:
+        name = row["label"]
+        res = row.get("results") or {}
+        if "error" in res:
+            print("%s\tERROR\t%s" % (name, res["error"]))
             continue
-        print("%s\t%+.2f\t%+.1f%%\t%+.2f\t%+.1f%%" % (
-            name, dw_us, dt_us * 100, dw_them, dt_them * 100))
+        base = res.get("delta_base_us")
+        base_s = "%+d" % base if base is not None else "–"
+        print("%s\t%s\t%+.2f\t%+.2f\t%+.1f%%\t%+.2f\t%+.2f\t%+.1f%%" % (
+            name, base_s,
+            res["fdw_us"], res["dw_us"], res["dp_title_us"],
+            res["fdw_them"], res["dw_them"], res["dp_title_them"]))
+
+
+def _merge_trade_screen(sec, rows, label):
+    by_label = {r["label"]: r.get("results") for r in rows}
+    deals = []
+    for deal in sec["deals"]:
+        d = dict(deal)
+        key = _deal_key(deal)
+        if key in by_label:
+            d["results"] = by_label[key]
+        deals.append(d)
+    sec["deals"] = deals
+    sec["their_label"] = label
+    sec["meta"] = _meta()
+    sec.pop("refresh", None)
+    return sec
+
+
+def _run_trade_screen(sec, force=False):
+    sec = dict(sec)
+    pending = _deals_needing_run(sec, force)
+    if not pending:
+        return sec, False
+    rows, label = _trade_screen_results(sec, pending)
+    _print_trade_screen(rows, label)
+    return _merge_trade_screen(sec, rows, label), True
 
 
 def player_rows(roster_full, path, names, from_rows):
     by = {p["n"]: p for p in from_rows}
+    fits = sim.group_fits(roster_full)
     rows = []
     for n in names:
         body = by.get(n)
         if body is None:
             continue
+        fdw = sim.formula_player_wins(body, fits)
         dw = sim.incoming_wins(roster_full, [body])[n][0]
         dt = sim.incoming_title(roster_full, [body], path=path)[n][0]
-        rows.append((n, dw, dt))
+        rows.append((n, fdw, dw, dt))
     return rows
 
 
-def run_player_effects(sec):
+def _print_player_effects(groups, sec):
     their = resolve_roster(sec["their_roster"])
     label = sec.get("their_label") or their
-    ours = sim.basis()
-    theirs = sim.basis(their)
-    our_proj = sim.our_roster()
-    their_proj = sim.our_roster(their)
     for group in sec["groups"]:
         gname = group["label"]
+        match = next(g for g in groups if g["label"] == gname)
+        seat = match["seat"]
         if group["source"] == "their":
-            rows = player_rows(ours, None, group["names"], their_proj)
-            seat, who = "ours", label
+            who = label
         else:
-            rows = player_rows(theirs, their, group["names"], our_proj)
-            seat, who = label, "us"
+            who = "us"
         print("\n=== %s (%s on %s roster) ===" % (gname, who, seat))
-        print("player\tΔw %s\tΔP(title)" % seat)
-        for n, dw, dt in sorted(rows, key=lambda r: -r[1]):
-            print("%s\t%+.2f\t%+.1f%%" % (n, dw, dt * 100))
+        print("player\tΔw\tΔw %s\tΔP(title)" % season_dw_tag())
+        for row in match["players"]:
+            print("%s\t%+.2f\t%+.2f\t%+.1f%%" % (
+                row["player"], row["fdw"], row["dw"], row["dp_title"]))
+
+
+def _player_effects_needs_run(sec, force=False):
+    if force or sec.get("refresh"):
+        return True
+    return "player_results" not in sec
+
+
+def _merge_player_effects(sec, groups, label):
+    sec["player_results"] = groups
+    sec["their_label"] = label
+    sec.pop("refresh", None)
+    return sec
+
+
+def _run_player_effects(sec, force=False):
+    sec = dict(sec)
+    if not _player_effects_needs_run(sec, force):
+        return sec, False
+    groups, label = _player_effects_results(sec)
+    _print_player_effects(groups, sec)
+    return _merge_player_effects(sec, groups, label), True
 
 
 def run_title_column(sec):
@@ -303,57 +437,91 @@ def run_reports(sec):
 
 _RUNNERS = {
     "reports": run_reports,
-    "trade-screen": run_trade_screen,
-    "player-effects": run_player_effects,
     "title-column": run_title_column,
 }
 
 
-def run_section(sec):
-    validate_section(sec)
-    _RUNNERS[sec["kind"]](sec)
+def _load_config(config):
+    if isinstance(config, str):
+        with open(config) as f:
+            return json.load(f)
+    return config
 
 
-def run_config(config):
-    for sec in parse_config(config):
-        run_section(sec)
+def _meta():
+    return {"simmed": _simmed_date(), "dp_title_note": TITLE_NOTE}
 
 
-def enrich_config(raw):
-    if isinstance(raw, str):
-        with open(raw) as f:
-            raw = json.load(f)
-    meta = {
-        "simmed": date.today().isoformat(),
-        "dp_title_note": TITLE_NOTE,
-    }
-    sections = parse_config(raw)
-    enriched = []
-    for sec in sections:
-        sec = dict(sec)
-        if sec["kind"] == "trade-screen":
-            rows, label = _trade_screen_results(sec)
-            by_label = {r["label"]: r.get("results") for r in rows}
-            deals = []
-            for deal in sec["deals"]:
-                d = dict(deal)
-                d["results"] = by_label.get(deal.get("label") or "deal")
-                deals.append(d)
-            sec["deals"] = deals
-            sec["their_label"] = label
-        elif sec["kind"] == "player-effects":
-            groups, label = _player_effects_results(sec)
-            sec["player_results"] = groups
-            sec["their_label"] = label
-        enriched.append(sec)
+def _pack_config(raw, sections):
     if "sections" in raw:
         out = dict(raw)
-        out["meta"] = meta
-        out["sections"] = enriched
+        out["sections"] = sections
     else:
-        out = enriched[0]
-        out["meta"] = meta
+        out = sections[0]
+    out["meta"] = _meta()
     return out
+
+
+def _enrich_section(sec, force=False):
+    sec = dict(sec)
+    validate_section(sec)
+    kind = sec["kind"]
+    if kind == "trade-screen":
+        pending = _deals_needing_run(sec, force)
+        if not pending:
+            return sec
+        rows, label = _trade_screen_results(sec, pending)
+        return _merge_trade_screen(sec, rows, label)
+    if kind == "player-effects":
+        if not _player_effects_needs_run(sec, force):
+            return sec
+        groups, label = _player_effects_results(sec)
+        return _merge_player_effects(sec, groups, label)
+    return sec
+
+
+def run_section(sec, force=False):
+    sec = dict(sec)
+    validate_section(sec)
+    kind = sec["kind"]
+    if kind == "trade-screen":
+        return _run_trade_screen(sec, force)
+    if kind == "player-effects":
+        return _run_player_effects(sec, force)
+    _RUNNERS[kind](sec)
+    return sec, True
+
+
+def run_config(config, write_back=None, force=False):
+    config_path = config if isinstance(config, str) else None
+    raw = _load_config(config)
+    sections = parse_config(raw)
+    if write_back is None:
+        write_back = (config_path is not None
+                      and any(s.get("kind") in WRITEBACK_KINDS for s in sections))
+    out_sections = []
+    changed = False
+    for sec in sections:
+        out_sec, ran = run_section(sec, force)
+        changed = changed or ran
+        out_sections.append(out_sec)
+    if write_back and config_path and (changed or force):
+        out = _pack_config(raw, out_sections)
+        with open(config_path, "w") as f:
+            json.dump(out, f, indent=2)
+            f.write("\n")
+    return out_sections
+
+
+def enrich_config(raw, force=True):
+    raw = _load_config(raw)
+    sections = []
+    for sec in parse_config(raw):
+        if sec.get("kind") in WRITEBACK_KINDS:
+            sections.append(_enrich_section(sec, force))
+        else:
+            sections.append(dict(sec))
+    return _pack_config(raw, sections)
 
 
 def write_config(config_path, dest_path=None):

@@ -8,6 +8,7 @@ from .playoffs import report_playoffs, report_weeks
 from .schedules import report_schedules
 from .tables import report_extras, report_players
 from .title import report_title
+from .horizon import report_horizon
 
 
 REPORTS = {
@@ -18,7 +19,7 @@ REPORTS = {
     "extras": report_extras, "players": report_players,
     "market": report_market, "gp": report_gp,
     "schedules": report_schedules, "playoffs": report_playoffs,
-    "weeks": report_weeks, "title": report_title,
+    "weeks": report_weeks,     "title": report_title, "horizon": report_horizon,
 }
 
 BLURB = {
@@ -39,6 +40,7 @@ BLURB = {
     "weeks": "W20-W23 per player, closed form -- no bracket Monte Carlo",
     "title": "the whole season simulated: standings -> seeds -> bracket -> "
              "P(title)",
+    "horizon": "naive Y1-Y3 PF ranks: pool age-bucket rate drift, same rosters",
 }
 
 # Reads the board and the pool, not the roster, so its table doesn't change

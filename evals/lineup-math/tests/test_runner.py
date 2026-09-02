@@ -8,7 +8,9 @@ import unittest
 
 import sim
 from simlib.runner import (
-    check_config, enrich_config, parse_config, resolve_roster, run_config)
+    _simmed_date, check_config, enrich_config, parse_config, resolve_roster,
+    run_config, sim_tmp_path, team_sims_path, team_sim_path,
+    team_trade_shapes_path)
 from tests.harness import cheap_monte_carlo
 
 EXAMPLES = os.path.join(sim.HERE, "sims", "examples")
@@ -21,6 +23,27 @@ class ResolveRoster(unittest.TestCase):
 
     def test_bare_filename_gets_json_suffix(self):
         self.assertTrue(resolve_roster("roster-161024-2025-26").endswith(".json"))
+
+
+class TeamTradeShapesPath(unittest.TestCase):
+    def test_slug_resolves_to_name_trade_shapes_md(self):
+        path = team_trade_shapes_path("josh")
+        self.assertTrue(path.endswith(os.path.join("josh", "Josh Trade Shapes.md")))
+
+    def test_team_id_resolves_to_name_trade_shapes_md(self):
+        path = team_trade_shapes_path(161021)
+        self.assertTrue(path.endswith(os.path.join("hlina", "Hlina Trade Shapes.md")))
+
+    def test_team_sims_path_alias(self):
+        self.assertEqual(team_sims_path("josh"), team_trade_shapes_path("josh"))
+
+    def test_team_sim_path_alias(self):
+        self.assertEqual(team_sim_path("josh"), team_trade_shapes_path("josh"))
+
+    def test_sim_tmp_path_under_tmpdir(self):
+        path = sim_tmp_path("josh-kawhi")
+        self.assertTrue(path.startswith(tempfile.gettempdir()))
+        self.assertTrue(path.endswith("ff-sim-josh-kawhi.json"))
 
 
 class ConfigParse(unittest.TestCase):
@@ -107,6 +130,30 @@ class ConfigRun(unittest.TestCase):
         self.assertEqual(got["dw_them"],
                          round(after_them.wins - before_them.wins, 2))
 
+    def test_trade_screen_includes_formula_and_season_delta_w(self):
+        deal = {
+            "label": "probe",
+            "out_us": ["Jalen Suggs"],
+            "in_from_them": ["Deni Avdija"],
+            "out_them": ["Deni Avdija"],
+            "in_from_us": ["Jalen Suggs"],
+        }
+        their = "roster-161020-2025-26.json"
+        in_us = [p for p in sim.our_roster(their) if p["n"] == "Deni Avdija"]
+        out_us = [p for p in sim.our_roster() if p["n"] == "Jalen Suggs"]
+        expect_fdw = sim.deal_formula_wins(in_us, out_us, sim.basis())
+        cfg = {
+            "kind": "trade-screen",
+            "their_roster": 161020,
+            "their_label": "Mitch",
+            "deals": [deal],
+        }
+        with cheap_monte_carlo():
+            out = enrich_config(cfg)
+        got = out["deals"][0]["results"]
+        self.assertEqual(got["fdw_us"], round(expect_fdw, 2))
+        self.assertIn("fdw_them", got)
+
     def test_trade_screen_title_note_is_both_rosters(self):
         cfg = {
             "kind": "trade-screen",
@@ -124,6 +171,113 @@ class ConfigRun(unittest.TestCase):
             out = enrich_config(cfg)
         self.assertIn("both rosters", out["meta"]["dp_title_note"])
         self.assertIn("both rosters", out["deals"][0]["results"]["dp_title_note"])
+
+    def test_trade_screen_results_include_simmed_date(self):
+        cfg = {
+            "kind": "trade-screen",
+            "their_roster": 161020,
+            "their_label": "Mitch",
+            "deals": [{
+                "label": "probe",
+                "out_us": ["Jalen Suggs"],
+                "in_from_them": ["Deni Avdija"],
+                "out_them": ["Deni Avdija"],
+                "in_from_us": ["Jalen Suggs"],
+            }],
+        }
+        with cheap_monte_carlo():
+            out = enrich_config(cfg)
+        self.assertEqual(out["deals"][0]["results"]["simmed"], _simmed_date())
+        self.assertEqual(out["meta"]["simmed"], _simmed_date())
+
+    def test_trade_screen_section_meta_has_simmed_date(self):
+        cfg = {
+            "sections": [{
+                "label": "probe",
+                "kind": "trade-screen",
+                "their_roster": 161020,
+                "their_label": "Mitch",
+                "deals": [{
+                    "label": "probe",
+                    "out_us": ["Jalen Suggs"],
+                    "in_from_them": ["Deni Avdija"],
+                    "out_them": ["Deni Avdija"],
+                    "in_from_us": ["Jalen Suggs"],
+                }],
+            }],
+        }
+        with cheap_monte_carlo():
+            out = enrich_config(cfg)
+        self.assertEqual(out["sections"][0]["meta"]["simmed"], _simmed_date())
+
+    def test_run_config_writes_results_back_to_file(self):
+        cfg = {
+            "kind": "trade-screen",
+            "their_roster": 161020,
+            "their_label": "Mitch",
+            "deals": [{
+                "label": "probe",
+                "out_us": ["Jalen Suggs"],
+                "in_from_them": ["Deni Avdija"],
+                "out_them": ["Deni Avdija"],
+                "in_from_us": ["Jalen Suggs"],
+            }],
+        }
+        path = os.path.join(tempfile.mkdtemp(), "probe.json")
+        with open(path, "w") as f:
+            json.dump(cfg, f)
+        with cheap_monte_carlo():
+            run_config(path)
+        with open(path) as f:
+            saved = json.load(f)
+        self.assertIn("meta", saved)
+        self.assertIn("simmed", saved["meta"])
+        self.assertIn("results", saved["deals"][0])
+        self.assertIn("dw_us", saved["deals"][0]["results"])
+
+    def test_reports_only_config_does_not_write_back(self):
+        cfg = {"kind": "reports", "names": ["market"]}
+        path = os.path.join(tempfile.mkdtemp(), "reports.json")
+        with open(path, "w") as f:
+            json.dump(cfg, f)
+        with open(path) as f:
+            before = f.read()
+        with cheap_monte_carlo():
+            run_config(path)
+        with open(path) as f:
+            self.assertEqual(f.read(), before)
+
+    def test_cached_deals_are_skipped(self):
+        cfg = {
+            "kind": "trade-screen",
+            "their_roster": 161020,
+            "their_label": "Mitch",
+            "deals": [
+                {
+                    "label": "done",
+                    "out_us": ["Jalen Suggs"],
+                    "in_from_them": ["Deni Avdija"],
+                    "out_them": ["Deni Avdija"],
+                    "in_from_us": ["Jalen Suggs"],
+                    "results": {"dw_us": 1.0, "dp_title_us": 1.0,
+                                "dw_them": -1.0, "dp_title_them": -1.0},
+                },
+                {
+                    "label": "new",
+                    "out_us": ["Jalen Suggs"],
+                    "in_from_them": ["Deni Avdija"],
+                    "out_them": ["Deni Avdija"],
+                    "in_from_us": ["Jalen Suggs"],
+                },
+            ],
+        }
+        with cheap_monte_carlo():
+            out = io.StringIO()
+            with contextlib.redirect_stdout(out):
+                run_config(cfg)
+            text = out.getvalue()
+        self.assertNotIn("done", text)
+        self.assertIn("new", text)
 
     def test_cli_check_accepts_valid_config(self):
         path = os.path.join(EXAMPLES, "brian-trade-screen.json")

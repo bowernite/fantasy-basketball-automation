@@ -176,6 +176,21 @@ def incoming_wins(roster, players, blocks=None, trials=TRIALS, seed0=101, R=None
     return out
 
 
+def formula_player_wins(p, fits):
+    from .wins import pf_wins
+    g = slot_group(p["elig"])
+    R, c = fits[g]
+    return (p["avg"] - R) * p["gp"] * pf_wins(c)
+
+
+def deal_formula_wins(in_bodies, out_bodies, roster_for_fits):
+    """Per-piece net formula Δw — sum of incoming minus outgoing bodies."""
+    fits = group_fits(roster_for_fits)
+    ins = sum(formula_player_wins(p, fits) for p in in_bodies)
+    outs = sum(formula_player_wins(p, fits) for p in out_bodies)
+    return ins - outs
+
+
 def replacement(roster, gp=68, elig=("SF", "PF"), rates=(30, 40, 50, 65)):
     """R is the x-intercept of a line fit over `rates`, not the rate at which
     a body is worth zero -- value in rate is convex, so this cannot be used

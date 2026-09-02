@@ -3,6 +3,20 @@
 #   evals/lineup-math/run sim.py --help
 set -e
 HERE=$(CDPATH= cd -- "$(dirname "$0")" && pwd)
+ORIG=$(pwd)
+# Path args are taken relative to the caller's cwd first, then relative to HERE.
+n=$#
+i=0
+while [ $i -lt $n ]; do
+    arg=$1
+    shift
+    case $arg in
+        /*) ;;
+        */*|*.json|*.py) [ -e "$ORIG/$arg" ] && arg="$ORIG/$arg" ;;
+    esac
+    set -- "$@" "$arg"
+    i=$((i + 1))
+done
 cd "$HERE"
 if [ $# -eq 0 ] || [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
     echo "usage: ./run sim.py [--roster <file>] [report ...]"

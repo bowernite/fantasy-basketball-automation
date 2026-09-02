@@ -55,6 +55,12 @@ SEASON_TAG = "%d-%02d" % (SEASON, (SEASON + 1) % 100)
 LIVE_SEASON = SEASON + 1
 LIVE_TAG = "%d-%02d" % (LIVE_SEASON, (LIVE_SEASON + 1) % 100)
 
+
+def season_dw_tag(year=None):
+    """Short fantasy-season tag for Δw (season) labels, e.g. '26–'27."""
+    y = year if year is not None else LIVE_SEASON
+    return "'%02d–'%02d" % (y % 100, (y + 1) % 100)
+
 MONTHS = (["%d%02d" % (SEASON, m) for m in (10, 11, 12)]
           + ["%d%02d" % (SEASON + 1, m) for m in (1, 2, 3, 4)])
 LEAGUE = 30579

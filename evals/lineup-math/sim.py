@@ -91,6 +91,7 @@ from simlib.roster import (
 from simlib.auction import AUCTION_N, auction_slots, coverage_picks, steer
 from simlib.value import (
     OutOfBracket, breakeven, breakeven_cell, breakeven_fmt, breakeven_value,
+    deal_formula_wins, formula_player_wins,
     group_body, group_fits, group_replacement, incoming_wins, replacement, thin,
     value_key)
 from simlib.bracket import (

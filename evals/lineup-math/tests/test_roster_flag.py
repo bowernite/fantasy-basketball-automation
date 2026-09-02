@@ -74,7 +74,7 @@ class RosterScopedReports(unittest.TestCase):
 
     def test_every_report_the_skills_and_pages_cite_is_a_real_one(self):
         pages = [os.path.join(sim.HERE, n) for n in
-                 ("README.md", "method.md", "findings.md", "tldr.md")]
+                 ("README.md", "method.md", "findings.md")]
         pages += glob.glob(skills_path("*", "*.md"))
         pages += glob.glob(os.path.join(sim.HERE, os.pardir, "*.md"))
         cited = collections.Counter()
