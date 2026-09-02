@@ -1,6 +1,6 @@
 # Team projections — where each team finishes, and where its picks land
 
-Evaluated **2026-09-02**. Keyed to who **produces** a pick, not who holds it. Slots written `1.01`–`1.12`.
+Evaluated **2026-09-02** (projections + boards refresh; Sharpe `gp=0` override on our assumed-through roster). Keyed to who **produces** a pick, not who holds it. Slots written `1.01`–`1.12`.
 
 | Column | Source |
 | --- | --- |
@@ -15,8 +15,8 @@ Assumed-through overlays on disk (`Pending Trades.md`): Matthew package, Henry H
 
 | Team | '26-27 | Sept '27 | '27-28 | Sept '28 | '28-29 | Sept '29 |
 | --- | --- | --- | --- | --- | --- | --- |
-| Bathroom club (us) | **1** | **1.12** | **2** | **1.11** | **4** | **1.09** |
-| Matthew the Apostle | **2** | **1.11** | **1** | **1.12** | **3** | **1.10** |
+| Bathroom club (us) | **2** | **1.11** | **2** | **1.11** | **4** | **1.09** |
+| Matthew the Apostle | **1** | **1.12** | **1** | **1.12** | **3** | **1.10** |
 | Pascals of Pangea | **3** | **1.10** | **8** | 1.03–1.09 (prior) | **11** | 1.01–1.08 (prior) |
 | Jesus Christ and Disciples | **4** | **1.09** | **7** | 1.03–1.10 (prior) | **9** | 1.02–1.09 (prior) |
 | Yao Ming Dynasty | **5** | 1.05–1.11 (prior) | **3** | **1.10** | **7** | 1.03–1.10 (prior) |
@@ -30,22 +30,22 @@ Assumed-through overlays on disk (`Pending Trades.md`): Matthew package, Henry H
 
 ## Year-1 sim (PF)
 
-Measured 2026-09-02, overlay on disk, `sim.team_levels()`:
+Measured 2026-09-02, overlay on disk, `sim.team_levels()` (Sleeper/GP refresh; Sharpe `gp=0` on our roster):
 
 | rank | team | PF |
 | ---: | --- | ---: |
-| 1 | Bathroom club (us) | **31,590** |
-| 2 | Matthew the Apostle | **31,450** |
-| 3 | Pascals of Pangea | 30,450 |
-| 4 | Jesus Christ and his Disciples | 30,330 |
-| 5 | Yao Ming Dynasty | 30,223 |
-| 6 | The Don | 30,017 |
+| 1 | Matthew the Apostle | **31,449** |
+| 2 | Bathroom club (us) | **31,414** |
+| 3 | Pascals of Pangea | 30,551 |
+| 4 | Jesus Christ and his Disciples | 30,329 |
+| 5 | Yao Ming Dynasty | 30,151 |
+| 6 | The Don | 30,016 |
 | 7 | The Gutes of Gotland | 29,029 |
-| 8 | Mongol Khans Freak Militia | 27,870 |
-| 9 | The Han Dybantsy | 27,615 |
+| 8 | Mongol Khans Freak Militia | 27,869 |
+| 9 | The Han Dybantsy | 27,614 |
 | 10 | King Christopher of Bavaria | 26,985 |
 | 11 | Pharaoh Mattankhamun-Ra | 25,581 |
-| 12 | Shai Gilgeous-Alexander the Great | 25,494 |
+| 12 | Shai Gilgeous-Alexander the Great | 25,454 |
 
 ## Title odds (this year)
 
@@ -53,13 +53,13 @@ Measured 2026-09-02, overlay on disk, `sim.team_levels()`:
 
 | Team | P(title) |
 | --- | ---: |
-| Bathroom club (us) | **39.3%** |
-| Matthew the Apostle | 29.2% |
-| Pascals of Pangea | 10.1% |
-| The Don | 7.6% |
-| Jesus Christ and Disciples | 7.2% |
-| Yao Ming Dynasty | 4.5% |
-| The Gutes of Gotland | 1.8% |
+| Bathroom club (us) | **37.1%** |
+| Matthew the Apostle | **30.8%** |
+| Pascals of Pangea | 9.9% |
+| Jesus Christ and Disciples | 7.9% |
+| The Don | 7.3% |
+| Yao Ming Dynasty | 4.8% |
+| The Gutes of Gotland | 2.0% |
 | Mongol Khans | 0.1% |
 | The Han Dybantsy | 0.1% |
 | King Christopher of Bavaria | 0.0% |
@@ -79,4 +79,4 @@ Measured 2026-09-02, overlay on disk, `sim.team_levels()`:
 
 - Draft / lottery rules: `league-info`. Slot pricing: `eval-pick`.
 - Team eval pick tables that still cite the 2026-07-29 ranks are stale until re-modelled off this file.
-- **Josh overlay** (Kawhi + Turner → us; Bridges + Gordon + Collins → Josh) is in the PF/title run above. Us **#1 PF** / **39.3% P(title)**; Josh **#4 PF** / **7.2% P(title)** (was #3 / 12.7% pre-Josh overlay).
+- **Josh overlay** (Kawhi + Turner → us; Bridges + Gordon + Collins → Josh) is in the PF/title run above. Us **#2 PF** / **37.1% P(title)**; Matthew **#1 PF** / **30.8% P(title)** (Matthew passes us with Sharpe at `gp=0` on our assumed-through roster — was us #1 / 39.3% pre-override).
