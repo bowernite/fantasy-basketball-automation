@@ -1,6 +1,6 @@
 # Amen Thompson shapes — sim record (Pharaoh Mattankhamun-Ra)
 
-Every Amen-out shape priced against Matthew, run **2026-08-12**. Column meanings: `Eval Definitions`, `Delta w.md`, `Bracket value.md`. Decision rule: `VERDICT.md`. Roster and pick values: `Matthew's Team.md`, `evals/teams/my-team/My Team.md`.
+Every Amen-out shape priced against Matthew, run **2026-08-12**. Column meanings: `Eval Definitions`, `Delta w.md`, `Bracket value.md`. Roster and pick values: `Matthew's Team.md`, `evals/teams/my-team/My Team.md`.
 
 **Method.** All 12 roster files re-fetched 2026-08-12 18:47 (the draw for `ΔP(title)` reads all 12). Our 28 real bodies padded to 38. `Δw` is one joint `engine.run(swap(...), cal=DELTA_W_CAL)` per shape over 19 matchups, 200 trials × 8 seed blocks, against `wins(after, before)`. `ΔP(title)` here is `P(title|seed)` via `bracket.roster_title`, band **1–2** unless stated — not the eval column (`Eval Definitions §ΔP(title)`). **No figure here is a sum of per-player rows.** `ΔBASE` is board arithmetic, not sim.
 
