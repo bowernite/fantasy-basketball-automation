@@ -2,7 +2,7 @@
 
 Expands `Eval Definitions §BASE`.
 
-Blended points-format dynasty board rank and nothing else. **No adjustment by us for injury, durability, role, team situation, contract or aging** — the rank prices all six. **This binds BASE only**: the rate and `GP` feeding `Δw` are projections (`Eval Definitions §Δw`). BASE is the market price, not the truth; divergence is the edge. Picks: `eval-pick`.
+Blended points-format dynasty board rank and nothing else. **No adjustment by us for injury, durability, role, team situation, contract or aging** — the rank prices all six. **This binds BASE only**: the rate and `GP` feeding both win columns are projections (`Eval Definitions §Δw (season)`). BASE is the market price, not the truth; divergence is the edge. Picks: `eval-pick`.
 
 | Board          | Weight | Skill                |
 | -------------- | ------ | -------------------- |
@@ -29,7 +29,7 @@ V(r) = 9999 × (a+1)/(D−1) × (D−r)/(a+r)     for r < D, else 0
 
 `a` is asserted, not measured, and a sum over unlike pieces inherits that. **Equal body count with no picks → the point value stands.** Otherwise publish `ΔBASE` as a band: sweep `a` over `[√D/2, 2√D]`, re-blend every player and re-price every pick at each step, and take **min/max over the whole sweep — the extreme is often interior, never read it off the endpoints.**
 
-- **A band spanning zero is a BASE tie** (`VERDICT.md`). Publish the band; never quote the point value or its sign.
+- **A band spanning zero is a BASE tie.** Publish the band; never quote the point value or its sign.
 - Width tracks the body-count gap — a 1-for-1 barely moves, a 5-for-1 spans thousands.
 - Stack it with any pick-slot range already carried (`eval-pick` §*Future picks*): min/max over both at once, one band.
 - **Never charge a roster slot in BASE to offset body count** — the correction lands an order of magnitude under the band, and `Δw` prices body count already (`Format edges.md`).

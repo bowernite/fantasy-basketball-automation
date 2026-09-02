@@ -15,12 +15,13 @@ Every eval publishes three things, side by side, never folded into one number:
 | Layer | What it answers | Where it comes from |
 |---|---|---|
 | **BASE** | Market price, dynasty-wide — what he costs | External boards (§BASE) |
-| **`Δw`** | Wins added to a specific roster, this season | The sim (§Δw) |
+| **`Δw`** | Single-season wins above replacement in our scoring | `(rate − R) × GP ÷ K` (§Δw) |
+| **`Δw (season)`** | Wins added to a specific roster, that fantasy season | The sim (§Δw (season)) |
 | **`SIT`** | How much a win is worth to that team right now | Judgment: contending / fringe / tanking (§SIT) |
 
-**BASE owns everything multi-year** — trajectory, age, upside, risk: the boards price all of it into the rank, and nothing in this repo re-derives or stacks on top of that (`CLAUDE.md` §Objective). **`Δw` owns our format** — scoring weights, the 9 daily slots, the real NBA calendar, this roster's shape. The gap between them is the signal; `SIT` says which one the current season should listen to.
+**BASE owns everything multi-year** — trajectory, age, upside, risk: the boards price all of it into the rank, and nothing in this repo re-derives or stacks on top of that (`CLAUDE.md` §Objective). **Formula `Δw` owns our scoring weights and GP** — a quick single-season read with no roster or schedule. **`Δw (season)` owns the rest of our format** — the 9 daily slots, the real NBA calendar, this roster's shape. The gap between BASE and either win column is the signal; `SIT` says which one the current season should listen to.
 
-**There is deliberately no exchange rate between BASE and `Δw`** — no constant converts wins into BASE units, and none may be derived or remembered. A deal that needs one to look good is a tie (§VERDICT).
+**There is deliberately no exchange rate between BASE and either win column** — no constant converts wins into BASE units, and none may be derived or remembered. A deal that needs one to look good is a tie. **Formula `Δw` and `Δw (season)` are also not interchangeable** — never convert or net them.
 
 # Building a table
 
@@ -34,7 +35,7 @@ Boards and weights, the `V()` curve, `D` and `roster_size`, summing across a pac
 
 ## Columns
 
-What an eval publishes alongside BASE, never folded in — `Boards`, `FPts/G proj (last)`, `GP proj (last)`, `Δw`, `AGE`, `POS`, `W20`–`W23`.
+What an eval publishes alongside BASE, never folded in — `Boards`, `FPts/G proj (last)`, `GP proj (last)`, `Δw (season)`, `AGE`, `POS`, `W20`–`W23`.
 
 The column table with each column's source and cell format, the printing rules, and why no format-fit column exists: `Columns.md`.
 
@@ -46,9 +47,15 @@ The full classification table: `Columns.md` §Sourced vs modelled.
 
 ## `Δw`
 
-Sim-measured wins a player adds to a specific roster this season, over the 19 regular matchups `sim.py` prices (period 20 / W20 excluded — bracket R1). One season, one roster — multi-year value is BASE's entirely. `Δw ours` is the only cross-team-comparable column.
+Formula wins above replacement for one season — `(rate − R) × GP ÷ K`, ~600 PF per win. Not roster- or schedule-specific. Use when no sim run exists; trade tables always publish it alongside `Δw (season)`.
 
-The basis, the counterfactual, `incoming_wins`, and every prohibition on summing, discounting or shortlisting off it: `Delta w.md`.
+Formula, `R`, `K`, and when not to use it: `Delta w.md`.
+
+## `Δw (season)`
+
+Sim-measured wins a player adds to a specific roster that fantasy season, over the 19 regular matchups `sim.py` prices (period 20 / W20 excluded — bracket R1). Published as **`Δw 'YY–'YY`** (e.g. `Δw '26–'27 ours`). One season, one roster — multi-year value is BASE's entirely. **`Δw (season) ours` is the only cross-team-comparable column.**
+
+The basis, the counterfactual, `incoming_wins`, and every prohibition on summing, discounting or shortlisting off it: `Delta w (season).md`.
 
 ## Durability
 
@@ -75,7 +82,7 @@ How it is assigned and what it changes about what a team pays up for and sells d
 
 ## `ΔP(title)`
 
-Sim-measured change in **P(title)** from a player being on the roster — regular season, seeds and byes, then the bracket (`sim.py title` / `player_title`). Seed is simulated, not assumed. **A different currency from `Δw`, never combined with it** — **table column** after `Δw`, before `W20`–`W23`. Per-player inputs `W20`–`W23` are the next columns (§Columns).
+Sim-measured change in **P(title)** from a player being on the roster — regular season, seeds and byes, then the bracket (`sim.py title` / `player_title`). Seed is simulated, not assumed. **A different currency from `Δw (season)`, never combined with it** — **table column** after `Δw (season)`, before `W20`–`W23`. Per-player inputs `W20`–`W23` are the next columns (§Columns).
 
 Which report to run for whom, the two ΔP reads (`player_title` vs `incoming_title`), and what the figure may decide: `Bracket value.md`.
 
@@ -83,19 +90,11 @@ Which report to run for whom, the two ΔP reads (`player_title` vs `incoming_tit
 
 **`incoming_title` on `basis()`, not their roster.** **`ΔP(title) ours`** is our title odds if we acquire them. Their projected PF rank + `SIT` for whether they contend: `Bracket value.md` §Counterparty title reads.
 
-# Judging a deal
-
-## VERDICT
-
-The accept/reject judgment for a concrete deal: `ΔBASE` — banded per §BASE where the shape calls for it — and `Δw` published side by side and read against our `SIT`, never folded into one number.
-
-The rule by `SIT`, both tie rules, and how to rank two offers: `VERDICT.md`.
-
 # Standing rules
 
 ## Where our format pulls off consensus
 
-The **closed list** of four places our scoring weights, the 9-slot cap or a roster's shape make the answer differ from the market's: `Δw` · body count · multi-position eligibility · light-night coverage. Everything else is in BASE — no column, no discount, no model.
+The **closed list** of four places our scoring weights, the 9-slot cap or a roster's shape make the answer differ from the market's: **`Δw (season)`** · body count · multi-position eligibility · light-night coverage (formula `Δw` covers scoring weights only). Everything else is in BASE — no column, no discount, no model.
 
 Each item's direction, magnitude and the sim runs that already contain it: `Format edges.md`.
 
