@@ -35,7 +35,7 @@ Boards and weights, the `V()` curve, `D` and `roster_size`, summing across a pac
 
 ## Columns
 
-What an eval publishes alongside BASE, never folded in — `Boards`, `FPts/G proj (last)`, `GP proj (last)`, `Δw (season)`, `AGE`, `POS`, `W20`–`W23`.
+What an eval publishes alongside BASE, never folded in — `Boards`, `FPts/G proj (last)`, `GP proj (last)`, **`Δw`**, `Δw (season)`, `AGE`, `POS`, `W20`–`W23`.
 
 The column table with each column's source and cell format, the printing rules, and why no format-fit column exists: `Columns.md`.
 
@@ -47,7 +47,7 @@ The full classification table: `Columns.md` §Sourced vs modelled.
 
 ## `Δw`
 
-Formula wins above replacement for one season — `(rate − R) × GP ÷ K`, ~600 PF per win. Not roster- or schedule-specific. Use when no sim run exists; trade tables always publish it alongside `Δw (season)`.
+Formula wins above replacement for one season — `(rate − R) × GP ÷ K`, ~600 PF per win. Not roster- or schedule-specific. **Eval files and trade tables both publish it alongside `Δw (season)`** — eval player tables before the season-tagged columns (`Eval Template.md`).
 
 Formula, `R`, `K`, and when not to use it: `Delta w.md`.
 
@@ -82,7 +82,7 @@ How it is assigned and what it changes about what a team pays up for and sells d
 
 ## `ΔP(title)`
 
-Sim-measured change in **P(title)** from a player being on the roster — regular season, seeds and byes, then the bracket (`sim.py title` / `player_title`). Seed is simulated, not assumed. **A different currency from `Δw (season)`, never combined with it** — **table column** after `Δw (season)`, before `W20`–`W23`. Per-player inputs `W20`–`W23` are the next columns (§Columns).
+Sim-measured change in **P(title)** from a player being on the roster — regular season, seeds and byes, then the bracket (`sim.py title` / `player_title`). Seed is simulated, not assumed. **A different currency from `Δw (season)`, never combined with it** — **table column** after formula **`Δw`** and **`Δw (season)`**, before `W20`–`W23`. Per-player inputs `W20`–`W23` are the next columns (§Columns).
 
 Which report to run for whom, the two ΔP reads (`player_title` vs `incoming_title`), and what the figure may decide: `Bracket value.md`.
 
