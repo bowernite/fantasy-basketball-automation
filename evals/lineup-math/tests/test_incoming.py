@@ -71,18 +71,23 @@ class IncomingWins(unittest.TestCase):
         best = max(theirs, key=season_value)
         self.assertGreater(w[best["n"]][0], 0.3, best["n"])
 
-    def test_a_name_our_own_roster_already_carries_is_still_priced_as_himself(self):
+    def test_a_namesake_already_on_the_roster_is_refused_rather_than_priced_as_a_second_copy(self):
         full = sim.basis()
         theirs = max(sim.our_roster(THEIR_ROSTER), key=season_value)
         ours = full[0]["n"]
-        R = flat_R()
-        namesake = sim.incoming_wins(full, [dict(theirs, n=ours)], blocks=1,
-                                     trials=30, R=R)
-        alone = sim.incoming_wins(full, [dict(theirs, n="A NAME NOBODY HOLDS")],
-                                  blocks=1, trials=30, R=R)
-        self.assertGreater(alone["A NAME NOBODY HOLDS"][0], 0.3, theirs["n"])
-        self.assertAlmostEqual(namesake[ours][0], alone["A NAME NOBODY HOLDS"][0],
-                               places=9)
+        with self.assertRaises(ValueError) as e:
+            sim.incoming_wins(full, [dict(theirs, n=ours)], blocks=1,
+                              trials=2, R=flat_R())
+        self.assertIn(ours, str(e.exception))
+        self.assertIn("already on this roster", str(e.exception))
+
+    def test_a_body_already_on_the_roster_is_refused_rather_than_added_again(self):
+        theirs = sim.our_roster(THEIR_ROSTER)
+        with self.assertRaises(ValueError) as e:
+            sim.incoming_wins(sim.basis(THEIR_ROSTER), theirs, blocks=1,
+                              trials=2)
+        self.assertIn(theirs[0]["n"], str(e.exception))
+        self.assertIn("already on this roster", str(e.exception))
 
     def test_two_arrivals_of_one_name_are_refused_rather_than_priced_as_one(self):
         both = [sim.star(45.0, 70, ("C",), n="Jaylin Williams"),

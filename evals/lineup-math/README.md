@@ -64,8 +64,9 @@ you would publish. Fix the call — there is no flag to pass.
 |---|---|
 | `swap` | a name not on the file · a name on it **twice** · one name **sent twice** (a body leaves once, so the deal is a piece shorter than you typed) · **more bodies in than out** (the roster is capped — name the drops yourself) |
 | `breakeven` | a break-even outside its 20–90 search bracket. `OutOfBracket.mark` (`<20` / `>90`) is the answer; `breakeven_value` returns it instead of raising |
-| `incoming_wins` | **two arrivals of one name** (rows are keyed by name, so one would silently replace the other) · a roster with **nothing padded**, since the slot an arrival takes is a padded one |
-| `incoming_title` | same as `incoming_wins` |
+| `incoming_wins` | **two arrivals of one name** (rows are keyed by name, so one would silently replace the other) · a roster with **nothing padded**, since the slot an arrival takes is a padded one · **a name already on that roster** (that body is already here — `player_wins`; a counterparty is `incoming_wins(basis(), our_roster("their.json"))`) |
+| `incoming_title` | same as `incoming_wins`, plus a roster that is not the seated file (`path=` / `ROSTER`) |
+| `player_title` `roster_title` `swap_odds` | a roster that is not the seated file (`path=` / `ROSTER`). `basis(path)` does not move `ROSTER` |
 | `our_roster` (so `basis` too) | a roster file carrying **nobody** — it pads to 38, so an empty file is 38 bodies of filler, not an empty table |
 
 ## Where the code lives
@@ -105,8 +106,9 @@ holds a rotation spot at all.
 ## Pricing a counterparty
 
 ```
+./run sim_run.py --eval 160941            # eval table: Δw ours/theirs, ΔP(title) ours, W20–W23
 ./run fetch_data.py roster 160941        # -> rosters/roster-160941-2025-26.json
-./run sim.py --roster roster-160941-2025-26.json players replacement
+./run sim.py --roster roster-160941-2025-26.json players replacement  # Δw THEIRS / R only
 ./run fetch_data.py roster 161025        # OURS is the same command, same schema.
                                          # Re-run after a trade executes. Assumed-
                                          # through overlays (`Pending Trades.md`)
@@ -124,12 +126,22 @@ Re-fetch all 12 before quoting a `ΔP(title)` or a `P(title)`. The set is the se
 
 **Import it and the file has to be named twice.** `sim.basis(path)` reads a roster without
 moving `sim.ROSTER`, so `player_title`/`roster_title` take a `path=` of their own — omitted,
-the draw seats whoever `sim.ROSTER` says. The CLI's `--roster` sets both.
+the draw seats whoever `sim.ROSTER` says and **refuses** if this roster is not that file.
+The CLI's `--roster` sets both.
 
 **Two different Δw columns, and the CLI only prints one.** `--roster their.json players`
-prices his players **on his roster** — that is `Δw theirs`. `Δw ours` for those same
-players — what `Eval Definitions §Columns` requires and what a buy decision reads — is a
-separate run, on *our* roster, and it is one import call:
+prices his players **on his roster** — that is `Δw theirs`. `Δw ours` and `ΔP(title) ours`
+for those same players:
+
+```
+./run sim_run.py --eval <team_id>
+```
+
+That is `eval-columns`: `incoming_wins` / `incoming_title` on `basis()` (ours). JSON:
+`{ "kind": "eval-columns", "their_roster": 161014 }`. Never assign `sim.ROSTER` to their
+file, and never `incoming_*(basis(their.json), our_roster(their.json))` — that call refuses.
+
+Ad-hoc import, same calls:
 
 ```python
 sim.incoming_wins(sim.basis(), sim.our_roster("roster-160941-2025-26.json"))

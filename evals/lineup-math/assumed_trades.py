@@ -21,6 +21,10 @@ MOVES = (
     ("Miles Bridges", JOSH, US),
     ("Aaron Gordon", JOSH, US),
     ("John Collins", JOSH, US),
+    ("Jalen Duren", US, HLINA),
+    ("Jalen Green", HLINA, US),
+    ("Toumani Camara", HLINA, US),
+    ("Jabari Smith", HLINA, US),
 )
 
 # (name, from) — gone from the league, not a move

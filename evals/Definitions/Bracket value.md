@@ -7,7 +7,7 @@ Expands `Eval Definitions §ΔP(title)` and §*Counterparty title reads*.
 **Two ΔP reads, like `Δw (season)`** (`Eval Definitions §Columns`):
 
 - **Ours, on roster** — `sim.player_title(basis(), names)` · roster `P(title)` from `sim.py title`
-- **Ours, not yet on roster** — `incoming_title(basis(), our_roster("their.json"))` — **`ΔP(title) ours`** on counterparty evals; never priced on their roster
+- **Ours, not yet on roster** — `incoming_title(basis(), our_roster("their.json"))` / `--eval <team_id>` — **`ΔP(title) ours`** on counterparty evals; never priced on their roster
 
 **`W20`–`W23`** (`Columns.md`) are expected points in each bracket period: `FPts/Gp` × that player's NBA games inside the period × `GPp` ÷ his NBA team's games. `sim.py weeks` — closed-form, any roster. Points, never wins: never fed into either win column's units, read against the 0.1-win floor, or compared to a season rate. Round count and window come off the period data, never a remembered shape.
 

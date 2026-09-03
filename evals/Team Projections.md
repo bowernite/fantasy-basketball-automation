@@ -9,14 +9,14 @@ Evaluated **2026-09-02** (projections + boards refresh; Sharpe `gp=0` override o
 | **'27-28 · '28-29** | Judgment on age / window — young cores climb, star-age cliffs fall. ±2–3 ranks of noise. No multi-year sim exists. |
 | **Sept slots** | Top-4 finish → `13 − rank` exact. Bottom-8 → lottery **prior** band only (`league-info`). |
 
-Assumed-through overlays on disk (`Pending Trades.md`): Matthew package, Henry Hunter, **Josh Kawhi + Turner ↔ Bridges + Gordon + Collins**.
+Assumed-through overlays on disk (`Pending Trades.md`): Matthew package, Henry Hunter, **Josh Kawhi + Turner ↔ Bridges + Gordon + Collins**, **Hlina Duren ↔ Green + Camara + Smith**.
 
 ## Master table — projected finish → pick slot
 
 | Team | '26-27 | Sept '27 | '27-28 | Sept '28 | '28-29 | Sept '29 |
 | --- | --- | --- | --- | --- | --- | --- |
-| Bathroom club (us) | **2** | **1.11** | **2** | **1.11** | **4** | **1.09** |
-| Matthew the Apostle | **1** | **1.12** | **1** | **1.12** | **3** | **1.10** |
+| Bathroom club (us) | **1** | **1.12** | **2** | **1.11** | **4** | **1.09** |
+| Matthew the Apostle | **2** | **1.11** | **1** | **1.12** | **3** | **1.10** |
 | Pascals of Pangea | **3** | **1.10** | **8** | 1.03–1.09 (prior) | **11** | 1.01–1.08 (prior) |
 | Jesus Christ and Disciples | **4** | **1.09** | **7** | 1.03–1.10 (prior) | **9** | 1.02–1.09 (prior) |
 | Yao Ming Dynasty | **5** | 1.05–1.11 (prior) | **3** | **1.10** | **7** | 1.03–1.10 (prior) |
@@ -34,8 +34,8 @@ Measured 2026-09-02, overlay on disk, `sim.team_levels()` (Sleeper/GP refresh; S
 
 | rank | team | PF |
 | ---: | --- | ---: |
-| 1 | Matthew the Apostle | **31,449** |
-| 2 | Bathroom club (us) | **31,414** |
+| 1 | Bathroom club (us) | **31,543** |
+| 2 | Matthew the Apostle | **30,956** |
 | 3 | Pascals of Pangea | 30,551 |
 | 4 | Jesus Christ and his Disciples | 30,329 |
 | 5 | Yao Ming Dynasty | 30,151 |
@@ -49,12 +49,12 @@ Measured 2026-09-02, overlay on disk, `sim.team_levels()` (Sleeper/GP refresh; S
 
 ## Title odds (this year)
 
-`sim.py title`, 2026-09-02. Unconditional `P(title)` — regular season, then the bracket. Not the PF-rank finish prior above. Josh overlay on our roster and Josh's.
+`sim.py title`, 2026-09-02. Unconditional `P(title)` — regular season, then the bracket. Not the PF-rank finish prior above. All assumed-through overlays on disk (Matthew, Josh, Hlina).
 
 | Team | P(title) |
 | --- | ---: |
-| Bathroom club (us) | **37.1%** |
-| Matthew the Apostle | **30.8%** |
+| Bathroom club (us) | **47.0%** |
+| Matthew the Apostle | **17.5%** |
 | Pascals of Pangea | 9.9% |
 | Jesus Christ and Disciples | 7.9% |
 | The Don | 7.3% |
@@ -79,4 +79,4 @@ Measured 2026-09-02, overlay on disk, `sim.team_levels()` (Sleeper/GP refresh; S
 
 - Draft / lottery rules: `league-info`. Slot pricing: `eval-pick`.
 - Team eval pick tables that still cite the 2026-07-29 ranks are stale until re-modelled off this file.
-- **Josh overlay** (Kawhi + Turner → us; Bridges + Gordon + Collins → Josh) is in the PF/title run above. Us **#2 PF** / **37.1% P(title)**; Matthew **#1 PF** / **30.8% P(title)** (Matthew passes us with Sharpe at `gp=0` on our assumed-through roster — was us #1 / 39.3% pre-override).
+- **Josh + Hlina overlays** on the PF/title run above. Us **#1 PF** / **47.0% P(title)**; Matthew **#2 PF** / **17.5% P(title)**. Hlina Duren ↔ Green + Camara + Smith flips the top two (+129 PF us, +9.9 pp title vs pre-Hlina overlay).

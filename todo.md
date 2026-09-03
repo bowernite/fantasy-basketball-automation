@@ -1,1 +1,3 @@
 - [x] Delta w for just PF / in general, vs for this season simmed — see `Eval Definitions §Δw` vs `§Δw (season)`
+- [x] Formula Δw cutoff R stays 15, not ~25 — gap vs sim is our fitted REPL (~25) vs league last-rostered, not a wrong constant (`Eval Definitions §Δw`)
+- [ ] At some point Update repo (average projections from a few more sites, once those sites have released. e.g. ESPN)

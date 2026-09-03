@@ -2,11 +2,12 @@
 import json
 import sys
 
-from simlib.runner import KINDS, check_config, run_config, write_config
+from simlib.runner import KINDS, check_config, eval_columns_section, run_config, write_config
 
 
 def usage():
     print("usage: ./run sim_run.py [--refresh] <config.json>")
+    print("       ./run sim_run.py --eval <team_id>")
     print("       ./run sim_run.py --check <config.json>")
     print("       ./run sim_run.py --write <config.json> [dest.json]")
     print("")
@@ -14,6 +15,7 @@ def usage():
     print("Run configs: $TMPDIR/ff-sim-<tag>.json (simlib.runner.sim_tmp_path)")
     print("Skips trade sections/deals that already have results; --refresh re-runs all.")
     print("Set \"refresh\": true on a section to re-run just that block.")
+    print("--eval <team_id> prints counterparty eval columns in our seat.")
     print("")
     print("Kinds: %s" % ", ".join(KINDS))
     print("Schema: .claude/skills/sims/config.md")
@@ -31,6 +33,17 @@ if __name__ == "__main__":
     if not args:
         usage()
         sys.exit(2)
+    if args[0] == "--eval":
+        if len(args) != 2:
+            usage()
+            sys.exit(2)
+        ref = int(args[1]) if args[1].isdigit() else args[1]
+        try:
+            run_config(eval_columns_section(ref))
+        except (ValueError, KeyError, OSError) as e:
+            print(e, file=sys.stderr)
+            sys.exit(1)
+        sys.exit(0)
     if args[0] == "--check":
         if len(args) != 2:
             usage()

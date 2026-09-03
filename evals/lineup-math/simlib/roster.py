@@ -34,8 +34,19 @@ DEAD = {"tm": "MIA", "avg": 6.0, "gp": 40, "elig": ["PG", "SG"]}  # backfill gra
 PAD_POS = (["PG", "SG"], ["SF", "PF"], ["C"])  # slot groups for padding without a positional hole
 
 
-ROSTER = "roster-%d-%s.json" % (TEAM, SEASON_TAG)  # ours; `--roster PATH` overrides
+OURS = "roster-%d-%s.json" % (TEAM, SEASON_TAG)  # never moved; `--roster` sets ROSTER
+ROSTER = OURS
 MAX_WIRE = 38  # wire cap today and post Sept '26 expansion
+
+
+def refuse_already_rostered(roster, players, fn):
+    clash = sorted({p["n"] for p in players} & {p["n"] for p in roster})
+    if clash:
+        raise ValueError("%s already on this roster -- %s adds a body that "
+                         "is not here. player_wins/player_title for one that "
+                         "is; counterparty: %s(basis(), "
+                         "our_roster(\"their.json\"))"
+                         % (", ".join(clash), fn, fn))
 
 
 def label(path=None):
@@ -222,6 +233,13 @@ class _PadNames:
 
 
 PAD_NAMES = _PadNames()
+
+
+def refuse_foreign_seat(roster, who, fn):
+    seated = {p["n"] for p in our_roster(who) if p["n"] not in PAD_NAMES}
+    here = {p["n"] for p in roster if p["n"] not in PAD_NAMES}
+    if here and len(here & seated) * 2 < len(here):
+        raise ValueError("%s: this roster is not %s -- pass path=" % (fn, who))
 
 
 AUCTION_NAMES = frozenset(p["n"] for p in EXPANSION)

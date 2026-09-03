@@ -52,10 +52,13 @@ class TitleProbability(unittest.TestCase):
                 self.assertGreater(sd, 0.0)
 
     def test_a_roster_with_nothing_padded_refuses_incoming_title(self):
-        full = [dict(p, n="Real %d" % i) for i, p in enumerate(sim.basis())]
-        with self.assertRaises(ValueError):
+        full = [p if p["n"] not in roster_mod.PAD_NAMES
+                else dict(p, n="Real %d" % i)
+                for i, p in enumerate(sim.basis())]
+        with self.assertRaises(ValueError) as ctx:
             bracket.incoming_title(full, [sim.star(40.0, 68, ("C",), n="IN")],
                                    blocks=1, trials=2, R=flat_R())
+        self.assertIn("padded", str(ctx.exception))
 
     def test_a_side_of_a_deal_is_priced_in_one_joint_run(self):
         with cheap_monte_carlo(8):
@@ -85,13 +88,31 @@ class TitleProbability(unittest.TestCase):
                                                  R=flat_R()).values()
             finally:
                 roster_mod.ROSTER = was
-            ours_loaded, = bracket.player_title(full, [name], blocks=1,
-                                                R=flat_R()).values()
         for band in sim.BANDS:
             with self.subTest(band=band.label):
                 self.assertEqual(got[band.label], cli_side[band.label])
-        self.assertNotEqual(got, ours_loaded, "this counterparty is priced the "
-                            "same either way -- pick one inside the field")
+
+    def test_a_counterparty_roster_without_path_is_refused_rather_than_seated_as_us(self):
+        full = sim.basis(THEIR_ROSTER)
+        name = sim.our_roster(THEIR_ROSTER)[0]["n"]
+        with self.assertRaises(ValueError) as ctx:
+            bracket.player_title(full, [name], blocks=1, R=flat_R())
+        self.assertIn("path=", str(ctx.exception))
+
+    def test_incoming_title_on_a_counterparty_roster_without_path_is_refused(self):
+        body = sim.star(40.0, 68, ("C",), n="INCOMING")
+        with self.assertRaises(ValueError) as ctx:
+            bracket.incoming_title(sim.basis(THEIR_ROSTER), [body],
+                                   blocks=1, R=flat_R())
+        self.assertIn("path=", str(ctx.exception))
+
+    def test_roster_title_on_a_counterparty_roster_without_path_is_refused(self):
+        full = sim.basis(THEIR_ROSTER)
+        name = sim.our_roster(THEIR_ROSTER)[0]["n"]
+        without = sim.swap(full, [name], [sim.star(10, 68, ("C",), n="DEAD")])
+        with self.assertRaises(ValueError) as ctx:
+            bracket.roster_title(full, without, blocks=1)
+        self.assertIn("path=", str(ctx.exception))
 
     def test_a_name_not_on_the_roster_is_refused(self):
         with cheap_monte_carlo(4, blocks=1):
@@ -121,10 +142,21 @@ class UnconditionalTitle(unittest.TestCase):
         self.assertGreater(sd, 0.0)
 
     def test_a_roster_with_nothing_padded_refuses_incoming_title(self):
-        full = [dict(p, n="Real %d" % i) for i, p in enumerate(sim.basis())]
-        with self.assertRaises(ValueError):
+        full = [p if p["n"] not in roster_mod.PAD_NAMES
+                else dict(p, n="Real %d" % i)
+                for i, p in enumerate(sim.basis())]
+        with self.assertRaises(ValueError) as ctx:
             sim.incoming_title(full, [sim.star(40.0, 68, ("C",), n="IN")],
                                blocks=1, trials=20)
+        self.assertIn("padded", str(ctx.exception))
+
+    def test_a_body_already_on_the_roster_is_refused_rather_than_added_again(self):
+        theirs = sim.our_roster(THEIR_ROSTER)
+        with self.assertRaises(ValueError) as e:
+            sim.incoming_title(sim.basis(THEIR_ROSTER), theirs, blocks=1,
+                               trials=20)
+        self.assertIn(theirs[0]["n"], str(e.exception))
+        self.assertIn("already on this roster", str(e.exception))
 
     def test_a_side_of_a_deal_is_priced_in_one_joint_run(self):
         with cheap_monte_carlo(8, seasons=200):
@@ -153,6 +185,39 @@ class UnconditionalTitle(unittest.TestCase):
             finally:
                 roster_mod.ROSTER = was
         self.assertEqual(got, cli_side)
+
+    def test_a_counterparty_roster_without_path_is_refused_rather_than_seated_as_us(self):
+        full = sim.basis(THEIR_ROSTER)
+        name = sim.our_roster(THEIR_ROSTER)[0]["n"]
+        with cheap_monte_carlo(4, seasons=20):
+            with self.assertRaises(ValueError) as ctx:
+                sim.player_title(full, [name], blocks=1)
+        self.assertIn("path=", str(ctx.exception))
+
+    def test_incoming_title_on_a_counterparty_roster_without_path_is_refused(self):
+        body = sim.star(40.0, 68, ("C",), n="INCOMING")
+        with cheap_monte_carlo(4, seasons=20):
+            with self.assertRaises(ValueError) as ctx:
+                sim.incoming_title(sim.basis(THEIR_ROSTER), [body], blocks=1)
+        self.assertIn("path=", str(ctx.exception))
+
+    def test_roster_title_on_a_counterparty_roster_without_path_is_refused(self):
+        full = sim.basis(THEIR_ROSTER)
+        name = sim.our_roster(THEIR_ROSTER)[0]["n"]
+        without = sim.swap(full, [name], [sim.star(10, 68, ("C",), n="DEAD")])
+        with cheap_monte_carlo(4, seasons=20):
+            with self.assertRaises(ValueError) as ctx:
+                sim.roster_title(full, without, blocks=1)
+        self.assertIn("path=", str(ctx.exception))
+
+    def test_swap_odds_on_a_counterparty_roster_without_path_is_refused(self):
+        full = sim.basis(THEIR_ROSTER)
+        name = sim.our_roster(THEIR_ROSTER)[0]["n"]
+        after = sim.swap(full, [name], [sim.star(40, 68, ("C",), n="IN")])
+        with cheap_monte_carlo(4, seasons=20):
+            with self.assertRaises(ValueError) as ctx:
+                sim.swap_odds(after, full)
+        self.assertIn("path=", str(ctx.exception))
 
     def test_a_name_not_on_the_roster_is_refused(self):
         with cheap_monte_carlo(4, seasons=20):

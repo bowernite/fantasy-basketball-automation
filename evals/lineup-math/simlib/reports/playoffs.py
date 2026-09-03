@@ -99,7 +99,8 @@ def report_playoffs():
     reg_games = statistics.mean(period_games(i) for i in REGULAR)
 
     print("Delta P(title|seed) per player, against a replacement 68-GP body OF")
-    print("HIS OWN SLOT GROUP -- seed HELD.")
+    print("HIS OWN SLOT GROUP -- seed HELD, not the eval column "
+          "(`player_title` / `--eval`).")
     print("%d-man roster: %s." % (len(full), ", ".join(
         "%s %.1f" % (g, R[g]) for g in sorted(R))))
     print("Bracket: %d rounds, periods %s (%s to %s), %d of %d teams."

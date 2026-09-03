@@ -6,20 +6,15 @@ import tempfile
 from datetime import date
 
 import sim
-from fetch_data import SEASON_TAG, season_dw_tag
+from fetch_data import SEASON_TAG, TEAM, season_dw_tag
 from simlib import roster
 from simlib.data import HERE
 from simlib.reports import OURS_ONLY, REPORTS
 
-EVAL_BASE = {
-    "us": os.path.join(HERE, "..", "teams", "my-team", "My Team.md"),
-    "161021": os.path.join(HERE, "..", "teams", "hlina", "Matt Hlina's Team.md"),
-    "161024": os.path.join(HERE, "..", "teams", "josh", "Josh's Team.md"),
-}
-
 _BASE_CACHE = {}
 
-KINDS = ("reports", "trade-screen", "player-effects", "title-column")
+KINDS = ("reports", "trade-screen", "player-effects", "title-column",
+         "eval-columns")
 WRITEBACK_KINDS = frozenset(("trade-screen", "player-effects"))
 
 TEAM_SLUG = {
@@ -73,6 +68,10 @@ def team_sim_path(owner):
 def sim_tmp_path(tag):
     safe = re.sub(r"[^\w.-]+", "-", str(tag).strip()).strip("-") or "run"
     return os.path.join(tempfile.gettempdir(), "ff-sim-%s.json" % safe)
+
+
+def eval_columns_section(team_ref):
+    return {"kind": "eval-columns", "their_roster": team_ref}
 
 
 def resolve_roster(ref):
@@ -139,6 +138,13 @@ def validate_section(sec):
         include = sec.get("include") or ["ours", "their_incoming"]
         if "their_incoming" in include and not sec.get("their_roster"):
             raise ValueError("title-column with their_incoming needs their_roster")
+    elif kind == "eval-columns":
+        if not sec.get("their_roster"):
+            raise ValueError("eval-columns needs 'their_roster'")
+        path = resolve_roster(sec["their_roster"])
+        if os.path.basename(path) == os.path.basename(roster.OURS):
+            raise ValueError("eval-columns is counterparty columns; "
+                             "sim.py players weeks and player_title for ours")
 
 
 def bodies(names, roster_rows):
@@ -159,7 +165,7 @@ def _simmed_date(when=None):
 
 def price_deal(deal, their, our_proj, their_proj, before=None):
     after_ours = sim.basis_after_trade(
-        None, deal["out_us"], bodies(deal["in_from_them"], their_proj))
+        roster.OURS, deal["out_us"], bodies(deal["in_from_them"], their_proj))
     after_theirs = sim.basis_after_trade(
         their, deal["out_them"], bodies(deal["in_from_us"], our_proj))
     after_us, before_us, after_them, before_them = sim.deal_odds(
@@ -168,8 +174,8 @@ def price_deal(deal, their, our_proj, their_proj, before=None):
     out_us = bodies(deal["out_us"], our_proj)
     in_them = bodies(deal["in_from_us"], our_proj)
     out_them = bodies(deal["out_them"], their_proj)
-    fdw_us = sim.deal_formula_wins(in_us, out_us, sim.basis())
-    fdw_them = sim.deal_formula_wins(in_them, out_them, sim.basis(their))
+    fdw_us = sim.deal_formula_wins(in_us, out_us)
+    fdw_them = sim.deal_formula_wins(in_them, out_them)
     return (after_us.wins - before_us.wins, after_us.title - before_us.title,
             after_them.wins - before_them.wins,
             after_them.title - before_them.title,
@@ -213,11 +219,43 @@ def _player_base(names, path):
     return total
 
 
+def _team_id(their_roster):
+    if their_roster == "us":
+        return TEAM
+    if isinstance(their_roster, int):
+        return their_roster
+    s = str(their_roster).strip()
+    if s.isdigit():
+        return int(s)
+    name = os.path.basename(resolve_roster(s))
+    parts = name.replace(".json", "").split("-")
+    if len(parts) >= 2 and parts[1].isdigit():
+        return int(parts[1])
+    raise ValueError("no team eval for %s" % their_roster)
+
+
+def eval_md_for(their_roster):
+    tid = _team_id(their_roster)
+    slug = TEAM_SLUG.get(tid)
+    if slug is None:
+        raise ValueError("no team eval for %s" % their_roster)
+    folder = os.path.join(HERE, "..", "teams", slug)
+    if not os.path.isdir(folder):
+        return None
+    matches = [f for f in os.listdir(folder)
+               if f.endswith("Team.md") and "Trade" not in f]
+    if len(matches) != 1:
+        return None
+    return os.path.join(folder, matches[0])
+
+
 def deal_delta_base(deal, their_roster):
-    key = str(their_roster) if isinstance(their_roster, int) else "161024"
-    their_path = EVAL_BASE.get(key, EVAL_BASE["161024"])
+    their_path = eval_md_for(their_roster)
+    our_path = eval_md_for(TEAM)
+    if not their_path or not our_path:
+        return None
     try:
-        out = _player_base(deal["out_us"], EVAL_BASE["us"])
+        out = _player_base(deal["out_us"], our_path)
         inc = _player_base(deal["in_from_them"], their_path)
         out += int(deal.get("out_us_extra_base") or 0)
         inc += int(deal.get("in_from_us_extra_base") or 0)
@@ -239,7 +277,7 @@ def _deals_needing_run(sec, force=False):
 def _trade_screen_results(sec, deals=None):
     their = resolve_roster(sec["their_roster"])
     label = sec.get("their_label") or their
-    our_proj = sim.our_roster()
+    our_proj = sim.our_roster(roster.OURS)
     their_proj = sim.our_roster(their)
     before = sim.full_season()
     rows = []
@@ -272,9 +310,9 @@ def _trade_screen_results(sec, deals=None):
 def _player_effects_results(sec):
     their = resolve_roster(sec["their_roster"])
     label = sec.get("their_label") or their
-    ours = sim.basis()
+    ours = sim.basis(roster.OURS)
     theirs = sim.basis(their)
-    our_proj = sim.our_roster()
+    our_proj = sim.our_roster(roster.OURS)
     their_proj = sim.our_roster(their)
     out_groups = []
     for group in sec["groups"]:
@@ -341,15 +379,16 @@ def _run_trade_screen(sec, force=False):
 
 def player_rows(roster_full, path, names, from_rows):
     by = {p["n"]: p for p in from_rows}
-    fits = sim.group_fits(roster_full)
+    missing = [n for n in names if n not in by]
+    if missing:
+        raise KeyError("missing on roster: %s" % ", ".join(missing))
     rows = []
     for n in names:
-        body = by.get(n)
-        if body is None:
-            continue
-        fdw = sim.formula_player_wins(body, fits)
+        body = by[n]
+        fdw = sim.formula_player_wins(body)
         dw = sim.incoming_wins(roster_full, [body])[n][0]
-        dt = sim.incoming_title(roster_full, [body], path=path)[n][0]
+        seat = path if path is not None else roster.OURS
+        dt = sim.incoming_title(roster_full, [body], path=seat)[n][0]
         rows.append((n, fdw, dw, dt))
     return rows
 
@@ -397,27 +436,32 @@ def _run_player_effects(sec, force=False):
 def run_title_column(sec):
     their = resolve_roster(sec.get("their_roster"))
     include = sec.get("include") or ["ours", "their_incoming"]
-    full = sim.basis()
+    full = sim.basis(roster.OURS)
     if "ours" in include:
-        ours = sim.our_roster()
+        ours = sim.our_roster(roster.OURS)
         print("OURS player_title")
-        got = sim.player_title(full, [p["n"] for p in ours])
+        got = sim.player_title(full, [p["n"] for p in ours], path=roster.OURS)
         for p in ours:
             m, sd, _ = got[p["n"]]
             print("%s\t%+.4f\t%.4f" % (p["n"], m, sd))
     if "their_incoming" in include and their:
         incoming = sim.our_roster(their)
         print("\nTHEIR_INCOMING incoming_title")
-        got = sim.incoming_title(full, incoming)
+        got = sim.incoming_title(full, incoming, path=roster.OURS)
         for p in incoming:
             m, sd, _ = got[p["n"]]
             print("%s\t%+.4f\t%.4f" % (p["n"], m, sd))
     if "roster_odds" in include:
-        odds = sim.full_season()[sim.ROSTER]
+        odds = sim.full_season()[roster.OURS]
         print("\nROSTER_ODDS")
         print("P_TITLE\t%.4f" % odds.title)
         print("PF\t%.0f" % odds.pf)
         print("WINS\t%.1f" % odds.wins)
+
+
+def run_eval_columns(sec):
+    from simlib.eval_columns import print_eval_columns
+    print_eval_columns(resolve_roster(sec["their_roster"]), sec.get("names"))
 
 
 def run_reports(sec):
@@ -438,6 +482,7 @@ def run_reports(sec):
 _RUNNERS = {
     "reports": run_reports,
     "title-column": run_title_column,
+    "eval-columns": run_eval_columns,
 }
 
 

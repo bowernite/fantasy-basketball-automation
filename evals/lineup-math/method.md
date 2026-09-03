@@ -129,7 +129,7 @@ carry into a bracket week.** Every `Δw` here is built on scored periods 1–19 
 (`league-info`) and sits outside all of them, alongside periods 21–23. Pricing a bracket-week game in these
 units and reading it against the floor is a currency error, not a conservative approximation.
 `Eval Definitions §ΔP(title)` owns what the title currency is and what it may decide;
-**`sim.player_title` / `sim.py title` is the source of the number** and re-runs it per roster.
+**`sim.player_title` on our roster file is the eval column** (`incoming_title` onto us for a counterparty). `sim.py title` is roster `P(title)`. `sim.py playoffs` is seed-held, not the column.
 
 **The multiplier.** `findings.md` §*Bracket weeks* carries the measured tables, per band and
 per roster. **Take the window and the round count from the period data — never hardcode

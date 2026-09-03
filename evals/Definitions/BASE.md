@@ -9,7 +9,7 @@ Blended points-format dynasty board rank and nothing else. **No adjustment by us
 | Dizzle Points  | 40%    | `dizzle-dynasty`     |
 | Hashtag Points | 35%    | `hashtag-basketball` |
 
-Hashtag crowd is the third `Boards` number — printed, not blended. Weights renormalise when a blended board is absent (`~53.3 / 46.7` when both present).
+Hashtag crowd is the `Boards` figure in parens — printed, not blended. Weights renormalise when a blended board is absent (`~53.3 / 46.7` when both present).
 
 Dynatyze (`dynatyze`) is too shallow to blend — reference only. Before adding a source, count analysts, not boards (`eval-player` §*Caveats*).
 

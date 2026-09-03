@@ -1,4 +1,4 @@
-from .. import engine, value
+from .. import engine, roster, value
 from ..engine import TRIALS
 from ..gp import evidence_flags
 from ..projections import projected_rate
@@ -22,6 +22,9 @@ def report_players():
     full = basis()
     R = group_replacement(full)
     ours = our_roster()
+    if roster.ROSTER != roster.OURS:
+        print("Δw THEIRS (`player_wins` on this roster) -- not the eval "
+              "`Δw (season) ours` column (`--eval`).")
     print("wins lost if swapped for a replacement-level 68-GP body OF HIS OWN")
     print("SLOT GROUP, %d-man roster: %s." % (len(full), ", ".join(
         "%s %.1f" % (g, R[g]) for g in sorted(R))))

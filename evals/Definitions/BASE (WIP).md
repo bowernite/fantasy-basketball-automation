@@ -9,7 +9,7 @@ Blended points-format dynasty board rank and nothing else. Keep in mind this is 
 | Dizzle Points  | 40%    | `dizzle-dynasty`     |
 | Hashtag Points | 35%    | `hashtag-basketball` |
 
-Hashtag crowd is the third `Boards` number — printed, not blended.
+Hashtag crowd is the `Boards` figure in parens — printed, not blended.
 
 _(Dynatyze (`dynatyze`) is too shallow to blend — reference only)_
 

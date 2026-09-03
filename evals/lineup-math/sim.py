@@ -47,8 +47,9 @@ and is never summed with, netted against or converted into `Δw`:
     after.title - before.title           # same joint change, as Odds
     sim.full_season()[sim.ROSTER].seeds  # P(each seed), all 12 teams
 
-Pass `path` whenever the roster came from `basis(path)` -- omitted, a
-counterparty is silently priced in our seat (`sim.ROSTER`).
+Pass `path=` when the roster came from `basis(path)`. Omitted seats
+`ROSTER` and refuses if this roster is not that file. Never assign
+`sim.ROSTER` to their file to price `incoming_*`.
 
 Roster JSON (list of dicts), written by `fetch_data.roster_rows`:
     {"n": name, "tm": FF pro-team abbrev, "avg": FPts/G, "tot": season FPts,
@@ -91,7 +92,7 @@ from simlib.roster import (
 from simlib.auction import AUCTION_N, auction_slots, coverage_picks, steer
 from simlib.value import (
     OutOfBracket, breakeven, breakeven_cell, breakeven_fmt, breakeven_value,
-    deal_formula_wins, formula_player_wins,
+    deal_formula_wins, formula_player_wins, league_pf,
     group_body, group_fits, group_replacement, incoming_wins, replacement, thin,
     value_key)
 from simlib.bracket import (

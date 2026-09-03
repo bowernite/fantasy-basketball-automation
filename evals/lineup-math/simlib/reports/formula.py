@@ -5,7 +5,9 @@ from ..roster import (
     GROUPS, basis, group_slots, our_roster, pure_bodies, slot_group, star, swap)
 from ..schedule import SIM_TM
 from ..stats import slope
-from ..value import group_body, group_fits, replacement, thin
+from ..value import (
+    formula_player_wins, group_body, group_fits, group_replacement,
+    replacement, thin)
 from ..wins import pf_wins, wins
 
 
@@ -80,46 +82,30 @@ def report_positions():
 def report_formula():
     full = basis()
     base = engine.run(full, cal=DELTA_W_CAL)
-    R, c = replacement(full)
-    # through `pf_wins`, not `PF_PER_WIN / c` -- `replacement` fits `c` on the
-    # standings calendar, and `sim` below is measured on `DELTA_W_CAL`; skipping
-    # the basis conversion would grade the formula ~5% off and read as its error
-    K = 1.0 / pf_wins(c)
-    print("formula: (rate - %.1f) x GP / %.0f = wins, tested as 1-for-1s against"
-          % (R, K))
-    # same swap `players` prices -- both reports must grade one counterfactual,
-    # or posR is scored against a `sim` column with its own error baked in
+    K = 1.0 / pf_wins(1.0)
+    print("formula: league-curve PF / %.0f = wins, tested as 1-for-1s against"
+          % K)
     print("a replacement 68-GP body OF HIS OWN SLOT GROUP.\n")
-    grp = group_fits(full)
-    print("  %-22s %5s %4s %8s %8s %7s %7s" %
-          ("player", "rate", "gp", "sim", "1R", "err", "posR err"))
+    grp = group_replacement(full)
+    print("  %-22s %5s %4s %8s %8s %7s" %
+          ("player", "rate", "gp", "sim", "formula", "err"))
     rows = []
-    for p in sorted(our_roster(), key=lambda q: -(q["avg"] - R) * q["gp"])[:12]:
+    for p in sorted(our_roster(), key=lambda q: -formula_player_wins(q))[:12]:
         g = slot_group(p["elig"])
-        r = engine.run(swap(full, [p["n"]], [group_body(g, grp[g][0])]),
+        r = engine.run(swap(full, [p["n"]], [group_body(g, grp[g])]),
                        cal=DELTA_W_CAL)
         sim_w = wins(base, r)
-        pred = (p["avg"] - R) * p["gp"] / K
-        Rp, cp = grp[g]
-        predp = (p["avg"] - Rp) * p["gp"] * pf_wins(cp)
-        rows.append((p["n"], sim_w, pred, predp))
-        print("  %-22s %5.1f %4d %+8.2f %+8.2f %+6.0f%% %+6.0f%%"
+        pred = formula_player_wins(p)
+        rows.append((p["n"], sim_w, pred))
+        print("  %-22s %5.1f %4d %+8.2f %+8.2f %+6.0f%%"
               % (p["n"], p["avg"], p["gp"], sim_w, pred,
-                 100 * (pred / sim_w - 1) if sim_w else 0,
-                 100 * (predp / sim_w - 1) if sim_w else 0))
-    err = [abs(pr / s - 1) for _, s, pr, _ in rows if s > 0.1]
-    errp = [abs(pp / s - 1) for _, s, _, pp in rows if s > 0.1]
+                 100 * (pred / sim_w - 1) if sim_w else 0))
+    err = [abs(pr / s - 1) for _, s, pr in rows if s > 0.1]
     print("\n  |error| median %.0f%%, worst %.0f%%"
           % (100 * statistics.median(err), 100 * max(err)))
-    print("  with per-position R: median %.0f%%, worst %.0f%%"
-          % (100 * statistics.median(errp), 100 * max(errp)))
-    by_sim = [n for n, _, _, _ in sorted(rows, key=lambda r: -r[1])][:5]
-    by_f = [n for n, _, _, _ in sorted(rows, key=lambda r: -r[2])][:5]
-    by_fp = [n for n, _, _, _ in sorted(rows, key=lambda r: -r[3])][:5]
-    print("  top 5 by sim         : %s" % ", ".join(by_sim))
-    print("  top 5 by formula     : %s" % ", ".join(by_f))
-    print("  top 5 by formula+posR: %s" % ", ".join(by_fp))
-    # derived, not hardcoded -- a comparison of the three lists above
-    print("  posR %s the top-5 order, and it %s the sim's."
-          % ("leaves" if by_f == by_fp else "changes",
-             "matches" if by_fp == by_sim else "still differs from"))
+    by_sim = [n for n, _, _ in sorted(rows, key=lambda r: -r[1])][:5]
+    by_f = [n for n, _, _ in sorted(rows, key=lambda r: -r[2])][:5]
+    print("  top 5 by sim    : %s" % ", ".join(by_sim))
+    print("  top 5 by formula: %s" % ", ".join(by_f))
+    print("  formula %s the sim's top-5 order."
+          % ("matches" if by_f == by_sim else "differs from"))

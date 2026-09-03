@@ -1,6 +1,6 @@
 # Findings
 
-> NOTE: This is old, and several versions of sim logic ago. Take with a grain of salt
+> NOTE: This is old, and several versions of sim logic ago. Take with a grain of salt. Formula `Δw` is the league curve (`league-curve.md`), not `(rate − R) × GP ÷ K`.
 
 Every number a trade decision reads, and the caveats that flip a sign. `method.md` owns the basis; `README.md` owns the commands.
 
@@ -114,7 +114,7 @@ Steering the seven September auction bodies on schedule is worth **+0.095 ± 0.0
 | 3–4 | 3 | 0.378 | 0.310–0.446 | **11.3** |
 | 5–8 | 4 | 0.323 | 0.284–0.359 | **8.8** |
 
-We project **1st of 12** on season PF (30,231), so **band 1–2 applies to us** for the seed-conditional read. Per-player `P(title|seed)` tops out at **+15.6 percentage points** (Amen Thompson, band 1–2). The eval column is unconditional `ΔP(title)` (`sim.player_title`).
+We project **1st of 12** on season PF (30,231), so **band 1–2 applies to us** for the seed-conditional read. Per-player `P(title|seed)` tops out at **+15.6 percentage points** (Amen Thompson, band 1–2). The eval column is unconditional `ΔP(title)` (`sim.player_title` on our roster file). `sim.py playoffs` is seed-held, not that column.
 
 - ⚠️ **It scales with `P(title)`, so it is a fact about the roster loaded, not the format** — a rebuilding team reads **0.0–1.3×**. **Re-run per roster**, and never sum, net or convert `ΔP(title)` against `Δw (season)` (`Eval Definitions §ΔP(title)`).
 - ⚠️ **A band is a seed range and the draw splits it** (6 and 7 sit on the 2-seed's side, 5 and 8 on the 1-seed's). A call that turns on the spread needs the seed.

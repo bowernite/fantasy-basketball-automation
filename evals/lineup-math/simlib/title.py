@@ -8,7 +8,7 @@ from .bracket import (
     BANDS, BRACKET_TEAMS, LADDERS, WITHIN_CV, field_mean, loaded, measure,
     team_levels)
 from .data import BRACKET, FULL_FIELD, PERIODS, REGULAR, _load
-from .roster import PAD_NAMES, slot_group, swap
+from .roster import PAD_NAMES, refuse_already_rostered, refuse_foreign_seat, slot_group, swap
 from .stats import block_stats
 from .value import group_body, group_replacement
 
@@ -272,6 +272,7 @@ def bracket_odds(order=None, teams=None, trials=None, seed0=SEED0):
 def swap_odds(after, before, path=None, trials=None, seed0=SEED0):
     """ARG ORDER IS THE SIGN, as `wins(deal, base)`"""
     who, teams, at = _seat(path)
+    refuse_foreign_seat(before, who, "swap_odds")
     out = []
     for r in (after, before):
         swapped = list(teams)
@@ -364,6 +365,7 @@ def player_title(roster, names, blocks=None, trials=None, seed0=SEED0,
                  R=None, path=None, workers=None):
     """ONE NAME AT A TIME -- a multi-piece side is `roster_title`"""
     who, teams, at = _seat(path)
+    refuse_foreign_seat(roster, who, "player_title")
     R = group_replacement(roster) if R is None else R
     with_team = measure(roster, who)
     by_name = {p["n"]: p for p in roster}
@@ -387,7 +389,9 @@ def incoming_title(roster, players, blocks=None, trials=None, seed0=SEED0,
     if twice:
         raise ValueError("%s: two bodies of one name -- rename the row you "
                          "mean" % ", ".join(twice))
+    refuse_already_rostered(roster, players, "incoming_title")
     who, teams, at = _seat(path)
+    refuse_foreign_seat(roster, who, "incoming_title")
     R = group_replacement(roster) if R is None else R
     pads = [i for i, p in enumerate(roster) if p["n"] in PAD_NAMES]
     if not pads:
@@ -408,5 +412,6 @@ def roster_title(after, before, blocks=None, trials=None, seed0=SEED0,
                  path=None, workers=None):
     """ARG ORDER IS THE SIGN, as `wins(deal, base)`"""
     who, teams, at = _seat(path)
+    refuse_foreign_seat(before, who, "roster_title")
     return _delta(measure(after, who), measure(before, who),
                   teams, who, at, trials, seed0, blocks, workers)

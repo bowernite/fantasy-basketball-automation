@@ -25,3 +25,15 @@ Handshake. Not on Fleaflicker. Executes **immediately after Sept '26 expansion, 
 Bodies after all overlays: **us 33**, Josh **27**. Then expansion is 38 — us **5** open slots, Josh **11**.
 
 **Draft / FA:** us still make 2.09 and bid the four FA slots that remain. Josh fills eleven slots from his 3.02, 3.10 and the FA auction.
+
+## Hlina — Duren ↔ Green, Camara, Smith
+
+Handshake. Not on Fleaflicker. Executes **immediately after Sept '26 expansion, before the rookie draft and FA auction** (uneven bodies — net +2 us, net −2 Hlina). No picks.
+
+| | Us | Hlina |
+| --- | --- | --- |
+| Players | −Duren · +Green · +Camara · +Smith | +Duren · −Green · −Camara · −Smith |
+
+Bodies after all overlays: **us 35**, Hlina **26**. Then expansion is 38 — us **3** open slots, Hlina **12**.
+
+**Draft / FA:** us still make 2.09 and bid the two FA slots that remain (after Matthew and Josh overlays). Hlina fills twelve slots from his 2.06, 3.06 and the FA auction.

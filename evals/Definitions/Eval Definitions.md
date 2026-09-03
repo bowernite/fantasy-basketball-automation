@@ -15,11 +15,11 @@ Every eval publishes three things, side by side, never folded into one number:
 | Layer | What it answers | Where it comes from |
 |---|---|---|
 | **BASE** | Market price, dynasty-wide — what he costs | External boards (§BASE) |
-| **`Δw`** | Single-season wins above replacement in our scoring | `(rate − R) × GP ÷ K` (§Δw) |
+| **`Δw`** | Single-season wins a typical team gets from his rate and GP | league curve (§Δw) |
 | **`Δw (season)`** | Wins added to a specific roster, that fantasy season | The sim (§Δw (season)) |
 | **`SIT`** | How much a win is worth to that team right now | Judgment: contending / fringe / tanking (§SIT) |
 
-**BASE owns everything multi-year** — trajectory, age, upside, risk: the boards price all of it into the rank, and nothing in this repo re-derives or stacks on top of that (`CLAUDE.md` §Objective). **Formula `Δw` owns our scoring weights and GP** — a quick single-season read with no roster or schedule. **`Δw (season)` owns the rest of our format** — the 9 daily slots, the real NBA calendar, this roster's shape. The gap between BASE and either win column is the signal; `SIT` says which one the current season should listen to.
+**BASE owns everything multi-year** — trajectory, age, upside, risk: the boards price all of it into the rank, and nothing in this repo re-derives or stacks on top of that (`CLAUDE.md` §Objective). **Formula `Δw` owns typical-team fielded value** — scoring weights, GP, and the 9-slot cap as a league-average curve, no specific roster. **`Δw (season)` owns this roster and the calendar**. The gap between BASE and either win column is the signal; `SIT` says which one the current season should listen to.
 
 **There is deliberately no exchange rate between BASE and either win column** — no constant converts wins into BASE units, and none may be derived or remembered. A deal that needs one to look good is a tie. **Formula `Δw` and `Δw (season)` are also not interchangeable** — never convert or net them.
 
@@ -47,7 +47,7 @@ The full classification table: `Columns.md` §Sourced vs modelled.
 
 ## `Δw`
 
-Formula wins above replacement for one season — `(rate − R) × GP ÷ K`, ~600 PF per win. Not roster- or schedule-specific. **Eval files and trade tables both publish it alongside `Δw (season)`** — eval player tables before the season-tagged columns (`Eval Template.md`).
+Formula wins a typical team in this format gets from the player's rate and GP — league curve, ~600 PF per win. Not roster-specific. One column on every table. **Eval files and trade tables both publish it alongside `Δw (season)`** — eval player tables before the season-tagged columns (`Eval Template.md`).
 
 Formula, `R`, `K`, and when not to use it: `Delta w.md`.
 
@@ -82,19 +82,19 @@ How it is assigned and what it changes about what a team pays up for and sells d
 
 ## `ΔP(title)`
 
-Sim-measured change in **P(title)** from a player being on the roster — regular season, seeds and byes, then the bracket (`sim.py title` / `player_title`). Seed is simulated, not assumed. **A different currency from `Δw (season)`, never combined with it** — **table column** after formula **`Δw`** and **`Δw (season)`**, before `W20`–`W23`. Per-player inputs `W20`–`W23` are the next columns (§Columns).
+Sim-measured change in **P(title)** from a player being on the roster — regular season, seeds and byes, then the bracket (`player_title` / `incoming_title`). Seed is simulated, not assumed. **A different currency from `Δw (season)`, never combined with it** — **table column** after formula **`Δw`** and **`Δw (season)`**, before `W20`–`W23`. Per-player inputs `W20`–`W23` are the next columns (§Columns).
 
 Which report to run for whom, the two ΔP reads (`player_title` vs `incoming_title`), and what the figure may decide: `Bracket value.md`.
 
 ## Counterparty title reads
 
-**`incoming_title` on `basis()`, not their roster.** **`ΔP(title) ours`** is our title odds if we acquire them. Their projected PF rank + `SIT` for whether they contend: `Bracket value.md` §Counterparty title reads.
+**`incoming_title` on `basis()`, not their roster.** Eval file: `--eval <team_id>`. **`ΔP(title) ours`** is our title odds if we acquire them. Their projected PF rank + `SIT` for whether they contend: `Bracket value.md` §Counterparty title reads.
 
 # Standing rules
 
 ## Where our format pulls off consensus
 
-The **closed list** of four places our scoring weights, the 9-slot cap or a roster's shape make the answer differ from the market's: **`Δw (season)`** · body count · multi-position eligibility · light-night coverage (formula `Δw` covers scoring weights only). Everything else is in BASE — no column, no discount, no model.
+The **closed list** of four places our scoring weights, the 9-slot cap or a roster's shape make the answer differ from the market's: **`Δw (season)`** · body count · multi-position eligibility · light-night coverage (formula `Δw` covers typical-team 9-slot via the curve). Everything else is in BASE — no column, no discount, no model.
 
 Each item's direction, magnitude and the sim runs that already contain it: `Format edges.md`.
 

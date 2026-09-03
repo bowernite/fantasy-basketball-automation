@@ -7,7 +7,7 @@ from .data import (
     BRACKET, BRACKET_CAL, FULL_FIELD, HIST_PERIODS, PERIODS, REGULAR,
     ROSTER_DIR, SCORED, SCORES)
 from .engine import TRIALS
-from .roster import PAD_NAMES, basis, slot_group, swap
+from .roster import PAD_NAMES, basis, refuse_already_rostered, refuse_foreign_seat, slot_group, swap
 from .schedule import bracket_games, team_nights
 from .stats import block_stats, cdf, phi
 from .value import _sampling, group_body, seed_blocks
@@ -332,6 +332,7 @@ def player_title(roster, names, blocks=None, trials=TRIALS, seed0=SEED0,
                  R=None, path=None):
     """ONE NAME AT A TIME -- a multi-piece side is `roster_title`, never
     summed rows"""
+    refuse_foreign_seat(roster, loaded(path), "player_title")
     seeds, R = _sampling(roster, TITLE_BLOCKS if blocks is None else blocks,
                          trials, seed0, R)
     base = [bracket_weeks(roster, trials=trials, seed0=s) for s in seeds]
@@ -357,6 +358,8 @@ def incoming_title(roster, players, blocks=None, trials=TRIALS, seed0=SEED0,
     if twice:
         raise ValueError("%s: two bodies of one name -- rename the row you "
                          "mean" % ", ".join(twice))
+    refuse_already_rostered(roster, players, "incoming_title")
+    refuse_foreign_seat(roster, loaded(path), "incoming_title")
     seeds, R = _sampling(roster, TITLE_BLOCKS if blocks is None else blocks,
                          trials, seed0, R)
     pads = [i for i, p in enumerate(roster) if p["n"] in PAD_NAMES]
@@ -380,6 +383,7 @@ def incoming_title(roster, players, blocks=None, trials=TRIALS, seed0=SEED0,
 def roster_title(after, before, blocks=None, trials=TRIALS, seed0=SEED0,
                  path=None):
     """ARG ORDER IS THE SIGN, as `wins(deal, base)`"""
+    refuse_foreign_seat(before, loaded(path), "roster_title")
     seeds = seed_blocks(TITLE_BLOCKS if blocks is None else blocks, trials,
                         seed0)
     return _bands_delta(

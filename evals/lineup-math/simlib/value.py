@@ -4,10 +4,11 @@ import collections, os
 from . import engine, shard
 from .data import DELTA_W_CAL
 from .engine import TRIALS
-from .roster import GROUPS, PAD_NAMES, slot_group, star, swap
+from .roster import GROUPS, PAD_NAMES, refuse_already_rostered, slot_group, star, swap
 from .schedule import SIM_TM
 from .stats import block_stats, false_position, slope
-from .wins import wins
+from .league_curve import league_pf
+from .wins import pf_wins, wins
 
 
 def value_key(roster, R=None):
@@ -149,6 +150,7 @@ def incoming_wins(roster, players, blocks=None, trials=TRIALS, seed0=101, R=None
     if twice:
         raise ValueError("%s: two bodies of one name -- rename the row you "
                          "mean" % ", ".join(twice))
+    refuse_already_rostered(roster, players, "incoming_wins")
     seeds, R = _sampling(roster, blocks, trials, seed0, R)
     pads = [i for i, p in enumerate(roster) if p["n"] in PAD_NAMES]
     if not pads:
@@ -176,18 +178,14 @@ def incoming_wins(roster, players, blocks=None, trials=TRIALS, seed0=101, R=None
     return out
 
 
-def formula_player_wins(p, fits):
-    from .wins import pf_wins
-    g = slot_group(p["elig"])
-    R, c = fits[g]
-    return (p["avg"] - R) * p["gp"] * pf_wins(c)
+def formula_player_wins(p):
+    return pf_wins(league_pf(p["avg"], p["gp"]))
 
 
-def deal_formula_wins(in_bodies, out_bodies, roster_for_fits):
+def deal_formula_wins(in_bodies, out_bodies):
     """Per-piece net formula Δw — sum of incoming minus outgoing bodies."""
-    fits = group_fits(roster_for_fits)
-    ins = sum(formula_player_wins(p, fits) for p in in_bodies)
-    outs = sum(formula_player_wins(p, fits) for p in out_bodies)
+    ins = sum(formula_player_wins(p) for p in in_bodies)
+    outs = sum(formula_player_wins(p) for p in out_bodies)
     return ins - outs
 
 

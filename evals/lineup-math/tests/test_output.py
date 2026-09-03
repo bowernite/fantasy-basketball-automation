@@ -66,12 +66,21 @@ class OutputIsSelfDescribing(unittest.TestCase):
 
     def test_the_formula_error_column_is_signed_against_the_sim_column(self):
         out = render("formula")
-        rows = re.findall(r"([-+]\d+\.\d\d) +([-+]\d+\.\d\d) +([-+]\d+)% +"
-                          r"([-+]\d+)%$", out, re.M)
+        rows = re.findall(r"([-+]\d+\.\d\d) +([-+]\d+\.\d\d) +([-+]\d+)%$",
+                          out, re.M)
         self.assertGreaterEqual(len(rows), 10, out)
-        for sim_w, one_r, err, _ in rows:
+        for sim_w, one_r, err in rows:
             self.assertEqual(float(err) > 0, float(one_r) > float(sim_w),
                              "%s vs %s reads as err %s%%" % (one_r, sim_w, err))
+
+    def test_a_counterparty_players_report_is_labelled_theirs_not_the_ours_column(self):
+        out = render("players", THEIR_ROSTER)
+        self.assertRegex(out, r"THEIRS")
+        self.assertRegex(out, r"not the eval .+ours")
+
+    def test_playoffs_says_it_is_not_the_eval_column(self):
+        out = render("playoffs")
+        self.assertRegex(out, r"not the eval")
 
     def test_the_per_player_table_states_the_seed_blocks_behind_its_sd(self):
         out = render("players")

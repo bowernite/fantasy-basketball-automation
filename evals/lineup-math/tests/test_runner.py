@@ -8,8 +8,8 @@ import unittest
 
 import sim
 from simlib.runner import (
-    _simmed_date, check_config, enrich_config, parse_config, resolve_roster,
-    run_config, sim_tmp_path, team_sims_path, team_sim_path,
+    _simmed_date, check_config, deal_delta_base, enrich_config, parse_config,
+    resolve_roster, run_config, sim_tmp_path, team_sims_path, team_sim_path,
     team_trade_shapes_path)
 from tests.harness import cheap_monte_carlo
 
@@ -23,6 +23,16 @@ class ResolveRoster(unittest.TestCase):
 
     def test_bare_filename_gets_json_suffix(self):
         self.assertTrue(resolve_roster("roster-161024-2025-26").endswith(".json"))
+
+
+class DealDeltaBase(unittest.TestCase):
+    def test_an_unknown_counterparty_is_refused_rather_than_priced_off_another_team(self):
+        with self.assertRaises(ValueError) as ctx:
+            deal_delta_base({
+                "out_us": ["Jalen Suggs"],
+                "in_from_them": ["Deni Avdija"],
+            }, 999999)
+        self.assertIn("999999", str(ctx.exception))
 
 
 class TeamTradeShapesPath(unittest.TestCase):
@@ -68,6 +78,24 @@ class ConfigValidate(unittest.TestCase):
             check_config({"kind": "reports", "names": ["scenarios"],
                           "roster": 161024})
         self.assertIn("refuse", str(ctx.exception))
+
+    def test_eval_columns_needs_their_roster(self):
+        with self.assertRaises(ValueError) as ctx:
+            check_config({"kind": "eval-columns"})
+        self.assertIn("their_roster", str(ctx.exception))
+
+    def test_eval_columns_section_has_no_roster_key(self):
+        from simlib.runner import eval_columns_section
+        sec = eval_columns_section(161014)
+        check_config(sec)
+        self.assertEqual(sec["kind"], "eval-columns")
+        self.assertEqual(sec["their_roster"], 161014)
+        self.assertNotIn("roster", sec)
+
+    def test_eval_columns_refuses_our_roster(self):
+        with self.assertRaises(ValueError) as ctx:
+            check_config({"kind": "eval-columns", "their_roster": 161025})
+        self.assertIn("counterparty", str(ctx.exception))
 
     def test_example_configs_validate(self):
         for name in os.listdir(EXAMPLES):
@@ -141,7 +169,7 @@ class ConfigRun(unittest.TestCase):
         their = "roster-161020-2025-26.json"
         in_us = [p for p in sim.our_roster(their) if p["n"] == "Deni Avdija"]
         out_us = [p for p in sim.our_roster() if p["n"] == "Jalen Suggs"]
-        expect_fdw = sim.deal_formula_wins(in_us, out_us, sim.basis())
+        expect_fdw = sim.deal_formula_wins(in_us, out_us)
         cfg = {
             "kind": "trade-screen",
             "their_roster": 161020,
@@ -280,7 +308,7 @@ class ConfigRun(unittest.TestCase):
         self.assertIn("new", text)
 
     def test_cli_check_accepts_valid_config(self):
-        path = os.path.join(EXAMPLES, "brian-trade-screen.json")
+        path = os.path.join(EXAMPLES, "eval-columns.json")
         p = subprocess.run(["python3", "sim_run.py", "--check", path],
                            cwd=sim.HERE, capture_output=True, text=True)
         self.assertEqual(p.returncode, 0, p.stdout + p.stderr)
@@ -294,9 +322,77 @@ class ConfigRun(unittest.TestCase):
         self.assertNotEqual(p.returncode, 0)
         self.assertIn("unknown kind", p.stderr + p.stdout)
 
+    def test_cli_eval_refuses_our_team(self):
+        p = subprocess.run(["python3", "sim_run.py", "--eval", "161025"],
+                           cwd=sim.HERE, capture_output=True, text=True)
+        self.assertNotEqual(p.returncode, 0)
+        self.assertIn("counterparty", p.stderr + p.stdout)
+
+    def test_eval_columns_prices_incoming_on_us_without_moving_roster(self):
+        was = sim.ROSTER
+        cfg = {
+            "kind": "eval-columns",
+            "their_roster": 161020,
+            "names": ["Deni Avdija"],
+        }
+        with cheap_monte_carlo():
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf):
+                run_config(cfg)
+        text = buf.getvalue()
+        self.assertEqual(sim.ROSTER, was)
+        self.assertIn("Deni Avdija", text)
+        self.assertIn("ours", text)
+        self.assertIn("theirs", text)
+        row = next(l for l in text.splitlines() if "Deni Avdija" in l)
+        parts = row.split("\t")
+        self.assertGreaterEqual(len(parts), 5)
+        self.assertNotEqual(parts[2], parts[3], text)
+
+    def test_player_effects_refuses_a_name_missing_on_the_source_roster(self):
+        cfg = {
+            "kind": "player-effects",
+            "their_roster": 161020,
+            "groups": [{
+                "label": "probe",
+                "source": "their",
+                "names": ["Nobody McFake"],
+            }],
+        }
+        with cheap_monte_carlo():
+            with self.assertRaises(KeyError) as ctx:
+                run_config(cfg)
+        self.assertIn("Nobody McFake", str(ctx.exception))
+
+    def test_eval_columns_stays_on_us_when_roster_global_is_theirs(self):
+        was = sim.ROSTER
+        cfg = {
+            "kind": "eval-columns",
+            "their_roster": 161020,
+            "names": ["Deni Avdija"],
+        }
+        try:
+            sim.ROSTER = "roster-161020-2025-26.json"
+            with cheap_monte_carlo():
+                buf = io.StringIO()
+                with contextlib.redirect_stdout(buf):
+                    run_config(cfg)
+            text = buf.getvalue()
+        finally:
+            sim.ROSTER = was
+        self.assertIn("Deni Avdija", text)
+        self.assertNotIn("already on this roster", text)
+
 
 class RunHelp(unittest.TestCase):
     def test_directory_runner_lists_sim_run(self):
         p = subprocess.run(["./run", "-h"], cwd=sim.HERE,
                            capture_output=True, text=True)
         self.assertIn("sim_run.py", p.stdout + p.stderr)
+
+
+class EvalCli(unittest.TestCase):
+    def test_sim_run_help_lists_eval(self):
+        p = subprocess.run(["python3", "sim_run.py", "-h"], cwd=sim.HERE,
+                           capture_output=True, text=True)
+        self.assertIn("--eval", p.stdout)
