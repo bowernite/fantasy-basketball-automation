@@ -1,6 +1,6 @@
 # Matt Hlina (`Matthew the Apostle`)
 
-> _26 bodies · **contending** · sim 2026-09-02_
+> _26 bodies · **contending** · sim 2026-09-03_
 
 ## Players
 
@@ -12,11 +12,11 @@
 | Jalen Duren | 22.8 | C | 35 • 36 (43) | **3636** | 39 (39) | 69 (70) | **+1.66** | **+1.02** | **+1.35** | 8.2% | 101 | 134 | 101 | 134 |  |
 | Alex Sarr | 21.4 | C | 48 • 29 (39) | **3485** | 30 (34) | 68 (48) | **+0.92** | **+0.33** | **+0.62** | 1.7% | 101 | 76 | 76 | 101 | 2yr role |
 | Stephon Castle | 21.8 | PG/SG | 41 • 42 (23) | **3242** | 36 (35) | 69 (68) | **+1.45** | **+0.95** | **+1.09** | 7.3% | 94 | 94 | 125 | 94 | 2yr role |
-| VJ Edgecombe | 21.1 | PG/SG | 44 • 46 (27) | **3047** | 34 (32) | 74 (75) | **+1.33** | **+0.81** | **+1.09** | 7.3% | 125 | 94 | 125 | 125 | 1yr role |
+| VJ Edgecombe | 21.1 | PG/SG | 44 • 46 (27) | **3047** | 34 (32) | 74 (75) | **+1.34** | **+0.81** | **+1.09** | 7.3% | 125 | 94 | 125 | 125 | 1yr role |
 | Brandon Miller | 23.8 | PF/SF | 42 • 60 (21) | **2828** | 37 (33) | 68 (65) | **+1.52** | **+0.80** | **+1.19** | 7.0% | 63 | 127 | 95 | 127 |  |
 | Matas Buzelis | 21.9 | PF/SF | 72 • 59 (45) | **2210** | 36 (29) | 74 (77) | **+1.56** | **+0.96** | **+1.35** | 8.5% | 135 | 101 | 101 | 135 | 2yr role |
 | Kyshawn George | 22.7 | PF/SF | 85 • 94 (93) | **1633** | 27 (29) | 68 (48) | **+0.72** | **+0.18** | **+0.38** | 0.7% | 92 | 69 | 69 | 92 | 2yr role |
-| Cedric Coward | 23.0 | PG/SG | 81 • 117 (76) | **1522** | 33 (26) | 72 (62) | **+1.27** | **+0.56** | **+0.87** | 4.3% | 90 | 121 | 121 | 121 | 1yr role |
+| Cedric Coward | 23.0 | PG/SG | 81 • 117 (76) | **1522** | 33 (26) | 72 (62) | **+1.28** | **+0.56** | **+0.87** | 4.3% | 90 | 121 | 121 | 121 | 1yr role |
 | Ajay Mitchell | 24.2 | PG/SG | 108 • 90 (146) | **1458** | 26 (25) | 70 (57) | **+0.65** | **+0.12** | **+0.24** | 1.8% | 67 | 90 | 67 | 90 | board split · 1yr role |
 | Jaime Jaquez | 25.5 | PG/SG | 147 • 118 (153) | **1037** | 31 (28) | 72 (75) | **+1.12** | **+0.40** | **+0.67** | 2.8% | 85 | 85 | 85 | 113 |  |
 | Joan Beringer | 19.8 | PF/SF | 120 • 172 (168) | **960** | 16 (9) | 71 (41) | **+0.17** | **-0.11** | **-0.14** | -1.1% | 43 | 57 | 29 | 57 | 0yr role |
@@ -43,7 +43,7 @@
 
 ## Picks
 
-Ownership sourced 2026-09-02 (`FetchLeagueDraftBoard`, `FetchTrades`). No assumed-through pick overlay. Ranks sourced, conversions modelled. Crowd `/keeper` vote-convergence notice is live → Dizzle alone for pick VALUE (`eval-pick` §4). Slot priors off `Team Projections.md` (2026-09-02).
+Ownership sourced 2026-09-03 (`FetchLeagueDraftBoard`, `FetchTrades`). No assumed-through pick overlay. Ranks sourced, conversions modelled. Crowd `/keeper` vote-convergence notice is live → Dizzle alone for pick VALUE (`eval-pick` §4). Slot priors off `Team Projections.md` (2026-09-02).
 
 `≤` marks a value the current class's lookup can only bound, not price (`eval-pick` §*Future picks*).
 
