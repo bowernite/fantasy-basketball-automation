@@ -73,6 +73,31 @@ class Pad(unittest.TestCase):
         self.assertEqual(rk["avg"], 10.0)
         self.assertEqual(rk["gp"], 60)
 
+class PickTrade(unittest.TestCase):
+    def test_a_traded_pick_stops_padding_the_senders_roster(self):
+        before = sum(1 for p in sim.basis() if p["n"].startswith("RK"))
+        after = sim.basis_after_trade(sim.ROSTER, [], [], out_picks=["2.09"])
+        self.assertEqual(sum(1 for p in after if p["n"].startswith("RK")),
+                         before - 1)
+        self.assertEqual(len(after), 38)
+
+    def test_a_traded_pick_pads_the_receivers_roster_at_its_own_grade(self):
+        josh = "roster-161024-2025-26.json"
+        in_pick = sim.resolve_picks(sim.ROSTER, ["2.09"])
+        after = sim.basis_after_trade(josh, [], [], in_picks=in_pick)
+        rk = next(p for p in after if p["n"].startswith("RK") and p["tm"] == "MEM")
+        self.assertAlmostEqual(rk["avg"], sim.projected_rate("Karim Lopez"))
+        self.assertEqual(rk["tm"], "MEM")
+        self.assertEqual(rk["elig"], ["SF", "PF"])
+
+    def test_an_unknown_slot_refuses(self):
+        with self.assertRaises(KeyError):
+            sim.basis_after_trade(sim.ROSTER, [], [], out_picks=["9.09"])
+
+    def test_a_pick_the_sender_does_not_hold_refuses(self):
+        with self.assertRaises(KeyError):
+            sim.basis_after_trade(sim.ROSTER, [], [], out_picks=["1.11"])
+
 class Backfill(unittest.TestCase):
     def test_a_richer_backfill_grade_lowers_the_breakeven(self):
         full = sim.basis()

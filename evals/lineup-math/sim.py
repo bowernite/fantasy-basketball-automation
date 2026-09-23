@@ -88,7 +88,8 @@ from simlib.projections import (
     projected_rate, projected_gp, _projections, _feed_gp_index)
 from simlib.roster import (
     DEAD, EXPANSION, GROUPS, MAX_WIRE, PAD_POS, apply_trade, basis, basis_after_trade,
-    group_slots, our_roster, pad, pure_bodies, slot_group, star, swap)
+    group_slots, our_roster, pad, pick_slot, pure_bodies, resolve_picks, slot_group,
+    star, swap)
 from simlib.auction import AUCTION_N, auction_slots, coverage_picks, steer
 from simlib.value import (
     OutOfBracket, breakeven, breakeven_cell, breakeven_fmt, breakeven_value,

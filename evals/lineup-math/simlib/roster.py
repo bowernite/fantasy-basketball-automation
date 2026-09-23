@@ -133,10 +133,18 @@ def apply_trade(roster, out_names, adds, max_bodies=MAX_WIRE):
     return out
 
 
-def basis_after_trade(path, out_names, adds):
-    """Wire roster after the trade, then padded to 38 for pricing."""
+def basis_after_trade(path, out_names, adds, out_picks=None, in_picks=None):
+    """Wire roster after the trade, then padded to 38 for pricing.
+    `out_picks` (slot names, e.g. "2.09") are `path`'s own picks that left
+    in this trade -- refuses a slot `path` does not hold. `in_picks`
+    (resolved pick rows, from `resolve_picks` on the counterparty) are picks
+    that arrived, and pad with their own rate/elig/tm instead of an FA."""
     src = path or ROSTER
-    return pad(apply_trade(our_roster(src), out_names, adds), path=src)
+    exclude = set(out_picks or [])
+    if exclude:
+        resolve_picks(src, sorted(exclude))  # refuses an unheld slot
+    return pad(apply_trade(our_roster(src), out_names, adds), path=src,
+               exclude_picks=exclude, extra_picks=in_picks)
 
 
 def swap(roster, out_names, adds, dead=None):
@@ -190,6 +198,23 @@ def held_picks(path):
     return board[key]
 
 
+def pick_slot(pick):
+    return "%d.%02d" % (pick["round"], pick["slot"])
+
+
+def resolve_picks(path, slots):
+    """Held picks of `path`, named by slot (e.g. "2.09"). Refuses a slot
+    `path` does not hold."""
+    if not slots:
+        return []
+    by_slot = {pick_slot(p): p for p in held_picks(path)}
+    missing = [s for s in slots if s not in by_slot]
+    if missing:
+        raise KeyError("%s: not a pick %s holds -- check data/draft-2026.json"
+                       % (", ".join(missing), path or ROSTER))
+    return [by_slot[s] for s in slots]
+
+
 def _pick_body(i, pick=None):
     pick = pick or {}
     body = dict(PICK, n="RK%d" % i,
@@ -201,12 +226,18 @@ def _pick_body(i, pick=None):
     return body
 
 
-def pad(roster, n=38, path=None):
+def pad(roster, n=38, path=None, exclude_picks=None, extra_picks=None):
     """Appends, so real bodies keep their order (and rng draws). `path`
-    missing means no held picks — FA fill only. `basis` always passes one."""
+    missing means no held picks — FA fill only. `basis` always passes one.
+    `exclude_picks` (slot names) drops picks of `path` that moved away in a
+    trade; `extra_picks` (resolved pick rows) are a counterparty's picks
+    that moved onto this roster instead."""
     out = list(roster)
     need = max(0, n - len(out))
-    picks = held_picks(path) if path else []
+    held = held_picks(path) if path else []
+    if exclude_picks:
+        held = [p for p in held if pick_slot(p) not in exclude_picks]
+    picks = list(extra_picks or []) + held
     n_picks = min(need, len(picks))
     for i in range(n_picks):
         out.append(_pick_body(i, picks[i]))

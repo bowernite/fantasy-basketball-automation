@@ -164,10 +164,14 @@ def _simmed_date(when=None):
 
 
 def price_deal(deal, their, our_proj, their_proj, before=None):
+    in_us_picks = roster.resolve_picks(their, deal.get("in_from_them_picks"))
+    in_them_picks = roster.resolve_picks(roster.OURS, deal.get("in_from_us_picks"))
     after_ours = sim.basis_after_trade(
-        roster.OURS, deal["out_us"], bodies(deal["in_from_them"], their_proj))
+        roster.OURS, deal["out_us"], bodies(deal["in_from_them"], their_proj),
+        out_picks=deal.get("out_us_picks"), in_picks=in_us_picks)
     after_theirs = sim.basis_after_trade(
-        their, deal["out_them"], bodies(deal["in_from_us"], our_proj))
+        their, deal["out_them"], bodies(deal["in_from_us"], our_proj),
+        out_picks=deal.get("out_them_picks"), in_picks=in_them_picks)
     after_us, before_us, after_them, before_them = sim.deal_odds(
         after_ours, after_theirs, their, before=before)
     in_us = bodies(deal["in_from_them"], their_proj)

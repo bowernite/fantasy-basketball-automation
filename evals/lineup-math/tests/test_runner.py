@@ -218,6 +218,56 @@ class ConfigRun(unittest.TestCase):
         self.assertEqual(out["deals"][0]["results"]["simmed"], _simmed_date())
         self.assertEqual(out["meta"]["simmed"], _simmed_date())
 
+    def test_trade_screen_picks_move_by_slot(self):
+        deal = {
+            "label": "probe",
+            "out_us": [],
+            "in_from_them": [],
+            "out_them": [],
+            "in_from_us": [],
+            "out_us_picks": ["2.09"],
+            "in_from_them_picks": ["1.03"],
+        }
+        cfg = {
+            "kind": "trade-screen",
+            "their_roster": 161020,
+            "their_label": "Mitch",
+            "deals": [deal],
+        }
+        their = "roster-161020-2025-26.json"
+        with cheap_monte_carlo():
+            after_ours = sim.basis_after_trade(
+                None, [], [], out_picks=["2.09"],
+                in_picks=sim.resolve_picks(their, ["1.03"]))
+            after_theirs = sim.basis_after_trade(their, [], [])
+            after_us, before_us, after_them, before_them = sim.deal_odds(
+                after_ours, after_theirs, their)
+            out = enrich_config(cfg)
+        got = out["deals"][0]["results"]
+        self.assertNotIn("error", got)
+        self.assertEqual(got["dw_us"], round(after_us.wins - before_us.wins, 2))
+        self.assertEqual(got["dw_them"],
+                         round(after_them.wins - before_them.wins, 2))
+
+    def test_trade_screen_pick_not_held_by_sender_refuses(self):
+        deal = {
+            "label": "probe",
+            "out_us": [],
+            "in_from_them": [],
+            "out_them": [],
+            "in_from_us": [],
+            "out_us_picks": ["1.03"],
+        }
+        cfg = {
+            "kind": "trade-screen",
+            "their_roster": 161020,
+            "their_label": "Mitch",
+            "deals": [deal],
+        }
+        with cheap_monte_carlo():
+            out = enrich_config(cfg)
+        self.assertIn("error", out["deals"][0]["results"])
+
     def test_trade_screen_section_meta_has_simmed_date(self):
         cfg = {
             "sections": [{
