@@ -226,6 +226,10 @@ def _pick_body(i, pick=None):
     return body
 
 
+def pick_bodies(picks):
+    return [_pick_body(i, p) for i, p in enumerate(picks)]
+
+
 def pad(roster, n=38, path=None, exclude_picks=None, extra_picks=None):
     """Appends, so real bodies keep their order (and rng draws). `path`
     missing means no held picks — FA fill only. `basis` always passes one.

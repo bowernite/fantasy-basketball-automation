@@ -249,6 +249,27 @@ class ConfigRun(unittest.TestCase):
         self.assertEqual(got["dw_them"],
                          round(after_them.wins - before_them.wins, 2))
 
+    def test_trade_screen_formula_delta_w_counts_the_mock_rookie_of_a_moved_pick(self):
+        cfg = {
+            "kind": "trade-screen",
+            "their_roster": 161020,
+            "their_label": "Mitch",
+            "deals": [{
+                "label": "probe",
+                "out_us": [],
+                "in_from_them": [],
+                "out_them": [],
+                "in_from_us": [],
+                "out_them_picks": ["1.03"],
+                "in_from_them_picks": ["1.03"],
+            }],
+        }
+        with cheap_monte_carlo():
+            out = enrich_config(cfg)
+        got = out["deals"][0]["results"]
+        self.assertGreater(got["fdw_us"], 0)
+        self.assertEqual(got["fdw_them"], -got["fdw_us"])
+
     def test_trade_screen_pick_not_held_by_sender_refuses(self):
         deal = {
             "label": "probe",

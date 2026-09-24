@@ -174,10 +174,12 @@ def price_deal(deal, their, our_proj, their_proj, before=None):
         out_picks=deal.get("out_them_picks"), in_picks=in_them_picks)
     after_us, before_us, after_them, before_them = sim.deal_odds(
         after_ours, after_theirs, their, before=before)
-    in_us = bodies(deal["in_from_them"], their_proj)
-    out_us = bodies(deal["out_us"], our_proj)
-    in_them = bodies(deal["in_from_us"], our_proj)
-    out_them = bodies(deal["out_them"], their_proj)
+    out_us_picks = roster.resolve_picks(roster.OURS, deal.get("out_us_picks"))
+    out_them_picks = roster.resolve_picks(their, deal.get("out_them_picks"))
+    in_us = bodies(deal["in_from_them"], their_proj) + roster.pick_bodies(in_us_picks)
+    out_us = bodies(deal["out_us"], our_proj) + roster.pick_bodies(out_us_picks)
+    in_them = bodies(deal["in_from_us"], our_proj) + roster.pick_bodies(in_them_picks)
+    out_them = bodies(deal["out_them"], their_proj) + roster.pick_bodies(out_them_picks)
     fdw_us = sim.deal_formula_wins(in_us, out_us)
     fdw_them = sim.deal_formula_wins(in_them, out_them)
     return (after_us.wins - before_us.wins, after_us.title - before_us.title,
