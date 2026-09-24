@@ -10,7 +10,7 @@ Screening (9/10/26): 54 shapes, then +75 (angles / young / gap). Hali vs Giddey-
 
 Sharpe / Mark angle (9/24): both near-dead for us this season (Sharpe 0g, Mark 10g post-surgery) but young for a tanking Todd. Adding either to a Cade package or pairing them for Porter / Brunson prices well. Mark rows before 9/24 carry his pre-injury 64g; re-price before floating any of them.
 
-Age screen (9/24): Brett wants the Cade → Brunson move to buy a big window bump and/or youth back. Best answer: 6-for-4 into 1.01 (our young dead weight + depth for Brunson + Porter + NAW + 1.01) — top ΔP(title) in the file and younger BASE-weighted. Fallbacks swap a vet for Dëmin/Bryant, or send Butler/Kyrie back.
+Age screen (9/24): Brett wants the Cade → Brunson move to buy a big window bump and/or youth back. Best answer: 6-for-4 into 1.01 (our young dead weight + depth for Brunson + Porter + NAW + 1.01) — top ΔP(title) in the file and younger BASE-weighted. No-1.01 fallback: Cade + Sharpe + Mark for the Claxton package + Dëmin. Todd won't want older players, so Kyrie/Butler rows are reference only.
 
 Age lens (rough): prefer not to get meaningfully older — incoming Porter 28 / NAW 28 / Ja 27 / Claxton 27 over Brunson 30 / Tatum 29 / Gobert 34 when numbers are close. Contending still buys Brunson/Tatum; they sit lower in tier/sort vs similar youth paths.
 
@@ -18,7 +18,12 @@ Age lens (rough): prefer not to get meaningfully older — incoming Porter 28 / 
 
 ## Above floor
 
+Cade(25,48p,68g)+Kuminga(24,19p,69g) > Brunson(30,39p,72g)+Porter(28,37p,64g)+NAW(28,31p,74g)+Claxton(27,31p,72g)+Dëmin(21,25p,68g) | +1200 +3.3 +1.3 +14%
+Cade(25,48p,68g)+Sharpe(23,27p,0g)+Mark(25,29p,10g) > Brunson(30,39p,72g)+Porter(28,37p,64g)+NAW(28,31p,74g)+Claxton(27,31p,72g)+Dëmin(21,25p,68g) | -500 +3.5 +1.4 +14%
 Cade(25,48p,68g) > Brunson(30,39p,72g)+Porter(28,37p,64g)+NAW(28,31p,74g)+Claxton(27,31p,72g) | +700 +3.0 +1.3 +13%
+Cade(25,48p,68g)+Kuminga(24,19p,69g) > Brunson(30,39p,72g)+Porter(28,37p,64g)+NAW(28,31p,74g)+Claxton(27,31p,72g)+Bryant(21,16p,72g) | +700 +2.9 +1.3 +12%
+Cade(25,48p,68g)+Walker(23,20p,72g) > Brunson(30,39p,72g)+Porter(28,37p,64g)+NAW(28,31p,74g)+Claxton(27,31p,72g)+Bryant(21,16p,72g) | +1000 +2.9 +1.3 +12%
+Cade(25,48p,68g)+Bona(23,17p,72g) > Brunson(30,39p,72g)+Porter(28,37p,64g)+NAW(28,31p,74g)+Claxton(27,31p,72g)+Bryant(21,16p,72g) | +1200 +3.0 +1.3 +12%
 Cade(25,48p,68g)+Butler(37,28p,26g) > Brunson(30,39p,72g)+Porter(28,37p,64g)+NAW(28,31p,74g)+Claxton(27,31p,72g)+Bryant(21,16p,72g) | +700 +2.9 +1.3 +12%
 Cade(25,48p,68g) > Brunson(30,39p,72g)+Porter(28,37p,64g)+NAW(28,31p,74g)+Gobert(34,32p,71g) | +400 +3.1 +1.4 +12%
 Cade(25,48p,68g)+Sharpe(23,27p,0g) > Brunson(30,39p,72g)+Porter(28,37p,64g)+NAW(28,31p,74g)+Claxton(27,31p,72g) | -300 +3.0 +1.3 +13%
@@ -167,6 +172,7 @@ Smith(23,29p,74g)+Walker(23,20p,72g) > NAW(28,31p,74g)+Claxton(27,31p,72g) | +17
 Vassell(26,25p,68g) > Porter(28,37p,64g)+Dosunmu(27,26p,73g) | +1600 +1.6 +0.7 +8%
 Green(25,30p,71g) > Porter(28,37p,64g)+Claxton(27,31p,72g) | +1600 +1.5 +0.9 +7%
 Cade(25,48p,68g)+Garland(27,37p,67g)+Sharpe(23,27p,0g) > Brunson(30,39p,72g)+Porter(28,37p,64g)+NAW(28,31p,74g)+'26 1.01 | +1500 +1.7* +0.9 +9%
+Cade(25,48p,68g)+Walker(23,20p,72g) > Brunson(30,39p,72g)+Porter(28,37p,64g)+NAW(28,31p,74g)+Claxton(27,31p,72g)+Dëmin(21,25p,68g) | +1500 +3.3 +1.3 +14%
 Eason(25,26p,64g) > Porter(28,37p,64g)+Mitchell(28,26p,73g) | +1400 +1.4 +0.8 +12%
 ## Doesn't meet our minimums
 
