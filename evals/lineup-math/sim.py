@@ -82,7 +82,7 @@ from simlib.board import (
     BOARD_DIR, BOARD_SUFFIX, POOL, board_rates, newest_board, pool, pool_seasons)
 from simlib.gp import (
     FRAGMENT_GP, GP_BOOT, GP_FOLDS, GP_KNOT, GP_MIN_RATE, GP_MODELS, GP_SHUFFLES,
-    PROJECT_GP_NOTE, ROTATION_RATE, SEASONS, age_at, evidence_flags,
+    PROJECT_GP_NOTE, ROTATION_RATE, SEASONS, age_at, durable_gp, evidence_flags,
     gp_fit, gp_model, gp_models, gp_rows, gp_sq_errors, mapped_gp, project_gp, rate_evidence)
 from simlib.projections import (
     projected_rate, projected_gp, _projections, _feed_gp_index)

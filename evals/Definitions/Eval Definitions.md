@@ -15,7 +15,7 @@ Every eval publishes three things, side by side, never folded into one number:
 | Layer | What it answers | Where it comes from |
 |---|---|---|
 | **BASE** | Market price, dynasty-wide — what he costs | External boards (§BASE) |
-| **`Δw`** | Single-season wins a typical team gets from his rate and GP | league curve (§Δw) |
+| **`Δw`** | Single-season wins a typical team gets from his rate and healthy GP | league curve (§Δw) |
 | **`Δw (season)`** | Wins added to a specific roster, that fantasy season | The sim (§Δw (season)) |
 | **`SIT`** | How much a win is worth to that team right now | Judgment: contending / fringe / tanking (§SIT) |
 
@@ -47,7 +47,7 @@ The full classification table: `Columns.md` §Sourced vs modelled.
 
 ## `Δw`
 
-Formula wins a typical team in this format gets from the player's rate and GP — league curve, ~600 PF per win. Not roster-specific. One column on every table. **Eval files and trade tables both publish it alongside `Δw (season)`** — eval player tables before the season-tagged columns (`Eval Template.md`).
+Formula wins a typical team in this format gets from the player's rate and GP — league curve, ~600 PF per win. Not roster-specific, and blind to this season's absences: `GPp` floored at the durability map. `Δw (season)`, `ΔP(title)` and `W20`–`W23` carry the absence. One column on every table. **Eval files and trade tables both publish it alongside `Δw (season)`** — eval player tables before the season-tagged columns (`Eval Template.md`).
 
 Formula, `R`, `K`, and when not to use it: `Delta w.md`.
 
