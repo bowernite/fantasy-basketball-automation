@@ -14,6 +14,8 @@ Age screen (9/24): Brett wants the Cade → Brunson move to buy a big window bum
 
 Age lens (rough): prefer not to get meaningfully older — incoming Porter 28 / NAW 28 / Ja 27 / Claxton 27 over Brunson 30 / Tatum 29 / Gobert 34 when numbers are close. Contending still buys Brunson/Tatum; they sit lower in tier/sort vs similar youth paths.
 
+Hali angle (9/24): Haliburton (26.5) as the youth-in piece instead of Brunson prices far worse — best Hali shape is +6% `ΔP(title)` vs +13–14% for the Brunson + Porter + NAW + Claxton frame. Hali's 62g and our guard glut cap him. Not the way to get younger.
+
 * pick in deal: Sept '26 picks count their mock rookie's projection, later picks 0.
 
 ## Above floor
@@ -77,6 +79,8 @@ Cade(25,48p,68g)+Smith(23,29p,74g)+Walker(23,20p,72g) > Tatum(29,45p,70g)+Brunso
 Smith(23,29p,74g)+Kuminga(24,19p,69g)+'27 1st > Brunson(30,39p,72g) | +300 +0.5* +0.7 +8%
 Eason(25,26p,64g)+Walker(23,20p,72g) > Porter(28,37p,64g) | +300 +0.4 +0.5 +8%
 Cade(25,48p,68g)+Green(25,30p,71g) > Tatum(29,45p,70g)+Brunson(30,39p,72g) | +900 +0.6 +0.9 +7%
+Cade(25,48p,68g) > Haliburton(27,39p,62g)+Porter(28,37p,64g)+Claxton(27,31p,72g) | +1300 +1.7 +0.6 +6%
+Cade(25,48p,68g)+Sharpe(23,27p,0g) > Haliburton(27,39p,62g)+Porter(28,37p,64g)+NAW(28,31p,74g) | +800 +1.2 +0.8 +6%
 Vassell(26,25p,68g) > Porter(28,37p,64g) | +600 +0.8 +0.4 +7%
 Smith(23,29p,74g) > Porter(28,37p,64g) | +500 +0.5 +0.5 +7%
 Suggs(25,29p,58g) > Porter(28,37p,64g) | +100 +0.6 +0.5 +7%
@@ -86,6 +90,7 @@ Cade(25,48p,68g) > Tatum(29,45p,70g)+NAW(28,31p,74g) | +900 +1.0 +0.7 +5% | Us p
 Sharpe(23,27p,0g) > NAW(28,31p,74g) | +900 +0.5 +0.7 +5%
 Cade(25,48p,68g) > Tatum(29,45p,70g)+Claxton(27,31p,72g) | +400 +0.9 +0.5 +5%
 Suggs(25,29p,58g)+Walker(23,20p,72g) > NAW(28,31p,74g)+Claxton(27,31p,72g) | +1300 +1.1 +0.7 +5%
+Cade(25,48p,68g)+Kuminga(24,19p,69g) > Haliburton(27,39p,62g)+Porter(28,37p,64g)+NAW(28,31p,74g) | +1100 +1.5 +0.6 +5%
 Green(25,30p,71g)+'27 1st > Brunson(30,39p,72g) | +500 +0.8* +0.7 +5%
 Mark(25,29p,10g) > NAW(28,31p,74g) | +600 +0.4 +0.7 +4%
 Mark(25,29p,10g) > Claxton(27,31p,72g) | +100 +0.3 +0.5 +4%
@@ -111,6 +116,8 @@ Green(25,30p,71g)+Kuminga(24,19p,69g)+Walker(23,20p,72g) > Brunson(30,39p,72g) |
 Eason(25,26p,64g)+Green(25,30p,71g) > Brunson(30,39p,72g) | +800 +0.1 +0.6 +4%
 Green(25,30p,71g)+Mark(25,29p,10g) > Brunson(30,39p,72g) | +600 0.0 +0.8 +4%
 Murray(26,28p,72g)+Smith(23,29p,74g) > Brunson(30,39p,72g) | +800 0.0 +0.5 +4%
+Cade(25,48p,68g)+Suggs(25,29p,58g) > Haliburton(27,39p,62g)+Porter(28,37p,64g)+NAW(28,31p,74g) | +100 +1.0 +0.5 +4%
+Cade(25,48p,68g)+Garland(27,37p,67g) > Brunson(30,39p,72g)+Haliburton(27,39p,62g)+Porter(28,37p,64g) | 0 +0.9 +0.5 +4%
 Kuminga(24,19p,69g)+'27 1st > NAW(28,31p,74g) | -200 +0.9* +0.5 +4%
 Cade(25,48p,68g) > Tatum(29,45p,70g)+Gobert(34,32p,71g) | +100 +1.0 +0.6 +4%
 Edey(24,35p,58g)+Kuminga(24,19p,69g) > Brunson(30,39p,72g) | +400 +0.3 +0.4 +4%
@@ -139,6 +146,7 @@ Green(25,30p,71g)+Smith(23,29p,74g)+'27 1st > Brunson(30,39p,72g) | -700 -0.2* +
 Bane(28,33p,74g) > Porter(28,37p,64g) | -600 +0.1 +0.2 +3%
 Bridges(29,32p,74g) > Porter(28,37p,64g) | +600 +0.2 +0.3 +2%
 Cade(25,48p,68g) > Tatum(29,45p,70g)+Dosunmu(27,26p,73g) | -100 +0.6 +0.3 +2%
+Cade(25,48p,68g) > Haliburton(27,39p,62g)+Porter(28,37p,64g) | -100 +0.6 +0.2 +1%
 Edey(24,35p,58g) > Porter(28,37p,64g) | -800 +0.3 +0.2 +2%
 Cade(25,48p,68g) > Tatum(29,45p,70g)+Walter(22,17p,74g) | -800 +0.1 +0.2 +2%
 White(27,32p,70g) > NAW(28,31p,74g) | +500 0.0 +0.2 +1%
@@ -165,6 +173,7 @@ Cade(25,48p,68g)+Green(25,30p,71g) > Brunson(30,39p,72g)+Porter(28,37p,64g)+'26 
 Collins(29,29p,72g)+Walker(23,20p,72g) > Brunson(30,39p,72g) | +2400 +0.5 +0.6 +5%
 Cade(25,48p,68g) > Brunson(30,39p,72g)+'26 1.01 | +2300 +0.6* +0.3 +3%
 Cade(25,48p,68g) > Brunson(30,39p,72g)+Porter(28,37p,64g)+NAW(28,31p,74g)+'28 1st | +2000 +2.0* +0.9 +9%
+Cade(25,48p,68g) > Brunson(30,39p,72g)+Haliburton(27,39p,62g) | +1700 +1.0 +0.4 +3%
 Cade(25,48p,68g)+Bane(28,33p,74g) > Brunson(30,39p,72g)+Porter(28,37p,64g)+'26 1.01 | +1700 +0.8* +0.5 +7%
 Cade(25,48p,68g) > Brunson(30,39p,72g)+Porter(28,37p,64g)+NAW(28,31p,74g)+'27 1st | +1700 +2.0* +0.9 +9%
 Smith(23,29p,74g)+Walker(23,20p,72g) > NAW(28,31p,74g)+Claxton(27,31p,72g) | +1700 +1.0 +0.6 +4%
@@ -192,6 +201,7 @@ Giddey(24,42p,69g)+Kuminga(24,19p,69g)+Walker(23,20p,72g) > Haliburton(27,39p,62
 Giddey(24,42p,69g)+Walker(23,20p,72g)+'27 1st > Haliburton(27,39p,62g) | -200 -0.7* -0.4 -6%
 Suggs(25,29p,58g)+Green(25,30p,71g)+Smith(23,29p,74g)+Walker(23,20p,72g) > Haliburton(27,39p,62g) | +1100 -1.5 -0.2 -6%
 Giddey(24,42p,69g)+Walker(23,20p,72g) > Ja(27,28p,60g)+NAW(28,31p,74g) | -1000 -0.4 -0.3 -6%
+Cade(25,48p,68g) > Haliburton(27,39p,62g)+NAW(28,31p,74g) | 0 +0.4 -0.1 -5%
 Giddey(24,42p,69g)+Green(25,30p,71g)+Smith(23,29p,74g) > Tatum(29,45p,70g) | -400 -1.6 -0.3 -5%
 Giddey(24,42p,69g) > Porter(28,37p,64g) | -2700 -0.5 -0.5 -4%
 Giddey(24,42p,69g)+Mark(25,29p,10g)+Smith(23,29p,74g) > Tatum(29,45p,70g) | -100 -1.4 +0.1 +1%
