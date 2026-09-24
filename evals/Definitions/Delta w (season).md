@@ -18,6 +18,6 @@ Expands `Eval Definitions §Δw (season)`.
 - **`Δw (season)` still under-rates ascending youth** — one season, and a projection is a next-season forecast rather than a career curve. Never read a low figure on a young player as a sell signal.
 - **A high-`Δw (season)`/low-BASE row is either a format/roster edge or a rate the boards doubt.** Check the flags and the per-board ranks before calling it a buy — **a gap you cannot explain is a finding about our inputs, not about the market.**
 - **Team-specific, never a price.** What to pay comes from negotiation, not from any column on their table.
-- **Not the same as `Δw`.** Formula `Δw` (`Delta w.md`) ignores the 9-slot cap, the NBA calendar and lineup optimization. **Decide trades with `Δw (season)`**; use formula `Δw` only where no sim run exists.
+- **Not the same as `Δw`.** Formula `Δw` (`Delta w.md`) ignores the 9-slot cap, the NBA calendar, lineup optimization and this season's absences. **Decide trades with `Δw (season)`**; use formula `Δw` only where no sim run exists.
 
 **Untouchable is not an excuse to skip `Δw (season)`** — compute it for names with no realistic path too.
