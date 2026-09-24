@@ -11,7 +11,7 @@ def usage():
     print("       ./run sim_run.py --check <config.json>")
     print("       ./run sim_run.py --write <config.json> [dest.json]")
     print("")
-    print("Team shape archive: evals/teams/<owner>/<Name> Trade Shapes.md")
+    print("Team shape archive: evals/teams/<owner>/<Name>.shapes.md (do not read * Trade Shapes.md)")
     print("Run configs: $TMPDIR/ff-sim-<tag>.json (simlib.runner.sim_tmp_path)")
     print("Skips trade sections/deals that already have results; --refresh re-runs all.")
     print("Set \"refresh\": true on a section to re-run just that block.")
