@@ -4,6 +4,7 @@ import collections, os
 from . import engine, shard
 from .data import DELTA_W_CAL
 from .engine import TRIALS
+from .gp import durable_gp
 from .roster import GROUPS, PAD_NAMES, refuse_already_rostered, slot_group, star, swap
 from .schedule import SIM_TM
 from .stats import block_stats, false_position, slope
@@ -179,7 +180,7 @@ def incoming_wins(roster, players, blocks=None, trials=TRIALS, seed0=101, R=None
 
 
 def formula_player_wins(p):
-    return pf_wins(league_pf(p["avg"], p["gp"]))
+    return pf_wins(league_pf(p["avg"], durable_gp(p)))
 
 
 def deal_formula_wins(in_bodies, out_bodies):

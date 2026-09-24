@@ -224,6 +224,15 @@ def mapped_gp(name, season=SEASON_STR, gp=None, rate=None):
     return a + b * gp + c * min(rate, GP_KNOT)
 
 
+def durable_gp(p):
+    """Projected GP floored at the durability map. A projection under his
+    track record is this-season absence (injury, suspension), not what he is
+    worth. A body the pool has never seen keeps its projection"""
+    if not pool_seasons(p["n"]):
+        return p["gp"]
+    return max(p["gp"], mapped_gp(p["n"]))
+
+
 def project_gp(name, season=SEASON_STR, gp=None, rate=None):
     """`gp` and `rate` only apply when neither Hashtag nor FanScout hits"""
     feed_gp = projected_gp(name)
