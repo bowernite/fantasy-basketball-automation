@@ -1,5 +1,27 @@
 # out > in | ΔBASE Δw Δw(season) ΔP(title) | status
 
+Counterparty: Todd (161022). Tanking — 9th PF, 0.1% title (`Team Projections.md`). Columns: `Out | In` + our four big numbers.
+
+Texts 9/2/26: Brett opened. Todd wants young players; asked if we're win-now. Brett said yes but flexible, asked who on our roster / which picks. 9/10 Brett floated four shapes (Status). 9/11 Todd: interested in Cade. 9/24 Todd: Cade ↔ Brunson + "other pieces obviously" (his side adds). 9/24 Brett: hesitant (Cade better today, we get much older; other pieces must be really good); asked if 1.01 is in play. 9/24 Brett proposed Cade + Sharpe + Mark + Eason + Kuminga for Brunson + Porter + Dëmin + 1.01, pitched as youth and Sharpe/Mark being hurt helps his tank. 9/24 Todd: 1.01 off the table, "probably only thing for me off the table"; would include Hali or Tatum; mulling the 9/10 Tatum + NAW shape. 9/24 Brett floated Cade + Sharpe + Mark + Kuminga for Brunson + Porter + NAW + Claxton + Dëmin + '27 1st, and Cade + Sharpe + Mark for Tatum + Porter + NAW. 9/24 Todd countered: Brunson + Porter + '27 1st for Cade + Sharpe.
+
+No-1.01 screen (9/24): every 1.01 row is dead. Dëmin and his '27 / '28 1sts are the youth left. Lead: Cade + Sharpe + Mark + Kuminga for the Claxton package + Dëmin + '27 1st (+13%, ~1.4 yrs older BASE-weighted vs ~3 for the Dëmin-only rows). Cade + Sharpe for the Claxton package + Dëmin is the best pure window shape. Tatum + Porter + NAW for Cade + Sharpe + Mark matches the window at +14% but thin `Δw`.
+
+Todd counter (9/24 evening): his Brunson + Porter + '27 1st for Cade + Sharpe fails ΔBASE (-1300) and barely moves the window (+0.5 season, +5%). Brunson + Porter alone do not replace Cade; the window lift comes from the extra bodies (NAW / Claxton). Counter lead: add Mark from us, NAW + Claxton from him (+700 +1.7* +1.4 +12%). Smallest fix: his exact shape + NAW (+600 +1.3* +1.0 +9%).
+
+Brunson frame (9/24): Cade → Brunson + Porter + NAW + Claxton/Gobert beats every Tatum shape on all four numbers; fills us to 38 (no 2.09 / FA room).
+
+Screening (9/10/26): 54 shapes, then +75 (angles / young / gap). Hali vs Giddey-tier youth fails `ΔP(title)` hard — do not float. Tatum only works as Cade for Tatum + a side (Porter / NAW / Claxton / Ja). Porter 1-for-1s and `'27 1st` + young are the cleanest info probes. Brunson 2-for-1s in young. Do not float Too lopsided.
+
+Sharpe / Mark angle (9/24): both near-dead for us this season (Sharpe 0g, Mark 10g post-surgery) but young for a tanking Todd. Every Sharpe / Mark / Kyrie / Butler row re-priced 9/24 after the `Δw` healthy-GP fix (`Δw` now prices durable GP; the season columns still use this-season GP). Sending them out now costs ~0.6 `Δw` each.
+
+Age screen (9/24): Brett wants the Cade → Brunson move to buy a big window bump and/or youth back. Lead: 6-for-4 into 1.01 (our young dead weight + depth for Brunson + Porter + NAW + 1.01) — top ΔP(title), younger BASE-weighted; its `Δw` is flat because 1.01 counts only as a rookie there. No-1.01 fallback: Cade + Sharpe + Mark for the Claxton package + Dëmin. Todd won't want older players, so Kyrie/Butler rows are reference only.
+
+Age lens (rough): prefer not to get meaningfully older — incoming Porter 28 / NAW 28 / Ja 27 / Claxton 27 over Brunson 30 / Tatum 29 / Gobert 34 when numbers are close. Contending still buys Brunson/Tatum; they sit lower in tier/sort vs similar youth paths.
+
+Hali angle (9/24): Haliburton (26.5) as the youth-in piece instead of Brunson prices far worse — best Hali shape is +6% `ΔP(title)` vs +13–14% for the Brunson + Porter + NAW + Claxton frame. Hali's 62g and our guard glut cap him. Not the way to get younger.
+
+* pick in deal: Sept '26 picks count their mock rookie's projection, later picks 0.
+
 ## Above floor
 
 Cade(25,48p,68g)+Kuminga(24,19p,69g) > Brunson(30,39p,72g)+Porter(28,37p,64g)+NAW(28,31p,74g)+Claxton(27,31p,72g)+Dëmin(21,25p,68g) | +1200 +3.3 +1.3 +14%
@@ -11,17 +33,15 @@ Cade(25,48p,68g)+Kuminga(24,19p,69g) > Brunson(30,39p,72g)+Porter(28,37p,64g)+NA
 Cade(25,48p,68g)+Walker(23,20p,72g) > Brunson(30,39p,72g)+Porter(28,37p,64g)+NAW(28,31p,74g)+Claxton(27,31p,72g)+Bryant(21,16p,72g) | +1000 +2.9 +1.3 +12%
 Cade(25,48p,68g)+Bona(23,17p,72g) > Brunson(30,39p,72g)+Porter(28,37p,64g)+NAW(28,31p,74g)+Claxton(27,31p,72g)+Bryant(21,16p,72g) | +1200 +3.0 +1.3 +12%
 Cade(25,48p,68g) > Brunson(30,39p,72g)+Porter(28,37p,64g)+NAW(28,31p,74g)+Gobert(34,32p,71g) | +400 +3.1 +1.4 +12%
-Cade(25,48p,68g)+Sharpe(23,27p,0g)+Mark(25,29p,10g)+Kuminga(24,19p,69g)+Eason(25,26p,64g) > Haliburton(27,39p,62g)+Brunson(30,39p,72g)+Porter(28,37p,64g)+Claxton(27,31p,72g) | +800 +1.2 +1.4 +14%
 Cade(25,48p,68g)+Sharpe(23,27p,0g)+Mark(25,29p,10g) > Brunson(30,39p,72g)+Porter(28,37p,64g)+NAW(28,31p,74g)+Claxton(27,31p,72g)+Dëmin(21,25p,68g) | -500 +2.2 +1.4 +14%
 Cade(25,48p,68g)+Sharpe(23,27p,0g)+Mark(25,29p,10g) > Tatum(29,45p,70g)+Porter(28,37p,64g)+NAW(28,31p,74g) | +300 +1.1 +1.4 +14% | Us proposed 9/24
 Cade(25,48p,68g)+Sharpe(23,27p,0g)+Mark(25,29p,10g) > Brunson(30,39p,72g)+Porter(28,37p,64g)+NAW(28,31p,74g)+Claxton(27,31p,72g)+'28 1st | +1000 +1.7* +1.4 +12%
-Cade(25,48p,68g)+Sharpe(23,27p,0g)+Mark(25,29p,10g) > Brunson(30,39p,72g)+Porter(28,37p,64g)+NAW(28,31p,74g)+Claxton(27,31p,72g)+'27 1st | +700 +1.7* +1.4 +12% | Us proposed 9/24
+Cade(25,48p,68g)+Sharpe(23,27p,0g)+Mark(25,29p,10g) > Brunson(30,39p,72g)+Porter(28,37p,64g)+NAW(28,31p,74g)+Claxton(27,31p,72g)+'27 1st | +700 +1.7* +1.4 +12%
 Cade(25,48p,68g)+Butler(37,28p,26g) > Brunson(30,39p,72g)+Porter(28,37p,64g)+NAW(28,31p,74g)+Claxton(27,31p,72g)+Bryant(21,16p,72g) | +700 +2.5 +1.3 +12%
 Cade(25,48p,68g)+Sharpe(23,27p,0g) > Brunson(30,39p,72g)+Porter(28,37p,64g)+NAW(28,31p,74g)+Claxton(27,31p,72g) | -300 +2.4 +1.3 +13%
 Cade(25,48p,68g)+Sharpe(23,27p,0g)+Mark(25,29p,10g)+Eason(25,26p,64g)+Kuminga(24,19p,69g)+Suggs(25,29p,58g) > Brunson(30,39p,72g)+Porter(28,37p,64g)+NAW(28,31p,74g)+'26 1.01 | +200 +0.1* +1.3 +14%
 Cade(25,48p,68g)+Sharpe(23,27p,0g)+Mark(25,29p,10g)+Kuminga(24,19p,69g) > Brunson(30,39p,72g)+Porter(28,37p,64g)+NAW(28,31p,74g)+Claxton(27,31p,72g)+'27 1st | 0 +1.4* +1.3 +12%
 Cade(25,48p,68g) > Brunson(30,39p,72g)+Porter(28,37p,64g)+NAW(28,31p,74g)+Dëmin(21,25p,68g) | +500 +2.5 +1.1 +11%
-Cade(25,48p,68g)+Sharpe(23,27p,0g)+Mark(25,29p,10g)+Kuminga(24,19p,69g) > Haliburton(27,39p,62g)+Porter(28,37p,64g)+NAW(28,31p,74g)+Claxton(27,31p,72g)+Dëmin(21,25p,68g) | +1400 +1.8 +1.1 +10%
 Cade(25,48p,68g)+Walker(23,20p,72g) > Brunson(30,39p,72g)+Porter(28,37p,64g)+NAW(28,31p,74g)+Claxton(27,31p,72g) | +300 +2.7 +1.2 +12%
 Cade(25,48p,68g)+Kuminga(24,19p,69g) > Brunson(30,39p,72g)+Porter(28,37p,64g)+NAW(28,31p,74g)+Claxton(27,31p,72g) | 0 +2.7 +1.2 +12%
 Cade(25,48p,68g)+Sharpe(23,27p,0g)+Mark(25,29p,10g)+Eason(25,26p,64g)+Kuminga(24,19p,69g) > Brunson(30,39p,72g)+Porter(28,37p,64g)+Dëmin(21,25p,68g)+'26 1.01 | +1100 +0.3* +1.0 +13% | Todd rejected 9/24
@@ -30,18 +50,12 @@ Cade(25,48p,68g)+Sharpe(23,27p,0g) > Brunson(30,39p,72g)+Porter(28,37p,64g)+NAW(
 Cade(25,48p,68g)+Mark(25,29p,10g) > Brunson(30,39p,72g)+Porter(28,37p,64g)+NAW(28,31p,74g)+Claxton(27,31p,72g) | -600 +2.3 +1.3 +12%
 Cade(25,48p,68g)+Sharpe(23,27p,0g)+Mark(25,29p,10g)+Kyrie(34,34p,54g)+Kuminga(24,19p,69g) > Brunson(30,39p,72g)+Porter(28,37p,64g)+NAW(28,31p,74g)+'26 1.01 | +1100 +0.4* +1.1 +11%
 Cade(25,48p,68g)+Sharpe(23,27p,0g)+Mark(25,29p,10g)+Kyrie(34,34p,54g)+Eason(25,26p,64g) > Brunson(30,39p,72g)+Porter(28,37p,64g)+NAW(28,31p,74g)+'26 1.01 | +700 +0.1* +1.1 +11%
-Cade(25,48p,68g)+Sharpe(23,27p,0g)+Mark(25,29p,10g) > Haliburton(27,39p,62g)+Porter(28,37p,64g)+NAW(28,31p,74g)+Claxton(27,31p,72g) | +900 +1.5 +1.1 +8%
-Cade(25,48p,68g)+Sharpe(23,27p,0g)+Mark(25,29p,10g) > Haliburton(27,39p,62g)+Porter(28,37p,64g)+NAW(28,31p,74g)+Gobert(34,32p,71g) | +500 +1.5 +1.2 +8%
-Cade(25,48p,68g)+Sharpe(23,27p,0g)+Mark(25,29p,10g) > Haliburton(27,39p,62g)+Porter(28,37p,64g)+Claxton(27,31p,72g)+Gobert(34,32p,71g) | +100 +1.4 +1.1 +8%
-Cade(25,48p,68g)+Sharpe(23,27p,0g)+Mark(25,29p,10g)+Kuminga(24,19p,69g) > Haliburton(27,39p,62g)+Brunson(30,39p,72g)+Porter(28,37p,64g) | +400 +0.7 +1.2 +11%
-Cade(25,48p,68g)+Sharpe(23,27p,0g)+Mark(25,29p,10g)+Kuminga(24,19p,69g) > Haliburton(27,39p,62g)+Porter(28,37p,64g)+NAW(28,31p,74g)+Claxton(27,31p,72g) | +200 +1.2 +1.0 +8%
 Cade(25,48p,68g)+Sharpe(23,27p,0g)+Mark(25,29p,10g) > Brunson(30,39p,72g)+Porter(28,37p,64g)+NAW(28,31p,74g)+Dëmin(21,25p,68g)+'27 1st | +500 +1.2* +1.1 +10%
 Cade(25,48p,68g) > Brunson(30,39p,72g)+Porter(28,37p,64g)+NAW(28,31p,74g)+Bryant(21,16p,72g) | 0 +2.1 +1.1 +10%
 Cade(25,48p,68g)+Sharpe(23,27p,0g) > Brunson(30,39p,72g)+Porter(28,37p,64g)+NAW(28,31p,74g)+Dëmin(21,25p,68g) | -600 +1.9 +1.1 +11%
 Sharpe(23,27p,0g)+Mark(25,29p,10g)+Kuminga(24,19p,69g) > Brunson(30,39p,72g) | +600 +0.1 +1.1 +10%
 Cade(25,48p,68g)+Sharpe(23,27p,0g) > Brunson(30,39p,72g)+Porter(28,37p,64g)+NAW(28,31p,74g)+'27 1st | +600 +1.3* +1.0 +9%
 Cade(25,48p,68g)+Sharpe(23,27p,0g)+Mark(25,29p,10g)+Eason(25,26p,64g) > Brunson(30,39p,72g)+Porter(28,37p,64g)+'26 1.01 | +600 0.0* +1.0 +11%
-Cade(25,48p,68g)+Sharpe(23,27p,0g)+Mark(25,29p,10g)+Eason(25,26p,64g) > Haliburton(27,39p,62g)+Brunson(30,39p,72g)+Porter(28,37p,64g) | 0 +0.4 +1.1 +10%
 Sharpe(23,27p,0g)+Mark(25,29p,10g) > NAW(28,31p,74g)+Claxton(27,31p,72g) | +1000 +0.8 +1.1 +8%
 Cade(25,48p,68g)+Kyrie(34,34p,54g) > Brunson(30,39p,72g)+Porter(28,37p,64g)+NAW(28,31p,74g)+Claxton(27,31p,72g)+Bryant(21,16p,72g) | -400 +2.1 +1.0 +9%
 Cade(25,48p,68g) > Brunson(30,39p,72g)+Porter(28,37p,64g)+Claxton(27,31p,72g)+'27 1st | +1200 +1.9* +0.8 +9%
@@ -53,7 +67,6 @@ Cade(25,48p,68g)+Sharpe(23,27p,0g) > Brunson(30,39p,72g)+Porter(28,37p,64g)+Clax
 Cade(25,48p,68g)+Walker(23,20p,72g) > Brunson(30,39p,72g)+Porter(28,37p,64g)+NAW(28,31p,74g)+'27 1st | +1200 +1.6* +0.9 +8%
 Cade(25,48p,68g)+Sharpe(23,27p,0g) > Brunson(30,39p,72g)+Porter(28,37p,64g)+Gobert(34,32p,71g)+'27 1st | -200 +1.3* +0.9 +8%
 Cade(25,48p,68g)+Garland(27,37p,67g)+Mark(25,29p,10g) > Brunson(30,39p,72g)+Porter(28,37p,64g)+NAW(28,31p,74g)+'26 1.01 | +1200 +1.0* +0.9 +9%
-Cade(25,48p,68g)+Garland(27,37p,67g)+Mark(25,29p,10g) > Haliburton(27,39p,62g)+Brunson(30,39p,72g)+Porter(28,37p,64g)+Claxton(27,31p,72g) | +100 +1.3 +0.9 +9%
 Cade(25,48p,68g)+Sharpe(23,27p,0g)+Mark(25,29p,10g)+Eason(25,26p,64g)+Kyrie(34,34p,54g) > Brunson(30,39p,72g)+Porter(28,37p,64g)+Claxton(27,31p,72g)+'26 1.01 | +200 0.0* +0.9 +10%
 Cade(25,48p,68g)+Garland(27,37p,67g)+Sharpe(23,27p,0g)+Mark(25,29p,10g) > Brunson(30,39p,72g)+Porter(28,37p,64g)+NAW(28,31p,74g)+'26 1.01 | +100 +0.4* +0.9 +9%
 Cade(25,48p,68g)+Sharpe(23,27p,0g)+Mark(25,29p,10g) > Brunson(30,39p,72g)+Porter(28,37p,64g)+NAW(28,31p,74g)+'27 1st | -700 +0.6* +1.0 +9%
@@ -65,7 +78,6 @@ Cade(25,48p,68g)+Garland(27,37p,67g)+Suggs(25,29p,58g) > Brunson(30,39p,72g)+Por
 Cade(25,48p,68g)+Sharpe(23,27p,0g) > Brunson(30,39p,72g)+Porter(28,37p,64g)+Dëmin(21,25p,68g)+'27 1st | -100 +0.8* +0.6 +7%
 Cade(25,48p,68g) > Tatum(29,45p,70g)+Porter(28,37p,64g) | +700 +1.3 +0.8 +10% | Us proposed 9/10
 Cade(25,48p,68g) > Brunson(30,39p,72g)+Porter(28,37p,64g)+NAW(28,31p,74g) | -700 +2.0 +1.0 +9%
-Cade(25,48p,68g)+Sharpe(23,27p,0g)+Mark(25,29p,10g)+Eason(25,26p,64g) > Haliburton(27,39p,62g)+Porter(28,37p,64g)+NAW(28,31p,74g)+Claxton(27,31p,72g) | -300 +0.9 +1.0 +8%
 Eason(25,26p,64g) > Porter(28,37p,64g) | +700 +0.8 +0.7 +9% | Us proposed 9/10
 Mark(25,29p,10g) > Porter(28,37p,64g) | +400 +0.6 +0.8 +9%
 Cade(25,48p,68g)+Suggs(25,29p,58g) > Brunson(30,39p,72g)+Porter(28,37p,64g)+NAW(28,31p,74g)+'27 1st | 0 +1.2* +0.7 +8%
@@ -85,16 +97,8 @@ Cade(25,48p,68g)+Smith(23,29p,74g)+Walker(23,20p,72g) > Tatum(29,45p,70g)+Brunso
 Smith(23,29p,74g)+Kuminga(24,19p,69g)+'27 1st > Brunson(30,39p,72g) | +300 +0.5* +0.7 +8%
 Eason(25,26p,64g)+Walker(23,20p,72g) > Porter(28,37p,64g) | +300 +0.4 +0.5 +8%
 Cade(25,48p,68g)+Green(25,30p,71g) > Tatum(29,45p,70g)+Brunson(30,39p,72g) | +900 +0.6 +0.9 +7%
-Cade(25,48p,68g)+Sharpe(23,27p,0g)+Mark(25,29p,10g) > Haliburton(27,39p,62g)+Porter(28,37p,64g)+NAW(28,31p,74g)+Dëmin(21,25p,68g) | +600 +1.0 +0.9 +7%
-Cade(25,48p,68g)+Sharpe(23,27p,0g)+Mark(25,29p,10g) > Haliburton(27,39p,62g)+Brunson(30,39p,72g)+Claxton(27,31p,72g) | +800 +0.7 +0.9 +7%
-Cade(25,48p,68g)+Sharpe(23,27p,0g)+Mark(25,29p,10g)+Kuminga(24,19p,69g) > Haliburton(27,39p,62g)+Porter(28,37p,64g)+Claxton(27,31p,72g)+Dëmin(21,25p,68g) | -600 +0.7 +0.7 +7%
-Cade(25,48p,68g)+Sharpe(23,27p,0g)+Mark(25,29p,10g) > Haliburton(27,39p,62g)+Brunson(30,39p,72g)+Gobert(34,32p,71g) | +400 +0.7 +1.0 +6%
-Cade(25,48p,68g)+Sharpe(23,27p,0g)+Mark(25,29p,10g)+Kuminga(24,19p,69g) > Haliburton(27,39p,62g)+Brunson(30,39p,72g)+NAW(28,31p,74g) | +600 +0.5 +0.9 +6%
-Cade(25,48p,68g)+Sharpe(23,27p,0g)+Mark(25,29p,10g)+Kuminga(24,19p,69g) > Haliburton(27,39p,62g)+Brunson(30,39p,72g)+Claxton(27,31p,72g) | +100 +0.4 +0.9 +6%
 Cade(25,48p,68g) > Haliburton(27,39p,62g)+Porter(28,37p,64g)+Claxton(27,31p,72g) | +1300 +1.7 +0.6 +6%
-Cade(25,48p,68g) > Haliburton(27,39p,62g)+Porter(28,37p,64g)+Gobert(34,32p,71g) | +1000 +1.7 +0.6 +5%
 Cade(25,48p,68g)+Sharpe(23,27p,0g) > Haliburton(27,39p,62g)+Porter(28,37p,64g)+NAW(28,31p,74g) | +800 +1.2 +0.8 +6%
-Cade(25,48p,68g)+Sharpe(23,27p,0g) > Haliburton(27,39p,62g)+Porter(28,37p,64g)+Claxton(27,31p,72g) | +300 +1.1 +0.6 +6%
 Vassell(26,25p,68g) > Porter(28,37p,64g) | +600 +0.8 +0.4 +7%
 Smith(23,29p,74g) > Porter(28,37p,64g) | +500 +0.5 +0.5 +7%
 Suggs(25,29p,58g) > Porter(28,37p,64g) | +100 +0.6 +0.5 +7%
@@ -112,7 +116,6 @@ Mark(25,29p,10g) > Claxton(27,31p,72g) | +100 +0.3 +0.5 +4%
 ## Floor
 
 Bane(28,33p,74g)+Kuminga(24,19p,69g) > Brunson(30,39p,72g) | +600 +0.2 +0.5 +6%
-Cade(25,48p,68g)+Sharpe(23,27p,0g)+Mark(25,29p,10g)+Kuminga(24,19p,69g) > Haliburton(27,39p,62g)+Porter(28,37p,64g)+Claxton(27,31p,72g)+'27 1st | +700 +0.1* +0.6 +5%
 Suggs(25,29p,58g)+Smith(23,29p,74g) > Brunson(30,39p,72g) | +700 0.0 +0.5 +6%
 Hunter(29,19p,66g)+Smith(23,29p,74g) > Porter(28,37p,64g) | 0 +0.2 +0.5 +6%
 Cade(25,48p,68g) > Brunson(30,39p,72g)+Porter(28,37p,64g)+'26 2.04+'26 2.08 | -900 +1.3* +0.5 +6%
@@ -140,7 +143,6 @@ Edey(24,35p,58g)+Kuminga(24,19p,69g) > Brunson(30,39p,72g) | +400 +0.3 +0.4 +4%
 Camara(26,26p,76g)+Walker(23,20p,72g) > Porter(28,37p,64g) | +300 +0.4 +0.1 +4%
 Walker(23,20p,72g)+'27 1st > NAW(28,31p,74g) | +100 +0.8* +0.5 +3%
 Green(25,30p,71g) > Porter(28,37p,64g) | +100 +0.4 +0.5 +3%
-Cade(25,48p,68g) > Haliburton(27,39p,62g)+Porter(28,37p,64g)+Dëmin(21,25p,68g) | +1100 +1.2 +0.3 +3%
 Cade(25,48p,68g)+Garland(27,37p,67g) > Brunson(30,39p,72g)+Porter(28,37p,64g)+'26 1.01 | +600 +0.6* +0.3 +3%
 Suggs(25,29p,58g)+Green(25,30p,71g) > Brunson(30,39p,72g) | +300 0.0 +0.5 +3%
 Garland(27,37p,67g) > Brunson(30,39p,72g) | +100 +0.3 +0.3 +3%
@@ -222,13 +224,10 @@ Giddey(24,42p,69g)+Kuminga(24,19p,69g)+Walker(23,20p,72g) > Haliburton(27,39p,62
 Giddey(24,42p,69g)+Walker(23,20p,72g)+'27 1st > Haliburton(27,39p,62g) | -200 -0.7* -0.4 -6%
 Suggs(25,29p,58g)+Green(25,30p,71g)+Smith(23,29p,74g)+Walker(23,20p,72g) > Haliburton(27,39p,62g) | +1100 -1.5 -0.2 -6%
 Giddey(24,42p,69g)+Walker(23,20p,72g) > Ja(27,28p,60g)+NAW(28,31p,74g) | -1000 -0.4 -0.3 -6%
-Cade(25,48p,68g)+Sharpe(23,27p,0g)+Mark(25,29p,10g) > Haliburton(27,39p,62g)+NAW(28,31p,74g)+'27 1st | 0 -1.0* 0.0 -5%
 Cade(25,48p,68g) > Haliburton(27,39p,62g)+NAW(28,31p,74g) | 0 +0.4 -0.1 -5%
 Giddey(24,42p,69g)+Green(25,30p,71g)+Smith(23,29p,74g) > Tatum(29,45p,70g) | -400 -1.6 -0.3 -5%
 Giddey(24,42p,69g) > Porter(28,37p,64g) | -2700 -0.5 -0.5 -4%
-Cade(25,48p,68g)+Sharpe(23,27p,0g) > Haliburton(27,39p,62g)+Claxton(27,31p,72g)+'27 1st | +900 -0.3* -0.2 -4%
 Giddey(24,42p,69g)+Mark(25,29p,10g)+Smith(23,29p,74g) > Tatum(29,45p,70g) | -100 -1.4 +0.1 +1%
-Cade(25,48p,68g)+Sharpe(23,27p,0g)+Mark(25,29p,10g) > Haliburton(27,39p,62g)+Porter(28,37p,64g)+'27 1st | -100 -0.7* +0.2 +1%
 Giddey(24,42p,69g) > Ja(27,28p,60g)+NAW(28,31p,74g) | -600 -0.1 -0.1 -4%
 Giddey(24,42p,69g)+Edey(24,35p,58g)+'26 2.09 > Tatum(29,45p,70g) | -700 -0.9* -0.2 -4%
 Giddey(24,42p,69g)+Edey(24,35p,58g) > Tatum(29,45p,70g) | 0 -0.8 -0.2 -3%
@@ -245,7 +244,6 @@ White(27,32p,70g) > Ja(27,28p,60g) | +500 -0.5 -0.1 -1%
 Camara(26,26p,76g) > Claxton(27,31p,72g) | +300 +0.3 -0.1 -1%
 Collins(29,29p,72g) > Gobert(34,32p,71g) | +300 +0.2 +0.1 -1%
 Queta(27,26p,74g) > Gobert(34,32p,71g) | +300 +0.4 +0.2 -1%
-Cade(25,48p,68g)+Sharpe(23,27p,0g) > Haliburton(27,39p,62g)+NAW(28,31p,74g)+Claxton(27,31p,72g) | +400 +0.8 +0.4 0%
 Giddey(24,42p,69g)+Suggs(25,29p,58g)+Walker(23,20p,72g) > Tatum(29,45p,70g) | +400 -0.8 0.0 0%
 Green(25,30p,71g)+Smith(23,29p,74g) > Porter(28,37p,64g) | -1100 -0.6 +0.1 0%
 Smith(23,29p,74g)+Walker(23,20p,72g) > Ja(27,28p,60g) | +300 -0.6 0.0 0%
