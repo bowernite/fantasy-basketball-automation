@@ -6,6 +6,8 @@ Texts 9/25: we told him about the Cade sweepstakes. He replied "Now that does sp
 
 He rejected both sent shapes 9/25: "Both of those seem a bit steep to me. I think Cade > Deni but not by a ton in fantasy. Their dif was only 5 points, don't think that's worth giving up a mid 30s in JJJ and high 20s-low 30s in Queen. I have negative interest in Kuminga lol", then "I think the most I'd be willing to do is something like Deni + one other guy for Cade. Otherwise I'd be more open to trades once I see how these rooks of mine look after some nba action". He values players by FPts/G. Leave Kuminga and his Sept '26 rookies out of shapes.
 
+Rule (9/25): Flagg is virtually untouchable (Brett). No new In-side Flagg shapes.
+
 Older notes that still matter:
 - Kessler: he has turned it down every time (7/29, 9/3, 9/4 "Probably not trading Kessler"). He values him at "high 30s/low 40s with Luka".
 - Franz: 9/3 he wasn't interested, but on 7/29 he said he'd move him for a top 5 pick.
@@ -20,17 +22,25 @@ Score is the first number on each row (sim `score_us`); Δage is the last (sim `
 
 Sims 9/25/26 use Mitch's roster file from 9/2 (every row re-priced 9/25/26 for Score). His Sept '26 pick BASE comes from his eval: 1.04 3460, 1.08 2104, 1.10 1457, 2.03 971. His '27 1st is priced at the 1425 floor of its range. Our Don '27 2nd is priced 775, KC '27 2nd 900. No cuts: every shape stays at or under 38 bodies.
 
-The two `Cade+'27 1st+'28 1st+… > Deni+Flagg` rows are pick arithmetic, not simmed: the `Cade > Deni+Flagg` row minus the added picks' BASE. Δage is `~`.
+The two `Cade+'27 1st+'28 1st+… > Deni+Flagg` rows are pick arithmetic, not simmed: the `Cade > Deni+Flagg` row minus the added picks' BASE. Δage is `~`. Same for `Cade+KC '27 2nd`, `Cade+'26 2.09+own '27 2nd` and `Cade+Melton+own '27 2nd > Deni+Franz+Queen` (base rows `Cade`, `Cade+'26 2.09` and `Cade+Melton > Deni+Franz+Queen`), with Δage worked by hand per `trades` §Age.
 
 ## Above floor
 
 Cade+Kuminga > Deni+Franz+Queen | +3000 +1200 +1.8 +1.0 +14% -1.1
 Cade+Don '27 2nd > Deni+Franz+Queen | +3000 +1100 +2.1 +1.0 +14% -0.4
 Cade+'26 2.09 > Deni+Kessler+JJJ | +2900 +1100 +1.9 +1.0 +14% +0.9
+Cade+KC '27 2nd > Deni+Franz+Queen | +2900 +1000 +2.1 +1.0 +14% -0.3
+Cade+Butler > Deni+Franz+Queen | +2800 +1200 +1.5 +0.9 +13% -2.5
+Cade+Simons > Deni+Franz+Queen | +2800 +1200 +1.8 +0.8 +12% -1.3
 Cade+Kuminga > Deni+Kessler+JJJ | +2800 +1100 +1.7 +1.0 +13% +0.4
 Cade+Don '27 2nd > Deni+Kessler+JJJ | +2800 +1000 +2.0 +1.0 +14% +1.1
 Cade+Sharpe > Deni+Franz+Queen | +2600 +900 +1.5 +1.1 +14% -1.1
-Cade+'27 1st+'28 1st+own '27 2nd > Deni+Flagg | +2600 +900 +1.6 +1.0 +14% ~
+Cade+'26 2.09+own '27 2nd > Deni+Franz+Queen | +2600 +700 +2.0 +1.0 +14% +0.1
+Cade+'27 1st+'28 1st+own '27 2nd > Deni+Flagg | +2600 +900 +1.6 +1.0 +14% ~ | Us proposed 9/25
+Cade+Gordon > Deni+Franz+Queen | +2500 +1000 +1.4 +0.7 +12% -2.5
+Cade+Queta > Deni+Franz+Queen | +2500 +1100 +1.5 +0.7 +11% -1.6
+Cade+Poeltl > Deni+Franz+Queen | +2500 +900 +1.7 +0.9 +12% -1.9
+Cade+Melton+own '27 2nd > Deni+Franz+Queen | +2500 +900 +1.6 +0.8 +12% -1.0
 Cade+Simons > Deni+Kessler+JJJ | +2500 +1100 +1.6 +0.8 +11% +0.1
 Cade+Kuminga+Hunter > Deni+Franz+Queen | +2500 +700 +1.6 +1.0 +14% -1.2 | Mitch rejected 9/25
 Cade+Kuminga+Walker > Deni+Franz+Queen | +2500 +800 +1.5 +0.9 +13% -1.0
@@ -39,8 +49,11 @@ Cade+'27 1st+'28 1st+'28 2nd > Deni+Flagg | +2500 +800 +1.6 +1.0 +14% ~
 ## Floor
 
 Cade > Deni+JJJ+Queen | +2400 +900 +1.8 +0.8 +12% -0.6 | Mitch rejected 9/25
+Cade+Melton+Hunter > Deni+Franz+Queen | +2400 +1000 +1.3 +0.8 +11% -1.8
+Cade+Melton+'26 2.09 > Deni+Franz+Queen | +2400 +800 +1.5 +0.8 +12% -1.1
 Cade+Eason > Deni+Franz+Queen | +2400 +800 +1.5 +0.9 +13% -1.2
 Cade+Sharpe > Deni+Kessler+JJJ | +2400 +700 +1.4 +1.1 +13% +0.3
+Cade+Collins > Deni+Franz+Queen | +2300 +1100 +1.2 +0.6 +10% -2.2
 Cade > Deni+Kessler+Queen | +2300 +500 +2.2 +1.1 +14% -1.1
 Cade+Sharpe > Deni+JJJ+Keyonte | +2300 +1000 +1.0 +0.7 +12% -0.2
 Cade+Kuminga+Hunter > Deni+Kessler+JJJ | +2300 +600 +1.5 +1.0 +13% +0.2
@@ -49,6 +62,9 @@ Cade > Deni+Keyonte+Queen | +2200 +700 +1.8 +0.7 +12% -1.7
 Cade+Mark > Deni+Franz+Queen | +2200 +600 +1.4 +1.1 +14% -1.1
 Cade+Eason > Deni+Kessler+JJJ | +2200 +600 +1.4 +0.9 +13% +0.2
 Cade+Kuminga+'26 2.09 > Deni+Kessler+JJJ | +2100 +400 +1.6 +1.0 +13% +1.0
+Cade+Butler+'26 2.09 > Deni+Franz+Queen | +2100 +500 +1.4 +1.0 +13% -1.8
+Cade+VanVleet > Deni+Franz+Queen | +2100 +500 +1.5 +0.9 +13% -2.6
+Cade+Butler+Melton > Deni+Franz+Queen | +2100 +700 +1.0 +0.7 +11% -2.8
 Cade+'28 1st > Deni+Kessler+JJJ | +2100 +300 +2.0 +1.0 +14% +2.1
 Cade > Franz+JJJ+Queen | +2000 +700 +1.7 +0.6 +11% -1.0
 Cade+Sharpe > Franz+Kessler+JJJ | +2000 +500 +1.3 +0.9 +13% +0.1
@@ -63,20 +79,30 @@ Cade > Franz+Kessler+Queen | +1900 +200 +2.1 +0.9 +13% -1.4
 Cade > Kessler+JJJ+'26 1.04 | +1900 +1000 +1.2 +0.3 +7% -0.8
 Cade+Mark > Deni+Keyonte+Kessler | +1900 +200 +1.2 +0.9 +14% -0.7
 Cade > Deni+Kessler+'26 1.08 | +1900 +800 +1.1 +0.5 +8% -1.0
+Cade > Deni+Keyonte+CMB | +1800 +1000 +1.1 +0.2 +8% -1.5
 Cade > Franz+Keyonte+Queen | +1800 +500 +1.7 +0.5 +11% -2.2
 Cade+Hunter > Deni+Kessler+Queen | +1700 -100 +1.9 +1.1 +13% -1.2
 Cade+Kuminga > Deni+JJJ+Queen | +1700 +200 +1.5 +0.8 +12% -0.6
 Cade+Sharpe+Kuminga > Deni+Kessler+JJJ | +1700 0 +1.1 +1.0 +13% +0.4
+Cade+Queta+Melton > Deni+Franz+Queen | +1700 +700 +0.9 +0.5 +8% -2.0
+Cade+Gordon+Melton > Deni+Franz+Queen | +1700 +600 +0.9 +0.5 +9% -2.8
+Cade > Deni+Franz+Riley | +1600 +900 +0.9 +0.4 +7% -0.1
 Cade+Mark > Franz+Kessler+JJJ | +1600 +200 +1.1 +0.9 +12% +0.1
 Cade+Kuminga > Deni+Kessler+Queen | +1600 -200 +1.9 +1.0 +14% -1.1
 Cade > Kessler+JJJ+Keyonte | +1600 +400 +1.5 +0.5 +10% -0.5
+Cade+Melton > Deni+Keyonte+Queen | +1500 +300 +1.3 +0.5 +10% -2.3
+Cade > Deni+Franz+Risacher | +1500 +800 +0.9 +0.4 +7% -0.1
 Cade+Mark+Kuminga > Deni+Franz+Queen | +1500 -100 +1.1 +1.0 +14% -1.1
 Cade+Don '27 2nd > Deni+Kessler+Queen | +1500 -300 +2.2 +1.1 +14% -0.3
 Cade+Mark > Franz+JJJ+Keyonte | +1500 +500 +0.7 +0.4 +10% -0.5
 Cade > Deni+Kessler+Reed | +1500 +400 +1.5 +0.6 +9% -0.6
+Cade+Bane > Deni+Franz+Keyonte | +1400 +700 +0.7 +0.3 +6% -1.9
+Cade+Green > Luka+Reed | +1400 +1000 +0.3 +0.4 +2% +1.1
 Cade > Deni+JJJ+'26 1.10 | +1300 +700 +1.0 +0.3 +5% -0.5
 Cade > Deni+Kessler+'26 1.10 | +1300 +200 +1.3 +0.6 +8% -1.0
 Cade+Mark+Kuminga > Deni+Kessler+JJJ | +1300 -300 +1.0 +1.0 +13% +0.4
+Cade+Garland > Luka+JJJ | +1200 +600 +0.3 +0.4 +6% +1.2
+Cade+Collins > Deni+Franz+Reed | +1200 +1100 +0.6 0.0 +2% -1.8
 Cade+Sharpe > Deni+Kessler+Queen | +1200 -600 +1.6 +1.1 +14% -1.1
 Cade+Kuminga+Hunter > Deni+JJJ+Queen | +1200 -300 +1.3 +0.8 +11% -0.7
 Cade+Kuminga+Hunter > Deni+Kessler+Queen | +1100 -700 +1.6 +1.0 +13% -1.2
@@ -86,6 +112,7 @@ Cade+Garland > Deni+Flagg | +1000 +700 +0.1 +0.1 +3% -3.5
 Cade > Deni+Franz | +900 +200 +0.8 +0.4 +7% -0.1
 Cade+Sharpe+Mark > Deni+Kessler+JJJ | +900 -600 +0.6 +1.1 +13% +0.3
 Cade+Mark > Deni+JJJ+Queen | +900 -400 +1.1 +0.8 +11% -0.6
+Cade+Collins > Deni+JJJ+Queen | +900 +100 +0.9 +0.3 +7% -1.8
 Cade+Mark > Deni+Kessler+Queen | +800 -900 +1.4 +1.1 +14% -1.1
 Cade+Bane > Flagg+Kessler | +800 +300 +0.3 +0.2 +5% -4.6
 Cade+Sharpe > Deni+Kessler+'26 1.08 | +700 -200 +0.5 +0.6 +8% -1.0
@@ -114,10 +141,16 @@ Cade+Garland > Flagg+Kessler | -800 -900 +0.1 -0.1 +2% -4.1
 ## Too lopsided
 
 Cade > Deni+Flagg | +6000 +4300 +1.6 +1.0 +14% -2.9
+Cade+Collins > Deni+Franz+Keyonte | +3400 +2300 +1.0 +0.4 +10% -1.9
+Cade > Deni+Franz+Queen | +3800 +1900 +2.1 +1.0 +14% -1.1
 Cade+Bane > Deni+Flagg | +2500 +1900 +0.3 +0.3 +5% -4.0
 Cade > Deni+Kessler+JJJ | +3500 +1800 +2.0 +1.0 +14% +0.3
+Cade+Melton > Deni+Franz+Queen | +3000 +1500 +1.6 +0.8 +12% -1.7
 Cade+Kuminga > Deni+JJJ+Keyonte | +2700 +1400 +1.3 +0.6 +11% -0.2
+Cade+Melton > Deni+Franz+Reed | +2100 +1400 +0.9 +0.3 +5% -1.2
+Cade+Collins > Deni+Franz+CMB | +1900 +1400 +0.6 0.0 +5% -1.9
 Cade+Hunter > Deni+Kessler+JJJ | +3000 +1300 +1.7 +1.0 +13% +0.2
+Cade+'26 2.09 > Deni+Franz+Queen | +3100 +1300 +2.0 +1.0 +14% -0.5
 
 ## Doesn't meet our minimums
 
@@ -133,4 +166,5 @@ Cade+Collins > Deni+Franz | -700 -600 -0.1 -0.2 -1% -1.2
 Cade > Deni+'26 1.04 | -500 -400 +0.1 -0.2 -1% -1.3
 Cade > Deni+Kessler | -400 -1300 +0.8 +0.4 +7% -0.1
 Cade+Mark > Deni+Kessler+'26 1.10 | -200 -1200 +0.6 +0.7 +8% -1.0
+Cade+Collins > Luka | +300 +300 -0.3 +0.1 +1% +0.9
 Cade+Bane+Collins > Deni+Flagg | +700 +1100 -0.6 -0.3 -3% -4.6
