@@ -193,6 +193,27 @@ class ConfigRun(unittest.TestCase):
         self.assertEqual(got["fdw_us"], round(expect_fdw, 2))
         self.assertIn("fdw_them", got)
 
+    def test_trade_screen_score_prices_the_published_numbers_net_of_extra_bodies(self):
+        cfg = {
+            "kind": "trade-screen",
+            "their_roster": 161020,
+            "their_label": "Mitch",
+            "deals": [{
+                "label": "probe",
+                "out_us": ["Jalen Suggs"],
+                "in_from_them": ["Deni Avdija", "Tre Jones"],
+                "out_them": ["Deni Avdija", "Tre Jones"],
+                "in_from_us": ["Jalen Suggs"],
+            }],
+        }
+        with cheap_monte_carlo():
+            out = enrich_config(cfg)
+        got = out["deals"][0]["results"]
+        # one extra incoming body -> formula Δw docked 0.3
+        expect = (got["delta_base_us"] + 300 * (got["fdw_us"] - 0.3)
+                  + 250 * got["dw_us"] + 80 * got["dp_title_us"])
+        self.assertEqual(got["score_us"], round(expect))
+
     def test_trade_screen_title_note_is_both_rosters(self):
         cfg = {
             "kind": "trade-screen",

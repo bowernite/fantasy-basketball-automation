@@ -161,6 +161,23 @@ def bodies(names, roster_rows):
 
 TITLE_NOTE = "both rosters change in the 12-team field"
 
+# Composite score, BASE units (`Eval Definitions §Score`). Formula Δw sums
+# pieces, so it reads ~0.3 high per extra incoming body; docked here.
+SCORE_FDW = 300
+SCORE_DW = 250
+SCORE_DP_TITLE = 80
+SCORE_BODY_FDW = 0.3
+
+
+def deal_score(res, net_bodies):
+    """Our composite from the published (rounded) numbers; None without BASE."""
+    if res["delta_base_us"] is None:
+        return None
+    return round(res["delta_base_us"]
+                 + SCORE_FDW * (res["fdw_us"] - SCORE_BODY_FDW * net_bodies)
+                 + SCORE_DW * res["dw_us"]
+                 + SCORE_DP_TITLE * res["dp_title_us"])
+
 
 def _simmed_date(when=None):
     d = when or date.today()
@@ -373,6 +390,8 @@ def _trade_screen_results(sec, deals=None):
                 "dp_title_note": TITLE_NOTE,
                 "simmed": _simmed_date(),
             }
+            row["results"]["score_us"] = deal_score(
+                row["results"], len(deal["in_from_them"]) - len(deal["out_us"]))
         except (KeyError, ValueError) as e:
             row["results"] = {
                 "error": str(e),
@@ -408,7 +427,7 @@ def _player_effects_results(sec):
 def _print_trade_screen(rows, label):
     print("=== JOINT DEALS (%s) ===" % label)
     stag = season_dw_tag()
-    hdr = ("label\tΔBASE us\tΔw us\tΔw %s us\tΔP(title) us\tΔage us\t"
+    hdr = ("label\tScore us\tΔBASE us\tΔw us\tΔw %s us\tΔP(title) us\tΔage us\t"
            "Δw %s\tΔw %s %s\tΔP(title) %s"
            % (stag, stag, stag, label, label))
     print(hdr)
@@ -420,10 +439,12 @@ def _print_trade_screen(rows, label):
             continue
         base = res.get("delta_base_us")
         base_s = "%+d" % base if base is not None else "–"
+        score = res.get("score_us")
+        score_s = "%+d" % score if score is not None else "–"
         age = res.get("dage_us")
         age_s = "%+.1f" % age if age is not None else "–"
-        print("%s\t%s\t%+.2f\t%+.2f\t%+.1f%%\t%s\t%+.2f\t%+.2f\t%+.1f%%" % (
-            name, base_s,
+        print("%s\t%s\t%s\t%+.2f\t%+.2f\t%+.1f%%\t%s\t%+.2f\t%+.2f\t%+.1f%%" % (
+            name, score_s, base_s,
             res["fdw_us"], res["dw_us"], res["dp_title_us"], age_s,
             res["fdw_them"], res["dw_them"], res["dp_title_them"]))
 
