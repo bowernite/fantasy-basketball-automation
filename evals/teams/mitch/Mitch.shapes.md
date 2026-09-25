@@ -24,6 +24,8 @@ Sims 9/25/26 use Mitch's roster file from 9/2 (every row re-priced 9/25/26 for S
 
 The two `Cade+'27 1st+'28 1st+… > Deni+Flagg` rows are pick arithmetic, not simmed: the `Cade > Deni+Flagg` row minus the added picks' BASE. Δage is `~`. Same for `Cade+KC '27 2nd`, `Cade+'26 2.09+own '27 2nd` and `Cade+Melton+own '27 2nd > Deni+Franz+Queen` (base rows `Cade`, `Cade+'26 2.09` and `Cade+Melton > Deni+Franz+Queen`), with Δage worked by hand per `trades` §Age.
 
+Rows with `Mitch '27`/`'28` picks on the In side (9/25) were simmed for Δage, but the win columns match the base `Cade > Deni+X` row, so Score and ΔBASE are just that row plus the picks' BASE. Pick BASE comes from his eval: '27 1st 1425 (floor), '27 3rd 303 (floor), '28 1st 1524, '28 2nd 645, '28 3rd 357. His own '27 2nd is gone. No Deni+X+his later picks row reaches Todd's Score while staying under +1250 ΔBASE. The ceiling is about +2100 with Kessler and about +2000 with Franz.
+
 ## Above floor
 
 Cade+Kuminga > Deni+Franz+Queen | +3000 +1200 +1.8 +1.0 +14% -1.1
@@ -62,6 +64,7 @@ Cade > Deni+Keyonte+Queen | +2200 +700 +1.8 +0.7 +12% -1.7
 Cade+Mark > Deni+Franz+Queen | +2200 +600 +1.4 +1.1 +14% -1.1
 Cade+Eason > Deni+Kessler+JJJ | +2200 +600 +1.4 +0.9 +13% +0.2
 Cade+Kuminga+'26 2.09 > Deni+Kessler+JJJ | +2100 +400 +1.6 +1.0 +13% +1.0
+Cade > Deni+Kessler+Mitch '28 1st+Mitch '28 2nd+Mitch '27 3rd | +2100 +1200 +0.8 +0.4 +7% -1.9
 Cade+Butler+'26 2.09 > Deni+Franz+Queen | +2100 +500 +1.4 +1.0 +13% -1.8
 Cade+VanVleet > Deni+Franz+Queen | +2100 +500 +1.5 +0.9 +13% -2.6
 Cade+Butler+Melton > Deni+Franz+Queen | +2100 +700 +1.0 +0.7 +11% -2.8
@@ -72,6 +75,8 @@ Cade+Mark > Deni+Kessler+JJJ | +2000 +400 +1.2 +1.0 +13% +0.3
 Cade > Deni+Kessler+CMB | +2000 +700 +1.5 +0.6 +11% -0.7
 Cade+Vassell > Deni+Kessler+JJJ | +2000 +600 +1.4 +0.7 +11% +0.1
 Cade+Mark > Deni+JJJ+Keyonte | +1900 +700 +0.9 +0.6 +11% -0.2
+Cade > Deni+Franz+Mitch '28 2nd+Mitch '28 3rd | +1900 +1200 +0.8 +0.4 +7% -0.9
+Cade+own '27 2nd > Deni+Franz+Mitch '28 1st | +1900 +1200 +0.8 +0.4 +7% -0.6
 
 ## Below bar
 
@@ -142,9 +147,16 @@ Cade+Garland > Flagg+Kessler | -800 -900 +0.1 -0.1 +2% -4.1
 
 Cade > Deni+Flagg | +6000 +4300 +1.6 +1.0 +14% -2.9
 Cade+Collins > Deni+Franz+Keyonte | +3400 +2300 +1.0 +0.4 +10% -1.9
+Cade > Deni+Keyonte+Mitch '27 1st+Mitch '28 1st+Mitch '27 3rd | +2600 +2300 +0.4 0.0 +3% -2.8
+Cade > Deni+JJJ+Mitch '27 1st+Mitch '28 1st | +2500 +2100 +0.4 +0.1 +3% -1.7
+Cade > Deni+Queen+Mitch '27 1st+Mitch '28 1st+Mitch '28 2nd+Mitch '27 3rd+Mitch '28 3rd | +2600 +2100 +0.6 +0.2 +5% -3.4
 Cade > Deni+Franz+Queen | +3800 +1900 +2.1 +1.0 +14% -1.1
 Cade+Bane > Deni+Flagg | +2500 +1900 +0.3 +0.3 +5% -4.0
+Cade > Deni+Franz+Mitch '27 1st+Mitch '27 3rd | +2700 +1900 +0.8 +0.4 +7% -1.3
+Cade+own '27 2nd > Deni+Franz+Mitch '28 1st+Mitch '28 2nd | +2600 +1800 +0.8 +0.4 +7% -1.0
 Cade > Deni+Kessler+JJJ | +3500 +1800 +2.0 +1.0 +14% +0.3
+Cade > Deni+Franz+Mitch '28 1st | +2500 +1700 +0.8 +0.4 +7% -1.4
+Cade > Deni+Kessler+Mitch '27 1st+Mitch '28 1st | +2500 +1700 +0.8 +0.4 +7% -2.0
 Cade+Melton > Deni+Franz+Queen | +3000 +1500 +1.6 +0.8 +12% -1.7
 Cade+Kuminga > Deni+JJJ+Keyonte | +2700 +1400 +1.3 +0.6 +11% -0.2
 Cade+Melton > Deni+Franz+Reed | +2100 +1400 +0.9 +0.3 +5% -1.2
