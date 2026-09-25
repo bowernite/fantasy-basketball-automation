@@ -12,7 +12,7 @@ Sharpe `GPp` = 0 (`overrides-2026.json`).
 | --- | ---: | ---: | ---: | ---: |
 | All six | **+2,892** | **+4.28** | **+2.51** | **+37.7** |
 
-Before `P(title)` 9.2% → after **47.0%** (`My Team.md`).
+Before `P(title)` 9.2% → after **47.0%** (`Ours.team.md`).
 
 ## Now — undo on today's roster
 

@@ -7,7 +7,7 @@ from ..wins import PF_PER_WIN, wins
 
 
 # held fixed so the only variable down a ladder is body count -- not a bucket
-# or a recommendation (those live in `evals/teams/my-team/My Team.md`); shared
+# or a recommendation (those live in `evals/teams/my-team/Ours.team.md`); shared
 # by both reports below so they price the same trade
 FILLER = ["Jalen Suggs", "Coby White", "Myles Turner", "Jakob Poeltl",
           "Naz Reid"]

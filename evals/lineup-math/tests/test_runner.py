@@ -310,6 +310,60 @@ class ConfigRun(unittest.TestCase):
             out = enrich_config(cfg)
         self.assertIn("error", out["deals"][0]["results"])
 
+    def test_trade_screen_age_change_reads_later_picks_from_the_label(self):
+        cfg = {
+            "kind": "trade-screen",
+            "their_roster": 161020,
+            "their_label": "Mitch",
+            "deals": [{
+                "label": "'27 1st > '28 1st",
+                "out_us": [],
+                "in_from_them": [],
+                "out_them": [],
+                "in_from_us": [],
+            }],
+        }
+        with cheap_monte_carlo():
+            out = enrich_config(cfg)
+        self.assertAlmostEqual(out["deals"][0]["results"]["dage_us"], -1.0)
+
+    def test_trade_screen_age_change_weights_picks_by_round(self):
+        cfg = {
+            "kind": "trade-screen",
+            "their_roster": 161020,
+            "their_label": "Mitch",
+            "deals": [{
+                "label": "2.09+'28 1st > '27 2nd",
+                "out_us": [],
+                "in_from_them": [],
+                "out_them": [],
+                "in_from_us": [],
+                "out_us_picks": ["2.09"],
+                "in_from_us_picks": ["2.09"],
+            }],
+        }
+        with cheap_monte_carlo():
+            out = enrich_config(cfg)
+        # out (20 x 300 + 18 x 700) / 1000 = 18.6; in 19
+        self.assertAlmostEqual(out["deals"][0]["results"]["dage_us"], 0.4)
+
+    def test_trade_screen_age_change_reads_a_later_pick_named_by_owner(self):
+        cfg = {
+            "kind": "trade-screen",
+            "their_roster": 161020,
+            "their_label": "Mitch",
+            "deals": [{
+                "label": "'28 1st > '27 KC 2nd",
+                "out_us": [],
+                "in_from_them": [],
+                "out_them": [],
+                "in_from_us": [],
+            }],
+        }
+        with cheap_monte_carlo():
+            out = enrich_config(cfg)
+        self.assertAlmostEqual(out["deals"][0]["results"]["dage_us"], 1.0)
+
     def test_trade_screen_section_meta_has_simmed_date(self):
         cfg = {
             "sections": [{

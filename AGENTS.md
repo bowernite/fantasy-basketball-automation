@@ -17,9 +17,9 @@ Do the following in subagents, parallelize / put in background when possible:
 
 Avoid writing your own scripts whenever possible; rely on your own logic instead. Run the existing lineup-math scripts when you need sim output; copy stdout.
 
-# Trade shapes
+# Team files
 
-Read `evals/teams/<owner>/<Name>.shapes.md` only. Never read, grep, or shell-print `* Trade Shapes.md`.
+Read `evals/teams/<owner>/<Name>.team.md` and `<Name>.shapes.md` only. Never read, grep, or shell-print `*'s Team.md`, `My Team.md`, or `* Trade Shapes.md`.
 
 # Notes
 

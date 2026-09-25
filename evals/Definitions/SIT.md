@@ -2,7 +2,7 @@
 
 Expands `Eval Definitions §SIT` — a judgment call, not a value.
 
-One label per team — ours and any counterparty's — dated. Assign from standings (`FetchLeagueStandings`) plus `evals/Team Projections.md`; ours is `evals/teams/my-team/My Team.md`'s to own. The projections carry ±2–3 ranks of noise, so the label is **coarse on purpose**: where a team sits on a boundary, say so and carry both readings rather than forcing one.
+One label per team — ours and any counterparty's — dated. Assign from standings (`FetchLeagueStandings`) plus `evals/Team Projections.md`; ours is `evals/teams/my-team/Ours.team.md`'s to own. The projections carry ±2–3 ranks of noise, so the label is **coarse on purpose**: where a team sits on a boundary, say so and carry both readings rather than forcing one.
 
 What the label changes — what that team should pay up for and sell down:
 

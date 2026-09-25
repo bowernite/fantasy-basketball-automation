@@ -6,7 +6,7 @@ Single source of truth for every shared definition, formula and threshold used t
 
 **Every section here is a definition and a pointer.** The rules, formulas, thresholds and edge cases live in the linked file — **read it before applying the term**, never off the gloss alone.
 
-What an eval **publishes** is `Eval Template.md`. When and how to apply this: `eval-team` · picks `eval-pick` · negotiation `trades` · our own roster `evals/teams/my-team/My Team.md`.
+What an eval **publishes** is `Eval Template.md`. When and how to apply this: `eval-team` · picks `eval-pick` · negotiation `trades` · our own roster `evals/teams/my-team/Ours.team.md`.
 
 # The three layers
 

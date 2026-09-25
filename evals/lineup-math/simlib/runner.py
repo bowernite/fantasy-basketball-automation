@@ -12,6 +12,10 @@ from simlib.data import HERE
 from simlib.reports import OURS_ONLY, REPORTS
 
 _BASE_CACHE = {}
+_AGE_CACHE = {}
+
+PICK_AGE_WEIGHT = {1: 700, 2: 300, 3: 100}
+_LATER_PICK = re.compile(r"'(\d{2})(?: [A-Za-z]+)? ([123])(?:st|nd|rd)\b")
 
 KINDS = ("reports", "trade-screen", "player-effects", "title-column",
          "eval-columns")
@@ -188,24 +192,48 @@ def price_deal(deal, their, our_proj, their_proj, before=None):
             fdw_us, fdw_them)
 
 
-def _load_base(path):
-    if path in _BASE_CACHE:
-        return _BASE_CACHE[path]
-    out = {}
+def _eval_rows(path):
+    """Player table cells of a team eval: [_, Player, AGE, POS, Boards,
+    BASE, FPts/G proj, GP proj, ...]."""
     with open(path) as f:
         for line in f:
             if not line.startswith("|") or line.startswith("| ---"):
                 continue
             parts = [p.strip() for p in line.split("|")]
-            if len(parts) < 6:
+            if len(parts) < 6 or parts[1] in ("Player", "---"):
                 continue
-            name = parts[1]
-            if name in ("Player", "---"):
-                continue
-            m = re.search(r"\*\*([\d,]+)\*\*", parts[5])
-            if m:
-                out[name] = int(m.group(1).replace(",", ""))
+            yield parts
+
+
+def _load_base(path):
+    if path in _BASE_CACHE:
+        return _BASE_CACHE[path]
+    out = {}
+    for parts in _eval_rows(path):
+        m = re.search(r"\*\*([\d,]+)\*\*", parts[5])
+        if m:
+            out[parts[1]] = int(m.group(1).replace(",", ""))
     _BASE_CACHE[path] = out
+    return out
+
+
+def _load_age(path):
+    """Player -> (age, weight), weight = max(0, FPts/G proj - 18) x GP proj
+    (`trades` skill, Age)."""
+    if path in _AGE_CACHE:
+        return _AGE_CACHE[path]
+    out = {}
+    for parts in _eval_rows(path):
+        if len(parts) < 8:
+            continue
+        try:
+            age = float(parts[2])
+            fpts = int(parts[6].split()[0])
+            gp = int(parts[7].split()[0])
+        except (ValueError, IndexError):
+            continue
+        out[parts[1]] = (age, max(0, fpts - 18) * gp)
+    _AGE_CACHE[path] = out
     return out
 
 
@@ -270,6 +298,42 @@ def deal_delta_base(deal, their_roster):
         return None
 
 
+def _pick_ages(slots, label_side):
+    """(age, weight) per undrafted pick: Sept slots (e.g. "2.09") are this
+    year's; later picks come from the label side (e.g. "KC '27 2nd")."""
+    year = date.today().year
+    picks = [(year, int(s.split(".")[0])) for s in slots or []]
+    picks += [(2000 + int(yy), int(rnd))
+              for yy, rnd in _LATER_PICK.findall(label_side)]
+    return [(20 - (y - year), PICK_AGE_WEIGHT[rnd]) for y, rnd in picks]
+
+
+def _weighted_age(rows):
+    weight = sum(w for _, w in rows)
+    return sum(a * w for a, w in rows) / weight if weight else None
+
+
+def deal_delta_age(deal, their_roster):
+    """Our weighted-age change out -> in (`trades` skill, Age). Later
+    picks are read from the label (`out > in`, `.shapes.md` line format)."""
+    their_path = eval_md_for(their_roster)
+    our_path = eval_md_for(TEAM)
+    if not their_path or not our_path:
+        return None
+    ours, theirs = _load_age(our_path), _load_age(their_path)
+    out_label, _, in_label = (deal.get("label") or "").partition(" > ")
+    try:
+        out = [ours[n] for n in deal["out_us"]]
+        inc = [theirs[n] for n in deal["in_from_them"]]
+    except KeyError:
+        return None
+    out_age = _weighted_age(out + _pick_ages(deal.get("out_us_picks"), out_label))
+    in_age = _weighted_age(inc + _pick_ages(deal.get("in_from_them_picks"), in_label))
+    if out_age is None or in_age is None:
+        return None
+    return round(in_age - out_age, 2)
+
+
 def _deal_key(deal):
     return deal.get("label") or "deal"
 
@@ -298,6 +362,7 @@ def _trade_screen_results(sec, deals=None):
                 "fdw_us": round(fdw_us, 2),
                 "dw_us": round(dw_us, 2),
                 "dp_title_us": round(dt_us * 100, 1),
+                "dage_us": deal_delta_age(deal, sec["their_roster"]),
                 "fdw_them": round(fdw_them, 2),
                 "dw_them": round(dw_them, 2),
                 "dp_title_them": round(dt_them * 100, 1),
@@ -339,7 +404,7 @@ def _player_effects_results(sec):
 def _print_trade_screen(rows, label):
     print("=== JOINT DEALS (%s) ===" % label)
     stag = season_dw_tag()
-    hdr = ("label\tΔBASE us\tΔw us\tΔw %s us\tΔP(title) us\t"
+    hdr = ("label\tΔBASE us\tΔw us\tΔw %s us\tΔP(title) us\tΔage us\t"
            "Δw %s\tΔw %s %s\tΔP(title) %s"
            % (stag, stag, stag, label, label))
     print(hdr)
@@ -351,9 +416,11 @@ def _print_trade_screen(rows, label):
             continue
         base = res.get("delta_base_us")
         base_s = "%+d" % base if base is not None else "–"
-        print("%s\t%s\t%+.2f\t%+.2f\t%+.1f%%\t%+.2f\t%+.2f\t%+.1f%%" % (
+        age = res.get("dage_us")
+        age_s = "%+.1f" % age if age is not None else "–"
+        print("%s\t%s\t%+.2f\t%+.2f\t%+.1f%%\t%s\t%+.2f\t%+.2f\t%+.1f%%" % (
             name, base_s,
-            res["fdw_us"], res["dw_us"], res["dp_title_us"],
+            res["fdw_us"], res["dw_us"], res["dp_title_us"], age_s,
             res["fdw_them"], res["dw_them"], res["dp_title_them"]))
 
 

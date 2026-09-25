@@ -4,28 +4,32 @@ Brett is shopping Cade Cunningham to several owners in a bidding war. This file 
 
 ## Goal
 
-Find Cade deals that beat Todd's live offer on a flat read of the four big numbers plus age. Push prices up and use each bid as leverage.
+Find Cade deals that beat Todd's live offer on a flat read of the five big numbers (`trades` §The big numbers). Push prices up and use each bid as leverage.
 
 ## Current bids (our side)
 
-| Team | Out | In | ΔBASE | Δw | Δw (season) | ΔP(title) | Age change | Players (us) |
+| Team | Out | In | ΔBASE | Δw | Δw (season) | ΔP(title) | Δage | Players (us) |
 |---|---|---|---|---|---|---|---|---|
 | **Todd's live offer (benchmark)** | Cade+Sharpe+Mark | Hali+Porter+NAW+Claxton | +900 | +1.5 | +1.1 | +8% | +2.6 | +1 |
-| Todd counter (sent) | Cade+Sharpe+Mark+Kuminga | Hali+Porter+NAW+Claxton+Mitchell | +900 | +1.9 | +1.1 | +11% | +2.7 | +1 |
-| Todd counter (sent) | Cade+Sharpe+Mark | Tatum+Porter+NAW+Mitchell | +1000 | +1.7 | +1.5 | +16% | +3.4 | +1 |
-| Matthew lead (floated) | Cade+Kuminga+Walker+('27 1st)+('28 1st)+(2.09) | Johnson+Barnes | +900 | +1.5* | +1.3 | +17% | +2.6 | −2 |
-| Jon's offer (9/25, added Henry '27 2nd) | Cade+('27 1st)+(2.09) | SGA+Fears+(Henry '27 2nd) | +1500 | +0.9* | +0.5 | +6% | +2.5 | +1 |
-| Mitch lead (not yet floated) | Cade+Kuminga+Hunter | Deni+Franz+Queen | +700 | +1.6 | +1.0 | +14% | −1.2 | 0 |
-| Mitch fallback (not yet floated) | Cade | Deni+JJJ+Queen | +900 | +1.8 | +0.8 | +12% | −0.6 | +2 |
-| Jon counter (sent 9/25) | Cade+(2.09) | SGA+Sharpe+Wells | +2700 | +1.6* | +0.7 | +9% | +2.5 | +2 |
-| Chris feeler (rejected 9/25, depth) | Cade+Walker+Kuminga | Fox+Daniels+Anunoby+Quickley+Bridges+Stewart | +900 | +3.0 | +1.0 | +11% | +2.9 | +3 |
+| Todd counter A (sent) | Cade+Sharpe+Mark+Kuminga | Hali+Porter+NAW+Claxton+Mitchell | +900 | +1.9 | +1.1 | +11% | +2.7 | +1 |
+| Todd counter B (sent) | Cade+Sharpe+Mark | Tatum+Porter+NAW+Mitchell | +1000 | +1.7 | +1.5 | +16% | +3.4 | +1 |
+| Mitch lead (not sent) | Cade+Kuminga+Hunter | Deni+Franz+Queen | +700 | +1.6 | +1.0 | +14% | −1.2 | 0 |
+| Mitch fallback (not sent) | Cade | Deni+JJJ+Queen | +900 | +1.8 | +0.8 | +12% | −0.6 | +2 |
+| Jon's offer (received) | Cade+(2.09) | SGA+Wells+McBride | +1800 | +1.0* | +0.5 | +5% | +3.0 | +2 |
+| Jon counter (sent) | Cade+(2.09) | SGA+Sharpe+Wells | +2700 | +1.6* | +0.7 | +9% | +2.5 | +2 |
+| Jon next ask (drafted, not sent) | Cade+(2.09)+(KC '27 2nd) | SGA+Sharpe+Wells | ≈+1800 | +1.6* | +0.7 | +9% | +3.1 | +2 |
+| Jon fallback (not sent) | Cade+(2.09) | SGA+Fears+Wells | +2800 | +1.4* | +0.6 | +7% | +1.6 | +2 |
+| Matthew ask (sent, Wemby now untouchable) | Cade+Kuminga+('27 1st)+('28 1st)+(2.09) | Wemby+Ausar+Black | +700 | +1.8* | +1.1 | +10% | +0.7 | +1 |
+| Matthew realistic (sent) | Cade+Sharpe+Mark+('27 1st)+('28 1st)+(2.09) | Barnes+Harper+Ausar+Black | +1000 | +1.1* | +1.1 | +11% | +1.1 | +1 |
+| Matthew backup (not sent) | Cade+Sharpe+('27 1st)+('28 1st)+(2.09) | Barnes+Harper+Ausar | +1000 | +1.1* | +0.9 | +10% | +1.3 | +1 |
+| Matthew backup 2 (not sent) | Cade+(2.09) | Barnes+Ausar+Black | +1000 | +1.4* | +0.4 | +7% | −0.2 | +2 |
+| Chris feeler (dropped 9/25) | Cade+Walker+Kuminga | Fox+Daniels+Anunoby+Quickley+Bridges+Stewart | +900 | +3.0 | +1.0 | +11% | +2.9 | +3 |
 
 Live status per owner is in each `evals/teams/<owner>/<Name>.shapes.md` intro and Status column.
 
 ## How to judge a deal
 
-- Weigh ΔBASE, Δw, Δw (season) and ΔP(title) roughly equally. Title odds help, but don't over-index on this year's.
-- **Age:** Brett doesn't want to get significantly older. Report the age change on every deal (`trades` §Age, picks included).
+- Weigh ΔBASE, Δw, Δw (season) and ΔP(title) roughly equally, Δage as a rough vector alongside (`trades` §The big numbers). Title odds help, but don't over-index on this year's.
 - **Body adds:** slightly discount deals that are good mostly because we net extra bodies. That's basically free at any point and we can only do it so many times. Show a net "Players (us)" column when bodies are uneven.
 - **Picks are on the table from us:** '27 1st, '28 1st, 2.09 (Sept '26), own '27 2nd, KC '27 2nd, Don '27 2nd, '28 2nd.
 - Minimums (fail if any): ΔP < 0, ΔBASE ≤ -1000, Δw < -0.25, Δw (season) < -0.25.
@@ -47,8 +51,8 @@ Sept '26 picks (2.09) also need `out_us_picks` and `in_from_us_picks` so the moc
 
 ## Output format
 
-- Markdown tables for deals: Out | In | ΔBASE | Δw | Δw (season) | ΔP(title) | Age change (+ Players (us) when bodies are uneven). Picks in parentheses on the Out side, e.g. Cade+('27 1st)+(2.09). No deals in prose or bullets.
-- Rounding: ΔBASE nearest 100, win columns nearest tenth, ΔP nearest whole %. `*` on Δw when a pick is in the deal.
+- Deal tables: `trades` §Shapes. Todd's live offer is the benchmark row.
+- Rounding and `*`: `trade-shapes` §Table format.
 
 ## Texts (drafts only, never send)
 

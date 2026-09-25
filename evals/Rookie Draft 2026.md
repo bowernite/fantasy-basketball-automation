@@ -21,7 +21,7 @@ VALUE is **645**, from Dizzle's `1.21 / Karim Lopez` prefix at rank 185. That is
 
 **20 players go before us.** Chalk by BASE leaves Stirtz or Lopez. By Dizzle's class order it leaves Lopez.
 
-The pick's year-1 value is about 0. Every rookie we could plausibly get projects at 11–19 FP/g, against a `REPL` of 23.9–25.1 (`My Team.md`), and the FA auction still offers backfill (`eval-pick` §6). So rank on BASE alone.
+The pick's year-1 value is about 0. Every rookie we could plausibly get projects at 11–19 FP/g, against a `REPL` of 23.9–25.1 (`Ours.team.md`), and the FA auction still offers backfill (`eval-pick` §6). So rank on BASE alone.
 
 ## Board
 

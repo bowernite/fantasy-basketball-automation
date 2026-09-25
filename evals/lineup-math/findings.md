@@ -24,7 +24,7 @@ Every number a trade decision reads, and the caveats that flip a sign. `method.m
 - **Cheapest wins are at the bottom.** Three sub-replacement bodies → three 26-rate bodies @76 GP = **+1.63**, roughly matching a 1-for-1 for a 45 (+1.76) at **5–8× less BASE on the incoming side** (~592 against 3,000–5,000). ⚠️ The remaining sub-replacement group tops out near 500 BASE for any three, so the multiple is larger and the deal *harder* to make.
 - **GP is as important as rate.** A 55 @40 GP bought 3-for-1 is **−1.14**; a 40 @78 GP bought 1-for-1 is **+1.63**.
 - **The price is structural, not a backfill effect.** There is **no backfill at all before the September auction** — the pool is locked and we are 28/28. Backfill grade moves break-evens ≤4.3 rate points and flips no sign.
-- ⚠️ Suggs/Coby/Turner/Poeltl/Reid are the study's **filler**, held fixed so body count is the only variable — not a bucket, not a send list. Buckets: `evals/teams/my-team/My Team.md`.
+- ⚠️ Suggs/Coby/Turner/Poeltl/Reid are the study's **filler**, held fixed so body count is the only variable — not a bucket, not a send list. Buckets: `evals/teams/my-team/Ours.team.md`.
 
 # Break-evens
 
