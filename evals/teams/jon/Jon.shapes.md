@@ -6,7 +6,7 @@ Thread: Cade ↔ SGA only (9/25/26). Jon will not trade Sengun; Ware untouchable
 
 Benchmark: Todd's live offer for Cade is Cade+Sharpe+Mark > Haliburton+Porter+NAW+Claxton (+900 +1.5 +1.1 +8%, in-side ~2.6 yrs older). Only rows with SGA plus three of Fears / Sharpe / Watson / Bailey reach its +1.1 Δw (season); SGA plus one of them tops out near +0.6.
 
-Sims: 99-deal grid 9/25/26 (`/tmp/ff-sim-jon-cade-grid.out`) + 12 beat-Todd shapes 9/25/26 + 54 shapes with our 2.09 9/25/26 (34 no-Cade, 20 Cade ↔ SGA; includes the 9/22 floats) + 66 beat-Todd shapes 9/25/26 (SGA plus 2–4 mid pieces for picks or our depth; 16 counters off his SGA+Fears offer; one non-SGA Cade shape, which fails) + 6 Henry-2nd shapes 9/25/26 (his add plus Mark-for-bodies variants). Out-side Sharpe = Shaedon; In-side Sharpe = Day'Ron. Unlabelled '27 2nd = our own; '27 KC 2nd = King Christopher's; '27 Don 2nd = The Don's; In-side '26 2.10 = Jon's; In-side '27 Henry 2nd = Mongol Khans' '27 2nd, priced 810 (eval range 645–971). Jon ΔBASE ≥ +1000 = too lopsided (do not float). Our ΔBASE below -200: do not sim or archive (pruned 9/25). Jon won't take Shaedon ("he's bad", 9/25): no Out-side Sharpe shapes (pruned 9/25). Screening: do not float deals where his incoming side is non-marginally older (~28+).
+Sims: 99-deal grid 9/25/26 (`/tmp/ff-sim-jon-cade-grid.out`) + 12 beat-Todd shapes 9/25/26 + 54 shapes with our 2.09 9/25/26 (34 no-Cade, 20 Cade ↔ SGA; includes the 9/22 floats) + 66 beat-Todd shapes 9/25/26 (SGA plus 2–4 mid pieces for picks or our depth; 16 counters off his SGA+Fears offer; one non-SGA Cade shape, which fails) + 6 Henry-2nd shapes 9/25/26 (his add plus Mark-for-bodies variants) + 5 SGA+Fears+one-piece shapes 9/25/26. Out-side Sharpe = Shaedon; In-side Sharpe = Day'Ron. Unlabelled '27 2nd = our own; '27 KC 2nd = King Christopher's; '27 Don 2nd = The Don's; In-side '26 2.10 = Jon's; In-side '27 Henry 2nd = Mongol Khans' '27 2nd, priced 810 (eval range 645–971). Jon ΔBASE ≥ +1000 = too lopsided (do not float). Our ΔBASE below -200: do not sim or archive (pruned 9/25). Jon won't take Shaedon ("he's bad", 9/25): no Out-side Sharpe shapes (pruned 9/25). Screening: do not float deals where his incoming side is non-marginally older (~28+).
 
 * pick in deal: Sept '26 picks count their mock rookie's projection, later picks 0.
 
@@ -170,8 +170,10 @@ Cade > SGA+Fears+Jaylin | +3100 +1.2 +0.5 +6%
 Cade+Kuminga+Walker > SGA+Watson+Fears | +3000 +1.1 +0.6 +6%
 Cade > SGA+Bailey | +3000 +0.9 +0.4 +6%
 Cade > SGA+'26 1.11 | +2900 +0.4* +0.2 +3%
+Cade+'27 1st+2.09 > SGA+Fears+Watson+'27 Henry 2nd | +2800 +1.6* +0.8 +7%
 Cade > SGA+Fears | +2800 +1.0 +0.5 +5%
 Cade > SGA+Watson | +2800 +0.9 +0.6 +4%
+Cade+'27 1st > SGA+Fears+Watson | +2700 +1.7* +0.8 +7%
 Cade > SGA+Sharpe | +2700 +1.2 +0.6 +8%
 Cade+2.09 > SGA+Bailey+Traore | +2700 +1.0* +0.5 +6%
 Cade+Smith+Walker > SGA+Fears+Bailey | +2600 +0.4 +0.2 +4%
@@ -186,6 +188,7 @@ Cade+Walker > SGA+Watson | +2400 +0.6 +0.5 +3%
 Cade+2.09 > SGA+Bailey | +2300 +0.8* +0.4 +6%
 Cade+Kuminga > SGA+Bailey | +2300 +0.6 +0.3 +5%
 Cade+Walker > SGA+Fears | +2300 +0.7 +0.4 +4%
+Cade+'27 1st+2.09 > SGA+Fears+Bailey | +2200 +1.6* +0.7 +8%
 Cade > SGA+Jaylin+McBride | +2200 +0.8 +0.4 +4%
 Cade+Bona > SGA+Raynaud | +2200 +0.6 +0.2 +2%
 Cade+2.09 > SGA+Sharpe | +2100 +1.1* +0.6 +8%
@@ -195,6 +198,7 @@ Cade+Kuminga > SGA+Watson | +2100 +0.7 +0.5 +4%
 Cade+2.09 > SGA+Watson | +2100 +0.8* +0.6 +4%
 Cade > SGA+'26 2.10 | +2100 +0.3* +0.3 +3%
 Cade > SGA+Wells | +2100 +0.7 +0.4 +4%
+Cade+'27 1st+2.09 > SGA+Fears+Watson | +2000 +1.6* +0.8 +7%
 Cade > SGA+Traore | +1900 +0.5 +0.3 +3%
 Cade > SGA+Jaylin | +1800 +0.5 +0.3 +3%
 Cade > SGA+da Silva | +1800 +0.5 +0.3 +3%
@@ -229,6 +233,7 @@ Cade+'27 1st+'28 1st > SGA+Fears+Sharpe | +1200 +2.0* +0.8 +10%
 Cade+2.09 > SGA+McBride | +1200 +0.5* +0.4 +4%
 Cade+2.09 > SGA+Jaylin | +1200 +0.4* +0.3 +3% | Jon rejected 8/1
 Cade+'27 1st > SGA+Wallace | +1100 +0.7* +0.3 +3%
+Cade+'27 1st+2.09 > SGA+Fears+McBride | +1000 +1.3* +0.6 +6%
 Cade+'27 1st > SGA+Jaylin+'26 2.10 | +1000 +0.5* +0.3 +3%
 
 ## Doesn't meet our minimums
