@@ -206,6 +206,8 @@ Cade > Brunson+'26 1.01 | +2300 +0.6* +0.3 +3%
 Cade+Sharpe+Eason > Haliburton+Porter+NAW+Claxton+Dëmin | +2300 +2.2 +1.1 +11%
 Cade > Brunson+Porter+NAW+'28 1st | +2000 +2.0* +0.9 +9%
 Cade+Mark+Eason > Haliburton+Porter+NAW+Claxton+Dëmin | +2000 +2.1 +1.1 +10%
+Cade+Sharpe+Mark > Haliburton+Porter+NAW+Claxton+Gobert | +2000 +2.6 +1.4 +11%
+Cade+Sharpe+Mark+Chaney > Haliburton+Porter+NAW+Claxton+Gobert | +2000 +2.6 +1.5 +11%
 Cade > Tatum+Porter+Dëmin | +1900 +1.9 +0.9 +12%
 Cade > Brunson+Haliburton | +1700 +1.0 +0.4 +3%
 Cade+Bane > Brunson+Porter+'26 1.01 | +1700 +0.8* +0.5 +7%
@@ -214,8 +216,13 @@ Smith+Walker > NAW+Claxton | +1700 +1.0 +0.6 +4%
 Vassell > Porter+Dosunmu | +1600 +1.6 +0.7 +8%
 Green > Porter+Claxton | +1600 +1.5 +0.9 +7%
 Cade+Sharpe+Mark > Haliburton+Porter+NAW+Claxton+'26 2.04 | +1800 +1.7 +1.1 +8%
+Cade+Sharpe+Mark+Matković > Haliburton+Porter+NAW+Claxton+Gobert | +1800 +2.5 +1.5 +11%
 Cade+Sharpe+Mark > Haliburton+Porter+NAW+Claxton+'26 2.08 | +1700 +1.7 +1.1 +8%
+Cade+Sharpe+Mark+Ellis > Haliburton+Porter+NAW+Claxton+Gobert | +1700 +2.5 +1.5 +10%
+Cade+Sharpe+Mark+Bona > Haliburton+Porter+NAW+Claxton+Gobert | +1700 +2.4 +1.4 +10%
 Cade+Sharpe+Mark > Haliburton+Porter+NAW+Claxton+Bryant | +1600 +1.6 +1.2 +9%
+Cade+Sharpe+Mark+Huff > Haliburton+Porter+NAW+Claxton+Gobert | +1600 +2.5 +1.4 +11%
+Cade+Sharpe+Mark+Walker > Haliburton+Porter+NAW+Claxton+Gobert | +1600 +2.3 +1.4 +11%
 Cade+Garland+Sharpe > Brunson+Porter+NAW+'26 1.01 | +1500 +1.1* +0.9 +9%
 Cade+Sharpe+Mark+Kuminga > Brunson+Porter+NAW+Claxton+Dëmin+'28 1st | +1500 +2.0* +1.4 +13%
 Cade+Walker > Brunson+Porter+NAW+Claxton+Dëmin | +1500 +3.3 +1.3 +14%
