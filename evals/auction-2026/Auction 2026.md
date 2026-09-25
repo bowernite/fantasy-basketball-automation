@@ -66,22 +66,32 @@ Rules (Sheet, 2026-09-24):
 - **Hard max** = $ left − (spots left − 1).
 - **Rest of plan** = the spots left after this buy, priced at live `Market$`: the cheapest unsold T1s for our remaining T1 wants, plus the cheapest unsold T2 for each other spot ($1 once T2s run out). Leave out the row being bid on.
   - T1 wants = 3 − T1s bought, counting the row being bid on if it is a T1. Capped at unsold T1s and at the spots left.
+  - If that costs more than $ left − $1, drop T1 wants one at a time until it fits.
 - **Cap** = min(tier cap, $ left − rest of plan, hard max, $100 while ≥ 3 spots are open):
   - T1: no tier cap. A T1 always fills the next slot, even once we hold 3.
   - T2: 1.25 × live `Market$`.
   - T3: live `Market$`, and only once the unsold T2s are fewer than our non-T1 spots left. Until then, no bid.
   - Y: $1.
 - The T1 cap rises as rivals buy T1s. At the start it is $94 on Scheierman or Barlow. If only one T1 is left and we hold none, it is $200 − 3 × the cheapest T2, held to $100 until we are down to 2 spots.
-- **Last spot:** cap = hard max on the best tiered row up.
+- Don't stretch a T1 cap to beat a rich rival by $1–2. A rival who overpays for one T1 can't contest the next.
+- **Last spot:** cap = hard max on the rows of the best tier still unsold. Lower tiers keep their tier cap, and T3 stays shut.
 - **Endgame:** once our cap on an unsold tiered row beats every rival's `Max Bid`, nothing can outbid us. Nominate the best such row and win it.
 - Never bid on an untiered row, and never to push a rival's price. A stuck buy costs one of our 4 spots.
 - Waste check: finishing with more than ~$10 unspent means the caps were too tight.
 
 ## Nominating
 
-- **Early:** untiered names the room pays for. This drains rival $ and spots. In order: Brandon Williams, Harrison Barnes, Javonte Green, Goga Bitadze, Pat Spencer, Quinten Post, Patrick Williams, Ryan Nembhard, Caleb Love, Sergio De Larrea, Bruce Thornton, Alex Karaban, Jayden Quaintance.
+One nominee at a time, first match wins:
+
+1. **Endgame** row (§Bidding).
+2. **Last:** once no T1–T3 row is worth a bid, a Y row at $1.
+3. **Mid:** once half the league's auction spots are filled, the first unsold Mid row we still bid on.
+4. **Early:** the Early list in order, then the priciest unsold untiered row by live `Market$`.
+
+Lists:
+
+- **Early:** untiered names the room pays for. This drains rival $ and spots: Brandon Williams, Harrison Barnes, Javonte Green, Goga Bitadze, Pat Spencer, Quinten Post, Patrick Williams, Ryan Nembhard, Caleb Love, Sergio De Larrea, Bruce Thornton, Alex Karaban, Jayden Quaintance.
 - **Mid:** our targets deep on the Sheet list, once rivals have spent: Matisse Thybulle, Nick Richards, Trayce Jackson-Davis, Kenrich Williams, Jarred Vanderbilt.
-- **Last:** Y rows at $1 if we still have a spot once most rivals are down to 0–1 spots.
 - Leave the top-list T1s (Barlow, Hayes, Scheierman) for rivals to nominate. The endgame rule catches any that are left.
 - Per-slot $ at the start: us $50 · Mitch $50 · Bonin, Jon, Todd $33 · Joe $25 · Chris, Brian, Henry, Josh $22 · Hlina $20 · Matthew $15. Mitch is the only rival who can match us per slot. Watch his $ left.
 
@@ -90,8 +100,9 @@ Rules (Sheet, 2026-09-24):
 Runbook: `auction-live` Skill (`.claude/skills/auction-live/auction-live.md`).
 
 - Log every sale in `sales.tsv` as `player  team  $`, where team is the owner's first name. Either:
-  - **Agent session:** say "sold Hayes Chris 12", or let the Sheet poller append. The agent replies with the live multiplier, the live `Market$` and cap for the unsold tiered rows, and each team's $ left, spots left and `Max Bid`.
+  - **Agent session:** say "sold Hayes Chris 12", or let the Sheet poller append. The agent replies with room heat, the live `Market$` and cap for the unsold tiered rows, and each team's $ left, spots left and `Max Bid`.
   - **Sheet tab:** paste `values.tsv` and `sales.tsv` as tabs, then compute the multiplier below with SUM and VLOOKUP.
 - **Live multiplier** k = ($ left league-wide − spots left league-wide) ÷ Σ(`Market$` − 1) over the top (spots left) unsold rows. Live `Market$` = 1 + (`Market$` − 1) × k.
-- **Name match:** NFKD-ascii, lowercase, fold `’` to `'`, drop `Jr.`/`Sr.`/`II`/`III`. The Sheet writes Nae’Qwan Tomlin, D’Angelo Russell and Jae’Sean Tate with curly apostrophes.
+- **Room heat** = Σ(price − 1) ÷ Σ(live `Market$` just before the sale − 1) over the last 8 rival sales expected at ≥ $5. Leave out the forced fill (league spots left ≤ 2 × teams still open). Hot ≥ 1.15, cold ≤ 0.87. Advisory only: caps never use it.
+- **Name match:** NFKD-ascii, lowercase, fold `’` to `'`, drop `Jr.`/`Sr.`/`II`/`III`. The Sheet writes Nae’Qwan Tomlin, D’Angelo Russell and Jae’Sean Tate with curly apostrophes. A typo the commissioner never fixes goes in `aliases.tsv` (`sheet  name`).
 - **Open spots at start:** Matthew 13 · Hlina 10 · Chris, Brian, Henry, Josh 9 each · Joe 8 · Bonin, Jon, Todd 6 each · Mitch 4 · us 4.
