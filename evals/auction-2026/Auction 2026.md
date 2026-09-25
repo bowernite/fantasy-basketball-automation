@@ -85,7 +85,7 @@ One nominee at a time, first match wins:
 
 1. **Endgame** row (§Bidding).
 2. **Last:** once no T1–T3 row is worth a bid, a Y row at $1.
-3. **Mid:** once half the league's auction spots are filled, the first unsold Mid row we still bid on.
+3. **Mid:** the first unsold Mid row whose cap is ≥ 2 × its live `Market$`, or any Mid row we still bid on once half the league's auction spots are filled.
 4. **Early:** the Early list in order, then the priciest unsold untiered row by live `Market$`.
 
 Lists:

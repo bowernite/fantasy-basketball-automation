@@ -1,7 +1,7 @@
-# Auction live · k 1.06 · 19:51:40
+# Auction live · room ? 0/5 · 11:07:49
 
 **Us** $200 · 4 spots · max bid 197
-**Nominate** early: Brandon Williams · mid: Matisse Thybulle · last: Meleek Thomas $1
+**Nominate** Brandon Williams (early)
 
 ## Card: live Market$ / our cap
 
@@ -53,28 +53,28 @@
 
 | Player | Mkt | BASE | ours |
 |---|---:|---:|---:|
-| Cameron Boozer | 210 | 6655 | 0.85 |
-| Caleb Wilson | 210 | 3819 | 0.42 |
-| AJ Dybantsa | 210 | 5079 | 0.34 |
-| Darryn Peterson | 210 | 5353 | 0.27 |
-| Darius Acuff | 210 | 2640 | 0.10 |
-| Keaton Wagler | 210 | 2530 | 0.03 |
-| Yaxel Lendeborg | 210 | 1226 | 0.18 |
-| Mikel Brown | 210 | 2443 | 0.07 |
-| Brayden Burries | 210 | 1594 | 0.00 |
-| Kingston Flemings | 210 | 1894 | 0.01 |
-| Morez Johnson | 197 | 1343 | -0.04 |
-| Hannes Steinbach | 138 | 994 | -0.14 |
-| Aday Mara | 135 | 1071 | -0.10 |
-| Dailyn Swain | 129 | 893 | -0.10 |
-| Ebuka Okorie | 129 | 925 | -0.08 |
-| Nate Ament | 128 | 815 | -0.11 |
-| Christian Anderson | 103 | 749 | -0.16 |
-| Allen Graves | 103 | 792 | -0.08 |
-| Cameron Carr | 102 | 706 | -0.05 |
 | Baylor Scheierman | 78 | 268 | 0.01 |
-| Labaron Philon | 78 | 632 | -0.11 |
 | Dominick Barlow | 73 | 174 | -0.02 |
 | Brandon Williams | 69 | 205 | -0.02 |
-| Karim Lopez | 69 | 542 | -0.16 |
 | Marvin Bagley | 67 | 197 | 0.00 |
+| Jaxson Hayes | 65 | 129 | -0.10 |
+| Quinten Post | 65 | 202 | -0.11 |
+| Goga Bitadze | 64 | 227 | -0.10 |
+| Ryan Nembhard | 61 | 324 | -0.17 |
+| Harrison Barnes | 53 | 161 | -0.06 |
+| Dru Smith | 50 | 231 | -0.12 |
+| Patrick Williams | 47 | 151 | -0.11 |
+| Vít Krejčí | 46 | 148 | -0.02 |
+| Caleb Love | 44 | 188 | -0.15 |
+| Luka Garza | 42 | 107 | -0.08 |
+| Al Horford | 41 | 117 | -0.06 |
+| Julian Strawther | 40 | 173 | -0.02 |
+| Kentavious Caldwell-Pope | 38 | 78 | -0.05 |
+| Terance Mann | 38 | 51 | -0.10 |
+| Pat Spencer | 37 | 148 | -0.18 |
+| Zach Collins | 36 | 140 | -0.11 |
+| Javonte Green | 36 | 14 | -0.10 |
+| Simone Fontecchio | 36 | 55 | -0.11 |
+| Nae'Qwan Tomlin | 35 | 109 | -0.06 |
+| Jarred Vanderbilt | 33 | 66 | -0.07 |
+| Jamir Watkins | 33 | 110 | -0.12 |
