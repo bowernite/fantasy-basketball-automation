@@ -1,8 +1,34 @@
 import unittest
 from tests.harness import *
 from tests.fetch_stub import *
+from unittest import mock
+
+# Fixture deals, not the live list -- executed deals leave `assumed_trades`.
+US, HENRY, MATTHEW = 161025, 161019, 160941
+MOVES = (("DaRon Holmes", US, HENRY), ("De'Andre Hunter", HENRY, US),
+         ("Amen Thompson", US, MATTHEW)) + tuple(
+    (n, MATTHEW, US) for n in ("Keegan Murray", "Shaedon Sharpe", "Tari Eason",
+                               "Devin Vassell", "Jonathan Kuminga"))
+DROPS = (("Zeke Nnaji", HENRY),)
+FIXTURE_SRC = (
+    "\nMOVES = %r\nDROPS = %r\nINVOLVED = frozenset(t for _, a, b in MOVES "
+    "for t in (a, b)) | {t for _, t in DROPS}\n" % (MOVES, DROPS))
+
+
+def use_fixture_deals(test):
+    import assumed_trades as at
+    patch = mock.patch.multiple(at, MOVES=MOVES, DROPS=DROPS, INVOLVED=(
+        frozenset(t for _, a, b in MOVES for t in (a, b))
+        | {t for _, t in DROPS}))
+    patch.start()
+    test.addCleanup(patch.stop)
+    return at
+
 
 class AssumedTradesOverlay(unittest.TestCase):
+    def setUp(self):
+        use_fixture_deals(self)
+
     def test_moves_and_the_drop_and_a_second_pass_is_a_noop(self):
         import assumed_trades as at
         hunter = {"n": "De'Andre Hunter", "tm": "SAC"}
@@ -15,24 +41,24 @@ class AssumedTradesOverlay(unittest.TestCase):
         rest = [{"n": n, "tm": "FA"} for n in (
             "Shaedon Sharpe", "Tari Eason", "Devin Vassell", "Jonathan Kuminga")]
         rosters = {
-            at.US: [cade, amen, holmes],
-            at.HENRY: [hunter, nnaji],
-            at.MATTHEW: [wemby, murray] + rest,
+            US: [cade, amen, holmes],
+            HENRY: [hunter, nnaji],
+            MATTHEW: [wemby, murray] + rest,
         }
         self.assertEqual(at.apply_all(rosters), 3)
-        us = {r["n"] for r in rosters[at.US]}
+        us = {r["n"] for r in rosters[US]}
         self.assertEqual(us, {"Cade Cunningham", "De'Andre Hunter",
                               "Keegan Murray", "Shaedon Sharpe", "Tari Eason",
                               "Devin Vassell", "Jonathan Kuminga"})
-        self.assertEqual({r["n"] for r in rosters[at.HENRY]}, {"DaRon Holmes"})
-        self.assertEqual({r["n"] for r in rosters[at.MATTHEW]},
+        self.assertEqual({r["n"] for r in rosters[HENRY]}, {"DaRon Holmes"})
+        self.assertEqual({r["n"] for r in rosters[MATTHEW]},
                          {"Victor Wembanyama", "Amen Thompson"})
         self.assertEqual(at.apply_all(rosters), 0)
 
     def test_a_team_outside_the_deals_does_not_pull_the_other_sides(self):
         import assumed_trades as at
         self.assertEqual(at.expand_ids([161016]), [161016])
-        self.assertEqual(set(at.expand_ids([at.US])), at.INVOLVED)
+        self.assertEqual(set(at.expand_ids([US])), at.INVOLVED)
 
     def test_a_drop_only_empties_the_roster_it_was_dropped_from(self):
         import assumed_trades as at
@@ -57,12 +83,13 @@ class AssumedTradesOverlay(unittest.TestCase):
 
 class AssumedTradesReachTheFilesTheSimPrices(unittest.TestCase):
     def setUp(self):
-        import assumed_trades as at
-        self.at = at
+        at = self.at = use_fixture_deals(self)
         self.dir = tempfile.mkdtemp()
         self.addCleanup(shutil.rmtree, self.dir, True)
         for name in ("fetch_data.py", "assumed_trades.py"):
             shutil.copy(os.path.join(sim.HERE, name), self.dir)
+        with open(os.path.join(self.dir, "assumed_trades.py"), "a") as f:
+            f.write(FIXTURE_SRC)
         with open(os.path.join(self.dir, "stub_fleaflicker.py"), "w") as f:
             f.write(STUB_FLEAFLICKER)
         held = collections.defaultdict(list)

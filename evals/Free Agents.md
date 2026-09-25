@@ -7,7 +7,7 @@ seen across all five positions).
 **Scope — "non-rookie" means not in the incoming 2026 draft class**, not `proPlayer.isRookie == false`.
 Fleaflicker still carries `isRookie: true` on last year's ('25-26) rookie class — two-ways, stashes, bench
 call-ups — since it never flips the flag after their draft year passes. Split on `player_id`: the 2026 class
-is `>= 2851` (93 players, excluded). Only 36 get drafted Monday; the undrafted rest are auctionable (Oct '25 claims included 3 undrafted '25 rookies), so price them off `Rookie Draft 2026.md`. Everyone else with
+is `>= 2851` (93 players, excluded). Only 36 get drafted Monday; the undrafted rest are auctionable, so price them off `Rookie Draft 2026.md`. Everyone else with
 `isRookie: true` (`< 2851`, 55 players) is included below alongside the true non-rookies.
 
 **Further filtered to relevant bodies**: non-rookie FAs with either a real NBA team (`proTeamAbbreviation !=

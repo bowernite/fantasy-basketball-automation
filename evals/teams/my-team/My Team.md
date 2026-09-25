@@ -50,7 +50,7 @@ Dizzle Points 7/10/2026 depth 450 · Hashtag Points 25 August 2026 depth 772 · 
 
 Chaney Johnson is off all three boards, hand-checked — BASE 0 is a statement of value, not a failed join. Also absent from both GP feeds, so his `GPp` is map-only (`Eval Definitions §Durability`).
 
-Shaedon Sharpe `GPp` = 0 via manual override (`evals/board-snapshots/projections/overrides-2026.json`, out for season); assumed-through on our roster via `Pending Trades.md`.
+Shaedon Sharpe `GPp` = 0 via manual override (`evals/board-snapshots/projections/overrides-2026.json`, out for season).
 
 Mark Williams `GPp` = 10 via manual override (same file). Torn left labrum, surgery 2026-09-10; Suns gave no timetable, beat reporting at least five months. Hashtag GP already 10; FanScout still 65. Override follows the feed that moved so the blend is not ~37. BASE 1350 unchanged (expert boards have not moved).
 
@@ -96,7 +96,7 @@ Gone: none of our own '28 picks.
 
 **Counterfactual:** formula **`Δw`** is the league-curve value (`Eval Definitions §Δw`). **`Δw (season)`** swaps him for a replacement-level 68-GP body of his own slot group, fitted at `REPL` above on the 38-man padded roster (`Eval Definitions §Δw (season)`).
 
-35 live bodies against a 28 cap — the sim values the Sept '26 38. Three leftover slots are 2.09 (Lopez at his projected rate) plus two FA grades, not a steered auction (`Pending Trades.md`). Overlays assumed-through: Matthew adds Murray, Sharpe, Eason, Vassell and Kuminga; Henry adds Hunter for Holmes and moves 3.09 out; Josh sends Kawhi and Turner for Bridges, Gordon and Collins; Hlina sends Green, Camara and Smith for Duren.
+35 bodies against the 38 cap, Hlina deal assumed through (`Pending Trades.md`). Three leftover slots are 2.09 (Lopez at his projected rate) plus two FA grades, not a steered auction.
 
 Contending window (`Eval Definitions §SIT`). Butler 37 · Kyrie 34 · Middleton 35. This season's production: Cade, Giddey, Bridges, Collins, Green.
 

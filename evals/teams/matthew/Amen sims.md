@@ -46,7 +46,7 @@ S2 and S5 hand us more bodies than we send. The rows above displace pad slots (`
 
 ## If Duren goes to Hlina first
 
-`Pending Trades.md` owns the Duren ↔ Jalen Williams deal. Priced on our roster as it stands:
+Priced 8/12 against the then-proposed Duren ↔ Jalen Williams deal, on our roster as it stood:
 
 | | ΔBASE | Δw | ΔP(title) 1–2 |
 | --- | ---: | ---: | ---: |
@@ -73,7 +73,7 @@ Re-priced against the post-Williams roster, **every Edey shape dies**:
 
 ## What Duren is for
 
-Duren has two mutually exclusive uses. Both measured cumulatively against the same post-Henry baseline (`Pending Trades.md` §Henry: Hunter in, Chaney cut), at post-Sept execution so neither forfeits a body.
+Duren has two mutually exclusive uses. Both measured cumulatively against the same post-Henry baseline (Hunter in, Chaney cut), at post-Sept execution so neither forfeits a body.
 
 | Portfolio | ΔBASE | Δw | ΔP(title) 1–2 |
 | --- | ---: | ---: | ---: |
@@ -205,9 +205,7 @@ Black and Clowney are within ~40 BASE of HIS and lose to Dick on both sim column
 
 # Where it lands
 
-**Assumed through 2026-08-13 as HIS** (Amen → Keegan, Sharpe, Vassell, Eason, Kuminga). Record: `Pending Trades.md`. Do not re-open Ausar / DICK / a 2nd.
-
-**Body count at expansion:** +4 net → 32 bodies. We hold 2.09 (3.09 is Henry's). Make 2.09, then auction 5 of the 7 FA slots.
+**Agreed 2026-08-13 as HIS, executed 2026-09-22** (Amen → Keegan, Sharpe, Vassell, Eason, Kuminga).
 
 # Caveats
 

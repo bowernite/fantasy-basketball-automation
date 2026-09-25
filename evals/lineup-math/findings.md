@@ -4,7 +4,7 @@
 
 Every number a trade decision reads, and the caveats that flip a sign. `method.md` owns the basis; `README.md` owns the commands.
 
-**Re-run rather than quote.** Measured 2026-08-03 (§*Bracket weeks* 2026-08-08), then 28 bodies padded to 38. Roster is now 32 post-overlay (`Pending Trades.md`) — figures below are pre-overlay.
+**Re-run rather than quote.** Measured 2026-08-03 (§*Bracket weeks* 2026-08-08), then 28 bodies padded to 38. Roster is now 35 — figures below predate the Matthew, Josh and Hlina deals.
 
 # PF → wins
 
@@ -137,6 +137,6 @@ We project **1st of 12** on season PF (30,231), so **band 1–2 applies to us** 
 
 # Sept '26 expansion
 
-- Filling 28 → 38 with auction-grade bodies: **+1,219 PF (+2.04 wins), free** — more than most consolidation trades, and the cheapest wins available.
+- Filling 28 → 38 with auction-grade bodies: **+1,219 PF (+2.04 wins)** for use-it-or-lose-it auction $ only, no trade assets — more than most consolidation trades, and the cheapest wins available.
 - **Breadth stops differentiating** once every team refills from the same auction; hoarding filler now buys nothing durable.
 - **A traded-away body cannot be replaced** before then: a 3-for-1 today leaves 36 players and 2 dead slots.

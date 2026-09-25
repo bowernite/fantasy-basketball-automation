@@ -1,6 +1,6 @@
 # Team projections — where each team finishes, and where its picks land
 
-Evaluated **2026-09-12** (projections + boards refresh; Sharpe `gp=0` and Williams `gp=10` overrides on our assumed-through roster). Keyed to who **produces** a pick, not who holds it. Slots written `1.01`–`1.12`.
+Evaluated **2026-09-12** (projections + boards refresh; Sharpe `gp=0` and Williams `gp=10` overrides on our roster). Keyed to who **produces** a pick, not who holds it. Slots written `1.01`–`1.12`.
 
 | Column | Source |
 | --- | --- |
@@ -9,7 +9,7 @@ Evaluated **2026-09-12** (projections + boards refresh; Sharpe `gp=0` and Willia
 | **'27-28 · '28-29** | Judgment on age / window — young cores climb, star-age cliffs fall. ±2–3 ranks of noise. No multi-year sim exists. |
 | **Sept slots** | Top-4 finish → `13 − rank` exact. Bottom-8 → lottery **prior** band only (`league-info`). |
 
-Assumed-through overlays on disk (`Pending Trades.md`): Matthew package, Henry Hunter, **Josh Kawhi + Turner ↔ Bridges + Gordon + Collins**, **Hlina Duren ↔ Green + Camara + Smith**.
+Rosters include the Matthew, Henry, Josh and Hlina deals (Hlina assumed through, `Pending Trades.md`).
 
 ## Master table — projected finish → pick slot
 
@@ -30,7 +30,7 @@ Assumed-through overlays on disk (`Pending Trades.md`): Matthew package, Henry H
 
 ## Year-1 sim
 
-Measured 2026-09-12, overlay on disk. PF from `sim.team_levels()`; record from `sim.py title` (19 matchups, 20k seasons, wins rounded). Sleeper/GP refresh; Sharpe `gp=0` and Williams `gp=10` on our roster. Table sorted by PF; record can diverge ± a rank (Yao **13–6** at #5 PF, ahead of Jesus **12–7** at #4).
+Measured 2026-09-12. PF from `sim.team_levels()`; record from `sim.py title` (19 matchups, 20k seasons, wins rounded). Sleeper/GP refresh; Sharpe `gp=0` and Williams `gp=10` on our roster. Table sorted by PF; record can diverge ± a rank (Yao **13–6** at #5 PF, ahead of Jesus **12–7** at #4).
 
 | rank | team | PF | record |
 | ---: | --- | ---: | ---: |
@@ -49,7 +49,7 @@ Measured 2026-09-12, overlay on disk. PF from `sim.team_levels()`; record from `
 
 ## Title odds (this year)
 
-`sim.py title`, 2026-09-12. Unconditional `P(title)` — regular season, then the bracket. Not the PF-rank finish prior above. All assumed-through overlays on disk (Matthew, Josh, Hlina).
+`sim.py title`, 2026-09-12. Unconditional `P(title)` — regular season, then the bracket. Not the PF-rank finish prior above.
 
 | Team | P(title) |
 | --- | ---: |

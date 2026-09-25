@@ -4,7 +4,7 @@ Counterparty: Bonin (161016). Contending — 3rd PF, 10.4% title (`Team Projecti
 
 Texts 8/8/26: Brett opened — asked if he's looking to deal and what he wants. No reply (as of 9/10).
 
-Screening (9/10/26): 40 shapes simmed. Sims use post-pending-trades roster (35 bodies, assumed-through overlays on disk — same as eval). Float rule: only offer players on Fleaflicker today (28 wire bodies; pending-in like Murray/Smith/Kuminga sim fine but don't name in texts until they execute). Net bodies ≤ +1. Do not float Too lopsided. Bonin is a short-term competitor — prefer shapes that don't load his year-1 much (`Δw (them)`).
+Screening (9/10/26): 40 shapes simmed. Sims use our 35-body roster (same as eval). Net bodies ≤ +1. Do not float Too lopsided. Bonin is a short-term competitor — prefer shapes that don't load his year-1 much (`Δw (them)`).
 
 * pick in deal: Sept '26 picks count their mock rookie's projection, later picks 0.
 

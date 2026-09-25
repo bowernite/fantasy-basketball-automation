@@ -1,26 +1,13 @@
 """Assumed-through trades. Terms: `evals/Pending Trades.md`.
 
 `fetch_data.py roster` applies these after the wire cut. Idempotent once
-Fleaflicker matches. Amen is not on the wire at all until expansion.
+Fleaflicker matches; drop a deal here once the wire shows it.
 """
 
-US, HENRY, MATTHEW, HLINA, JOSH = 161025, 161019, 160941, 161021, 161024
+US, HLINA = 161025, 161021
 
 # (name, from, to)
 MOVES = (
-    ("DaRon Holmes", US, HENRY),
-    ("De'Andre Hunter", HENRY, US),
-    ("Amen Thompson", US, MATTHEW),
-    ("Keegan Murray", MATTHEW, US),
-    ("Shaedon Sharpe", MATTHEW, US),
-    ("Tari Eason", MATTHEW, US),
-    ("Devin Vassell", MATTHEW, US),
-    ("Jonathan Kuminga", MATTHEW, US),
-    ("Kawhi Leonard", US, JOSH),
-    ("Myles Turner", US, JOSH),
-    ("Miles Bridges", JOSH, US),
-    ("Aaron Gordon", JOSH, US),
-    ("John Collins", JOSH, US),
     ("Jalen Duren", US, HLINA),
     ("Jalen Green", HLINA, US),
     ("Toumani Camara", HLINA, US),
@@ -28,7 +15,7 @@ MOVES = (
 )
 
 # (name, from) — gone from the league, not a move
-DROPS = (("Zeke Nnaji", HENRY),)
+DROPS = ()
 
 INVOLVED = frozenset(t for _, a, b in MOVES for t in (a, b)) | {t for _, t in DROPS}
 
