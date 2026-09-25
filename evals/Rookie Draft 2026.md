@@ -4,6 +4,7 @@ Draft held Mon 2026-09-28; slots set by the '25-26 finish. 3 rounds × 12, one o
 
 Sources, all live pulls on 2026-09-24:
 
+- Class list: `FetchPlayerListing` (position-sliced, dedup'd), `isRookie:true` and `player_id ≥ 2851` → **93 players**. This is the driver list for the board below, not Dizzle's own "Rookie Ranks, Points" tab (70 rows) — that tab omits 23 of the 93 and includes several UDFA names outside the 93 (not usable here).
 - Board: `FetchLeagueDraftBoard?season=2026`, `FetchTrades`. No picks made yet, no pending pick moves, and `Pending Trades.md` moves no picks.
 - Dizzle `Dynasty Ranks, Points`, dated 7/10/2026, depth 466. Its `Rookie Ranks, Points` is dated 7/7/2026. Both predate Summer League.
 - Hashtag expert `DDTYPE=POINT`, dated 14 Sep 2026, depth 774.
@@ -70,10 +71,24 @@ A player missing from a board that reaches `D` counts as 0 on that board.
 | 36 | Emanuel Sharp | SAC | PG/SG | **274** | 291 | 279 | (378) | 39 | — | |
 | 37 | Meleek Thomas | CLE | SG/SF | **246** | 237 | 411 | (372) | 28 | 11.3 | split: Dizzle 237, expert 411 |
 | 38 | Chris Cenac Jr. | BOS | PF/C | **244** | 240 | 405 | (355) | 29 | 13.4 | split: Dizzle 240, expert 405; raw |
-| 39 | Tyler Bilodeau | BKN | SF/PF | **156** | — | 263 | (261) | 48 | — | not on Dizzle |
-| 40 | Trevon Brazile | DEN | SF/PF | **129** | — | 284 | (254) | 43 | — | not on Dizzle |
+| 39 | Jaron Pierre Jr. | NOP | PG/SG | **157** | — | 262 | (—) | 60 | — | not on Dizzle |
+| 40 | Tyler Bilodeau | BKN | SF/PF | **156** | — | 263 | (261) | 48 | — | not on Dizzle |
+| 41 | Trevon Brazile | DEN | SF/PF | **129** | — | 284 | (254) | 43 | — | not on Dizzle |
+| 42 | Izaiyah Nelson | ORL | SF/PF | **128** | — | 285 | (—) | 46 | — | not on Dizzle |
+| 43 | Ugonna Onyenso | DET | C | **87** | 337 | — | (—) | 44 | — | not on Hashtag expert |
+| 44 | Braden Smith | IND | PG/SG | **82** | 342 | — | (428) | 40 | — | not on Hashtag expert |
+| 45 | Malique Lewis | MIL | SF/PF | **27** | — | 406 | (318) | — | — | not on Dizzle |
+| 46 | Felix Okpara | WAS | PF/C | **26** | — | 407 | (300) | 47 | — | not on Dizzle |
+| 47 | Tobi Lawal | DAL | SF/PF | **26** | — | 408 | (482) | 55 | — | not on Dizzle |
+| 48 | Michael Ajayi | CHA | SF/PF | **25** | — | 409 | (441) | — | — | not on Dizzle |
+| 49 | Vsevolod Ishchenko | DAL | PG/SG | **24** | — | 410 | (364) | — | — | not on Dizzle |
+| 50 | Dillon Mitchell | BOS | SF/PF | **23** | — | 412 | (379) | 45 | — | not on Dizzle |
+| 51 | Tyler Nickel | NYK | SF/PF | **22** | — | 414 | (433) | 54 | — | not on Dizzle |
+| 52 | Jack Kayil | NYK | PG/SG | **22** | — | 415 | (409) | 49 | — | not on Dizzle |
 
-`—` means the player has no row on that board. Past row 40, BASE is under 130.
+`—` means the player has no row on that board (or, in Class #, no row on Dizzle's rookie-class tab).
+
+All 52 of the 93-player 2026 class with a nonzero BASE (a rank on Dizzle dynasty or Hashtag expert) are listed above. The other **41 have no rank on either board** (BASE 0) and are excluded: AK Okereke (LAL), Alpha Diallo (DEN), Boopie Miller (FA), Bryce Hopkins (DEN), Caleb Grill (BOS), Cameron Hildreth (IND), Carson Cooper (MEM), Chance McMillian (FA), Deivon Smith (FA), Ernest Udeh (CLE), Graham Ike (GSW), Hyunjung Lee (POR), Ibrahima Diallo (UTA), Ja'Kobi Gillespie (SAS), Jaden Bradley (TOR), Jayden Nunn (SAS), Jaylin Sellers (CHI), Josh Dix (OKC), Justin Harmon (UTA), Keonte Jones (DEN), Kobe Stewart (FA), Kylan Boswell (CHA), Lajae Jones (GSW), M.J. Iraldi (IND), Malik Dia (NOP), Maliq Brown (SAS), Meechie Johnson (LAL), Nick Martinelli (LAC), Otega Oweh (OKC), Peter Suder (FA), Quadir Copeland (HOU), Rafael Castro (HOU), Reese Dixon-Waters (DEN), Sean McNeil (FA), Solomon Washington (NOP), Terrell Brown (UTA), Tobe Awaka (CHI), Tre Donaldson (MIA), Trey Kaufman-Renn (MIN), Trey Townsend (FA), Wade Taylor (IND).
 
 ## At 2.09
 
