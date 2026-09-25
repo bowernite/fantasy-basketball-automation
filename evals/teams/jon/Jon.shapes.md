@@ -6,7 +6,7 @@ Counterparty: Jon (161015). Tanking — 12th PF, 0% title (`Team Projections.md`
 
 Benchmark: Todd's live offer for Cade is Cade+Sharpe+Mark > Haliburton+Porter+NAW+Claxton (+900 +1.5 +1.1 +8%, in-side ~2.6 yrs older). Jon rows with Sharpe (Day'Ron) in are the ones that match or beat it.
 
-Sims: 99-deal grid 9/25/26 (`/tmp/ff-sim-jon-cade-grid.out`) + 12 beat-Todd shapes 9/25/26. Out-side Sharpe = Shaedon; In-side Sharpe = Day'Ron. Jon ΔBASE ≥ +1000 = too lopsided (do not float). Screening: do not float deals where his incoming side is non-marginally older (~28+).
+Sims: 99-deal grid 9/25/26 (`/tmp/ff-sim-jon-cade-grid.out`) + 12 beat-Todd shapes 9/25/26. Out-side Sharpe = Shaedon; In-side Sharpe = Day'Ron. Jon ΔBASE ≥ +1000 = too lopsided (do not float). Our ΔBASE below -200: do not sim or archive (pruned 9/25). Screening: do not float deals where his incoming side is non-marginally older (~28+).
 
 * pick in deal: Sept '26 picks count their mock rookie's projection, later picks 0.
 
@@ -54,8 +54,6 @@ Cade+Vassell > SGA+McBride | +700 +0.1 +0.0 0%
 Our ΔBASE ≥ +1000 — Jon-specific bar; reference only, do not float.
 
 Cade+'27 1st > SGA+Sengun | +6500 +2.3* +1.3 +14%
-Cade+'27 1st+'28 1st > SGA+Fears+Sharpe | +1200 +2.0* +0.8 +10%
-Cade+Sharpe+Mark+2.09 > SGA+Watson+Sharpe | +1000 +0.4* +1.0 +9%
 Cade > SGA+Jaylin+'27 1st | +6400 +0.4* +0.3 +3%
 Cade+'27 1st > SGA+'27 1st | +4600 +0.3* +0.2 +2%
 Cade > SGA+Fears+Watson | +4100 +1.7 +0.8 +7%
@@ -123,41 +121,24 @@ Cade+'28 1st > SGA+Sharpe | +1300 +1.2* +0.6 +8%
 Cade+'27 1st > SGA+Fears | +1300 +1.0* +0.5 +5%
 Cade+'28 1st > SGA+Fears | +1300 +1.0* +0.5 +5%
 Cade+Kuminga+Eason > SGA+Fears+Jaylin | +1300 +0.3 +0.3 +4%
+Cade+'27 1st+'28 1st > SGA+Fears+Sharpe | +1200 +2.0* +0.8 +10%
 Cade+2.09 > SGA+McBride | +1200 +0.5* +0.4 +4%
 Cade+2.09 > SGA+Jaylin | +1200 +0.4* +0.3 +3% | Jon rejected 8/1
 Cade+'27 1st > SGA+Wallace | +1100 +0.7* +0.3 +3%
 Cade+'27 1st > SGA+Jaylin+'26 2.10 | +1000 +0.5* +0.3 +3%
+Cade+Sharpe+Mark+2.09 > SGA+Watson+Sharpe | +1000 +0.4* +1.0 +9%
 
 ## Doesn't meet our minimums
 
-Cade+Giddey+'27 1st > SGA+Jaylin | -4100 -1.5* -1.1 -12%
-Cade+Giddey+'27 1st > SGA | -4400 -1.6* -1.1 -12%
-Cade+Giddey > SGA | -3000 -1.6 -1.1 -12%
-Cade+Giddey > SGA+Fears+Watson | -400 -0.2 -0.4 -7%
-Cade+Garland > SGA+Jaylin | -1700 -1.0 -0.6 -7%
 Cade+Bridges > SGA+Jaylin | +700 -0.7 -0.3 -6%
-Cade+Edey > SGA+Jaylin | -700 -0.7 -0.5 -6%
-Cade+Edey+'26 2.09 > SGA+Jaylin | -1400 -0.8* -0.5 -6%
-Cade+Edey+'27 3rd > SGA+Jaylin+'26 2.10 | -400 -0.6* -0.4 -6%
 Cade+Edey > SGA+Jaylin+'26 2.10 | -100 -0.6* -0.4 -6%
-Cade+Edey+'26 3.09 > SGA+Jaylin+'26 2.10 | -400 -0.7* -0.4* -5% | Us proposed 8/2
-Cade+Edey > SGA | -1100 -0.9 -0.4 -5%
-Cade+Edey+'27 1st > SGA+Jaylin | -2100 -0.7* -0.4 -5%
 Cade+Bridges > SGA+Watson | +1600 -0.2 +0.1 -5%
-Cade+Garland > SGA+Watson | -800 -0.5 -0.3 -4%
 Cade+Edey > SGA+Watson | +200 -0.2 -0.1 -4%
-Cade+Garland > SGA+Fears | -800 -0.4 -0.4 -4%
-Cade+Sharpe+Mark > SGA+Fears | +400 -0.3 +0.6 +5%
-Cade+Bane > SGA+Jaylin | -500 -0.8 -0.4 -4%
 Cade+Bridges > SGA+Fears | +1600 -0.2 0 -3%
 Cade+Edey > SGA+Fears | +200 -0.1 -0.2 -3%
 Cade+Green > SGA | -200 -0.7 -0.1 -3%
-Cade+Camara+'27 1st > SGA+Jaylin | -700 -0.3* -0.3 -2%
-Cade+Edey+'27 1st > SGA+Fears | -1200 -0.1* -0.2 -2%
 Cade+Coby > SGA | +100 -0.9 -0.3 -2%
 Cade+Camara > SGA+Wells | +1000 0 -0.2 -2%
-Cade+Vassell+'27 1st > SGA+Jaylin | -800 -0.1* -0.1 -1%
-Cade+Smith+'27 1st > SGA+Jaylin | -800 -0.5* -0.1 -1%
-Cade+Suggs+'27 1st > SGA | -1600 -0.5* 0 +1%
 Cade+Bane > SGA+Watson | +400 -0.3 0 -1%
 Cade+Bane > SGA+Fears | +400 -0.2 -0.1 0%
+Cade+Sharpe+Mark > SGA+Fears | +400 -0.3 +0.6 +5%
