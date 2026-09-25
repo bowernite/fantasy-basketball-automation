@@ -4,7 +4,7 @@ Brett is shopping Cade Cunningham to several owners in a bidding war. This file 
 
 ## Goal
 
-Find Cade deals that beat Todd's live offer on a flat read of the five big numbers (`trades` §The big numbers). Push prices up and use each bid as leverage.
+Find Cade deals that beat Todd's live offer on `Score`. Push prices up and use each bid as leverage.
 
 ## Current bids (our side)
 
@@ -29,11 +29,9 @@ Live status per owner is in each `evals/teams/<owner>/<Name>.shapes.md` intro an
 
 ## How to judge a deal
 
-- Weigh ΔBASE, Δw, Δw (season) and ΔP(title) roughly equally, Δage as a rough vector alongside (`trades` §The big numbers). Title odds help, but don't over-index on this year's.
-- **Body adds:** slightly discount deals that are good mostly because we net extra bodies. That's basically free at any point and we can only do it so many times. Show a net "Players (us)" column when bodies are uneven.
+- Compare and rank by [Score](Definitions/Score.md) as the baseline. Gate first (minimums, Too lopsided) per `trades` §General guidlines and `trade-shapes` §Tiering. Jon's file uses a +1000 Too lopsided line.
+- Still judge each deal with nuance: the individual numbers, Δage (not in Score, read alongside), the counterparty's view of value (e.g. a lopsided ΔBASE they'd never accept), and body adds (a deal that's good mostly because we net bodies is worth a bit less).
 - **Picks are on the table from us:** '27 1st, '28 1st, 2.09 (Sept '26), own '27 2nd, KC '27 2nd, Don '27 2nd, '28 2nd.
-- Minimums (fail if any): ΔP < 0, ΔBASE ≤ -1000, Δw < -0.25, Δw (season) < -0.25.
-- Too lopsided to float: our ΔBASE ≥ about +1250–1400 (Jon: ≥ +1000). The counterparty should see it as a real offer.
 
 ## Pick BASE (for `out_us_extra_base`)
 
@@ -52,7 +50,7 @@ Sept '26 picks (2.09) also need `out_us_picks` and `in_from_us_picks` so the moc
 ## Output format
 
 - Deal tables: `trades` §Shapes. Todd's live offer is the benchmark row.
-- Rounding and `*`: `trade-shapes` §Table format.
+- Rounding: `trade-shapes` §Table format.
 
 ## Texts (drafts only, never send)
 
