@@ -1,80 +1,88 @@
 # FA auction 2026
 
-Mon 2026-09-28, live on the commissioner's Google Sheet right after the rookie draft. Prices live in `values.tsv`, sales go in `sales.tsv`. `Market$` and `Max$` are auction prices, not eval columns (`Eval Definitions` has no exchange rate between wins and $).
+Mon 2026-09-28, live on the commissioner's Google Sheet right after the rookie draft. Rows and prices: `values.tsv` (columns and `Market$`: `Pricing.md`). Sales: `sales.tsv`.
 
 Rules (Sheet, 2026-09-24):
 
-- $200 per team, use-it-or-lose-it. Unspent $ is worth nothing.
+- $200 per team, use-it-or-lose-it. Unspent $ is worth nothing. Auction $ can't be traded.
 - $1 min bid, and every open spot must be filled: Sheet `Max Bid` = $ left − (open − 1).
 - The pool is every unrostered player: the Sheet's 200-name list (sorted by '25-26 total FPts) plus the undrafted 2026 class, which is not on the list.
-
-# Pricing
-
-| Param | Value |
-|---|---|
-| `N`, spots league-wide (us 4, Hlina 10) | 93 |
-| `pool$` = $2,400 − $1 × N | $2,307 |
-| Undrafted 2026 class assumed | every rookie outside the top 36 by BASE |
-
-`Market$` models a room that shops three ways and spends every dollar:
-
-- `Market$` = $1 + `pool$` × mean(Win share, Sheet share, Board share), capped at $197
-  - Win share = max(0, formula `Δw` − 0.03) ÷ Σ over the top N. Unsigned (`fa`) and `noproj` rows get 0.
-  - Sheet share = max(0, `sheet_pts` − 340) ÷ Σ over the top N. Off-list rows (the 2026 class, 35 others) get 0.
-  - Board share = max(0, BASE − 25) ÷ Σ over the top N.
-  - Each replacement level is the mean of ranks N+1..N+3 on that metric.
-- `Win$`, `Sheet$`, `Board$` are each share × `pool$`. Where they split, the room splits: the Sheet's top names (B. Williams, Barnes, Javonte Green, Garza) draw list-shoppers, and off-list youth draws only those who prepared.
-- `Max$` = Brett's opening cap for card rows only: 1.5 × `Market$`, max $197.
-- `noproj` rows run on last season's rate, often over a handful of games (Alondes Williams 26.1 on 16 GP → formula `Δw` 0.37). Read them on BASE and `sheet_pts`.
-- 2026-class rows that get drafted Monday: delete them from `values.tsv` before the auction.
-- Flags come from `simlib/gp.py` plus the roster row: `frag` (pool GP in the fragment band), `miss` (gap in pool seasons), `rotN` (only N < 3 pool seasons at rotation rate), `nopool`, `GPp<map` (this-season absence), `fa` (unsigned), `noproj`, `unlisted` (not in `Free Agents.md`), `'25 rookie`, `'26 class`.
-
-**Read:** the best FA is worth ~0.1 wins to us over a $1 body, the decision floor (`Eval Definitions §σ`). No buy moves this season's title odds. The auction only turns free $ into bodies that beat our worst ones, with a small youth tail. So buy volume, rank by wins in 0.1-win bands, and let BASE break ties inside a band.
+- No past auction to calibrate against: `Market$` is a model, and the live multiplier corrects it from the first sales.
 
 # Plan
 
-**Buy 4.** Our 2 open spots plus 2 cuts: Chaney Johnson (BASE 0, ours −0.16) and Karlo Matković (BASE 161, −0.09). Each is beaten on both wins and BASE by every card vet.
+**Buy 4: our 2 open spots, plus cut Chaney Johnson and Khris Middleton.** Keep Matković.
 
-- Cut both on Fleaflicker before the auction, and have the commissioner show us at 4 open (`Max Bid` 197). The Sheet already shows 4 because it predates the Hlina/Duren trade. Either way we end at 4 buys with Chaney and Matković gone.
-  - If the commissioner applies the trade and won't take the cuts (2 open), buy card rows 1–4 only and bid the whole budget on the last slot.
-- Keep Middleton, Ellis, Huff and Bona. A swap for any of them gains less than the card-vet edge over Matković, and each extra slot thins $ per slot toward the rivals'.
-- Slots 1–3 go to card vets. Slot 4 goes to the best youth left (an undrafted rookie with BASE ≥ 240, or Nembhard) if it's there, otherwise another card vet.
+- Cut both on Fleaflicker before the auction and have the commissioner show us at 4 open (`Max Bid` 197).
+  - If he holds us to 2 open, buy 2 T1 and treat the 2nd as the last spot.
+- **Cuts.** Chaney is the worst body on every read. For the second cut, keeping Matković over Middleton reads +0.2 to +0.45pp across four buy sets (≈ 1.5σ each, same sign every time), and BASE is tied (161 vs 162). Huff and Ellis cut instead read the same pp, but they carry BASE 372 and 278.
+- **No 5th buy.** Cutting Matković too for a 5th buy reads −0.1 to −0.3pp against 4 buys: the kept body is worth about a T2, and the $ spreads thinner.
+- **Target: 3 T1 + 1 T2**, and a 4th T1 if its price fits. P(title) is 44% before the auction (43% with four $1 bodies). Joint sims, pp over four $1 bodies:
+
+| Set | ΔP(title) |
+|---|---:|
+| 4 T1 | +4.1 |
+| 3 T1 + T2 | +3.5 to +3.8 |
+| 3 T1 + Y | +3.3 to +3.5 |
+| 2 T1 + 2 T2 | +3.1 to +3.5 |
+| 4 T2 | +2.2 to +2.3 |
+
+## Tiers
+
+- **Rank by `tier`, then BASE inside a tier.** `Δw (season)` for every candidate sits within ±0.15 of a $1 body, under the 0.1-win decision floor, so it can't order them. `ΔP(title) ours` does: it tracks W20–W23 playoff-week output, and at this precision the tiers separate.
+- **Why ΔP drives the auction:** BASE (23–340) and `Δw (season)` tie at decision resolution, so the equal-weight rule lands on ΔP. `Δw (season)` can only veto. Don't carry this into trades.
+- Auction $ is use-it-or-lose-it with no other use, and `CLAUDE.md` weights this season like the next six, so there is no contending premium to add.
+- `dPtitle` = one buy replacing a $1 floor body (Justin Edwards) on our roster after the cuts. Run at 1000 engine trials and 60k title trials over 3 seed pairs, averaged. Across the pairs, sd ≈ 0.1pp per row.
+- Tier bounds: T1 ≥ +0.9pp · T2 +0.35 to +0.9 · T3 +0.15 to +0.35 · Y = 2026-class or '25 rookies at ≥ −0.15. Blank = no better than a $1 body.
+- 78 rows simmed: the top ~60 non-rookie rows by `Market$`, the 2026 class ranked 26–38 by BASE, and the rest of the ≥ 11 FPts/G vets. Nothing below the top 60 reached T3.
+- High-BASE undrafted rookies (De Larrea 412, Thornton 414, Quaintance 390, Karaban 338) read −0.3 to −0.6pp alone and −0.2pp in a set against Meleek Thomas. They are not on the card; nominate them to drain rival $.
 
 ## Cheat card
 
-Vets are tied on wins (−0.06 to +0.01), so they are ordered by BASE.
+`ΔP` = `dPtitle`. `Δw` = `Δw (season)` over the $1 body. `Cap` = opening cap at k = 1 (`Max$`). `Sheet #` = position on the Sheet's FA list.
 
-| # | Player | Tm | Age | BASE | Sheet # | Market$ | Max$ | Note |
-|---:|---|---|---:|---:|---:|---:|---:|---|
-| 1 | Baylor Scheierman | BOS | 26.0 | 268 | 16 | 73 | 110 | best on wins and BASE |
-| 2 | Brandon Williams | GSW | 26.8 | 205 | 1 | 65 | 98 | top of the list; the room will chase him |
-| 3 | Marvin Bagley | DEN | 27.5 | 197 | 3 | 63 | 94 | |
-| 4 | Dominick Barlow | PHI | 23.3 | 174 | 4 | 69 | 104 | youngest vet |
-| 5 | Julian Strawther | DEN | 24.4 | 173 | 46 | 38 | 57 | low on the list; value |
-| 6 | Vít Krejčí | POR | 26.3 | 148 | 17 | 43 | 64 | |
-| 7 | Tyus Jones | DEN | 30.4 | 135 | 57 | 23 | 34 | low on the list; value |
-| 8 | Nae'Qwan Tomlin | CLE | 25.8 | 109 | 28 | 33 | 50 | |
-| Y | Meleek Thomas | CLE | 20.1 | 246 | — | 30 | 45 | slot 4 if undrafted (ours −0.09) |
-| Y | Ryan Nembhard | CHA | 23.5 | 324 | 21 | 57 | 86 | slot 4 (ours −0.17) |
-| Y | best undrafted rookie | | | ≥ 240 | — | | | slot 4; watch Karaban 338, Conwell 331, Veesaar 321 (ACL), Sharp 274 |
+| Tier | Player | Tm | Age | BASE | ΔP | Δw | Market$ | Cap | Sheet # |
+|---|---|---|---:|---:|---:|---:|---:|---:|---:|
+| 1 | Baylor Scheierman | BOS | 26.0 | 268 | +1.35 | +0.15 | 73 | 94 | 16 |
+| 1 | Dominick Barlow | PHI | 23.3 | 174 | +1.01 | +0.10 | 69 | 94 | 4 |
+| 1 | Jaxson Hayes | UTA | 26.3 | 129 | +1.28 | +0.03 | 61 | 86 | 10 |
+| 1 | Matisse Thybulle | LAL | 29.6 | 23 | +1.07 | +0.10 | 26 | 51 | 71 |
+| 2 | Vít Krejčí | POR | 26.3 | 148 | +0.62 | +0.10 | 43 | 44 | 17 |
+| 2 | Al Horford | GSW | 40.3 | 117 | +0.48 | +0.07 | 39 | 44 | 22 |
+| 2 | Luka Garza | BOS | 27.7 | 107 | +0.51 | +0.04 | 40 | 44 | 6 |
+| 2 | Kentavious Caldwell-Pope | PHI | 33.6 | 78 | +0.60 | +0.07 | 36 | 44 | 29 |
+| 2 | Jarred Vanderbilt | LAL | 27.5 | 66 | +0.63 | +0.05 | 31 | 39 | 23 |
+| 2 | Simone Fontecchio | MIA | 30.8 | 55 | +0.63 | +0.02 | 34 | 42 | 11 |
+| 2 | Terance Mann | BKN | 29.9 | 51 | +0.57 | +0.03 | 36 | 44 | 12 |
+| 2 | Trayce Jackson-Davis | TOR | 26.6 | 42 | +0.57 | +0.01 | 19 | 24 | 67 |
+| 2 | Nick Richards | MIA | 28.8 | 36 | +0.64 | −0.00 | 21 | 26 | 51 |
+| 2 | Kenrich Williams | OKC | 31.8 | 32 | +0.40 | +0.02 | 23 | 29 | 37 |
 
-`Sheet #` = position on the Sheet's FA list.
+- **T3** (BASE, ΔP, `Market$`): Dru Smith 231 (+0.25, $47) · Marvin Bagley 197 (+0.29, $63) · Julian Strawther 173 (+0.19, $38) · Zach Collins 140 (+0.20, $34) · Kevon Looney 69 (+0.17, $18) · Trendon Watford 66 (+0.18, $23) · Josh Okogie 25 (+0.23, $23) · Jabari Walker 1 (+0.27, $20)
+- **Y:** Meleek Thomas 246 (+0.00, $30) · Chris Cenac 244 (+0.05, $28), if undrafted
 
 ## Bidding
 
 - **Hard max** = $ left − (spots left − 1).
-- **Cap** on a card row = 1.5 × live `Market$`, never above hard max. Below the cap, bid whenever a card row is up. Don't chase past it: the next card row is within noise.
-- **Last spot:** the cap is the hard max. Wait for the best card row left, then spend everything.
-- **Endgame:** once our hard max beats every rival's `Max Bid`, nothing can outbid us. Nominate the best card row left and win it.
-- Never bid on a non-card row until the last spot, and never to push a rival's price. A stuck buy costs one of our 4 spots.
-- If the card runs dry, extend it down `values.tsv` by `Δw '26–'27 ours` in 0.1-win bands, then BASE.
+- **Rest of plan** = the spots left after this buy, priced at live `Market$`: the cheapest unsold T1s for our remaining T1 wants, plus the cheapest unsold T2 for each other spot ($1 once T2s run out). Leave out the row being bid on.
+  - T1 wants = 3 − T1s bought, counting the row being bid on if it is a T1. Capped at unsold T1s and at the spots left.
+- **Cap** = min(tier cap, $ left − rest of plan, hard max, $100 while ≥ 3 spots are open):
+  - T1: no tier cap. A T1 always fills the next slot, even once we hold 3.
+  - T2: 1.25 × live `Market$`.
+  - T3: live `Market$`, and only once the unsold T2s are fewer than our non-T1 spots left. Until then, no bid.
+  - Y: $1.
+- The T1 cap rises as rivals buy T1s. At the start it is $94 on Scheierman or Barlow. If only one T1 is left and we hold none, it is $200 − 3 × the cheapest T2, held to $100 until we are down to 2 spots.
+- **Last spot:** cap = hard max on the best tiered row up.
+- **Endgame:** once our hard max beats every rival's `Max Bid`, nothing can outbid us. Nominate the best tiered row left and win it.
+- Never bid on an untiered row, and never to push a rival's price. A stuck buy costs one of our 4 spots.
 - Waste check: finishing with more than ~$10 unspent means the caps were too tight.
 
 ## Nominating
 
-- **Early:** list names the room will pay for and we don't want. This drains rival $ and fills rival spots, which is our competition for card rows. In order: Harrison Barnes, Javonte Green, Luka Garza, Jonas Valančiūnas (unsigned), Jaxson Hayes, Quinten Post, Simone Fontecchio, Terance Mann, Craig Porter, Pat Spencer, Clint Capela, John Konchar.
-- **Mid:** card rows the room rates low: Strawther, Tyus Jones, Tomlin. Rivals shop the list top-down.
-- **Last:** off-list youth (undrafted rookies) at $1, once most rivals are down to 0–1 spots.
+- **Early:** untiered names the room pays for. This drains rival $ and spots. In order: Brandon Williams, Harrison Barnes, Javonte Green, Goga Bitadze, Pat Spencer, Quinten Post, Patrick Williams, Ryan Nembhard, Caleb Love, Sergio De Larrea, Bruce Thornton, Alex Karaban, Jayden Quaintance.
+- **Mid:** our targets deep on the Sheet list, once rivals have spent: Matisse Thybulle, Nick Richards, Trayce Jackson-Davis, Kenrich Williams, Jarred Vanderbilt.
+- **Last:** Y rows at $1 if we still have a spot once most rivals are down to 0–1 spots.
+- Leave the top-list T1s (Barlow, Hayes, Scheierman) for rivals to nominate. The endgame rule catches any that are left.
 - Per-slot $ at the start: us $50 · Mitch $50 · Bonin, Jon, Todd $33 · Joe $25 · Chris, Brian, Henry, Josh $22 · Hlina $20 · Matthew $15. Mitch is the only rival who can match us per slot. Watch his $ left.
 
 # Live
@@ -82,7 +90,7 @@ Vets are tied on wins (−0.06 to +0.01), so they are ordered by BASE.
 Runbook: `auction-live` Skill (`.claude/skills/auction-live/auction-live.md`).
 
 - Log every sale in `sales.tsv` as `player  team  $`, where team is the owner's first name. Either:
-  - **Agent session:** say "sold Hayes Chris 12", or let the Sheet poller append. The agent replies with the live multiplier, live `Market$` and cap for the unsold card rows, and each team's $ left, spots left and `Max Bid`.
+  - **Agent session:** say "sold Hayes Chris 12", or let the Sheet poller append. The agent replies with the live multiplier, the live `Market$` and cap for the unsold tiered rows, and each team's $ left, spots left and `Max Bid`.
   - **Sheet tab:** paste `values.tsv` and `sales.tsv` as tabs, then compute the multiplier below with SUM and VLOOKUP.
 - **Live multiplier** k = ($ left league-wide − spots left league-wide) ÷ Σ(`Market$` − 1) over the top (spots left) unsold rows. Live `Market$` = 1 + (`Market$` − 1) × k.
 - **Name match:** NFKD-ascii, lowercase, fold `’` to `'`, drop `Jr.`/`Sr.`/`II`/`III`. The Sheet writes Nae’Qwan Tomlin, D’Angelo Russell and Jae’Sean Tate with curly apostrophes.
