@@ -1,4 +1,4 @@
-# out > in | ΔBASE Δw Δw(season) ΔP(title) | status
+# out > in | ΔBASE Δw Δw(season) ΔP(title) Δage | status
 
 Counterparty: Jon (161015). Tanking — 12th PF, 0% title (`Team Projections.md`). Columns: `Out | In` + our four big numbers.
 

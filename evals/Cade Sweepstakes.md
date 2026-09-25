@@ -63,7 +63,7 @@ Sept '26 picks (2.09) also need `out_us_picks` and `in_from_us_picks` so the moc
 
 ## Hard rules
 
-- Never read, grep, print or write `* Trade Shapes.md`. Only `*.shapes.md`.
+- Never read, grep, print or write `* Trade Shapes.md`, `*'s Team.md` or `My Team.md`. Agents read `<Name>.shapes.md` and `<Name>.team.md` only (ours is `evals/teams/my-team/Ours.team.md`).
 - No custom scripts: JSON config at `$TMPDIR/ff-sim-<tag>.json` + `evals/lineup-math/run sim_run.py`. Delete tmp configs when done.
 - Don't cd; relative paths. zsh: quote args with `=`. `/bin/ls`. GNU sed (`sed -i`, no '').
 - No linters/formatters.

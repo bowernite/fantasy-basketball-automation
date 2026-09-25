@@ -227,12 +227,16 @@ def _load_age(path):
         if len(parts) < 8:
             continue
         try:
-            age = float(parts[2])
             fpts = int(parts[6].split()[0])
             gp = int(parts[7].split()[0])
         except (ValueError, IndexError):
             continue
-        out[parts[1]] = (age, max(0, fpts - 18) * gp)
+        weight = max(0, fpts - 18) * gp
+        try:
+            out[parts[1]] = (float(parts[2]), weight)
+        except ValueError:
+            if not weight:
+                out[parts[1]] = (0.0, 0)
     _AGE_CACHE[path] = out
     return out
 

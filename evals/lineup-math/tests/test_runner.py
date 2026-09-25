@@ -8,9 +8,9 @@ import unittest
 
 import sim
 from simlib.runner import (
-    _simmed_date, check_config, deal_delta_base, enrich_config, parse_config,
-    resolve_roster, run_config, sim_tmp_path, team_sims_path, team_sim_path,
-    team_trade_shapes_path)
+    _simmed_date, check_config, deal_delta_age, deal_delta_base, enrich_config,
+    parse_config, resolve_roster, run_config, sim_tmp_path, team_sims_path,
+    team_sim_path, team_trade_shapes_path)
 from tests.harness import cheap_monte_carlo
 
 EXAMPLES = os.path.join(sim.HERE, "sims", "examples")
@@ -33,6 +33,17 @@ class DealDeltaBase(unittest.TestCase):
                 "in_from_them": ["Deni Avdija"],
             }, 999999)
         self.assertIn("999999", str(ctx.exception))
+
+
+class DealDeltaAge(unittest.TestCase):
+    def test_a_body_with_no_age_and_no_weight_does_not_blank_the_change(self):
+        # Chaney Johnson: AGE "–", FPts/G under 18, so weight 0
+        got = deal_delta_age({
+            "label": "Chaney+'28 1st > '27 1st",
+            "out_us": ["Chaney Johnson"],
+            "in_from_them": [],
+        }, 161020)
+        self.assertAlmostEqual(got, 1.0)
 
 
 class TeamTradeShapesPath(unittest.TestCase):

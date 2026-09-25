@@ -1,4 +1,4 @@
-# out > in | ΔBASE Δw Δw(season) ΔP(title) | status
+# out > in | ΔBASE Δw Δw(season) ΔP(title) Δage | status
 
 Counterparty: Matthew Pook, Pharaoh Mattankhamun-Ra (160941). He is tanking this year (11th, 0% title) and projected to climb to 5th in '27-28 and 1st in '28-29 (Team Projections). He is not Matthew the Apostle (Hlina).
 
@@ -9,9 +9,9 @@ Rule (9/25): Wemby is untouchable too (Brett). No new In-side Wemby shapes; exis
 
 No Johnson (9/25): after our two Johnson hypotheticals he asked "Any hypotheticals without Johnson?". Non-Johnson rows are built on Barnes, Harper or Wemby. Only the Wemby+Ausar+Black shapes clearly beat Todd; the best Barnes shape (Barnes+Harper+Ausar+Black) roughly ties him.
 
-Benchmark: Todd's live offer, Cade+Sharpe+Mark > Haliburton+Porter+NAW+Claxton, +900 +1.5 +1.1 +8%, and about +2.6 yrs older (weighted).
+Benchmark: Todd's live offer, Cade+Sharpe+Mark > Haliburton+Porter+NAW+Claxton, +900 +1.5 +1.1 +8% +2.6.
 
-Bars: beat Todd on a flat read of the four numbers plus age. Our ΔBASE stays between -200 and +1250. Our trades minimums apply.
+Bars: beat Todd on a flat read of the five numbers. Our ΔBASE stays between -200 and +1250. Our trades minimums apply.
 
 Priced 9/25/26. Rosters were checked against live that day, and his eval re-run on the 9/24 projections.
 
@@ -19,107 +19,107 @@ Priced 9/25/26. Rosters were checked against live that day, and his eval re-run 
 
 ## Above floor
 
-Cade+Kuminga+Walker+'27 1st+'28 1st+'26 2.09 > Johnson+Barnes | +900 +1.5* +1.3 +17%
-Cade+Sharpe+'27 1st+'28 1st+'26 2.09 > Johnson+Barnes | +1000 +1.4* +1.4 +18%
-Cade+Eason+'27 1st+'28 1st+'26 2.09 > Johnson+Barnes | +900 +1.4* +1.3 +17%
-Cade+Sharpe+'27 1st+KC '27 2nd+Don '27 2nd+'26 2.09 > Johnson+Barnes | +700 +1.4* +1.4 +18%
-Cade+Sharpe+Kuminga+'27 1st+'28 1st > Johnson+Barnes | +900 +1.3* +1.4 +18%
-Cade+Sharpe+Kuminga+'27 1st+KC '27 2nd+Don '27 2nd > Johnson+Barnes | +700 +1.3* +1.4 +18%
-Cade+Mark+'27 1st+'28 1st+'26 2.09 > Johnson+Barnes | +600 +1.3* +1.4 +17%
-Cade+Kuminga+'27 1st+'28 1st+'26 2.09 > Wemby+Ausar+Black | +700 +1.8* +1.1 +10%
-Cade+'26 2.09 > Johnson+Ausar+Black | +1000 +1.9* +0.9 +7%
-Cade+'28 2nd > Johnson+Ausar+Black | +1000 +2.0* +0.9 +7%
-Cade+Kuminga+'27 1st > Johnson+Ausar+Black+'26 2.05 | +500 +1.9* +0.9 +8%
-Cade+Kuminga+'26 2.09 > Johnson+Ausar+Black+Clowney | +800 +1.9* +0.9 +8%
-Cade+Sharpe+Mark+'27 1st+'28 1st+'26 2.09 > Barnes+Harper+Ausar+Black | +1000 +1.1* +1.1 +11%
-Cade+Kuminga > Johnson+Ausar+Black | +1000 +1.7 +0.8 +7%
-Cade+Sharpe+'26 2.09 > Johnson+Ausar+Black+Clowney | +400 +1.5* +1.0 +9%
-Cade+Sharpe+Kuminga+'27 1st+'28 1st > Wemby+Ausar+Black | +300 +1.3* +1.2 +10%
-Cade > Johnson+Ausar+Jakučionis | +900 +1.7 +0.8 +7%
+Cade+Kuminga+Walker+'27 1st+'28 1st+'26 2.09 > Johnson+Barnes | +900 +1.5* +1.3 +17% +2.6
+Cade+Sharpe+'27 1st+'28 1st+'26 2.09 > Johnson+Barnes | +1000 +1.4* +1.4 +18% +2.7
+Cade+Eason+'27 1st+'28 1st+'26 2.09 > Johnson+Barnes | +900 +1.4* +1.3 +17% +2.3
+Cade+Sharpe+'27 1st+KC '27 2nd+Don '27 2nd+'26 2.09 > Johnson+Barnes | +700 +1.4* +1.4 +18% +2.4
+Cade+Sharpe+Kuminga+'27 1st+'28 1st > Johnson+Barnes | +900 +1.3* +1.4 +18% +2.5
+Cade+Sharpe+Kuminga+'27 1st+KC '27 2nd+Don '27 2nd > Johnson+Barnes | +700 +1.3* +1.4 +18% +2.1
+Cade+Mark+'27 1st+'28 1st+'26 2.09 > Johnson+Barnes | +600 +1.3* +1.4 +17% +2.6
+Cade+Kuminga+'27 1st+'28 1st+'26 2.09 > Wemby+Ausar+Black | +700 +1.8* +1.1 +10% +0.7
+Cade+'26 2.09 > Johnson+Ausar+Black | +1000 +1.9* +0.9 +7% -0.3
+Cade+'28 2nd > Johnson+Ausar+Black | +1000 +2.0* +0.9 +7% -0.1
+Cade+Kuminga+'27 1st > Johnson+Ausar+Black+'26 2.05 | +500 +1.9* +0.9 +8% +0.3
+Cade+Kuminga+'26 2.09 > Johnson+Ausar+Black+Clowney | +800 +1.9* +0.9 +8% -0.3
+Cade+Sharpe+Mark+'27 1st+'28 1st+'26 2.09 > Barnes+Harper+Ausar+Black | +1000 +1.1* +1.1 +11% +1.1
+Cade+Kuminga > Johnson+Ausar+Black | +1000 +1.7 +0.8 +7% -0.9
+Cade+Sharpe+'26 2.09 > Johnson+Ausar+Black+Clowney | +400 +1.5* +1.0 +9% -0.3
+Cade+Sharpe+Kuminga+'27 1st+'28 1st > Wemby+Ausar+Black | +300 +1.3* +1.2 +10% +0.5
+Cade > Johnson+Ausar+Jakučionis | +900 +1.7 +0.8 +7% -1.1
 
 ## Floor
 
-Cade+'27 1st+'26 2.09 > Johnson+Ausar+'26 1.06 | +800 +1.7* +0.9 +7%
-Cade+Sharpe+Mark+'27 1st+'26 2.09 > Johnson+Barnes | +1000 +0.7* +1.5 +17%
-Cade+Sharpe+Mark+Kuminga+'27 1st > Johnson+Barnes | +1000 +0.5* +1.4 +17%
-Cade+Sharpe+'27 1st+'28 1st+'26 2.09 > Barnes+Harper+Ausar | +1000 +1.1* +0.9 +10%
-Cade+Sharpe+'26 2.09+KC '27 2nd > Johnson+Ausar+Black+'26 2.05 | 0 +1.4* +1.0 +8%
-Cade+'26 2.09+'28 2nd > Johnson+Ausar+Black | +400 +1.9* +0.9 +7%
-Cade+Bona+'26 2.09 > Johnson+Ausar+Black | +800 +1.7* +0.8 +6%
-Cade+Walker+'26 2.09 > Johnson+Ausar+Black | +600 +1.6* +0.8 +7%
-Cade+Kuminga+'28 2nd > Johnson+Ausar+Black | +400 +1.7* +0.8 +7%
-Cade+Sharpe > Johnson+Ausar+Black | +600 +1.4 +1.0 +7%
-Cade > Johnson+Ausar+Clowney | +700 +1.5 +0.8 +8%
-Cade+Eason > Johnson+Ausar+Black | +600 +1.4 +0.8 +6%
-Cade+Sharpe+Kuminga+'26 2.09 > Johnson+Ausar+Black+'26 2.05 | +200 +1.2* +1.0 +8%
-Cade+Kuminga+'27 1st+'28 1st > Wemby+Ausar | -100 +1.1* +1.0 +8%
-Cade+Sharpe+Mark+Kuminga+'27 1st+'28 1st > Barnes+Harper+Ausar+Black | +1000 +0.9* +1.0 +10%
-Cade+Sharpe+'27 1st+'26 2.09 > Wemby+Ausar | +300 +0.7* +1.1 +9%
-Cade+Sharpe+Mark+'27 1st+'28 1st > Barnes+Harper+Ausar+Clowney | +700 +0.7* +0.9 +10%
-Cade+Mark+'27 1st+'26 2.09 > Wemby+Ausar | 0 +0.6* +1.1 +8%
-Cade+Sharpe+Kuminga+'27 1st > Wemby+Ausar | +300 +0.5* +1.0 +9%
-Cade+Sharpe+Mark+Kuminga+Walker+'27 1st+'28 1st > Barnes+Harper+Ausar+Black | +600 +0.6* +0.9 +10%
-Cade+Sharpe > Barnes+Ausar+Black+Clowney | +1000 +1.1 +0.5 +8%
-Cade+'26 2.09 > Barnes+Ausar+Black | +1000 +1.4* +0.4 +7%
-Cade+Kuminga > Barnes+Ausar+Black | +900 +1.2 +0.4 +6%
-Cade+Sharpe+'27 1st > Johnson+Ausar+'26 1.06 | +400 +1.2* +0.9 +7%
-Cade+Kuminga+'26 2.09 > Johnson+Ausar+Black | +400 +1.6* +0.8 +7%
-Cade+Sharpe+'26 2.09 > Johnson+Ausar+Black | 0 +1.3* +1.0 +8%
-Cade+'26 2.09 > Johnson+Ausar+Jakučionis | +200 +1.6* +0.9 +7%
-Cade+'26 2.09 > Johnson+Ausar+Clowney | +100 +1.4* +0.8 +8%
-Cade+Sharpe+Mark+Kuminga+'27 1st+'26 2.09 > Johnson+Barnes | +300 +0.4* +1.4 +17%
-Cade+Sharpe+Mark+'27 1st+'28 1st > Johnson+Barnes | +200 +0.8* +1.5 +17%
-Cade+Mark > Johnson+Ausar+Black | +300 +1.2 +0.9 +6%
-Cade+Sharpe+'26 2.09 > Barnes+Ausar+Black+Clowney | +400 +1.0* +0.6 +8%
-Cade+Sharpe+Mark+'27 1st+'28 1st > Barnes+Harper+Ausar | +300 +0.4* +0.9 +10%
+Cade+'27 1st+'26 2.09 > Johnson+Ausar+'26 1.06 | +800 +1.7* +0.9 +7% +0.4
+Cade+Sharpe+Mark+'27 1st+'26 2.09 > Johnson+Barnes | +1000 +0.7* +1.5 +17% +1.7
+Cade+Sharpe+Mark+Kuminga+'27 1st > Johnson+Barnes | +1000 +0.5* +1.4 +17% +1.3
+Cade+Sharpe+'27 1st+'28 1st+'26 2.09 > Barnes+Harper+Ausar | +1000 +1.1* +0.9 +10% +1.3
+Cade+Sharpe+'26 2.09+KC '27 2nd > Johnson+Ausar+Black+'26 2.05 | 0 +1.4* +1.0 +8% 0.0
+Cade+'26 2.09+'28 2nd > Johnson+Ausar+Black | +400 +1.9* +0.9 +7% +0.4
+Cade+Bona+'26 2.09 > Johnson+Ausar+Black | +800 +1.7* +0.8 +6% -0.3
+Cade+Walker+'26 2.09 > Johnson+Ausar+Black | +600 +1.6* +0.8 +7% -0.2
+Cade+Kuminga+'28 2nd > Johnson+Ausar+Black | +400 +1.7* +0.8 +7% 0.0
+Cade+Sharpe > Johnson+Ausar+Black | +600 +1.4 +1.0 +7% -0.9
+Cade > Johnson+Ausar+Clowney | +700 +1.5 +0.8 +8% -0.7
+Cade+Eason > Johnson+Ausar+Black | +600 +1.4 +0.8 +6% -1.0
+Cade+Sharpe+Kuminga+'26 2.09 > Johnson+Ausar+Black+'26 2.05 | +200 +1.2* +1.0 +8% -0.6
+Cade+Kuminga+'27 1st+'28 1st > Wemby+Ausar | -100 +1.1* +1.0 +8% +0.5
+Cade+Sharpe+Mark+Kuminga+'27 1st+'28 1st > Barnes+Harper+Ausar+Black | +1000 +0.9* +1.0 +10% +0.9
+Cade+Sharpe+'27 1st+'26 2.09 > Wemby+Ausar | +300 +0.7* +1.1 +9% -0.2
+Cade+Sharpe+Mark+'27 1st+'28 1st > Barnes+Harper+Ausar+Clowney | +700 +0.7* +0.9 +10% +1.0
+Cade+Mark+'27 1st+'26 2.09 > Wemby+Ausar | 0 +0.6* +1.1 +8% -0.3
+Cade+Sharpe+Kuminga+'27 1st > Wemby+Ausar | +300 +0.5* +1.0 +9% -0.6
+Cade+Sharpe+Mark+Kuminga+Walker+'27 1st+'28 1st > Barnes+Harper+Ausar+Black | +600 +0.6* +0.9 +10% +0.8
+Cade+Sharpe > Barnes+Ausar+Black+Clowney | +1000 +1.1 +0.5 +8% -0.9
+Cade+'26 2.09 > Barnes+Ausar+Black | +1000 +1.4* +0.4 +7% -0.2
+Cade+Kuminga > Barnes+Ausar+Black | +900 +1.2 +0.4 +6% -0.8
+Cade+Sharpe+'27 1st > Johnson+Ausar+'26 1.06 | +400 +1.2* +0.9 +7% +0.1
+Cade+Kuminga+'26 2.09 > Johnson+Ausar+Black | +400 +1.6* +0.8 +7% -0.3
+Cade+Sharpe+'26 2.09 > Johnson+Ausar+Black | 0 +1.3* +1.0 +8% -0.3
+Cade+'26 2.09 > Johnson+Ausar+Jakučionis | +200 +1.6* +0.9 +7% -0.5
+Cade+'26 2.09 > Johnson+Ausar+Clowney | +100 +1.4* +0.8 +8% -0.1
+Cade+Sharpe+Mark+Kuminga+'27 1st+'26 2.09 > Johnson+Barnes | +300 +0.4* +1.4 +17% +1.6
+Cade+Sharpe+Mark+'27 1st+'28 1st > Johnson+Barnes | +200 +0.8* +1.5 +17% +2.4
+Cade+Mark > Johnson+Ausar+Black | +300 +1.2 +0.9 +6% -0.9
+Cade+Sharpe+'26 2.09 > Barnes+Ausar+Black+Clowney | +400 +1.0* +0.6 +8% -0.2
+Cade+Sharpe+Mark+'27 1st+'28 1st > Barnes+Harper+Ausar | +300 +0.4* +0.9 +10% +1.0
 
 ## Below bar
 
-Cade+Walker+Bona+'26 2.09 > Johnson+Ausar+Black | +400 +1.4* +0.7 +5%
-Cade+Sharpe+Kuminga > Johnson+Ausar+Black | 0 +1.1 +0.9 +7%
-Cade+Eason+Kuminga > Johnson+Ausar+Black | -100 +1.1 +0.7 +6%
-Cade > Johnson+Ausar | +300 +1.2 +0.8 +6%
-Cade+Kuminga > Johnson+Ausar+'26 2.05 | +500 +1.1* +0.7 +7%
-Cade+Kuminga+'26 2.09 > Barnes+Ausar+Black | +300 +1.1* +0.4 +7%
-Cade+Sharpe+Kuminga > Barnes+Ausar+Black+Jakučionis | +500 +1.0 +0.5 +7%
-Cade+Sharpe+'27 1st > Wemby+Black | +900 +0.5* +0.8 +6%
-Cade+Kuminga+Walker+'27 1st+'28 1st+'26 2.09 > Barnes+Harper+Black | +800 +0.8* +0.4 +7%
-Cade+Sharpe+Kuminga+'27 1st+'26 2.09 > Johnson+Harper | +300 +0.3* +0.9 +7%
-Cade+Sharpe+Kuminga+'27 1st+'28 1st > Barnes+Harper+Black | +800 +0.6* +0.5 +7%
-Cade+'27 1st+'28 1st > Barnes+Harper | +1100 +0.7* +0.4 +6%
-Cade+Sharpe+Kuminga > Barnes+Ausar+Black+Clowney | +300 +0.8 +0.5 +7%
-Cade > Johnson+Black+Clowney | +600 +1.2 +0.5 +4%
-Cade+Sharpe > Barnes+Ausar+Black | +600 +0.8 +0.5 +7%
-Cade+Sharpe+Mark+'27 1st+'26 2.09 > Barnes+Harper+Black | +1000 0.0* +0.7 +7%
-Cade+Sharpe+Mark+Kuminga > Barnes+Ausar+Black+Clowney+Jakučionis | -400 +0.5 +0.6 +8%
-Cade+Sharpe+Mark > Barnes+Ausar+Black+Jakučionis | -100 +0.5 +0.6 +7%
-Cade+Mark > Barnes+Ausar+Black | +300 +0.7 +0.5 +6%
-Cade+Sharpe+Mark+'27 1st > Johnson+Harper | +200 -0.1* +0.9 +7%
-Cade+Kuminga+'27 1st+KC '27 2nd > Barnes+Harper | +1000 +0.5* +0.3 +6%
-Cade+Sharpe+'27 1st+'26 2.09 > Barnes+Harper | +900 0.0* +0.5 +6%
-Cade > Barnes+Ausar | +200 +0.7 +0.3 +5%
-Cade+'27 1st > Wemby | +500 +0.4* +0.6 +4%
-Cade+Kuminga+'27 1st+'28 1st > Barnes+Harper | +400 +0.5* +0.3 +6%
-Cade+Sharpe+'27 1st+KC '27 2nd > Barnes+Harper | +600 +0.1* +0.4 +7%
-Cade+Sharpe+Kuminga+'27 1st > Barnes+Harper | +800 -0.2* +0.4 +6%
-Cade+Kuminga+Walker+'27 1st+'26 2.09 > Barnes+Harper | +800 0.0* +0.2 +5%
-Cade+Sharpe+'27 1st+'28 1st > Barnes+Harper | +100 +0.1* +0.4 +7%
-Cade+Kuminga > Johnson+Black+Maluach | +500 +0.8 +0.3 +3%
-Cade+Sharpe+'27 1st+KC '27 2nd+Don '27 2nd > Barnes+Harper | -200 +0.1* +0.4 +7%
-Cade > Johnson+Black | +200 +1.0 +0.4 +2%
-Cade+'27 1st+'28 1st > Wemby | -900 +0.4* +0.6 +4%
-Cade+Mark+'27 1st+'28 1st > Barnes+Harper | -200 0.0* +0.4 +6%
-Cade+Kuminga+'27 1st > Wemby | -200 +0.1* +0.5 +4%
-Cade+Sharpe > Johnson+'26 1.06 | +300 +0.1* +0.4 +3%
-Cade+Eason+'27 1st+'28 1st > Barnes+Harper | 0 +0.1* +0.3 +5%
-Cade+Walker+Kuminga+'27 1st+'28 1st > Barnes+Harper | 0 +0.1* +0.2 +5%
+Cade+Walker+Bona+'26 2.09 > Johnson+Ausar+Black | +400 +1.4* +0.7 +5% -0.2
+Cade+Sharpe+Kuminga > Johnson+Ausar+Black | 0 +1.1 +0.9 +7% -0.9
+Cade+Eason+Kuminga > Johnson+Ausar+Black | -100 +1.1 +0.7 +6% -1.0
+Cade > Johnson+Ausar | +300 +1.2 +0.8 +6% -0.6
+Cade+Kuminga > Johnson+Ausar+'26 2.05 | +500 +1.1* +0.7 +7% -1.0
+Cade+Kuminga+'26 2.09 > Barnes+Ausar+Black | +300 +1.1* +0.4 +7% -0.2
+Cade+Sharpe+Kuminga > Barnes+Ausar+Black+Jakučionis | +500 +1.0 +0.5 +7% -1.2
+Cade+Sharpe+'27 1st > Wemby+Black | +900 +0.5* +0.8 +6% -0.8
+Cade+Kuminga+Walker+'27 1st+'28 1st+'26 2.09 > Barnes+Harper+Black | +800 +0.8* +0.4 +7% +1.0
+Cade+Sharpe+Kuminga+'27 1st+'26 2.09 > Johnson+Harper | +300 +0.3* +0.9 +7% +0.2
+Cade+Sharpe+Kuminga+'27 1st+'28 1st > Barnes+Harper+Black | +800 +0.6* +0.5 +7% +0.9
+Cade+'27 1st+'28 1st > Barnes+Harper | +1100 +0.7* +0.4 +6% +1.1
+Cade+Sharpe+Kuminga > Barnes+Ausar+Black+Clowney | +300 +0.8 +0.5 +7% -0.8
+Cade > Johnson+Black+Clowney | +600 +1.2 +0.5 +4% -0.8
+Cade+Sharpe > Barnes+Ausar+Black | +600 +0.8 +0.5 +7% -0.8
+Cade+Sharpe+Mark+'27 1st+'26 2.09 > Barnes+Harper+Black | +1000 0.0* +0.7 +7% +0.1
+Cade+Sharpe+Mark+Kuminga > Barnes+Ausar+Black+Clowney+Jakučionis | -400 +0.5 +0.6 +8% -1.2
+Cade+Sharpe+Mark > Barnes+Ausar+Black+Jakučionis | -100 +0.5 +0.6 +7% -1.2
+Cade+Mark > Barnes+Ausar+Black | +300 +0.7 +0.5 +6% -0.8
+Cade+Sharpe+Mark+'27 1st > Johnson+Harper | +200 -0.1* +0.9 +7% -0.1
+Cade+Kuminga+'27 1st+KC '27 2nd > Barnes+Harper | +1000 +0.5* +0.3 +6% +0.4
+Cade+Sharpe+'27 1st+'26 2.09 > Barnes+Harper | +900 0.0* +0.5 +6% +0.3
+Cade > Barnes+Ausar | +200 +0.7 +0.3 +5% -0.4
+Cade+'27 1st > Wemby | +500 +0.4* +0.6 +4% -0.8
+Cade+Kuminga+'27 1st+'28 1st > Barnes+Harper | +400 +0.5* +0.3 +6% +1.0
+Cade+Sharpe+'27 1st+KC '27 2nd > Barnes+Harper | +600 +0.1* +0.4 +7% +0.4
+Cade+Sharpe+Kuminga+'27 1st > Barnes+Harper | +800 -0.2* +0.4 +6% -0.1
+Cade+Kuminga+Walker+'27 1st+'26 2.09 > Barnes+Harper | +800 0.0* +0.2 +5% +0.3
+Cade+Sharpe+'27 1st+'28 1st > Barnes+Harper | +100 +0.1* +0.4 +7% +1.1
+Cade+Kuminga > Johnson+Black+Maluach | +500 +0.8 +0.3 +3% -0.8
+Cade+Sharpe+'27 1st+KC '27 2nd+Don '27 2nd > Barnes+Harper | -200 +0.1* +0.4 +7% +0.8
+Cade > Johnson+Black | +200 +1.0 +0.4 +2% -0.8
+Cade+'27 1st+'28 1st > Wemby | -900 +0.4* +0.6 +4% +0.3
+Cade+Mark+'27 1st+'28 1st > Barnes+Harper | -200 0.0* +0.4 +6% +1.0
+Cade+Kuminga+'27 1st > Wemby | -200 +0.1* +0.5 +4% -0.8
+Cade+Sharpe > Johnson+'26 1.06 | +300 +0.1* +0.4 +3% -1.4
+Cade+Eason+'27 1st+'28 1st > Barnes+Harper | 0 +0.1* +0.3 +5% +0.7
+Cade+Walker+Kuminga+'27 1st+'28 1st > Barnes+Harper | 0 +0.1* +0.2 +5% +1.0
 
 ## Too lopsided
 
 ## Doesn't meet our minimums
 
-Cade > Harper+Ausar+Black | +200 +0.6 -0.2 -6%
-Cade+Mark+'27 1st > Wemby | -900 -0.4* +0.6 +3%
-Cade+Jabari+'27 1st+'26 2.09 > Barnes+Harper | +700 -0.3* +0.1 +3%
-Cade+Sharpe+'27 1st > Wemby | -500 -0.3* +0.6 +5%
-Cade+Sharpe+Mark+'27 1st > Barnes+Harper | +200 -0.6* +0.5 +6%
+Cade > Harper+Ausar+Black | +200 +0.6 -0.2 -6% -2.8
+Cade+Mark+'27 1st > Wemby | -900 -0.4* +0.6 +3% -0.8
+Cade+Jabari+'27 1st+'26 2.09 > Barnes+Harper | +700 -0.3* +0.1 +3% +0.2
+Cade+Sharpe+'27 1st > Wemby | -500 -0.3* +0.6 +5% -0.8
+Cade+Sharpe+Mark+'27 1st > Barnes+Harper | +200 -0.6* +0.5 +6% -0.1

@@ -24,4 +24,3 @@ Read `evals/teams/<owner>/<Name>.team.md` and `<Name>.shapes.md` only. Never rea
 # Notes
 
 - Always load/follow the `instructions-and-docs-ff` Skill when writing to `.md` files
-- FYI when copying to clipboard, I have an app that has clipboard history, so no worries about copying multiple things to clipboard, overwriting, etc -- they’re all easily accessible to me

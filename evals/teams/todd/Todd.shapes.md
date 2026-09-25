@@ -1,4 +1,4 @@
-# out > in | ΔBASE Δw Δw(season) ΔP(title) | status
+# out > in | ΔBASE Δw Δw(season) ΔP(title) Δage | status
 ## Above floor
 
 Cade+Sharpe+Mark+Walker > Tatum+Porter+NAW+Claxton | +1300 +1.8 +1.7 +17%

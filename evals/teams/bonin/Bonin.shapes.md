@@ -1,4 +1,4 @@
-# out > in | ΔBASE Δw Δw(season) ΔP(title) | status
+# out > in | ΔBASE Δw Δw(season) ΔP(title) Δage | status
 
 Counterparty: Bonin (161016). Contending — 3rd PF, 10.4% title (`Team Projections.md`). Columns: `Out | In` + our four big numbers.
 
