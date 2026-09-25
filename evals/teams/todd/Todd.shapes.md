@@ -30,7 +30,7 @@ Cade+Sharpe+Mark+Eason > Haliburton+Porter+NAW+Claxton+Gobert | +900 +2.0 +1.4 +
 Cade > Brunson+Porter+NAW+Dëmin | +500 +2.5 +1.1 +11%
 Cade+Sharpe+Mark+Kuminga > Haliburton+Porter+NAW+Claxton+Dëmin | +1400 +1.8 +1.1 +10%
 Cade+Sharpe+Mark+Kuminga > Haliburton+Porter+NAW+Gobert+Dëmin | +1000 +1.8 +1.2 +10%
-Cade+Sharpe+Mark+Eason > Haliburton+Porter+NAW+Claxton+Dëmin | +900 +1.4 +1.1 +10%
+Cade+Sharpe+Mark+Eason > Haliburton+Porter+NAW+Claxton+Dëmin | +900 +1.4 +1.1 +10% | Us proposed 9/24
 Cade+Walker > Brunson+Porter+NAW+Claxton | +300 +2.7 +1.2 +12%
 Cade+Kuminga > Brunson+Porter+NAW+Claxton | 0 +2.7 +1.2 +12%
 Cade+Sharpe+Mark+Eason+Kuminga > Brunson+Porter+Dëmin+'26 1.01 | +1100 +0.3* +1.0 +13% | Todd rejected 9/24
@@ -39,7 +39,8 @@ Cade+Sharpe > Brunson+Porter+NAW+Gobert | -600 +2.4 +1.4 +12%
 Cade+Mark > Brunson+Porter+NAW+Claxton | -600 +2.3 +1.3 +12%
 Cade+Sharpe+Mark+Kyrie+Kuminga > Brunson+Porter+NAW+'26 1.01 | +1100 +0.4* +1.1 +11%
 Cade+Sharpe+Mark+Kyrie+Eason > Brunson+Porter+NAW+'26 1.01 | +700 +0.1* +1.1 +11%
-Cade+Sharpe+Mark > Haliburton+Porter+NAW+Claxton | +900 +1.5 +1.1 +8%
+Cade+Sharpe+Mark > Haliburton+Porter+NAW+Claxton | +900 +1.5 +1.1 +8% | Todd proposed 9/24
+Cade+Sharpe+Mark+Kuminga > Haliburton+Porter+NAW+Claxton+Bryant | +900 +1.4 +1.1 +8%
 Cade+Sharpe+Mark > Haliburton+Porter+NAW+Gobert | +500 +1.5 +1.2 +8%
 Cade+Sharpe+Mark+Eason > Haliburton+Porter+NAW+Claxton+Bryant | +500 +1.0 +1.1 +8%
 Cade+Sharpe+Mark > Haliburton+Porter+Claxton+Gobert | +100 +1.4 +1.1 +8%
@@ -212,6 +213,9 @@ Cade > Brunson+Porter+NAW+'27 1st | +1700 +2.0* +0.9 +9%
 Smith+Walker > NAW+Claxton | +1700 +1.0 +0.6 +4%
 Vassell > Porter+Dosunmu | +1600 +1.6 +0.7 +8%
 Green > Porter+Claxton | +1600 +1.5 +0.9 +7%
+Cade+Sharpe+Mark > Haliburton+Porter+NAW+Claxton+'26 2.04 | +1800 +1.7 +1.1 +8%
+Cade+Sharpe+Mark > Haliburton+Porter+NAW+Claxton+'26 2.08 | +1700 +1.7 +1.1 +8%
+Cade+Sharpe+Mark > Haliburton+Porter+NAW+Claxton+Bryant | +1600 +1.6 +1.2 +9%
 Cade+Garland+Sharpe > Brunson+Porter+NAW+'26 1.01 | +1500 +1.1* +0.9 +9%
 Cade+Sharpe+Mark+Kuminga > Brunson+Porter+NAW+Claxton+Dëmin+'28 1st | +1500 +2.0* +1.4 +13%
 Cade+Walker > Brunson+Porter+NAW+Claxton+Dëmin | +1500 +3.3 +1.3 +14%
