@@ -10,7 +10,7 @@ What an eval **publishes** is `Eval Template.md`. When and how to apply this: `e
 
 # The three layers
 
-Every eval publishes three things, side by side, never folded into one number:
+Every eval publishes three things, side by side, never folded into one number (trades alone add §Score):
 
 | Layer | What it answers | Where it comes from |
 |---|---|---|
@@ -21,7 +21,7 @@ Every eval publishes three things, side by side, never folded into one number:
 
 **BASE owns everything multi-year** — trajectory, age, upside, risk: the boards price all of it into the rank, and nothing in this repo re-derives or stacks on top of that (`AGENTS.md` §Objective). **Formula `Δw` owns typical-team fielded value** — scoring weights, GP, and the 9-slot cap as a league-average curve, no specific roster. **`Δw (season)` owns this roster and the calendar**. The gap between BASE and either win column is the signal; `SIT` says which one the current season should listen to.
 
-**There is deliberately no exchange rate between BASE and either win column** — no constant converts wins into BASE units, and none may be derived or remembered. A deal that needs one to look good is a tie. **Formula `Δw` and `Δw (season)` are also not interchangeable** — never convert or net them.
+**Outside §Score there is no exchange rate between BASE and either win column** — no constant converts wins into BASE units, and none may be derived or remembered. **Formula `Δw` and `Δw (season)` are also not interchangeable** — never convert or net them outside §Score.
 
 # Building a table
 
@@ -89,6 +89,12 @@ Which report to run for whom, the two ΔP reads (`player_title` vs `incoming_tit
 ## Counterparty title reads
 
 **`incoming_title` on `basis()`, not their roster.** Eval file: `--eval <team_id>`. **`ΔP(title) ours`** is our title odds if we acquire them. Their projected PF rank + `SIT` for whether they contend: `Bracket value.md` §Counterparty title reads.
+
+## Score
+
+Our-side trade composite in BASE units — fixed rates over `ΔBASE`, formula `Δw` (body-corrected), `Δw (season)` and `ΔP(title)`. Trades only; never on eval player tables.
+
+Formula, rates, tie band and how to read it: `Score.md`.
 
 # Standing rules
 

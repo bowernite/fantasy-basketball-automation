@@ -15,7 +15,7 @@ Expands `Eval Definitions §ΔP(title)` and §*Counterparty title reads*.
 
 ⚠️ **`P(title)` and `ΔP(title)` are different numbers.** `P(title)` is the whole roster's odds; `ΔP(title)` is one player's contribution. Name which you are printing.
 
-⚠️ **`ΔP(title)` and `Δw (season)` are different currencies and are never combined.** `Δw (season)` is wins over `Delta w (season).md`'s 19-matchup regular-season basis; `ΔP(title)` is percentage points of title probability. **Never sum, net, average or exchange them**, and never read one against the other's thresholds. No conversion constant exists or may be derived. Formula **`Δw`** is a third currency — also never combined with either.
+⚠️ **`ΔP(title)` and `Δw (season)` are different currencies, combined only in `Score.md`.** `Δw (season)` is wins over `Delta w (season).md`'s 19-matchup regular-season basis; `ΔP(title)` is percentage points of title probability. Outside `Score.md`, **never sum, net, average or exchange them**, and never read one against the other's thresholds. Formula **`Δw`** is a third currency — same rule.
 
 - **What it may do:** decide a title-odds question — which of two comparable bodies to field, hold or acquire when the rest of the read is level.
 - **What it may not do:** reprice BASE, adjust `Δw (season)`, resize a row, or stand in for a trade decision on its own.
