@@ -7,7 +7,7 @@ Context: Cade sweepstakes, 9/25. Brett texted him to get in. Todd and Jon are bi
 Rule (9/25): no In-side Amen shapes. He won't trade Amen, whom we just sent him. Amen rows are pruned.
 Rule (9/25): Wemby is untouchable too (Brett). No new In-side Wemby shapes; existing Wemby rows are reference only (one was floated 9/25).
 
-No Johnson (9/25): after our two Johnson hypotheticals he asked "Any hypotheticals without Johnson?". Non-Johnson rows are built on Barnes, Harper or Wemby. By Score only Johnson shapes clearly beat Todd; the best Barnes shape (Barnes+Harper+Ausar+Black) and the Wemby+Ausar+Black ask roughly tie him.
+No Johnson (9/25): after our two Johnson hypotheticals he asked "Any hypotheticals without Johnson?". Non-Johnson rows are built on Barnes, Harper or Wemby. Barnes+Harper+Ausar+Black clears Todd and Jon only when our Out side is mostly picks (Cade + both 1sts + 2.09 + three '27 2nds, +2800); Sharpe and Mark cost Score through formula `Δw`.
 
 Benchmark: Todd's live offer, Cade+Sharpe+Mark > Haliburton+Porter+NAW+Claxton, +2200 +900 +1.5 +1.1 +8% +2.6.
 
@@ -26,6 +26,11 @@ Cade+Eason+'27 1st+'28 1st+'26 2.09 > Johnson+Barnes | +3000 +900 +1.4 +1.3 +17%
 Cade+Sharpe+'27 1st+KC '27 2nd+Don '27 2nd+'26 2.09 > Johnson+Barnes | +2900 +700 +1.4 +1.4 +18% +2.4
 Cade+Sharpe+Kuminga+'27 1st+KC '27 2nd+Don '27 2nd > Johnson+Barnes | +2900 +700 +1.3 +1.4 +18% +2.1
 Cade+Mark+'27 1st+'28 1st+'26 2.09 > Johnson+Barnes | +2800 +600 +1.3 +1.4 +17% +2.6
+Cade+'27 1st+'28 1st+KC '27 2nd+Don '27 2nd+own '27 2nd+'26 2.09 > Barnes+Harper+Ausar+Black | +2800 +1200 +2.4 +1.0 +11% +1.8
+Cade+Sharpe+'27 1st+'28 1st+own '27 2nd+'28 2nd+'26 2.09 > Barnes+Harper+Ausar+Black | +2700 +1200 +1.8 +1.0 +11% +1.6
+Cade+Sharpe+Kuminga+'27 1st+'28 1st+own '27 2nd+'26 2.09 > Barnes+Harper+Ausar+Black | +2600 +1200 +1.5 +1.0 +11% +1.4
+Cade+Kuminga+'27 1st+'28 1st+KC '27 2nd+Don '27 2nd+'26 2.09 > Barnes+Harper+Ausar+Black | +2600 +1100 +2.2 +0.9 +10% +1.6
+Cade+Mark+'27 1st+'28 1st+KC '27 2nd+'26 2.09 > Barnes+Harper+Ausar+Black | +2600 +1200 +1.7 +1.0 +10% +1.3
 
 ## Floor
 
@@ -113,6 +118,9 @@ Cade+Kuminga+'27 1st > Wemby | +300 -200 +0.1 +0.5 +4% -0.8
 Cade+'27 1st+'28 1st > Wemby | -400 -900 +0.4 +0.6 +4% +0.3
 
 ## Too lopsided
+
+Cade+Mark+'27 1st+'28 1st+Don '27 2nd+'26 2.09 > Barnes+Harper+Ausar+Black | +2700 +1300 +1.7 +1.0 +10% +1.3
+Cade+'27 1st+KC '27 2nd+'26 2.09 > Barnes+Ausar+Black+'26 1.06 | +2400 +1300 +1.9 +0.5 +7% +0.7
 
 ## Doesn't meet our minimums
 
