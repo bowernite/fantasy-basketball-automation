@@ -73,7 +73,7 @@ Rules (Sheet, 2026-09-24):
   - Y: $1.
 - The T1 cap rises as rivals buy T1s. At the start it is $94 on Scheierman or Barlow. If only one T1 is left and we hold none, it is $200 − 3 × the cheapest T2, held to $100 until we are down to 2 spots.
 - **Last spot:** cap = hard max on the best tiered row up.
-- **Endgame:** once our hard max beats every rival's `Max Bid`, nothing can outbid us. Nominate the best tiered row left and win it.
+- **Endgame:** once our cap on an unsold tiered row beats every rival's `Max Bid`, nothing can outbid us. Nominate the best such row and win it.
 - Never bid on an untiered row, and never to push a rival's price. A stuck buy costs one of our 4 spots.
 - Waste check: finishing with more than ~$10 unspent means the caps were too tight.
 
