@@ -31,7 +31,7 @@ Rules (Sheet, 2026-09-24):
 
 - **Rank by `tier`, then BASE inside a tier.** `Δw (season)` for every candidate sits within ±0.15 of a $1 body, under the 0.1-win decision floor, so it can't order them. `ΔP(title) ours` does: it tracks W20–W23 playoff-week output, and at this precision the tiers separate.
 - **Why ΔP drives the auction:** BASE (23–340) and `Δw (season)` tie at decision resolution, so the equal-weight rule lands on ΔP. `Δw (season)` can only veto. Don't carry this into trades.
-- Auction $ is use-it-or-lose-it with no other use, and `CLAUDE.md` weights this season like the next six, so there is no contending premium to add.
+- Auction $ is use-it-or-lose-it with no other use, and `AGENTS.md` weights this season like the next six, so there is no contending premium to add.
 - `dPtitle` = one buy replacing a $1 floor body (Justin Edwards) on our roster after the cuts. Run at 1000 engine trials and 60k title trials over 3 seed pairs, averaged. Across the pairs, sd ≈ 0.1pp per row.
 - Tier bounds: T1 ≥ +0.9pp · T2 +0.35 to +0.9 · T3 +0.15 to +0.35 · Y = 2026-class or '25 rookies at ≥ −0.15. Blank = no better than a $1 body.
 - 78 rows simmed: the top ~60 non-rookie rows by `Market$`, the 2026 class ranked 26–38 by BASE, and the rest of the ≥ 11 FPts/G vets. Nothing below the top 60 reached T3.

@@ -15,6 +15,8 @@ Find Cade deals that beat Todd's live offer on a flat read of the four big numbe
 | Todd counter (sent) | Cade+Sharpe+Mark | Tatum+Porter+NAW+Mitchell | +1000 | +1.7 | +1.5 | +16% | +3.4 | +1 |
 | Matthew lead (floated) | Cade+Kuminga+Walker+('27 1st)+('28 1st)+(2.09) | Johnson+Barnes | +900 | +1.5* | +1.3 | +17% | 0.0 | −2 |
 | Jon's offer (9/25, added Henry '27 2nd) | Cade+('27 1st)+(2.09) | SGA+Fears+(Henry '27 2nd) | +1500 | +0.9* | +0.5 | +6% | +1.3 | +1 |
+| Mitch lead (not yet floated) | Cade+Kuminga+Hunter | Deni+Franz+Queen | +700 | +1.6 | +1.0 | +14% | −1.2 | 0 |
+| Mitch fallback (not yet floated) | Cade | Deni+JJJ+Queen | +900 | +1.8 | +0.8 | +12% | −0.6 | +2 |
 | Chris feeler (rejected 9/25, depth) | Cade+Walker+Kuminga | Fox+Daniels+Anunoby+Quickley+Bridges+Stewart | +900 | +3.0 | +1.0 | +11% | +2.9 | +3 |
 
 Live status per owner is in each `evals/teams/<owner>/<Name>.shapes.md` intro and Status column.
@@ -66,6 +68,6 @@ Sept '26 picks (2.09) also need `out_us_picks` and `in_from_us_picks` so the moc
 - **Jon** (161015, tanking): won't take Shaedon. On 9/25 he added Henry's '27 2nd (≈810 BASE) to his offer. Picks only add BASE, so they don't close the win-column gap to Todd. Ask for players instead. In his file, Out "Sharpe" = Shaedon (ours), In "Sharpe" = Day'Ron (his). Doesn't want to give both Fears and Day'Ron Sharpe.
 - **Todd** (161022, tanking): live offer above.
 - **Matthew Pook** = Pharaoh Mattankhamun-Ra (160941), young and climbing, wants young players and picks on his timeline. Won't trade Amen.
-- **Chris Kelnhofer** = King Christopher of Bavaria (161014): win now, may sell everything 5–10 weeks in. Values bodies/depth highly. Passed on the 6 for 3 Cade feeler on 9/25: "I'll pass. Don't want to give up the depth. Even tho Cade is awesome".
+- **Chris Kelnhofer** = King Christopher of Bavaria (161014): win now, may sell everything 5–10 weeks in. Values bodies/depth highly. Passed on the 6 for 3 Cade feeler on 9/25: "I'll pass. Don't want to give up the depth. Even tho Cade is awesome". Dropped for Cade on 9/25: no Cade deal that keeps his bodies even also stops costing him about 2–3 wins this season. Hold '27 1st > Daniels or (2.09)+(KC '27 2nd) > Daniels for after Cade settles (re-price then).
 - "Mark" = Mark Williams (ours).
 - **Mitch** = The Don (161020): contending (6th, 9.4% title) and climbing (2nd in '28-29), so he's a short-term competitor (`trades` §Competitors). Earlier (9/3) he wasn't interested in our '27 1sts. 9/25 on Cade: "Now that does spark my attention" / "I like him more than SGHitler from Dummy who is also someone I inquired about" (he's also asked Jon about SGA).
