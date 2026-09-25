@@ -2,7 +2,7 @@
 
 Counterparty: Chris (King Christopher of Bavaria, 161014). Projected 10th, 0% P(title), cliff arc (LeBron/KD/Curry). Not a short-term competitor. Roster verified live 9/25; eval re-run on 9/24 projections.
 
-Context: we're shopping Cade (Todd and Jon bidding). Chris on 9/21: won't deal win-now players to a tier-1 contender. Plan: win now, then 5–10 weeks in either go all in or sell every win-now player. On 9/2 he floated Fox for a pick.
+Context: we're shopping Cade (Todd and Jon bidding). Chris on 9/21: won't deal win-now players to a tier-1 contender. Plan: win now, then 5–10 weeks in either go all in or sell every win-now player. On 9/2 he floated Fox for a pick. Values bodies/depth highly (Brett, 9/25): shapes that thin his roster are a hard sell.
 
 Benchmark (Todd live): Cade+Sharpe+Mark > Haliburton+Porter+NAW+Claxton | +900 +1.5 +1.1 +8%, +2.6 yrs weighted age.
 
