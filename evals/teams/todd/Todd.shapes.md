@@ -44,7 +44,7 @@ Cade+Mark > Brunson+Porter+NAW+Claxton+Dëmin | +2600 +600 +2.9 +1.4 +14% +2.9
 Sharpe+Mark > Porter+Claxton | +2600 +900 +1.1 +1.3 +13% +3.1
 Cade+Sharpe+Mark > Tatum+Porter+Claxton+Mitchell | +2600 +500 +1.6 +1.4 +16% +3.2
 Cade+Sharpe+Mark > Tatum+Porter+Claxton+'26 2.04 | +2500 +700 +1.2 +1.3 +14% +2.7
-Cade+Sharpe+Mark+Kuminga > Haliburton+Porter+NAW+Claxton+Mitchell | +2500 +900 +1.9 +1.1 +11% +2.7 | Us proposed 9/25
+Cade+Sharpe+Mark+Kuminga > Haliburton+Porter+NAW+Claxton+Mitchell | +2500 +900 +1.9 +1.1 +11% +2.7 | Todd rejected 9/25
 Cade > Tatum+Porter+'26 3.01 | +2500 +1200 +1.3 +0.8 +10% +3.2
 Cade+Sharpe+Mark > Tatum+Porter+NAW+'26 3.01 | +2500 +700 +1.1 +1.4 +14% +3.2
 Cade+Sharpe+Mark+Kuminga > Haliburton+Porter+NAW+Claxton+'26 2.04 | +2400 +1100 +1.4 +1.0 +8% +2.1
