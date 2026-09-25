@@ -8,29 +8,32 @@ Find Cade deals that beat Todd's live offer on `Score`. Push prices up and use e
 
 ## Current bids (our side)
 
-| Team | Out | In | ΔBASE | Δw | Δw (season) | ΔP(title) | Δage | Players (us) |
-|---|---|---|---|---|---|---|---|---|
-| **Todd's live offer (benchmark)** | Cade+Sharpe+Mark | Hali+Porter+NAW+Claxton | +900 | +1.5 | +1.1 | +8% | +2.6 | +1 |
-| Todd counter A (sent) | Cade+Sharpe+Mark+Kuminga | Hali+Porter+NAW+Claxton+Mitchell | +900 | +1.9 | +1.1 | +11% | +2.7 | +1 |
-| Todd counter B (sent) | Cade+Sharpe+Mark | Tatum+Porter+NAW+Mitchell | +1000 | +1.7 | +1.5 | +16% | +3.4 | +1 |
-| Mitch lead (not sent) | Cade+Kuminga+Hunter | Deni+Franz+Queen | +700 | +1.6 | +1.0 | +14% | −1.2 | 0 |
-| Mitch fallback (not sent) | Cade | Deni+JJJ+Queen | +900 | +1.8 | +0.8 | +12% | −0.6 | +2 |
-| Jon's offer (received) | Cade+(2.09) | SGA+Wells+McBride | +1800 | +1.0* | +0.5 | +5% | +3.0 | +2 |
-| Jon counter (sent) | Cade+(2.09) | SGA+Sharpe+Wells | +2700 | +1.6* | +0.7 | +9% | +2.5 | +2 |
-| Jon next ask (drafted, not sent) | Cade+(2.09)+(KC '27 2nd) | SGA+Sharpe+Wells | ≈+1800 | +1.6* | +0.7 | +9% | +3.1 | +2 |
-| Jon fallback (not sent) | Cade+(2.09) | SGA+Fears+Wells | +2800 | +1.4* | +0.6 | +7% | +1.6 | +2 |
-| Matthew ask (sent, Wemby now untouchable) | Cade+Kuminga+('27 1st)+('28 1st)+(2.09) | Wemby+Ausar+Black | +700 | +1.8* | +1.1 | +10% | +0.7 | +1 |
-| Matthew realistic (sent) | Cade+Sharpe+Mark+('27 1st)+('28 1st)+(2.09) | Barnes+Harper+Ausar+Black | +1000 | +1.1* | +1.1 | +11% | +1.1 | +1 |
-| Matthew backup (not sent) | Cade+Sharpe+('27 1st)+('28 1st)+(2.09) | Barnes+Harper+Ausar | +1000 | +1.1* | +0.9 | +10% | +1.3 | +1 |
-| Matthew backup 2 (not sent) | Cade+(2.09) | Barnes+Ausar+Black | +1000 | +1.4* | +0.4 | +7% | −0.2 | +2 |
-| Chris feeler (dropped 9/25) | Cade+Walker+Kuminga | Fox+Daniels+Anunoby+Quickley+Bridges+Stewart | +900 | +3.0 | +1.0 | +11% | +2.9 | +3 |
+| Team | Out | In | Score | vs Todd | ΔBASE | Δw | Δw (season) | ΔP(title) | Δage | N |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Jon counter (sent) | Cade+(2.09) | SGA+Sharpe+Wells | +3900 | +1700 | +2700 | +1.6 | +0.7 | +9% | +2.5 | +2 |
+| Jon fallback (not sent) | Cade+(2.09) | SGA+Fears+Wells | +3700 | +1500 | +2800 | +1.4 | +0.6 | +7% | +1.6 | +2 |
+| Todd counter B (sent) | Cade+Sharpe+Mark | Tatum+Porter+NAW+Mitchell | +3100 | +900 | +1000 | +1.7 | +1.5 | +16% | +3.4 | +1 |
+| Jon next ask (drafted, not sent) | Cade+(2.09)+(KC '27 2nd) | SGA+Sharpe+Wells | +3000 | +800 | +1800 | +1.6 | +0.7 | +9% | +3.1 | +2 |
+| Jon latest ask (drafted, not sent) | Cade+Mark+(2.09) | SGA+Sharpe+Wells+McBride | +2800 | +600 | +1700 | +1.2 | +0.8 | +9% | +2.4 | +2 |
+| Chris feeler (dropped 9/25) | Cade+Walker+Kuminga | Fox+Daniels+Anunoby+Quickley+Bridges+Stewart | +2600 | +500 | +900 | +3.0 | +1.0 | +11% | +2.9 | +3 |
+| Todd counter A (sent) | Cade+Sharpe+Mark+Kuminga | Hali+Porter+NAW+Claxton+Mitchell | +2500 | +400 | +900 | +1.9 | +1.1 | +11% | +2.7 | +1 |
+| Mitch lead (sent) | Cade+Kuminga+Hunter | Deni+Franz+Queen | +2500 | +300 | +700 | +1.6 | +1.0 | +14% | −1.2 | 0 |
+| Jon's offer (Jon proposed 9/25) | Cade+(2.09) | SGA+Wells+McBride | +2400 | +300 | +1800 | +1.0 | +0.5 | +5% | +3.0 | +2 |
+| Mitch fallback (sent) | Cade | Deni+JJJ+Queen | +2400 | +200 | +900 | +1.8 | +0.8 | +12% | −0.6 | +2 |
+| Matthew realistic (sent) | Cade+Sharpe+Mark+('27 1st)+('28 1st)+(2.09) | Barnes+Harper+Ausar+Black | +2400 | +200 | +1000 | +1.1 | +1.1 | +11% | +1.1 | +1 |
+| Matthew backup (not sent) | Cade+Sharpe+('27 1st)+('28 1st)+(2.09) | Barnes+Harper+Ausar | +2200 | +100 | +1000 | +1.1 | +0.9 | +10% | +1.3 | +1 |
+| Matthew ask (sent, Wemby now untouchable) | Cade+Kuminga+('27 1st)+('28 1st)+(2.09) | Wemby+Ausar+Black | +2200 | 0 | +700 | +1.8 | +1.1 | +10% | +0.7 | +1 |
+| **Todd's live offer (benchmark)** | Cade+Sharpe+Mark | Hali+Porter+NAW+Claxton | +2200 | — | +900 | +1.5 | +1.1 | +8% | +2.6 | +1 |
+| Matthew backup 2 (not sent) | Cade+(2.09) | Barnes+Ausar+Black | +1800 | −300 | +1000 | +1.4 | +0.4 | +7% | −0.2 | +2 |
+
+Sorted by `Score`; vs Todd = Score minus the benchmark's (raw +2164), nearest 100. Δage isn't in Score, so read it alongside. All five Jon rows are Too lopsided under Jon's +1000 line.
 
 Live status per owner is in each `evals/teams/<owner>/<Name>.shapes.md` intro and Status column.
 
 ## How to judge a deal
 
 - Compare and rank by [Score](Definitions/Score.md) as the baseline. Gate first (minimums, Too lopsided) per `trades` §General guidlines and `trade-shapes` §Tiering. Jon's file uses a +1000 Too lopsided line.
-- Still judge each deal with nuance: the individual numbers, Δage (not in Score, read alongside), the counterparty's view of value (e.g. a lopsided ΔBASE they'd never accept), and body adds (a deal that's good mostly because we net bodies is worth a bit less).
+- After that, read the individual numbers (including N and Δage, which isn't in Score) and the counterparty's view of value (e.g. a lopsided ΔBASE they'd never accept) with nuance.
 - **Picks are on the table from us:** '27 1st, '28 1st, 2.09 (Sept '26), own '27 2nd, KC '27 2nd, Don '27 2nd, '28 2nd.
 
 ## Pick BASE (for `out_us_extra_base`)

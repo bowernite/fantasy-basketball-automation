@@ -29,14 +29,14 @@ Cade+Mark+'27 1st+'28 1st+'26 2.09 > Johnson+Barnes | +2800 +600 +1.3 +1.4 +17% 
 
 ## Floor
 
-Cade+Sharpe+Mark+'27 1st+'28 1st+'26 2.09 > Barnes+Harper+Ausar+Black | +2400 +1000 +1.1 +1.1 +11% +1.1
+Cade+Sharpe+Mark+'27 1st+'28 1st+'26 2.09 > Barnes+Harper+Ausar+Black | +2400 +1000 +1.1 +1.1 +11% +1.1 | Us proposed 9/25
 Cade+Sharpe+Mark+Kuminga+'27 1st+'26 2.09 > Johnson+Barnes | +2400 +300 +0.4 +1.4 +17% +1.6
 Cade+Sharpe+Mark+Kuminga+'27 1st+'28 1st > Barnes+Harper+Ausar+Black | +2400 +1000 +0.9 +1.0 +10% +0.9
 Cade+Sharpe+Mark+'27 1st+'28 1st > Johnson+Barnes | +2300 +200 +0.8 +1.5 +17% +2.4
 Cade+'28 2nd > Johnson+Ausar+Black | +2300 +1000 +2.0 +0.9 +7% -0.1
 Cade+Sharpe+'27 1st+'28 1st+'26 2.09 > Barnes+Harper+Ausar | +2200 +1000 +1.1 +0.9 +10% +1.3
 Cade+'26 2.09 > Johnson+Ausar+Black | +2200 +1000 +1.9 +0.9 +7% -0.3
-Cade+Kuminga+'27 1st+'28 1st+'26 2.09 > Wemby+Ausar+Black | +2200 +700 +1.8 +1.1 +10% +0.7
+Cade+Kuminga+'27 1st+'28 1st+'26 2.09 > Wemby+Ausar+Black | +2200 +700 +1.8 +1.1 +10% +0.7 | Us proposed 9/25
 Cade+Kuminga > Johnson+Ausar+Black | +2200 +1000 +1.7 +0.8 +7% -0.9
 Cade+Kuminga+'26 2.09 > Johnson+Ausar+Black+Clowney | +2100 +800 +1.9 +0.9 +8% -0.3
 Cade+'27 1st+'26 2.09 > Johnson+Ausar+'26 1.06 | +2000 +800 +1.7 +0.9 +7% +0.4

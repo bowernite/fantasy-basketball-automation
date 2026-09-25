@@ -27,12 +27,12 @@ Cade+Kuminga > Deni+Kessler+JJJ | +2800 +1100 +1.7 +1.0 +13% +0.4
 Cade+Don '27 2nd > Deni+Kessler+JJJ | +2800 +1000 +2.0 +1.0 +14% +1.1
 Cade+Sharpe > Deni+Franz+Queen | +2600 +900 +1.5 +1.1 +14% -1.1
 Cade+Simons > Deni+Kessler+JJJ | +2500 +1100 +1.6 +0.8 +11% +0.1
-Cade+Kuminga+Hunter > Deni+Franz+Queen | +2500 +700 +1.6 +1.0 +14% -1.2
+Cade+Kuminga+Hunter > Deni+Franz+Queen | +2500 +700 +1.6 +1.0 +14% -1.2 | Us proposed 9/25
 Cade+Kuminga+Walker > Deni+Franz+Queen | +2500 +800 +1.5 +0.9 +13% -1.0
 
 ## Floor
 
-Cade > Deni+JJJ+Queen | +2400 +900 +1.8 +0.8 +12% -0.6
+Cade > Deni+JJJ+Queen | +2400 +900 +1.8 +0.8 +12% -0.6 | Us proposed 9/25
 Cade+Eason > Deni+Franz+Queen | +2400 +800 +1.5 +0.9 +13% -1.2
 Cade+Sharpe > Deni+Kessler+JJJ | +2400 +700 +1.4 +1.1 +13% +0.3
 Cade > Deni+Kessler+Queen | +2300 +500 +2.2 +1.1 +14% -1.1
