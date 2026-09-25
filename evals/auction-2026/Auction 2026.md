@@ -79,6 +79,8 @@ Vets are tied on wins (−0.06 to +0.01), so they are ordered by BASE.
 
 # Live
 
+Runbook: `auction-live` Skill (`.claude/skills/auction-live/auction-live.md`).
+
 - Log every sale in `sales.tsv` as `player  team  $`, where team is the owner's first name. Either:
   - **Agent session:** say "sold Hayes Chris 12", or let the Sheet poller append. The agent replies with the live multiplier, live `Market$` and cap for the unsold card rows, and each team's $ left, spots left and `Max Bid`.
   - **Sheet tab:** paste `values.tsv` and `sales.tsv` as tabs, then compute the multiplier below with SUM and VLOOKUP.
