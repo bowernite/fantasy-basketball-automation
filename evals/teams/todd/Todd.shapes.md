@@ -1,36 +1,70 @@
 # out > in | ΔBASE Δw Δw(season) ΔP(title) | status
 ## Above floor
 
+Cade+Sharpe+Mark+Walker > Tatum+Porter+NAW+Claxton | +1300 +1.8 +1.7 +17%
 Cade+Sharpe+Mark+Kuminga > Tatum+Porter+NAW+Claxton | +1000 +1.8 +1.7 +17%
+Cade+Sharpe+Mark+Kuminga > Tatum+Porter+NAW+Gobert | +700 +1.9 +1.7 +17%
+Cade+Sharpe+Mark > Tatum+Porter+NAW+Mitchell | +1000 +1.7 +1.5 +16%
 Cade+Sharpe+Mark+Eason > Tatum+Porter+NAW+Claxton | +600 +1.5 +1.7 +17%
 Cade+Sharpe+Mark > Tatum+Porter+Claxton+Dëmin | +1000 +1.6 +1.4 +15% | Us proposed 9/24
+Cade+Sharpe+Mark > Tatum+Porter+Claxton+Dosunmu | +800 +1.7 +1.5 +15%
+Cade+Sharpe+Mark > Tatum+Porter+Claxton+Mitchell | +500 +1.7 +1.4 +16%
+Cade+Mark > Tatum+Porter+NAW | +1300 +1.7 +1.4 +14%
 Cade+Sharpe+Mark+Kuminga > Tatum+Porter+NAW+Dëmin | +800 +1.4 +1.4 +15%
+Cade+Sharpe+Mark > Tatum+Porter+Claxton+Nesmith | +600 +1.4 +1.4 +15%
 Cade+Kuminga > Brunson+Porter+NAW+Claxton+Dëmin | +1200 +3.3 +1.3 +14%
 Cade+Sharpe > Brunson+Porter+NAW+Claxton+Dëmin | +900 +3.0 +1.4 +14%
 Cade+Mark > Brunson+Porter+NAW+Claxton+Dëmin | +600 +2.9 +1.4 +14%
 Cade+Sharpe > Tatum+Porter+Claxton | +1100 +1.7 +1.3 +14%
+Cade+Eason > Tatum+Porter+Claxton | +1100 +1.7 +1.1 +14%
+Cade+Sharpe > Tatum+Porter+Gobert | +800 +1.8 +1.3 +13%
 Cade+Mark > Tatum+Porter+Claxton | +800 +1.6 +1.2 +14%
+Cade+Sharpe+Kuminga > Tatum+Porter+NAW | +900 +1.5 +1.3 +14%
+Cade+Sharpe+Mark > Tatum+Porter+NAW+'26 3.01 | +700 +1.1* +1.4 +14%
+Cade+Sharpe+Mark > Tatum+Porter+Claxton+'26 2.04 | +700 +1.2* +1.3 +14%
+Cade+Mark+Kuminga > Tatum+Porter+NAW | +600 +1.4 +1.3 +13%
+Cade+Sharpe+Mark > Tatum+Porter+Claxton+'26 3.01 | +300 +1.0* +1.3 +14%
 Cade+Sharpe+Mark+Kuminga > Brunson+Porter+NAW+Claxton+Dëmin+'27 1st | +1200 +2.0* +1.4 +13% | Us proposed 9/24
 Cade > Brunson+Porter+NAW+Claxton | +700 +3.0 +1.3 +13%
 Cade+Kuminga > Brunson+Porter+NAW+Claxton+Bryant | +700 +2.9 +1.3 +12%
 Cade+Walker > Brunson+Porter+NAW+Claxton+Bryant | +1000 +2.9 +1.3 +12%
 Cade+Bona > Brunson+Porter+NAW+Claxton+Bryant | +1200 +3.0 +1.3 +12%
 Cade > Brunson+Porter+NAW+Gobert | +400 +3.1 +1.4 +12%
+Sharpe+Mark > Porter+NAW | +1300 +1.2 +1.4 +13%
+Eason+Mark > Porter+NAW | +1300 +1.2 +1.3 +12%
+Sharpe+Mark > Porter+Claxton | +900 +1.1 +1.3 +13%
+Cade+Eason > Tatum+Porter+Gobert | +700 +1.7 +1.1 +12%
+Cade+Mark > Tatum+Porter+Gobert | +500 +1.6 +1.3 +12%
 Cade+Sharpe+Mark+Kuminga+Eason > Haliburton+Brunson+Porter+Claxton | +800 +1.2 +1.4 +14% | Todd rejected 9/24
 Cade+Sharpe+Mark > Brunson+Porter+NAW+Claxton+Dëmin | -500 +2.2 +1.4 +14%
 Cade+Sharpe+Mark > Tatum+Porter+NAW | +300 +1.1 +1.4 +14% | Us proposed 9/24
+Cade+Sharpe+Mark > Brunson+Porter+NAW+Claxton+'27 1st+'26 3.01 | +1200 +1.7* +1.3 +12%
 Cade+Sharpe+Mark > Brunson+Porter+NAW+Claxton+'28 1st | +1000 +1.7* +1.4 +12%
 Cade+Sharpe+Mark > Brunson+Porter+NAW+Claxton+'27 1st | +700 +1.7* +1.4 +12% | Us proposed 9/24 · Todd interested
+Cade+Sharpe+Mark > Brunson+Porter+NAW+Gobert+'28 1st | +700 +1.7* +1.4 +11%
+Cade+Sharpe+Mark > Brunson+Porter+NAW+Claxton+'26 2.04+'26 2.08 | 0 +2.1* +1.4 +12%
+Cade+Sharpe+Mark > Brunson+Porter+NAW+Claxton+'27 2nd+'28 2nd | +200 +1.7* +1.4 +12%
+Cade+Sharpe+Mark > Brunson+Porter+NAW+Gobert+'27 1st | +400 +1.7* +1.4 +11%
 Cade+Butler > Brunson+Porter+NAW+Claxton+Bryant | +700 +2.5 +1.3 +12%
 Cade+Sharpe > Brunson+Porter+NAW+Claxton | -300 +2.4 +1.3 +13%
 Cade+Sharpe+Mark+Eason+Kuminga+Suggs > Brunson+Porter+NAW+'26 1.01 | +200 +0.1* +1.3 +14%
 Cade+Sharpe+Mark+Kuminga > Brunson+Porter+NAW+Claxton+'27 1st | 0 +1.4* +1.3 +12%
 Cade+Sharpe+Mark+Kuminga > Haliburton+Porter+NAW+Claxton+Gobert | +1300 +2.3 +1.4 +11%
 Cade+Sharpe+Mark+Eason > Haliburton+Porter+NAW+Claxton+Gobert | +900 +2.0 +1.4 +11%
+Cade+Sharpe+Mark+Ellis > Haliburton+Porter+NAW+Claxton+Mitchell | +1300 +2.1 +1.2 +11%
+Cade+Sharpe+Mark+Walker > Haliburton+Porter+NAW+Claxton+Mitchell | +1100 +1.9 +1.2 +11%
+Cade+Sharpe+Mark+Kuminga > Haliburton+Porter+NAW+Claxton+Mitchell | +900 +1.9 +1.1 +11%
+Cade+Sharpe+Mark > Haliburton+Brunson+Porter | +1100 +1.0 +1.3 +11%
+Cade+Sharpe+Mark+Eason > Haliburton+Porter+NAW+Claxton+Mitchell | +400 +1.5 +1.2 +11%
+Eason+Kuminga > Porter+Gobert | +1100 +1.6 +1.1 +12%
+Cade+Sharpe > Tatum+Porter+Dosunmu | +700 +1.4 +1.1 +11%
 Cade > Brunson+Porter+NAW+Dëmin | +500 +2.5 +1.1 +11%
 Cade+Sharpe+Mark+Kuminga > Haliburton+Porter+NAW+Claxton+Dëmin | +1400 +1.8 +1.1 +10%
 Cade+Sharpe+Mark+Kuminga > Haliburton+Porter+NAW+Gobert+Dëmin | +1000 +1.8 +1.2 +10%
 Cade+Sharpe+Mark+Eason > Haliburton+Porter+NAW+Claxton+Dëmin | +900 +1.4 +1.1 +10% | Us proposed 9/24
+Cade+Sharpe+Mark > Tatum+NAW+Claxton+Dosunmu | +900 +1.5 +1.3 +10%
+Eason+Kuminga+Walker > Porter+Claxton | +1000 +1.2 +0.9 +12%
+Eason+Kuminga > Porter+Mitchell | +700 +1.2 +0.8 +12%
 Cade+Walker > Brunson+Porter+NAW+Claxton | +300 +2.7 +1.2 +12%
 Cade+Kuminga > Brunson+Porter+NAW+Claxton | 0 +2.7 +1.2 +12%
 Cade+Sharpe+Mark+Eason+Kuminga > Brunson+Porter+Dëmin+'26 1.01 | +1100 +0.3* +1.0 +13% | Todd rejected 9/24
@@ -39,11 +73,23 @@ Cade+Sharpe > Brunson+Porter+NAW+Gobert | -600 +2.4 +1.4 +12%
 Cade+Mark > Brunson+Porter+NAW+Claxton | -600 +2.3 +1.3 +12%
 Cade+Sharpe+Mark+Kyrie+Kuminga > Brunson+Porter+NAW+'26 1.01 | +1100 +0.4* +1.1 +11%
 Cade+Sharpe+Mark+Kyrie+Eason > Brunson+Porter+NAW+'26 1.01 | +700 +0.1* +1.1 +11%
-Cade+Sharpe+Mark > Haliburton+Porter+NAW+Claxton | +900 +1.5 +1.1 +8% | Todd proposed 9/24
+Cade+Sharpe+Mark+Kuminga > Haliburton+Porter+NAW+Gobert+Dosunmu | +800 +2.0 +1.3 +9%
+Cade+Sharpe+Mark+Kuminga > Haliburton+Porter+NAW+Claxton+Dosunmu | +1100 +1.9 +1.3 +9%
+Cade+Sharpe+Mark+Eason > Haliburton+Porter+NAW+Claxton+Dosunmu | +700 +1.6 +1.3 +9%
+Cade+Sharpe+Mark+Walker > Haliburton+Porter+NAW+Claxton+Nesmith | +1200 +1.6 +1.1 +9%
+Cade+Sharpe+Mark+Kuminga > Haliburton+Porter+NAW+Claxton+Nesmith | +1000 +1.6 +1.1 +9%
+Cade+Sharpe+Mark > Haliburton+Porter+NAW+Gobert+'26 2.08 | +1300 +1.7* +1.2 +8%
+Cade+Sharpe+Mark > Haliburton+Porter+NAW+Gobert+'26 3.01 | +1000 +1.6* +1.2 +8%
+Cade+Sharpe+Mark > Haliburton+Porter+NAW+Claxton+'26 3.01 | +1300 +1.5* +1.1 +8%
+Cade+Sharpe+Mark > Haliburton+Porter+NAW+Claxton+'26 3.03 | +1300 +1.5* +1.1 +8%
+Cade+Sharpe+Mark > Haliburton+Porter+NAW+Claxton | +900 +1.5 +1.1 +8% | Todd proposed 9/25
+Cade+Sharpe+Mark+Kuminga > Haliburton+Porter+NAW+Claxton+'26 2.04 | +1100 +1.4* +1.0 +8%
+Cade+Sharpe+Mark+Kuminga > Haliburton+Porter+NAW+Claxton+'27 2nd | +1100 +1.2* +1.0 +8%
 Cade+Sharpe+Mark+Kuminga > Haliburton+Porter+NAW+Claxton+Bryant | +900 +1.4 +1.1 +8%
 Cade+Sharpe+Mark > Haliburton+Porter+NAW+Gobert | +500 +1.5 +1.2 +8%
 Cade+Sharpe+Mark+Eason > Haliburton+Porter+NAW+Claxton+Bryant | +500 +1.0 +1.1 +8%
 Cade+Sharpe+Mark > Haliburton+Porter+Claxton+Gobert | +100 +1.4 +1.1 +8%
+Cade+Sharpe+Mark > Haliburton+Porter+NAW+Mitchell | +100 +1.1 +0.9 +8%
 Cade+Sharpe+Mark+Kuminga > Haliburton+Brunson+Porter | +400 +0.7 +1.2 +11%
 Cade+Sharpe+Mark+Eason+Kuminga > Haliburton+Porter+NAW+Claxton+Dëmin | +200 +1.2 +1.0 +10%
 Cade+Sharpe+Mark+Kuminga > Haliburton+Porter+NAW+Claxton | +200 +1.2 +1.0 +8%
@@ -52,6 +98,8 @@ Cade > Brunson+Porter+NAW+Bryant | 0 +2.1 +1.1 +10%
 Cade+Sharpe > Brunson+Porter+NAW+Dëmin | -600 +1.9 +1.1 +11%
 Sharpe+Mark+Kuminga > Brunson | +600 +0.1 +1.1 +10%
 Cade+Sharpe > Brunson+Porter+NAW+'27 1st | +600 +1.3* +1.0 +9%
+Cade+Sharpe+Mark > Brunson+Porter+NAW+Dosunmu+'27 1st | +200 +1.3* +1.2 +9%
+Cade+Mark > Brunson+Porter+NAW+'27 1st | +300 +1.2* +1.0 +9%
 Cade+Sharpe+Mark+Eason > Brunson+Porter+'26 1.01 | +600 0.0* +1.0 +11%
 Cade+Sharpe+Mark+Eason > Haliburton+Brunson+Porter | 0 +0.4 +1.1 +10%
 Sharpe+Mark > NAW+Claxton | +1000 +0.8 +1.1 +8%
@@ -75,16 +123,20 @@ Cade+Murray+Eason > Brunson+Porter+'26 1.01 | +1400 +0.6* +0.7 +8%
 Cade+Eason > Brunson+Porter+NAW+'27 1st | +500 +1.3* +0.9 +8%
 Cade+Garland+Suggs > Brunson+Porter+NAW+'26 1.01 | +800 +1.0* +0.6 +7%
 Cade+Sharpe > Brunson+Porter+Dëmin+'27 1st | -100 +0.8* +0.6 +7%
+Cade > Tatum+Porter+'26 3.01 | +1200 +1.3* +0.8 +10%
 Cade > Tatum+Porter | +700 +1.3 +0.8 +10% | Us proposed 9/10
+Cade+Sharpe+Mark > Tatum+Brunson | +200 +0.3 +1.2 +11%
 Cade+Sharpe+Mark > Tatum+Porter+'27 1st | +700 -0.1* +0.9 +10%
 Cade+Sharpe > Tatum+Porter | -300 +0.7 +0.9 +10%
 Cade > Brunson+Porter+NAW | -700 +2.0 +1.0 +9%
 Cade+Sharpe+Mark+Eason > Haliburton+Porter+NAW+Claxton | -300 +0.9 +1.0 +8%
 Eason > Porter | +700 +0.8 +0.7 +9% | Us proposed 9/10
+Kuminga+Walker > Porter | +700 +0.8 +0.6 +9%
 Mark > Porter | +400 +0.6 +0.8 +9%
 Cade+Suggs > Brunson+Porter+NAW+'27 1st | 0 +1.2* +0.7 +8%
 Sharpe+Kuminga > Porter | +100 +0.5 +0.8 +10%
 Sharpe+Mark > Porter | -600 0.0 +0.9 +10%
+Eason+Kuminga > Porter | 0 +0.5 +0.6 +9%
 Cade+Suggs+Smith > Brunson+Porter+'26 1.01 | +1200 +0.3* +0.5 +7%
 Cade+Suggs+Vassell > Brunson+Porter+'26 1.01 | +1200 +0.7* +0.4 +6%
 Cade+Suggs > Tatum+Brunson | +900 +0.9 +0.9 +9%
@@ -108,6 +160,7 @@ Cade+Sharpe+Mark+Kuminga > Haliburton+Brunson+Claxton | +100 +0.4 +0.9 +6%
 Cade > Haliburton+Porter+Claxton | +1300 +1.7 +0.6 +6%
 Cade > Haliburton+Porter+Gobert | +1000 +1.7 +0.6 +5%
 Cade+Sharpe > Haliburton+Porter+NAW | +800 +1.2 +0.8 +6%
+Cade+Sharpe+Mark > Haliburton+Brunson+NAW | +1200 +0.8 +1.0 +6%
 Cade+Sharpe > Haliburton+Porter+Claxton | +300 +1.1 +0.6 +6%
 Vassell > Porter | +600 +0.8 +0.4 +7%
 Smith > Porter | +500 +0.5 +0.5 +7%
@@ -120,8 +173,12 @@ Cade > Tatum+Claxton | +400 +0.9 +0.5 +5%
 Suggs+Walker > NAW+Claxton | +1300 +1.1 +0.7 +5%
 Cade+Kuminga > Haliburton+Porter+NAW | +1100 +1.5 +0.6 +5%
 Green+'27 1st > Brunson | +500 +0.8* +0.7 +5%
+Kuminga > Claxton | +800 +0.8 +0.4 +4%
+Eason > NAW | +800 +0.5 +0.5 +4%
 Mark > NAW | +600 +0.4 +0.7 +4%
 Mark > Claxton | +100 +0.3 +0.5 +4%
+Eason > Claxton | +300 +0.4 +0.4 +4%
+Kuminga+Walker > NAW | +800 +0.6 +0.5 +3%
 
 ## Floor
 
