@@ -20,7 +20,7 @@ Plan 9/27 (Brett, main thread): send Todd and Jon one text each today with two u
 | Jon counter (sent) | Cade+(2.09) | SGA+Sharpe+Wells | +3900 | +1400 | +2700 | +1.6 | +0.7 | +9% | +2.5 | +2 |
 | Jon fallback (not sent) | Cade+(2.09) | SGA+Fears+Wells | +3700 | +1200 | +2800 | +1.4 | +0.6 | +7% | +1.6 | +2 |
 | Todd counter B (sent) | Cade+Sharpe+Mark | Tatum+Porter+NAW+Mitchell | +3100 | +600 | +1000 | +1.7 | +1.5 | +16% | +3.4 | +1 |
-| Jon next ask (drafted, not sent) | Cade+(2.09)+(KC '27 2nd) | SGA+Sharpe+Wells | +3000 | +500 | +1800 | +1.6 | +0.7 | +9% | +3.1 | +2 |
+| Jon rejected 9/25 | Cade+(2.09)+(KC '27 2nd) | SGA+Sharpe+Wells | +3000 | +500 | +1800 | +1.6 | +0.7 | +9% | +3.1 | +2 |
 | Jon latest ask (drafted, not sent) | Cade+Mark+(2.09) | SGA+Sharpe+Wells+McBride | +2800 | +300 | +1700 | +1.2 | +0.8 | +9% | +2.4 | +2 |
 | Jon Raynaud 2 (Us proposed 9/25) | Cade+Mark+(2.09) | SGA+Sharpe+Raynaud | +2700 | +200 | +1700 | +0.9 | +0.7 | +8% | +2.4 | +1 |
 | Jon Raynaud 3 (Us proposed 9/25) | Cade+Kuminga+('27 1st)+(2.09) | SGA+Fears+Raynaud+Wells | +2700 | +200 | +1600 | +1.7 | +0.6 | +8% | +2.5 | +2 |
