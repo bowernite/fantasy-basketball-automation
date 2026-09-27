@@ -26,15 +26,15 @@ Cade+Eason+'27 1st+'28 1st+'26 2.09 > Johnson+Barnes | +3000 +900 +1.4 +1.3 +17%
 Cade+Sharpe+'27 1st+KC '27 2nd+Don '27 2nd+'26 2.09 > Johnson+Barnes | +2900 +700 +1.4 +1.4 +18% +2.4
 Cade+Sharpe+Kuminga+'27 1st+KC '27 2nd+Don '27 2nd > Johnson+Barnes | +2900 +700 +1.3 +1.4 +18% +2.1
 Cade+Mark+'27 1st+'28 1st+'26 2.09 > Johnson+Barnes | +2800 +600 +1.3 +1.4 +17% +2.6
-Cade+'27 1st+'28 1st+KC '27 2nd+Don '27 2nd+own '27 2nd+'26 2.09 > Barnes+Harper+Ausar+Black | +2800 +1200 +2.4 +1.0 +11% +1.8
-Cade+Sharpe+'27 1st+'28 1st+own '27 2nd+'28 2nd+'26 2.09 > Barnes+Harper+Ausar+Black | +2700 +1200 +1.8 +1.0 +11% +1.6
+Cade+'27 1st+'28 1st+KC '27 2nd+Don '27 2nd+own '27 2nd+'26 2.09 > Barnes+Harper+Ausar+Black | +2800 +1200 +2.4 +1.0 +11% +1.8 | Matthew rejected 9/25
+Cade+Sharpe+'27 1st+'28 1st+own '27 2nd+'28 2nd+'26 2.09 > Barnes+Harper+Ausar+Black | +2700 +1200 +1.8 +1.0 +11% +1.6 | Matthew rejected 9/25
 Cade+Sharpe+Kuminga+'27 1st+'28 1st+own '27 2nd+'26 2.09 > Barnes+Harper+Ausar+Black | +2600 +1200 +1.5 +1.0 +11% +1.4
 Cade+Kuminga+'27 1st+'28 1st+KC '27 2nd+Don '27 2nd+'26 2.09 > Barnes+Harper+Ausar+Black | +2600 +1100 +2.2 +0.9 +10% +1.6
 Cade+Mark+'27 1st+'28 1st+KC '27 2nd+'26 2.09 > Barnes+Harper+Ausar+Black | +2600 +1200 +1.7 +1.0 +10% +1.3
 
 ## Floor
 
-Cade+Sharpe+Mark+'27 1st+'28 1st+'26 2.09 > Barnes+Harper+Ausar+Black | +2400 +1000 +1.1 +1.1 +11% +1.1 | Us proposed 9/25
+Cade+Sharpe+Mark+'27 1st+'28 1st+'26 2.09 > Barnes+Harper+Ausar+Black | +2400 +1000 +1.1 +1.1 +11% +1.1 | Matthew rejected 9/25
 Cade+Sharpe+Mark+Kuminga+'27 1st+'26 2.09 > Johnson+Barnes | +2400 +300 +0.4 +1.4 +17% +1.6
 Cade+Sharpe+Mark+Kuminga+'27 1st+'28 1st > Barnes+Harper+Ausar+Black | +2400 +1000 +0.9 +1.0 +10% +0.9
 Cade+Sharpe+Mark+'27 1st+'28 1st > Johnson+Barnes | +2300 +200 +0.8 +1.5 +17% +2.4
@@ -60,18 +60,21 @@ Cade+Sharpe > Johnson+Ausar+Black | +1800 +600 +1.4 +1.0 +7% -0.9
 Cade+Walker+'26 2.09 > Johnson+Ausar+Black | +1800 +600 +1.6 +0.8 +7% -0.2
 Cade > Johnson+Ausar+Clowney | +1800 +700 +1.5 +0.8 +8% -0.7
 Cade+Kuminga > Barnes+Ausar+Black | +1800 +900 +1.2 +0.4 +6% -0.8
+Cade+'27 1st+'28 1st > Barnes+Ausar+Black+Matthew '28 1st | +1800 +900 +1.4 +0.4 +7% +0.7
 Cade+Sharpe+Kuminga+'27 1st+'28 1st > Wemby+Ausar+Black | +1700 +300 +1.3 +1.2 +10% +0.5
 Cade+Sharpe+Kuminga+'27 1st+'28 1st > Barnes+Harper+Black | +1700 +800 +0.6 +0.5 +7% +0.9
 Cade+Sharpe+Mark+'27 1st+'26 2.09 > Barnes+Harper+Black | +1700 +1000 0.0 +0.7 +7% +0.1
 Cade+Sharpe+'27 1st > Wemby+Black | +1700 +900 +0.5 +0.8 +6% -0.8
 Cade+Sharpe+'26 2.09 > Johnson+Ausar+Black+Clowney | +1700 +400 +1.5 +1.0 +9% -0.3
 Cade+Kuminga+Walker+'27 1st+'28 1st+'26 2.09 > Barnes+Harper+Black | +1700 +800 +0.8 +0.4 +7% +1.0
+Cade+'27 1st+'28 1st+KC '27 2nd+Don '27 2nd+own '27 2nd > Barnes+Harper+Matthew '28 1st | +1700 +1000 +0.7 +0.4 +6% +0.6
 Cade+Kuminga+'27 1st+KC '27 2nd > Barnes+Harper | +1600 +1000 +0.5 +0.3 +6% +0.4
 Cade+'26 2.09+'28 2nd > Johnson+Ausar+Black | +1600 +400 +1.9 +0.9 +7% +0.4
 Cade+Eason > Johnson+Ausar+Black | +1600 +600 +1.4 +0.8 +6% -1.0
 Cade+Kuminga+'26 2.09 > Johnson+Ausar+Black | +1500 +400 +1.6 +0.8 +7% -0.3
 Cade+Kuminga > Johnson+Ausar+'26 2.05 | +1500 +500 +1.1 +0.7 +7% -1.0
 Cade+Kuminga+'28 2nd > Johnson+Ausar+Black | +1500 +400 +1.7 +0.8 +7% 0.0
+Cade+'28 1st > Barnes+Ausar+Matthew '28 1st | +1500 +900 +0.7 +0.3 +5% 0.0
 Cade+Sharpe+'27 1st+'26 2.09 > Wemby+Ausar | +1500 +300 +0.7 +1.1 +9% -0.2
 Cade+Sharpe+'27 1st > Johnson+Ausar+'26 1.06 | +1500 +400 +1.2 +0.9 +7% +0.1
 Cade+Sharpe+'27 1st+'26 2.09 > Barnes+Harper | +1500 +900 0.0 +0.5 +6% +0.3
@@ -127,5 +130,6 @@ Cade+'27 1st+KC '27 2nd+'26 2.09 > Barnes+Ausar+Black+'26 1.06 | +2400 +1300 +1.
 Cade+Mark+'27 1st > Wemby | -500 -900 -0.4 +0.6 +3% -0.8
 Cade > Harper+Ausar+Black | -400 +200 +0.6 -0.2 -6% -2.8
 Cade+Sharpe+'27 1st > Wemby | 0 -500 -0.3 +0.6 +5% -0.8
+Cade > Barnes+Matthew '28 1st | +600 +800 -0.4 -0.3 +1% -2.0
 Cade+Sharpe+Mark+'27 1st > Barnes+Harper | +700 +200 -0.6 +0.5 +6% -0.1
 Cade+Jabari+'27 1st+'26 2.09 > Barnes+Harper | +900 +700 -0.3 +0.1 +3% +0.2
