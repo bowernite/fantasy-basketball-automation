@@ -1,0 +1,45 @@
+# out > in | Score ΔBASE Δw Δw(season) ΔP(title) Δage | status
+
+Counterparty: Hlina (Matthew the Apostle, 161021). Contending, #2 this season (18.9% title) and projected #1 in '27-28, so our top competitor (`trades` §Competitors).
+
+Hlina 9/27 3:20p: asked "What's the price for Cade?". Nothing offered yet.
+
+Floor: the expected Todd/Jon close, Score ≈ +2600 (Jon's offer +2400, Todd's favorite +2200). Cade rows tier against it. Maxey+Buzelis rows sit Above floor on a tie Score for Δage (−0.8 vs +2.4 to +3.0 on the Todd/Jon deals) and ΔP(title).
+
+Competitor read: every Maxey+X or Paolo+X row costs Hlina 0.7 to 2.7 formula Δw and his ΔBASE is the mirror of ours (he's at 26 bodies, so a 2-for-1 thins him). Only the straight Cade > Maxey family helps him (+0.3 Δw), and it fails our minimums.
+
+Priced 9/27/26 on the 9/2 rosters (checked against Fleaflicker 9/27, no changes) with Hlina's eval columns re-run 9/27. Incoming picks: Matthew '27 1st 2687 (band midpoint), Hlina '27 1st 1425.
+
+## Above floor
+
+Cade > Maxey+Buzelis | +2600 +1200 +1.2 +0.7 +12% -0.8 | Us proposed 9/27
+Cade+Chaney+Matkovic > Maxey+Buzelis | +2500 +1100 +1.0 +0.7 +10% -0.8
+
+## Floor
+
+Pick rows (9/27) are not re-simmed. They take the no-pick row's numbers, subtract the pick's BASE from Score and ΔBASE, and recompute Δage per `trades` §Age. Score* (Cade Sweepstakes) is about +2900 on both.
+
+Cade+'27 2nd > Paolo+Jalen Williams | +2500 +1100 +1.3 +0.8 +12% +0.4 | Us proposed 9/27
+Cade+Chris '27 2nd > Maxey+Miller | +2200 +900 +1.2 +0.6 +10% +0.8 | Us proposed 9/27
+
+## Below bar
+
+Cade > Maxey+Coward | +1400 +500 +1.0 +0.5 +7% -0.2
+Cade > Paolo+Castle | +1000 -200 +1.1 +0.7 +10% -1.9
+Cade > Maxey+Jaquez | +700 +100 +0.8 +0.3 +5% +0.8
+
+## Too lopsided
+
+Cade > Maxey+Castle | +3600 +2300 +1.1 +0.7 +11% -0.8
+Cade+Chaney > Maxey+Castle | +3600 +2300 +1.1 +0.7 +11% -0.8
+Cade > Maxey+Edgecombe | +2700 +2100 +0.7 +0.2 +6% -1.0
+Cade > Paolo+Castle+Buzelis | +4400 +2000 +2.7 +1.5 +19% -2.3
+Cade > Maxey+Miller | +3100 +1800 +1.2 +0.6 +10% 0.0
+Cade > Maxey+Matthew '27 1st | +1400 +1700 -0.3 -0.3 -2% -1.1
+Cade > Paolo+Jalen Williams | +3000 +1600 +1.3 +0.8 +12% -0.4
+Cade > Paolo+Buzelis+Matthew '27 1st | +2700 +1400 +1.2 +0.6 +10% -2.7
+
+## Doesn't meet our minimums
+
+Cade > Maxey | -1300 -1000 -0.3 -0.3 -2% +0.9
+Cade > Maxey+Hlina '27 1st | +100 +400 -0.3 -0.3 -2% -1.1
