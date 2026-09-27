@@ -8,7 +8,7 @@ Find Cade deals that beat Jon's offer (best bid from another owner, Brett's curr
 
 Deadline: close Cade by end of day 9/27 with Todd or Jon (Mitch is out, Matthew isn't close). Expect few back and forths, mostly texts late in the day (Brett, 9/27). Brett's 9/26 9:10a text to both set an end-of-weekend deadline and said he'd pick between Todd's and Jon's best.
 
-Plan 9/27 (Brett, main thread): send Todd and Jon one text each today with two upgrade options. Fallback sealers tonight: Todd's favorite + Chaney, or Jon's offer + Chaney. Plan page: `/tmp/cade-plan.html`.
+Plan 9/27 (Brett, main thread): Todd and Jon texts with two upgrade options each sent (Brett 9/27 AM); waiting on replies. Push-a-2nd step and ~8p sealers not sent yet. Fallback sealers tonight: Todd's favorite + Chaney, or Jon's offer + Chaney. Plan page: `/tmp/cade-plan.html`.
 
 - Todd: Cade+Sharpe+Mark+('28 1st) > Tatum+Porter+NAW+Claxton, and Cade+Sharpe+Mark+(2.09) > Hali+Porter+NAW+Claxton+Mitchell.
 - Jon: Cade+(2.09)+('27 1st) > SGA+Day'Ron+Wells+McBride, and Cade+Mark+(2.09)+('28 1st) > SGA+Day'Ron+Watson+Wells+McBride.
@@ -86,6 +86,7 @@ Sept '26 picks (2.09) also need `out_us_picks` and `in_from_us_picks` so the moc
 - Phrase offers as "What do you think about X?". Never say a deal works on our end while spitballing.
 - Picks in parentheses, e.g. Cade+('27 1st)+(2.09).
 - Withhold sim numbers, board info, and why we want a player. Other owners can know Cade is in a bidding war.
+- Todd and Jon are friends and future trade partners, so don't push them too hard (Brett 9/27). Keep the text count low, don't re-float shapes they passed on, don't haggle small stuff. Not corny or overly polite either.
 
 ## Hard rules
 
