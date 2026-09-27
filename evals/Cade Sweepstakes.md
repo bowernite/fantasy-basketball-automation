@@ -6,6 +6,13 @@ Brett is shopping Cade Cunningham to several owners in a bidding war. This file 
 
 Find Cade deals that beat Jon's offer (best bid from another owner, Brett's current pick) on `Score`. Push prices up and use each bid as leverage. Todd's live offer still wins this season (+1.1 vs +0.5 `Δw (season)`) and on ΔP(title) (+8% vs +5%); Jon's lead comes from BASE.
 
+Deadline: close Cade by end of day 9/27 with Todd or Jon (Mitch is out, Matthew isn't close). Expect few back and forths, mostly texts late in the day (Brett, 9/27). Brett's 9/26 9:10a text to both set an end-of-weekend deadline and said he'd pick between Todd's and Jon's best.
+
+Plan 9/27 (Brett, main thread): send Todd and Jon one text each today with two upgrade options. Fallback sealers tonight: Todd's favorite + Chaney, or Jon's offer + Chaney. Plan page: `/tmp/cade-plan.html`.
+
+- Todd: Cade+Sharpe+Mark+('28 1st) > Tatum+Porter+NAW+Claxton, and Cade+Sharpe+Mark+(2.09) > Hali+Porter+NAW+Claxton+Mitchell.
+- Jon: Cade+(2.09)+('27 1st) > SGA+Day'Ron+Wells+McBride, and Cade+Mark+(2.09)+('28 1st) > SGA+Day'Ron+Watson+Wells+McBride.
+
 ## Current bids (our side)
 
 | Team | Out | In | Score | vs Jon | ΔBASE | Δw | Δw (season) | ΔP(title) | Δage | N |
@@ -43,6 +50,9 @@ Live status per owner is in each `evals/teams/<owner>/<Name>.shapes.md` intro an
   - We value our picks below their BASE (Brett, 9/25): we're contending, our 1sts will likely land late, and we'll soon have more picks than roster use for. So Score undercounts deals where we add picks, since it subtracts full pick BASE. Use picks as sweeteners to buy win columns and ΔP(title) (e.g. upgrading Hali to Tatum with Todd), not BASE. Todd and Matthew both want picks.
   - Adding a later pick ('27/'28) to our Out side doesn't need a re-sim. Subtract its BASE from ΔBASE and Score, since the win columns and ΔP(title) don't change. Its age effect is small, and it makes our Out side younger.
   - The 2.09 (Sept '26) does count in the win columns, so it needs a sim.
+  - Add picks (2nds/3rds, even 1sts) to improve or seal the Todd and Jon deals (Brett, 9/27). Semi-neglect our outgoing pick value: rank by Score\* = Score + 75% of each outgoing 2nd/3rd's BASE (2.09 counts as a 2nd) + 50% of each outgoing 1st's BASE.
+  - Jon doesn't realize how good our team will be, so he likely values our 1sts above what they're worth to us (Brett, 9/27).
+- **Matkovic and Chaney Johnson (ours) are sweeteners too** (Brett, 9/27). We'll likely cut both for FAs at the auction, so Score\* adds back 100% of their BASE. Owners may value Chaney Johnson above his worth off last year's stats. Don't tell owners we'd cut them.
 
 ### BASE caveat (agent analysis 9/25; BASE method stays as is)
 
@@ -87,7 +97,7 @@ Sept '26 picks (2.09) also need `out_us_picks` and `in_from_us_picks` so the moc
 ## Owner notes
 
 - **Jon** (161015, tanking): won't take Shaedon. Standing offer (9/25 11:43a): Cade+(2.09) for SGA plus our pick of 1 or 2 of Champagnie/Wells/McBride; we keep Shaedon and Mark. Henry's '27 2nd (≈810 BASE) came only with his SGA+Fears package for Cade+('27 1st)+(2.09) (11:23a), which we declined; it's not in the standing offer. 12:20p: "Sounds like Todd's offer is going to beat mine at this point". Picks only add BASE, so they don't close the win-column gap to Todd. Ask for players instead. In his file, Out "Sharpe" = Shaedon (ours), In "Sharpe" = Day'Ron (his). Doesn't want to give both Fears and Day'Ron Sharpe. On 9/25 he re-floated Brett's old 8/2 shape Cade+Edey+(3.09) for SGA+Jaylin+(Jon 2.10), which fails our minimums; declined 3:15p. Our 3.09 went to Henry on 8/13. Edey is a hold in Cade talks (agent sim 9/25). Nudged him on the Raynaud shapes 9/25; no answer yet.
-- **Todd** (161022, tanking): live offer above. Rejected counter A 9/25 (3:47p): "I'm not big on Kuminga so probably prefer the simpler deal".
+- **Todd** (161022, tanking): his favorite is "Todd's live offer" above, but it's only contemplated, not firmly on offer. Rejected counter A 9/25 (3:47p): "I'm not big on Kuminga so probably prefer the simpler deal". Ignored the Tatum counters. 9/26 10:15a: "Right now I'm leaning towards not trading and waiting until the trade deadline to see what I can get for MPJ/Gobert". 10:55a on his favorite: "That's the only one I'm still contemplating a little bit, but if Jon has a better offer I won't be reaching any further". Brett 11:09a: Jon's "doesn't at this point".
 - **Matthew Pook** = Pharaoh Mattankhamun-Ra (160941), young and climbing, wants young players and picks on his timeline. Won't trade Amen Thompson (we just sent Amen to him and he likes him), so never put Amen on the In side. Treat Wemby as untouchable too (Brett, 9/25). 9/25 asked "Any hypotheticals without Johnson?". 7:42p rejected our 4:00p Barnes+Harper+Ausar+Black shapes: "I think those are all a little too much for me. It'd probably be something around Scottie and a 1st for Cade". Brett: "aight homie no worries".
 - **Chris Kelnhofer** = King Christopher of Bavaria (161014): win now, may sell everything 5–10 weeks in. Values bodies/depth highly. Passed on the 6 for 3 Cade feeler on 9/25: "I'll pass. Don't want to give up the depth. Even tho Cade is awesome". Dropped for Cade on 9/25: no Cade deal that keeps his bodies even also stops costing him about 2–3 wins this season. Hold '27 1st > Daniels or (2.09)+(KC '27 2nd) > Daniels for after Cade settles (re-price then).
 - "Mark" = Mark Williams (ours).
