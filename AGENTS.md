@@ -17,6 +17,10 @@ Do the following in subagents, parallelize / put in background when possible:
 
 Avoid writing your own scripts whenever possible; rely on your own logic instead. Run the existing lineup-math scripts when you need sim output; copy stdout.
 
+## Naming
+
+Refer to teams by the owner's Name from the `team-info` Skill, never the fantasy team name or an abbreviation of it. Applies everywhere: reports, texts, files, tables. Label a pick by its original owner, e.g. "Chris '27 2nd", not "KC '27 2nd".
+
 # Team files
 
 Read `evals/teams/<owner>/<Name>.team.md` and `<Name>.shapes.md` only. Never read, grep, or shell-print `*'s Team.md`, `My Team.md`, or `* Trade Shapes.md`.

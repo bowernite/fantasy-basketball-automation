@@ -46,18 +46,18 @@ Chaney Johnson | – SF/SG | 0 | 8 41 | +0.02 -0.16 -0.7% | fragile · 1yr role
 pick | origin | rookie | VALUE
 ### Sept '26 — sourced
 2.09 | own | Karim Lopez | 645
-Gone: own 1.09 → The Don · own 3.09 → Mongol Khans Freak Militia (Henry)
+Gone: own 1.09 → Mitch · own 3.09 → Henry
 ### Sept '27 — modelled off projected finish
 1st | own | Aday Mara | 1425
-2nd | The Don | Cameron Carr → Allen Graves | ≤918–634
-2nd | King Christopher | Hannes Steinbach → Karim Lopez | ≤1111–645
+2nd | Mitch | Cameron Carr → Allen Graves | ≤918–634
+2nd | Chris | Hannes Steinbach → Karim Lopez | ≤1111–645
 2nd | own | Bruce Thornton | ≤540
 3rd | own | Henri Veesaar | ≤297
 Gone: none
 ### Sept '28 — modelled off projected finish
 1st | own | Aday Mara | ≤1425
 2nd | own | Allen Graves | ≤634
-3rd | Mongol Khans | Chris Cenac Jr. → Ryan Conwell | ≤406–303
-3rd | Pharaoh | Chris Cenac Jr. → Ryan Conwell | ≤406–303
+3rd | Henry | Chris Cenac Jr. → Ryan Conwell | ≤406–303
+3rd | Matthew | Chris Cenac Jr. → Ryan Conwell | ≤406–303
 3rd | own | Ryan Conwell | ≤303
 Gone: none
