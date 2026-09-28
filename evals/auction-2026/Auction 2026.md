@@ -11,14 +11,15 @@ Rules (Sheet, 2026-09-24):
 
 # Plan
 
-**Buy 4 on the Sheet's 4 open spots. After the auction, cut Chaney Johnson and Khris Middleton.** Keep Matković.
+**Buy 4 on the Sheet's 4 open spots. After the auction, cut Chaney Johnson and Karlo Matković.** Middleton went to Chris in the Fox deal (9/28, 485835, body-even), so Matković is the second cut.
+
+- Card `dPtitle`, `score` and `Δw '26–'27 ours` were priced pre-Fox, on the roster with Middleton. Fox deepens it, so buys read a bit lower (§Trades that add bodies). Not re-simmed.
 
 - The Hlina deal (`Pending Trades.md`) lands after the auction. No cuts before it. When it lands (+2 bodies, 40), the two cuts take us back to 38.
-  - If our 4th buy is a T2 or worse, cut the weaker of it and Middleton (`Score ranking.md`).
-- Middleton traded for a pick before the auction leaves us 5 open. Have the commissioner hold us at 4, or buy a $1 5th body and cut it with Chaney.
-- **Cuts.** Chaney is the worst body on every read. For the second cut, keeping Matković over Middleton reads +0.2 to +0.45pp across four buy sets (≈ 1.5σ each, same sign every time), and BASE is tied (161 vs 162). Huff and Ellis cut instead read the same pp, but they carry BASE 372 and 278.
-- **No 5th buy.** Cutting Matković too for a 5th buy reads −0.1 to −0.3pp against 4 buys: the kept body is worth about a T2, and the $ spreads thinner.
-- **Target: the plan (§Bidding)**, the most summed Score our open spots hold at live `Market$`. At the open that is 2 T1 + 2 T2: Scheierman, Hayes, Collins and Strawther, $196 for Score 836. P(title) is 44% before the auction (43% with four $1 bodies).
+  - If our 4th buy is a T2 or worse, cut the weaker of it and Matković (`Score ranking.md`).
+- **Cuts.** Chaney is the worst body on every read. Matković has the lowest Score of the bodies left (185, vs Bona 322, Ellis 324, Huff 365). Huff and Ellis cut instead read the same pp, but they carry BASE 372 and 278.
+- **No 5th buy.** Cutting a third body for a 5th buy (pre-Fox, Matković as the extra cut) reads −0.1 to −0.3pp against 4 buys: the kept body is worth about a T2, and the $ spreads thinner.
+- **Target: the plan (§Bidding)**, the most summed Score our open spots hold at live `Market$`. At the open that is 2 T1 + 2 T2: Scheierman, Hayes, Collins and Strawther, $196 for Score 836. P(title) is 44% before the auction (43% with four $1 bodies), pre-Fox.
 - **More open spots** (a deal lands before the auction): the tool reads the Sheet's `Open roster spots` and re-plans. At 6 spots the plan stays 2 T1 + 2 T2, plus two $1 bodies.
 
 ## Trades that add bodies (9/28)
@@ -55,7 +56,6 @@ Rows: every tiered row, plus the top 50 of the pool by `Market$` (leaving out th
 | 1 | ***Adem Bona*** | PHI | 23.4 | 257 | +0.76 | 322 | – | – | – | – | – |
 | 1 | Dominick Barlow | PHI | 23.3 | 174 | +1.01 | 246 | 68 | 142 | +74 | 90 | 4 |
 | 1 | Jaxson Hayes | UTA | 26.3 | 129 | +1.28 | 205 | 58 | 119 | +61 | 90 | 10 |
-| 1 | ***Khris Middleton*** | WAS | 35.1 | 162 | +0.45 | 203 | – | – | – | – | – |
 | 1 | Marvin Bagley | DEN | 27.5 | 197 | +0.29 | 201 | 64 | 116 | +52 | 90 | 3 |
 | 2 | ***Karlo Matković*** | NOP | 25.4 | 161 | +0.80 | 185 | – | – | – | – | – |
 | 2 | Dru Smith | MIA | 28.7 | 231 | +0.25 | 175 | 49 | 101 | +52 | 47 | 7 |
@@ -111,10 +111,10 @@ Rows: every tiered row, plus the top 50 of the pool by `Market$` (leaving out th
 
 ## Ours
 
-Our bottom 8 on the `dPtitle` basis, 9/28: roster after both cuts, one $1 body (Justin Edwards) plus FA-grade pads in the open spots. Kept row = keep vs swap to a second $1 body; Chaney and Middleton = add back over the $1 body. Scheierman and Thybulle re-run on this basis read +1.41 and +0.96 (card +1.35, +1.07). Formula `Δw` for `Score`: `Ours.team.md`.
+Our bottom 8 on the `dPtitle` basis, 9/28: roster after both cuts, one $1 body (Justin Edwards) plus FA-grade pads in the open spots. Kept row = keep vs swap to a second $1 body; Chaney = add back over the $1 body. Middleton's row is gone with him (Fox deal). Scheierman and Thybulle re-run on this basis read +1.41 and +0.96 (card +1.35, +1.07). Formula `Δw` for `Score`: `Ours.team.md`.
 
 - Every FA except Scheierman scores below Huff, Ellis and Bona, and the top FAs sit inside their 250 tie band (`Score.md`). No extra cut.
-- Middleton 203 vs Matković 185 is a Score tie. ΔP (+0.80 vs +0.45) keeps Matković.
+- Matković (185) is the lowest-Score body left after Chaney, so he's the second cut now that Middleton is Chris's.
 
 ## Bidding
 

@@ -13,6 +13,7 @@ Timing: rookie draft ~7:45p CT 9/28, FA auction after. Cade and 2.09 are still o
 - **Michael is the lead.** Brett offered Cade > Reaves+Sabonis+Siakam 11:24a (texts). Michael 11:56a: "Last one is a lot but interesting since Cade's a beast. Lemme think a bit". Counters in Owner notes.
 - **Jon passed 9/28** (texts). Brett sent Fleaflicker proposal 485816 (the "Jon agreed" row) 9:13a. Jon 9:15a: "I'm giving it some final thoughts today". Brett 1:56p told him others were interested in the picks and Cade. Jon 1:59p: "I'll probably pass then, so you're free to deal if you want". Treat as dead. The proposal may still be live on Fleaflicker (unconfirmed).
 - Out: Todd (9/27), Josh (9/27 7:36p), Mitch, Matthew. Hlina still passing on Cade (9/28 12:03p).
+- **Fox landed 9/28** (Fleaflicker 485835): Middleton+(own '27 2nd)+(Chris '27 2nd) > Fox. Rows below priced before it; Middleton and both 2nds can't go in a Cade deal now.
 
 ## Current bids (our side)
 
@@ -72,12 +73,10 @@ Live status per owner is in each `evals/teams/<owner>/<Name>.shapes.md` intro an
 | '27 1st | 1150 |
 | '28 1st | 900 |
 | 2.09 | 580 |
-| own '27 2nd | 575 |
-| Chris '27 2nd | 775 |
 | Mitch '27 2nd | 700 |
 | '28 2nd | 450 |
 
-Repriced 9/28 off each year's market; bands in `Ours.team.md` Notes.
+Repriced 9/28 off each year's market; bands in `Ours.team.md` Notes. Own '27 2nd (575) and Chris '27 2nd (775) went to Chris for Fox 9/28 (485835).
 
 Sept '26 picks (2.09) also need `out_us_picks` and `in_from_us_picks` so the mock rookie counts in win columns.
 
@@ -109,7 +108,7 @@ Sept '26 picks (2.09) also need `out_us_picks` and `in_from_us_picks` so the moc
   - 8:20–8:22p asked what the trade would be, then read it as Cade+(2.09)+('27 1st) > SGA+Wells+McBride+Champagnie (+1400, Score\* +2600). Brett 8:23p sent Cade+('27 1st)+Chaney > SGA+Wells+McBride+Champagnie (+2100, Score\* +2800), 8:27p Matković in place of Chaney as an alternative (+1800, Score\* +2700). Superseded by his 8:49p shape.
 - **Todd** (161022, tanking): officially out (Brett 9/27). His favorite is "Todd's live offer" above, but it's only contemplated, not firmly on offer. Rejected counter A 9/25 (3:47p): "I'm not big on Kuminga so probably prefer the simpler deal". Ignored the Tatum counters. 9/26 10:15a: "Right now I'm leaning towards not trading and waiting until the trade deadline to see what I can get for MPJ/Gobert". 10:55a on his favorite: "That's the only one I'm still contemplating a little bit, but if Jon has a better offer I won't be reaching any further". Brett 11:09a: Jon's "doesn't at this point". 9/27 4:25p withdrew: "I think I'm going to withdraw from the Cade sweepstakes. In the season if you need that final push to get your team ahead of the others, I will most likely have Gobert/MPJ/Brunson available". 4:26p Brett asked if "that other deal" (his favorite) is something he'd still do; 5:16p "I don't think so". Last-throw shapes (favorite + Gobert or Brunson for our picks) are in `Todd.shapes.md`. The Tatum and Hali+Mitchell upgrades are dead.
 - **Matthew** (160941): young and climbing, wants young players and picks on his timeline. Won't trade Amen Thompson (we just sent Amen to him and he likes him), so never put Amen on the In side. Treat Wemby as untouchable too (Brett, 9/25). 9/25 asked "Any hypotheticals without Johnson?". 7:42p rejected our 4:00p Barnes+Harper+Ausar+Black shapes: "I think those are all a little too much for me. It'd probably be something around Scottie and a 1st for Cade". Brett: "aight homie no worries".
-- **Chris** (161014): win now, may sell everything 5–10 weeks in. Values bodies/depth highly. Passed on the 6 for 3 Cade feeler on 9/25: "I'll pass. Don't want to give up the depth. Even tho Cade is awesome". Dropped for Cade on 9/25: no Cade deal that keeps his bodies even also stops costing him about 2–3 wins this season. Hold '27 1st > Daniels or (2.09)+(Chris '27 2nd) > Daniels for after Cade settles (re-price then).
+- **Chris** (161014): win now, may sell everything 5–10 weeks in. Values bodies/depth highly. Passed on the 6 for 3 Cade feeler on 9/25: "I'll pass. Don't want to give up the depth. Even tho Cade is awesome". Dropped for Cade on 9/25: no Cade deal that keeps his bodies even also stops costing him about 2–3 wins this season. Hold '27 1st > Daniels for after Cade settles (re-price then). 9/28 sold us Fox for Middleton+(own '27 2nd)+(Chris '27 2nd) (485835), after asking for a scrub to stay body-even.
 - **Josh** (161024, contending, 4th PF, 8.6% title): win-now (Brett 9/27). New to this. Guards depth: passed on Kyrie/Butler 9/25 ("don't want to give up more depth"), dislikes 3-for-1s. 9/25 offered 2 firsts + Porziņģis for Cade (Brett disliked it); he only holds his own '28 1st, since his '27 1st is Hlina's. Only Mitchell / Murray / Towns and his '28 1st (≈2360, band 1457–3270) carry BASE, so Jon-level `Score` needs two of the three stars plus picks, and that costs him this season. He has spare guards and centers, so Towns is his most expendable star. 9/27 7:20p "Hell nah" to Brett's two 2-for-2s (Mitchell+Towns and Murray+Towns cores). Brett: not creative, has named his price (Porziņģis + two 1sts), values Mitchell+Towns highly. Prefer players back; his picks OK if needed. Porziņģis-frame shapes reach Jon's level only with Murray plus Barrett added, e.g. Cade+(Chaney) > Murray+Porziņģis+Barrett+(Josh '28 1st)+(Josh '27 2nd) (+2400, −0.8 `Δw (season)` for him). He liked Collins and Gordon (both traded to us 9/1). Shapes are in `evals/teams/josh/Josh.shapes.md`.
   - 9/27 rejected Cade+Butler > Mitchell+Towns+(Josh '27 2nd)+(Josh '28 2nd) and Cade+Collins > Murray+Towns+(Josh '28 1st)+(Josh '27 2nd): "hell no, appreciate the offer though". His read looks far apart from ours: his own 9/25 offer (Porziņģis plus two 1sts for Cade) was about −4600 ΔBASE for us.
   - 9/27 7:35p Brett sent Cade+Chaney > Murray+Porziņģis+Barrett+(Josh '28 1st)+(Josh '27 2nd) and Cade+Chaney+Matković > Murray+Porziņģis+Barrett+Sexton+(Josh '28 1st). 7:36p: "No respectfully". Fully out.
