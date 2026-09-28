@@ -10,10 +10,15 @@ Tiers (Score, 9/25/26): Cade rows against the benchmark's +2200. None clears it;
 
 Sims: 99-deal grid 9/25/26 (`/tmp/ff-sim-jon-cade-grid.out`) + 12 beat-Todd shapes 9/25/26 + 54 shapes with our 2.09 9/25/26 (34 no-Cade, 20 Cade ↔ SGA; includes the 9/22 floats) + 66 beat-Todd shapes 9/25/26 (SGA plus 2–4 mid pieces for picks or our depth; 16 counters off his SGA+Fears offer; one non-SGA Cade shape, which fails) + 6 Henry-2nd shapes 9/25/26 (his add plus Mark-for-bodies variants) + 5 SGA+Fears+one-piece shapes 9/25/26 + 10 Cade(+2.09) ↔ SGA+role-player shapes 9/25/26 (his Wells/Champagnie/McBride offer + counters) + 38 angle shapes 9/25/26 (Mark / Eason / Kuminga / Walker for Sharpe / Fears / Watson on top of his Wells+McBride offer, vet adds, Giddey-for-SGA two-step legs on today's roster; 2 no-Cade legs under -200 pruned) + Cade+2.09+'27 KC 2nd > SGA+Sharpe+Wells 9/25/26 + 37 Raynaud shapes 9/25/26 (21 Cade ↔ SGA+Raynaud, 16 no-Cade; Mark > Raynaud pruned under -200) + 11 Edey/Jaylin shapes 9/25/26 (his re-sent 8/2 shape plus 2.09 for 3.09, no pick swap, +Raynaud, +Sharpe, Kuminga / Mark for Edey) + 23 pick/sweetener ladders off his Wells+McBride offer 9/27/26 (sealers, Sharpe / Fears / Watson / Bailey rungs, Chaney / Matković sweeteners; his offer re-priced +2428, unchanged at rounding) + Cade+'27 1st > SGA+Wells+McBride 9/27/26 (his ask; his offer re-priced +2428 again) + 2 counters to that ask 9/27/26 (Chaney added to his offer; Champagnie added to his ask; his offer re-priced +2428 again) + 3 Champagnie-ask shapes 9/27/26 (his 8:22p reading with both 2.09 and '27 1st; our 8:23p Chaney offer; Matković alternative). Jon's 8:49p floats 9/27/26: Cade+'27 1st > SGA plus one of Wells / Champagnie / McBride / Jaylin, Cade+2.09 > SGA, and the combined Cade+2.09+'27 1st > SGA+Wells+McBride+Champagnie+Jaylin (Chaney cut to stay at 38), plus Cade+2.09 > SGA+Jaylin as a middle ground. Our counter to the combine 9/27/26: Chaney+Matković added, no cut needed (37 bodies). Our '27 3rd priced 297. Every row re-priced 9/25/26 for Score and Δage. Out-side Sharpe = Shaedon; In-side Sharpe = Day'Ron. Unlabelled '27 2nd = our own, priced 540; '27 KC 2nd = King Christopher's, 900; '27 Don 2nd = The Don's, 775; '28 2nd 634; our '27 / '28 1sts 1425 each; 2.09 645; 3.09 357 (Henry.team.md), BASE-only since Henry holds it (no body, not in Δage); In-side '26 2.10 = Jon's, 640; In-side '27 Henry 2nd = Mongol Khans' '27 2nd, priced 810 (eval range 645–971); In-side '27 1st = Jon's own, priced 4574 (eval range 2391–6757). Jon ΔBASE ≥ +1000 = too lopsided (do not float). Our ΔBASE below -200: do not sim or archive (pruned 9/25). Jon won't take Shaedon ("he's bad", 9/25): no Out-side Sharpe shapes (pruned 9/25). Screening: do not float deals where his incoming side is non-marginally older (~28+). + 2 picks-light shapes 9/28/26 (Cade+2.09+'27 2nd > SGA+Wells, > SGA+McBride; his 9/25 offer and its '27 2nd / '27 3rd variants re-priced, unchanged at rounding).
 
+Post-Cade 9/28/26: Jon passed on Cade 9/28 (thread dead). 20 no-Cade shapes simmed on the Michael Cade deal (Siakam version, `$TMPDIR/ff-C1`) with 9/28 pick BASE ('27 1st 1150, '27 KC 2nd 775, '27 Don 2nd 700, '27 2nd 575). They skip 2.09 / '28 2nd (Hlina thread) and the Giannis-offer pieces. Chaney in Out = cut to stay at 38 (we're at 37). Rows: every '27 1st row without Cade, the Edey rows, '27 KC 2nd+'27 Don 2nd > Sharpe, and three re-priced Raynaud rows (Kuminga > Raynaud+McBride, Walker+'27 2nd > Raynaud+McBride, '27 2nd > Raynaud). ΔP(title) runs smaller here because the base is already ~63%.
+
 ## Above floor
 
 Walker+2.09+'27 2nd > Sharpe+Watson | +1800 +1000 +1.2 +0.6 +5% +4.3
 Kuminga+Walker+2.09 > Sharpe+Watson | +1600 +800 +0.9 +0.5 +5% +3.1
+Chaney+'27 1st+'27 KC 2nd > Sharpe+Watson | +1400 +600 +1.6 +0.5 +4% +5.5
+Chaney+'27 1st > Sharpe+Wells | +1400 +700 +1.4 +0.3 +3% +5.3
+Kuminga+'27 1st > Sharpe+Watson | +1400 +700 +1.3 +0.4 +4% +5.0
 2.09+'27 2nd+'27 KC 2nd > Sharpe+Watson | +1400 +500 +1.5 +0.7 +6% +5.2 | Us proposed 9/22
 2.09+'27 2nd > Sharpe+'26 2.10 | +1400 +700 +0.9 +0.4 +5% +4.0
 Mark+2.09 > Sharpe+Watson | +1400 +600 +0.8 +0.7 +6% +3.2
@@ -22,6 +27,7 @@ Mark+2.09 > Sharpe+Watson | +1400 +600 +0.8 +0.7 +6% +3.2
 2.09+'27 2nd > Raynaud+Wells+McBride | +1300 +800 +1.3 +0.4 +4% +4.3
 2.09 > Raynaud+Wells | +1300 +900 +0.9 +0.2 +2% +3.2
 2.09+'28 2nd > Sharpe+McBride | +1200 +300 +1.2 +0.5 +7% +6.0
+Chaney+'27 1st > Sharpe+McBride | +1100 +500 +1.3 +0.4 +4% +6.0
 2.09 > Fears | +1100 +700 +0.7 +0.3 +4% -0.1 | Jon rejected 9/22
 2.09+'27 2nd > Sharpe+Jaylin | +1100 +400 +1.0 +0.4 +6% +5.3 | Us proposed 9/22
 Walker+2.09 > Sharpe+Jaylin | +1100 +600 +0.7 +0.3 +4% +3.8
@@ -29,7 +35,6 @@ Eason+2.09+'27 2nd > Sharpe+Watson | +1100 +300 +0.9 +0.6 +6% +2.3 | Us proposed
 Kuminga+2.09 > Sharpe+McBride | +1000 +300 +0.9 +0.4 +6% +4.3 | Jon rejected 9/22
 2.09+'27 Don 2nd > Sharpe+McBride | +1000 +200 +1.2 +0.5 +7% +5.5
 2.09 > Raynaud+McBride | +1000 +700 +0.8 +0.3 +3% +4.3
-Kuminga > Raynaud+McBride | +1000 +600 +0.6 +0.2 +3% +0.4
 
 ## Floor
 
@@ -54,7 +59,9 @@ Cade+Mark+'27 1st+'28 1st+2.09 > SGA+Fears+Sharpe+McBride+Wallace | +1900 +600 +
 Cade+Mark+'27 1st+'28 1st+2.09 > SGA+Fears+Watson+Bailey | +1900 +700 +1.5 +0.9 +8% +2.9
 Cade+Mark+'27 1st+'27 2nd > SGA+Sharpe+Watson | +1900 +700 +1.1 +0.9 +9% +3.7
 Cade+Mark+'27 1st+2.09 > SGA+Fears+Raynaud+Wells | +1900 +900 +1.2 +0.7 +8% +2.5
+Kuminga+'27 1st > Sharpe+Raynaud | +900 +400 +1.2 +0.2 +3% +4.9
 Bona+2.09 > Sharpe | +900 +400 +0.6 +0.3 +3% +4.8
+Kuminga > Raynaud+McBride | +800 +600 +0.6 +0.1 +1% +0.4
 2.09+'27 KC 2nd > Sharpe+Jaylin | +800 +100 +1.0 +0.4 +6% +5.3
 2.09+'27 2nd > Sharpe | +700 +100 +0.8 +0.4 +5% +5.3
 Walker+2.09 > Sharpe | +700 +200 +0.5 +0.3 +3% +3.8
@@ -68,9 +75,12 @@ Mark+Kuminga+2.09 > Sharpe+Watson | +700 -100 +0.5 +0.7 +6% +2.8
 Mark+2.09 > Sharpe+Wells | +600 -100 +0.6 +0.5 +6% +3.0
 Melton+2.09 > Sharpe | +600 +200 +0.3 +0.1 +3% -0.1
 Kuminga+2.09 > Sharpe | +600 -100 +0.6 +0.3 +5% +4.1
-'27 2nd > Raynaud | +600 +400 +0.5 +0.1 +1% +4.4
+'27 1st > Bailey | +600 +300 +0.6 +0.1 +2% +1.0
+'27 1st > Sharpe | +600 +100 +0.9 +0.2 +3% +5.8
 Walker > Raynaud | +600 +500 +0.2 -0.1 0% +0.4
-Walker+'27 2nd > Raynaud+McBride | +600 +300 +0.6 +0.1 +2% +4.0
+'27 1st > Fears | +500 +200 +0.8 +0.2 +2% +0.9
+'27 2nd > Raynaud | +500 +400 +0.5 0.0 +1% +4.4
+Walker+'27 2nd > Raynaud+McBride | +500 +300 +0.6 +0.1 +1% +4.0
 2.09 > McBride+'26 2.10 | +500 +300 +0.4 +0.2 +2% +2.5
 Walker+2.09 > Fears | +500 +200 +0.4 +0.2 +2% -1.1
 2.09 > Raynaud | +500 +300 +0.5 +0.1 +2% +3.4
@@ -168,11 +178,16 @@ Cade+Vassell > SGA+McBride | +700 +700 +0.1 0.0 0% +2.8
 Cade+Edey+2.09 > SGA+Sharpe+Jaylin+'26 2.10 | +600 +500 +0.3 +0.1 +1% +2.3
 Cade+Murray > SGA+Wells | +500 +500 -0.1 +0.1 0% +2.2
 Walker+2.09 > Watson | +400 +200 +0.3 +0.3 0% +3.0
+'27 1st > Watson | +400 +200 +0.7 +0.2 +1% +5.0
 '27 Don 2nd > Raynaud | +400 +200 +0.5 +0.1 +1% +4.4
+'27 KC 2nd+'27 Don 2nd > Sharpe | +300 -200 +0.9 +0.2 +3% +5.8
 Cade+'27 1st > SGA | +400 0 +0.3 +0.2 +3% +4.7
 Cade+'28 1st > SGA | +400 0 +0.3 +0.2 +3% +5.0
 Kuminga+2.09 > Watson | +300 0 +0.3 +0.3 +2% +3.3
 '27 KC 2nd > Raynaud | +200 +100 +0.5 +0.1 +1% +4.4
+Kuminga+'27 2nd > Raynaud+McBride | +200 0 +0.6 +0.1 +1% +4.3
+Edey > Fears+Sharpe | +100 0 +0.6 -0.1 +1% -1.7
+Edey > Sharpe+Watson | +100 0 +0.5 0.0 0% +0.2
 Walker+'28 2nd > Raynaud | 0 -100 +0.2 -0.1 0% +3.8
 
 ## Too lopsided
@@ -345,6 +360,8 @@ Cade+'27 1st+'28 1st > SGA+Fears+Sharpe | +2600 +1200 +2.0 +0.8 +10% +3.6
 Cade+2.09+'27 1st+'28 1st > SGA+Sharpe+Watson+Wells | +2600 +1200 +2.3 +1.0 +10% +4.3
 Cade+Mark+2.09+'27 2nd > SGA+Sharpe+Wells+McBride | +2300 +1200 +1.2 +0.8 +9% +3.0
 Cade+Matković+'27 1st > SGA+Wells+McBride+Champagnie | +1800 +1200 +1.3 +0.5 +4% +3.8 | Us proposed 9/27
+Chaney+'27 1st > Sharpe+Raynaud | +1800 +1100 +1.5 +0.3 +4% +5.3
+Chaney+'27 1st > Watson+Raynaud | +1500 +1100 +1.2 +0.3 +1% +4.7
 Cade+Mark+2.09 > SGA+Fears+McBride | +1800 +1100 +0.6 +0.6 +5% +1.9
 Cade+Mark+2.09 > SGA+Fears+Champagnie | +1700 +1100 +0.5 +0.6 +5% +1.9
 Cade+'27 1st > SGA+Wallace | +1600 +1100 +0.7 +0.3 +4% +4.2
@@ -352,6 +369,7 @@ Cade+Mark+2.09 > SGA+Sharpe+McBride | +2000 +1100 +0.7 +0.7 +8% +2.8
 Cade+Mark+2.09 > SGA+Raynaud+Wells | +1600 +1100 +0.5 +0.5 +5% +2.5
 Cade+Kuminga+2.09 > SGA+Jaylin+'26 2.10 | +1500 +1100 +0.2 +0.2 +3% +2.9
 Cade+2.09+'27 1st > SGA+Wells+McBride+Champagnie+Jaylin | +1800 +1100 +1.5 +0.6 +5% +4.1 | Jon rejected 9/28
+Walker+'27 1st > Sharpe+Watson | +1600 +1000 +1.3 +0.4 +3% +4.8
 Cade+'27 1st+2.09 > SGA+Fears+McBride | +1900 +1000 +1.3 +0.6 +6% +3.1
 Cade+'27 1st > SGA+Wells+McBride | +1700 +1000 +1.1 +0.5 +5% +3.9 | Jon proposed 9/27
 Cade+'27 1st > SGA+Jaylin+'26 2.10 | +1400 +1000 +0.5 +0.3 +3% +3.8
@@ -366,6 +384,7 @@ Cade+Edey > SGA+Jaylin+'26 2.10 | -800 -100 -0.6 -0.4 -6% +2.4
 Cade > Sharpe+Watson+Fears+Bailey+'26 1.11+'26 2.01 | -700 -100 +1.0 -0.5 -6% -3.2
 Cade+Green > SGA | -600 -200 -0.7 -0.1 -3% +3.3
 Cade+Coby > SGA | -400 +100 -0.9 -0.3 -2% +2.7
+Edey > Sharpe+Raynaud | -400 -300 +0.4 -0.2 0% 0.0
 Cade+Edey > SGA+Watson | -200 +200 -0.2 -0.1 -4% +2.6
 Cade+Bridges > SGA+Jaylin | -200 +700 -0.7 -0.3 -7% +2.0
 Cade+Edey+2.09 > SGA+Jaylin+Raynaud+'26 2.10 | -200 +200 -0.1 -0.2 -3% +2.3

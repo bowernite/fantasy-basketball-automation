@@ -26,6 +26,8 @@ The two `Cade+'27 1st+'28 1st+… > Deni+Flagg` rows are pick arithmetic, not si
 
 Rows with `Mitch '27`/`'28` picks on the In side (9/25) were simmed for Δage, but the win columns match the base `Cade > Deni+X` row, so Score and ΔBASE are just that row plus the picks' BASE. Pick BASE comes from his eval: '27 1st 1425 (floor), '27 3rd 303 (floor), '28 1st 1524, '28 2nd 645, '28 3rd 357. His own '27 2nd is gone. No Deni+X+his later picks row reaches Todd's Score while staying under +1250 ΔBASE. The ceiling is about +2100 with Kessler and about +2000 with Franz.
 
+Non-Cade shapes (9/28, before the draft): simmed with the Bonin deal applied (Cade > Reaves+Sabonis+Siakam, roster copy `$TMPDIR/ff-C1`). With Derrick White in place of Siakam, ΔP(title) moves by 1 point or less. All 1-for-1s, so bodies stay even. `Mitch '27 2nd` is his own pick, which we hold (700). There's no benchmark, so these are tiered by judgment. They sit below the Cade rows, which are moot once the Bonin deal lands. Ruled out: every 2-for-1 for Deni, Franz or JJJ loses ΔP(title). Jabari Smith and Camara rows (same roster) added 9/28 once Brett ruled the Hlina Duren deal done.
+
 ## Above floor
 
 Cade+Kuminga > Deni+Franz+Queen | +3000 +1200 +1.8 +1.0 +14% -1.1
@@ -47,6 +49,20 @@ Cade+Simons > Deni+Kessler+JJJ | +2500 +1100 +1.6 +0.8 +11% +0.1
 Cade+Kuminga+Hunter > Deni+Franz+Queen | +2500 +700 +1.6 +1.0 +14% -1.2 | Mitch rejected 9/25
 Cade+Kuminga+Walker > Deni+Franz+Queen | +2500 +800 +1.5 +0.9 +13% -1.0
 Cade+'27 1st+'28 1st+'28 2nd > Deni+Flagg | +2500 +800 +1.6 +1.0 +14% ~
+Jabari Smith+Mitch '27 2nd > JJJ | +1600 +1100 +0.2 +0.2 +5% +4.3
+Camara+Mitch '27 2nd > JJJ | +1600 +1200 +0.4 +0.1 +2% +2.5
+Kyrie > JJJ | +1400 +1200 +0.1 0.0 +2% -8.0
+Kyrie > Keyonte | +1200 +1100 +0.1 -0.1 +1% -12.2
+Jabari Smith > Queen | +1100 +500 +0.4 +0.3 +6% -2.2
+Camara > Queen | +1100 +600 +0.6 +0.2 +4% -5.2
+White+Mitch '27 2nd > JJJ | +1100 +900 0.0 0.0 +2% +1.7
+White+Mitch '27 2nd > Keyonte | +900 +800 0.0 0.0 +2% -2.5
+Green+Mitch '27 2nd > JJJ | +800 +700 +0.2 +0.2 +1% +3.3
+Kyrie+Mitch '27 2nd > JJJ | +700 +500 +0.1 0.0 +2% -4.0
+White > Queen | +600 +300 +0.2 +0.1 +3% -5.4
+Reid > Queen | +500 +100 +0.3 +0.2 +3% -5.9
+Green > Queen | +400 0 +0.4 +0.2 +2% -3.5
+Kyrie > Queen | +200 -100 +0.3 +0.1 +3% -13.3
 
 ## Floor
 
@@ -157,6 +173,7 @@ Cade+own '27 2nd > Deni+Franz+Mitch '28 1st+Mitch '28 2nd | +2600 +1800 +0.8 +0.
 Cade > Deni+Kessler+JJJ | +3500 +1800 +2.0 +1.0 +14% +0.3
 Cade > Deni+Franz+Mitch '28 1st | +2500 +1700 +0.8 +0.4 +7% -1.4
 Cade > Deni+Kessler+Mitch '27 1st+Mitch '28 1st | +2500 +1700 +0.8 +0.4 +7% -2.0
+White > JJJ | +1800 +1600 0.0 0.0 +2% -0.1
 Cade+Melton > Deni+Franz+Queen | +3000 +1500 +1.6 +0.8 +12% -1.7
 Cade+Kuminga > Deni+JJJ+Keyonte | +2700 +1400 +1.3 +0.6 +11% -0.2
 Cade+Melton > Deni+Franz+Reed | +2100 +1400 +0.9 +0.3 +5% -1.2
@@ -176,7 +193,15 @@ Cade+Hunter > Deni+Kessler | -1000 -1800 +0.6 +0.4 +6% -0.2
 Cade > Franz+Kessler | -900 -1500 +0.7 +0.2 +5% -0.5
 Cade+Collins > Deni+Franz | -700 -600 -0.1 -0.2 -1% -1.2
 Cade > Deni+'26 1.04 | -500 -400 +0.1 -0.2 -1% -1.3
+Kyrie+Edey > Deni | -500 -100 -0.6 -0.1 -3% -3.9
 Cade > Deni+Kessler | -400 -1300 +0.8 +0.4 +7% -0.1
+Edey+Green > Deni | -300 0 -0.5 0.0 -4% +0.7
 Cade+Mark > Deni+Kessler+'26 1.10 | -200 -1200 +0.6 +0.7 +8% -1.0
+Kyrie+Collins > JJJ | -100 +400 -0.8 -0.4 -4% -5.4
+Kyrie+Green > Franz | +200 +500 -0.6 -0.1 -3% -5.1
 Cade+Collins > Luka | +300 +300 -0.3 +0.1 +1% +0.9
+Kyrie+White > Franz | +400 +800 -0.8 -0.3 -2% -5.8
+Kyrie+Green > Deni | +600 +800 -0.5 +0.1 -2% -4.4
 Cade+Bane+Collins > Deni+Flagg | +700 +1100 -0.6 -0.3 -3% -4.6
+Kyrie+Reid > Deni | +700 +800 -0.5 0.0 -1% -5.5
+Kyrie+White > Deni | +800 +1000 -0.6 -0.1 -2% -5.1

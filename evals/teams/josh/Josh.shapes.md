@@ -10,7 +10,28 @@ Sims: 38 Cade shapes 9/27/26 (Mitchell / Murray / Towns / Barrett / Allen / Porz
 
 Kuminga sale (9/28 texts): Middleton for his '27 3rd (no) → 11:13a he offered "a 2nd for Kuminga or Naz Reid" (2nd unnamed) → Brett countered Kuminga for his '28 2nd + Matthew '27 3rd, then Chaney for any 3rd → 11:20a "Nah I'm good" (swipe-reply on the Chaney text; covers the counter too). Kuminga rows tier against his own offer, not the Cade benchmark. Priced 9/28/26 on current rosters; same numbers within 0.1 with the Jon deal applied. Pure pick-for-Kuminga rows fail only on formula Δw (−0.28, one body out, uncorrected); body-corrected Δw ≈ 0 and the slot backfills at today's auction. Adding his 3.10 (net 0 bodies) clears the gate. Naz Reid ruled out (−8%).
 
+Post-Cade menu (9/28 ~3:30p): 30 shapes priced with Michael's Cade > Reaves+Sabonis+Siakam applied (`$TMPDIR/ff-C1`, 37 bodies), status `if Cade (Siakam)`. Our depth (Naz Reid / Kuminga / Collins / Gordon / Suggs / Keegan Murray / Edey, Matković / Chaney throw-ins, '27 1st / own '27 2nd) for Towns / Kawhi / Embiid / Murray / Mitchell / Barrett. These tier against holding (Score 0), not the Cade benchmark. Avoided pieces live in other threads (Garland, Bane, Giddey, Sharpe, Mark Williams, Middleton, 2.09, '28 1st, '28 2nd). Naz Reid no longer fails once Sabonis and Siakam land. Mitchell for depth fails ΔP(title).
+
 ## Above floor
+
+Naz Reid+Kuminga+Gordon+'27 1st > Towns+Kawhi | +3000 +1200 +1.5 +0.9 +13% +7.9 | if Cade (Siakam)
+Naz Reid+Kuminga+own '27 2nd > Towns | +1900 +900 +0.6 +0.6 +8% +6.3 | if Cade (Siakam)
+Naz Reid+Collins+Gordon+Kuminga+'27 1st > Towns+Kawhi | +1900 +400 +0.7 +0.6 +12% +7.0 | if Cade (Siakam)
+Naz Reid+Collins+Matković > Towns | +1800 +1200 -0.2 +0.3 +5% +3.3 | if Cade (Siakam)
+Naz Reid+Kuminga+Gordon > Towns | +1300 +600 -0.1 +0.3 +6% +2.8 | if Cade (Siakam)
+Suggs+Kuminga+Collins > Murray | +1200 +700 0.0 +0.3 +4% +2.8 | if Cade (Siakam)
+Keegan Murray+Naz Reid > Towns | +1200 +500 0.0 +0.5 +6% +4.7 | if Cade (Siakam)
+Gordon+Kuminga > Kawhi | +1200 +200 +0.7 +0.4 +7% +5.3 | if Cade (Siakam)
+Suggs+Naz Reid > Towns | +1100 +400 +0.1 +0.5 +6% +5.0 | if Cade (Siakam)
+Collins+Kuminga > Kawhi | +1100 +300 +0.5 +0.2 +6% +7.1 | if Cade (Siakam)
+Kuminga+Gordon > Embiid | +900 +200 +0.3 +0.3 +6% +2.6 | if Cade (Siakam)
+Kuminga+Collins+Chaney > Embiid | +900 +200 +0.1 +0.2 +5% +4.4 | if Cade (Siakam)
+Kuminga+Collins > Embiid | +800 +200 +0.1 +0.2 +5% +4.4 | if Cade (Siakam)
+Collins+Gordon+Chaney > Kawhi | +700 +100 +0.1 +0.1 +4% +5.8 | if Cade (Siakam)
+Edey+Collins > Towns | +700 +400 -0.1 +0.2 +3% +4.8 | if Cade (Siakam)
+Collins+Gordon > Kawhi | +600 +100 +0.1 0.0 +5% +5.8 | if Cade (Siakam)
+Edey+Collins > Murray | +600 +500 -0.1 +0.1 0% +3.5 | if Cade (Siakam)
+Naz Reid+Kuminga > Kawhi | +100 -500 +0.4 +0.3 +4% +8.8 | if Cade (Siakam)
 
 Cade+Middleton+Chaney > Murray+Towns+Barrett | +3200 +1100 +2.0 +1.4 +15% +4.5
 
@@ -33,6 +54,8 @@ Kuminga > Josh '28 2nd+3.10 | +400 +400 -0.2 -0.1 0% -5.4
 Kuminga > Josh '27 2nd+3.10 | +200 +300 -0.2 -0.1 0% -4.7
 
 ## Below bar
+
+Kuminga+Collins+Gordon > Kawhi | -100 -500 -0.2 -0.1 +5% +6.1 | if Cade (Siakam)
 
 Cade+Chaney > Mitchell+Towns | +2000 +500 +1.7 +1.4 +8% +5.9
 Cade+Gordon+Collins+Chaney > Mitchell+Towns+Barrett | +2000 +700 +0.9 +1.0 +9% +3.2
@@ -75,6 +98,13 @@ Cade > Towns+Barrett+Josh '28 1st | +300 -200 +0.4 +0.1 +6% +2.2
 
 ## Too lopsided
 
+Naz Reid+Collins+Gordon+Kuminga > Towns+Kawhi | +3000 +1600 +0.7 +0.6 +12% +4.8 | if Cade (Siakam)
+Naz Reid+Collins+Kuminga+Gordon > Towns+Embiid | +2700 +1500 +0.3 +0.6 +10% +3.3 | if Cade (Siakam)
+Suggs+Kuminga > Murray | +2500 +1500 +0.9 +0.7 +6% +4.8 | if Cade (Siakam)
+Naz Reid+Kuminga > Towns | +2500 +1400 +0.6 +0.6 +8% +4.4 | if Cade (Siakam)
+Naz Reid+Collins+Chaney > Towns | +2000 +1300 -0.1 +0.3 +5% +3.3 | if Cade (Siakam)
+Naz Reid+Collins > Towns | +1900 +1300 0.0 +0.3 +5% +3.3 | if Cade (Siakam)
+
 Cade+Middleton > Mitchell+Towns+Josh '28 1st | +4100 +2700 +1.4 +1.3 +8% +3.2
 Cade+Collins > Mitchell+Murray+Josh '28 1st | +2800 +2300 +0.9 +0.7 +2% +2.1
 Cade+Gordon > Mitchell+Murray+Josh '28 1st | +3000 +2200 +1.1 +0.9 +3% +1.9
@@ -113,6 +143,15 @@ Cade+Gordon > Mitchell+Murray+Josh '27 2nd+Josh '28 2nd | +2100 +1300 +1.1 +0.9 
 Cade+Gordon+Collins > Mitchell+Towns+Josh '28 1st | +1600 +1300 +0.1 +0.5 +2% +1.8
 
 ## Doesn't meet our minimums
+
+Naz Reid+Collins+Melton > Towns | +1300 +900 -0.6 +0.2 +4% +3.2 | if Cade (Siakam)
+Naz Reid+Kuminga+Collins > Towns | +1200 +600 -0.3 +0.2 +5% +3.5 | if Cade (Siakam)
+Naz Reid+Kuminga+Collins > Murray | +1000 +800 -0.3 +0.1 +1% +2.2 | if Cade (Siakam)
+Edey+Naz Reid > Mitchell | +700 +800 0.0 +0.4 -3% +4.8 | if Cade (Siakam)
+Naz Reid+Collins+Gordon > Towns | +700 +500 -0.7 0.0 +3% +2.5 | if Cade (Siakam)
+Kuminga+Collins+Gordon > Embiid | -400 -600 -0.6 -0.1 +4% +3.4 | if Cade (Siakam)
+Naz Reid+Kuminga > Barrett | -500 -500 -0.5 -0.2 +1% -0.2 | if Cade (Siakam)
+Naz Reid+Collins > Embiid | -700 -700 -0.6 -0.1 +2% +5.0 | if Cade (Siakam)
 
 Naz Reid > Josh '27 2nd | -1900 -900 -1.0 -0.6 -8% -8.0 | Josh proposed 9/28
 Kuminga > Josh '27 2nd | -100 0 -0.3 -0.1 0% -4.9 | Josh proposed 9/28

@@ -15,6 +15,8 @@ Bars: Cade rows tier by Score against the benchmark (`trade-shapes` §Tiering). 
 
 Priced 9/25/26. Rosters were checked against live that day, and his eval re-run on the 9/24 projections. Every row re-priced 9/25/26 to add Score.
 
+Post-Cade (9/28): every row without Cade on Out was priced 9/28/26 with Michael's Cade > Reaves+Sabonis+Siakam applied (37 bodies). His roster was checked live that day and was unchanged. 9/25 he said "It'd probably be something around Scottie and a 1st for Cade", so his Barnes ≈ Cade less a 1st. These rows avoid assets in live threads: Garland, Bane, Giddey, Sharpe, Mark, '28 1st, '28 2nd, 2.09, Middleton, and Green/Camara/Jabari (not ours on Fleaflicker until Hlina accepts). No floor benchmark, so these rows are tiered by judgment. Barnes rows without Edey read higher on ΔP(title) (+9–10% vs +7%).
+
 ## Above floor
 
 Cade+Sharpe+'27 1st+'28 1st+'26 2.09 > Johnson+Barnes | +3200 +1000 +1.4 +1.4 +18% +2.7
@@ -31,6 +33,12 @@ Cade+Sharpe+'27 1st+'28 1st+own '27 2nd+'28 2nd+'26 2.09 > Barnes+Harper+Ausar+B
 Cade+Sharpe+Kuminga+'27 1st+'28 1st+own '27 2nd+'26 2.09 > Barnes+Harper+Ausar+Black | +2600 +1200 +1.5 +1.0 +11% +1.4
 Cade+Kuminga+'27 1st+'28 1st+KC '27 2nd+Don '27 2nd+'26 2.09 > Barnes+Harper+Ausar+Black | +2600 +1100 +2.2 +0.9 +10% +1.6
 Cade+Mark+'27 1st+'28 1st+KC '27 2nd+'26 2.09 > Barnes+Harper+Ausar+Black | +2600 +1200 +1.7 +1.0 +10% +1.3
+Eason+Vassell+Walker+'27 1st+Chris '27 2nd+Mitch '27 2nd+'27 2nd > Barnes | +2100 +800 +0.4 +0.5 +10% +3.4
+Edey+Walker+'27 1st+Chris '27 2nd+Mitch '27 2nd > Barnes | +2100 +1200 +0.5 +0.4 +7% +3.6
+Edey+Vassell+Walker+'27 1st+Chris '27 2nd+Mitch '27 2nd+'27 2nd > Barnes+Black | +1800 +800 +0.7 +0.2 +7% +2.5
+Edey+Walker+'27 1st+Chris '27 2nd+Mitch '27 2nd+'27 2nd > Barnes | +1500 +600 +0.5 +0.4 +7% +3.9
+Vassell+Suggs+Walker+'27 1st+Chris '27 2nd+Mitch '27 2nd+'27 2nd > Barnes | +1400 +300 +0.3 +0.4 +9% +3.2
+Walker+'27 1st+Chris '27 2nd > Ausar+Black | +1300 +600 +1.5 +0.4 +3% +3.6
 
 ## Floor
 
@@ -50,6 +58,10 @@ Cade > Johnson+Ausar+Jakučionis | +1900 +900 +1.7 +0.8 +7% -1.1
 Cade+Bona+'26 2.09 > Johnson+Ausar+Black | +1900 +800 +1.7 +0.8 +6% -0.3
 Cade+Sharpe+Mark+'27 1st+'28 1st > Barnes+Harper+Ausar+Clowney | +1900 +700 +0.7 +0.9 +10% +1.0
 Cade+Sharpe+Mark+Kuminga+Walker+'27 1st+'28 1st > Barnes+Harper+Ausar+Black | +1900 +600 +0.6 +0.9 +10% +0.8
+Edey+Vassell+'27 1st+Chris '27 2nd+Mitch '27 2nd > Barnes | +1200 +400 +0.3 +0.2 +7% +2.9
+'27 1st > Ausar | +900 +400 +1.0 +0.4 +3% +4.5
+Suggs+'27 1st > Ausar+Black | +600 +100 +1.0 +0.4 +2% +1.2
+Edey+Suggs+'27 1st+Chris '27 2nd+Mitch '27 2nd > Barnes | +500 -100 +0.1 +0.3 +6% +2.9
 
 ## Below bar
 
@@ -116,12 +128,18 @@ Cade+Walker+Kuminga+'27 1st+'28 1st > Barnes+Harper | +600 0 +0.1 +0.2 +5% +1.0
 Cade+Eason+'27 1st+'28 1st > Barnes+Harper | +500 0 +0.1 +0.3 +5% +0.7
 Cade+Sharpe+'27 1st+KC '27 2nd+Don '27 2nd > Barnes+Harper | +500 -200 +0.1 +0.4 +7% +0.8
 Cade+Sharpe+Mark+Kuminga > Barnes+Ausar+Black+Clowney+Jakučionis | +400 -400 +0.5 +0.6 +8% -1.2
+Walker+'27 1st > Ausar | +400 0 +0.7 +0.3 +3% +3.8
 Cade+Mark+'27 1st+'28 1st > Barnes+Harper | +300 -200 0.0 +0.4 +6% +1.0
 Cade+Kuminga+'27 1st > Wemby | +300 -200 +0.1 +0.5 +4% -0.8
+'27 1st+'27 2nd > Ausar | +300 -200 +1.0 +0.4 +3% +4.5
+Chris '27 2nd+Mitch '27 2nd > Black | +200 0 +0.8 +0.1 +1% +3.6
 Cade+'27 1st+'28 1st > Wemby | -400 -900 +0.4 +0.6 +4% +0.3
 
 ## Too lopsided
 
+Edey+'27 1st+Chris '27 2nd+Mitch '27 2nd > Barnes+Black | +4200 +3000 +1.6 +0.5 +8% +3.0
+Edey+Walker+'27 1st+Chris '27 2nd+Mitch '27 2nd+'27 2nd > Barnes+Ausar | +3500 +2100 +1.6 +0.7 +10% +3.3
+Vassell+Walker+'27 1st+Chris '27 2nd+Mitch '27 2nd+'27 2nd > Barnes | +3300 +2000 +1.1 +0.5 +11% +4.2
 Cade+Mark+'27 1st+'28 1st+Don '27 2nd+'26 2.09 > Barnes+Harper+Ausar+Black | +2700 +1300 +1.7 +1.0 +10% +1.3
 Cade+'27 1st+KC '27 2nd+'26 2.09 > Barnes+Ausar+Black+'26 1.06 | +2400 +1300 +1.9 +0.5 +7% +0.7
 
@@ -130,6 +148,7 @@ Cade+'27 1st+KC '27 2nd+'26 2.09 > Barnes+Ausar+Black+'26 1.06 | +2400 +1300 +1.
 Cade+Mark+'27 1st > Wemby | -500 -900 -0.4 +0.6 +3% -0.8
 Cade > Harper+Ausar+Black | -400 +200 +0.6 -0.2 -6% -2.8
 Cade+Sharpe+'27 1st > Wemby | 0 -500 -0.3 +0.6 +5% -0.8
+Edey > Ausar+Black | +500 +400 +0.7 0.0 -1% -1.2
 Cade > Barnes+Matthew '28 1st | +600 +800 -0.4 -0.3 +1% -2.0
 Cade+Sharpe+Mark+'27 1st > Barnes+Harper | +700 +200 -0.6 +0.5 +6% -0.1
 Cade+Jabari+'27 1st+'26 2.09 > Barnes+Harper | +900 +700 -0.3 +0.1 +3% +0.2
