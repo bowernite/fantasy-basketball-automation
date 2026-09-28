@@ -12,15 +12,17 @@ Screening (9/28/26): 56 young-for-vet shapes simmed on the no-Jon roster (Cade k
 
 Texts 9/28/26 (Cade): Brett offered Cade > Reaves+Sabonis+Siakam. Michael: "Last one is a lot but interesting since Cade's a beast. Lemme think a bit" and "I'm trying to get younger". Expect a smaller counter. Counter screen (9/28, same roster): every Cade 2-for-1 fails ΔBASE except Reaves+Markkanen (ΔBASE −955, Below bar). A Cade deal needs Reaves+Sabonis plus a real third piece (Siakam, White or Hart) to clear the floor.
 
+Fox re-price 9/28/26: the four Cade menu rows (Reaves+Sabonis+Siakam / +White, Reaves+Siakam+White, Reaves+Sabonis+Hart) priced with Chris's Middleton+Chris '27 2nd+own '27 2nd > Fox also applied on the Cade-kept roster (`$TMPDIR/ff-F`, 35 bodies). Middleton goes to Chris in that deal, so Middleton > Michael '27 3rd can't execute.
+
 ## Above floor
 
-Cade > Reaves+Sabonis+Siakam | +3600 +1000 +3.1 +1.6 +18% +5.3 | Us proposed 9/28
 Cade > Reaves+Markkanen+Siakam | +3500 +1200 +2.6 +1.3 +17% +5.0
+Cade > Reaves+Sabonis+Siakam | +3400 +1000 +3.1 +1.3 +16% +5.3 | Us proposed 9/28
 Edey+Kuminga+Walker > Sabonis+Siakam | +3300 +1000 +2.0 +1.4 +15% +7.1
 Edey+Sharpe+Kuminga > Sabonis+Markkanen | +3300 +1000 +1.6 +1.5 +17% +5.5
 Edey+Murray > Sabonis+Markkanen | +3200 +1100 +1.7 +1.3 +16% +4.8
-Cade > Reaves+Sabonis+White | +3200 +800 +2.9 +1.4 +18% +5.2
 Edey+Suggs > Sabonis+Markkanen | +3000 +1000 +1.8 +1.2 +15% +5.2
+Cade > Reaves+Sabonis+White | +2900 +800 +2.9 +1.2 +15% +5.2
 Edey+Sharpe > Sabonis+White | +2800 +900 +1.7 +1.3 +14% +6.7
 Sharpe+Kuminga > Sabonis | +2700 +800 +1.2 +1.2 +14% +6.4
 Edey+Eason > Sabonis+White | +2600 +800 +1.7 +1.1 +13% +6.4
@@ -32,11 +34,11 @@ Kuminga+Walker > Siakam | +2400 +1000 +1.0 +0.8 +9% +9.1
 Kuminga+Eason > Sabonis | +2400 +700 +1.2 +1.0 +13% +5.2
 Murray+Walker > Markkanen+Draymond | +2400 +1200 +1.0 +0.8 +9% +5.5
 Eason+Kuminga > Markkanen | +2300 +900 +0.7 +0.8 +11% +4.1
-Cade > Reaves+Siakam+White | +2300 +400 +2.4 +1.2 +14% +5.9
 Edey+Kuminga > Sabonis+Hart | +2200 +400 +1.8 +1.1 +12% +6.4
 Cade > Clingan+Sabonis+Siakam | +2200 -300 +3.0 +1.5 +18% +3.6
-Cade > Reaves+Sabonis+Hart | +2200 0 +2.7 +1.3 +16% +4.9
 Kuminga+'27 1st > Markkanen | +2200 +600 +1.3 +0.9 +12% +9.8
+Cade > Reaves+Siakam+White | +2100 +400 +2.4 +1.0 +12% +5.9
+Cade > Reaves+Sabonis+Hart | +1900 0 +2.7 +1.1 +14% +4.9
 Kuminga+Walker > White | +1800 +800 +0.7 +0.6 +7% +8.8
 Sharpe+Kuminga > Siakam | +1800 +400 +0.7 +0.9 +10% +8.5
 Edey > Sabonis+Draymond | +1700 +500 +1.5 +0.8 +8% +7.2

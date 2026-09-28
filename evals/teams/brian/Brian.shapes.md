@@ -4,20 +4,22 @@ Counterparty: Brian (161018). Contending, 5th PF and 6% title (`Team Projections
 
 Pre-draft menu (9/28 ~4p): priced with Michael's Cade > Reaves+Sabonis+Siakam applied (`$TMPDIR/ff-C1`, 37 bodies); every row assumes that deal. Tiers against holding (Score 0). Our depth (Eason / Kuminga / Walker / Hunter / Suggs / Keegan Murray / Vassell) for his vets Randle + Nurkić; the pitch to him is younger at even BASE. Avoided assets in other threads: Cade, Middleton, Garland, Bane, Giddey, Sharpe, Mark Williams, Coby White, 2.09, '28 1st, '28 2nd. Kuminga also sits in the Joe / Josh / Chris drafts and Eason in Joe option 3, so the no-Kuminga rows lead. Config `$TMPDIR/ff-sim-brian-C1.json`. Jabari Smith and Camara rows (same roster) added 9/28 once Brett ruled the Hlina Duren deal done; config `$TMPDIR/ff-sim-hlina-pieces-C1.json`.
 
+Fox re-price 9/28/26: the three sent rows (Murray+Walker, Eason+Walker+Hunter, Suggs+Walker > Randle+Nurkić) priced on the Cade (Siakam) roster with Chris's Middleton+Chris '27 2nd+own '27 2nd > Fox also applied (`$TMPDIR/ff-CF`, 37 bodies). Other post-Cade rows are pre-Fox and read about +100 Score / +1% ΔP(title) high next to them.
+
 ## Above floor
 
 Eason+Kuminga > Randle+Nurkić | +1900 +400 +1.6 +0.7 +11% +6.7
 Camara+Walker > Randle+Nurkić | +1900 +600 +1.5 +0.4 +8% +6.2
 Vassell+Kuminga > Randle+Nurkić | +1800 +300 +1.7 +0.5 +10% +6.1
-Eason+Walker+Hunter > Randle+Nurkić | +1700 +100 +1.3 +0.7 +11% +6.7
 Jabari Smith+Kuminga > Randle+Nurkić | +1600 +300 +1.3 +0.6 +11% +8.5
-Murray+Walker > Randle+Nurkić | +1600 +200 +1.4 +0.7 +10% +6.3
 Eason+Kuminga+Walker > Randle+Nurkić | +1500 0 +1.3 +0.7 +11% +7.1
 Camara+Kuminga > Randle+Nurkić | +1500 +400 +1.5 +0.4 +7% +5.8
+Eason+Walker+Hunter > Randle+Nurkić | +1500 +100 +1.3 +0.6 +10% +6.7
 Eason+Kuminga > Pritchard+Nurkić | +1400 +100 +1.5 +0.7 +9% +5.0
-Suggs+Walker > Randle+Nurkić | +1400 +100 +1.4 +0.6 +9% +7.0
+Murray+Walker > Randle+Nurkić | +1400 +200 +1.4 +0.6 +9% +6.3
 Eason+Kuminga+own '27 2nd > Randle+Nurkić | +1300 -200 +1.6 +0.7 +11% +8.8
 Murray+Kuminga > Randle+Nurkić | +1300 -100 +1.4 +0.7 +10% +6.0
+Suggs+Walker > Randle+Nurkić | +1300 +100 +1.4 +0.5 +8% +7.0
 Eason+Kuminga+Mitch '27 2nd > Randle+Nurkić | +1200 -300 +1.6 +0.7 +11% +8.8
 Suggs+Kuminga > Randle+Nurkić | +1200 -200 +1.5 +0.6 +10% +6.8
 Jabari Smith > Randle | +1200 +500 +0.5 +0.4 +6% +8.4

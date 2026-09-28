@@ -12,6 +12,8 @@ Priced 9/25/26; pick ladders 9/27/26 (our own '27 3rd at 297). Todd's picks pric
 
 9/28/26 rows, priced on the post-Cade roster (Cade > Reaves+Sabonis+Siakam assumed; picks '27 1st 1150 · Chris '27 2nd 775 · Mitch '27 2nd 700 · own '27 2nd 575). Those rows are the 28 whose In is only Porter, Brunson, Gobert and/or Tatum (excluding Eason+Kuminga > Porter) and whose Out is one of: Eason+Kuminga, Eason+Walker(+Chris '27 2nd / +'27 1st), Eason+'27 1st, Eason+Chris '27 2nd, Walker+'27 1st, Walker+Chris '27 2nd(+Mitch '27 2nd), Kuminga+Walker, Vassell+Walker, Suggs+Walker(+Chris '27 2nd), Bona+Walker+'27 1st, Suggs+Eason(+Walker)+picks, Suggs/Murray/Edey+'27 1st, Murray+Walker+'27 1st, Edey+Walker, Edey+Eason/Suggs+Walker+'27 1st, Queta, Poeltl+own '27 2nd. All other rows are pre-Cade and go stale once it lands. Built to avoid live-thread assets (Garland, Sharpe, Mark, Bane, Giddey, '28 1st, '28 2nd, 2.09, Middleton). Hlina's pieces were first left out too; Brett ruled the Duren deal done 9/28, so Green, Camara and Smith are ours to trade. Rows with them added the same day on the same roster (Green > Porter+Claxton re-priced). Kuminga rows are reference only (Todd "not big on Kuminga").
 
+Fox re-price 9/28/26: Eason+Walker+'27 1st > Porter+Gobert, Suggs+Eason+'27 1st > Brunson+Gobert and the new Suggs+Eason+Walker+'27 1st+Mitch '27 2nd > Brunson+Porter priced on the Cade (Siakam) roster with Chris's Middleton+Chris '27 2nd+own '27 2nd > Fox also applied (`$TMPDIR/ff-CF`, 37 bodies). Other post-Cade rows are pre-Fox and read about +100 Score / +1% ΔP(title) high next to them.
+
 ## Above floor
 
 Cade+Sharpe+Mark+2.09+own '27 2nd > Tatum+Porter+NAW+Claxton+Mitchell | +3800 +1200 +2.7 +1.8 +19% +4.4
@@ -77,9 +79,10 @@ Eason+Kuminga > Porter+Mitchell | +2200 +700 +1.2 +0.8 +12% +3.0
 Sharpe+Mark > NAW+Claxton | +2200 +1000 +0.8 +1.1 +8% +3.0
 Green > Porter+Gobert | +2100 +1200 +1.5 +0.6 +5% +6.3
 Giddey > Brunson+Porter | +2100 +900 +1.2 +0.7 +9% +5.3 | Us proposed 9/10
-Suggs+Eason+'27 1st > Brunson+Gobert | +2100 +800 +1.4 +0.8 +8% +8.8
 Suggs+Eason+Walker+'27 1st+Chris '27 2nd > Brunson+Porter | +2000 +300 +1.4 +0.9 +12% +6.8
+Suggs+Eason+Walker+'27 1st+Mitch '27 2nd > Brunson+Porter | +1900 +300 +1.4 +0.8 +11% +6.8
 Eason+Walker+'27 1st > Brunson | +2000 +900 +0.8 +0.6 +7% +8.2
+Suggs+Eason+'27 1st > Brunson+Gobert | +2000 +800 +1.4 +0.7 +8% +8.8
 Eason+Walker+Chris '27 2nd > Porter+Gobert | +1900 +600 +1.5 +0.7 +8% +7.9
 Sharpe+Mark+Kuminga > Brunson | +1800 +600 +0.1 +1.1 +10% +5.6
 Eason > Porter | +1800 +700 +0.8 +0.7 +9% +2.9 | Us proposed 9/10
@@ -94,7 +97,6 @@ Vassell > Porter | +1600 +600 +0.8 +0.4 +7% +2.2
 Suggs+Walker+Chris '27 2nd > Brunson | +1600 +700 +0.6 +0.6 +6% +6.8
 Kuminga+Walker > Porter | +1600 +700 +0.8 +0.4 +6% +4.9
 Walker+Chris '27 2nd > Porter | +1500 +600 +1.1 +0.5 +6% +7.9
-Eason+Walker+'27 1st > Porter+Gobert | +1500 +200 +1.5 +0.7 +8% +9.1
 Green+Kuminga+Walker > Brunson | +1400 +800 +0.1 +0.6 +3% +5.7
 Kuminga > Claxton | +1400 +800 +0.8 +0.4 +4% +3.5
 Kuminga+Walker > NAW | +1400 +800 +0.6 +0.5 +3% +4.7
@@ -103,6 +105,7 @@ Eason > NAW | +1400 +800 +0.5 +0.5 +4% +2.7
 Eason+Green > Brunson | +1400 +800 +0.1 +0.6 +3% +5.1
 Smith > Porter | +1400 +500 +0.5 +0.5 +7% +4.9
 Suggs+Smith > Brunson | +1400 +700 0.0 +0.4 +6% +5.9
+Eason+Walker+'27 1st > Porter+Gobert | +1400 +200 +1.5 +0.6 +7% +9.1
 Sharpe+Kuminga > Porter | +1300 +100 +0.5 +0.8 +10% +4.3
 Bane+Kuminga > Brunson | +1300 +600 +0.2 +0.5 +5% +2.0
 Murray+Smith > Brunson | +1200 +800 0.0 +0.4 +3% +5.4

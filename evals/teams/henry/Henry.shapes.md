@@ -8,6 +8,8 @@ Rules for this target: we receive ≤ bodies we send (Brett 9/28). Simpler shape
 
 Sims: 9/28/26. Out-side picks: '27 1st 1425, '28 1st 1425, Chris '27 2nd 880 (mid of 645–1111 band, so ±~230 on those rows), Mitch '27 2nd 775, Henry '28 3rd 350, 2.09 645 (undrafted on the wire 9/28). Giannis refreshed via `--eval` 9/28: Δw (season) +2.37, ΔP(title) ours 17.0%. Baseline P(title) 45.0% no-Jon, 50.4% if Jon deal. Wells/McBride rows: Score, ΔBASE, Δage hand-computed (no eval row in the sim). Shapes that keep Giddey and pay in Garland/Bane/Edey plus Sharpe and Williams (both out long-term, near-zero season cost) run ΔP(title) +9–12%; Giddey-centered shapes cap near +5–8%. Ruled out 9/28: Kyrie/VanVleet/Butler (age, Henry is climbing); Giddey+Garland 2-for-1 (ΔBASE about −1000).
 
+if Cade (Siakam)+Fox = if Cade (Siakam) plus Chris's Middleton+Chris '27 2nd+own '27 2nd > Fox (`$TMPDIR/ff-CF`, 37 bodies; 9/28/26).
+
 ## Above floor
 
 Garland+Sharpe+Williams > Giannis | +2500 +1100 0.0 +1.3 +11% +5.2 | no-Jon
@@ -20,14 +22,14 @@ Garland+Sharpe+Williams+Henry '28 3rd > Giannis | +2100 +700 0.0 +1.3 +11% +5.8 
 Edey+Sharpe+Williams+'27 1st > Giannis | +2100 +600 +0.3 +1.4 +10% +9.4 | no-Jon
 Edey+Sharpe+Williams+'28 1st > Giannis | +2100 +600 +0.3 +1.4 +10% +9.8 | no-Jon
 Garland+Sharpe+Williams > Giannis | +2100 +1100 0.0 +1.0 +7% +5.2 | if Cade (White)
-Garland+Sharpe+Williams > Giannis | +2100 +1100 0.0 +0.9 +7% +5.2 | if Cade (Siakam)
 Giddey+Williams > Giannis | +2000 +1200 +0.1 +0.8 +7% +7.8 | no-Jon
 Garland+Sharpe+Williams+Henry '28 3rd > Giannis | +2000 +700 0.0 +1.1 +10% +5.8 | if Jon deal
-Bane+Sharpe+Williams+'28 1st > Giannis | +2000 +800 +0.2 +1.0 +9% +7.4 | if Cade (Siakam)
 Bane+Sharpe+Williams+'28 1st > Giannis | +2000 +800 +0.2 +1.1 +8% +7.4 | if Cade (White)
 Garland+Sharpe+2.09+'27 1st > Giannis | +1900 +400 +0.6 +1.3 +12% +8.3 | no-Jon
 Edey+Sharpe+Williams+'28 1st > Giannis | +1900 +600 +0.3 +1.2 +9% +9.8 | if Jon deal
 Giddey+Chris '27 2nd+Mitch '27 2nd > Giannis | +1900 +900 +0.9 +0.8 +7% +9.1 | no-Jon
+Garland+Sharpe+Williams > Giannis | +1900 +1100 0.0 +0.8 +6% +5.2 | if Cade (Siakam)+Fox
+Bane+Sharpe+Williams+'28 1st > Giannis | +1900 +800 +0.2 +0.9 +8% +7.4 | if Cade (Siakam)+Fox
 Garland+Bane > Giannis | +1800 +1100 +0.1 +0.6 +5% +4.3 | no-Jon
 Bane+Sharpe+Williams+2.09+'27 1st > Giannis | +1700 +200 +0.1 +1.5 +12% +7.7 | no-Jon
 Garland+Sharpe+'27 1st+Chris '27 2nd > Giannis | +1700 +100 +0.7 +1.3 +12% +8.4 | no-Jon
@@ -51,9 +53,9 @@ Garland+Sharpe+Eason+'27 1st > Giannis | +1300 -100 +0.1 +1.1 +11% +7.5 | no-Jon
 Giddey+'27 1st+Chris '27 2nd > Giannis | +1300 +200 +0.9 +0.8 +7% +9.6 | no-Jon
 Giddey+'28 1st+Chris '27 2nd > Giannis | +1300 +200 +0.9 +0.8 +7% +9.9 | no-Jon
 Giddey+Garland > Giannis+Rollins | +1300 +500 +0.9 +0.6 +5% +4.0 | if Cade (White)
-Giddey+Garland > Giannis+Rollins | +1300 +500 +0.9 +0.5 +5% +4.0 | if Cade (Siakam)
 Edey+Green+Sharpe+'28 1st > Giannis | +1200 +300 +0.1 +1.1 +5% +9.0 | no-Jon
 Edey+Green+Sharpe+'28 1st > Giannis | +1200 +300 +0.1 +0.9 +5% +9.0 | if Jon deal
+Giddey+Garland > Giannis+Rollins | +1200 +500 +0.9 +0.5 +4% +4.0 | if Cade (Siakam)+Fox
 Giddey+'28 1st+Chris '27 2nd > Giannis | +1100 +200 +0.9 +0.6 +5% +9.9 | if Jon deal
 Garland+Sharpe+Williams+'27 1st > Giannis | +1100 -300 0.0 +1.3 +11% +7.8 | no-Jon
 Giddey+Sharpe+'27 1st > Giannis | +1000 +100 +0.3 +0.9 +8% +9.3 | no-Jon

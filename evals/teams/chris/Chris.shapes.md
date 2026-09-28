@@ -24,10 +24,11 @@ Cade+Bona > Fox+Daniels+Anunoby+Quickley+Bridges | +2500 +1000 +2.9 +0.9 +9% +2.
 Cade+Melton+Walker+Bona+Middleton > Fox+Durant+Daniels+Anunoby+Quickley | +2500 +600 +2.5 +1.0 +11% +4.4
 Sharpe+Mark > Daniels+Quickley | +2400 +900 +1.1 +1.2 +12% +0.8
 Sharpe+Mark > Daniels+Bridges | +2100 +800 +0.9 +1.2 +10% +1.7
-Chris '27 2nd+own '27 2nd > Fox | +1900 +1200 +1.2 +0.5 +4% +10.1 | Us proposed 9/28
-Matković+Chris '27 2nd+own '27 2nd > Fox | +1700 +1000 +1.1 +0.5 +3% +10.1 | Chris proposed 9/28
+Chris '27 2nd+own '27 2nd > Fox | +1900 +1200 +1.2 +0.5 +4% +10.1
 '26 2.09+KC '27 2nd > Fox | +1900 +1000 +1.1 +0.8 +6% +9.6
 Chris '27 2nd+Mitch '27 2nd > Fox | +1800 +1100 +1.2 +0.5 +4% +10.1
+Middleton+Chris '27 2nd+own '27 2nd > Fox | +1700 +1000 +1.0 +0.5 +4% +7.7 | Us proposed 9/28
+Matković+Chris '27 2nd+own '27 2nd > Fox | +1700 +1000 +1.1 +0.5 +3% +10.1 | Chris proposed 9/28
 '27 1st+'26 2.09 > Daniels+Stewart | +1500 +300 +1.8 +1.0 +8% +5.0
 Sharpe+Mark+'26 2.09 > Daniels+Bridges | +1500 +200 +0.8 +1.2 +10% +5.1
 '27 1st+'26 2.09 > Fox | +1400 +500 +1.1 +0.8 +6% +9.8

@@ -12,15 +12,13 @@ Handshake. Not on Fleaflicker. No picks. Lands after the auction.
 
 Bodies: **us 35**, Hlina **26** (wire 33 / 28).
 
-## Chris — Fox ↔ two '27 2nds
+## Chris — Fox ↔ Middleton + two '27 2nds
 
-Chris accepted by text 9/28 3:20p. Proposed on Fleaflicker 9/28 (trade **485834**), awaiting his accept. Uneven bodies, so assume it executes on draft day.
+Chris accepted by text 9/28 3:20p, then asked for a scrub (Matković or Middleton) to stay body-even. Proposed on Fleaflicker 9/28 (trade **485835**, replaces canceled 485834), awaiting his accept.
 
 | | Us | Chris |
 | --- | --- | --- |
-| Players | +Fox | −Fox |
+| Players | +Fox · −Middleton | −Fox · +Middleton |
 | Picks | −Brett '27 2nd · −Chris '27 2nd | +Brett '27 2nd · +Chris '27 2nd |
 
-Bodies: **us +1**, Chris −1.
-
-3:23p Chris asked to add Matković (or Middleton) so he isn't a body down. Not in 485834 yet; if Brett agrees, re-propose and add −Matković here and in `assumed_trades.py`.
+Bodies: even.

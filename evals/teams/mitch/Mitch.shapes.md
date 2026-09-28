@@ -28,6 +28,8 @@ Rows with `Mitch '27`/`'28` picks on the In side (9/25) were simmed for Δage, b
 
 Non-Cade shapes (9/28, before the draft): simmed with the Bonin deal applied (Cade > Reaves+Sabonis+Siakam, roster copy `$TMPDIR/ff-C1`). With Derrick White in place of Siakam, ΔP(title) moves by 1 point or less. All 1-for-1s, so bodies stay even. `Mitch '27 2nd` is his own pick, which we hold (700). There's no benchmark, so these are tiered by judgment. They sit below the Cade rows, which are moot once the Bonin deal lands. Ruled out: every 2-for-1 for Deni, Franz or JJJ loses ΔP(title). Jabari Smith and Camara rows (same roster) added 9/28 once Brett ruled the Hlina Duren deal done.
 
+Fox re-price 9/28/26: Jabari Smith+Mitch '27 2nd > JJJ, Jabari Smith > Queen, White+Mitch '27 2nd > Keyonte and White > Queen priced on the Cade (Siakam) roster with Chris's Middleton+Chris '27 2nd+own '27 2nd > Fox also applied (`$TMPDIR/ff-CF`, 37 bodies). Other post-Cade rows are pre-Fox and read about +100 Score / +1% ΔP(title) high next to them.
+
 ## Above floor
 
 Cade+Kuminga > Deni+Franz+Queen | +3000 +1200 +1.8 +1.0 +14% -1.1
@@ -49,15 +51,15 @@ Cade+Simons > Deni+Kessler+JJJ | +2500 +1100 +1.6 +0.8 +11% +0.1
 Cade+Kuminga+Hunter > Deni+Franz+Queen | +2500 +700 +1.6 +1.0 +14% -1.2 | Mitch rejected 9/25
 Cade+Kuminga+Walker > Deni+Franz+Queen | +2500 +800 +1.5 +0.9 +13% -1.0
 Cade+'27 1st+'28 1st+'28 2nd > Deni+Flagg | +2500 +800 +1.6 +1.0 +14% ~
-Jabari Smith+Mitch '27 2nd > JJJ | +1600 +1100 +0.2 +0.2 +5% +4.3
 Camara+Mitch '27 2nd > JJJ | +1600 +1200 +0.4 +0.1 +2% +2.5
+Jabari Smith+Mitch '27 2nd > JJJ | +1500 +1100 +0.2 +0.2 +4% +4.3
 Kyrie > JJJ | +1400 +1200 +0.1 0.0 +2% -8.0
 Kyrie > Keyonte | +1200 +1100 +0.1 -0.1 +1% -12.2
-Jabari Smith > Queen | +1100 +500 +0.4 +0.3 +6% -2.2
 Camara > Queen | +1100 +600 +0.6 +0.2 +4% -5.2
 White+Mitch '27 2nd > JJJ | +1100 +900 0.0 0.0 +2% +1.7
-White+Mitch '27 2nd > Keyonte | +900 +800 0.0 0.0 +2% -2.5
+Jabari Smith > Queen | +1000 +500 +0.4 +0.2 +5% -2.2
 Green+Mitch '27 2nd > JJJ | +800 +700 +0.2 +0.2 +1% +3.3
+White+Mitch '27 2nd > Keyonte | +800 +800 0.0 0.0 +1% -2.5
 Kyrie+Mitch '27 2nd > JJJ | +700 +500 +0.1 0.0 +2% -4.0
 White > Queen | +600 +300 +0.2 +0.1 +3% -5.4
 Reid > Queen | +500 +100 +0.3 +0.2 +3% -5.9

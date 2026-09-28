@@ -13,6 +13,7 @@ MOVES = (
     ("Toumani Camara", HLINA, US),
     ("Jabari Smith", HLINA, US),
     ("De'Aaron Fox", CHRIS, US),
+    ("Khris Middleton", US, CHRIS),
 )
 
 # (name, from) — gone from the league, not a move
