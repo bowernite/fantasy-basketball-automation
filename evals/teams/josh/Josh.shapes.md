@@ -8,6 +8,8 @@ Benchmark: Jon's offer Cade+2.09 > SGA+Wells+McBride (+2400, `evals/Cade Sweepst
 
 Sims: 38 Cade shapes 9/27/26 (Mitchell / Murray / Towns / Barrett / Allen / Porziņģis cores, his picks, our vets Gordon / Collins / Butler / Middleton / Kyrie / Bridges back, Chaney / Matković sweeteners) + 30 pick-free-In shapes 9/27/26 (2-for-2 and 3-for-3 around Mitchell+Towns / Mitchell+Murray / Murray+Towns plus Barrett / Allen / Wiggins / Sexton; our Gordon / Collins / Melton / Middleton / Butler / Simons / Chaney / Matković, 2.09 and '27 1st sweeteners) + 24 Porziņģis-frame shapes 9/27/26 (Porziņģis + his picks bridged by Murray or Mitchell plus Barrett / Allen / LaVine / Turner / Kawhi / Gillespie / Sexton / Wiggins / Cam Johnson; 2-for-3 and 3-for-4 with Chaney / Matković as his bodies back). In-side picks: Josh '28 1st 2360 (eval range 1457–3270, so ΔBASE is a band of about ±900), Josh '28 2nd 800, Josh '27 2nd 640, Jon 3.02 453. Out-side 2.09 645, '27 1st 1425. Every Josh row costs him Δw (season); least is Cade+Gordon+Collins > Mitchell+Towns (−0.2 for him), then Murray+Porziņģis+Barrett+picks (−0.8). His non-star pieces carry too little BASE: without Mitchell, Towns or Murray nothing reaches the benchmark (Porziņģis+Barrett+Allen+LaVine+picks +600). Cade > Mitchell cores fail ΔP(title) without a second star. Ruled out 9/27: his 9/25 Porziņģis + picks offer (ΔBASE about −4600); Kawhi / Embiid centerpieces (low BASE, he just bought Kawhi).
 
+Kuminga sale (9/28 texts): Middleton for his '27 3rd (no) → 11:13a he offered "a 2nd for Kuminga or Naz Reid" (2nd unnamed) → Brett countered Kuminga for his '28 2nd + Matthew '27 3rd, then Chaney for any 3rd → 11:20a "Nah I'm good" (swipe-reply on the Chaney text; covers the counter too). Kuminga rows tier against his own offer, not the Cade benchmark. Priced 9/28/26 on current rosters; same numbers within 0.1 with the Jon deal applied. Pure pick-for-Kuminga rows fail only on formula Δw (−0.28, one body out, uncorrected); body-corrected Δw ≈ 0 and the slot backfills at today's auction. Adding his 3.10 (net 0 bodies) clears the gate. Naz Reid ruled out (−8%).
+
 ## Above floor
 
 Cade+Middleton+Chaney > Murray+Towns+Barrett | +3200 +1100 +2.0 +1.4 +15% +4.5
@@ -27,6 +29,8 @@ Cade+Collins+Simons > Mitchell+Towns+Barrett | +2300 +800 +1.3 +1.1 +10% +4.0
 Cade+Butler > Murray+Towns+Josh '28 1st | +2300 +1100 +0.8 +0.9 +9% +2.1
 Cade+Collins+Butler > Mitchell+Towns+Barrett | +2200 +800 +1.0 +1.2 +11% +3.1
 Cade+Gordon > Mitchell+Towns+Josh '27 2nd+Josh '28 2nd | +2100 +1100 +1.0 +1.0 +6% +2.7
+Kuminga > Josh '28 2nd+3.10 | +400 +400 -0.2 -0.1 0% -5.4
+Kuminga > Josh '27 2nd+3.10 | +200 +300 -0.2 -0.1 0% -4.7
 
 ## Below bar
 
@@ -110,7 +114,12 @@ Cade+Gordon+Collins > Mitchell+Towns+Josh '28 1st | +1600 +1300 +0.1 +0.5 +2% +1
 
 ## Doesn't meet our minimums
 
+Naz Reid > Josh '27 2nd | -1900 -900 -1.0 -0.6 -8% -8.0 | Josh proposed 9/28
+Kuminga > Josh '27 2nd | -100 0 -0.3 -0.1 0% -4.9 | Josh proposed 9/28
+Kuminga > Josh '28 2nd | +100 +100 -0.3 -0.1 0% -5.9 | Josh proposed 9/28
 Cade > Mitchell+Porziņģis+Josh '28 1st | +200 +300 +0.5 +0.3 -3% +2.9
+Kuminga > Josh '27 2nd+Josh '28 3rd | +300 +300 -0.3 -0.1 0% -5.2
+Kuminga > Josh '28 2nd+Matthew '27 3rd | +400 +400 -0.3 -0.1 0% -5.7 | Josh rejected 9/28
 Cade > Mitchell+Josh '28 1st+Josh '28 2nd+Josh '27 2nd+Jon 3.02 | +600 +1100 -0.1 0.0 -6% +0.3
 Cade+Chaney > Murray+Porziņģis+Josh '28 1st+Josh '28 2nd+Josh '27 2nd | +600 +700 +0.2 -0.1 -1% +1.0
 Cade+Chaney > Porziņģis+Barrett+Allen+LaVine+Josh '28 1st+Josh '28 2nd | +600 +800 +0.8 -0.2 -2% +1.3
