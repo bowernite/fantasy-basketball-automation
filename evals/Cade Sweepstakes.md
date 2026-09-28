@@ -14,7 +14,7 @@ Plan 9/27 (Brett, main thread): Todd and Jon texts with two upgrade options each
 - Jon: Cade+(2.09)+('27 1st) > SGA+Day'Ron+Wells+McBride, and Cade+Mark+(2.09)+('28 1st) > SGA+Day'Ron+Watson+Wells+McBride.
 - As of 4:35p: Jon is the main path, with Todd's favorite as a possible fallback.
 - Todd is officially out (Brett 9/27). Josh is fully out (9/27 7:36p).
-- **Status 9/28 8:36a: Jon deal agreed by text, awaiting Jon's submission.** Cade+(2.09)+('27 1st) > SGA+Wells+McBride+Champagnie+Jaylin (Jon's 8:49p shape, Brett accepted as-is 9:01p). No reply since; Fleaflicker shows no accepted/completed trade and Cade is still ours (the API can't see an unaccepted incoming proposal). Brett is nudging Jon to send it before today's auction.
+- **Status 9/28 1:59p: Jon backed out ("I'll probably pass then, so you're free to deal if you want") after Brett told him other owners were interested in Cade and the picks. Cade and 2.09 are still ours.** Earlier, 8:36a: Jon deal agreed by text, awaiting Jon's submission. Cade+(2.09)+('27 1st) > SGA+Wells+McBride+Champagnie+Jaylin (Jon's 8:49p shape, Brett accepted as-is 9:01p). No reply since; Fleaflicker shows no accepted/completed trade and Cade is still ours (the API can't see an unaccepted incoming proposal). Brett is nudging Jon to send it before today's auction.
 
 ## Current bids (our side)
 

@@ -30,6 +30,7 @@ Rules (Sheet, 2026-09-24):
 
 - **Score sets the tier, and ΔP gates it.** `score` = `Score.md` on the buy as a 1-for-1 swap for the $1 body (Justin Edwards), N = 0. A row needs `dPtitle` ≥ +0.15pp (≈ 1.5σ) to be tiered at all, whatever its Score: no speculative bodies that don't help this season.
 - Tier bounds on `score`: T1 > 200 · T2 100–200 · T3 0–100. Blank = under the ΔP floor, or no better than a $1 body.
+- **Win-now override:** Thybulle is T2 on Score 82. His +1.07pp is T1-grade for this season at ~$22.
 - Within ~250 is a tie, so tiers are coarse bins. Inside a tier, the card runs by Score.
 - Auction $ is use-it-or-lose-it with no other use, and `AGENTS.md` weights this season like the next six, so there is no contending premium to add.
 - `dPtitle` = one buy replacing a $1 floor body (Justin Edwards) on our roster after the cuts. Run at 1000 engine trials and 60k title trials over 3 seed pairs, averaged. Across the pairs, sd ≈ 0.1pp per row.
@@ -38,29 +39,75 @@ Rules (Sheet, 2026-09-24):
 
 ## Cheat card
 
-`ΔP` = `dPtitle`. `Score`, `Market$`, `Score$` and `Gap` are `values.tsv` columns (`Pricing.md`). `Gap` = `Score$` − `Market$`: > 0 means the room underprices the row against our Score. `Cap` = opening cap from the live tool on the blank Sheet (`Max$`). `Sheet #` = position on the Sheet's FA list. ***Bold italic*** rows are ours, priced as keep vs the $1 body (§Ours); not bid targets.
+`ΔP` = `dPtitle`. `Score`, `Market$`, `Score$` and `Gap` are `values.tsv` columns (`Pricing.md`). `Gap` = `Score$` − `Market$`: > 0 means the room underprices the row against our Score. `Cap` = opening cap from the live tool on the blank Sheet (`Max$`). `Sheet #` = position on the Sheet's FA list. T3 `Cap` 0 = shut until the T2s run out (§Bidding).
+
+Rows: every tiered row, plus the top 50 of the pool by `Market$` (leaving out the 36 rookies the draft takes). **Pass** rows fail the ΔP floor or don't beat the $1 body (Justin Edwards, `ref`): never bid, but the room pays for them, so nominate them early. An undrafted rookie not listed is a pass too (ΔP floor, §Tiers).
+
+***Bold italic*** rows are ours, priced as keep vs the $1 body (§Ours); not bid targets.
 
 | Tier | Player | Tm | Age | BASE | ΔP | Score | Market$ | Score$ | Gap | Cap | Sheet # |
 |---|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
 | 1 | ***Jarace Walker*** | IND | 23.0 | 424 | +1.47 | 588 | – | – | – | – | – |
 | 1 | ***De'Andre Hunter*** | SAC | 28.8 | 510 | +0.93 | 581 | – | – | – | – | – |
-| 1 | Baylor Scheierman | BOS | 26.0 | 268 | +1.35 | 375 | 66 | 197 | +131 | 74 | 16 |
+| 1 | Baylor Scheierman | BOS | 26.0 | 268 | +1.35 | 375 | 66 | 197 | +131 | 90 | 16 |
 | 1 | ***Jay Huff*** | IND | 29.0 | 372 | +0.47 | 365 | – | – | – | – | – |
 | 1 | ***Keon Ellis*** | BKN | 26.7 | 278 | +1.13 | 324 | – | – | – | – | – |
 | 1 | ***Adem Bona*** | PHI | 23.4 | 257 | +0.76 | 322 | – | – | – | – | – |
-| 1 | Dominick Barlow | PHI | 23.3 | 174 | +1.01 | 246 | 68 | 142 | +74 | 74 | 4 |
-| 1 | Jaxson Hayes | UTA | 26.3 | 129 | +1.28 | 205 | 58 | 119 | +61 | 68 | 10 |
+| 1 | Dominick Barlow | PHI | 23.3 | 174 | +1.01 | 246 | 68 | 142 | +74 | 90 | 4 |
+| 1 | Jaxson Hayes | UTA | 26.3 | 129 | +1.28 | 205 | 58 | 119 | +61 | 90 | 10 |
 | 1 | ***Khris Middleton*** | WAS | 35.1 | 162 | +0.45 | 203 | – | – | – | – | – |
-| 1 | Marvin Bagley | DEN | 27.5 | 197 | +0.29 | 201 | 64 | 116 | +52 | 74 | 3 |
+| 1 | Marvin Bagley | DEN | 27.5 | 197 | +0.29 | 201 | 64 | 116 | +52 | 90 | 3 |
 | 2 | ***Karlo Matković*** | NOP | 25.4 | 161 | +0.80 | 185 | – | – | – | – | – |
-| 2 | Dru Smith | MIA | 28.7 | 231 | +0.25 | 175 | 49 | 101 | +52 | 42 | 7 |
-| 2 | Vít Krejčí | POR | 26.3 | 148 | +0.62 | 159 | 43 | 92 | +49 | 42 | 17 |
-| 2 | Julian Strawther | DEN | 24.4 | 173 | +0.19 | 149 | 34 | 86 | +52 | 42 | 48 |
-| 2 | Al Horford | GSW | 40.3 | 117 | +0.48 | 109 | 39 | 64 | +25 | 42 | 22 |
-| 2 | Zach Collins | CHI | 28.8 | 140 | +0.20 | 107 | 26 | 62 | +36 | 34 | 136 |
+| 2 | Dru Smith | MIA | 28.7 | 231 | +0.25 | 175 | 49 | 101 | +52 | 47 | 7 |
+| 2 | Vít Krejčí | POR | 26.3 | 148 | +0.62 | 159 | 43 | 92 | +49 | 47 | 17 |
+| 2 | Julian Strawther | DEN | 24.4 | 173 | +0.19 | 149 | 34 | 86 | +52 | 45 | 46 |
+| 2 | Al Horford | GSW | 40.3 | 117 | +0.48 | 109 | 39 | 64 | +25 | 47 | 22 |
+| 2 | Zach Collins | CHI | 28.8 | 140 | +0.20 | 107 | 26 | 62 | +36 | 35 | 136 |
+| 3 | Luka Garza | BOS | 27.7 | 107 | +0.51 | 91 | 44 | 53 | +9 | 0 | 6 |
+| 3 | Kentavious Caldwell-Pope | PHI | 33.6 | 78 | +0.60 | 89 | 35 | 52 | +17 | 0 | 29 |
+| 2 | Matisse Thybulle | LAL | 29.6 | 23 | +1.07 | 82 | 22 | 48 | +26 | 29 | 71 |
+| 3 | Jarred Vanderbilt | LAL | 27.5 | 66 | +0.63 | 65 | 32 | 38 | +6 | 0 | 23 |
+| 3 | Terance Mann | BKN | 29.9 | 51 | +0.57 | 44 | 39 | 26 | −13 | 0 | 12 |
+| 3 | Simone Fontecchio | MIA | 30.8 | 55 | +0.63 | 44 | 38 | 26 | −12 | 0 | 11 |
+| 3 | Trayce Jackson-Davis | TOR | 26.6 | 42 | +0.57 | 23 | 17 | 14 | −3 | 0 | 67 |
+| 3 | Nick Richards | MIA | 28.8 | 36 | +0.64 | 20 | 20 | 12 | −8 | 0 | 49 |
+| 3 | Kevon Looney | LAL | 30.6 | 69 | +0.17 | 16 | 14 | 10 | −4 | 0 | 102 |
+| 3 | Kenrich Williams | OKC | 31.8 | 32 | +0.40 | 2 | 24 | 2 | −22 | 0 | 35 |
+| 3 | Trendon Watford | NOP | 25.9 | 66 | +0.18 | 2 | 24 | 2 | −22 | 0 | 41 |
 | – | ***Chaney Johnson*** | BKN | – | 0 | +0.06 | −92 | – | – | – | – | – |
-
-- **T3** (Score, ΔP, `Market$`, Gap), shut at the open: Luka Garza (91, +0.51, $44, +9) · Kentavious Caldwell-Pope (89, +0.60, $35, +17) · Matisse Thybulle (82, +1.07, $22, +26) · Jarred Vanderbilt (65, +0.63, $32, +6) · Terance Mann (44, +0.57, $39, −13) · Simone Fontecchio (44, +0.63, $38, −12) · Trayce Jackson-Davis (23, +0.57, $17, −3) · Nick Richards (20, +0.64, $20, −8) · Kevon Looney (16, +0.17, $14, −4) · Kenrich Williams (2, +0.40, $24, −22) · Trendon Watford (2, +0.18, $24, −22)
+| | **Pass** | | | | | | | | | | |
+| – | Ryan Nembhard | CHA | 23.5 | 324 | −0.49 | 202 | 53 | 117 | +64 | – | 21 |
+| – | Brandon Williams | GSW | 26.8 | 205 | +0.11 | 187 | 68 | 108 | +40 | – | 1 |
+| – | Goga Bitadze | ORL | 27.2 | 227 | −0.04 | 177 | 58 | 103 | +45 | – | 8 |
+| – | Meleek Thomas | CLE | 20.1 | 246 | +0.00 | 175 | 22 | 101 | +79 | – | – |
+| – | Quinten Post | MEM | 26.5 | 202 | +0.09 | 169 | 58 | 98 | +40 | – | 15 |
+| – | Chris Cenac | BOS | 19.6 | 244 | +0.05 | 164 | 21 | 95 | +74 | – | – |
+| – | Harrison Barnes | SAS | 34.3 | 161 | −0.04 | 106 | 54 | 62 | +8 | – | 2 |
+| – | Caleb Love | PHI | 25.0 | 188 | −0.31 | 89 | 38 | 52 | +14 | – | 30 |
+| – | Patrick Williams | CHI | 25.1 | 151 | −0.10 | 85 | 44 | 50 | +6 | – | 20 |
+| – | Spencer Jones | DEN | 25.3 | 149 | −0.06 | 70 | 31 | 41 | +10 | – | 25 |
+| – | Tyus Jones | DEN | 30.4 | 135 | −0.01 | 70 | 22 | 41 | +19 | – | 57 |
+| – | D'Angelo Russell | MEM | 30.6 | 170 | −0.33 | 69 | 24 | 41 | +17 | – | 76 |
+| – | Nae'Qwan Tomlin | CLE | 25.8 | 109 | +0.06 | 62 | 33 | 37 | +4 | – | 28 |
+| – | Jamir Watkins | WAS | 25.2 | 110 | −0.25 | 20 | 32 | 12 | −20 | – | 27 |
+| – | Pat Spencer | PHX | 30.2 | 148 | −0.54 | 11 | 38 | 7 | −31 | – | 14 |
+| – | Vince Williams | FA | 26.1 | 112 | −0.34 | 10 | 22 | 7 | −15 | – | 36 |
+| – | Justin Edwards | PHI | 22.8 | 76 | ref | ref | 22 | – | – | – | 37 |
+| – | Craig Porter | CLE | 26.6 | 61 | +0.01 | −1 | 32 | 1 | −31 | – | 13 |
+| – | Guerschon Yabusele | FA | 30.8 | 122 | −0.44 | −7 | 24 | 1 | −23 | – | 32 |
+| – | Jonas Valančiūnas | FA | 34.4 | 67 | −0.21 | −9 | 29 | 1 | −28 | – | 9 |
+| – | Tre Mann | WAS | 25.6 | 65 | −0.20 | −15 | 20 | 1 | −19 | – | 64 |
+| – | Josh Okogie | UTA | 28.1 | 25 | +0.23 | −31 | 27 | 1 | −26 | – | 24 |
+| – | Jabari Walker | PHI | 24.2 | 1 | +0.27 | −41 | 20 | 1 | −19 | – | 48 |
+| – | Jaylen Clark | MIN | 25.0 | 63 | −0.30 | −47 | 22 | 1 | −21 | – | 50 |
+| – | Javonte Green | DET | 33.2 | 14 | −0.13 | −54 | 40 | 1 | −39 | – | 5 |
+| – | John Konchar | NYK | 30.5 | 17 | +0.03 | −55 | 30 | 1 | −29 | – | 19 |
+| – | Kris Murray | MEM | 26.1 | 45 | −0.33 | −58 | 27 | 1 | −26 | – | 26 |
+| – | Rayan Rupert | PHI | 22.3 | 31 | −0.17 | −65 | 21 | 1 | −20 | – | 34 |
+| – | Bryce McGowens | NOP | 23.9 | 0 | +0.00 | −86 | 20 | 1 | −19 | – | 55 |
+| – | Quenton Jackson | IND | 28.0 | 11 | −0.30 | −87 | 24 | 1 | −23 | – | 33 |
+| – | Svi Mykhailiuk | UTA | 29.3 | 0 | −0.08 | −94 | 20 | 1 | −19 | – | 31 |
+| – | Clint Capela | HOU | 32.4 | 15 | −0.29 | −96 | 28 | 1 | −27 | – | 18 |
 
 ## Ours
 
@@ -75,10 +122,10 @@ Our bottom 8 on the `dPtitle` basis, 9/28: roster after both cuts, one $1 body (
 - **Plan** = the unsold T1 and T2 rows with the most summed Score that fill our spots left at live `Market$`, with $1 bodies in the rest. It sets how many T1s and T2s we hold room for, and re-plans after every sale.
 - **Rest of plan** = the plan's other T1s and T2s, priced at the cheapest unsold rows of each tier, plus $1 per other spot. Leave out the row being bid on. It takes one slot of its own tier; a row the plan has no slot for takes a $1 slot, then a T2 slot, then a T1 slot.
 - **Cap** = min(tier cap, $ left − rest of plan, hard max, $100 while ≥ 3 spots are open):
-  - T1: no tier cap.
+  - T1: no tier cap. While we hold no T1, a T1 also gets min($90, $ left − rest of plan with its other T1 slots at T2 rows), whichever is higher, so we land one T1 even if the room runs 5–10% over.
   - T2: 1.25 × live `Market$`.
   - T3: live `Market$`, and only once the unsold T2s are fewer than our spots left beyond the plan's T1s. Until then, no bid.
-- At the open: Scheierman, Barlow and Bagley $74 · Hayes $68 · Dru Smith, Krejčí, Strawther and Horford $42 · Collins $34.
+- At the open: every T1 $90 · Dru Smith, Krejčí and Horford $47 · Strawther $45 · Collins $35 · Thybulle $29. After our first T1, the next T1's cap falls back to $ left − rest of plan.
 - Don't stretch a T1 cap to beat a rich rival by $1–2. A rival who overpays for one T1 can't contest the next.
 - **Last spot:** cap = hard max on the rows of the best tier still unsold. Lower tiers keep their tier cap, and T3 stays shut.
 - **Endgame:** once our cap on an unsold tiered row beats every rival's `Max Bid`, nothing can outbid us. Nominate the best such row and win it.

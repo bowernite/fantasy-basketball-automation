@@ -8,11 +8,13 @@ Texts 9/28/26: Brett offered Middleton for his '27 3rd. Michael: "Not bad, I'll 
 
 Screening (9/10/26): 40 shapes simmed. Sims use our 35-body roster (same as eval). Net bodies ≤ +1. Do not float Too lopsided. Bonin is a short-term competitor — prefer shapes that don't load his year-1 much (`Δw (them)`). Every row re-priced 9/25/26 (Score, Δage). Bane+Gordon > Reaves held at Floor despite its Score: it adds to Bonin's season (+0.1 Δw (season) for him) and sits just under Too lopsided.
 
-Screening (9/28/26): 56 young-for-vet shapes simmed on the no-Jon roster (Cade kept; Hlina overlay in). Michael's roster unchanged since 9/2 (checked on the wire 9/28). Every 9/28 row cuts his season, so none loads a competitor. Floor for non-Cade rows ≈ +400 Score. Cade rows are tiered against Jon's open deal, Cade+2.09+'27 1st > SGA+Wells+McBride+Champagnie+Jaylin (+1800 +1100 +1.5 +0.6 +5% +4.1, `Jon.shapes.md`). Out-side picks: '28 1st 1425, Chris '27 2nd 900. In-side picks: Michael '27 3rd 357, Michael '27 1st 1524. Sharpe rows have no Δage (0 projected GP), nor Bona > Draymond. Draymond = Draymond Green; bare Green = Jalen Green. Smith, Green and Camara come from the Hlina deal after the auction, so their rows can't execute before it lands. Middleton > Michael '27 3rd fails on paper (Δw −0.26, ΔP −0.5) because the sim keeps Middleton over a pad body; in practice he is cut after the auction, so the deal is +357 BASE for free.
+Screening (9/28/26): 56 young-for-vet shapes simmed on the no-Jon roster (Cade kept; Hlina overlay in). Michael's roster unchanged since 9/2 (checked on the wire 9/28). Every 9/28 row cuts his season, so none loads a competitor. Floor for non-Cade rows ≈ +400 Score. Cade rows are tiered against Jon's deal, Cade+2.09+'27 1st > SGA+Wells+McBride+Champagnie+Jaylin (+1800 +1100 +1.5 +0.6 +5% +4.1, `Jon.shapes.md`). Jon backed out 9/28, so the floor is a reference, not a live bid. Out-side picks: '28 1st 1425, Chris '27 2nd 900. In-side picks: Michael '27 3rd 357, Michael '27 1st 1524. Sharpe rows have no Δage (0 projected GP), nor Bona > Draymond. Draymond = Draymond Green; bare Green = Jalen Green. Smith, Green and Camara come from the Hlina deal after the auction, so their rows can't execute before it lands. Middleton > Michael '27 3rd fails on paper (Δw −0.26, ΔP −0.5) because the sim keeps Middleton over a pad body; in practice he is cut after the auction, so the deal is +357 BASE for free.
+
+Texts 9/28/26 (Cade): Brett offered Cade > Reaves+Sabonis+Siakam. Michael: "Last one is a lot but interesting since Cade's a beast. Lemme think a bit" and "I'm trying to get younger". Expect a smaller counter. Counter screen (9/28, same roster): every Cade 2-for-1 fails ΔBASE except Reaves+Markkanen (Below bar). A Cade deal needs Reaves+Sabonis plus a real third piece (Siakam, White or Hart) to clear the floor.
 
 ## Above floor
 
-Cade > Reaves+Sabonis+Siakam | +3600 +1000 +3.1 +1.6 +18% +5.3
+Cade > Reaves+Sabonis+Siakam | +3600 +1000 +3.1 +1.6 +18% +5.3 | Us proposed 9/28
 Cade > Reaves+Markkanen+Siakam | +3500 +1200 +2.6 +1.3 +17% +5.0
 Edey+Kuminga+Walker > Sabonis+Siakam | +3300 +1000 +2.0 +1.4 +15% +7.1
 Edey+Sharpe+Kuminga > Sabonis+Markkanen | +3300 +1000 +1.6 +1.5 +17% +5.5
@@ -71,6 +73,7 @@ Vassell+Eason > Siakam | +700 -100 +0.4 +0.5 +7% +6.8
 
 Cade > Reaves+Sabonis+Michael '27 1st | +1800 +400 +1.5 +0.8 +11% +2.6
 Cade > Sabonis+Markkanen+Siakam | +1800 -700 +2.9 +1.4 +18% +5.7
+Cade > Reaves+Sabonis+Nembhard | +1700 -100 +2.2 +1.0 +13% +4.1
 Bane+Gordon > Reaves | +1500 +1200 -0.2 +0.2 +3% -1.0
 Suggs+Kuminga > Siakam | +700 -200 +0.5 +0.6 +6% +7.3
 Garland+Kuminga > Reaves | +700 +200 0.0 +0.3 +4% +1.7
@@ -84,6 +87,7 @@ Bane+Walker > Markkanen | +400 -100 0.0 +0.3 +4% +1.6
 Walker > DeRozan | +400 +300 +0.1 +0.2 0% +14.0
 Kuminga > Draymond+Klay | +200 -100 +0.6 +0.2 +2% +12.5
 Walker > Draymond | +200 +100 +0.2 +0.1 0% +13.4
+Cade > Reaves+Markkanen | +100 -1000 +1.0 +0.6 +9% +3.8
 Smith+Walker+'27 1st > Siakam | -100 -1000 +0.3 +0.6 +7% +10.9
 Garland > Markkanen | -400 -800 +0.1 +0.2 +4% +2.6
 Garland+Reid > Clingan+Powell | -700 -900 0.0 +0.2 +2% -1.0

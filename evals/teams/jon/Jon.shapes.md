@@ -351,7 +351,7 @@ Cade+'27 1st > SGA+Wallace | +1600 +1100 +0.7 +0.3 +4% +4.2
 Cade+Mark+2.09 > SGA+Sharpe+McBride | +2000 +1100 +0.7 +0.7 +8% +2.8
 Cade+Mark+2.09 > SGA+Raynaud+Wells | +1600 +1100 +0.5 +0.5 +5% +2.5
 Cade+Kuminga+2.09 > SGA+Jaylin+'26 2.10 | +1500 +1100 +0.2 +0.2 +3% +2.9
-Cade+2.09+'27 1st > SGA+Wells+McBride+Champagnie+Jaylin | +1800 +1100 +1.5 +0.6 +5% +4.1 | Jon proposed 9/27
+Cade+2.09+'27 1st > SGA+Wells+McBride+Champagnie+Jaylin | +1800 +1100 +1.5 +0.6 +5% +4.1 | Jon rejected 9/28
 Cade+'27 1st+2.09 > SGA+Fears+McBride | +1900 +1000 +1.3 +0.6 +6% +3.1
 Cade+'27 1st > SGA+Wells+McBride | +1700 +1000 +1.1 +0.5 +5% +3.9 | Jon proposed 9/27
 Cade+'27 1st > SGA+Jaylin+'26 2.10 | +1400 +1000 +0.5 +0.3 +3% +3.8

@@ -2,7 +2,7 @@
 
 Counterparty: Hlina (Matthew the Apostle, 161021). Contending, #2 this season (18.9% title) and projected #1 in '27-28, so our top competitor (`trades` §Competitors).
 
-Hlina 9/27 3:20p: asked "What's the price for Cade?". Nothing offered yet.
+Hlina 9/27 3:20p: asked "What's the price for Cade?". Nothing offered yet. 9/28 12:03p passed on both Cade shapes, then asked "Any interest in Laravia for 2.09?".
 
 Floor: the expected Todd/Jon close, Score ≈ +2600 (Jon's offer +2400, Todd's favorite +2200). Cade rows tier against it. Maxey+Buzelis rows sit Above floor on a tie Score for Δage (−0.8 vs +2.4 to +3.0 on the Todd/Jon deals) and ΔP(title).
 
@@ -12,15 +12,21 @@ Priced 9/27/26 on the 9/2 rosters (checked against Fleaflicker 9/27, no changes)
 
 ## Above floor
 
-Cade > Maxey+Buzelis | +2600 +1200 +1.2 +0.7 +12% -0.8 | Us proposed 9/27
+Cade > Maxey+Buzelis | +2600 +1200 +1.2 +0.7 +12% -0.8 | Hlina rejected 9/28
 Cade+Chaney+Matkovic > Maxey+Buzelis | +2500 +1100 +1.0 +0.7 +10% -0.8
 
 ## Floor
 
 Pick rows (9/27) are not re-simmed. They take the no-pick row's numbers, subtract the pick's BASE from Score and ΔBASE, and recompute Δage per `trades` §Age. Score* (Cade Sweepstakes) is about +2900 on both.
 
-Cade+'27 2nd > Paolo+Jalen Williams | +2500 +1100 +1.3 +0.8 +12% +0.4 | Us proposed 9/27
-Cade+Chris '27 2nd > Maxey+Miller | +2200 +900 +1.2 +0.6 +10% +0.8 | Us proposed 9/27
+Cade+'27 2nd > Paolo+Jalen Williams | +2500 +1100 +1.3 +0.8 +12% +0.4 | Hlina rejected 9/28
+Cade+Chris '27 2nd > Maxey+Miller | +2200 +900 +1.2 +0.6 +10% +0.8 | Hlina rejected 9/28
+
+LaRavia rows (9/28) tier against holding the pick, not the Cade floor. Most of the ΔP(title) is Hlina's loss (−5%), since he's at 26 bodies. 2.09 is free since Jon backed out of the Cade deal 9/28 1:59p.
+
+'28 2nd > LaRavia | +200 -200 +0.5 +0.3 +4% +6.8
+own '27 2nd > LaRavia | +100 -300 +0.5 +0.3 +4% +5.8
+'26 2.09 > LaRavia | +100 -300 +0.4 +0.3 +4% +4.8 | Hlina proposed 9/28
 
 ## Below bar
 
