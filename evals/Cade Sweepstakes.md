@@ -4,17 +4,15 @@ Brett is shopping Cade Cunningham to several owners in a bidding war. This file 
 
 ## Goal
 
-Find Cade deals that beat Jon's offer (best bid from another owner, Brett's current pick) on `Score`. Push prices up and use each bid as leverage. Todd's live offer still wins this season (+1.1 vs +0.5 `Δw (season)`) and on ΔP(title) (+8% vs +5%); Jon's lead comes from BASE.
+Find the best Cade deal on `Score`. Jon's offer stays the benchmark row. Push prices up and use each bid as leverage.
 
-Deadline: close Cade by end of day 9/27 with Todd or Jon (Mitch is out, Matthew isn't close). Expect few back and forths, mostly texts late in the day (Brett, 9/27). Brett's 9/26 9:10a text to both set an end-of-weekend deadline and said he'd pick between Todd's and Jon's best.
+Timing: rookie draft ~7:45p CT 9/28, FA auction after. Cade and 2.09 are still ours.
 
-Plan 9/27 (Brett, main thread): Todd and Jon texts with two upgrade options each sent (Brett 9/27 AM); waiting on replies. Push-a-2nd step and ~8p sealers not sent yet. Fallback sealers tonight: Todd's favorite + Chaney, or Jon's offer + Chaney. Plan page: `/tmp/cade-plan.html`.
+**Status 9/28 ~3p CT:**
 
-- Todd: Cade+Sharpe+Mark+('28 1st) > Tatum+Porter+NAW+Claxton, and Cade+Sharpe+Mark+(2.09) > Hali+Porter+NAW+Claxton+Mitchell.
-- Jon: Cade+(2.09)+('27 1st) > SGA+Day'Ron+Wells+McBride, and Cade+Mark+(2.09)+('28 1st) > SGA+Day'Ron+Watson+Wells+McBride.
-- As of 4:35p: Jon is the main path, with Todd's favorite as a possible fallback.
-- Todd is officially out (Brett 9/27). Josh is fully out (9/27 7:36p).
-- **Status 9/28 1:59p: Jon backed out ("I'll probably pass then, so you're free to deal if you want") after Brett told him other owners were interested in Cade and the picks. Cade and 2.09 are still ours.** Earlier, 8:36a: Jon deal agreed by text, awaiting Jon's submission. Cade+(2.09)+('27 1st) > SGA+Wells+McBride+Champagnie+Jaylin (Jon's 8:49p shape, Brett accepted as-is 9:01p). No reply since; Fleaflicker shows no accepted/completed trade and Cade is still ours (the API can't see an unaccepted incoming proposal). Brett is nudging Jon to send it before today's auction.
+- **Michael is the lead.** Brett offered Cade > Reaves+Sabonis+Siakam 11:24a (texts). Michael 11:56a: "Last one is a lot but interesting since Cade's a beast. Lemme think a bit". Counters in Owner notes.
+- **Jon passed 9/28** (texts). Brett sent Fleaflicker proposal 485816 (the "Jon agreed" row) 9:13a. Jon 9:15a: "I'm giving it some final thoughts today". Brett 1:56p told him others were interested in the picks and Cade. Jon 1:59p: "I'll probably pass then, so you're free to deal if you want". Treat as dead. The proposal may still be live on Fleaflicker (unconfirmed).
+- Out: Todd (9/27), Josh (9/27 7:36p), Mitch, Matthew. Hlina still passing on Cade (9/28 12:03p).
 
 ## Current bids (our side)
 
@@ -22,6 +20,7 @@ Plan 9/27 (Brett, main thread): Todd and Jon texts with two upgrade options each
 |---|---|---|---|---|---|---|---|---|---|---|
 | Jon counter (sent) | Cade+(2.09) | SGA+Sharpe+Wells | +3900 | +1400 | +2700 | +1.6 | +0.7 | +9% | +2.5 | +2 |
 | Jon fallback (not sent) | Cade+(2.09) | SGA+Fears+Wells | +3700 | +1200 | +2800 | +1.4 | +0.6 | +7% | +1.6 | +2 |
+| **Michael ask (Us proposed 9/28 11:24a, lead)** | Cade | Reaves+Sabonis+Siakam | +3600 | +1200 | +1000 | +3.1 | +1.6 | +18% | +5.3 | +2 |
 | Todd counter B (sent) | Cade+Sharpe+Mark | Tatum+Porter+NAW+Mitchell | +3100 | +600 | +1000 | +1.7 | +1.5 | +16% | +3.4 | +1 |
 | Jon rejected 9/25 | Cade+(2.09)+(Chris '27 2nd) | SGA+Sharpe+Wells | +3000 | +500 | +1800 | +1.6 | +0.7 | +9% | +3.1 | +2 |
 | Jon latest ask (drafted, not sent) | Cade+Mark+(2.09) | SGA+Sharpe+Wells+McBride | +2800 | +300 | +1700 | +1.2 | +0.8 | +9% | +2.4 | +2 |
@@ -38,7 +37,7 @@ Plan 9/27 (Brett, main thread): Todd and Jon texts with two upgrade options each
 | Matthew backup (not sent) | Cade+Sharpe+('27 1st)+('28 1st)+(2.09) | Barnes+Harper+Ausar | +2200 | −200 | +1000 | +1.1 | +0.9 | +10% | +1.3 | +1 |
 | Matthew ask (sent, Wemby now untouchable) | Cade+Kuminga+('27 1st)+('28 1st)+(2.09) | Wemby+Ausar+Black | +2200 | −300 | +700 | +1.8 | +1.1 | +10% | +0.7 | +1 |
 | Todd's live offer | Cade+Sharpe+Mark | Hali+Porter+NAW+Claxton | +2200 | −300 | +900 | +1.5 | +1.1 | +8% | +2.6 | +1 |
-| **Jon agreed (Jon proposed 9/27 8:49p, agreed by text 9:01p, awaiting Jon's submission, current pick, Score\* +3000)** | Cade+(2.09)+('27 1st) | SGA+Wells+McBride+Champagnie+Jaylin | +1800 | −600 | +1100 | +1.5 | +0.6 | +5% | +4.1 | +4 |
+| Jon agreed (Jon proposed 9/27 8:49p, Us proposed 9/28 as Fleaflicker 485816, Jon passed 9/28, Score\* +3000) | Cade+(2.09)+('27 1st) | SGA+Wells+McBride+Champagnie+Jaylin | +1800 | −600 | +1100 | +1.5 | +0.6 | +5% | +4.1 | +4 |
 | Matthew backup 2 (not sent) | Cade+(2.09) | Barnes+Ausar+Black | +1800 | −600 | +1000 | +1.4 | +0.4 | +7% | −0.2 | +2 |
 
 Sorted by `Score`; vs Jon = Score minus the benchmark's (≈300 over Todd's raw +2164), nearest 100. Δage isn't in Score, so read it alongside. All Jon rows are Too lopsided under Jon's +1000 line.
@@ -105,7 +104,7 @@ Sept '26 picks (2.09) also need `out_us_picks` and `in_from_us_picks` so the moc
 ## Owner notes
 
 - **Jon** (161015, tanking): won't take Shaedon. Standing offer (9/25 11:43a): Cade+(2.09) for SGA plus our pick of 1 or 2 of Champagnie/Wells/McBride; we keep Shaedon and Mark. Henry's '27 2nd (≈810 BASE) came only with his SGA+Fears package for Cade+('27 1st)+(2.09) (11:23a), which we declined; it's not in the standing offer. 12:20p: "Sounds like Todd's offer is going to beat mine at this point". Picks only add BASE, so they don't close the win-column gap to Todd. Ask for players instead. In his file, Out "Sharpe" = Shaedon (ours), In "Sharpe" = Day'Ron (his). Doesn't want to give both Fears and Day'Ron Sharpe. On 9/25 he re-floated Brett's old 8/2 shape Cade+Edey+(3.09) for SGA+Jaylin+(Jon 2.10), which fails our minimums; declined 3:15p. Our 3.09 went to Henry on 8/13. Edey is a hold in Cade talks (agent sim 9/25). Nudged him on the Raynaud shapes 9/25; no answer yet. 9/26 night told Brett to look out in the evening for an offer he'd submit (Brett 9/27, not in texts). Resumed texting 9/27 evening (below).
-  - 9/27 8:49p floated a combine, Cade+(2.09)+('27 1st) > SGA+Wells+McBride+Champagnie+Jaylin (+1800, ΔBASE +1100, Too lopsided). Brett accepted it as-is by text 9:01p ("yeah let's do it ... send it over and I'll accept"); awaiting Jon's submission. A counter adding Chaney+Matković was drafted, not sent (+1600, Score\* +3000, ΔBASE +900, +0.6 `Δw (season)`, +5%, +4.1 Δage, N +2).
+  - 9/27 8:49p floated a combine, Cade+(2.09)+('27 1st) > SGA+Wells+McBride+Champagnie+Jaylin (+1800, ΔBASE +1100, Too lopsided). Brett accepted it as-is by text 9:01p and proposed it 9/28 (485816); Jon passed 9/28 1:59p (Status above). A counter adding Chaney+Matković was drafted, not sent (+1600, Score\* +3000, ΔBASE +900, +0.6 `Δw (season)`, +5%, +4.1 Δage, N +2).
   - 9/27 8:12p, answering Brett's acceptance of the standing offer: "Would you consider the 27 1st instead?", i.e. Cade+('27 1st) > SGA+Wells+McBride (our '27 1st in place of the 2.09). Score +1700 (Score\* +2400) vs his offer's +2400 (+2900).
   - 8:20–8:22p asked what the trade would be, then read it as Cade+(2.09)+('27 1st) > SGA+Wells+McBride+Champagnie (+1400, Score\* +2600). Brett 8:23p sent Cade+('27 1st)+Chaney > SGA+Wells+McBride+Champagnie (+2100, Score\* +2800), 8:27p Matković in place of Chaney as an alternative (+1800, Score\* +2700). Superseded by his 8:49p shape.
 - **Todd** (161022, tanking): officially out (Brett 9/27). His favorite is "Todd's live offer" above, but it's only contemplated, not firmly on offer. Rejected counter A 9/25 (3:47p): "I'm not big on Kuminga so probably prefer the simpler deal". Ignored the Tatum counters. 9/26 10:15a: "Right now I'm leaning towards not trading and waiting until the trade deadline to see what I can get for MPJ/Gobert". 10:55a on his favorite: "That's the only one I'm still contemplating a little bit, but if Jon has a better offer I won't be reaching any further". Brett 11:09a: Jon's "doesn't at this point". 9/27 4:25p withdrew: "I think I'm going to withdraw from the Cade sweepstakes. In the season if you need that final push to get your team ahead of the others, I will most likely have Gobert/MPJ/Brunson available". 4:26p Brett asked if "that other deal" (his favorite) is something he'd still do; 5:16p "I don't think so". Last-throw shapes (favorite + Gobert or Brunson for our picks) are in `Todd.shapes.md`. The Tatum and Hali+Mitchell upgrades are dead.
@@ -116,4 +115,10 @@ Sept '26 picks (2.09) also need `out_us_picks` and `in_from_us_picks` so the moc
   - 9/27 7:35p Brett sent Cade+Chaney > Murray+Porziņģis+Barrett+(Josh '28 1st)+(Josh '27 2nd) and Cade+Chaney+Matković > Murray+Porziņģis+Barrett+Sexton+(Josh '28 1st). 7:36p: "No respectfully". Fully out.
 - "Mark" = Mark Williams (ours).
 - **Mitch** (161020): Out of the Cade talks (Brett, 9/25). Contending (6th, 9.4% title) and climbing (2nd in '28-29), so he's a short-term competitor (`trades` §Competitors). Earlier (9/3) he wasn't interested in our '27 1sts. 9/25 on Cade: "Now that does spark my attention" / "I like him more than SGHitler from Dummy who is also someone I inquired about" (he's also asked Jon about SGA). Rejected both sent shapes 9/25: "Both of those seem a bit steep to me. I think Cade > Deni but not by a ton in fantasy. Their dif was only 5 points, don't think that's worth giving up a mid 30s in JJJ and high 20s-low 30s in Queen. I have negative interest in Kuminga lol", then "I think the most I'd be willing to do is something like Deni + one other guy for Cade. Otherwise I'd be more open to trades once I see how these rooks of mine look after some nba action". Values players by FPts/G. Keep Kuminga and his Sept '26 rookies out of shapes. Deni + one other guy tops out at Cade > Deni+Franz (Score +900, −1200 vs Todd). Flagg is virtually untouchable (Brett, 9/25): no new In-side Flagg shapes. Without Flagg, getting past Todd takes Deni+Franz+Queen plus a cheap piece from us, e.g. Cade+Butler (+2800) or Cade+(Chris '27 2nd) (+2900).
-- **Hlina** (161021): entered the Cade talks 9/27 (3:20p), replying to Brett's 9/25 invite. Only asked the price, no offer yet: "What’s the price for Cade?". Very smart trader and our biggest competitor by far this year and probably the next 2–3, so a deal is unlikely (Brett 9/27). Assume we'll probably land a bit better than Todd's and Jon's latest offers (Brett 9/27). 3:34p: "I'll probably pass". 3:39p Brett floated Cade+(2nd) > Paolo+Jalen Williams and Cade+(Chris '27 2nd) > Maxey+Miller; no answer yet.
+- **Hlina** (161021): entered the Cade talks 9/27 (3:20p), replying to Brett's 9/25 invite. Only asked the price, no offer yet: "What’s the price for Cade?". Very smart trader and our biggest competitor by far this year and probably the next 2–3, so a deal is unlikely (Brett 9/27). Assume we'll probably land a bit better than Todd's and Jon's latest offers (Brett 9/27). 3:34p: "I'll probably pass". 3:39p Brett floated Cade+(2nd) > Paolo+Jalen Williams and Cade+(Chris '27 2nd) > Maxey+Miller. Still passing on Cade 9/28 12:03p (texts).
+  - Duren deal still not accepted on Fleaflicker (9/27: "I'll accept it tomorrow").
+  - 9/28 offered LaRavia for our 2.09: +100, a tie with holding the pick (Lopez mocked at 2.09). Preferred counter (2.09)+('28 2nd) > Jaquez (+800, ΔP +6%); fallback (2.09) > Bey (+700). Trading 2.09 breaks Jon's proposal; fine since Jon passed.
+- **Michael** (161016): lead as of 9/28. Wants to get younger. Slow texter (missed Brett's August text for 7 weeks). Replied 11:56a to our ask (Status above). Counters priced in `evals/teams/bonin/Bonin.shapes.md`:
+  - All 2-for-1s fail our minimums except Cade > Reaves+Markkanen (+100).
+  - Acceptable thirds: Reaves+Sabonis+White (+3200), Reaves+Markkanen+Siakam (+3500).
+  - About even with Jon's offer: Reaves+Siakam+White (+2300), Reaves+Sabonis+Hart (+2200), Reaves+Sabonis+(Michael '27 1st) (+1800, youngest at Δage +2.6).
