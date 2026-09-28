@@ -27,6 +27,11 @@ Rules (Sheet, 2026-09-24):
 | 2 T1 + 2 T2 | +3.1 to +3.5 |
 | 4 T2 | +2.2 to +2.3 |
 
+## Trades that add bodies (9/28)
+
+- Cuts are free (no salary or dead cap; only the cut player's BASE), and the $200 is fixed. A trade that adds bodies costs no auction spots: cut down to the same open count. The Jon deal (+4 bodies) keeps 4 buys by also cutting Matković, Ellis and Huff. Those three read ≈ 0pp on the post-trade roster.
+- On a deeper roster, a buy is worth less. Three T1-grade stand-ins (≈17 FPts/G at ≈70 GP) read +0.8pp on the plan roster but only +0.0 to +0.5 after the Jon deal. Expect the post-trade auction to return about half the pp above.
+
 ## Tiers
 
 - **Rank by `tier`, then BASE inside a tier.** `Δw (season)` for every candidate sits within ±0.15 of a $1 body, under the 0.1-win decision floor, so it can't order them. `ΔP(title) ours` does: it tracks W20–W23 playoff-week output, and at this precision the tiers separate.
