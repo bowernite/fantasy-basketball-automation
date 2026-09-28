@@ -1,28 +1,34 @@
 <!doctype html><html><head><meta charset="utf-8"><title>Auction · $200 · 4 spots</title>
-<meta name="color-scheme" content="light"><style>
-:root{--ink:#1d2330;--mute:#6b7280;--line:#e6e8ec;--bg:#f6f7f9;--card:#fff;--bid:#0f7b45;--bidbg:#e9f7ef;
---warn:#b45309;--warnbg:#fff4e0;--bad:#b42318;--badbg:#fdecea}
+<meta name="color-scheme" content="dark"><style>
+:root{--ink:#e6e8ee;--mute:#949cab;--line:#2d323c;--row:#252932;--bg:#15171c;--card:#1c1f26;--raise:#242831;
+--hover:#232833;--bid:#4cc38a;--bidbg:#1d3a2c;--warn:#e0a458;--warnbg:#3a2c1a;--bad:#ff7b72;--badbg:#3d1f22;
+--focus:#5b9dff;--dim:#6b7280}
 *{box-sizing:border-box}
+html{background:var(--bg)}
 body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.4 -apple-system,BlinkMacSystemFont,"SF Pro Text",
-system-ui,sans-serif;font-variant-numeric:tabular-nums}
-header{position:sticky;top:0;z-index:5;background:var(--card);border-bottom:1px solid var(--line);padding:14px 24px}
+system-ui,sans-serif;font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+header{position:sticky;top:0;z-index:5;background:var(--card);border-bottom:1px solid var(--line);padding:14px 24px;
+box-shadow:0 6px 18px #0000004d}
 .stats{display:flex;gap:10px;flex-wrap:wrap;align-items:stretch}
-.stat{background:var(--bg);border-radius:10px;padding:8px 14px;min-width:96px}
-.stat b{display:block;font-size:22px;font-weight:650;letter-spacing:-.01em}
+.stat{background:var(--raise);border:1px solid var(--line);border-radius:10px;padding:8px 14px;min-width:96px}
+.stat b{display:block;font-size:22px;font-weight:650;letter-spacing:-.01em;color:#f3f4f7}
 .stat span{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--mute)}
 .stat.nom{flex:1;min-width:220px}.stat.nom b{font-size:18px}
-.live{display:flex;align-items:center;gap:8px}.live i{width:10px;height:10px;border-radius:50%;background:#9ca3af}
-.live.on i{background:#16a34a;box-shadow:0 0 0 4px #16a34a26}.live.down{background:var(--badbg);color:var(--bad)}
-.live.down i{background:var(--bad)}.live.down span{color:var(--bad)}.live b{font-size:15px}
+.live{display:flex;align-items:center;gap:8px}.live i{width:10px;height:10px;border-radius:50%;background:var(--dim)}
+.live.on i{background:var(--bid);box-shadow:0 0 0 4px #4cc38a2e}
+.live.down{background:var(--badbg);border-color:#6e2b2e;color:var(--bad)}
+.live.down i{background:var(--bad);box-shadow:0 0 0 4px #ff7b722e}.live.down span,.live.down b{color:var(--bad)}
+.live b{font-size:15px}
 #q{margin-top:12px;width:100%;font:500 20px/1.2 inherit;padding:12px 16px;border:2px solid var(--line);
-border-radius:12px;background:var(--card);color:var(--ink);outline:none}
-#q:focus{border-color:#3b82f6;box-shadow:0 0 0 4px #3b82f633}
+border-radius:12px;background:var(--bg);color:var(--ink);outline:none;caret-color:var(--focus)}
+#q::placeholder{color:#6f7787}
+#q:focus{border-color:var(--focus);box-shadow:0 0 0 4px #5b9dff40}
 #hits{display:flex;gap:12px;flex-wrap:wrap}#hits:not(:empty){margin-top:12px}
-.hit{flex:1;min-width:260px;max-width:420px;background:var(--card);border:1px solid var(--line);border-radius:14px;
-padding:14px 18px;border-left:8px solid #9ca3af}
-.hit.bid{border-left-color:var(--bid);background:var(--bidbg)}.hit.sold{opacity:.7}
-.hit h2{margin:0 0 4px;font-size:17px}.hit .v{font-size:34px;font-weight:700;letter-spacing:-.02em}
-.hit.bid .v{color:var(--bid)}.hit.pass .v{color:var(--mute)}.hit .m{color:var(--mute);font-size:13px}
+.hit{flex:1;min-width:260px;max-width:420px;background:var(--raise);border:1px solid var(--line);border-radius:14px;
+padding:14px 18px;border-left:8px solid var(--dim)}
+.hit.bid{border-color:#2f5e45;border-left-color:var(--bid);background:var(--bidbg)}.hit.sold{opacity:.55}
+.hit h2{margin:0 0 4px;font-size:17px;color:#f3f4f7}.hit .v{font-size:34px;font-weight:700;letter-spacing:-.02em}
+.hit.bid .v{color:#5fd49b}.hit.pass .v{color:var(--mute)}.hit .m{color:var(--mute);font-size:13px}
 main{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:20px;padding:16px 24px 40px}
 .panel{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
 .panel h3{margin:0;padding:10px 14px;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--mute);
@@ -32,18 +38,18 @@ table{width:100%;border-collapse:collapse}
 td,th{padding:6px 12px;white-space:nowrap;text-align:right}td:first-child,th:first-child{text-align:left}
 thead th{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--mute);font-weight:600;
 background:var(--card);border-bottom:1px solid var(--line)}
-tbody tr{border-bottom:1px solid #f0f1f3}tbody tr:hover{background:#f3f6fb}
-tr.sec th{text-align:left;background:var(--bg);color:var(--mute);font-size:11px;letter-spacing:.06em;
+tbody tr{border-bottom:1px solid var(--row)}tbody tr:hover{background:var(--hover)}
+tr.sec th{text-align:left;background:var(--raise);color:var(--mute);font-size:11px;letter-spacing:.06em;
 text-transform:uppercase;padding:8px 12px}
-tr.bid td:first-child{font-weight:600}tr.bid td.cap{color:var(--bid);font-weight:700;background:var(--bidbg)}
-td.cap{font-weight:600}tr.pass td.cap{color:var(--mute);font-weight:400}
-tr.sold td{color:#9ca3af}tr.sold s{color:#9ca3af}
+tr.bid td:first-child{font-weight:600}tr.bid td.cap{color:#5fd49b;font-weight:700;background:var(--bidbg)}
+td.cap{font-weight:600;color:#f3f4f7}tr.pass td.cap{color:var(--mute);font-weight:400}
+tr.sold td,tr.sold s{color:var(--dim)}
 .side td{padding:5px 14px;font-size:13px}
 .empty{padding:10px 14px;color:var(--mute);font-size:13px}
 </style></head><body>
 <header><div class="stats"><div class="stat "><b>$200</b><span>$ left</span></div><div class="stat "><b>4</b><span>spots</span></div><div class="stat "><b>$197</b><span>max bid</span></div>
 <div class="stat nom"><b>Brandon Williams (early)</b><span>nominate</span></div><div class="stat "><b>waiting · 0/5 sales</b><span>room heat</span></div>
-<div class="stat live" id="live"><i></i><div><b>not live</b><span>updated 4:29:57</span></div></div></div>
+<div class="stat live" id="live"><i></i><div><b>not live</b><span>updated 6:56:16</span></div></div></div>
 <input id="q" placeholder="Player up? Type a name   ( / to focus · Esc to clear )" autofocus autocomplete="off"
 spellcheck="false"><div id="hits"></div></header>
 <main><div class="panel"><table id="pool"><thead><tr><th>Player</th><th>Cap</th><th>Mkt</th><th>Score</th><th>ΔP</th><th>Gap</th><th>BASE</th><th>Δw ours</th></tr></thead><tbody>
@@ -51,7 +57,7 @@ spellcheck="false"><div id="hits"></div></header>
 </tbody></table></div>
 <aside><div class="panel"><h3>Rivals · max bid · $ left · spots</h3><table class="side"><tr><td>Mitch</td><td>197</td><td>$200</td><td>4</td></tr><tr><td>Todd</td><td>195</td><td>$200</td><td>6</td></tr><tr><td>Jon</td><td>195</td><td>$200</td><td>6</td></tr><tr><td>Bonin</td><td>195</td><td>$200</td><td>6</td></tr><tr><td>Hlina</td><td>193</td><td>$200</td><td>8</td></tr><tr><td>Joe</td><td>193</td><td>$200</td><td>8</td></tr><tr><td>Henry</td><td>192</td><td>$200</td><td>9</td></tr><tr><td>Brian</td><td>192</td><td>$200</td><td>9</td></tr><tr><td>Josh</td><td>192</td><td>$200</td><td>9</td></tr><tr><td>Chris</td><td>192</td><td>$200</td><td>9</td></tr><tr><td>Matthew</td><td>188</td><td>$200</td><td>13</td></tr></table></div>
 <div class="panel"><h3>Last sales</h3><table class="side"><tr><td class="empty">No sales yet</td></tr></table></div></aside></main>
-<script>const GEN = 1790630997.332;
+<script>const GEN = 1790639776.493;
 const q = document.getElementById('q'), hits = document.getElementById('hits');
 const rows = [...document.querySelectorAll('#pool tbody tr')];
 const fold = t => t.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase();
