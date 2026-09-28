@@ -9,6 +9,7 @@ Score = ΔBASE + 300·(Δw − 0.3·N) + 250·Δw(season) + 80·ΔP(title)
 ```
 
 - `ΔP(title)` in percentage points. `N` = net incoming players (in − out, named cuts included, picks excluded) — formula `Δw` is a per-piece sum and reads high per extra incoming body.
+- An outgoing player we'd cut anyway costs nothing: add his BASE back into ΔBASE and Score, and read the win columns net of losing him.
 - Fixed rates — never refit per team, roster or archive. Constants live in `simlib/runner.py`; change both together.
 - **A baseline, not a verdict.** It gives a starting order; still read every number individually, in the context of our roster, `SIT`, `Δage` and counterparty.
 - Within ~250 is a tie; wider on pick-heavy or uneven-body deals (`ΔBASE` is a band there, §BASE).

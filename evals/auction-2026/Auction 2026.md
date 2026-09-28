@@ -46,25 +46,25 @@ Rules (Sheet, 2026-09-24):
 
 ## Cheat card
 
-`ΔP` = `dPtitle`. `Δw` = `Δw (season)` over the $1 body. `Score` = `values.tsv` `score`. `Cap` = opening cap at k = 1 (`Max$`). `Sheet #` = position on the Sheet's FA list. ***Bold italic*** rows are ours, priced as keep vs the $1 body (§Ours); not bid targets.
+`ΔP` = `dPtitle`. `Δw` = `Δw (season)` over the $1 body. `Score` = `values.tsv` `score`. `Cap` = opening cap at k = 1 (`Max$`). `Sheet #` = position on the Sheet's FA list. Sorted by Score; bids still run on tier. ***Bold italic*** rows are ours, priced as keep vs the $1 body (§Ours); not bid targets.
 
 | Tier | Player | Tm | Age | BASE | ΔP | Δw | Score | Market$ | Cap | Sheet # |
 |---|---|---|---:|---:|---:|---:|---:|---:|---:|---:|
-| 1 | ***De'Andre Hunter*** | SAC | 28.8 | 510 | +0.93 | +0.04 | 581 | – | – | – |
 | 1 | ***Jarace Walker*** | IND | 23.0 | 424 | +1.47 | +0.17 | 588 | – | – | – |
-| 1 | ***Keon Ellis*** | BKN | 26.7 | 278 | +1.13 | +0.06 | 324 | – | – | – |
+| 1 | ***De'Andre Hunter*** | SAC | 28.8 | 510 | +0.93 | +0.04 | 581 | – | – | – |
 | 1 | Baylor Scheierman | BOS | 26.0 | 268 | +1.35 | +0.15 | 375 | 73 | 94 | 16 |
+| 2 | ***Jay Huff*** | IND | 29.0 | 372 | +0.47 | +0.04 | 365 | – | – | – |
+| 1 | ***Keon Ellis*** | BKN | 26.7 | 278 | +1.13 | +0.06 | 324 | – | – | – |
+| 2 | ***Adem Bona*** | PHI | 23.4 | 257 | +0.76 | +0.13 | 322 | – | – | – |
 | 1 | Dominick Barlow | PHI | 23.3 | 174 | +1.01 | +0.10 | 246 | 69 | 94 | 4 |
 | 1 | Jaxson Hayes | UTA | 26.3 | 129 | +1.28 | +0.03 | 205 | 61 | 86 | 10 |
-| 1 | Matisse Thybulle | LAL | 29.6 | 23 | +1.07 | +0.10 | 82 | 26 | 51 | 71 |
-| 2 | ***Jay Huff*** | IND | 29.0 | 372 | +0.47 | +0.04 | 365 | – | – | – |
-| 2 | ***Adem Bona*** | PHI | 23.4 | 257 | +0.76 | +0.13 | 322 | – | – | – |
 | 2 | ***Khris Middleton*** | WAS | 35.1 | 162 | +0.45 | +0.07 | 203 | – | – | – |
 | 2 | ***Karlo Matković*** | NOP | 25.4 | 161 | +0.80 | +0.05 | 185 | – | – | – |
 | 2 | Vít Krejčí | POR | 26.3 | 148 | +0.62 | +0.10 | 159 | 43 | 44 | 17 |
 | 2 | Al Horford | GSW | 40.3 | 117 | +0.48 | +0.07 | 109 | 39 | 44 | 22 |
 | 2 | Luka Garza | BOS | 27.7 | 107 | +0.51 | +0.04 | 91 | 40 | 44 | 6 |
 | 2 | Kentavious Caldwell-Pope | PHI | 33.6 | 78 | +0.60 | +0.07 | 89 | 36 | 44 | 29 |
+| 1 | Matisse Thybulle | LAL | 29.6 | 23 | +1.07 | +0.10 | 82 | 26 | 51 | 71 |
 | 2 | Jarred Vanderbilt | LAL | 27.5 | 66 | +0.63 | +0.05 | 65 | 31 | 39 | 23 |
 | 2 | Simone Fontecchio | MIA | 30.8 | 55 | +0.63 | +0.02 | 44 | 34 | 42 | 11 |
 | 2 | Terance Mann | BKN | 29.9 | 51 | +0.57 | +0.03 | 44 | 36 | 44 | 12 |

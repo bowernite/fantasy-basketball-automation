@@ -2,34 +2,92 @@
 
 Counterparty: Bonin (161016). Contending — 3rd PF, 10.4% title (`Team Projections.md`). Columns: `Out | In` + Score + our five big numbers.
 
-Texts 8/8/26: Brett opened — asked if he's looking to deal and what he wants. No reply (as of 9/10).
+Texts 8/8/26: Brett opened — asked if he's looking to deal and what he wants. No reply until 9/28.
+
+Texts 9/28/26: Brett offered Middleton for his '27 3rd. Michael: "Not bad, I'll think on it. But in general I'm trying to get younger instead of adding guys towards end of career." Won the title last year; has vets on his Fleaflicker trade block (Brett 9/28). Trade block 9/28 (Fleaflicker `isOnTradingBlock`): Sabonis, Markkanen, Nembhard, Draymond, Klay, DeRozan; no picks, no note. Target: his vets for our young pieces and picks.
 
 Screening (9/10/26): 40 shapes simmed. Sims use our 35-body roster (same as eval). Net bodies ≤ +1. Do not float Too lopsided. Bonin is a short-term competitor — prefer shapes that don't load his year-1 much (`Δw (them)`). Every row re-priced 9/25/26 (Score, Δage). Bane+Gordon > Reaves held at Floor despite its Score: it adds to Bonin's season (+0.1 Δw (season) for him) and sits just under Too lopsided.
 
+Screening (9/28/26): 56 young-for-vet shapes simmed on the no-Jon roster (Cade kept; Hlina overlay in). Michael's roster unchanged since 9/2 (checked on the wire 9/28). Every 9/28 row cuts his season, so none loads a competitor. Floor for non-Cade rows ≈ +400 Score. Cade rows are tiered against Jon's open deal, Cade+2.09+'27 1st > SGA+Wells+McBride+Champagnie+Jaylin (+1800 +1100 +1.5 +0.6 +5% +4.1, `Jon.shapes.md`). Out-side picks: '28 1st 1425, Chris '27 2nd 900. In-side picks: Michael '27 3rd 357, Michael '27 1st 1524. Sharpe rows have no Δage (0 projected GP), nor Bona > Draymond. Draymond = Draymond Green; bare Green = Jalen Green. Smith, Green and Camara come from the Hlina deal after the auction, so their rows can't execute before it lands. Middleton > Michael '27 3rd fails on paper (Δw −0.26, ΔP −0.5) because the sim keeps Middleton over a pad body; in practice he is cut after the auction, so the deal is +357 BASE for free.
+
 ## Above floor
 
+Cade > Reaves+Sabonis+Siakam | +3600 +1000 +3.1 +1.6 +18% +5.3
+Cade > Reaves+Markkanen+Siakam | +3500 +1200 +2.6 +1.3 +17% +5.0
+Edey+Kuminga+Walker > Sabonis+Siakam | +3300 +1000 +2.0 +1.4 +15% +7.1
+Edey+Sharpe+Kuminga > Sabonis+Markkanen | +3300 +1000 +1.6 +1.5 +17% +5.5
+Edey+Murray > Sabonis+Markkanen | +3200 +1100 +1.7 +1.3 +16% +4.8
+Cade > Reaves+Sabonis+White | +3200 +800 +2.9 +1.4 +18% +5.2
+Edey+Suggs > Sabonis+Markkanen | +3000 +1000 +1.8 +1.2 +15% +5.2
+Edey+Sharpe > Sabonis+White | +2800 +900 +1.7 +1.3 +14% +6.7
+Sharpe+Kuminga > Sabonis | +2700 +800 +1.2 +1.2 +14% +6.4
+Edey+Eason > Sabonis+White | +2600 +800 +1.7 +1.1 +13% +6.4
+Smith+Kuminga+Walker > Siakam+Hart | +2600 +900 +1.2 +1.0 +12% +8.7
+Edey+Murray+Walker > Sabonis+Markkanen | +2600 +700 +1.4 +1.2 +14% +5.0
+Sharpe+Kuminga > Markkanen | +2500 +1000 +0.7 +1.0 +12% +5.3
+Cade > Sabonis+Siakam+White+Hart | +2400 -300 +3.8 +1.7 +19% +6.5
+Kuminga+Walker > Siakam | +2400 +1000 +1.0 +0.8 +9% +9.1
+Kuminga+Eason > Sabonis | +2400 +700 +1.2 +1.0 +13% +5.2
+Murray+Walker > Markkanen+Draymond | +2400 +1200 +1.0 +0.8 +9% +5.5
+Eason+Kuminga > Markkanen | +2300 +900 +0.7 +0.8 +11% +4.1
+Cade > Reaves+Siakam+White | +2300 +400 +2.4 +1.2 +14% +5.9
+Edey+Kuminga > Sabonis+Hart | +2200 +400 +1.8 +1.1 +12% +6.4
+Cade > Clingan+Sabonis+Siakam | +2200 -300 +3.0 +1.5 +18% +3.6
+Cade > Reaves+Sabonis+Hart | +2200 0 +2.7 +1.3 +16% +4.9
 Kuminga+'27 1st > Markkanen | +2200 +600 +1.3 +0.9 +12% +9.8
+Kuminga+Walker > White | +1800 +800 +0.7 +0.6 +7% +8.8
+Sharpe+Kuminga > Siakam | +1800 +400 +0.7 +0.9 +10% +8.5
+Edey > Sabonis+Draymond | +1700 +500 +1.5 +0.8 +8% +7.2
+Murray+Walker > Markkanen | +1700 +700 +0.4 +0.7 +8% +3.7
 Smith+'27 1st > Clingan | +1700 +400 +0.7 +0.8 +11% +1.2
+Williams+Walker > Hart+Jerome | +1600 +200 +1.1 +0.9 +10% +6.5
 Simons+Walker > White | +1600 +800 +0.7 +0.4 +6% +6.6
+Murray+Kuminga > Markkanen | +1600 +400 +0.5 +0.7 +9% +3.4
+Eason+Kuminga > Siakam | +1500 +300 +0.7 +0.8 +9% +7.3
+Eason+Kuminga > Harden | +1500 +700 +0.6 +0.8 +5% +11.9
+Sharpe+Walker > White | +1500 +500 +0.4 +0.7 +8% +9.1
+Kuminga+'28 1st > Siakam | +1400 0 +1.3 +0.9 +10% +13.9
 Murray+'27 1st > Clingan | +1400 0 +0.9 +0.9 +11% -0.1
 Camara+Walker > Siakam | +1300 +600 +0.5 +0.4 +4% +6.7
+Eason+Walker > White | +1200 +400 +0.4 +0.5 +6% +7.3
 Melton+Gordon > White | +1100 +600 +0.1 +0.2 +4% +2.3
 Smith+Kuminga > Siakam | +1100 +200 +0.4 +0.6 +7% +9.1
+Eason+Kuminga > Zubac | +1100 +400 +0.4 +0.5 +5% +4.3
+Kuminga > Jerome | +1000 +200 +0.8 +0.5 +6% +5.2
+Edey > Sabonis | +1000 0 +1.0 +0.6 +7% +6.0
+Green > Siakam | +1000 +500 +0.6 +0.6 +2% +7.8
 Bane > Markkanen | +1000 +400 +0.3 +0.4 +5% +1.0
+Williams+Sharpe > Harden | +900 +100 +0.1 +1.0 +5% +12.3
+Sharpe > Hart | +900 +100 +0.5 +0.6 +6% ?
+Walker > Nembhard | +900 +700 +0.3 +0.2 +2% +3.6
+Williams+Kuminga > White | +900 -100 +0.3 +0.7 +8% +7.7
+Suggs+Walker > Harden | +900 +400 +0.4 +0.6 +2% +12.2
 Edey+Suggs > Clingan+Powell | +800 0 +0.5 +0.5 +5% +1.1
+Smith+Walker > White | +800 +200 +0.1 +0.3 +4% +8.8
 Murray+Vassell > Markkanen | +700 0 +0.2 +0.4 +7% +3.2
 Vassell+Eason > Siakam | +700 -100 +0.4 +0.5 +7% +6.8
 
 ## Floor
 
+Cade > Reaves+Sabonis+Michael '27 1st | +1800 +400 +1.5 +0.8 +11% +2.6
+Cade > Sabonis+Markkanen+Siakam | +1800 -700 +2.9 +1.4 +18% +5.7
 Bane+Gordon > Reaves | +1500 +1200 -0.2 +0.2 +3% -1.0
+Suggs+Kuminga > Siakam | +700 -200 +0.5 +0.6 +6% +7.3
+Garland+Kuminga > Reaves | +700 +200 0.0 +0.3 +4% +1.7
+Eason > Hart | +700 0 +0.5 +0.4 +5% +6.1
+Kuminga > Nembhard | +700 +400 +0.4 +0.2 +2% +2.7
+Walker+Chris '27 2nd > Hart | +600 -200 +0.8 +0.4 +5% +11.1
 Bane+Walker > Markkanen | +400 -100 0.0 +0.3 +4% +1.6
 
 ## Below bar
 
+Walker > DeRozan | +400 +300 +0.1 +0.2 0% +14.0
+Kuminga > Draymond+Klay | +200 -100 +0.6 +0.2 +2% +12.5
+Walker > Draymond | +200 +100 +0.2 +0.1 0% +13.4
 Smith+Walker+'27 1st > Siakam | -100 -1000 +0.3 +0.6 +7% +10.9
 Garland > Markkanen | -400 -800 +0.1 +0.2 +4% +2.6
 Garland+Reid > Clingan+Powell | -700 -900 0.0 +0.2 +2% -1.0
+
 
 ## Too lopsided
 
@@ -60,5 +118,7 @@ Green+Simons > Siakam | -100 -200 +0.2 +0.4 -1% +7.3
 Green+Smith > Markkanen | -100 -200 -0.4 +0.3 +1% +5.2
 Garland+Gordon > Reaves | 0 0 -0.4 -0.1 0% +0.2
 Bane+Collins > Clingan | 0 -100 -0.5 +0.1 +1% -6.0
+Middleton > Michael '27 3rd | +200 +200 -0.3 -0.1 -1% -16.1 | Us proposed 9/28
+Bona > Draymond | +300 +200 +0.3 +0.1 -1% ?
 Green+Bridges > Siakam+Hart | +600 +400 +0.5 +0.6 -2% +5.2
 Collins+Bridges > Clingan | +1000 +1100 -0.4 +0.1 -2% -6.2
