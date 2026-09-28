@@ -6,7 +6,7 @@ How `values.tsv` prices a row. The plan and card: `Auction 2026.md`. `Market$` m
 
 | Param | Value |
 |---|---|
-| `N`, spots league-wide (us 4, Hlina 10 post-deal; 91 on the Sheet until it lands, and live k corrects) | 93 |
+| `N`, spots league-wide (us 4, Hlina 10; the Sheet has 91 with Hlina at 8, and live k corrects) | 93 |
 | `pool$` = $2,400 − $1 × N | $2,307 |
 | Undrafted 2026 class assumed | every rookie outside the top 36 by BASE |
 
