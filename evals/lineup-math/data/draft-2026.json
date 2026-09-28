@@ -332,6 +332,18 @@
       "chart": "1.18"
     },
     {
+      "round": 2,
+      "slot": 9,
+      "overall": 21,
+      "name": "Karim Lopez",
+      "tm": "MEM",
+      "elig": [
+        "SF",
+        "PF"
+      ],
+      "chart": "1.21"
+    },
+    {
       "round": 3,
       "slot": 6,
       "overall": 30,
@@ -431,18 +443,5 @@
       "chart": "2.04"
     }
   ],
-  "161025": [
-    {
-      "round": 2,
-      "slot": 9,
-      "overall": 21,
-      "name": "Karim Lopez",
-      "tm": "MEM",
-      "elig": [
-        "SF",
-        "PF"
-      ],
-      "chart": "1.21"
-    }
-  ]
+  "161025": []
 }

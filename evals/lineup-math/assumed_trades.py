@@ -12,6 +12,8 @@ MOVES = (
     ("Jalen Green", HLINA, US),
     ("Toumani Camara", HLINA, US),
     ("Jabari Smith", HLINA, US),
+    ("Jake LaRavia", HLINA, US),
+    ("Andre Drummond", HLINA, US),
 )
 
 # (name, from) — gone from the league, not a move
