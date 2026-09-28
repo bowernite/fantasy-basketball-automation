@@ -1,32 +1,32 @@
-# Auction live · room ? 0/5 · 14:49:46
+# Auction live · room ? 0/5 · 16:08:05
 
 **Us** $200 · 4 spots · max bid 197
 **Nominate** Brandon Williams (early)
 
 ## Card: Score, live Market$, gap, our cap
 
-| Tier | Player | Score | Mkt | Gap | Cap |
-|---|---|---:|---:|---:|---:|
-| T1 | Baylor Scheierman | 375 | 70 | +139 | 90 |
-| T1 | Dominick Barlow | 246 | 72 | +79 | 90 |
-| T1 | Jaxson Hayes | 205 | 62 | +65 | 90 |
-| T1 | Marvin Bagley | 201 | 68 | +55 | 90 |
-| T2 | Dru Smith | 175 | 52 | +55 | 47 |
-| T2 | Vít Krejčí | 159 | 46 | +52 | 47 |
-| T2 | Julian Strawther | 149 | 36 | +55 | 45 |
-| T2 | Al Horford | 109 | 41 | +27 | 47 |
-| T2 | Zach Collins | 107 | 28 | +38 | 35 |
-| T2 | Matisse Thybulle | 82 | 23 | +28 | 29 |
-| T3 | Luka Garza | 91 | 47 | +10 | 0 |
-| T3 | Kentavious Caldwell-Pope | 89 | 37 | +18 | 0 |
-| T3 | Jarred Vanderbilt | 65 | 34 | +6 | 0 |
-| T3 | Terance Mann | 44 | 41 | -14 | 0 |
-| T3 | Simone Fontecchio | 44 | 40 | -13 | 0 |
-| T3 | Trayce Jackson-Davis | 23 | 18 | -3 | 0 |
-| T3 | Nick Richards | 20 | 21 | -9 | 0 |
-| T3 | Kevon Looney | 16 | 15 | -4 | 0 |
-| T3 | Kenrich Williams | 2 | 25 | -23 | 0 |
-| T3 | Trendon Watford | 2 | 25 | -23 | 0 |
+| Player | Score | Mkt | Gap | Cap |
+|---|---:|---:|---:|---:|
+| Baylor Scheierman | 375 | 70 | +139 | 100 |
+| Dominick Barlow | 246 | 72 | +79 | 71 |
+| Jaxson Hayes | 205 | 62 | +65 | 66 |
+| Marvin Bagley | 201 | 68 | +55 | 56 |
+| Dru Smith | 175 | 52 | +55 | 48 |
+| Vít Krejčí | 159 | 46 | +52 | 42 |
+| Julian Strawther | 149 | 36 | +55 | 40 |
+| Al Horford | 109 | 41 | +27 | 32 |
+| Zach Collins | 107 | 28 | +38 | 32 |
+| Luka Garza | 91 | 47 | +10 | 22 |
+| Kentavious Caldwell-Pope | 89 | 37 | +18 | 22 |
+| Matisse Thybulle | 82 | 23 | +28 | 22 |
+| Jarred Vanderbilt | 65 | 34 | +6 | 12 |
+| Terance Mann | 44 | 41 | -14 | 6 |
+| Simone Fontecchio | 44 | 40 | -13 | 6 |
+| Trayce Jackson-Davis | 23 | 18 | -3 | 0 |
+| Nick Richards | 20 | 21 | -9 | 0 |
+| Kevon Looney | 16 | 15 | -4 | 0 |
+| Kenrich Williams | 2 | 25 | -23 | 0 |
+| Trendon Watford | 2 | 25 | -23 | 0 |
 
 ## Rivals: max bid · $ left · spots
 

@@ -49,6 +49,8 @@ ditto "$APP_PATH" "$INSTALLED_APP_PATH"
 "$LSREGISTER" -u "$APP_PATH"
 rm -rf "$APP_PATH"
 "$LSREGISTER" -f "$INSTALLED_APP_PATH"
+# Unregistering the build copy also drops the installed extension (same bundle id)
+pluginkit -a "$INSTALLED_APP_PATH/Contents/PlugIns/$SAFARI_APP_NAME Extension.appex"
 
 echo "✅ Installed: $INSTALLED_APP_PATH"
 echo "Next: open \"$INSTALLED_APP_PATH\" once, then enable it in Safari -> Settings -> Extensions"

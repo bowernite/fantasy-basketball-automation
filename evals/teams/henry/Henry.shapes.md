@@ -12,6 +12,8 @@ if Cade (Siakam)+Fox = if Cade (Siakam) plus Chris's Middleton+Chris '27 2nd+own
 
 Fox deal executed 9/28 (Fleaflicker 485835). Middleton, Chris '27 2nd and own '27 2nd are Chris's now, so rows that send any of them can't be offered.
 
+Cade kept+Fox = wire + `Pending Trades.md` + Fox, Cade kept (`$TMPDIR/ff-F`, 35 bodies; config `$TMPDIR/ff-sim-henry-cade-F.json`; 9/28/26). Cade rows are floored against Michael's Cade > Reaves+Sabonis+Siakam (+3400, ΔP +16%), which also leaves Garland/Sharpe/Williams free for a non-Cade Giannis deal.
+
 ## Above floor
 
 Garland+Sharpe+Williams > Giannis | +2500 +1100 0.0 +1.3 +11% +5.2 | no-Jon
@@ -65,6 +67,10 @@ Giddey+Sharpe+'28 1st > Giannis | +1000 +100 +0.3 +0.9 +8% +9.6 | no-Jon
 
 ## Below bar
 
+Cade+Sharpe+Williams > Giannis+Okongwu+Rollins | +2600 +500 +2.1 +1.5 +15% +3.3 | Cade kept+Fox
+Cade > Giannis+Rollins | +1800 +400 +1.8 +0.9 +9% +4.2 | Cade kept+Fox
+Cade > Giannis+McDaniels | +1600 +700 +1.4 +0.7 +6% +5.3 | Cade kept+Fox
+Cade > Giannis+Hartenstein | +1600 +500 +1.3 +0.7 +8% +6.0 | Cade kept+Fox
 Giddey+Green > Giannis | +1000 +900 -0.1 +0.3 +1% +7.6 | if Jon deal
 Giddey+Sharpe+'28 1st > Giannis | +800 +100 +0.3 +0.7 +5% +9.6 | if Jon deal
 Giddey+Wells+McBride+'28 1st > Giannis | +700 +100 0.0 +0.4 +4% +9.2 | if Jon deal
@@ -77,14 +83,18 @@ Garland+Edey+'28 1st > Giannis | 0 -500 +0.2 +0.5 +2% +7.9 | if Jon deal
 
 Middleton > Giannis | +9500 +6800 +2.5 +1.8 +18% -3.4 | no-Jon
 Middleton > Giannis | +9300 +6800 +2.5 +1.5 +16% -3.4 | if Jon deal
+Cade > Giannis+Knueppel | +4700 +3300 +1.7 +0.8 +9% +3.0 | Cade kept+Fox
+Cade > Giannis+Okongwu+Rollins | +5200 +2800 +3.3 +1.4 +15% +3.3 | Cade kept+Fox
 Bane+Sharpe+Williams > Giannis | +3800 +2300 +0.2 +1.5 +12% +3.8 | no-Jon
 Bane+Sharpe+Williams > Giannis | +3700 +2300 +0.2 +1.2 +11% +3.8 | if Jon deal
 Garland+'27 1st > Giannis | +3700 +2100 +1.3 +1.2 +12% +7.8 | no-Jon
+Cade > Giannis+Okongwu | +3000 +1400 +1.9 +1.1 +11% +4.8 | Cade kept+Fox
 
 ## Doesn't meet our minimums
 
 Garland+Edey+Green > Giannis | -1000 -700 -0.8 +0.2 -4% +6.4 | no-Jon
 Garland+Edey+Green > Giannis | -900 -700 -0.8 +0.1 -2% +6.4 | if Jon deal
+Cade > Giannis | -500 -1100 +0.5 +0.4 +4% +6.8 | Cade kept+Fox
 Giddey+Edey > Giannis | -200 0 -0.2 +0.1 -2% +7.7 | if Jon deal
 Giddey+Edey > Giannis | 0 0 -0.2 +0.1 -1% +7.7 | no-Jon
 Garland+Edey+Sharpe > Giannis | +300 -100 -0.4 +0.5 +3% +6.1 | if Jon deal

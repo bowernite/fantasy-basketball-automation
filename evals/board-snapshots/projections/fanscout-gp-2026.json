@@ -1,9 +1,9 @@
 {
  "season": "2026-27",
  "source": "fanscout projections",
- "url": "https://fanscout.pro/projections",
+ "url": "https://fanscout.pro/projections?players=1000",
  "title": "NBA Fantasy Basketball Projections 2026\u201327 | FanScout",
- "fetched": "2026-09-12T15:22:09Z",
+ "fetched": "2026-09-28T21:05:48Z",
  "depth": 481,
  "rookies": [
   {
@@ -679,6 +679,11 @@
    "team": "MIN"
   },
   {
+   "name": "Khaman Maluach",
+   "gp": 68.0,
+   "team": "PHX"
+  },
+  {
    "name": "P.J. Washington",
    "gp": 68.0,
    "team": "DAL"
@@ -722,11 +727,6 @@
    "name": "Andrew Nembhard",
    "gp": 68.0,
    "team": "IND"
-  },
-  {
-   "name": "Mark Williams",
-   "gp": 65.0,
-   "team": "PHX"
   },
   {
    "name": "Darryn Peterson",
@@ -837,6 +837,11 @@
    "name": "Isaiah Stewart",
    "gp": 68.0,
    "team": "MEM"
+  },
+  {
+   "name": "Mark Williams",
+   "gp": 24.0,
+   "team": "PHX"
   },
   {
    "name": "Jalen Smith",
@@ -1144,11 +1149,6 @@
    "team": "MIL"
   },
   {
-   "name": "Khaman Maluach",
-   "gp": 68.0,
-   "team": "PHX"
-  },
-  {
    "name": "Mouhamed Gueye",
    "gp": 59.0,
    "team": "ATL"
@@ -1267,6 +1267,11 @@
    "name": "Deandre Ayton",
    "gp": 73.0,
    "team": "WAS"
+  },
+  {
+   "name": "Oso Ighodaro",
+   "gp": 73.0,
+   "team": "PHX"
   },
   {
    "name": "Baylor Scheierman",
@@ -1417,11 +1422,6 @@
    "name": "Dean Wade",
    "gp": 68.0,
    "team": "PHI"
-  },
-  {
-   "name": "Oso Ighodaro",
-   "gp": 73.0,
-   "team": "PHX"
   },
   {
    "name": "Kyle Anderson",
