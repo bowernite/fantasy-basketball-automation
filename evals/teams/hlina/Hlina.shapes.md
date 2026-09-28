@@ -10,6 +10,8 @@ Competitor read: every Maxey+X or Paolo+X row costs Hlina 0.7 to 2.7 formula Δw
 
 Priced 9/27/26 on the 9/2 rosters (checked against Fleaflicker 9/27, no changes) with Hlina's eval columns re-run 9/27. Incoming picks: Matthew '27 1st 2687 (band midpoint), Hlina '27 1st 1425.
 
+Fox deal executed 9/28 (Fleaflicker 485835). Middleton, Chris '27 2nd and own '27 2nd (bare '27 2nd) are Chris's now, so rows that send any of them can't be offered.
+
 ## Above floor
 
 Cade > Maxey+Buzelis | +2600 +1200 +1.2 +0.7 +12% -0.8 | Hlina rejected 9/28

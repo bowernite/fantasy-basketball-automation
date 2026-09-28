@@ -21,8 +21,9 @@ That command:
 - Builds `extension/dist/*`
 - Syncs a Safari-safe web extension source (excluding `extension/signed/`)
 - Builds the macOS app via `xcodebuild`
+- Installs it to `/Applications/Fantasy Basketball Automation.app`, replacing any prior install, and removes the build output
 
-The output prints the built `.app` path. Open that app once, then in Safari go to `Safari -> Settings -> Extensions` and enable the extension.
+Safari lists one extension per installed copy of the host app, so keep only this one. Open it once, then in Safari go to `Safari -> Settings -> Extensions` and enable the extension.
 
 ## Signing it so it persists across Safari restarts
 

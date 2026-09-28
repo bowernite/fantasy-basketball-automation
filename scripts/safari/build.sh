@@ -36,6 +36,20 @@ if [ -z "$APP_PATH" ]; then
   exit 0
 fi
 
-echo "✅ Build complete: $APP_PATH"
-echo "Next: open \"$APP_PATH\""
+# Safari lists one extension per registered host app, so install a single copy and drop the build output
+LSREGISTER="/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister"
+INSTALLED_APP_PATH="/Applications/$SAFARI_APP_NAME.app"
+
+osascript -e "quit app \"$SAFARI_APP_NAME\"" 2>/dev/null || true
+if [ -d "$INSTALLED_APP_PATH" ]; then
+  "$LSREGISTER" -u "$INSTALLED_APP_PATH"
+  rm -rf "$INSTALLED_APP_PATH"
+fi
+ditto "$APP_PATH" "$INSTALLED_APP_PATH"
+"$LSREGISTER" -u "$APP_PATH"
+rm -rf "$APP_PATH"
+"$LSREGISTER" -f "$INSTALLED_APP_PATH"
+
+echo "✅ Installed: $INSTALLED_APP_PATH"
+echo "Next: open \"$INSTALLED_APP_PATH\" once, then enable it in Safari -> Settings -> Extensions"
 

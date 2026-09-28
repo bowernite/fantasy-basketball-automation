@@ -30,6 +30,10 @@ Non-Cade shapes (9/28, before the draft): simmed with the Bonin deal applied (Ca
 
 Fox re-price 9/28/26: Jabari Smith+Mitch '27 2nd > JJJ, Jabari Smith > Queen, White+Mitch '27 2nd > Keyonte and White > Queen priced on the Cade (Siakam) roster with Chris's Middleton+Chris '27 2nd+own '27 2nd > Fox also applied (`$TMPDIR/ff-CF`, 37 bodies). Other post-Cade rows are pre-Fox and read about +100 Score / +1% ΔP(title) high next to them.
 
+Texts 9/28: Brett sent Jabari Smith+Mitch '27 2nd > JJJ, White+Mitch '27 2nd > Keyonte and White > Queen at 3:31p. Mitch replied 3:48p: "Not interested in those. Don't care for Coby". Keep Coby White out of shapes. Edey rows (9/28) are on the CF roster (`$TMPDIR/ff-CF`, config `$TMPDIR/ff-sim-mitch-r2-CF.json`). Fox > JJJ and Fox > Keyonte weren't archived because the CF eval has no BASE for Fox. Their win columns were Δw (season) −0.1 / −0.2 and ΔP +2% / +1%.
+
+Fox deal executed 9/28 (Fleaflicker 485835). Middleton, Chris '27 2nd (KC '27 2nd) and own '27 2nd are Chris's now, so rows that send any of them can't be offered.
+
 ## Above floor
 
 Cade+Kuminga > Deni+Franz+Queen | +3000 +1200 +1.8 +1.0 +14% -1.1
@@ -51,17 +55,23 @@ Cade+Simons > Deni+Kessler+JJJ | +2500 +1100 +1.6 +0.8 +11% +0.1
 Cade+Kuminga+Hunter > Deni+Franz+Queen | +2500 +700 +1.6 +1.0 +14% -1.2 | Mitch rejected 9/25
 Cade+Kuminga+Walker > Deni+Franz+Queen | +2500 +800 +1.5 +0.9 +13% -1.0
 Cade+'27 1st+'28 1st+'28 2nd > Deni+Flagg | +2500 +800 +1.6 +1.0 +14% ~
+Edey+Camara > JJJ+Queen | +1700 +1100 +0.7 +0.2 +4% -1.5
 Camara+Mitch '27 2nd > JJJ | +1600 +1200 +0.4 +0.1 +2% +2.5
-Jabari Smith+Mitch '27 2nd > JJJ | +1500 +1100 +0.2 +0.2 +4% +4.3
+Edey+Jabari Smith > JJJ+Queen | +1500 +1000 +0.5 +0.2 +5% -0.2
 Kyrie > JJJ | +1400 +1200 +0.1 0.0 +2% -8.0
 Kyrie > Keyonte | +1200 +1100 +0.1 -0.1 +1% -12.2
 Camara > Queen | +1100 +600 +0.6 +0.2 +4% -5.2
-White+Mitch '27 2nd > JJJ | +1100 +900 0.0 0.0 +2% +1.7
+Edey > JJJ+Mitch '28 2nd | +1100 +1100 0.0 0.0 0% +0.2
+Edey > JJJ+Tre Jones | +1000 +800 +0.6 +0.1 +1% +2.0
 Jabari Smith > Queen | +1000 +500 +0.4 +0.2 +5% -2.2
+Edey+Reid > JJJ+Queen | +900 +600 +0.4 +0.1 +2% -2.0
 Green+Mitch '27 2nd > JJJ | +800 +700 +0.2 +0.2 +1% +3.3
-White+Mitch '27 2nd > Keyonte | +800 +800 0.0 0.0 +1% -2.5
+Edey+Green > JJJ+Queen | +800 +500 +0.4 +0.2 +2% -0.8
 Kyrie+Mitch '27 2nd > JJJ | +700 +500 +0.1 0.0 +2% -4.0
-White > Queen | +600 +300 +0.2 +0.1 +3% -5.4
+Jabari Smith+Mitch '27 2nd > JJJ | +1500 +1100 +0.2 +0.2 +4% +4.3 | Mitch rejected 9/28
+White+Mitch '27 2nd > JJJ | +1100 +900 0.0 0.0 +2% +1.7
+White+Mitch '27 2nd > Keyonte | +800 +800 0.0 0.0 +1% -2.5 | Mitch rejected 9/28
+White > Queen | +600 +300 +0.2 +0.1 +3% -5.4 | Mitch rejected 9/28
 Reid > Queen | +500 +100 +0.3 +0.2 +3% -5.9
 Green > Queen | +400 0 +0.4 +0.2 +2% -3.5
 Kyrie > Queen | +200 -100 +0.3 +0.1 +3% -13.3
@@ -152,13 +162,17 @@ Cade+'26 2.09 > Deni+Franz | +300 -500 +0.7 +0.4 +7% +0.5
 Cade > Deni+Kessler+Tre | +200 -900 +1.4 +0.6 +9% +0.1
 Cade+Don '27 2nd > Deni+Franz | +200 -600 +0.8 +0.4 +7% +0.7
 Cade+Melton > Deni+Franz | +100 -300 +0.3 +0.1 +3% -0.7
+Edey > JJJ | +500 +500 0.0 0.0 0% +2.1
 Cade > Kessler+JJJ+'26 1.08 | 0 -400 +0.7 +0.1 +3% -0.8
+Edey+Mitch '27 2nd > JJJ | -200 -200 0.0 0.0 0% +3.3
+Reid+Mitch '27 2nd > Queen | -300 -600 +0.3 +0.1 +2% -3.9
 Cade+KC '27 2nd > Deni+Franz | 0 -700 +0.8 +0.4 +7% +0.7
 Cade+Suggs > Luka | -300 -600 -0.2 +0.2 +3% +1.9
 Cade+Hunter+'26 2.09 > Deni+Franz | -300 -1000 +0.4 +0.4 +6% +0.4
 Cade > Deni+JJJ | -500 -800 +0.4 +0.1 +3% +0.7
 Cade+Eason > Deni+Franz | -500 -900 +0.1 +0.2 +5% -0.2
 Cade > Deni+Keyonte | -700 -1000 +0.4 0.0 +3% -0.9
+Edey > Queen | -700 -800 +0.2 0.0 +1% -3.2
 Cade+Garland > Flagg+Kessler | -800 -900 +0.1 -0.1 +2% -4.1
 
 ## Too lopsided
@@ -175,6 +189,7 @@ Cade+own '27 2nd > Deni+Franz+Mitch '28 1st+Mitch '28 2nd | +2600 +1800 +0.8 +0.
 Cade > Deni+Kessler+JJJ | +3500 +1800 +2.0 +1.0 +14% +0.3
 Cade > Deni+Franz+Mitch '28 1st | +2500 +1700 +0.8 +0.4 +7% -1.4
 Cade > Deni+Kessler+Mitch '27 1st+Mitch '28 1st | +2500 +1700 +0.8 +0.4 +7% -2.0
+Kyrie+Jabari Smith > JJJ+Queen | +2400 +1700 +0.5 +0.2 +6% -5.4
 White > JJJ | +1800 +1600 0.0 0.0 +2% -0.1
 Cade+Melton > Deni+Franz+Queen | +3000 +1500 +1.6 +0.8 +12% -1.7
 Cade+Kuminga > Deni+JJJ+Keyonte | +2700 +1400 +1.3 +0.6 +11% -0.2
@@ -198,9 +213,12 @@ Cade > Deni+'26 1.04 | -500 -400 +0.1 -0.2 -1% -1.3
 Kyrie+Edey > Deni | -500 -100 -0.6 -0.1 -3% -3.9
 Cade > Deni+Kessler | -400 -1300 +0.8 +0.4 +7% -0.1
 Edey+Green > Deni | -300 0 -0.5 0.0 -4% +0.7
+Kyrie+Jabari Smith > JJJ | -400 0 -0.9 -0.2 -1% -2.6
 Cade+Mark > Deni+Kessler+'26 1.10 | -200 -1200 +0.6 +0.7 +8% -1.0
+Green+Jabari Smith > JJJ | -200 +100 -0.8 -0.1 -1% +2.4
 Kyrie+Collins > JJJ | -100 +400 -0.8 -0.4 -4% -5.4
 Kyrie+Green > Franz | +200 +500 -0.6 -0.1 -3% -5.1
+Edey > Keyonte | +200 +300 0.0 -0.2 -1% -2.1
 Cade+Collins > Luka | +300 +300 -0.3 +0.1 +1% +0.9
 Kyrie+White > Franz | +400 +800 -0.8 -0.3 -2% -5.8
 Kyrie+Green > Deni | +600 +800 -0.5 +0.1 -2% -4.4

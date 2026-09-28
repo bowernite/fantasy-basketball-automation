@@ -16,6 +16,8 @@ Embiid thread (9/28 texts): Brett 3:30p sent Naz Reid+Keegan Murray > Towns · N
 
 Fox re-price 9/28/26: status `if Cade (Siakam)+Fox` = priced on the Cade (Siakam) roster with Chris's Middleton+Chris '27 2nd+own '27 2nd > Fox also applied (`$TMPDIR/ff-CF`, 37 bodies). Other post-Cade rows are pre-Fox and read about +100 Score / +1% ΔP(title) high next to them.
 
+Fox deal executed 9/28 (Fleaflicker 485835). Middleton, Chris '27 2nd and own '27 2nd are Chris's now, so rows that send any of them can't be offered.
+
 ## Above floor
 
 Edey > Towns | +1900 +1200 +0.8 +0.5 +6% +6.9 | if Cade (Siakam)+Fox

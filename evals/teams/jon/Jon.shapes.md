@@ -14,6 +14,10 @@ Post-Cade 9/28/26: Jon passed on Cade 9/28 (thread dead). 20 no-Cade shapes simm
 
 Fox re-price 9/28/26: Chaney+'27 1st > Sharpe+Wells, Chaney+'27 1st > Sharpe+McBride and Kuminga+'27 1st > Sharpe+Watson priced on the Cade (Siakam) roster with Chris's Middleton+Chris '27 2nd+own '27 2nd > Fox also applied (`$TMPDIR/ff-CF`, 37 bodies). Other post-Cade rows are pre-Fox and read about +100 Score / +1% ΔP(title) high next to them.
 
+Mark sale 9/28/26 (`$TMPDIR/ff-CF`, 37 bodies, config `$TMPDIR/ff-sim-sharpe-mark-CF.json`): Mark > Sharpe+Wells, Sharpe, Watson, McBride+Wells. Mark is also in Henry's sent Giannis offers 1–2.
+
+Fox deal executed 9/28 (Fleaflicker 485835). Middleton, Chris '27 2nd ('27 KC 2nd) and own '27 2nd (bare '27 2nd) are Chris's now, so rows that send any of them can't be offered.
+
 ## Above floor
 
 Walker+2.09+'27 2nd > Sharpe+Watson | +1800 +1000 +1.2 +0.6 +5% +4.3
@@ -34,6 +38,7 @@ Kuminga+'27 1st > Sharpe+Watson | +1300 +700 +1.3 +0.3 +3% +5.0
 Walker+2.09 > Sharpe+Jaylin | +1100 +600 +0.7 +0.3 +4% +3.8
 Eason+2.09+'27 2nd > Sharpe+Watson | +1100 +300 +0.9 +0.6 +6% +2.3 | Us proposed 9/22
 Chaney+'27 1st > Sharpe+McBride | +1100 +500 +1.3 +0.3 +3% +6.0
+Mark > Sharpe+Wells | +1000 +500 +0.7 +0.3 +3% -0.4
 Kuminga+2.09 > Sharpe+McBride | +1000 +300 +0.9 +0.4 +6% +4.3 | Jon rejected 9/22
 2.09+'27 Don 2nd > Sharpe+McBride | +1000 +200 +1.2 +0.5 +7% +5.5
 2.09 > Raynaud+McBride | +1000 +700 +0.8 +0.3 +3% +4.3
@@ -187,11 +192,14 @@ Walker+2.09 > Watson | +400 +200 +0.3 +0.3 0% +3.0
 Cade+'27 1st > SGA | +400 0 +0.3 +0.2 +3% +4.7
 Cade+'28 1st > SGA | +400 0 +0.3 +0.2 +3% +5.0
 Kuminga+2.09 > Watson | +300 0 +0.3 +0.3 +2% +3.3
+Mark > Sharpe | +200 -100 +0.2 +0.2 +3% +0.1
 '27 KC 2nd > Raynaud | +200 +100 +0.5 +0.1 +1% +4.4
 Kuminga+'27 2nd > Raynaud+McBride | +200 0 +0.6 +0.1 +1% +4.3
 Edey > Fears+Sharpe | +100 0 +0.6 -0.1 +1% -1.7
 Edey > Sharpe+Watson | +100 0 +0.5 0.0 0% +0.2
+Mark > Watson | 0 0 -0.1 +0.2 0% -0.7
 Walker+'28 2nd > Raynaud | 0 -100 +0.2 -0.1 0% +3.8
+Mark > McBride+Wells | -300 -400 +0.1 +0.2 +1% -0.6
 
 ## Too lopsided
 

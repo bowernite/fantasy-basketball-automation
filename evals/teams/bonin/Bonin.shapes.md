@@ -14,6 +14,8 @@ Texts 9/28/26 (Cade): Brett offered Cade > Reaves+Sabonis+Siakam. Michael: "Last
 
 Fox re-price 9/28/26: the four Cade menu rows (Reaves+Sabonis+Siakam / +White, Reaves+Siakam+White, Reaves+Sabonis+Hart) priced with Chris's Middleton+Chris '27 2nd+own '27 2nd > Fox also applied on the Cade-kept roster (`$TMPDIR/ff-F`, 35 bodies). Middleton goes to Chris in that deal, so Middleton > Michael '27 3rd can't execute.
 
+Fox deal executed 9/28 (Fleaflicker 485835). Middleton, Chris '27 2nd and own '27 2nd are Chris's now, so rows that send any of them can't be offered.
+
 ## Above floor
 
 Cade > Reaves+Markkanen+Siakam | +3500 +1200 +2.6 +1.3 +17% +5.0

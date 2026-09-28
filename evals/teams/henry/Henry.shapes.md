@@ -10,6 +10,8 @@ Sims: 9/28/26. Out-side picks: '27 1st 1425, '28 1st 1425, Chris '27 2nd 880 (mi
 
 if Cade (Siakam)+Fox = if Cade (Siakam) plus Chris's Middleton+Chris '27 2nd+own '27 2nd > Fox (`$TMPDIR/ff-CF`, 37 bodies; 9/28/26).
 
+Fox deal executed 9/28 (Fleaflicker 485835). Middleton, Chris '27 2nd and own '27 2nd are Chris's now, so rows that send any of them can't be offered.
+
 ## Above floor
 
 Garland+Sharpe+Williams > Giannis | +2500 +1100 0.0 +1.3 +11% +5.2 | no-Jon

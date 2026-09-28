@@ -1,6 +1,6 @@
 # FA auction 2026 — Score ranking
 
-Simmed `values.tsv` rows at `score` ≥ 100, with our bottom 8 in ***bold italic*** (method: `Auction 2026.md` §Ours). Chaney Johnson −92. 2026-class rows drop out once drafted. Within ~250 is a tie (`Score.md`). Tier = Score band, gated on ΔP ≥ +0.15 (`Auction 2026.md` §Tiers); `Gap`: `Pricing.md`.
+Simmed `values.tsv` rows at `score` ≥ 100, with our bottom 8 in ***bold italic*** (method: `Auction 2026.md` §Ours). Chaney Johnson −92. Middleton went to Chris 9/28 (Fox deal); every row is priced pre-Fox. 2026-class rows drop out once drafted. Within ~250 is a tie (`Score.md`). Tier = Score band, gated on ΔP ≥ +0.15 (`Auction 2026.md` §Tiers); `Gap`: `Pricing.md`.
 
 | Player | Tier | Score | BASE | ΔP | Market$ | Gap |
 |---|---|---:|---:|---:|---:|---:|
@@ -18,7 +18,6 @@ Simmed `values.tsv` rows at `score` ≥ 100, with our bottom 8 in ***bold italic
 | Koa Peat | – | 218 | 351 | −0.37 | 27 | +99 |
 | Henri Veesaar | – | 215 | 321 | −0.24 | 27 | +97 |
 | Jaxson Hayes | 1 | 205 | 129 | +1.28 | 58 | +61 |
-| ***Khris Middleton*** | 1 | 203 | 162 | +0.45 | – | – |
 | Ryan Nembhard | – | 202 | 324 | −0.49 | 53 | +64 |
 | Marvin Bagley | 1 | 201 | 197 | +0.29 | 64 | +52 |
 | Richie Saunders | – | 195 | 349 | −0.53 | 27 | +86 |

@@ -14,7 +14,6 @@ Rules (Sheet, 2026-09-24):
 **Buy 4 on the Sheet's 4 open spots. After the auction, cut Chaney Johnson and Karlo Matković.** Middleton went to Chris in the Fox deal (9/28, 485835, body-even), so Matković is the second cut.
 
 - Card `dPtitle`, `score` and `Δw '26–'27 ours` were priced pre-Fox, on the roster with Middleton. Fox deepens it, so buys read a bit lower (§Trades that add bodies). Not re-simmed.
-
 - The Hlina deal (`Pending Trades.md`) lands after the auction. No cuts before it. When it lands (+2 bodies, 40), the two cuts take us back to 38.
   - If our 4th buy is a T2 or worse, cut the weaker of it and Matković (`Score ranking.md`).
 - **Cuts.** Chaney is the worst body on every read. Matković has the lowest Score of the bodies left (185, vs Bona 322, Ellis 324, Huff 365). Huff and Ellis cut instead read the same pp, but they carry BASE 372 and 278.
