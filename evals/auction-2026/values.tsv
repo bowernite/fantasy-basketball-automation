@@ -18,102 +18,102 @@ player_id	name	POS	AGE	NBA	FPts/Gp	GPp	BASE	Δw	Δw '26–'27 ours	sheet_pts	Win
 2877	Christian Anderson	PG/SG	20.5	CHA	15.6	58	749	0.13	-0.16		57	0	232	73		'26 class				
 2860	Allen Graves	SF/PF	20.2	TOR	13.2	72	792	0.10	-0.08		41	0	246	73		'26 class				
 2890	Cameron Carr	PG/SG	21.8	LAL	16.4	58	706	0.15	-0.05		67	0	218	72		'26 class				
-2568	Baylor Scheierman	PG/SG	26.0	BOS	16.9	72	268	0.20	0.01	1042	93	44	78	66	100	rot0	1.35	375	197	131
+2568	Baylor Scheierman	PG/SG	26.0	BOS	17.0	72	268	0.20	-0.00	1042	93	44	78	66	100	rot0	0.87	332	197	131
 2859	Labaron Philon	PG/SG	20.8	PHI	12.4	48	632	0.06	-0.11		21	0	195	55		'26 class				
-2360	Dominick Barlow	SF/PF	23.3	PHI	17.2	69	174	0.20	-0.02	1350.75	93	64	48	68	71	rot1	1.01	246	142	74
-2269	Brandon Williams	PG/SG	26.8	GSW	14.9	73	205	0.14	-0.02	1491.75	62	73	58	68		miss · rot2	0.11	187	108	40
+2360	Dominick Barlow	SF/PF	23.3	PHI	17.0	69	174	0.19	-0.02	1350.75	93	64	48	68	71	rot1	0.73	218	154	86
+2269	Brandon Williams	PG/SG	26.8	GSW	15.0	73	205	0.15	-0.03	1491.75	62	73	58	68		miss · rot2	-0.11	168	119	51
 2903	Karim Lopez	SF/PF	19.5	MEM	13.3	48	542	0.07	-0.16		26	0	166	49		'26 class				
-1719	Marvin Bagley	SF/PF	27.5	DEN	15.9	66	197	0.15	0.00	1369.25	67	65	55	64	56		0.29	201	116	52
+1719	Marvin Bagley	SF/PF	27.5	DEN	15.8	66	197	0.15	0.01	1369.25	67	65	55	64	56		-0.07	173	122	58
 2916	Bennett Stirtz	PG/SG	23.0	OKC	11.3	46	546	0.05	-0.13		15	0	167	46		'26 class				
-1885	Jaxson Hayes	PF/C	26.3	UTA	17.6	68	129	0.21	-0.10	1104.5	98	48	33	58	66		1.28	205	119	61
-2619	Quinten Post	C	26.5	MEM	16.2	68	202	0.17	-0.11	1066.5	77	46	57	58		rot2	0.09	169	98	40
-1895	Goga Bitadze	PF/C	27.2	ORL	16.4	54	227	0.14	-0.10	1135.5	62	50	65	58		GPp<map	-0.04	177	103	45
-2798	Ryan Nembhard	PG/SG	23.5	CHA	13.4	50	324	0.08	-0.17	989.25	31	41	96	53		rot1 · GPp<map · '25 rookie	-0.49	202	117	64
+1885	Jaxson Hayes	PF/C	26.3	UTA	10.5	68	129	0.06	-0.14	1104.5	98	48	33	58	66		-0.03	44	32	-26
+2619	Quinten Post	C	26.5	MEM	16.3	68	202	0.17	-0.11	1066.5	77	46	57	58		rot2	-0.16	147	104	46
+1895	Goga Bitadze	PF/C	27.2	ORL	16.5	54	227	0.15	-0.09	1135.5	62	50	65	58		GPp<map	-0.06	179	127	69
+2798	Ryan Nembhard	PG/SG	23.5	CHA	13.5	50	324	0.08	-0.16	989.25	31	41	96	53		rot1 · GPp<map · '25 rookie	-0.44	207	146	93
 2908	Tarris Reed	C	23.1	SAS	13.9	34	475	0.05	-0.12		15	0	144	41		'26 class				
 2854	Joshua Jefferson	SF/PF	22.8	BKN	14.0	16	487	0.03	-0.17		5	0	148	39		'26 class				
 2874	Zuby Ejiofor	PF/C	22.4	ATL	12.9	34	441	0.05	-0.13		15	0	133	38		'26 class				
-904	Harrison Barnes	SF/PF	34.3	SAS	12.7	70	161	0.09	-0.06	1385	36	66	44	54			-0.04	106	62	8
-2232	Dru Smith	PG/SG	28.7	MIA	10.3	72	231	0.06	-0.12	1154.75	21	52	66	49	48	rot2	0.25	175	101	52
-2021	Patrick Williams	SF/PF	25.1	CHI	13.4	72	151	0.11	-0.11	1025.75	46	43	40	44			-0.10	85	50	6
-2899	Sergio De Larrea	PG/SG	20.8	DAL	7.2	56	412	0.03	-0.15		5	0	124	33		'26 class	-0.45	284	164	131
-2079	Vít Krejčí	PG/SG	26.3	POR	13.6	64	148	0.10	-0.02	1033.75	41	44	39	43	42	rot2	0.62	159	92	49
-2893	Alex Karaban	SF/PF	23.9	SAC	14.1	44	338	0.07	-0.17		26	0	100	32		'26 class	-0.30	229	132	100
-2900	Bruce Thornton	PG/SG	23.0	HOU	0.0	38	414	0.00	-0.19		0	0	125	32		noproj · '26 class	-0.52	261	151	119
-2792	Caleb Love	PG/SG	25.0	PHI	14.4	18	188	0.09	-0.15	829.75	36	31	52	38		rot1 · GPp<map · '25 rookie	-0.31	89	52	14
-2148	Luka Garza	C	27.7	BOS	12.9	69	107	0.09	-0.08	1187.25	36	54	26	44	22	rot1	0.51	91	53	9
-2910	Jayden Quaintance	PF/C	19.2	SAS	10.0	14	390	0.01	-0.17		0	0	117	30		'26 class	-0.56	242	140	110
-217	Al Horford	PF/C	40.3	GSW	14.9	56	117	0.11	-0.06	953.5	46	39	29	39	32		0.48	109	64	25
-2471	Julian Strawther	PG/SG	24.4	DEN	13.4	68	173	0.10	-0.02	674	41	21	47	34	40	rot0	0.19	149	86	52
-1045	Kentavious Caldwell-Pope	PG/SG	33.6	PHI	14.5	70	78	0.13	-0.05	836.75	57	31	17	35	22		0.60	89	52	17
-1880	Terance Mann	SG/SF	29.9	BKN	15.1	58	51	0.12	-0.10	1074	51	46	8	39	6		0.57	44	26	-13
-2876	Henri Veesaar	C	22.5	ATL	12.5	33	321	0.04	-0.14		10	0	95	27		'26 class	-0.24	215	124	97
-2892	Koa Peat	SF/PF	19.7	PHX	7.5	44	351	0.02	-0.18		0	0	105	27		'26 class	-0.37	218	126	99
-2902	Richie Saunders	PG/SG	25.0	MEM	0.0	26	349	0.00	-0.19		0	0	104	27		noproj · '26 class	-0.53	195	113	86
-2373	Pat Spencer	PG/SG	30.2	PHX	10.9	21	148	0.05	-0.18	1071.5	15	46	39	38		rot1 · GPp<map	-0.54	11	7	-31
-1571	Zach Collins	PF/C	28.8	CHI	17.0	50	140	0.14	-0.11	196.75	62	0	37	26	32	frag	0.20	107	62	36
-1927	Javonte Green	PG/SG	33.2	DET	13.3	72	14	0.10	-0.10	1259.5	41	58	0	40			-0.13	-54	1	-39
-2365	Simone Fontecchio	SF/PF	30.8	MIA	13.2	72	55	0.10	-0.11	1098	41	48	10	38	6	rot2	0.63	44	26	-12
-2880	Ryan Conwell	PG/SG	22.3	MIA	0.0	52	331	0.00	-0.19		0	0	98	26		noproj · '26 class	-0.58	173	100	74
-2688	Nae'Qwan Tomlin	SF/PF	25.8	CLE	12.8	66	109	0.09	-0.06	851.5	36	32	27	33		rot0	0.06	62	37	4
-2913	Isaiah Evans	PG/SG	20.8	MIN	7.0	26	325	0.01	-0.18		0	0	96	25		'26 class	-0.47	181	105	80
-2888	Baba Miller	SF/PF	22.6	LAC	0.0	18	317	0.00	-0.19		0	0	94	24		noproj · '26 class	-0.65	154	89	65
-1704	Jarred Vanderbilt	SF/PF	27.5	LAL	13.5	68	66	0.10	-0.07	914.75	41	36	13	32	12		0.63	65	38	6
-2776	Jamir Watkins	SF/PF	25.2	WAS	14.0	52	110	0.08	-0.12	861.75	31	33	27	32		rot1 · '25 rookie	-0.25	20	12	-20
-2866	Meleek Thomas	SG/SF	20.1	CLE	11.3	52	246	0.05	-0.09		15	0	71	22		'26 class	0.00	175	101	79
-2683	Spencer Jones	SF/PF	25.3	DEN	8.7	70	149	0.04	-0.09	900.25	10	35	40	31		rot0	-0.06	70	41	10
-1272	D'Angelo Russell	PG/SG	30.6	MEM	14.7	43	170	0.08	-0.14	460.75	31	8	46	24			-0.33	69	41	17
-2851	Chris Cenac	PF/C	19.6	BOS	13.4	30	244	0.04	-0.13		10	0	70	21		'26 class	0.05	164	95	74
-2894	Emanuel Sharp	PG/SG	22.5	SAC	0.0	56	274	0.00	-0.19		0	0	80	21		noproj · '26 class	-0.56	118	69	48
-2501	Craig Porter	PG/SG	26.6	CLE	10.8	66	61	0.06	-0.07	1072	21	46	12	32		rot1	0.01	-1	1	-31
-1844	Matisse Thybulle	SG/SF	29.6	LAL	16.6	56	23	0.15	-0.03	478.5	67	9	0	22	22		1.07	82	48	26
-2478	Kris Murray	SF/PF	26.1	MEM	13.5	53	45	0.08	-0.15	873.75	31	34	6	27		rot1 · GPp<map	-0.33	-58	1	-26
-1916	John Konchar	PG/SG	30.5	NYK	12.8	38	17	0.07	-0.13	1029	26	44	0	30		GPp<map	0.03	-55	1	-29
-1758	Kenrich Williams	SG/SF	31.8	OKC	13.2	64	32	0.09	-0.10	780.75	36	28	2	24	0	rot2	0.40	2	2	-22
-1732	Josh Okogie	PG/SG	28.1	UTA	12.5	66	25	0.08	-0.14	914.5	31	36	0	27		rot2	0.23	-31	1	-26
-2203	Trendon Watford	SG/SF	25.9	NOP	13.1	44	66	0.07	-0.14	759.5	26	27	13	24	0	GPp<map	0.18	2	2	-22
-1268	Tyus Jones	PG/SG	30.4	DEN	9.8	72	135	0.05	-0.06	597.75	15	16	35	22			-0.01	70	41	19
-758	Jonas Valančiūnas	C	34.4	FA	15.4	57	67	0.12	-0.13	1133.75	0	50	13	29		fa · GPp<map	-0.21	-9	1	-28
-2389	Quenton Jackson	PG/SG	28.0	IND	13.5	38	11	0.08	-0.14	824.5	31	31	0	24		rot1 · GPp<map	-0.30	-87	1	-23
-1160	Clint Capela	C	32.4	HOU	11.3	51	15	0.06	-0.17	1030.5	21	44	0	28		GPp<map	-0.29	-96	1	-27
-1431	Guerschon Yabusele	SF/PF	30.8	FA	7.3	56	122	0.03	-0.16	825	0	31	31	24		rot1 · fa	-0.44	-7	1	-23
-2177	Tre Mann	PG/SG	25.6	WAS	14.3	54	65	0.09	-0.11	538.25	36	13	13	20			-0.20	-15	1	-19
-2046	Nick Richards	C	28.8	MIA	14.8	49	36	0.09	-0.12	642.25	36	19	4	20	0		0.64	20	12	-8
-2602	Justin Edwards	SF/PF	22.8	PHI	9.9	66	76	0.05	-0.11	768.5	15	27	16	22		rot1				
-2344	Jabari Walker	SF/PF	24.2	PHI	13.9	46	1	0.09	-0.11	650.25	36	20	0	20		rot1 · GPp<map	0.27	-41	1	-19
-1188	Bogdan Bogdanović	PG/SG	34.1	HOU	14.0	54	95	0.09	-0.16	315.75	36	0	22	16		frag	-0.38	-11	1	-15
-2452	Trayce Jackson-Davis	SF/PF	26.6	TOR	13.6	56	42	0.09	-0.11	517.25	36	11	5	17	0	rot2	0.57	23	14	-3
-2327	Vince Williams	PG/SG/SF	26.1	FA	13.7	49	112	0.08	-0.14	772.75	0	27	28	22		rot2 · fa	-0.34	10	7	-15
-1297	Cameron Payne	PG	32.1	FA	14.8	41	188	0.08	-0.15	366.5	0	2	52	15		frag · fa · GPp<map	-0.42	77	45	30
-2769	Bogoljub Marković	SF/PF	–	MIL	11.5	47	145	0.05	-0.16		15	0	38	14		nopool · '25 rookie	-0.27	34	20	6
-2474	Jaylen Clark	PG/SG	25.0	MIN	8.6	70	63	0.04	-0.14	833.75	10	31	12	22		rot0	-0.30	-47	1	-21
-1280	Kevon Looney	SF/PF	30.6	LAL	16.0	32	69	0.09	-0.12	304.5	36	0	14	14	0	frag · GPp<map	0.17	16	10	-4
-2477	Rayan Rupert	SG/SF	22.3	PHI	11.6	26	31	0.06	-0.15	785.5	21	28	2	21		rot0 · GPp<map	-0.17	-65	1	-20
+904	Harrison Barnes	SF/PF	34.3	SAS	13.7	70	161	0.11	-0.07	1385	36	66	44	54			-0.23	92	66	12
+2232	Dru Smith	PG/SG	28.7	MIA	14.9	72	231	0.14	-0.09	1154.75	21	52	66	49	48	rot2	0.58	231	163	114
+2021	Patrick Williams	SF/PF	25.1	CHI	13.5	72	151	0.11	-0.09	1025.75	46	43	40	44			-0.10	88	63	19
+2899	Sergio De Larrea	PG/SG	20.8	DAL	7.3	56	412	0.03	-0.14		5	0	124	33		'26 class	-0.41	287	197	164
+2079	Vít Krejčí	PG/SG	26.3	POR	13.8	64	148	0.10	-0.04	1033.75	41	44	39	43	42	rot2	0.45	138	98	55
+2893	Alex Karaban	SF/PF	23.9	SAC	14.2	44	338	0.07	-0.16		26	0	100	32		'26 class	-0.43	219	155	123
+2900	Bruce Thornton	PG/SG	23.0	HOU	0.0	38	414	0.00	-0.18		0	0	125	32		noproj · '26 class	-0.56	258	182	150
+2792	Caleb Love	PG/SG	25.0	PHI	14.6	18	188	0.09	-0.15	829.75	36	31	52	38		rot1 · GPp<map · '25 rookie	-0.35	84	60	22
+2148	Luka Garza	C	27.7	BOS	11.3	69	107	0.07	-0.08	1187.25	36	54	26	44	22	rot1	-0.03	40	29	-15
+2910	Jayden Quaintance	PF/C	19.2	SAS	10.2	14	390	0.01	-0.16		0	0	117	30		'26 class	-0.40	255	180	150
+217	Al Horford	PF/C	40.3	GSW	14.9	56	117	0.11	-0.05	953.5	46	39	29	39	32		0.01	72	51	12
+2471	Julian Strawther	PG/SG	24.4	DEN	13.2	68	173	0.10	-0.03	674	41	21	47	34	40	rot0	-0.21	113	80	46
+1045	Kentavious Caldwell-Pope	PG/SG	33.6	PHI	13.2	70	78	0.10	-0.07	836.75	57	31	17	35	22		0.30	48	35	0
+1880	Terance Mann	SG/SF	29.9	BKN	11.7	58	51	0.06	-0.13	1074	51	46	8	39	6		0.21	-13	1	-38
+2876	Henri Veesaar	C	22.5	ATL	12.7	33	321	0.04	-0.12		10	0	95	27		'26 class	-0.27	215	152	125
+2892	Koa Peat	SF/PF	19.7	PHX	7.6	44	351	0.02	-0.17		0	0	105	27		'26 class	-0.35	220	155	128
+2902	Richie Saunders	PG/SG	25.0	MEM	0.0	26	349	0.00	-0.18		0	0	104	27		noproj · '26 class	-0.56	193	136	109
+2373	Pat Spencer	PG/SG	30.2	PHX	11.0	21	148	0.05	-0.17	1071.5	15	46	39	38		rot1 · GPp<map	-0.35	26	19	-19
+1571	Zach Collins	PF/C	28.8	CHI	17.1	50	140	0.14	-0.09	196.75	62	0	37	26	32	frag	0.03	96	68	42
+1927	Javonte Green	PG/SG	33.2	DET	14.5	72	14	0.13	-0.09	1259.5	41	58	0	40			-0.27	-57	1	-39
+2365	Simone Fontecchio	SF/PF	30.8	MIA	13.3	72	55	0.11	-0.10	1098	41	48	10	38	6	rot2	0.19	12	9	-29
+2880	Ryan Conwell	PG/SG	22.3	MIA	0.0	52	331	0.00	-0.18		0	0	98	26		noproj · '26 class	-0.48	182	129	103
+2688	Nae'Qwan Tomlin	SF/PF	25.8	CLE	12.9	66	109	0.09	-0.04	851.5	36	32	27	33		rot0	-0.18	46	33	0
+2913	Isaiah Evans	PG/SG	20.8	MIN	7.1	26	325	0.01	-0.17		0	0	96	25		'26 class	-0.53	177	125	100
+2888	Baba Miller	SF/PF	22.6	LAC	0.0	18	317	0.00	-0.18		0	0	94	24		noproj · '26 class	-0.59	159	112	88
+1704	Jarred Vanderbilt	SF/PF	27.5	LAL	13.7	68	66	0.11	-0.07	914.75	41	36	13	32	12		0.14	27	20	-12
+2776	Jamir Watkins	SF/PF	25.2	WAS	16.6	52	110	0.13	-0.08	861.75	31	33	27	32		rot1 · '25 rookie	-0.28	41	30	-2
+2866	Meleek Thomas	SG/SF	20.1	CLE	11.5	52	246	0.05	-0.08		15	0	71	22		'26 class	-0.18	161	114	92
+2683	Spencer Jones	SF/PF	25.3	DEN	8.8	70	149	0.04	-0.07	900.25	10	35	40	31		rot0	-0.22	60	43	12
+1272	D'Angelo Russell	PG/SG	30.6	MEM	15.1	43	170	0.09	-0.14	460.75	31	8	46	24			-0.47	58	42	18
+2851	Chris Cenac	PF/C	19.6	BOS	13.6	30	244	0.05	-0.12		10	0	70	21		'26 class	-0.21	146	103	82
+2894	Emanuel Sharp	PG/SG	22.5	SAC	0.0	56	274	0.00	-0.18		0	0	80	21		noproj · '26 class	-0.51	122	87	66
+2501	Craig Porter	PG/SG	26.6	CLE	10.5	66	61	0.06	-0.06	1072	21	46	12	32		rot1	-0.18	-16	1	-31
+1844	Matisse Thybulle	SG/SF	29.6	LAL	16.7	56	23	0.15	-0.05	478.5	67	9	0	22	22		0.54	33	24	2
+2478	Kris Murray	SF/PF	26.1	MEM	13.4	53	45	0.08	-0.15	873.75	31	34	6	27		rot1 · GPp<map	-0.27	-56	1	-26
+1916	John Konchar	PG/SG	30.5	NYK	9.7	38	17	0.04	-0.15	1029	26	44	0	30		GPp<map	-0.27	-96	1	-29
+1758	Kenrich Williams	SG/SF	31.8	OKC	13.1	64	32	0.09	-0.09	780.75	36	28	2	24	0	rot2	0.22	-12	1	-23
+1732	Josh Okogie	PG/SG	28.1	UTA	12.6	66	25	0.08	-0.14	914.5	31	36	0	27		rot2	0.15	-40	1	-26
+2203	Trendon Watford	SG/SF	25.9	NOP	13.0	44	66	0.07	-0.14	759.5	26	27	13	24	0	GPp<map	0.04	-11	1	-23
+1268	Tyus Jones	PG/SG	30.4	DEN	9.8	72	135	0.05	-0.06	597.75	15	16	35	22			-0.19	54	39	17
+758	Jonas Valančiūnas	C	34.4	FA	15.5	57	67	0.13	-0.13	1133.75	0	50	13	29		fa · GPp<map	-0.25	-12	1	-28
+2389	Quenton Jackson	PG/SG	28.0	IND	13.7	38	11	0.08	-0.14	824.5	31	31	0	24		rot1 · GPp<map	-0.45	-102	1	-23
+1160	Clint Capela	C	32.4	HOU	10.8	51	15	0.05	-0.16	1030.5	21	44	0	28		GPp<map	-0.31	-101	1	-27
+1431	Guerschon Yabusele	SF/PF	30.8	FA	7.7	56	122	0.03	-0.15	825	0	31	31	24		rot1 · fa	-0.41	-5	1	-23
+2177	Tre Mann	PG/SG	25.6	WAS	14.2	54	65	0.09	-0.10	538.25	36	13	13	20			-0.31	-24	1	-19
+2046	Nick Richards	C	28.8	MIA	14.9	49	36	0.10	-0.11	642.25	36	19	4	20	0		0.26	-7	1	-19
+2602	Justin Edwards	SF/PF	22.8	PHI	10.0	66	76	0.05	-0.10	768.5	15	27	16	22		rot1				
+2344	Jabari Walker	SF/PF	24.2	PHI	14.1	46	1	0.09	-0.10	650.25	36	20	0	20		rot1 · GPp<map	0.11	-54	1	-19
+1188	Bogdan Bogdanović	PG/SG	34.1	HOU	14.2	54	95	0.09	-0.15	315.75	36	0	22	16		frag	-0.38	-12	1	-15
+2452	Trayce Jackson-Davis	SF/PF	26.6	TOR	13.5	56	42	0.08	-0.10	517.25	36	11	5	17	0	rot2	0.17	-11	1	-16
+2327	Vince Williams	PG/SG/SF	26.1	FA	13.6	49	112	0.08	-0.14	772.75	0	27	28	22		rot2 · fa	-0.36	6	5	-17
+1297	Cameron Payne	PG	32.1	FA	15.1	41	188	0.08	-0.15	366.5	0	2	52	15		frag · fa · GPp<map	-0.44	73	52	37
+2769	Bogoljub Marković	SF/PF	–	MIL	11.4	47	145	0.05	-0.15		15	0	38	14		nopool · '25 rookie	-0.32	31	23	9
+2474	Jaylen Clark	PG/SG	25.0	MIN	8.6	70	63	0.04	-0.14	833.75	10	31	12	22		rot0	-0.41	-59	1	-21
+1280	Kevon Looney	SF/PF	30.6	LAL	16.2	32	69	0.10	-0.12	304.5	36	0	14	14	0	frag · GPp<map	-0.10	-5	1	-13
+2477	Rayan Rupert	SG/SF	22.3	PHI	11.4	26	31	0.06	-0.14	785.5	21	28	2	21		rot0 · GPp<map	-0.25	-72	1	-20
 2313	Tyrese Martin	SF/PF	27.6	PHI	9.2	48	116	0.03	-0.14	587	5	16	29	18		miss · rot1 · GPp<map				
-2073	Killian Hayes	PG/SG	25.2	FA	8.2	40	184	0.02	-0.17	331	0	0	51	14		frag · fa · GPp<map	-0.52	42	25	11
+2073	Killian Hayes	PG/SG	25.2	FA	8.3	40	184	0.02	-0.17	331	0	0	51	14		frag · fa · GPp<map	-0.44	46	33	19
 2433	Marcus Sasser	PG/SG	26.0	DAL	7.8	62	151	0.03	-0.15	394	5	3	40	14		rot1				
-2314	Bryce McGowens	PG/SG	23.9	NOP	11.4	44	0	0.05	-0.15	808.5	15	30	0	20		rot0 · GPp<map	0.00	-86	1	-19
-1712	Svi Mykhailiuk	SG/SF	29.3	UTA	10.8	44	0	0.05	-0.16	826.75	15	31	0	20		rot1 · GPp<map	-0.08	-94	1	-19
-2467	Jordan Hawkins	PG/SG	24.4	MEM	9.8	40	116	0.04	-0.16	438.25	10	6	29	14		rot1 · GPp<map	-0.48	-13	1	-13
+2314	Bryce McGowens	PG/SG	23.9	NOP	11.6	44	0	0.05	-0.14	808.5	15	30	0	20		rot0 · GPp<map	-0.06	-91	1	-19
+1712	Svi Mykhailiuk	SG/SF	29.3	UTA	10.8	44	0	0.05	-0.16	826.75	15	31	0	20		rot1 · GPp<map	-0.14	-102	1	-19
+2467	Jordan Hawkins	PG/SG	24.4	MEM	10.0	40	116	0.04	-0.16	438.25	10	6	29	14		rot1 · GPp<map	-0.42	-12	1	-13
 2041	Josh Green	PG/SG	25.9	UTA	9.2	59	87	0.04	-0.16	562	10	14	20	16						
-1447	Buddy Hield	PG/SG	33.8	CHA	9.1	44	73	0.03	-0.18	720	5	24	15	18		GPp<map	-0.54	-69	1	-17
-2737	Liam McNeeley	SF/PF	21.0	CHA	10.3	44	126	0.04	-0.17	262.75	10	0	32	12		rot0 · '25 rookie	-0.50	-8	1	-11
-2788	Micah Peavy	SG/SF	25.2	MEM	8.3	54	89	0.03	-0.16	609.25	5	17	21	16		rot0 · '25 rookie	-0.44	-40	1	-15
-2030	Cole Anthony	PG/SG	26.4	FA	8.7	45	125	0.03	-0.17	511.75	0	11	32	14		fa	-0.43	-6	1	-13
+1447	Buddy Hield	PG/SG	33.8	CHA	9.3	44	73	0.03	-0.17	720	5	24	15	18		GPp<map	-0.49	-66	1	-17
+2737	Liam McNeeley	SF/PF	21.0	CHA	10.5	44	126	0.04	-0.17	262.75	10	0	32	12		rot0 · '25 rookie	-0.48	-9	1	-11
+2788	Micah Peavy	SG/SF	25.2	MEM	8.3	54	89	0.03	-0.16	609.25	5	17	21	16		rot0 · '25 rookie	-0.33	-34	1	-15
+2030	Cole Anthony	PG/SG	26.4	FA	8.9	45	125	0.03	-0.16	511.75	0	11	32	14		fa	-0.46	-9	1	-13
 2781	Adou Thiero	PG/SG	22.4	LAL	4.5	62	152	0.02	-0.15	111.75	0	0	41	11		frag · rot0 · noproj · '25 rookie				
 2853	Tyler Bilodeau	SF/PF	22.4	BKN	0.0	16	156	0.00	-0.19		0	0	42	12		noproj · '26 class				
 2906	Jaron Pierre	PG/SG	24.2	NOP	0.0	16	157	0.00	-0.19		0	0	42	12		noproj · '26 class				
-1468	Dorian Finney-Smith	SF/PF	33.4	ATL	13.4	40	74	0.06	-0.12	329.75	21	0	16	10		GPp<map	-0.24	-20	1	-9
-1930	Caleb Martin	SF/PF	31.0	DAL	11.5	46	36	0.05	-0.14	614.25	15	17	4	14		GPp<map	-0.28	-69	1	-13
+1468	Dorian Finney-Smith	SF/PF	33.4	ATL	9.8	40	74	0.03	-0.13	329.75	21	0	16	10		GPp<map	-0.29	-39	1	-9
+1930	Caleb Martin	SF/PF	31.0	DAL	11.3	46	36	0.05	-0.12	614.25	15	17	4	14		GPp<map	-0.24	-64	1	-13
 1725	Jevon Carter	PG/SG	31.0	ORL	9.7	66	0	0.05	-0.15	674.25	15	21	0	15		rot1				
 98	Mike Conley	PG/SG	39.0	BOS	9.3	46	25	0.04	-0.13	683.25	10	22	0	14		GPp<map				
 2454	Kobe Brown	SF/PF	26.7	IND	9.0	21	0	0.03	-0.18	760.25	5	27	0	16		rot0 · GPp<map				
 2707	RayJ Dennis	PG/SG	25.5	ATL	9.0	9	124	0.02	-0.18	152.5	0	0	32	9		frag · rot0 · noproj · GPp<map				
 2881	Izaiyah Nelson	SF/PF	23.0	ORL	0.0	20	128	0.00	-0.19		0	0	33	9		noproj · '26 class				
 2911	Trevon Brazile	SF/PF	23.7	DEN	0.0	44	129	0.00	-0.19		0	0	33	9		noproj · '26 class				
-1413	Georges Niang	SF/PF	33.3	GSW	12.1	68	11	0.08	-0.07		31	0	0	9		miss	-0.03	-48	1	-8
+1413	Georges Niang	SF/PF	33.3	GSW	12.3	68	11	0.08	-0.06		31	0	0	9		miss	-0.25	-66	1	-8
 2083	Anthony Gill	SF/PF	33.9	WAS	8.1	52	0	0.03	-0.15	728.75	5	25	0	15		rot0				
 1565	Lonzo Ball	PG/SG/SF	28.9	FA	9.4	46	67	0.03	-0.16	613.5	0	17	13	13		miss · fa · GPp<map				
-2328	David Roddy	SF/PF	25.5	DEN	14.7	35	0	0.07	-0.10	85.25	26	0	0	8		frag · rot1	-0.05	-71	1	-7
+2328	David Roddy	SF/PF	25.5	DEN	14.9	35	0	0.07	-0.09	85.25	26	0	0	8		frag · rot1	-0.28	-90	1	-7
 36	Nicolas Batum	SG/SF	37.8	FA	10.3	57	0	0.05	-0.15	768.5	0	27	0	14		fa · GPp<map				
 2296	Jamaree Bouyea	PG/SG	27.2	PHX	9.7	21	36	0.04	-0.18	552.25	10	13	4	11		rot0 · GPp<map				
 1155	Dwight Powell	PF/C	35.2	FA	9.2	54	0	0.04	-0.15	765.75	0	27	0	14		rot2 · fa · GPp<map				
@@ -123,8 +123,8 @@ player_id	name	POS	AGE	NBA	FPts/Gp	GPp	BASE	Δw	Δw '26–'27 ours	sheet_pts	Win
 2305	Ochai Agbaji	PG/SG	26.4	NYK	7.6	53	25	0.03	-0.14	617.5	5	18	0	11		rot1				
 1835	Haywood Highsmith	SF/PF	29.8	PHX	6.0	42	99	0.02	-0.18	83.25	0	0	24	7		frag · rot1				
 2426	Dariq Whitehead	SG/SF	22.1	FA	22.4	38	87	0.24	-0.09	134.25	0	0	20	6		frag · rot1 · fa · noproj				
-2363	Tyson Etienne	PG/SG	27.0	BKN	13.5	40	0	0.06	-0.15	303	21	0	0	6		frag · rot0 · GPp<map	-0.05	-87	1	-5
-2827	LJ Cryer	PG/SG	25.0	GSW	14.1	20	0	0.06	-0.15	207.25	21	0	0	6		frag · rot0 · GPp<map · '25 rookie	-0.46	-119	1	-5
+2363	Tyson Etienne	PG/SG	27.0	BKN	13.8	40	0	0.06	-0.15	303	21	0	0	6		frag · rot0 · GPp<map	-0.08	-92	1	-5
+2827	LJ Cryer	PG/SG	25.0	GSW	14.3	20	0	0.07	-0.14	207.25	21	0	0	6		frag · rot0 · GPp<map · '25 rookie	-0.47	-118	1	-5
 2802	Myron Gardner	SF/PF	25.3	MIA	8.9	38	54	0.03	-0.16	451.5	5	7	9	8		rot0 · GPp<map · '25 rookie				
 285	Kevin Love	PF/C	38.0	FA	9.4	47	0	0.03	-0.16	653.25	0	20	0	11		fa				
 2858	Ugonna Onyenso	C	22.0	DET	0.0	16	87	0.00	-0.19		0	0	20	6		noproj · '26 class				
@@ -138,7 +138,7 @@ player_id	name	POS	AGE	NBA	FPts/Gp	GPp	BASE	Δw	Δw '26–'27 ours	sheet_pts	Win
 1562	Jonathan Isaac	SF/PF	29.0	ORL	7.7	44	52	0.02	-0.16	429.5	0	6	9	6		GPp<map				
 2427	Jalen Wilson	SF/PF	25.9	ATL	7.7	22	22	0.02	-0.17	568.5	0	14	0	8		rot1 · GPp<map				
 2711	Jamison Battle	SF/PF	25.4	TOR	8.8	62	0	0.04	-0.13	349.75	10	1	0	4		rot0				
-1266	Larry Nance	PF/C	33.7	IND	11.1	42	10	0.04	-0.15	351.5	10	1	0	4		GPp<map	-0.40	-111	1	-3
+1266	Larry Nance	PF/C	33.7	IND	11.1	42	10	0.04	-0.14	351.5	10	1	0	4		GPp<map	-0.40	-111	1	-3
 2304	Dalen Terry	SF/PF	24.2	GSW	8.9	48	0	0.03	-0.13	469.75	5	8	0	6		rot0				
 1784	Drew Eubanks	PF/C	29.6	NYK	9.5	46	0	0.03	-0.14	466.25	5	8	0	6		rot2				
 2390	Keaton Wallace	PG/SG	27.6	ATL	8.2	49	0	0.03	-0.14	436.25	5	6	0	5		rot0				

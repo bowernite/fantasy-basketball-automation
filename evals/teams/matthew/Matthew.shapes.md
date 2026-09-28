@@ -21,7 +21,7 @@ Fox re-price 9/28/26: '27 1st > Ausar and Suggs+'27 1st > Ausar+Black priced on 
 
 Rule (9/28): no In-side Ausar shapes. 3:34p he turned down both Ausar rows: "I just can't imagine your pick being higher than 8 or 9 in a not so strong draft" and "how could I split up the brothers right after getting them". He discounts our '27 1st. Ausar rows are reference only.
 
-Post-decline (9/28/26, `$TMPDIR/ff-CF`): Barnes rows are built from players plus one or two picks, since he discounts our picks. Chris '27 2nd and own '27 2nd are gone to Chris (Fox), so rows priced before that that use them can't be sent.
+Post-decline (9/28/26, `$TMPDIR/ff-CF`): Barnes rows are built from players plus one or two picks, since he discounts our picks. Chris '27 2nd and own '27 2nd are gone to Chris (Fox), so rows priced before that that use them can't be sent. 3:39p Brett sent the three Barnes rows marked proposed. 4:11p Matthew: "I like edey but am scared by the injuries but may need a little more depth looking at my team". Chaney and Matković are cut-anyway throw-ins for that depth ask: formula Δw charges them about −0.15, so the Jabari row nets about −0.2 and still clears.
 
 ## Above floor
 
@@ -42,7 +42,8 @@ Cade+Mark+'27 1st+'28 1st+KC '27 2nd+'26 2.09 > Barnes+Harper+Ausar+Black | +260
 Eason+Vassell+Walker+'27 1st+Chris '27 2nd+Mitch '27 2nd+'27 2nd > Barnes | +2100 +800 +0.4 +0.5 +10% +3.4
 Edey+Walker+'27 1st+Chris '27 2nd+Mitch '27 2nd > Barnes | +2100 +1200 +0.5 +0.4 +7% +3.6
 Edey+Vassell+Walker+'27 1st+Chris '27 2nd+Mitch '27 2nd+'27 2nd > Barnes+Black | +1800 +800 +0.7 +0.2 +7% +2.5
-Edey+Jabari Smith+'27 1st+Mitch '27 2nd > Barnes | +1600 +1100 -0.1 +0.2 +5% +2.9
+Edey+Jabari Smith+'27 1st+Mitch '27 2nd > Barnes | +1600 +1100 -0.1 +0.2 +5% +2.9 | Us proposed 9/28
+Edey+Jabari Smith+Chaney Johnson+Matković+'27 1st+Mitch '27 2nd > Barnes | +1600 +900 -0.3 +0.1 +5% +2.9
 Edey+Walker+'27 1st+Chris '27 2nd+Mitch '27 2nd+'27 2nd > Barnes | +1500 +600 +0.5 +0.4 +7% +3.9
 Vassell+Suggs+Walker+'27 1st+Chris '27 2nd+Mitch '27 2nd+'27 2nd > Barnes | +1400 +300 +0.3 +0.4 +9% +3.2
 Walker+'27 1st+Chris '27 2nd > Ausar+Black | +1300 +600 +1.5 +0.4 +3% +3.6
@@ -65,9 +66,10 @@ Cade > Johnson+Ausar+Jakučionis | +1900 +900 +1.7 +0.8 +7% -1.1
 Cade+Bona+'26 2.09 > Johnson+Ausar+Black | +1900 +800 +1.7 +0.8 +6% -0.3
 Cade+Sharpe+Mark+'27 1st+'28 1st > Barnes+Harper+Ausar+Clowney | +1900 +700 +0.7 +0.9 +10% +1.0
 Cade+Sharpe+Mark+Kuminga+Walker+'27 1st+'28 1st > Barnes+Harper+Ausar+Black | +1900 +600 +0.6 +0.9 +10% +0.8
-Giddey+'27 1st > Barnes | +1300 +1100 +0.1 0.0 +3% +2.6
+Giddey+'27 1st > Barnes | +1300 +1100 +0.1 0.0 +3% +2.6 | Us proposed 9/28
 Edey+Vassell+'27 1st+Chris '27 2nd+Mitch '27 2nd > Barnes | +1200 +400 +0.3 +0.2 +7% +2.9
-Edey+Suggs+'27 1st+Mitch '27 2nd+'27 3rd > Barnes | +900 +400 +0.1 +0.2 +4% +2.6
+Edey+Suggs+'27 1st+Mitch '27 2nd+'27 3rd > Barnes | +900 +400 +0.1 +0.2 +4% +2.6 | Us proposed 9/28
+Edey+Suggs+Chaney Johnson+Matković+'27 1st+Mitch '27 2nd+'27 3rd > Barnes | +900 +300 -0.2 +0.2 +4% +2.6
 '27 1st > Ausar | +800 +400 +1.0 +0.3 +2% +4.5 | Matthew rejected 9/28
 Edey+Suggs+'27 1st+Chris '27 2nd+Mitch '27 2nd > Barnes | +500 -100 +0.1 +0.3 +6% +2.9
 Suggs+'27 1st > Ausar+Black | +500 +100 +1.0 +0.3 +2% +1.2 | Matthew rejected 9/28
@@ -174,3 +176,5 @@ Giddey+Walker+'27 1st > Barnes | +800 +700 -0.3 0.0 +2% +2.5
 Cade+Jabari+'27 1st+'26 2.09 > Barnes+Harper | +900 +700 -0.3 +0.1 +3% +0.2
 Camara+'27 1st > Ausar+Black | +900 +700 +1.1 +0.2 -1% +0.7
 Giddey+Edey > Barnes+Black | +900 +1100 -0.3 -0.3 -1% +0.3
+
+Edey+Jabari Smith+Bona+'27 1st+Mitch '27 2nd > Barnes | +1300 +800 -0.4 +0.1 +5% +2.9
