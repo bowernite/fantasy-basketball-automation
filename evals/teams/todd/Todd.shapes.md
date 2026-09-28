@@ -4,7 +4,9 @@ Counterparty: Todd (The Han Dybantsy, 161022). Tanking.
 
 Todd 9/26: leaning toward not trading and selling Porter/Gobert at the deadline; his favorite is the only Cade deal he's still weighing, and he won't go further if Jon's is better. Chaney and Matković are near-free sweeteners for us (Brett, 9/27).
 
-Benchmark: Todd's live offer for Cade is Cade+Sharpe+Mark > Haliburton+Porter+NAW+Claxton (+2200 +900 +1.5 +1.1 +8% +2.6). Cade rows tier against its Score: above floor = clearly above it, floor = within ~250 (~400 on pick-heavy or uneven-body rows), below bar = clearly below. Non-Cade rows tier on their own, floor around +900 Score.
+Todd 9/27: withdrew from the Cade talks (4:25p), said Gobert/MPJ/Brunson will likely be available in-season, and said "I don't think so" to his favorite (5:16p). Last-throw shapes (9/27) pair his favorite with a vet he'd sell anyway (Gobert or Brunson) for our picks. Favorite plus one of our 1sts alone fails Score* (~+1500).
+
+Benchmark: Todd's favorite for Cade is Cade+Sharpe+Mark > Haliburton+Porter+NAW+Claxton (+2200 +900 +1.5 +1.1 +8% +2.6). Cade rows tier against its Score: above floor = clearly above it, floor = within ~250 (~400 on pick-heavy or uneven-body rows), below bar = clearly below. Non-Cade rows tier on their own, floor around +900 Score.
 
 Priced 9/25/26; pick ladders 9/27/26 (our own '27 3rd at 297). Todd's picks priced at '27 1st 2390, '28 1st 2690, '27 2nd 878, '28 2nd 984, Sept '26 1.01 6757, 2.04 927, 2.08 788, 3.01 457, 3.03 420. Sharpe > NAW has no Δage: Sharpe's age weight is 0 (GP 0).
 
@@ -12,6 +14,7 @@ Priced 9/25/26; pick ladders 9/27/26 (our own '27 3rd at 297). Todd's picks pric
 
 Cade+Sharpe+Mark+2.09+own '27 2nd > Tatum+Porter+NAW+Claxton+Mitchell | +3800 +1200 +2.7 +1.8 +19% +4.4
 Cade+Sharpe+Mark+Chaney+own '27 2nd > Tatum+Porter+NAW+Claxton | +3600 +1200 +2.1 +1.7 +17% +4.0
+Cade+Sharpe+Mark+'27 1st+'28 1st+2.09 > Haliburton+Brunson+Porter+NAW+Claxton | +3600 +1000 +3.1 +1.9 +17% +5.9
 Cade+Sharpe+Mark+own '27 2nd > Tatum+Porter+NAW+Claxton | +3500 +1200 +2.1 +1.7 +17% +4.0
 Cade+Kuminga > Brunson+Porter+NAW+Claxton+Dëmin | +3400 +1200 +3.3 +1.3 +14% +3.0
 Cade+Sharpe+Mark+2.09 > Tatum+Porter+NAW+Claxton | +3400 +1100 +2.0 +1.7 +17% +3.8
@@ -52,6 +55,7 @@ Cade+Sharpe+Mark+Kuminga > Haliburton+Porter+NAW+Gobert+Dëmin | +2600 +1000 +1.
 Cade+Sharpe+Mark > Haliburton+Brunson+Porter | +2600 +1100 +1.0 +1.2 +11% +3.4
 Cade+Sharpe > Tatum+Porter+Gobert | +2600 +800 +1.8 +1.3 +13% +4.9
 Cade+Sharpe+Mark+Kyrie+Kuminga > Brunson+Porter+NAW+'26 1.01 | +2600 +1100 +0.4 +1.1 +11% -0.1
+Cade+Sharpe+Mark+2.09+own '27 2nd > Haliburton+Porter+NAW+Claxton+Gobert | +2600 +800 +2.5 +1.5 +11% +5.0
 Cade+Sharpe+Mark+Eason > Haliburton+Porter+NAW+Claxton+Gobert | +2600 +900 +1.9 +1.4 +11% +3.8
 Cade+Mark > Brunson+Porter+NAW+Claxton+Dëmin | +2600 +600 +2.9 +1.4 +14% +2.9
 Sharpe+Mark > Porter+Claxton | +2600 +900 +1.1 +1.3 +13% +3.1
@@ -93,6 +97,7 @@ Green+Mark > Brunson | +1200 +600 0.0 +0.7 +4% +5.4
 
 Cade > Brunson+Porter+Claxton+'27 1st | +2500 +1200 +1.9 +0.8 +10% +2.3
 Cade+Walker > Brunson+Porter+NAW+'27 1st | +2500 +1200 +1.6 +0.9 +8% +2.5
+Cade+Sharpe+Mark+'27 1st > Haliburton+Porter+NAW+Claxton+Gobert | +2400 +600 +2.6 +1.4 +11% +5.3
 Cade+Butler > Brunson+Porter+NAW+Claxton+Bryant | +2400 +700 +2.5 +1.3 +12% +2.3
 Cade+Sharpe+Mark > Brunson+Porter+NAW+Claxton+'27 1st | +2400 +700 +1.6 +1.4 +12% +2.4 | Us proposed 9/24 · Todd interested
 Cade+Sharpe+Mark > Brunson+Porter+NAW+Gobert+'28 1st | +2400 +700 +1.7 +1.4 +11% +3.6
@@ -108,7 +113,7 @@ Cade+Sharpe+Mark > Haliburton+Porter+NAW+Gobert+'26 3.01 | +2300 +1000 +1.6 +1.2
 Cade+Sharpe+Mark+Chaney > Haliburton+Porter+NAW+Claxton | +2300 +900 +1.5 +1.2 +9% +2.6
 Cade+Sharpe+Mark > Haliburton+Brunson+NAW | +2200 +1200 +0.8 +1.0 +6% +3.4
 Cade+Mark > Tatum+Porter+Gobert | +2200 +500 +1.6 +1.2 +12% +4.9
-Cade+Sharpe+Mark > Haliburton+Porter+NAW+Claxton | +2200 +900 +1.5 +1.1 +8% +2.6 | Todd proposed 9/25
+Cade+Sharpe+Mark > Haliburton+Porter+NAW+Claxton | +2200 +900 +1.5 +1.1 +8% +2.6 | Todd rejected 9/27
 Cade+Walker > Brunson+Porter+NAW+Claxton | +2200 +300 +2.7 +1.2 +12% +3.8
 Cade+Sharpe+Mark+Kuminga > Haliburton+Porter+NAW+Claxton+Bryant | +2200 +900 +1.4 +1.1 +8% +2.6
 Cade+Suggs+Vassell > Brunson+Porter+'26 1.01 | +2100 +1200 +0.7 +0.4 +6% +2.2
@@ -284,6 +289,7 @@ Smith+Walker > NAW+Claxton | +2500 +1700 +0.9 +0.6 +4% +4.5
 Cade > Brunson+Haliburton | +2200 +1700 +1.0 +0.4 +3% +3.5
 Cade > Brunson+Porter+NAW+'27 1st | +3100 +1700 +1.9 +0.9 +9% +2.4
 Cade+Sharpe+Mark > Haliburton+Porter+NAW+Claxton+'26 2.08 | +3000 +1700 +1.7 +1.1 +8% +2.1
+Cade+Sharpe+Mark+'27 1st+'28 1st > Haliburton+Brunson+Porter+NAW+Claxton | +4300 +1600 +3.2 +1.9 +17% +5.8
 Cade+Sharpe+Mark+Chaney+Matković+2.09 > Tatum+Porter+NAW+Claxton+Mitchell | +4300 +1600 +2.6 +1.8 +19% +3.8
 Cade+Sharpe+Mark+Chaney+Matković > Tatum+Porter+NAW+Claxton | +4000 +1600 +2.0 +1.7 +17% +3.2
 Cade+Sharpe+Mark+Huff > Haliburton+Porter+NAW+Claxton+Gobert | +3500 +1600 +2.5 +1.4 +11% +3.8
