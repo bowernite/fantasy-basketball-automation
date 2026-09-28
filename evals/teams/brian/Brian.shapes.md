@@ -16,12 +16,12 @@ Vassell+Kuminga > Randle+Nurkić | +1800 +300 +1.7 +0.5 +10% +6.1
 Jabari Smith+Kuminga > Randle+Nurkić | +1600 +300 +1.3 +0.6 +11% +8.5
 Eason+Kuminga+Walker > Randle+Nurkić | +1500 0 +1.3 +0.7 +11% +7.1
 Camara+Kuminga > Randle+Nurkić | +1500 +400 +1.5 +0.4 +7% +5.8
-Eason+Walker+Hunter > Randle+Nurkić | +1500 +100 +1.3 +0.6 +10% +6.7
+Eason+Walker+Hunter > Randle+Nurkić | +1500 +100 +1.3 +0.6 +10% +6.7 | Us proposed 9/28
 Eason+Kuminga > Pritchard+Nurkić | +1400 +100 +1.5 +0.7 +9% +5.0
-Murray+Walker > Randle+Nurkić | +1400 +200 +1.4 +0.6 +9% +6.3
+Murray+Walker > Randle+Nurkić | +1400 +200 +1.4 +0.6 +9% +6.3 | Us proposed 9/28
 Eason+Kuminga+own '27 2nd > Randle+Nurkić | +1300 -200 +1.6 +0.7 +11% +8.8
 Murray+Kuminga > Randle+Nurkić | +1300 -100 +1.4 +0.7 +10% +6.0
-Suggs+Walker > Randle+Nurkić | +1300 +100 +1.4 +0.5 +8% +7.0
+Suggs+Walker > Randle+Nurkić | +1300 +100 +1.4 +0.5 +8% +7.0 | Us proposed 9/28
 Eason+Kuminga+Mitch '27 2nd > Randle+Nurkić | +1200 -300 +1.6 +0.7 +11% +8.8
 Suggs+Kuminga > Randle+Nurkić | +1200 -200 +1.5 +0.6 +10% +6.8
 Jabari Smith > Randle | +1200 +500 +0.5 +0.4 +6% +8.4

@@ -6,6 +6,8 @@ Todd 9/26: leaning toward not trading and selling Porter/Gobert at the deadline;
 
 Todd 9/27: withdrew from the Cade talks (4:25p), said Gobert/MPJ/Brunson will likely be available in-season, and said "I don't think so" to his favorite (5:16p). Last-throw shapes (9/27) pair his favorite with a vet he'd sell anyway (Gobert or Brunson) for our picks. Favorite plus one of our 1sts alone fails Score* (~+1500).
 
+Todd 9/28: passed on Matković+(Henry '28 3rd) > Mitchell (2:35p, doesn't want 3rds). 5:47p "Out on all of these" to the 3:12p menu, and no trades before the draft (draft prep). Revisit after the auction or near the deadline, when he's said Gobert/MPJ/Brunson will be available.
+
 Benchmark: Todd's favorite for Cade is Cade+Sharpe+Mark > Haliburton+Porter+NAW+Claxton (+2200 +900 +1.5 +1.1 +8% +2.6). Cade rows tier against its Score: above floor = clearly above it, floor = within ~250 (~400 on pick-heavy or uneven-body rows), below bar = clearly below. Non-Cade rows tier on their own, floor around +900 Score.
 
 Priced 9/25/26; pick ladders 9/27/26 (our own '27 3rd at 297). Todd's picks priced at '27 1st 2390, '28 1st 2690, '27 2nd 878, '28 2nd 984, Sept '26 1.01 6757, 2.04 927, 2.08 788, 3.01 457, 3.03 420. Sharpe > NAW has no Δage: Sharpe's age weight is 0 (GP 0).
@@ -82,12 +84,12 @@ Eason+Kuminga > Porter+Mitchell | +2200 +700 +1.2 +0.8 +12% +3.0
 Sharpe+Mark > Brunson | +2100 +1200 +0.4 +0.6 +7% +5.3
 Green > Porter+Gobert | +2100 +1200 +1.5 +0.6 +5% +6.3
 Giddey > Brunson+Porter | +2100 +900 +1.2 +0.7 +9% +5.3 | Us proposed 9/10
-Suggs+Eason+Walker+'27 1st+Chris '27 2nd > Brunson+Porter | +2000 +300 +1.4 +0.9 +12% +6.8
+Suggs+Eason+Walker+'27 1st+Chris '27 2nd > Brunson+Porter | +2000 +300 +1.4 +0.9 +12% +6.8 | Todd rejected 9/28
 Suggs+Eason+Walker+'27 1st+Mitch '27 2nd > Brunson+Porter | +1900 +300 +1.4 +0.8 +11% +6.8
 Eason+Walker+'27 1st > Brunson | +2000 +900 +0.8 +0.6 +7% +8.2
-Suggs+Eason+'27 1st > Brunson+Gobert | +2000 +800 +1.4 +0.7 +8% +8.8
+Suggs+Eason+'27 1st > Brunson+Gobert | +2000 +800 +1.4 +0.7 +8% +8.8 | Todd rejected 9/28
 Sharpe+Mark > Porter+Claxton | +1900 +900 +1.1 +0.7 +7% +3.1
-Eason+Walker+Chris '27 2nd > Porter+Gobert | +1900 +600 +1.5 +0.7 +8% +7.9
+Eason+Walker+Chris '27 2nd > Porter+Gobert | +1900 +600 +1.5 +0.7 +8% +7.9 | Todd rejected 9/28
 Sharpe+Mark+Kuminga > Brunson | +1800 +600 +0.1 +1.1 +10% +5.6
 Eason > Porter | +1800 +700 +0.8 +0.7 +9% +2.9 | Us proposed 9/10
 Suggs+'27 1st > Brunson | +1800 +800 +1.0 +0.6 +7% +8.0

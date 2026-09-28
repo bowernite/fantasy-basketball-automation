@@ -26,11 +26,11 @@ Cade > Reaves+Markkanen+Siakam | +3500 +1200 +2.6 +1.3 +17% +5.0
 Cade > Reaves+Sabonis+Siakam | +3400 +1000 +3.1 +1.3 +16% +5.3 | Us proposed 9/28
 Edey+Kuminga+Walker > Sabonis+Siakam | +3300 +1000 +2.0 +1.4 +15% +7.1
 Edey+Sharpe+Kuminga > Sabonis+Markkanen | +3300 +1000 +1.6 +1.5 +17% +5.5
-Cade+Eason+Collins+Melton > Reaves+Sabonis+Siakam+White | +3300 +600 +2.7 +1.4 +20% +4.4
+Cade+Eason+Collins+Melton > Reaves+Sabonis+Siakam+White | +3300 +600 +2.7 +1.4 +20% +4.4 | Us proposed 9/28 4:24p
 Edey+Murray > Sabonis+Markkanen | +3200 +1100 +1.7 +1.3 +16% +4.8
 Cade+Kuminga > Reaves+Sabonis+White+(2.11) | +3100 +700 +3.0 +1.2 +16% +4.6
 Cade+Keegan Murray+Vassell > Reaves+Sabonis+Siakam+White | +3100 +200 +3.3 +1.6 +20% +5.3
-Cade+Jabari Smith+Collins+Melton > Reaves+Sabonis+Siakam+White | +3000 +400 +2.4 +1.3 +19% +4.9
+Cade+Jabari Smith+Collins+Melton > Reaves+Sabonis+Siakam+White | +3000 +400 +2.4 +1.3 +19% +4.9 | Us proposed 9/28 4:24p
 Edey+Suggs > Sabonis+Markkanen | +3000 +1000 +1.8 +1.2 +15% +5.2
 Cade > Reaves+Sabonis+White | +2900 +800 +2.9 +1.2 +15% +5.2 | Us proposed 9/28 3:32p
 Cade+Coby White+Camara > Reaves+Sabonis+Siakam+White | +2800 +400 +2.9 +1.4 +17% +5.0
@@ -63,7 +63,7 @@ Cade+Jabari Smith > Reaves+Sabonis+Siakam | +2000 -300 +2.5 +1.3 +16% +5.8
 Cade+Keegan Murray > Reaves+Sabonis+White+(2.11) | +2000 -200 +2.4 +1.2 +16% +4.2
 Cade+Jalen Green > Reaves+Sabonis+Siakam+(2.11) | +2000 0 +2.5 +1.2 +13% +4.8
 Cade > Reaves+Sabonis+Hart | +1900 0 +2.7 +1.1 +14% +4.9 | Us proposed 9/28 3:32p
-Cade+Collins+Melton > Reaves+Sabonis+Harden | +1900 +100 +1.9 +1.0 +12% +5.1
+Cade+Collins+Melton > Reaves+Sabonis+Harden | +1900 +100 +1.9 +1.0 +12% +5.1 | Us proposed 9/28 4:24p
 Cade+Keegan Murray+Vassell+Collins > Reaves+Sabonis+Siakam+White | +1900 -600 +2.4 +1.3 +18% +4.6
 Cade+Bridges+Collins+Queta > Reaves+Sabonis+Siakam+White | +1900 +200 +2.0 +1.0 +12% +3.9
 Cade+Eason > Reaves+Sabonis+White | +1900 -400 +2.5 +1.2 +16% +5.1
@@ -105,7 +105,7 @@ Vassell+Eason > Siakam | +700 -100 +0.4 +0.5 +7% +6.8
 Cade+Vassell > Reaves+Sabonis+White | +1800 -400 +2.6 +1.1 +16% +5.0
 Cade+Coby White > Reaves+Sabonis+Harden | +1800 -100 +2.2 +1.2 +12% +6.0
 Cade+Keegan Murray > Reaves+Sabonis+Harden | +1800 -300 +2.5 +1.3 +14% +6.3
-Cade+Collins+Melton > Reaves+Sabonis+Siakam | +1800 -200 +2.0 +1.0 +15% +3.9
+Cade+Collins+Melton > Reaves+Sabonis+Siakam | +1800 -200 +2.0 +1.0 +15% +3.9 | Us proposed 9/28 4:24p
 Cade+Queta+Melton > Reaves+Sabonis+Siakam | +1800 -200 +2.2 +1.1 +14% +4.4
 Cade > Reaves+Sabonis+Michael '27 1st | +1800 +400 +1.5 +0.8 +11% +2.6
 Cade > Sabonis+Markkanen+Siakam | +1800 -700 +2.9 +1.4 +18% +5.7

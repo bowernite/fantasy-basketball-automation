@@ -22,11 +22,11 @@ Fox deal executed 9/28 (Fleaflicker 485835). Middleton, Chris '27 2nd ('27 KC 2n
 
 Walker+2.09+'27 2nd > Sharpe+Watson | +1800 +1000 +1.2 +0.6 +5% +4.3
 Kuminga+Walker+2.09 > Sharpe+Watson | +1600 +800 +0.9 +0.5 +5% +3.1
-Chaney+'27 1st+'27 KC 2nd > Sharpe+Watson | +1400 +600 +1.6 +0.5 +4% +5.5
+Chaney+'27 1st+'27 KC 2nd > Sharpe+Watson | +1400 +600 +1.6 +0.5 +4% +5.5 | Us proposed 9/28
 2.09+'27 2nd+'27 KC 2nd > Sharpe+Watson | +1400 +500 +1.5 +0.7 +6% +5.2 | Us proposed 9/22
 2.09+'27 2nd > Sharpe+'26 2.10 | +1400 +700 +0.9 +0.4 +5% +4.0
 Mark+2.09 > Sharpe+Watson | +1400 +600 +0.8 +0.7 +6% +3.2
-Chaney+'27 1st > Sharpe+Wells | +1400 +700 +1.4 +0.3 +3% +5.3
+Chaney+'27 1st > Sharpe+Wells | +1400 +700 +1.4 +0.3 +3% +5.3 | Us proposed 9/28
 2.09 > Sharpe | +1300 +600 +0.8 +0.4 +5% +4.8 | Jon rejected 9/22
 2.09+'27 2nd > Sharpe+McBride | +1300 +400 +1.2 +0.5 +7% +5.5 | Us proposed 9/22
 2.09+'27 2nd > Raynaud+Wells+McBride | +1300 +800 +1.3 +0.4 +4% +4.3
@@ -37,7 +37,7 @@ Kuminga+'27 1st > Sharpe+Watson | +1300 +700 +1.3 +0.3 +3% +5.0
 2.09+'27 2nd > Sharpe+Jaylin | +1100 +400 +1.0 +0.4 +6% +5.3 | Us proposed 9/22
 Walker+2.09 > Sharpe+Jaylin | +1100 +600 +0.7 +0.3 +4% +3.8
 Eason+2.09+'27 2nd > Sharpe+Watson | +1100 +300 +0.9 +0.6 +6% +2.3 | Us proposed 9/22
-Chaney+'27 1st > Sharpe+McBride | +1100 +500 +1.3 +0.3 +3% +6.0
+Chaney+'27 1st > Sharpe+McBride | +1100 +500 +1.3 +0.3 +3% +6.0 | Us proposed 9/28
 Mark > Sharpe+Wells | +1000 +500 +0.7 +0.3 +3% -0.4
 Kuminga+2.09 > Sharpe+McBride | +1000 +300 +0.9 +0.4 +6% +4.3 | Jon rejected 9/22
 2.09+'27 Don 2nd > Sharpe+McBride | +1000 +200 +1.2 +0.5 +7% +5.5

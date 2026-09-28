@@ -19,7 +19,7 @@ Cade+Chaney+Matkovic > Maxey+Buzelis | +2500 +1100 +1.0 +0.7 +10% -0.8
 
 2.09 counters (9/28) tier against holding the pick (Score 0). Formula Δw for Hlina: Jaquez −1.0, LaRavia+Drummond −0.9, Bey −0.7.
 
-'26 2.09+'28 2nd > Jaquez | +800 0 +1.0 +0.6 +6% +6.5
+'26 2.09+'28 2nd > Jaquez | +800 0 +1.0 +0.6 +6% +6.5 | Hlina rejected 9/28
 '26 2.09 > LaRavia+Drummond | +700 -100 +0.9 +0.5 +7% +9.3
 '26 2.09 > Bey | +700 -100 +0.7 +0.4 +6% +7.4
 
