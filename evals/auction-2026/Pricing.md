@@ -14,6 +14,7 @@ How `values.tsv` prices a row. The plan and card: `Auction 2026.md`. `Market$` m
 
 - `Market$` = $1 + `pool$` × (½ Sheet share + ¼ Win share + ¼ Board share), capped at $197
   - Win share = max(0, formula `Δw` − 0.02) ÷ Σ over the top N. Unsigned (`fa`) and `noproj` rows get 0.
+  - `Market$` runs on the 9/24 projections. The 78 simmed rows carry the 9/28 projections in `FPts/Gp` and `Δw`, so their Win share is stale; live k corrects the level, not the mix.
   - Sheet share = max(0, `sheet_pts` − 340) ÷ Σ over the top N. Off-list rows (the 2026 class, 35 others) get 0.
   - Board share = max(0, BASE − 25) ÷ Σ over the top N.
   - Each replacement level is the mean of ranks N+1..N+3 on that metric. Rookies assumed drafted are left out of it.

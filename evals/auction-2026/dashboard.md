@@ -1,4 +1,4 @@
-# Auction live · room ? 0/5 · 16:08:05
+# Auction live · room ? 0/5 · 16:23:26
 
 **Us** $200 · 4 spots · max bid 197
 **Nominate** Brandon Williams (early)
@@ -7,26 +7,13 @@
 
 | Player | Score | Mkt | Gap | Cap |
 |---|---:|---:|---:|---:|
-| Baylor Scheierman | 375 | 70 | +139 | 100 |
-| Dominick Barlow | 246 | 72 | +79 | 71 |
-| Jaxson Hayes | 205 | 62 | +65 | 66 |
-| Marvin Bagley | 201 | 68 | +55 | 56 |
-| Dru Smith | 175 | 52 | +55 | 48 |
-| Vít Krejčí | 159 | 46 | +52 | 42 |
-| Julian Strawther | 149 | 36 | +55 | 40 |
-| Al Horford | 109 | 41 | +27 | 32 |
-| Zach Collins | 107 | 28 | +38 | 32 |
-| Luka Garza | 91 | 47 | +10 | 22 |
-| Kentavious Caldwell-Pope | 89 | 37 | +18 | 22 |
-| Matisse Thybulle | 82 | 23 | +28 | 22 |
-| Jarred Vanderbilt | 65 | 34 | +6 | 12 |
-| Terance Mann | 44 | 41 | -14 | 6 |
-| Simone Fontecchio | 44 | 40 | -13 | 6 |
-| Trayce Jackson-Davis | 23 | 18 | -3 | 0 |
-| Nick Richards | 20 | 21 | -9 | 0 |
-| Kevon Looney | 16 | 15 | -4 | 0 |
-| Kenrich Williams | 2 | 25 | -23 | 0 |
-| Trendon Watford | 2 | 25 | -23 | 0 |
+| Baylor Scheierman | 332 | 70 | +139 | 100 |
+| Dru Smith | 231 | 52 | +121 | 83 |
+| Dominick Barlow | 218 | 72 | +92 | 77 |
+| Vít Krejčí | 138 | 46 | +59 | 6 |
+| Kentavious Caldwell-Pope | 48 | 37 | +0 | 6 |
+| Matisse Thybulle | 33 | 23 | +2 | 6 |
+| Simone Fontecchio | 12 | 40 | -31 | 6 |
 
 ## Rivals: max bid · $ left · spots
 
@@ -50,27 +37,27 @@
 | Player | Mkt | BASE | ours |
 |---|---:|---:|---:|
 | Dominick Barlow | 72 | 174 | -0.02 |
-| Brandon Williams | 72 | 205 | -0.02 |
-| Baylor Scheierman | 70 | 268 | 0.01 |
-| Marvin Bagley | 68 | 197 | 0.00 |
-| Jaxson Hayes | 62 | 129 | -0.10 |
+| Brandon Williams | 72 | 205 | -0.03 |
+| Baylor Scheierman | 70 | 268 | -0.00 |
+| Marvin Bagley | 68 | 197 | 0.01 |
+| Jaxson Hayes | 62 | 129 | -0.14 |
 | Quinten Post | 62 | 202 | -0.11 |
-| Goga Bitadze | 62 | 227 | -0.10 |
-| Harrison Barnes | 57 | 161 | -0.06 |
-| Ryan Nembhard | 56 | 324 | -0.17 |
-| Dru Smith | 52 | 231 | -0.12 |
-| Patrick Williams | 47 | 151 | -0.11 |
+| Goga Bitadze | 62 | 227 | -0.09 |
+| Harrison Barnes | 57 | 161 | -0.07 |
+| Ryan Nembhard | 56 | 324 | -0.16 |
+| Dru Smith | 52 | 231 | -0.09 |
+| Patrick Williams | 47 | 151 | -0.09 |
 | Luka Garza | 47 | 107 | -0.08 |
-| Vít Krejčí | 46 | 148 | -0.02 |
-| Javonte Green | 42 | 14 | -0.10 |
-| Al Horford | 41 | 117 | -0.06 |
-| Terance Mann | 41 | 51 | -0.10 |
+| Vít Krejčí | 46 | 148 | -0.04 |
+| Javonte Green | 42 | 14 | -0.09 |
+| Al Horford | 41 | 117 | -0.05 |
+| Terance Mann | 41 | 51 | -0.13 |
 | Caleb Love | 40 | 188 | -0.15 |
-| Pat Spencer | 40 | 148 | -0.18 |
-| Simone Fontecchio | 40 | 55 | -0.11 |
-| Kentavious Caldwell-Pope | 37 | 78 | -0.05 |
-| Julian Strawther | 36 | 173 | -0.02 |
-| Nae'Qwan Tomlin | 35 | 109 | -0.06 |
+| Pat Spencer | 40 | 148 | -0.17 |
+| Simone Fontecchio | 40 | 55 | -0.10 |
+| Kentavious Caldwell-Pope | 37 | 78 | -0.07 |
+| Julian Strawther | 36 | 173 | -0.03 |
+| Nae'Qwan Tomlin | 35 | 109 | -0.04 |
 | Jarred Vanderbilt | 34 | 66 | -0.07 |
-| Jamir Watkins | 34 | 110 | -0.12 |
-| Craig Porter | 34 | 61 | -0.07 |
+| Jamir Watkins | 34 | 110 | -0.08 |
+| Craig Porter | 34 | 61 | -0.06 |
