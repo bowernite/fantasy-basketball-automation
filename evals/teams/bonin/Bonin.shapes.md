@@ -10,7 +10,7 @@ Screening (9/10/26): 40 shapes simmed. Sims use our 35-body roster (same as eval
 
 Screening (9/28/26): 56 young-for-vet shapes simmed on the no-Jon roster (Cade kept; Hlina overlay in). Michael's roster unchanged since 9/2 (checked on the wire 9/28). Every 9/28 row cuts his season, so none loads a competitor. Floor for non-Cade rows ≈ +400 Score. Cade rows are tiered against Jon's deal, Cade+2.09+'27 1st > SGA+Wells+McBride+Champagnie+Jaylin (+1800 +1100 +1.5 +0.6 +5% +4.1, `Jon.shapes.md`). Jon backed out 9/28, so the floor is a reference, not a live bid. Out-side picks: '28 1st 1425, Chris '27 2nd 900. In-side picks: Michael '27 3rd 357, Michael '27 1st 1524. Sharpe rows have no Δage (0 projected GP), nor Bona > Draymond. Draymond = Draymond Green; bare Green = Jalen Green. Smith, Green and Camara come from the Hlina deal after the auction, so their rows can't execute before it lands. Middleton > Michael '27 3rd fails on paper (Δw −0.26, ΔP −0.5) because the sim keeps Middleton over a pad body; in practice he is cut after the auction, so the deal is +357 BASE for free.
 
-Texts 9/28/26 (Cade): Brett offered Cade > Reaves+Sabonis+Siakam. Michael: "Last one is a lot but interesting since Cade's a beast. Lemme think a bit" and "I'm trying to get younger". Expect a smaller counter. Counter screen (9/28, same roster): every Cade 2-for-1 fails ΔBASE except Reaves+Markkanen (Below bar). A Cade deal needs Reaves+Sabonis plus a real third piece (Siakam, White or Hart) to clear the floor.
+Texts 9/28/26 (Cade): Brett offered Cade > Reaves+Sabonis+Siakam. Michael: "Last one is a lot but interesting since Cade's a beast. Lemme think a bit" and "I'm trying to get younger". Expect a smaller counter. Counter screen (9/28, same roster): every Cade 2-for-1 fails ΔBASE except Reaves+Markkanen (ΔBASE −955, Below bar). A Cade deal needs Reaves+Sabonis plus a real third piece (Siakam, White or Hart) to clear the floor.
 
 ## Above floor
 
@@ -105,24 +105,33 @@ Green+'27 1st > Reaves | +2200 +1300 +0.8 +0.8 +7% +6.1
 
 ## Doesn't meet our minimums
 
+Cade > Sabonis | -6000 -5600 -0.2 -0.4 -4% +5.4
 Giddey+Edey > Clingan | -5400 -4000 -1.4 -0.7 -12% -1.6
+Cade > Reaves | -4400 -3700 -0.6 -0.5 -6% +3.3
 Giddey+'27 1st > Clingan | -3000 -2800 -0.2 -0.1 -1% +0.1
 Giddey > Siakam | -2900 -2300 -0.3 -0.3 -5% +8.5
 Garland+Gordon > Siakam | -2700 -2200 -0.6 -0.2 -4% +4.4
 Garland+'27 1st > Siakam | -2600 -2800 +0.1 +0.1 +1% +8.5
+Cade > Markkanen+Siakam | -2500 -3200 +0.8 +0.3 +6% +5.9
+Cade > Sabonis+Siakam | -2400 -3400 +1.4 +0.6 +7% +6.3
 Garland+Collins > Sabonis | -1700 -1800 -0.3 0.0 +1% +2.8
 Garland > White | -1600 -1600 -0.1 0.0 0% +5.5
+Cade > Sabonis+Markkanen | -1500 -2800 +1.3 +0.6 +10% +4.9
 Reid+Suggs > Zubac | -1500 -1100 -0.5 0.0 -4% +3.1
 Giddey+Gordon > Sabonis+Powell | -1400 -1600 +0.3 0.0 +1% +5.3
 Coby White+Suggs > White | -1300 -1200 -0.6 +0.1 -1% +6.1
 Bane+Suggs > Clingan | -900 -1000 -0.4 +0.2 0% -4.6
 Garland+Suggs > Reaves | -900 -800 -0.5 +0.1 -1% +2.1
+Cade > Reaves+Siakam | -700 -1500 +1.0 +0.5 +6% +5.3
 Giddey > Reaves | -200 -100 -0.2 -0.1 -1% +4.3
+Cade > Sabonis+Markkanen+Nembhard | -100 -1800 +2.0 +0.8 +12% +4.5
 Green+Simons > Siakam | -100 -200 +0.2 +0.4 -1% +7.3
 Green+Smith > Markkanen | -100 -200 -0.4 +0.3 +1% +5.2
 Garland+Gordon > Reaves | 0 0 -0.4 -0.1 0% +0.2
 Bane+Collins > Clingan | 0 -100 -0.5 +0.1 +1% -6.0
 Middleton > Michael '27 3rd | +200 +200 -0.3 -0.1 -1% -16.1 | Us proposed 9/28
 Bona > Draymond | +300 +200 +0.3 +0.1 -1% ?
+Cade > Reaves+Sabonis | +300 -1200 +1.5 +0.8 +11% +4.4
 Green+Bridges > Siakam+Hart | +600 +400 +0.5 +0.6 -2% +5.2
+Cade > Sabonis+Siakam+White | +700 -1500 +2.7 +1.3 +15% +6.6
 Collins+Bridges > Clingan | +1000 +1100 -0.4 +0.1 -2% -6.2

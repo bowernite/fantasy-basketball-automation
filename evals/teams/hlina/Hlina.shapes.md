@@ -15,6 +15,12 @@ Priced 9/27/26 on the 9/2 rosters (checked against Fleaflicker 9/27, no changes)
 Cade > Maxey+Buzelis | +2600 +1200 +1.2 +0.7 +12% -0.8 | Hlina rejected 9/28
 Cade+Chaney+Matkovic > Maxey+Buzelis | +2500 +1100 +1.0 +0.7 +10% -0.8
 
+2.09 counters (9/28) tier against holding the pick (Score 0). Formula Δw for Hlina: Jaquez −1.0, LaRavia+Drummond −0.9, Bey −0.7.
+
+'26 2.09+'28 2nd > Jaquez | +800 0 +1.0 +0.6 +6% +6.5
+'26 2.09 > LaRavia+Drummond | +700 -100 +0.9 +0.5 +7% +9.3
+'26 2.09 > Bey | +700 -100 +0.7 +0.4 +6% +7.4
+
 ## Floor
 
 Pick rows (9/27) are not re-simmed. They take the no-pick row's numbers, subtract the pick's BASE from Score and ΔBASE, and recompute Δage per `trades` §Age. Score* (Cade Sweepstakes) is about +2900 on both.
@@ -22,7 +28,7 @@ Pick rows (9/27) are not re-simmed. They take the no-pick row's numbers, subtrac
 Cade+'27 2nd > Paolo+Jalen Williams | +2500 +1100 +1.3 +0.8 +12% +0.4 | Hlina rejected 9/28
 Cade+Chris '27 2nd > Maxey+Miller | +2200 +900 +1.2 +0.6 +10% +0.8 | Hlina rejected 9/28
 
-LaRavia rows (9/28) tier against holding the pick, not the Cade floor. Most of the ΔP(title) is Hlina's loss (−5%), since he's at 26 bodies. 2.09 is free since Jon backed out of the Cade deal 9/28 1:59p.
+LaRavia rows (9/28) tier against holding the pick, not the Cade floor. Most of the ΔP(title) is Hlina's loss (−5%), since he's at 26 bodies. 2.09 is free since Jon backed out of the Cade deal 9/28 1:59p. Re-simmed 9/28 afternoon (LaRavia confirmed on Hlina's live roster): 2.09 > LaRavia unchanged, Hlina formula Δw −0.4.
 
 '28 2nd > LaRavia | +200 -200 +0.5 +0.3 +4% +6.8
 own '27 2nd > LaRavia | +100 -300 +0.5 +0.3 +4% +5.8
