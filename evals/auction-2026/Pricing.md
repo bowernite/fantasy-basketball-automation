@@ -25,6 +25,7 @@ How `values.tsv` prices a row. The plan and card: `Auction 2026.md`. `Market$` m
 
 - `dPtitle`: `ΔP(title) ours` in pp, one buy replacing a $1 floor body (Justin Edwards) on our post-auction roster. Method: `Auction 2026.md` §Tiers. Blank = not simmed: drafted-class rookies, unsigned, `noproj` vets, rows under ~11 FPts/G.
 - `tier`: `1`, `2`, `3`, `Y` or blank, from `dPtitle` (`Auction 2026.md` §Tiers).
+- `score`: `Score.md` on the swap $1 body (Justin Edwards: BASE 76, formula `Δw` 0.05, `Δw '26–'27 ours` −0.11) → this row, N = 0. `Δw (season)` = `Δw '26–'27 ours` + 0.11. Simmed rows only.
 - `Max$`: our opening cap on a tiered row at k = 1 (`Auction 2026.md` §Bidding). Blank on T3, which is shut at the open. The live cap moves with every sale.
 - `Δw '26–'27 ours`: `Δw (season)` against `REPL` (~24–25 rate), so FA rows mostly print negative.
 - `noproj` rows run on last season's rate, often over a handful of games (Alondes Williams 26.1 on 16 GP → formula `Δw` 0.37). Read them on BASE and `sheet_pts`.

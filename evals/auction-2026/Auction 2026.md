@@ -38,33 +38,49 @@ Rules (Sheet, 2026-09-24):
 - **Why ΔP drives the auction:** BASE (23–340) and `Δw (season)` tie at decision resolution, so the equal-weight rule lands on ΔP. `Δw (season)` can only veto. Don't carry this into trades.
 - Auction $ is use-it-or-lose-it with no other use, and `AGENTS.md` weights this season like the next six, so there is no contending premium to add.
 - `dPtitle` = one buy replacing a $1 floor body (Justin Edwards) on our roster after the cuts. Run at 1000 engine trials and 60k title trials over 3 seed pairs, averaged. Across the pairs, sd ≈ 0.1pp per row.
+- `score` (`Pricing.md`) rides beside the tiers and does not set them. Ranked with our bottom 8: `Score ranking.md`.
 - Tier bounds: T1 ≥ +0.9pp · T2 +0.35 to +0.9 · T3 +0.15 to +0.35 · Y = 2026-class or '25 rookies at ≥ −0.15. Blank = no better than a $1 body.
 - 78 rows simmed: the top ~60 non-rookie rows by `Market$`, the 2026 class ranked 26–38 by BASE, and the rest of the ≥ 11 FPts/G vets. Nothing below the top 60 reached T3.
-- High-BASE undrafted rookies (De Larrea 412, Thornton 414, Quaintance 390, Karaban 338) read −0.3 to −0.6pp alone and −0.2pp in a set against Meleek Thomas. They are not on the card; nominate them to drain rival $.
+- High-BASE undrafted rookies (De Larrea 412, Thornton 414, Quaintance 390, Karaban 338) read −0.3 to −0.6pp alone and −0.2pp in a set against Meleek Thomas, but score 229–284, top 6 FAs with Scheierman and Barlow (`Score ranking.md`). They are not on the card; nominate them to drain rival $.
 
 ## Cheat card
 
-`ΔP` = `dPtitle`. `Δw` = `Δw (season)` over the $1 body. `Cap` = opening cap at k = 1 (`Max$`). `Sheet #` = position on the Sheet's FA list.
+`ΔP` = `dPtitle`. `Δw` = `Δw (season)` over the $1 body. `Score` = `values.tsv` `score`. `Cap` = opening cap at k = 1 (`Max$`). `Sheet #` = position on the Sheet's FA list. ***Bold italic*** rows are ours, priced as keep vs the $1 body (§Ours); not bid targets.
 
-| Tier | Player | Tm | Age | BASE | ΔP | Δw | Market$ | Cap | Sheet # |
-|---|---|---|---:|---:|---:|---:|---:|---:|---:|
-| 1 | Baylor Scheierman | BOS | 26.0 | 268 | +1.35 | +0.15 | 73 | 94 | 16 |
-| 1 | Dominick Barlow | PHI | 23.3 | 174 | +1.01 | +0.10 | 69 | 94 | 4 |
-| 1 | Jaxson Hayes | UTA | 26.3 | 129 | +1.28 | +0.03 | 61 | 86 | 10 |
-| 1 | Matisse Thybulle | LAL | 29.6 | 23 | +1.07 | +0.10 | 26 | 51 | 71 |
-| 2 | Vít Krejčí | POR | 26.3 | 148 | +0.62 | +0.10 | 43 | 44 | 17 |
-| 2 | Al Horford | GSW | 40.3 | 117 | +0.48 | +0.07 | 39 | 44 | 22 |
-| 2 | Luka Garza | BOS | 27.7 | 107 | +0.51 | +0.04 | 40 | 44 | 6 |
-| 2 | Kentavious Caldwell-Pope | PHI | 33.6 | 78 | +0.60 | +0.07 | 36 | 44 | 29 |
-| 2 | Jarred Vanderbilt | LAL | 27.5 | 66 | +0.63 | +0.05 | 31 | 39 | 23 |
-| 2 | Simone Fontecchio | MIA | 30.8 | 55 | +0.63 | +0.02 | 34 | 42 | 11 |
-| 2 | Terance Mann | BKN | 29.9 | 51 | +0.57 | +0.03 | 36 | 44 | 12 |
-| 2 | Trayce Jackson-Davis | TOR | 26.6 | 42 | +0.57 | +0.01 | 19 | 24 | 67 |
-| 2 | Nick Richards | MIA | 28.8 | 36 | +0.64 | −0.00 | 21 | 26 | 51 |
-| 2 | Kenrich Williams | OKC | 31.8 | 32 | +0.40 | +0.02 | 23 | 29 | 37 |
+| Tier | Player | Tm | Age | BASE | ΔP | Δw | Score | Market$ | Cap | Sheet # |
+|---|---|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| 1 | ***De'Andre Hunter*** | SAC | 28.8 | 510 | +0.93 | +0.04 | 581 | – | – | – |
+| 1 | ***Jarace Walker*** | IND | 23.0 | 424 | +1.47 | +0.17 | 588 | – | – | – |
+| 1 | ***Keon Ellis*** | BKN | 26.7 | 278 | +1.13 | +0.06 | 324 | – | – | – |
+| 1 | Baylor Scheierman | BOS | 26.0 | 268 | +1.35 | +0.15 | 375 | 73 | 94 | 16 |
+| 1 | Dominick Barlow | PHI | 23.3 | 174 | +1.01 | +0.10 | 246 | 69 | 94 | 4 |
+| 1 | Jaxson Hayes | UTA | 26.3 | 129 | +1.28 | +0.03 | 205 | 61 | 86 | 10 |
+| 1 | Matisse Thybulle | LAL | 29.6 | 23 | +1.07 | +0.10 | 82 | 26 | 51 | 71 |
+| 2 | ***Jay Huff*** | IND | 29.0 | 372 | +0.47 | +0.04 | 365 | – | – | – |
+| 2 | ***Adem Bona*** | PHI | 23.4 | 257 | +0.76 | +0.13 | 322 | – | – | – |
+| 2 | ***Khris Middleton*** | WAS | 35.1 | 162 | +0.45 | +0.07 | 203 | – | – | – |
+| 2 | ***Karlo Matković*** | NOP | 25.4 | 161 | +0.80 | +0.05 | 185 | – | – | – |
+| 2 | Vít Krejčí | POR | 26.3 | 148 | +0.62 | +0.10 | 159 | 43 | 44 | 17 |
+| 2 | Al Horford | GSW | 40.3 | 117 | +0.48 | +0.07 | 109 | 39 | 44 | 22 |
+| 2 | Luka Garza | BOS | 27.7 | 107 | +0.51 | +0.04 | 91 | 40 | 44 | 6 |
+| 2 | Kentavious Caldwell-Pope | PHI | 33.6 | 78 | +0.60 | +0.07 | 89 | 36 | 44 | 29 |
+| 2 | Jarred Vanderbilt | LAL | 27.5 | 66 | +0.63 | +0.05 | 65 | 31 | 39 | 23 |
+| 2 | Simone Fontecchio | MIA | 30.8 | 55 | +0.63 | +0.02 | 44 | 34 | 42 | 11 |
+| 2 | Terance Mann | BKN | 29.9 | 51 | +0.57 | +0.03 | 44 | 36 | 44 | 12 |
+| 2 | Trayce Jackson-Davis | TOR | 26.6 | 42 | +0.57 | +0.01 | 23 | 19 | 24 | 67 |
+| 2 | Nick Richards | MIA | 28.8 | 36 | +0.64 | −0.00 | 20 | 21 | 26 | 51 |
+| 2 | Kenrich Williams | OKC | 31.8 | 32 | +0.40 | +0.02 | 2 | 23 | 29 | 37 |
+| – | ***Chaney Johnson*** | BKN | – | 0 | +0.06 | −0.05 | −92 | – | – | – |
 
-- **T3** (BASE, ΔP, `Market$`): Dru Smith 231 (+0.25, $47) · Marvin Bagley 197 (+0.29, $63) · Julian Strawther 173 (+0.19, $38) · Zach Collins 140 (+0.20, $34) · Kevon Looney 69 (+0.17, $18) · Trendon Watford 66 (+0.18, $23) · Josh Okogie 25 (+0.23, $23) · Jabari Walker 1 (+0.27, $20)
-- **Y:** Meleek Thomas 246 (+0.00, $30) · Chris Cenac 244 (+0.05, $28), if undrafted
+- **T3** (BASE, ΔP, Score, `Market$`): Dru Smith 231 (+0.25, 175, $47) · Marvin Bagley 197 (+0.29, 201, $63) · Julian Strawther 173 (+0.19, 149, $38) · Zach Collins 140 (+0.20, 107, $34) · Kevon Looney 69 (+0.17, 16, $18) · Trendon Watford 66 (+0.18, 2, $23) · Josh Okogie 25 (+0.23, −31, $23) · Jabari Walker 1 (+0.27, −41, $20)
+- **Y:** Meleek Thomas 246 (+0.00, 175, $30) · Chris Cenac 244 (+0.05, 164, $28), if undrafted
+
+## Ours
+
+Our bottom 8 on the `dPtitle` basis, 9/28: roster after both cuts, one $1 body (Justin Edwards) plus FA-grade pads in the open spots. Kept row = keep vs swap to a second $1 body; Chaney and Middleton = add back over the $1 body. Scheierman and Thybulle re-run on this basis read +1.41 and +0.96 (card +1.35, +1.07). Formula `Δw` for `Score`: `Ours.team.md`.
+
+- Every FA except Scheierman scores below Huff, Ellis and Bona, and the top FAs sit inside their 250 tie band (`Score.md`). No extra cut.
+- Middleton 203 vs Matković 185 is a Score tie. ΔP (+0.80 vs +0.45) keeps Matković.
 
 ## Bidding
 

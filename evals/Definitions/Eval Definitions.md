@@ -92,7 +92,7 @@ Which report to run for whom, the two ΔP reads (`player_title` vs `incoming_tit
 
 ## Score
 
-Our-side trade composite in BASE units — fixed rates over `ΔBASE`, formula `Δw` (body-corrected), `Δw (season)` and `ΔP(title)`. Trades only; never on eval player tables.
+Our-side trade composite in BASE units — fixed rates over `ΔBASE`, formula `Δw` (body-corrected), `Δw (season)` and `ΔP(title)`. Trades and auction buys (a 1-for-1 swap against the $1 body); never on eval player tables.
 
 Formula, rates, tie band and how to read it: `Score.md`.
 
