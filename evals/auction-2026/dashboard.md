@@ -1,4 +1,4 @@
-# Auction live · room ? 0/5 · 16:23:26
+# Auction live · room ? 0/5 · 16:29:57
 
 **Us** $200 · 4 spots · max bid 197
 **Nominate** Brandon Williams (early)
@@ -7,13 +7,13 @@
 
 | Player | Score | Mkt | Gap | Cap |
 |---|---:|---:|---:|---:|
-| Baylor Scheierman | 332 | 70 | +139 | 100 |
+| Baylor Scheierman | 332 | 70 | +139 | 124 |
 | Dru Smith | 231 | 52 | +121 | 83 |
 | Dominick Barlow | 218 | 72 | +92 | 77 |
-| Vít Krejčí | 138 | 46 | +59 | 6 |
-| Kentavious Caldwell-Pope | 48 | 37 | +0 | 6 |
-| Matisse Thybulle | 33 | 23 | +2 | 6 |
-| Simone Fontecchio | 12 | 40 | -31 | 6 |
+| Vít Krejčí | 138 | 46 | +59 | 0 |
+| Kentavious Caldwell-Pope | 48 | 37 | +0 | 0 |
+| Matisse Thybulle | 33 | 23 | +2 | 0 |
+| Simone Fontecchio | 12 | 40 | -31 | 0 |
 
 ## Rivals: max bid · $ left · spots
 

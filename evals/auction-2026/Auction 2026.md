@@ -49,15 +49,15 @@ Rows: every target, plus the top 50 of the pool by `Market$` (leaving out the 36
 | ***De'Andre Hunter*** | SAC | 28.8 | 510 | +0.35 | 532 | – | – | – | – | – |
 | ***Jay Huff*** | IND | 29.0 | 372 | +0.33 | 392 | – | – | – | – | – |
 | ***Adem Bona*** | PHI | 23.4 | 257 | +1.21 | 355 | – | – | – | – | – |
-| Baylor Scheierman | BOS | 26.0 | 268 | +0.87 | 332 | 66 | 197 | +131 | 100 | 16 |
+| Baylor Scheierman | BOS | 26.0 | 268 | +0.87 | 332 | 66 | 197 | +131 | 124 | 16 |
 | ***Keon Ellis*** | BKN | 26.7 | 278 | +1.14 | 324 | – | – | – | – | – |
 | Dru Smith | MIA | 28.7 | 231 | +0.58 | 231 | 49 | 163 | +114 | 83 | 7 |
 | Dominick Barlow | PHI | 23.3 | 174 | +0.73 | 218 | 68 | 154 | +86 | 77 | 4 |
 | ***Karlo Matković*** | NOP | 25.4 | 161 | +0.59 | 167 | – | – | – | – | – |
-| Vít Krejčí | POR | 26.3 | 148 | +0.45 | 138 | 43 | 98 | +55 | 6 | 17 |
-| Kentavious Caldwell-Pope | PHI | 33.6 | 78 | +0.30 | 48 | 35 | 35 | 0 | 6 | 29 |
-| Matisse Thybulle | LAL | 29.6 | 23 | +0.54 | 33 | 22 | 24 | +2 | 6 | 71 |
-| Simone Fontecchio | MIA | 30.8 | 55 | +0.19 | 12 | 38 | 9 | −29 | 6 | 11 |
+| Vít Krejčí | POR | 26.3 | 148 | +0.45 | 138 | 43 | 98 | +55 | 0 | 17 |
+| Kentavious Caldwell-Pope | PHI | 33.6 | 78 | +0.30 | 48 | 35 | 35 | 0 | 0 | 29 |
+| Matisse Thybulle | LAL | 29.6 | 23 | +0.54 | 33 | 22 | 24 | +2 | 0 | 71 |
+| Simone Fontecchio | MIA | 30.8 | 55 | +0.19 | 12 | 38 | 9 | −29 | 0 | 11 |
 | ***Chaney Johnson*** | BKN | – | 0 | −0.25 | −118 | – | – | – | – | – |
 | **Pass** | | | | | | | | | | |
 | Ryan Nembhard | CHA | 23.5 | 324 | −0.44 | 207 | 53 | 146 | +93 | – | 21 |
@@ -114,12 +114,12 @@ Our bottom 7 on the `dPtitle` basis, 9/28, post-Fox: roster after both cuts, one
 ## Bidding
 
 - **Hard max** = $ left − (spots left − 1).
-- **Plan** = the unsold targets with the most summed Score that fill our spots left at live `Market$`, with $1 bodies (Score 0) in the rest. Re-plans after every sale.
-- **Cap** on a target = the most we can pay for it and still match the plan without it: its Score + the best plan for our other spots on the $ left after paying ≥ the best plan without it. Never over hard max, or $100 while ≥ 3 spots are open.
-- At the open: Scheierman $100 · Dru Smith $83 · Barlow $77 · Krejčí, Caldwell-Pope, Thybulle and Fontecchio $6. The three plan rows use $194 of $200, so any other buy costs one of them.
+- **Plan** = the unsold targets with the most summed Score that fill our spots left at live `Market$`, with $1 bodies in the rest. One $1 spot counts as Matković's 167: the post-Hlina cut takes that body, not him. Re-plans after every sale.
+- **Cap** on a target = the most we can pay for it and still match the plan without it: its Score + the best plan for our other spots on the $ left after paying ≥ the best plan without it. Never over hard max.
+- At the open: Scheierman $124 · Dru Smith $83 · Barlow $77 · the rest $0. A 4th buy under Matković's 167 is the one cut, so it is worth nothing until we hold 2 buys or fewer of the plan's three.
 - Caps assume the rest of the plan sells at live `Market$`. When room heat reads hot, the rest costs more, so caps read low.
 - Don't stretch a cap to beat a rich rival by $1–2. A rival who overpays for one target can't contest the next.
-- **Last spot:** the cap goes to hard max on every target that outscores the best one our $ buys at live `Market$`, and $0 on the rest.
+- **Last spot:** the cap goes to hard max on every target that outscores Matković and the best one our $ buys at live `Market$`, and $0 on the rest.
 - **Endgame:** once our cap on an unsold target beats every rival's `Max Bid`, nothing can outbid us. Nominate the best such row and win it.
 - Never bid on a pass row, and never to push a rival's price. A stuck buy costs one of our spots.
 - Waste check: finishing with more than ~$10 unspent means the caps were too tight.
@@ -130,7 +130,7 @@ Nominating opens with our $1 bid: if nobody bids, the row is ours. One nominee a
 
 1. **Endgame** row (§Bidding).
 2. **Mid:** the first unsold Mid row we still bid on, then the top-Score target we still bid on. Only once half the league's auction spots are filled, on our last spot, or when no Early row is left.
-3. **Early:** the Early list in order, then the priciest unsold pass row by live `Market$`. Skip any row under $5 live `Market$`.
+3. **Early:** the Early list in order, then the priciest unsold pass row by live `Market$`. Skip any row under $5 live `Market$`, and unsigned (`fa`) or `noproj` rows.
 
 Lists:
 
@@ -144,7 +144,7 @@ Lists:
 Runbook: `auction-live` Skill (`.claude/skills/auction-live/auction-live.md`).
 
 - Log every sale in `sales.tsv` as `player  team  $`, where team is the owner's first name. Either:
-  - **Agent session:** say "sold Barlow Chris 60", or let the Sheet poller append. The agent replies with room heat, the Score, live `Market$`, gap and cap for the unsold targets, and each team's $ left, spots left and `Max Bid`.
+  - **Agent session:** the Sheet poller appends it. The agent replies with room heat, the Score, live `Market$`, gap and cap for the unsold targets, and each team's $ left, spots left and `Max Bid`.
   - **Sheet tab:** paste `values.tsv` and `sales.tsv` as tabs, then compute the multiplier below with SUM and VLOOKUP.
 - **Live multiplier** k = ($ left league-wide − spots left league-wide) ÷ Σ(`Market$` − 1) over the top (spots left) unsold rows. Live `Market$` = 1 + (`Market$` − 1) × k. Live gap = `gap` × k.
 - **Room heat** = Σ(price − 1) ÷ Σ(live `Market$` just before the sale − 1) over the last 8 rival sales expected at ≥ $5. Leave out the forced fill (league spots left ≤ 2 × teams still open). Hot ≥ 1.15, cold ≤ 0.87. Advisory only: caps never use it.
