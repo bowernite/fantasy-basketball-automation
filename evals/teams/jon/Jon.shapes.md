@@ -8,7 +8,7 @@ Benchmark: Todd's live offer for Cade is Cade+Sharpe+Mark > Haliburton+Porter+NA
 
 Tiers (Score, 9/25/26): Cade rows against the benchmark's +2200. None clears it; Floor = within ~250 (~300 on pick-heavy or uneven-body rows), and those Floor rows mostly run +3.5 to +4.6 Δage vs its +2.6. Non-Cade rows against their own floor, about +700 (e.g. 2.09 > Wells+McBride).
 
-Sims: 99-deal grid 9/25/26 (`/tmp/ff-sim-jon-cade-grid.out`) + 12 beat-Todd shapes 9/25/26 + 54 shapes with our 2.09 9/25/26 (34 no-Cade, 20 Cade ↔ SGA; includes the 9/22 floats) + 66 beat-Todd shapes 9/25/26 (SGA plus 2–4 mid pieces for picks or our depth; 16 counters off his SGA+Fears offer; one non-SGA Cade shape, which fails) + 6 Henry-2nd shapes 9/25/26 (his add plus Mark-for-bodies variants) + 5 SGA+Fears+one-piece shapes 9/25/26 + 10 Cade(+2.09) ↔ SGA+role-player shapes 9/25/26 (his Wells/Champagnie/McBride offer + counters) + 38 angle shapes 9/25/26 (Mark / Eason / Kuminga / Walker for Sharpe / Fears / Watson on top of his Wells+McBride offer, vet adds, Giddey-for-SGA two-step legs on today's roster; 2 no-Cade legs under -200 pruned) + Cade+2.09+'27 KC 2nd > SGA+Sharpe+Wells 9/25/26 + 37 Raynaud shapes 9/25/26 (21 Cade ↔ SGA+Raynaud, 16 no-Cade; Mark > Raynaud pruned under -200) + 11 Edey/Jaylin shapes 9/25/26 (his re-sent 8/2 shape plus 2.09 for 3.09, no pick swap, +Raynaud, +Sharpe, Kuminga / Mark for Edey) + 23 pick/sweetener ladders off his Wells+McBride offer 9/27/26 (sealers, Sharpe / Fears / Watson / Bailey rungs, Chaney / Matković sweeteners; his offer re-priced +2428, unchanged at rounding). Our '27 3rd priced 297. Every row re-priced 9/25/26 for Score and Δage. Out-side Sharpe = Shaedon; In-side Sharpe = Day'Ron. Unlabelled '27 2nd = our own, priced 540; '27 KC 2nd = King Christopher's, 900; '27 Don 2nd = The Don's, 775; '28 2nd 634; our '27 / '28 1sts 1425 each; 2.09 645; 3.09 357 (Henry.team.md), BASE-only since Henry holds it (no body, not in Δage); In-side '26 2.10 = Jon's, 640; In-side '27 Henry 2nd = Mongol Khans' '27 2nd, priced 810 (eval range 645–971); In-side '27 1st = Jon's own, priced 4574 (eval range 2391–6757). Jon ΔBASE ≥ +1000 = too lopsided (do not float). Our ΔBASE below -200: do not sim or archive (pruned 9/25). Jon won't take Shaedon ("he's bad", 9/25): no Out-side Sharpe shapes (pruned 9/25). Screening: do not float deals where his incoming side is non-marginally older (~28+).
+Sims: 99-deal grid 9/25/26 (`/tmp/ff-sim-jon-cade-grid.out`) + 12 beat-Todd shapes 9/25/26 + 54 shapes with our 2.09 9/25/26 (34 no-Cade, 20 Cade ↔ SGA; includes the 9/22 floats) + 66 beat-Todd shapes 9/25/26 (SGA plus 2–4 mid pieces for picks or our depth; 16 counters off his SGA+Fears offer; one non-SGA Cade shape, which fails) + 6 Henry-2nd shapes 9/25/26 (his add plus Mark-for-bodies variants) + 5 SGA+Fears+one-piece shapes 9/25/26 + 10 Cade(+2.09) ↔ SGA+role-player shapes 9/25/26 (his Wells/Champagnie/McBride offer + counters) + 38 angle shapes 9/25/26 (Mark / Eason / Kuminga / Walker for Sharpe / Fears / Watson on top of his Wells+McBride offer, vet adds, Giddey-for-SGA two-step legs on today's roster; 2 no-Cade legs under -200 pruned) + Cade+2.09+'27 KC 2nd > SGA+Sharpe+Wells 9/25/26 + 37 Raynaud shapes 9/25/26 (21 Cade ↔ SGA+Raynaud, 16 no-Cade; Mark > Raynaud pruned under -200) + 11 Edey/Jaylin shapes 9/25/26 (his re-sent 8/2 shape plus 2.09 for 3.09, no pick swap, +Raynaud, +Sharpe, Kuminga / Mark for Edey) + 23 pick/sweetener ladders off his Wells+McBride offer 9/27/26 (sealers, Sharpe / Fears / Watson / Bailey rungs, Chaney / Matković sweeteners; his offer re-priced +2428, unchanged at rounding) + Cade+'27 1st > SGA+Wells+McBride 9/27/26 (his ask; his offer re-priced +2428 again) + 2 counters to that ask 9/27/26 (Chaney added to his offer; Champagnie added to his ask; his offer re-priced +2428 again). Our '27 3rd priced 297. Every row re-priced 9/25/26 for Score and Δage. Out-side Sharpe = Shaedon; In-side Sharpe = Day'Ron. Unlabelled '27 2nd = our own, priced 540; '27 KC 2nd = King Christopher's, 900; '27 Don 2nd = The Don's, 775; '28 2nd 634; our '27 / '28 1sts 1425 each; 2.09 645; 3.09 357 (Henry.team.md), BASE-only since Henry holds it (no body, not in Δage); In-side '26 2.10 = Jon's, 640; In-side '27 Henry 2nd = Mongol Khans' '27 2nd, priced 810 (eval range 645–971); In-side '27 1st = Jon's own, priced 4574 (eval range 2391–6757). Jon ΔBASE ≥ +1000 = too lopsided (do not float). Our ΔBASE below -200: do not sim or archive (pruned 9/25). Jon won't take Shaedon ("he's bad", 9/25): no Out-side Sharpe shapes (pruned 9/25). Screening: do not float deals where his incoming side is non-marginally older (~28+).
 
 ## Above floor
 
@@ -260,7 +260,7 @@ Cade > SGA+McBride | +2300 +1800 +0.6 +0.4 +3% +3.0
 Cade+2.09+'27 KC 2nd > SGA+Sharpe+Wells | +3000 +1800 +1.6 +0.7 +9% +3.1
 Cade+2.09 > SGA+Wells+McBride | +2400 +1800 +1.0 +0.5 +5% +3.0 | Jon proposed 9/25
 Cade+Chaney+2.09+'27 KC 2nd > SGA+Sharpe+Wells | +3100 +1800 +1.6 +0.7 +9% +3.1
-Cade+Chaney+2.09 > SGA+Wells+McBride | +2500 +1800 +1.0 +0.5 +5% +3.0
+Cade+Chaney+2.09 > SGA+Wells+McBride | +2500 +1800 +1.0 +0.5 +5% +3.0 | Us proposed 9/27
 Cade+2.09+'27 3rd > SGA+Wells+McBride+Champagnie | +2500 +1800 +1.3 +0.6 +5% +3.1
 Cade > SGA+da Silva | +2200 +1800 +0.5 +0.3 +3% +3.1
 Cade > SGA+Champagnie | +2200 +1800 +0.6 +0.3 +3% +3.0
@@ -332,6 +332,7 @@ Cade+'27 1st > SGA+Sharpe | +2300 +1300 +1.2 +0.6 +8% +3.8
 Cade+'28 1st > SGA+Sharpe | +2300 +1300 +1.2 +0.6 +8% +4.1
 Cade+Mark+Walker+2.09 > SGA+Sharpe+Wells+McBride | +2300 +1300 +0.9 +0.7 +8% +2.5
 Cade+'27 1st+2.09 > SGA+Sharpe+Wells | +2500 +1300 +1.6 +0.7 +9% +3.7
+Cade+'27 1st > SGA+Wells+McBride+Champagnie | +2000 +1300 +1.4 +0.6 +5% +3.8 | Us proposed 9/27
 Cade+2.09 > SGA+Jaylin | +1500 +1200 +0.4 +0.3 +3% +3.8 | Jon rejected 8/1
 Cade+2.09 > SGA+McBride | +1600 +1200 +0.5 +0.4 +4% +3.7
 Cade+'27 1st+'28 1st > SGA+Fears+Sharpe | +2600 +1200 +2.0 +0.8 +10% +3.6
@@ -344,6 +345,7 @@ Cade+Mark+2.09 > SGA+Sharpe+McBride | +2000 +1100 +0.7 +0.7 +8% +2.8
 Cade+Mark+2.09 > SGA+Raynaud+Wells | +1600 +1100 +0.5 +0.5 +5% +2.5
 Cade+Kuminga+2.09 > SGA+Jaylin+'26 2.10 | +1500 +1100 +0.2 +0.2 +3% +2.9
 Cade+'27 1st+2.09 > SGA+Fears+McBride | +1900 +1000 +1.3 +0.6 +6% +3.1
+Cade+'27 1st > SGA+Wells+McBride | +1700 +1000 +1.1 +0.5 +5% +3.9 | Jon proposed 9/27
 Cade+'27 1st > SGA+Jaylin+'26 2.10 | +1400 +1000 +0.5 +0.3 +3% +3.8
 Cade+Mark+Kuminga+2.09 > SGA+Sharpe+Wells+McBride | +2100 +1000 +0.9 +0.8 +9% +2.4
 
