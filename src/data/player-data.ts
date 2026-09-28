@@ -12,6 +12,9 @@ export const PLAYER_DATA = {
   "Zach Edey": {
     projectedSeasonAvg: 35,
   },
+  "De'Aaron Fox": {
+    projectedSeasonAvg: 33,
+  },
   "Desmond Bane": {
     projectedSeasonAvg: 33,
   },
@@ -96,9 +99,6 @@ export const PLAYER_DATA = {
   "Adem Bona": {
     projectedSeasonAvg: 17,
   },
-  "Khris Middleton": {
-    projectedSeasonAvg: 20,
-  },
   "Karlo Matković": {
     projectedSeasonAvg: 15,
   },
@@ -123,6 +123,9 @@ export const PLAYER_DATA = {
   },
   "Dillon Brooks": {
     projectedSeasonAvg: 24.2,
+  },
+  "Khris Middleton": {
+    projectedSeasonAvg: 20,
   },
   "Lonzo Ball": {
     projectedSeasonAvg: 20.1,

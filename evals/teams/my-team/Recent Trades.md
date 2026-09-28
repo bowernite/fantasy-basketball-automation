@@ -26,6 +26,9 @@ Reverse the deal, flip signs. Sharpe at 0. Same boards/projections as the joint.
 | 8/13         | Matthew | Amen              | Murray+Sharpe+Eason +Vassell+Kuminga   |   **+455** | **+0.54** |       -0.25 |      -3.8 |         — |
 | 9/22         | Josh    | Kawhi+Turner      | Bridges+Gordon+Collins                 |       -180 | **+0.42** |   **+0.17** |  **+4.5** | **-0.42** |
 | 9/2 assumed  | Hlina   | Duren             | Green+Camara+Smith                     |   **+402** | **+0.99** |   **+0.35** | **+10.2** | **-0.99** |
+| 9/28         | Chris   | Middleton+('27 2nd own)+('27 2nd Chris) | Fox                    | **+1,028** | **+0.95** |   **+0.68** |  **+6.3** |         — |
+
+Chris row (trade 485835) simmed 9/28 on today's roster, 9/12 projections; not in the joint above. Picks at 9/28 VALUE (own 575, Chris 775).
 
 Amen isolation is negative on season/title because Sharpe is OFS and the other five deals already filled those slots.
 
@@ -41,5 +44,6 @@ Deals applied in order on the pre-window roster (Bagley back for the Mitch cut).
 | 8/13         | Matthew | Amen              | Murray+Sharpe+Eason +Vassell+Kuminga   |   **+242** | **+1.15** |   **+0.70** |  **+8.0** |         — |
 | 9/22         | Josh    | Kawhi+Turner      | Bridges+Gordon+Collins                 |       -180 | **+0.42** |   **+0.25** |  **+6.5** | **-0.42** |
 | 9/2 assumed  | Hlina   | Duren             | Green+Camara+Smith                     |   **+402** | **+0.99** |   **+0.21** |  **+8.8** | **-0.99** |
+| 9/28         | Chris   | Middleton+('27 2nd own)+('27 2nd Chris) | Fox                    | **+1,028** | **+0.95** |   **+0.68** |  **+6.3** |         — |
 
 8/13 HIS on a thinner roster, old method (joint sim as `Δw`, band 1–2 title): `Amen sims.md` **+0.98 / +5.74**. Do not mix columns with this table.

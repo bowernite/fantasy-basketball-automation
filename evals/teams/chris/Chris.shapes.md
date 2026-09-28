@@ -12,6 +12,8 @@ Bars: Cade rows are tiered by Score against Todd's live offer (`trade-shapes` §
 
 9/28 (post-Cade menu): new rows priced with Cade > Reaves+Sabonis+Siakam applied (`$TMPDIR/ff-C1` roster, 37 bodies) and picks at 9/28 VALUE ('27 1st 1150, Chris '27 2nd 775, Mitch '27 2nd 700, own '27 2nd 575). Those rows are the ones built only from '27 picks, Kuminga, Walker, Suggs, Murray, Eason, White, Bridges, Kyrie, VanVleet. Every other non-Cade row is 9/25 and pre-Cade. Cade, Middleton, Garland, Sharpe, Mark, Bane, Giddey, '28 1st, 2.09 and '28 2nd are committed in live threads (war room), so rows using them are parked. His 9/21 "won't deal win-now players to a tier 1 contender / want to deal to a tier 2 contender" was his answer to Brett asking about the Fox-for-a-pick idea. Daniels (23.9) is the piece least likely to count as win-now in his head. Jabari Smith, Camara and Green rows (same roster) added 9/28 once Brett ruled the Hlina Duren deal done. Not archived to `Chris Trade Shapes.md` (AGENTS.md bars agents from that file).
 
+Executed 9/28 (trade 485835): Middleton+Chris '27 2nd+own '27 2nd > Fox | +1700 +1000 +1.0 +0.5 +4% +7.7. Every row above priced before it; Fox, Middleton and both '27 2nds have moved.
+
 ## Above floor
 
 Cade+Sharpe > Fox+Daniels+Curry+Anunoby+Quickley | +3100 +1100 +3.0 +1.4 +13% +5.0
@@ -27,7 +29,6 @@ Sharpe+Mark > Daniels+Bridges | +2100 +800 +0.9 +1.2 +10% +1.7
 Chris '27 2nd+own '27 2nd > Fox | +1900 +1200 +1.2 +0.5 +4% +10.1
 '26 2.09+KC '27 2nd > Fox | +1900 +1000 +1.1 +0.8 +6% +9.6
 Chris '27 2nd+Mitch '27 2nd > Fox | +1800 +1100 +1.2 +0.5 +4% +10.1
-Middleton+Chris '27 2nd+own '27 2nd > Fox | +1700 +1000 +1.0 +0.5 +4% +7.7 | Us proposed 9/28
 Matković+Chris '27 2nd+own '27 2nd > Fox | +1700 +1000 +1.1 +0.5 +3% +10.1 | Chris proposed 9/28
 '27 1st+'26 2.09 > Daniels+Stewart | +1500 +300 +1.8 +1.0 +8% +5.0
 Sharpe+Mark+'26 2.09 > Daniels+Bridges | +1500 +200 +0.8 +1.2 +10% +5.1

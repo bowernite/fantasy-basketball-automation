@@ -12,14 +12,14 @@ Kuminga sale (9/28 texts): Middleton for his '27 3rd (no) → 11:13a he offered 
 
 Post-Cade menu (9/28 ~3:30p): 30 shapes priced with Michael's Cade > Reaves+Sabonis+Siakam applied (`$TMPDIR/ff-C1`, 37 bodies), status `if Cade (Siakam)`. Our depth (Naz Reid / Kuminga / Collins / Gordon / Suggs / Keegan Murray / Edey, Matković / Chaney throw-ins, '27 1st / own '27 2nd) for Towns / Kawhi / Embiid / Murray / Mitchell / Barrett. These tier against holding (Score 0), not the Cade benchmark. Avoided pieces live in other threads (Garland, Bane, Giddey, Sharpe, Mark Williams, Middleton, 2.09, '28 1st, '28 2nd). Naz Reid no longer fails once Sabonis and Siakam land. Mitchell for depth fails ΔP(title). Jabari Smith and Camara rows added 9/28 once Brett ruled the Hlina Duren deal done.
 
-Embiid thread (9/28 texts): Brett 3:30p sent Naz Reid+Keegan Murray > Towns · Naz Reid+Suggs > Towns · Kuminga+Collins > Embiid. 3:31p Josh ignored Towns and asked Naz Reid+Kuminga+Collins > Embiid (fails ΔBASE −1400). Brett countered with Kuminga+Collins+Chaney > Embiid and Naz Reid+Kuminga+Collins > Embiid+Allen. 3:36p "No I'm good, I wasn't even sure if I would do the trade I sent I was just feeling it out". He'll move Embiid, prices him at about three of our depth pieces, and wouldn't discuss Towns. New angles 3:40p on `if Cade (Siakam)+Fox`: 1-for-1s that keep his body count, 2-for-2s for Towns, and his own 11:13a "a 2nd for Kuminga or Naz" offer. Kuminga or Naz for his '28 2nd fails ΔP(title). Mitchell and Murray 2-for-2s built on Edey+Green fail ΔP(title).
+Embiid thread (9/28 texts): Brett 3:30p sent Naz Reid+Keegan Murray > Towns · Naz Reid+Suggs > Towns · Kuminga+Collins > Embiid. 3:31p Josh ignored Towns and asked Naz Reid+Kuminga+Collins > Embiid (fails ΔBASE −1400). Brett countered with Kuminga+Collins+Chaney > Embiid and Naz Reid+Kuminga+Collins > Embiid+Allen. 3:36p "No I'm good, I wasn't even sure if I would do the trade I sent I was just feeling it out". 3:44p declined Naz Reid > Embiid and Butler > Embiid: "Nah I got to keep him for that value". Parked until after the auction. He'll move Embiid, prices him at about three of our depth pieces, and wouldn't discuss Towns. New angles 3:40p on `if Cade (Siakam)+Fox`: 1-for-1s that keep his body count, 2-for-2s for Towns, and his own 11:13a "a 2nd for Kuminga or Naz" offer. Kuminga or Naz for his '28 2nd fails ΔP(title). Mitchell and Murray 2-for-2s built on Edey+Green fail ΔP(title).
 
 Fox re-price 9/28/26: status `if Cade (Siakam)+Fox` = priced on the Cade (Siakam) roster with Chris's Middleton+Chris '27 2nd+own '27 2nd > Fox also applied (`$TMPDIR/ff-CF`, 37 bodies). Other post-Cade rows are pre-Fox and read about +100 Score / +1% ΔP(title) high next to them.
 
 ## Above floor
 
 Edey > Towns | +1900 +1200 +0.8 +0.5 +6% +6.9 | if Cade (Siakam)+Fox
-Butler > Embiid | +1800 +900 +0.7 +0.5 +7% -4.1 | if Cade (Siakam)+Fox
+Butler > Embiid | +1800 +900 +0.7 +0.5 +7% -4.1 | if Cade (Siakam)+Fox · Josh rejected 9/28 3:44p
 Collins > Embiid | +1500 +900 +0.4 +0.2 +5% +4.0 | if Cade (Siakam)+Fox
 Jabari Smith+Naz Reid > Towns+Plowden | +1500 +900 0.0 +0.3 +6% +6.0 | if Cade (Siakam)+Fox
 Camara+Naz Reid > Towns+Payton | +1500 +1000 +0.2 +0.3 +4% +4.5 | if Cade (Siakam)+Fox
@@ -29,7 +29,7 @@ Naz Reid+Green > Towns+Payton | +700 +500 -0.1 +0.3 +3% +5.4 | if Cade (Siakam)+
 Jabari Smith > Barrett | +700 +500 -0.1 +0.1 +3% +3.3 | if Cade (Siakam)+Fox
 Naz Reid+Chaney > Embiid | +700 +100 +0.3 +0.3 +4% +5.9 | if Cade (Siakam)+Fox
 Green > Kawhi | +600 +100 +0.7 +0.4 +2% +11.0 | if Cade (Siakam)+Fox
-Naz Reid > Embiid | +600 +100 +0.3 +0.3 +4% +5.9 | if Cade (Siakam)+Fox
+Naz Reid > Embiid | +600 +100 +0.3 +0.3 +4% +5.9 | if Cade (Siakam)+Fox · Josh rejected 9/28 3:44p
 Kyrie > Kawhi | +500 0 +0.6 +0.2 +3% +1.2 | if Cade (Siakam)+Fox
 Green > Embiid | +400 0 +0.3 +0.3 +2% +8.3 | if Cade (Siakam)+Fox
 Naz Reid+Kuminga+Gordon+'27 1st > Towns+Kawhi | +3000 +1200 +1.5 +0.9 +13% +7.9 | if Cade (Siakam)
@@ -44,7 +44,7 @@ Gordon+Kuminga > Kawhi | +1200 +200 +0.7 +0.4 +7% +5.3 | if Cade (Siakam)
 Keegan Murray+Naz Reid > Towns | +1200 +500 0.0 +0.4 +6% +4.7 | if Cade (Siakam)+Fox
 Collins+Kuminga > Kawhi | +1100 +300 +0.5 +0.2 +6% +7.1 | if Cade (Siakam)
 Suggs+Naz Reid > Towns | +1000 +400 +0.1 +0.4 +5% +5.0 | if Cade (Siakam)+Fox
-Kuminga+Collins+Chaney > Embiid | +900 +200 +0.1 +0.2 +5% +4.4 | if Cade (Siakam)+Fox · counter to his 3:31p ask, drafted
+Kuminga+Collins+Chaney > Embiid | +900 +200 +0.1 +0.2 +5% +4.4 | if Cade (Siakam)+Fox · Josh rejected 9/28 3:36p
 Kuminga+Gordon > Embiid | +900 +200 +0.3 +0.3 +6% +2.6 | if Cade (Siakam)
 Kuminga+Collins+Chaney > Embiid | +900 +200 +0.1 +0.2 +5% +4.4 | if Cade (Siakam)
 Kuminga+Collins > Embiid | +800 +200 +0.1 +0.2 +5% +4.4 | if Cade (Siakam)+Fox
@@ -53,7 +53,7 @@ Edey+Collins > Towns | +700 +400 -0.1 +0.2 +3% +4.8 | if Cade (Siakam)
 Jabari Smith+Kuminga > Kawhi | +600 -100 +0.4 +0.4 +6% +12.2 | if Cade (Siakam)
 Collins+Gordon > Kawhi | +600 +100 +0.1 0.0 +5% +5.8 | if Cade (Siakam)
 Edey+Collins > Murray | +600 +500 -0.1 +0.1 0% +3.5 | if Cade (Siakam)
-Naz Reid+Kuminga+Collins > Embiid+Allen | +500 +200 +0.1 +0.2 +3% +3.3 | if Cade (Siakam)+Fox · counter to his 3:31p ask, drafted
+Naz Reid+Kuminga+Collins > Embiid+Allen | +500 +200 +0.1 +0.2 +3% +3.3 | if Cade (Siakam)+Fox · Josh rejected 9/28 3:36p
 Jabari Smith+Gordon > Kawhi | +200 -300 0.0 +0.2 +5% +9.1 | if Cade (Siakam)
 Camara+Gordon > Kawhi | +200 -200 +0.3 +0.1 +2% +7.0 | if Cade (Siakam)
 Naz Reid+Kuminga > Kawhi | +100 -500 +0.4 +0.3 +4% +8.8 | if Cade (Siakam)

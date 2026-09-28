@@ -48,7 +48,7 @@ Live status per owner is in each `evals/teams/<owner>/<Name>.shapes.md` intro an
 
 - Compare and rank by [Score](Definitions/Score.md) as the baseline. Gate first (minimums, Too lopsided) per `trades` §General guidlines and `trade-shapes` §Tiering. Jon's file uses a +1000 Too lopsided line.
 - After that, read the individual numbers (including N and Δage, which isn't in Score) and the counterparty's view of value (e.g. a lopsided ΔBASE they'd never accept) with nuance.
-- **Picks are on the table from us:** '27 1st, '28 1st, 2.09 (Sept '26), own '27 2nd, Chris '27 2nd, Mitch '27 2nd, '28 2nd.
+- **Picks are on the table from us:** '27 1st, '28 1st, 2.09 (Sept '26), Mitch '27 2nd, '28 2nd. Own '27 2nd and Chris '27 2nd went to Chris for Fox 9/28 (trade 485835).
   - Privately, we want to move our picks (Brett, 9/25). Don't say so to other owners.
   - Picks count at full VALUE on both sides (`eval-pick`). Use them as sweeteners to buy win columns and ΔP(title) (e.g. upgrading Hali to Tatum with Todd), not BASE. Todd and Matthew both want picks.
   - Adding a later pick ('27/'28) to our Out side doesn't need a re-sim. Subtract its BASE from ΔBASE and Score, since the win columns and ΔP(title) don't change. Its age effect is small, and it makes our Out side younger.
