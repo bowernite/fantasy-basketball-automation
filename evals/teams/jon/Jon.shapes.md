@@ -10,7 +10,7 @@ Tiers (Score, 9/25/26): Cade rows against the benchmark's +2200. None clears it;
 
 Sims: 99-deal grid 9/25/26 (`/tmp/ff-sim-jon-cade-grid.out`) + 12 beat-Todd shapes 9/25/26 + 54 shapes with our 2.09 9/25/26 (34 no-Cade, 20 Cade ↔ SGA; includes the 9/22 floats) + 66 beat-Todd shapes 9/25/26 (SGA plus 2–4 mid pieces for picks or our depth; 16 counters off his SGA+Fears offer; one non-SGA Cade shape, which fails) + 6 Henry-2nd shapes 9/25/26 (his add plus Mark-for-bodies variants) + 5 SGA+Fears+one-piece shapes 9/25/26 + 10 Cade(+2.09) ↔ SGA+role-player shapes 9/25/26 (his Wells/Champagnie/McBride offer + counters) + 38 angle shapes 9/25/26 (Mark / Eason / Kuminga / Walker for Sharpe / Fears / Watson on top of his Wells+McBride offer, vet adds, Giddey-for-SGA two-step legs on today's roster; 2 no-Cade legs under -200 pruned) + Cade+2.09+'27 KC 2nd > SGA+Sharpe+Wells 9/25/26 + 37 Raynaud shapes 9/25/26 (21 Cade ↔ SGA+Raynaud, 16 no-Cade; Mark > Raynaud pruned under -200) + 11 Edey/Jaylin shapes 9/25/26 (his re-sent 8/2 shape plus 2.09 for 3.09, no pick swap, +Raynaud, +Sharpe, Kuminga / Mark for Edey) + 23 pick/sweetener ladders off his Wells+McBride offer 9/27/26 (sealers, Sharpe / Fears / Watson / Bailey rungs, Chaney / Matković sweeteners; his offer re-priced +2428, unchanged at rounding) + Cade+'27 1st > SGA+Wells+McBride 9/27/26 (his ask; his offer re-priced +2428 again) + 2 counters to that ask 9/27/26 (Chaney added to his offer; Champagnie added to his ask; his offer re-priced +2428 again) + 3 Champagnie-ask shapes 9/27/26 (his 8:22p reading with both 2.09 and '27 1st; our 8:23p Chaney offer; Matković alternative). Jon's 8:49p floats 9/27/26: Cade+'27 1st > SGA plus one of Wells / Champagnie / McBride / Jaylin, Cade+2.09 > SGA, and the combined Cade+2.09+'27 1st > SGA+Wells+McBride+Champagnie+Jaylin (Chaney cut to stay at 38), plus Cade+2.09 > SGA+Jaylin as a middle ground. Our counter to the combine 9/27/26: Chaney+Matković added, no cut needed (37 bodies). Our '27 3rd priced 297. Every row re-priced 9/25/26 for Score and Δage. Out-side Sharpe = Shaedon; In-side Sharpe = Day'Ron. Unlabelled '27 2nd = our own, priced 540; '27 KC 2nd = King Christopher's, 900; '27 Don 2nd = The Don's, 775; '28 2nd 634; our '27 / '28 1sts 1425 each; 2.09 645; 3.09 357 (Henry.team.md), BASE-only since Henry holds it (no body, not in Δage); In-side '26 2.10 = Jon's, 640; In-side '27 Henry 2nd = Mongol Khans' '27 2nd, priced 810 (eval range 645–971); In-side '27 1st = Jon's own, priced 4574 (eval range 2391–6757). Jon ΔBASE ≥ +1000 = too lopsided (do not float). Our ΔBASE below -200: do not sim or archive (pruned 9/25). Jon won't take Shaedon ("he's bad", 9/25): no Out-side Sharpe shapes (pruned 9/25). Screening: do not float deals where his incoming side is non-marginally older (~28+). + 2 picks-light shapes 9/28/26 (Cade+2.09+'27 2nd > SGA+Wells, > SGA+McBride; his 9/25 offer and its '27 2nd / '27 3rd variants re-priced, unchanged at rounding).
 
-Post-Cade 9/28/26: Jon passed on Cade 9/28 (thread dead). 20 no-Cade shapes simmed on the Michael Cade deal (Siakam version, `$TMPDIR/ff-C1`) with 9/28 pick BASE ('27 1st 1150, '27 KC 2nd 775, '27 Don 2nd 700, '27 2nd 575). They skip 2.09 / '28 2nd (Hlina thread) and the Giannis-offer pieces. Chaney in Out = cut to stay at 38 (we're at 37). Rows: every '27 1st row without Cade, the Edey rows, '27 KC 2nd+'27 Don 2nd > Sharpe, and three re-priced Raynaud rows (Kuminga > Raynaud+McBride, Walker+'27 2nd > Raynaud+McBride, '27 2nd > Raynaud). ΔP(title) runs smaller here because the base is already ~63%.
+Post-Cade 9/28/26: Jon passed on Cade 9/28 (thread dead). 20 no-Cade shapes simmed on the Michael Cade deal (Siakam version, `$TMPDIR/ff-C1`) with 9/28 pick BASE ('27 1st 1150, '27 KC 2nd 775, '27 Don 2nd 700, '27 2nd 575). They skip 2.09 / '28 2nd (Hlina thread) and the Giannis-offer pieces. Chaney in Out = cut to stay at 38 (we're at 37). Rows: every '27 1st row without Cade, the Edey rows, '27 KC 2nd+'27 Don 2nd > Sharpe, and three re-priced Raynaud rows (Kuminga > Raynaud+McBride, Walker+'27 2nd > Raynaud+McBride, '27 2nd > Raynaud). ΔP(title) runs smaller here because the base is already ~63%. Jabari Smith, Camara and Green rows (same roster) added 9/28 once Brett ruled the Hlina Duren deal done.
 
 ## Above floor
 
@@ -61,6 +61,7 @@ Cade+Mark+'27 1st+'27 2nd > SGA+Sharpe+Watson | +1900 +700 +1.1 +0.9 +9% +3.7
 Cade+Mark+'27 1st+2.09 > SGA+Fears+Raynaud+Wells | +1900 +900 +1.2 +0.7 +8% +2.5
 Kuminga+'27 1st > Sharpe+Raynaud | +900 +400 +1.2 +0.2 +3% +4.9
 Bona+2.09 > Sharpe | +900 +400 +0.6 +0.3 +3% +4.8
+Jabari Smith > Sharpe+Wells | +900 +600 +0.5 +0.1 +2% +1.0
 Kuminga > Raynaud+McBride | +800 +600 +0.6 +0.1 +1% +0.4
 2.09+'27 KC 2nd > Sharpe+Jaylin | +800 +100 +1.0 +0.4 +6% +5.3
 2.09+'27 2nd > Sharpe | +700 +100 +0.8 +0.4 +5% +5.3
@@ -338,6 +339,7 @@ Cade+'28 1st > SGA+Watson | +2000 +1400 +0.9 +0.6 +4% +4.2
 Cade+Kuminga+2.09 > SGA+Raynaud+McBride | +2100 +1400 +0.8 +0.4 +5% +3.0
 Cade+Mark+2.09 > SGA+Raynaud+Wells+McBride | +2100 +1400 +0.8 +0.6 +6% +2.5
 Cade+Mark+2.09 > SGA+Jaylin+Raynaud+'26 2.10 | +1900 +1400 +0.3 +0.5 +4% +2.3
+Jabari Smith > Sharpe+Watson | +1700 +1300 +0.7 +0.3 +3% +1.2
 Cade+'27 1st > SGA+Fears | +2100 +1300 +1.0 +0.5 +5% +2.8
 Cade+'28 1st > SGA+Fears | +2100 +1300 +1.0 +0.5 +5% +3.1
 Cade+Mark+Walker+2.09 > SGA+Fears+Wells+McBride | +2100 +1300 +0.7 +0.6 +6% +1.7
@@ -396,3 +398,5 @@ Cade+Bane > SGA+Fears | +300 +400 -0.2 -0.1 0% +0.2
 Cade+Mark > SGA+Jaylin | +700 +500 -0.3 +0.3 +2% +3.2
 Cade+Mark+2.09 > SGA+Jaylin+'26 2.10 | +700 +500 -0.3 +0.3 +3% +2.9
 Cade+Camara > SGA+Wells | +800 +1000 0.0 -0.2 -2% +2.2
+Camara > Sharpe+Wells | +800 +800 +0.7 0.0 -1% -2.0
+Green > Sharpe+Watson | +1000 +900 +0.6 +0.2 -1% -0.1

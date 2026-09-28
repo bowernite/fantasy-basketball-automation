@@ -4,7 +4,7 @@
 Fleaflicker matches; drop a deal here once the wire shows it.
 """
 
-US, HLINA = 161025, 161021
+US, HLINA, CHRIS = 161025, 161021, 161014
 
 # (name, from, to)
 MOVES = (
@@ -12,6 +12,7 @@ MOVES = (
     ("Jalen Green", HLINA, US),
     ("Toumani Camara", HLINA, US),
     ("Jabari Smith", HLINA, US),
+    ("De'Aaron Fox", CHRIS, US),
 )
 
 # (name, from) — gone from the league, not a move

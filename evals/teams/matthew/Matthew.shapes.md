@@ -15,7 +15,7 @@ Bars: Cade rows tier by Score against the benchmark (`trade-shapes` §Tiering). 
 
 Priced 9/25/26. Rosters were checked against live that day, and his eval re-run on the 9/24 projections. Every row re-priced 9/25/26 to add Score.
 
-Post-Cade (9/28): every row without Cade on Out was priced 9/28/26 with Michael's Cade > Reaves+Sabonis+Siakam applied (37 bodies). His roster was checked live that day and was unchanged. 9/25 he said "It'd probably be something around Scottie and a 1st for Cade", so his Barnes ≈ Cade less a 1st. These rows avoid assets in live threads: Garland, Bane, Giddey, Sharpe, Mark, '28 1st, '28 2nd, 2.09, Middleton, and Green/Camara/Jabari (not ours on Fleaflicker until Hlina accepts). No floor benchmark, so these rows are tiered by judgment. Barnes rows without Edey read higher on ΔP(title) (+9–10% vs +7%).
+Post-Cade (9/28): every row without Cade on Out was priced 9/28/26 with Michael's Cade > Reaves+Sabonis+Siakam applied (37 bodies). His roster was checked live that day and was unchanged. 9/25 he said "It'd probably be something around Scottie and a 1st for Cade", so his Barnes ≈ Cade less a 1st. These rows avoid assets in live threads: Garland, Bane, Giddey, Sharpe, Mark, '28 1st, '28 2nd, 2.09 and Middleton. Green, Camara and Jabari were first left out too; Brett ruled the Hlina Duren deal done 9/28, so they're ours to trade, and rows with them were added the same day on the same roster. No floor benchmark, so these rows are tiered by judgment. Barnes rows without Edey read higher on ΔP(title) (+9–10% vs +7%).
 
 ## Above floor
 
@@ -128,6 +128,7 @@ Cade+Walker+Kuminga+'27 1st+'28 1st > Barnes+Harper | +600 0 +0.1 +0.2 +5% +1.0
 Cade+Eason+'27 1st+'28 1st > Barnes+Harper | +500 0 +0.1 +0.3 +5% +0.7
 Cade+Sharpe+'27 1st+KC '27 2nd+Don '27 2nd > Barnes+Harper | +500 -200 +0.1 +0.4 +7% +0.8
 Cade+Sharpe+Mark+Kuminga > Barnes+Ausar+Black+Clowney+Jakučionis | +400 -400 +0.5 +0.6 +8% -1.2
+Jabari > Ausar | +500 +300 +0.1 +0.2 +2% +0.2
 Walker+'27 1st > Ausar | +400 0 +0.7 +0.3 +3% +3.8
 Cade+Mark+'27 1st+'28 1st > Barnes+Harper | +300 -200 0.0 +0.4 +6% +1.0
 Cade+Kuminga+'27 1st > Wemby | +300 -200 +0.1 +0.5 +4% -0.8
@@ -137,11 +138,15 @@ Cade+'27 1st+'28 1st > Wemby | -400 -900 +0.4 +0.6 +4% +0.3
 
 ## Too lopsided
 
+Green+Walker+'27 1st > Barnes | +4500 +3500 +0.7 +0.6 +8% +2.9
+Jabari+Walker+'27 1st+Chris '27 2nd > Barnes | +4400 +3200 +0.7 +0.6 +10% +3.9
+Green+'27 1st+Chris '27 2nd > Barnes | +4200 +3200 +1.0 +0.6 +8% +3.4
 Edey+'27 1st+Chris '27 2nd+Mitch '27 2nd > Barnes+Black | +4200 +3000 +1.6 +0.5 +8% +3.0
 Edey+Walker+'27 1st+Chris '27 2nd+Mitch '27 2nd+'27 2nd > Barnes+Ausar | +3500 +2100 +1.6 +0.7 +10% +3.3
 Vassell+Walker+'27 1st+Chris '27 2nd+Mitch '27 2nd+'27 2nd > Barnes | +3300 +2000 +1.1 +0.5 +11% +4.2
 Cade+Mark+'27 1st+'28 1st+Don '27 2nd+'26 2.09 > Barnes+Harper+Ausar+Black | +2700 +1300 +1.7 +1.0 +10% +1.3
 Cade+'27 1st+KC '27 2nd+'26 2.09 > Barnes+Ausar+Black+'26 1.06 | +2400 +1300 +1.9 +0.5 +7% +0.7
+Jabari+Walker > Ausar+Black | +1600 +1300 +0.5 +0.2 +2% -0.1
 
 ## Doesn't meet our minimums
 
@@ -152,3 +157,4 @@ Edey > Ausar+Black | +500 +400 +0.7 0.0 -1% -1.2
 Cade > Barnes+Matthew '28 1st | +600 +800 -0.4 -0.3 +1% -2.0
 Cade+Sharpe+Mark+'27 1st > Barnes+Harper | +700 +200 -0.6 +0.5 +6% -0.1
 Cade+Jabari+'27 1st+'26 2.09 > Barnes+Harper | +900 +700 -0.3 +0.1 +3% +0.2
+Camara+'27 1st > Ausar+Black | +900 +700 +1.1 +0.2 -1% +0.7

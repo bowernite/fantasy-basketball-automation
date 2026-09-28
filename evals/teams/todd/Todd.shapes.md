@@ -10,7 +10,7 @@ Benchmark: Todd's favorite for Cade is Cade+Sharpe+Mark > Haliburton+Porter+NAW+
 
 Priced 9/25/26; pick ladders 9/27/26 (our own '27 3rd at 297). Todd's picks priced at '27 1st 2390, '28 1st 2690, '27 2nd 878, '28 2nd 984, Sept '26 1.01 6757, 2.04 927, 2.08 788, 3.01 457, 3.03 420. Sharpe > NAW has no Δage: Sharpe's age weight is 0 (GP 0).
 
-9/28/26 rows, priced on the post-Cade roster (Cade > Reaves+Sabonis+Siakam assumed; picks '27 1st 1150 · Chris '27 2nd 775 · Mitch '27 2nd 700 · own '27 2nd 575). Those rows are the 28 whose In is only Porter, Brunson, Gobert and/or Tatum (excluding Eason+Kuminga > Porter) and whose Out is one of: Eason+Kuminga, Eason+Walker(+Chris '27 2nd / +'27 1st), Eason+'27 1st, Eason+Chris '27 2nd, Walker+'27 1st, Walker+Chris '27 2nd(+Mitch '27 2nd), Kuminga+Walker, Vassell+Walker, Suggs+Walker(+Chris '27 2nd), Bona+Walker+'27 1st, Suggs+Eason(+Walker)+picks, Suggs/Murray/Edey+'27 1st, Murray+Walker+'27 1st, Edey+Walker, Edey+Eason/Suggs+Walker+'27 1st, Queta, Poeltl+own '27 2nd. All other rows are pre-Cade and go stale once it lands. Built to avoid live-thread assets (Garland, Sharpe, Mark, Bane, Giddey, '28 1st, '28 2nd, 2.09, Middleton) and Hlina's pieces (Green, Camara, Smith land after the auction). Kuminga rows are reference only (Todd "not big on Kuminga").
+9/28/26 rows, priced on the post-Cade roster (Cade > Reaves+Sabonis+Siakam assumed; picks '27 1st 1150 · Chris '27 2nd 775 · Mitch '27 2nd 700 · own '27 2nd 575). Those rows are the 28 whose In is only Porter, Brunson, Gobert and/or Tatum (excluding Eason+Kuminga > Porter) and whose Out is one of: Eason+Kuminga, Eason+Walker(+Chris '27 2nd / +'27 1st), Eason+'27 1st, Eason+Chris '27 2nd, Walker+'27 1st, Walker+Chris '27 2nd(+Mitch '27 2nd), Kuminga+Walker, Vassell+Walker, Suggs+Walker(+Chris '27 2nd), Bona+Walker+'27 1st, Suggs+Eason(+Walker)+picks, Suggs/Murray/Edey+'27 1st, Murray+Walker+'27 1st, Edey+Walker, Edey+Eason/Suggs+Walker+'27 1st, Queta, Poeltl+own '27 2nd. All other rows are pre-Cade and go stale once it lands. Built to avoid live-thread assets (Garland, Sharpe, Mark, Bane, Giddey, '28 1st, '28 2nd, 2.09, Middleton). Hlina's pieces were first left out too; Brett ruled the Duren deal done 9/28, so Green, Camara and Smith are ours to trade. Rows with them added the same day on the same roster (Green > Porter+Claxton re-priced). Kuminga rows are reference only (Todd "not big on Kuminga").
 
 ## Above floor
 
@@ -69,10 +69,13 @@ Cade+Sharpe+Mark+Kuminga > Haliburton+Porter+NAW+Claxton+'26 2.04 | +2400 +1100 
 Cade+Mark+Kuminga > Tatum+Porter+NAW | +2400 +600 +1.4 +1.3 +13% +3.4
 Cade+Eason > Tatum+Porter+Gobert | +2400 +700 +1.7 +1.1 +12% +4.8
 Cade+Sharpe+Mark > Tatum+Porter+Claxton+Nesmith | +2400 +600 +1.4 +1.4 +15% +3.2
+Smith+Eason+'27 1st > Brunson+Gobert | +2400 +1200 +1.3 +0.8 +8% +9.3
+Smith+Walker > Porter+Gobert | +2400 +1200 +1.2 +0.6 +8% +7.6
 Eason+Kuminga > Porter+Gobert | +2400 +1100 +1.6 +0.7 +9% +5.8
 Walker+Chris '27 2nd+Mitch '27 2nd > Porter+Gobert | +2400 +1000 +2.2 +0.8 +8% +11.1
 Eason+Kuminga > Porter+Mitchell | +2200 +700 +1.2 +0.8 +12% +3.0
 Sharpe+Mark > NAW+Claxton | +2200 +1000 +0.8 +1.1 +8% +3.0
+Green > Porter+Gobert | +2100 +1200 +1.5 +0.6 +5% +6.3
 Giddey > Brunson+Porter | +2100 +900 +1.2 +0.7 +9% +5.3 | Us proposed 9/10
 Suggs+Eason+'27 1st > Brunson+Gobert | +2100 +800 +1.4 +0.8 +8% +8.8
 Suggs+Eason+Walker+'27 1st+Chris '27 2nd > Brunson+Porter | +2000 +300 +1.4 +0.9 +12% +6.8
@@ -83,6 +86,7 @@ Eason > Porter | +1800 +700 +0.8 +0.7 +9% +2.9 | Us proposed 9/10
 Suggs+'27 1st > Brunson | +1800 +800 +1.0 +0.6 +7% +8.0
 Murray+'27 1st > Brunson | +1800 +900 +0.9 +0.6 +6% +7.5
 Edey+Suggs+Walker+'27 1st > Tatum | +1800 +1200 0.0 +0.5 +4% +5.5
+Green+Walker > Porter+Gobert | +1600 +800 +1.2 +0.5 +4% +6.5
 Sharpe > NAW | +1600 +900 +0.5 +0.7 +5% ?
 Simons+Walker > Porter | +1600 +700 +0.7 +0.5 +6% +2.7
 Mark > Porter | +1600 +400 +0.6 +0.8 +9% +3.5
@@ -298,6 +302,8 @@ Cade+Mark+Eason > Haliburton+Porter+NAW+Claxton+Dëmin | +3500 +2000 +2.1 +1.1 +
 Cade > Brunson+Porter+NAW+'28 1st | +3400 +2000 +1.9 +0.9 +9% +2.2
 Cade > Tatum+Porter+Dëmin | +3500 +1900 +1.9 +0.9 +12% +2.4
 Cade+Sharpe+Mark+Matković > Haliburton+Porter+NAW+Claxton+Gobert | +3700 +1800 +2.5 +1.4 +11% +3.8
+Green+Eason > Brunson+Gobert | +3000 +1900 +1.2 +0.8 +6% +6.8
+Green+'27 1st > Brunson+Gobert | +3100 +1900 +1.9 +0.8 +7% +9.6
 White+Green+Smith > Haliburton | +700 +1800 -1.5 -0.5 -9% +1.6
 Edey+Eason+Walker+'27 1st > Tatum | +2600 +1800 +0.1 +0.5 +6% +5.7
 Cade+Sharpe+Mark > Haliburton+Porter+NAW+Claxton+'26 2.04 | +3200 +1800 +1.7 +1.1 +8% +2.1
@@ -315,7 +321,7 @@ Cade+Sharpe+Mark+Chaney+Matković > Tatum+Porter+NAW+Claxton | +4000 +1600 +2.0 
 Cade+Sharpe+Mark+Huff > Haliburton+Porter+NAW+Claxton+Gobert | +3500 +1600 +2.5 +1.4 +11% +3.8
 Vassell > Porter+Dosunmu | +2800 +1600 +1.6 +0.7 +8% +1.7
 Cade+Sharpe+Mark > Haliburton+Porter+NAW+Claxton+Bryant | +2900 +1600 +1.6 +1.2 +9% +2.6
-Green > Porter+Claxton | +2700 +1600 +1.4 +0.9 +7% +3.2
+Green > Porter+Claxton | +2400 +1600 +1.5 +0.6 +5% +3.2
 Cade+Sharpe+Mark+Walker > Haliburton+Porter+NAW+Claxton+Gobert | +3400 +1600 +2.3 +1.4 +11% +4.0
 Murray+Walker+'27 1st > Brunson+Gobert | +2900 +1600 +1.7 +0.8 +8% +9.1
 Cade+Sharpe+Mark+2.09+own '27 2nd > Haliburton+Porter+NAW+Claxton+Mitchell+Gobert | +3700 +1500 +3.2 +1.6 +14% +4.9
@@ -323,6 +329,7 @@ Cade+Sharpe+Mark+Kuminga > Brunson+Porter+NAW+Claxton+Dëmin+'28 1st | +3400 +15
 Edey+Green+Walker > Haliburton | +600 +1500 -0.9 -0.3 -9% +2.2
 Cade+Walker > Brunson+Porter+NAW+Claxton+Dëmin | +3600 +1500 +3.3 +1.3 +13% +3.1
 Cade+Garland+Sharpe > Brunson+Porter+NAW+'26 1.01 | +2800 +1500 +1.1 +0.9 +9% +1.9
+Camara+Walker > Porter+Gobert | +2300 +1400 +1.5 +0.4 +5% +5.2
 Cade+Sharpe+Mark+own '27 2nd > Haliburton+Porter+NAW+Claxton+Gobert | +3300 +1400 +2.6 +1.4 +11% +4.5
 Cade+Sharpe+Mark+own '27 3rd > Tatum+Porter+NAW+Claxton | +3800 +1400 +2.1 +1.7 +17% +3.5
 Cade+Sharpe+Mark+'28 1st > Tatum+Porter+NAW+Claxton+Gobert | +4200 +1400 +3.2 +2.0 +19% +5.9
