@@ -2,31 +2,70 @@
 
 Counterparty: Josh (161024). Contending, 4th PF and 8.6% title (`Team Projections.md`). Win-now (Brett 9/27). Columns: `Out | In` + Score + our five big numbers (`trades` §The big numbers).
 
-Thread: 9/1 he took Kawhi+Turner for Bridges+Gordon+Collins ("makes sense for me trying to win now"; sorry to lose Collins). 9/25 he passed on Kyrie/Butler ("don't want to give up more depth") and offered 2 firsts + Porziņģis for Cade; Brett disliked it. He holds only his own '28 1st (his '27 1st is Hlina's). He dislikes 3-for-1s.
+Thread: 9/1 he took Kawhi+Turner for Bridges+Gordon+Collins ("makes sense for me trying to win now"; sorry to lose Collins). 9/25 he passed on Kyrie/Butler ("don't want to give up more depth") and offered 2 firsts + Porziņģis for Cade; Brett disliked it. He holds only his own '28 1st (his '27 1st is Hlina's). He dislikes 3-for-1s. 9/27 7:20p "Hell nah, appreciate the offer though" to both 2-for-2s Brett sent (Mitchell+Towns and Murray+Towns cores). Brett: he isn't creative and has named his price (Porziņģis + two 1sts); he values the Mitchell+Towns pair highly.
 
-Benchmark: Jon's offer Cade+2.09 > SGA+Wells+McBride (+2400, `evals/Cade Sweepstakes.md`). Floor = within ~250.
+Benchmark: Jon's offer Cade+2.09 > SGA+Wells+McBride (+2400, `evals/Cade Sweepstakes.md`). Floor = within ~250. Prefer players back; Josh picks OK if needed (Brett 9/27).
 
-Sims: 38 Cade shapes 9/27/26 (Mitchell / Murray / Towns / Barrett / Allen / Porziņģis cores, his picks, our vets Gordon / Collins / Butler / Middleton / Kyrie / Bridges back, Chaney / Matković sweeteners). In-side picks: Josh '28 1st 2360 (eval range 1457–3270, so ΔBASE is a band of about ±900), Josh '28 2nd 800, Josh '27 2nd 640, Jon 3.02 453. Every Josh row costs him Δw (season); least is Cade+Gordon+Collins > Mitchell+Towns (−0.2 for him). Cade > Mitchell cores fail ΔP(title) without a second star. Ruled out 9/27: his 9/25 Porziņģis + picks offer (ΔBASE about −4600); Kawhi / Embiid cores (low BASE, he just bought Kawhi).
+Sims: 38 Cade shapes 9/27/26 (Mitchell / Murray / Towns / Barrett / Allen / Porziņģis cores, his picks, our vets Gordon / Collins / Butler / Middleton / Kyrie / Bridges back, Chaney / Matković sweeteners) + 30 pick-free-In shapes 9/27/26 (2-for-2 and 3-for-3 around Mitchell+Towns / Mitchell+Murray / Murray+Towns plus Barrett / Allen / Wiggins / Sexton; our Gordon / Collins / Melton / Middleton / Butler / Simons / Chaney / Matković, 2.09 and '27 1st sweeteners) + 24 Porziņģis-frame shapes 9/27/26 (Porziņģis + his picks bridged by Murray or Mitchell plus Barrett / Allen / LaVine / Turner / Kawhi / Gillespie / Sexton / Wiggins / Cam Johnson; 2-for-3 and 3-for-4 with Chaney / Matković as his bodies back). In-side picks: Josh '28 1st 2360 (eval range 1457–3270, so ΔBASE is a band of about ±900), Josh '28 2nd 800, Josh '27 2nd 640, Jon 3.02 453. Out-side 2.09 645, '27 1st 1425. Every Josh row costs him Δw (season); least is Cade+Gordon+Collins > Mitchell+Towns (−0.2 for him), then Murray+Porziņģis+Barrett+picks (−0.8). His non-star pieces carry too little BASE: without Mitchell, Towns or Murray nothing reaches the benchmark (Porziņģis+Barrett+Allen+LaVine+picks +600). Cade > Mitchell cores fail ΔP(title) without a second star. Ruled out 9/27: his 9/25 Porziņģis + picks offer (ΔBASE about −4600); Kawhi / Embiid centerpieces (low BASE, he just bought Kawhi).
+
+## Above floor
+
+Cade+Middleton+Chaney > Murray+Towns+Barrett | +3200 +1100 +2.0 +1.4 +15% +4.5
 
 ## Floor
 
+Cade+Gordon+Melton > Mitchell+Towns+Barrett | +2600 +1000 +1.3 +1.2 +11% +3.5
+Cade+Gordon+Middleton > Mitchell+Towns+Allen | +2600 +1100 +1.8 +1.5 +8% +3.8
 Cade+Middleton > Mitchell+Towns+Josh '28 2nd | +2500 +1200 +1.4 +1.3 +8% +4.4
-Cade+Butler > Mitchell+Towns+Josh '27 2nd+Josh '28 2nd | +2400 +1200 +1.1 +1.2 +7% +2.7
+Cade+Collins+Melton > Mitchell+Towns+Barrett | +2400 +1100 +1.1 +1.1 +9% +3.8
+Cade+Butler > Mitchell+Towns+Josh '27 2nd+Josh '28 2nd | +2400 +1200 +1.1 +1.2 +7% +2.7 | Josh rejected 9/27
+Cade+Chaney > Murray+Kawhi+Porziņģis+Josh '28 1st | +2400 +1000 +1.9 +1.0 +9% +5.2
+Cade+Collins+Middleton > Mitchell+Towns+Allen | +2400 +1100 +1.6 +1.3 +6% +4.0
+Cade+Collins+Middleton+2.09 > Mitchell+Towns+Barrett | +2300 +700 +1.3 +1.2 +11% +4.3
+Cade+Gordon+Butler > Mitchell+Towns+Barrett | +2300 +700 +1.2 +1.3 +12% +2.9
+Cade+Collins+Simons > Mitchell+Towns+Barrett | +2300 +800 +1.3 +1.1 +10% +4.0
 Cade+Butler > Murray+Towns+Josh '28 1st | +2300 +1100 +0.8 +0.9 +9% +2.1
+Cade+Collins+Butler > Mitchell+Towns+Barrett | +2200 +800 +1.0 +1.2 +11% +3.1
 Cade+Gordon > Mitchell+Towns+Josh '27 2nd+Josh '28 2nd | +2100 +1100 +1.0 +1.0 +6% +2.7
 
 ## Below bar
 
+Cade+Chaney > Mitchell+Towns | +2000 +500 +1.7 +1.4 +8% +5.9
+Cade+Gordon+Collins+Chaney > Mitchell+Towns+Barrett | +2000 +700 +0.9 +1.0 +9% +3.2
+Cade+Chaney > Mitchell+Murray | +2000 +700 +1.7 +1.3 +6% +5.3
 Cade > Mitchell+Towns | +2000 +500 +1.7 +1.3 +8% +5.9
 Cade+Gordon > Murray+Towns+Josh '28 1st | +2000 +1000 +0.8 +0.7 +7% +2.1
+Cade+Gordon+Collins > Mitchell+Towns+Barrett | +1900 +700 +1.0 +0.9 +9% +3.2
+Cade+Collins+Melton > Mitchell+Towns+Allen | +1900 +800 +1.3 +1.2 +4% +4.1
 Cade > Mitchell+Murray | +1900 +700 +1.7 +1.3 +6% +5.3
 Cade+Collins > Murray+Towns+Josh '28 1st | +1900 +1000 +0.6 +0.5 +6% +2.3
+Cade+Collins+Middleton > Murray+Towns+Barrett | +1800 +300 +1.2 +0.9 +12% +3.5
+Cade+Matković > Mitchell+Towns | +1800 +400 +1.6 +1.3 +8% +5.9
+Cade+Chaney > Murray+Porziņģis+Barrett+Josh '28 1st | +1800 +1000 +1.0 +0.4 +6% +2.3
+Cade+Gordon+Collins > Mitchell+Murray+Barrett | +1800 +800 +1.0 +0.8 +6% +2.7
+Cade+Middleton > Mitchell+Towns | +1700 +400 +1.4 +1.3 +8% +5.4
+Cade > Murray+Porziņģis+Barrett+Josh '28 1st | +1700 +1000 +1.1 +0.4 +6% +2.3
 Cade+Kyrie > Mitchell+Towns+Josh '28 1st | +1700 +1100 +0.6 +0.8 +3% +0.9
+Cade+Collins+Chaney > Mitchell+Towns+Sexton | +1600 +200 +1.6 +1.3 +8% +4.3
+Cade+Chaney+Matković > Murray+Porziņģis+Barrett+Josh '28 1st | +1600 +900 +0.9 +0.4 +5% +2.3
 Cade+Kyrie > Mitchell+Murray+Josh '28 1st | +1600 +1200 +0.7 +0.7 0% +0.4
+Cade+Chaney+Matković > Mitchell+Porziņģis+Barrett+Gillespie | +1600 +400 +1.9 +0.8 +7% +4.5
+Cade+Middleton+Chaney > Murray+Porziņģis+Barrett+Josh '28 1st | +1600 +900 +0.8 +0.3 +5% +1.8
+Cade+Collins+Middleton+'27 1st > Mitchell+Towns+Barrett | +1500 -100 +1.4 +1.2 +11% +5.2
 Cade > Mitchell+Barrett+Josh '28 1st | +1400 +1000 +0.7 +0.4 +2% +2.0
+Cade+Collins+Melton > Murray+Towns+Barrett | +1400 0 +0.9 +0.8 +11% +3.5
+Cade+Gordon+Collins > Mitchell+Towns+Allen | +1400 +400 +1.1 +1.1 +4% +3.5
+Cade+Chaney > Murray+Porziņģis+Allen+Josh '28 1st | +1300 +800 +1.2 +0.7 +2% +2.8
+Cade+Melton > Mitchell+Towns | +1200 +100 +1.2 +1.2 +6% +5.3
+Cade+Chaney > Mitchell+Porziņģis+Barrett+Josh '27 2nd | +1200 +400 +1.3 +0.7 +5% +3.9
 Cade+Butler > Mitchell+Barrett+Josh '28 1st+Josh '28 2nd | +1200 +1000 0.0 +0.3 +1% -0.1
 Cade+Butler > Mitchell+Murray | +900 -100 +1.1 +1.2 +5% +3.9
 Cade > Murray+Towns | +900 -500 +1.5 +1.0 +10% +5.6
+Cade+Gordon+Collins > Mitchell+Towns+Wiggins | +800 -200 +1.0 +0.9 +7% +4.1
+Cade+Butler > Murray+Porziņģis+Barrett+Josh '28 1st | +800 +300 +0.4 +0.3 +5% +1.0
+Cade+Chaney > Murray+Porziņģis+Turner+Josh '28 1st | +700 +400 +0.9 +0.2 +1% +3.0
+Cade+Chaney > Murray+Porziņģis+LaVine+Josh '28 1st | +700 +500 +0.8 +0.1 0% +3.1
+Cade+Chaney > Murray+Barrett+Allen+Josh '27 2nd | +700 -300 +1.4 +0.8 +5% +3.2
 Cade+Collins > Mitchell+Murray | +500 -100 +0.9 +0.7 +2% +4.1
 Cade > Towns+Barrett+Josh '28 1st | +300 -200 +0.4 +0.1 +6% +2.2
 
@@ -35,20 +74,36 @@ Cade > Towns+Barrett+Josh '28 1st | +300 -200 +0.4 +0.1 +6% +2.2
 Cade+Middleton > Mitchell+Towns+Josh '28 1st | +4100 +2700 +1.4 +1.3 +8% +3.2
 Cade+Collins > Mitchell+Murray+Josh '28 1st | +2800 +2300 +0.9 +0.7 +2% +2.1
 Cade+Gordon > Mitchell+Murray+Josh '28 1st | +3000 +2200 +1.1 +0.9 +3% +1.9
+Cade+Chaney > Mitchell+Porziņģis+Barrett+Josh '28 1st | +2900 +2100 +1.3 +0.7 +5% +2.7
 Cade+Gordon+Collins > Mitchell+Towns+Josh '28 1st+Josh '28 2nd | +2400 +2100 +0.1 +0.5 +2% +1.1
 Cade+Collins+Middleton > Mitchell+Towns+Josh '28 1st | +2700 +2000 +0.6 +0.8 +4% +2.3
 Cade+Gordon+Collins > Mitchell+Towns+Josh '28 1st+Josh '27 2nd | +2300 +1900 +0.1 +0.5 +2% +1.1
 Cade+Bridges > Mitchell+Murray+Josh '28 1st | +1800 +1900 +0.6 +0.7 -5% +2.0
+Cade+Chaney > Mitchell+Porziņģis+Allen+Josh '28 1st | +2500 +1800 +1.5 +0.9 +1% +3.1
 Cade+Collins > Murray+Towns+Josh '28 1st+Josh '28 2nd | +2700 +1800 +0.6 +0.5 +6% +1.6
+Cade+Chaney > Murray+Porziņģis+Barrett+Josh '28 1st+Josh '28 2nd | +2600 +1800 +1.0 +0.4 +6% +1.6
 Cade+Chaney > Mitchell+Barrett+Josh '28 1st+Josh '28 2nd | +2300 +1800 +0.6 +0.5 +2% +1.3
 Cade > Mitchell+Barrett+Josh '28 1st+Josh '28 2nd | +2200 +1800 +0.7 +0.4 +2% +1.3
 Cade+Gordon > Murray+Towns+Josh '28 1st+Josh '28 2nd | +2800 +1800 +0.8 +0.7 +7% +1.4
 Cade+Gordon > Mitchell+Murray+Josh '27 2nd+Josh '28 2nd+Jon 3.02 | +2600 +1700 +1.1 +1.0 +3% +2.0
-Cade+Collins > Murray+Towns+Josh '28 1st+Josh '27 2nd | +2500 +1700 +0.6 +0.5 +6% +1.7
+Cade+Chaney+Matković > Murray+Porziņģis+Barrett+Wiggins+Josh '28 1st | +3000 +1700 +1.8 +0.7 +9% +3.1
+Cade+Collins > Murray+Towns+Josh '28 1st+Josh '27 2nd | +2500 +1700 +0.6 +0.5 +6% +1.7 | Josh rejected 9/27
+Cade+Chaney+Matković > Murray+Porziņģis+Barrett+Gillespie+Josh '28 1st | +2800 +1700 +1.7 +0.6 +7% +2.4
+Cade+Chaney > Murray+Porziņģis+Barrett+Josh '28 1st+Josh '27 2nd | +2400 +1700 +1.0 +0.4 +6% +1.7
+Cade+Chaney+Matković > Murray+Porziņģis+Barrett+Cam Johnson+Josh '28 1st | +2500 +1600 +1.4 +0.6 +5% +2.7
+Cade+Chaney > Mitchell+Porziņģis+LaVine+Josh '28 1st | +1900 +1600 +1.1 +0.5 -1% +3.5
+Cade+Collins+Chaney > Mitchell+Towns+Barrett | +3300 +1500 +1.6 +1.3 +12% +4.1
 Cade > Mitchell+Allen+Josh '28 1st+Josh '28 2nd | +1600 +1500 +0.8 +0.6 -3% +1.8
 Cade+Collins+Matkovic > Murray+Towns+Josh '28 1st+Josh '27 2nd | +2300 +1500 +0.5 +0.5 +6% +1.7
+Cade+Collins+Middleton > Mitchell+Murray+Barrett | +2800 +1500 +1.4 +1.1 +8% +3.2
+Cade+Gordon+Chaney > Mitchell+Towns+Barrett | +3300 +1500 +1.8 +1.4 +12% +3.8
+Cade+Chaney > Murray+Barrett+Allen+Josh '28 1st | +2400 +1400 +1.4 +0.8 +5% +2.1
+Cade+Butler+Middleton > Mitchell+Towns+Barrett | +3300 +1400 +1.6 +1.5 +13% +3.4
 Cade+Gordon+Collins > Mitchell+Murray+Josh '28 1st | +1500 +1400 +0.2 +0.4 -2% +1.3
+Cade+Collins+Middleton > Mitchell+Towns+Barrett | +3000 +1400 +1.4 +1.2 +11% +3.7
 Cade+Collins+Butler > Mitchell+Towns+Josh '28 1st | +2000 +1400 +0.2 +0.8 +4% +1.7
+Cade+Gordon+Middleton > Mitchell+Towns+Barrett | +3000 +1300 +1.6 +1.3 +12% +3.5
+Cade+Chaney+Matković > Murray+Porziņģis+Barrett+Sexton+Josh '28 1st | +2500 +1300 +1.7 +0.8 +8% +2.5
 Cade > Towns+Allen+Barrett+Josh '28 1st | +2400 +1300 +1.4 +0.8 +8% +2.5
 Cade+Gordon > Mitchell+Murray+Josh '27 2nd+Josh '28 2nd | +2100 +1300 +1.1 +0.9 +3% +2.2
 Cade+Gordon+Collins > Mitchell+Towns+Josh '28 1st | +1600 +1300 +0.1 +0.5 +2% +1.8
@@ -57,3 +112,5 @@ Cade+Gordon+Collins > Mitchell+Towns+Josh '28 1st | +1600 +1300 +0.1 +0.5 +2% +1
 
 Cade > Mitchell+Porziņģis+Josh '28 1st | +200 +300 +0.5 +0.3 -3% +2.9
 Cade > Mitchell+Josh '28 1st+Josh '28 2nd+Josh '27 2nd+Jon 3.02 | +600 +1100 -0.1 0.0 -6% +0.3
+Cade+Chaney > Murray+Porziņģis+Josh '28 1st+Josh '28 2nd+Josh '27 2nd | +600 +700 +0.2 -0.1 -1% +1.0
+Cade+Chaney > Porziņģis+Barrett+Allen+LaVine+Josh '28 1st+Josh '28 2nd | +600 +800 +0.8 -0.2 -2% +1.3
