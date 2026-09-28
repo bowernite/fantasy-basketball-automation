@@ -51,12 +51,13 @@ Live status per owner is in each `evals/teams/<owner>/<Name>.shapes.md` intro an
 - After that, read the individual numbers (including N and Δage, which isn't in Score) and the counterparty's view of value (e.g. a lopsided ΔBASE they'd never accept) with nuance.
 - **Picks are on the table from us:** '27 1st, '28 1st, 2.09 (Sept '26), own '27 2nd, Chris '27 2nd, Mitch '27 2nd, '28 2nd.
   - Privately, we want to move our picks (Brett, 9/25). Don't say so to other owners.
-  - We value our picks below their BASE (Brett, 9/25): we're contending, our 1sts will likely land late, and we'll soon have more picks than roster use for. So Score undercounts deals where we add picks, since it subtracts full pick BASE. Use picks as sweeteners to buy win columns and ΔP(title) (e.g. upgrading Hali to Tatum with Todd), not BASE. Todd and Matthew both want picks.
+  - Picks count at full VALUE on both sides (`eval-pick`). Use them as sweeteners to buy win columns and ΔP(title) (e.g. upgrading Hali to Tatum with Todd), not BASE. Todd and Matthew both want picks.
   - Adding a later pick ('27/'28) to our Out side doesn't need a re-sim. Subtract its BASE from ΔBASE and Score, since the win columns and ΔP(title) don't change. Its age effect is small, and it makes our Out side younger.
   - The 2.09 (Sept '26) does count in the win columns, so it needs a sim.
-  - Add picks (2nds/3rds, even 1sts) to improve or seal the Todd and Jon deals (Brett, 9/27). Semi-neglect our outgoing pick value: rank by Score\* = Score + 75% of each outgoing 2nd/3rd's BASE (2.09 counts as a 2nd) + 50% of each outgoing 1st's BASE.
+  - Add picks (2nds/3rds, even 1sts) to improve or seal the Todd and Jon deals (Brett, 9/27). Rank by Score; inside its tie band, prefer the deal that turns picks into win columns and ΔP(title).
+  - Score\* in rows and notes dated 9/27 or earlier = Score + 75% of each outgoing 2nd/3rd's BASE (2.09 counts as a 2nd) + 50% of each outgoing 1st's BASE + cut-anyway add-back, at the old pick BASE. Not used going forward.
   - Jon doesn't realize how good our team will be, so he likely values our 1sts above what they're worth to us (Brett, 9/27).
-- **Matkovic and Chaney Johnson (ours) are sweeteners too** (Brett, 9/27). We'll likely cut both for FAs at the auction, so Score\* adds back 100% of their BASE. Owners may value Chaney Johnson above his worth off last year's stats. Don't tell owners we'd cut them. Roster spots aren't a reason to add them to deals; Brett can cut guys if the roster gets tight (9/27).
+- **Matkovic and Chaney Johnson (ours) are sweeteners too** (Brett, 9/27). We'll likely cut both for FAs at the auction, so Score adds back their BASE ([Score](Definitions/Score.md)). Owners may value Chaney Johnson above his worth off last year's stats. Don't tell owners we'd cut them. Roster spots aren't a reason to add them to deals; Brett can cut guys if the roster gets tight (9/27).
 
 ### BASE caveat (agent analysis 9/25; BASE method stays as is)
 
@@ -69,13 +70,15 @@ Live status per owner is in each `evals/teams/<owner>/<Name>.shapes.md` intro an
 
 | Pick | BASE |
 |---|---|
-| '27 1st | 1425 |
-| '28 1st | 1425 |
-| 2.09 | 645 |
-| own '27 2nd | 540 |
-| Chris '27 2nd | ≈900 |
-| Mitch '27 2nd | ≈775 |
-| '28 2nd | 634 |
+| '27 1st | 1150 |
+| '28 1st | 900 |
+| 2.09 | 580 |
+| own '27 2nd | 575 |
+| Chris '27 2nd | 775 |
+| Mitch '27 2nd | 700 |
+| '28 2nd | 450 |
+
+Repriced 9/28 off each year's market; bands in `Ours.team.md` Notes.
 
 Sept '26 picks (2.09) also need `out_us_picks` and `in_from_us_picks` so the mock rookie counts in win columns.
 

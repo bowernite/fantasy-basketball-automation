@@ -1,7 +1,7 @@
 # Brett (Bathroom club) · 35 bodies · contending · sim 2026-09-12
 Stamps: boards Dizzle 7/10/26 · Hashtag 8/25/26 · crowd 9/12/26 · proj 9/12/26 · roster 9/2/26 · AGE 9/2/26
 Title: PF 1/12 (31366) · P(title) 43.1%
-Notes: Roster overlays assumed through: Matthew, Henry, Josh, Hlina (Pending Trades) · 35 of 38: three open slots = 2.09 (Lopez at projected rate) + two FA grades, not a steered auction · Chaney Johnson off all three boards, hand-checked: BASE 0 is real, GPp map-only · Sharpe GPp 0 override (out for season) · Mark Williams GPp 10 override: torn left labrum, surgery 9/10/26, 5+ months, BASE 1350 unchanged (boards not moved) · aging: Butler 37 · Kyrie 34 · Middleton 35 · this season's production: Cade · Giddey · Bridges · Collins · Green · own '27 1st below Dynatyze Mid 1st → haircut 0; every other future row an unsized haircut · lottery priors (King Christopher/Don '27 2nds, Pharaoh/Mongol Khans '28 3rds) are ranges, not modes
+Notes: Roster overlays assumed through: Matthew, Henry, Josh, Hlina (Pending Trades) · 35 of 38: three open slots = 2.09 (Lopez at projected rate) + two FA grades, not a steered auction · Chaney Johnson off all three boards, hand-checked: BASE 0 is real, GPp map-only · Sharpe GPp 0 override (out for season) · Mark Williams GPp 10 override: torn left labrum, surgery 9/10/26, 5+ months, BASE 1350 unchanged (boards not moved) · aging: Butler 37 · Kyrie 34 · Middleton 35 · this season's production: Cade · Giddey · Bridges · Collins · Green · future picks priced off their year's market 9/28, bands: '27 1st 1060–1240 · '28 1st 830–1000 · own '27 2nd 540–660 · Chris/Mitch '27 2nds 690–900 · '28 2nd modelled, no market · Chris/Mitch '27 2nds and Henry/Matthew '28 3rds are priors, not modes
 
 ## Players
 player | AGE POS | BASE | FPts/G GP | Δw Δw'26–'27-ours ΔP(title) | flags
@@ -45,19 +45,19 @@ Chaney Johnson | – SF/SG | 0 | 8 41 | +0.02 -0.16 -0.7% | fragile · 1yr role
 ## Picks
 pick | origin | rookie | VALUE
 ### Sept '26 — sourced
-2.09 | own | Karim Lopez | 645
+2.09 | own | Karim Lopez | 580
 Gone: own 1.09 → Mitch · own 3.09 → Henry
-### Sept '27 — modelled off projected finish
-1st | own | Aday Mara | 1425
-2nd | Mitch | Cameron Carr → Allen Graves | ≤918–634
-2nd | Chris | Hannes Steinbach → Karim Lopez | ≤1111–645
-2nd | own | Bruce Thornton | ≤540
-3rd | own | Henri Veesaar | ≤297
+### Sept '27 — market, projected finish
+1st | own | Dynatyze '27 1.12 · crowd Pick 9–14 | 1150
+2nd | Chris | league comps · Dynatyze template | 775
+2nd | Mitch | league comps · Dynatyze template | 700
+2nd | own | league comps · Dynatyze template | 575
+3rd | own | league comps | 250
 Gone: none
-### Sept '28 — modelled off projected finish
-1st | own | Aday Mara | ≤1425
-2nd | own | Allen Graves | ≤634
-3rd | Henry | Chris Cenac Jr. → Ryan Conwell | ≤406–303
-3rd | Matthew | Chris Cenac Jr. → Ryan Conwell | ≤406–303
-3rd | own | Ryan Conwell | ≤303
+### Sept '28 — market, projected finish
+1st | own | Dynatyze '28 1.12 | 900
+2nd | own | own '27 2nd less '27→'28 1st gap | 450
+3rd | Henry | league comps | 250
+3rd | Matthew | league comps | 250
+3rd | own | league comps | 250
 Gone: none
