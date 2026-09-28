@@ -4,7 +4,7 @@ Treat as **executed** everywhere — roster files, evals, sims, pick ownership �
 
 ## Hlina — Duren ↔ Green, Camara, Smith
 
-Handshake. Not on Fleaflicker. No picks.
+Handshake. Not on Fleaflicker. No picks. Lands after the rookie draft.
 
 | | Us | Hlina |
 | --- | --- | --- |

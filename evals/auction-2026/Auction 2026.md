@@ -13,7 +13,7 @@ Rules (Sheet, 2026-09-24):
 
 **Buy 4: our 2 open spots, plus cut Chaney Johnson and Khris Middleton.** Keep Matković.
 
-- Cut both on Fleaflicker before the auction and have the commissioner show us at 4 open (`Max Bid` 197).
+- The Hlina deal (`Pending Trades.md`) lands after the rookie draft. Until it does, the Sheet shows us at 4 open (`Max Bid` 197) with no cuts. When it lands (+2 bodies), cut both on Fleaflicker: before the auction, have the commissioner keep us at 4 open; after it, the cuts take us back to 38.
   - If he holds us to 2 open, buy 2 T1 and treat the 2nd as the last spot.
 - **Cuts.** Chaney is the worst body on every read. For the second cut, keeping Matković over Middleton reads +0.2 to +0.45pp across four buy sets (≈ 1.5σ each, same sign every time), and BASE is tied (161 vs 162). Huff and Ellis cut instead read the same pp, but they carry BASE 372 and 278.
 - **No 5th buy.** Cutting Matković too for a 5th buy reads −0.1 to −0.3pp against 4 buys: the kept body is worth about a T2, and the $ spreads thinner.
@@ -114,7 +114,7 @@ Lists:
 - **Early:** untiered names the room pays for. This drains rival $ and spots: Brandon Williams, Harrison Barnes, Javonte Green, Goga Bitadze, Pat Spencer, Quinten Post, Patrick Williams, Ryan Nembhard, Caleb Love, Sergio De Larrea, Bruce Thornton, Alex Karaban, Jayden Quaintance.
 - **Mid:** our targets deep on the Sheet list, once rivals have spent: Matisse Thybulle, Nick Richards, Trayce Jackson-Davis, Kenrich Williams, Jarred Vanderbilt.
 - Leave the top-list T1s (Barlow, Hayes, Scheierman) for rivals to nominate. The endgame rule catches any that are left.
-- Per-slot $ at the start: us $50 · Mitch $50 · Bonin, Jon, Todd $33 · Joe $25 · Chris, Brian, Henry, Josh $22 · Hlina $20 · Matthew $15. Mitch is the only rival who can match us per slot. Watch his $ left.
+- Per-slot $ at the start: us $50 · Mitch $50 · Bonin, Jon, Todd $33 · Joe $25 · Chris, Brian, Henry, Josh $22 · Hlina $25 ($20 once the deal lands) · Matthew $15. Mitch is the only rival who can match us per slot. Watch his $ left.
 
 # Live
 
@@ -126,4 +126,4 @@ Runbook: `auction-live` Skill (`.claude/skills/auction-live/auction-live.md`).
 - **Live multiplier** k = ($ left league-wide − spots left league-wide) ÷ Σ(`Market$` − 1) over the top (spots left) unsold rows. Live `Market$` = 1 + (`Market$` − 1) × k.
 - **Room heat** = Σ(price − 1) ÷ Σ(live `Market$` just before the sale − 1) over the last 8 rival sales expected at ≥ $5. Leave out the forced fill (league spots left ≤ 2 × teams still open). Hot ≥ 1.15, cold ≤ 0.87. Advisory only: caps never use it.
 - **Name match:** NFKD-ascii, lowercase, fold `’` to `'`, drop `Jr.`/`Sr.`/`II`/`III`. The Sheet writes Nae’Qwan Tomlin, D’Angelo Russell and Jae’Sean Tate with curly apostrophes. A typo the commissioner never fixes goes in `aliases.tsv` (`sheet  name`).
-- **Open spots at start:** Matthew 13 · Hlina 10 · Chris, Brian, Henry, Josh 9 each · Joe 8 · Bonin, Jon, Todd 6 each · Mitch 4 · us 4.
+- **Open spots at start:** Matthew 13 · Hlina 8 (10 once the deal lands) · Chris, Brian, Henry, Josh 9 each · Joe 8 · Bonin, Jon, Todd 6 each · Mitch 4 · us 4.
