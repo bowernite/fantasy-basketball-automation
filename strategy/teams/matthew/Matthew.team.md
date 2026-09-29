@@ -1,7 +1,7 @@
 # Matthew (Pharaoh Mattankhamun-Ra) · 37 bodies · tanking · sim 2026-09-29
 Stamps: boards Dizzle 7/10/26 · Hashtag 9/24/26 · crowd 9/29/26 · proj 9/29/26 · roster 9/29/26 · AGE 9/29/26 · picks Dynatyze 9/29/26 + crowd 9/29/26
 Title: PF 11/12 (26187) · 5.2 W · P(title) 0.0% · ours P(title) 55.5%
-Notes: tanking, youth + BASE buyer · 9/22 bought Amen from us for Sharpe/Vassell/Eason/Kuminga/Murray · 9/28 with Mitch: sent Acuff (his 1.05) + his '28 1st, Stirtz (his 2.05) to Joe in the 3-way; got Wagler (1.08), Murray-Boyles, Reed + Mitch '28 2nd and 3rd; his '29 1st/2nd went to Mitch and came back · drafted Burries 1.06, Quaintance 3.05 · 37 bodies, 1 open slot: can take a net +1 body from us with no cut on his side · Δw'26–'27-ours: Wembanyama +2.28, Jalen Johnson +2.09, Barnes +1.35, Amen +1.01, rest ≤ +0.38 · noproj rows (Sorber, Lewis, Kayil, Ilyasova) on the ~6.0 fallback rate · Kayil Dizzle rank off the rookie chart (~342); AGE from Dizzle DOB · Cormac Ryan, Ilyasova off every board (hand-checked, BASE 0) · no board splits at D 456 · Dizzle is the oldest board (7/10) · '27 picks are Dynatyze (2nd also averages the crowd Pick 9-14 band on 2.01–2.02, 50/50), mean over the 1.01–1.08 prior; bands '27 2nd 1095–685 · 3rd 457–282 · 4th 206–140 · '28–'29 slots open 1.01–1.12 until `future` lands; VALUE = mean over the range, bands '28 2nd 741–379 · 3rd 322–130 · 4th 130–38 · '29 1st 1281–583 · 2nd 518–264 · 3rd 219–68 · 4th 68–0
+Notes: tanking, youth + BASE buyer · 9/22 bought Amen from us for Sharpe/Vassell/Eason/Kuminga/Murray · 9/28 with Mitch: sent Acuff (his 1.05) + his '28 1st, Stirtz (his 2.05) to Joe in the 3-way; got Wagler (1.08), Murray-Boyles, Reed + Mitch '28 2nd and 3rd; his '29 1st/2nd went to Mitch and came back · drafted Burries 1.06, Quaintance 3.05 · 37 bodies, 1 open slot: can take a net +1 body from us with no cut on his side · Δw'26–'27-ours: Wembanyama +2.28, Jalen Johnson +2.09, Barnes +1.35, Amen +1.01, rest ≤ +0.38 · noproj rows (Sorber, Lewis, Kayil, Ilyasova) on the ~6.0 fallback rate · Kayil Dizzle rank off the rookie chart (~342); AGE from Dizzle DOB · Cormac Ryan, Ilyasova off every board (hand-checked, BASE 0) · no board splits at D 456 · Dizzle is the oldest board (7/10) · '27 picks are Dynatyze (2nd also averages the crowd Pick 9-14 band on 2.01–2.02, 50/50), mean over the 1.01–1.08 prior; bands '27 2nd 1095–685 · 3rd 457–282 · 4th 206–140 · '28–'29 slots = `sim.py future` own-pick slot band of the original owner (middle 80%): Matthew '28 01–09 · '29 03–11, Mitch '28 06–12, Chris '28 01–03; VALUE = mean over the range, bands '28 own 2nd 741–457 · Mitch 2nd 545–379 · Chris 3rd 322–277 · Mitch 3rd 221–130 · own 4th 130–67 · '29 1st 1089–618 · 2nd 461–282 · 3rd 186–79 · 4th 68–0
 
 ## Players
 player | AGE POS | BASE | FPts/G GP | Δw Δw'26–'27-ours Δw'26–'27-theirs ΔP(title)-ours | flags
@@ -51,16 +51,16 @@ own 2nd | own (2.01–2.08 prior) | Dynatyze '27 R2 template · crowd Pick 9–1
 own 3rd | own (3.01–3.08 prior) | Dynatyze '27 R3 template | 364
 own 4th | own (4.01–4.08 prior) | Dynatyze '27 R4 template, capped at 3.12 | 182
 Gone: own 1st → Hlina
-### Sept '28 — modelled, open slot range 1.01–1.12
-own 2nd | own | Dynatyze '28 R2 template | 541
-Mitch 2nd | Mitch 9/28 | Dynatyze '28 R2 template | 541
-Chris 3rd | Chris | Dynatyze '28 R3 (w 0.23) | 217
-Mitch 3rd | Mitch 9/28 | Dynatyze '28 R3 (w 0.23) | 217
-own 4th | own | Dynatyze '28 R4 template, capped at 3.12 | 91
+### Sept '28 — modelled off `future` slot bands (original owner)
+own 2nd | own (2.01–2.09) | Dynatyze '28 R2 template | 587
+Mitch 2nd | Mitch 9/28 (2.06–2.12) | Dynatyze '28 R2 template | 459
+Chris 3rd | Chris (3.01–3.03) | Dynatyze '28 R3 (w 0.23) | 299
+Mitch 3rd | Mitch 9/28 (3.06–3.12) | Dynatyze '28 R3 (w 0.23) | 174
+own 4th | own (4.01–4.09) | Dynatyze '28 R4 template, capped at 3.12 | 106
 Gone: own 1st → Mitch · own 3rd → Brett
-### Sept '29 — modelled, open slot range 1.01–1.12
-own 1st | own | Dynatyze '29 R1 template | 877
-own 2nd | own | Dynatyze '29 R2 template | 380
-own 3rd | own | Dynatyze '29 R3 (w 0.14) | 138
-own 4th | own | Dynatyze '29 R4 template, capped at 3.12 | 37
+### Sept '29 — modelled off `future` slot band (Matthew 03–11)
+own 1st | own (1.03–1.11) | Dynatyze '29 R1 template | 831
+own 2nd | own (2.03–2.11) | Dynatyze '29 R2 template | 365
+own 3rd | own (3.03–3.11) | Dynatyze '29 R3 (w 0.14) | 129
+own 4th | own (4.03–4.11) | Dynatyze '29 R4 template, capped at 3.12 | 34
 Gone: none

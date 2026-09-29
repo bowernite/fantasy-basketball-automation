@@ -1,7 +1,7 @@
 # Brett (Bathroom club) · 38 bodies · contending · sim 2026-09-29
 Stamps: boards Dizzle 7/10/26 · Hashtag 9/24/26 · crowd 9/29/26 · proj 9/29/26 · roster 9/29/26 · AGE 9/29/26 · picks Dynatyze 9/29/26 + crowd 9/29/26
 Title: PF 1/12 (32172) · 16.2 W · P(title) 55.5%
-Notes: 38 of 38, no open slot: any net +body deal cuts our worst body by Score (Tyus Jones today; trades §Uneven bodies) · Emanuel Sharp noproj: rate 6.0 is the no-projection fallback, GP map-only · Sharpe GPp 0 override (out for season) · Mark Williams GPp 10 override: torn left labrum, surgery 9/10/26, 5+ months · Tyus Jones, Quinten Post off Dizzle; AGE Hashtag 9/12 · aging: Butler 37 · Kyrie 34 · Dizzle is the oldest board (7/10) · no board splits at D 456 · '27 picks = Dynatyze rank by slot (1st adds the 50/50 crowd band Pick 9–14; 2nd/3rd/4th Dynatyze alone, no crowd ceilings; 4ths capped at 3.12 = 206): Mitch 2nd 694 (2.05–2.11 prior; 831–573) · 3rds 243 (3.10) / 206 (3.12) · '28–'29 slots open 1.01–1.12 until `future` lands; VALUE = mean over the range, bands '28 1st 2076–831 · 2nd 741–379 · 3rd 322–130 · 4th 130–38 · '29 1st 1281–583 · 2nd 518–264 · 3rd 219–68 · 4th 68–0 · Mitch '27 2nd is a 2.05–2.11 prior, not a mode
+Notes: 38 of 38, no open slot: any net +body deal cuts our worst body by Score (Tyus Jones today; trades §Uneven bodies) · Emanuel Sharp noproj: rate 6.0 is the no-projection fallback, GP map-only · Sharpe GPp 0 override (out for season) · Mark Williams GPp 10 override: torn left labrum, surgery 9/10/26, 5+ months · Tyus Jones, Quinten Post off Dizzle; AGE Hashtag 9/12 · aging: Butler 37 · Kyrie 34 · Dizzle is the oldest board (7/10) · no board splits at D 456 · '27 picks = Dynatyze rank by slot (1st adds the 50/50 crowd band Pick 9–14; 2nd/3rd/4th Dynatyze alone, no crowd ceilings; 4ths capped at 3.12 = 206): Mitch 2nd 694 (2.05–2.11 prior; 831–573) · 3rds 243 (3.10) / 206 (3.12) · '28/'29 slots = `sim.py future` own-pick slot band of the original owner (middle 80% of paths, no-trades read); VALUE = mean over the band: own '28 09–12 (1st 1038–831 · 2nd 457–379 · 3rd 172–130 · 4th 67–38) · own '29 06–12 (1st 877–583 · 2nd 383–264 · 3rd 140–68 · 4th 42–0) · Matthew '28 3rd 01–09 (322–172) · Henry '28 3rd 02–09 (297–172) · Mitch '27 2nd is a 2.05–2.11 prior, not a mode
 
 ## Players
 player | AGE POS | BASE | FPts/G GP | Δw Δw'26–'27-ours ΔP(title) | Score | flags
@@ -54,17 +54,17 @@ pick | origin | rookie | VALUE
 3rd | own (3.12) | Dynatyze '27 3.12 (template) | 206
 4th | own (4.12) | Dynatyze '27 4.12 template | 93
 Gone: own 2nd → Chris · Chris 2nd → Chris (9/28, Fox trade)
-### Sept '28 — modelled, open slot range 1.01–1.12
-1st | own | Dynatyze '28 R1 (w 0.48) | 1335
-2nd | own | Dynatyze '28 R2 template | 541
-3rd | Matthew | Dynatyze '28 R3 (w 0.23) | 217
-3rd | Henry | Dynatyze '28 R3 (w 0.23) | 217
-3rd | own | Dynatyze '28 R3 (w 0.23) | 217
-4th | own | Dynatyze '28 R4 template, capped at 3.12 | 91
+### Sept '28 — modelled, `future` own-pick slot band
+1st | own (1.09–1.12) | Dynatyze '28 1.09–1.12 (w 0.48) | 931
+2nd | own (2.09–2.12) | Dynatyze '28 2.09–2.12 template | 417
+3rd | Matthew (3.01–3.09) | Dynatyze '28 3.01–3.09 (w 0.23) | 242
+3rd | Henry (3.02–3.09) | Dynatyze '28 3.02–3.09 (w 0.23) | 232
+3rd | own (3.09–3.12) | Dynatyze '28 3.09–3.12 (w 0.23) | 151
+4th | own (4.09–4.12) | Dynatyze '28 4.09–4.12 template | 52
 Gone: none
-### Sept '29 — modelled, open slot range 1.01–1.12
-1st | own | Dynatyze '29 R1 template | 877
-2nd | own | Dynatyze '29 R2 template | 380
-3rd | own | Dynatyze '29 R3 (w 0.14) | 138
-4th | own | Dynatyze '29 R4 template, capped at 3.12 | 37
+### Sept '29 — modelled, `future` own-pick slot band
+1st | own (1.06–1.12) | Dynatyze '29 1.06–1.12 template | 718
+2nd | own (2.06–2.12) | Dynatyze '29 2.06–2.12 template | 321
+3rd | own (3.06–3.12) | Dynatyze '29 3.06–3.12 (w 0.14) | 103
+4th | own (4.06–4.12) | Dynatyze '29 4.06–4.12 template | 18
 Gone: none

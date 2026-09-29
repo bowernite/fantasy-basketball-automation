@@ -66,32 +66,32 @@ Ordinal = our overall pick `(R−1)×12 + S`. The market rows are the 9/29 crowd
 
 Gone: own 1st → Hlina
 
-### Sept '28 — modelled, open slot range 1.01–1.12
+### Sept '28 — modelled off `future` slot bands (original owner)
 
-| Pick      | Origin    | Ordinal | Board row                               |    rank | **VALUE** |
-| --------- | --------- | ------: | --------------------------------------- | ------: | --------: |
-| own 2nd   | own       |   13–24 | Dynatyze '28 R2 template                | 169–248 |   **541** |
-| Mitch 2nd | Mitch 9/28 |  13–24 | Dynatyze '28 R2 template                | 169–248 |   **541** |
-| Chris 3rd | Chris     |   25–36 | Dynatyze '28 R3 (w 0.23)                | 267–356 |   **217** |
-| Mitch 3rd | Mitch 9/28 |  25–36 | Dynatyze '28 R3 (w 0.23)                | 267–356 |   **217** |
-| own 4th   | own       |   37–48 | Dynatyze '28 R4 template, capped at 3.12 | 338–422 |    **91** |
+| Pick      | Origin                | Ordinal | Board row                                |    rank | **VALUE** |
+| --------- | --------------------- | ------: | ---------------------------------------- | ------: | --------: |
+| own 2nd   | own (2.01–2.09)       |   13–21 | Dynatyze '28 R2 template                 | 169–226 |   **587** |
+| Mitch 2nd | Mitch 9/28 (2.06–2.12) |  18–24 | Dynatyze '28 R2 template                 | 205–248 |   **459** |
+| Chris 3rd | Chris (3.01–3.03)     |   25–27 | Dynatyze '28 R3 (w 0.23)                 | 267–284 |   **299** |
+| Mitch 3rd | Mitch 9/28 (3.06–3.12) |  30–36 | Dynatyze '28 R3 (w 0.23)                 | 308–356 |   **174** |
+| own 4th   | own (4.01–4.09)       |   37–45 | Dynatyze '28 R4 template, capped at 3.12 | 338–399 |   **106** |
 
 Gone: own 1st → Mitch · own 3rd → Brett
 
-### Sept '29 — modelled, open slot range 1.01–1.12
+### Sept '29 — modelled off `future` slot band (Matthew 03–11)
 
-| Pick    | Origin | Ordinal | Board row                               |    rank | **VALUE** |
-| ------- | ------ | ------: | --------------------------------------- | ------: | --------: |
-| own 1st | own    |    1–12 | Dynatyze '29 R1 template                | 111–197 |   **877** |
-| own 2nd | own    |   13–24 | Dynatyze '29 R2 template                | 211–289 |   **380** |
-| own 3rd | own    |   25–36 | Dynatyze '29 R3 (w 0.14)                | 309–398 |   **138** |
-| own 4th | own    |   37–48 | Dynatyze '29 R4 template, capped at 3.12 | 380–463 |    **37** |
+| Pick    | Origin          | Ordinal | Board row                                |    rank | **VALUE** |
+| ------- | --------------- | ------: | ---------------------------------------- | ------: | --------: |
+| own 1st | own (1.03–1.11) |    3–11 | Dynatyze '29 R1 template                 | 127–190 |   **831** |
+| own 2nd | own (2.03–2.11) |   15–23 | Dynatyze '29 R2 template                 | 225–282 |   **365** |
+| own 3rd | own (3.03–3.11) |   27–35 | Dynatyze '29 R3 (w 0.14)                 | 325–390 |   **129** |
+| own 4th | own (4.03–4.11) |   39–47 | Dynatyze '29 R4 template, capped at 3.12 | 395–456 |    **34** |
 
 Gone: none
 
-- Bands (max–min over the slot range): '27 2nd 1095–685 · 3rd 457–282 · 4th 206–140 · '28 2nd 741–379 · 3rd 322–130 · 4th 130–38 · '29 1st 1281–583 · 2nd 518–264 · 3rd 219–68 · 4th 68–0.
+- Bands (max–min over the slot range): '27 2nd 1095–685 · 3rd 457–282 · 4th 206–140 · '28 own 2nd 741–457 · Mitch 2nd 545–379 · Chris 3rd 322–277 · Mitch 3rd 221–130 · own 4th 130–67 · '29 1st 1089–618 · 2nd 461–282 · 3rd 186–79 · 4th 68–0.
 - '27: VALUE is the Dynatyze template; the crowd band is averaged 50/50 only where it is ≤ 12 picks wide (here 2.01–2.02). Wider bands are cross-check only.
-- '28–'29 slots stay an open range until the `future` projections land. A range prior is worth more than its modal slot.
+- '28–'29 slots: the original owner's own-pick slot band from `sim.py future` (middle 80% of 600 paths, same band every round): Matthew '28 01–09 · '29 03–11, Mitch '28 06–12, Chris '28 01–03. It's a no-trades read (`Team Projections` Notes). A range is worth more than its modal slot.
 
 # Details
 

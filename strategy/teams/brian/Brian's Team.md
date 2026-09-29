@@ -59,25 +59,25 @@
 
 Gone: own 1st → Jon; own 3rd → Brett.
 
-### Sept '28 — modelled, slot open 1.01–1.12
+### Sept '28 — modelled off `future` own-pick band (Brian 03–11)
 
 | Pick    | Origin                | Ordinal | Board row                                               |    rank | **VALUE** |
 | ------- | --------------------- | ------: | ------------------------------------------------------- | ------: | --------: |
-| own 1st | own (1.01–1.12 open)  |    1–12 | Dynatyze '28 R1 (w 0.48)                                |  70–156 |  **1335** |
-| own 2nd | own (2.01–2.12 open)  |   13–24 | Dynatyze '28 R2 (template)                              | 169–248 |   **541** |
-| own 3rd | own (3.01–3.12 open)  |   25–36 | Dynatyze '28 R3 (w 0.23)                                | 267–356 |   **217** |
-| own 4th | own (4.01–4.12 open)  |   37–48 | Dynatyze '28 R4 (template), cap '28 3.12                | 356–422 |    **91** |
+| own 1st | own (1.03–1.11 band)  |    3–11 | Dynatyze '28 1.03–1.11 (w 0.48)                         |  85–148 |  **1247** |
+| own 2nd | own (2.03–2.11 band)  |   15–23 | Dynatyze '28 2.03–2.11 (template)                       | 184–241 |   **519** |
+| own 3rd | own (3.03–3.11 band)  |   27–35 | Dynatyze '28 3.03–3.11 (w 0.23)                         | 284–348 |   **206** |
+| own 4th | own (4.03–4.11 band)  |   39–47 | Dynatyze '28 4.03–4.11 (template), 4.03 cap '28 3.12    | 356–414 |    **89** |
 
 Gone: none.
 
-### Sept '29 — modelled, slot open 1.01–1.12
+### Sept '29 — modelled off `future` own-pick band (Brian 02–09)
 
 | Pick    | Origin                | Ordinal | Board row                                               |    rank | **VALUE** |
 | ------- | --------------------- | ------: | ------------------------------------------------------- | ------: | --------: |
-| own 1st | own (1.01–1.12 open)  |    1–12 | Dynatyze '29 R1 (template)                              | 111–197 |   **877** |
-| own 2nd | own (2.01–2.12 open)  |   13–24 | Dynatyze '29 R2 (template)                              | 211–289 |   **380** |
-| own 3rd | own (3.01–3.12 open)  |   25–36 | Dynatyze '29 R3 (w 0.14)                                | 309–398 |   **138** |
-| own 4th | own (4.01–4.12 open)  |   37–48 | Dynatyze '29 R4 (template), cap '29 3.12                | 398–463 |    **37** |
+| own 1st | own (1.02–1.09 band)  |     2–9 | Dynatyze '29 1.02–1.09 (template)                       | 119–174 |   **922** |
+| own 2nd | own (2.02–2.09 band)  |   14–21 | Dynatyze '29 2.02–2.09 (template)                       | 218–268 |   **399** |
+| own 3rd | own (3.02–3.09 band)  |   26–33 | Dynatyze '29 3.02–3.09 (w 0.14)                         | 317–374 |   **150** |
+| own 4th | own (4.02–4.09 band)  |   38–45 | Dynatyze '29 4.02–4.09 (template), 4.02–4.03 cap '29 3.12 | 398–441 |    **46** |
 
 Gone: none.
 
@@ -95,7 +95,7 @@ Gone: none.
 **Sourced vs modelled**
 
 - Sourced: board ranks, rosters, projections, Dynatyze and crowd pick ranks.
-- Modelled: BASE (curve), every pick VALUE, all sim columns, the '27 slot (projected finish).
+- Modelled: BASE (curve), every pick VALUE, all sim columns, the '27 slot (projected finish), the '28/'29 slots (`sim.py future` band).
 - Discount chosen: none.
 
 **Board staleness:** Dizzle 7/10 is the stalest blended board. Hashtag expert is from 9/24, crowd from 9/29, and Dynatyze picks from 9/29.
@@ -103,9 +103,9 @@ Gone: none.
 **Pick bands** (VALUE is the mean over the slot range):
 
 - '27: slot 1.10, with 1.11 a coin flip (Brian 13.1 W vs Michael 12.8). The 2nd (608) and Jon's 3rd (376) are Dynatyze template by slot; wide crowd bands are cross-check only.
-- '28: 1st 831–2076 · 2nd 379–741 · 3rd 130–322 · 4th 38–130.
-- '29: 1st 583–1281 · 2nd 264–518 · 3rd 68–219 · 4th 0–68.
-- '28/'29 stay open (1.01–1.12) until the `future` projections land.
+- '28: slot 03–11 (`sim.py future` own-pick band, middle 80%). 1st 893–1714 · 2nd 403–651 · 3rd 144–277 · 4th 47–130.
+- '29: slot 02–09 (same). 1st 709–1180 · 2nd 319–488 · 3rd 102–202 · 4th 16–68.
+- The '28/'29 bands are a no-trades read: no rebuilds, trades or FA restocking.
 
 # Title odds
 

@@ -1,7 +1,7 @@
 # Michael (Pascals of Pangea) · 38 bodies · contending · sim 2026-09-29
 Stamps: boards Dizzle 7/10/26 · Hashtag 9/24/26 · crowd 9/29/26 · Dynatyze picks 9/29/26 · proj 9/29/26 · roster 9/29/26 · AGE 9/29/26
 Title: PF 2/12 (30717) · 12.8 W · P(title) 13.1% · ours P(title) 55.5%
-Notes: Contending year 1 · targets by Δw ours: Sabonis, Clingan, Reaves, Harden, Siakam, Markkanen · open deal: Michael countered Cade for Reaves + Sabonis + Siakam, undecided (Bonin.shapes.md) · 2026 rookies now priced off Dizzle's slot-prefix rows (Lendeborg 1222, Carr 707, Karaban 335, Braden Smith 82); Hopkins has no Dizzle dynasty row → rookie-chart ~400, no Hashtag expert row → 35 · McDermott, Potter 0 (Hashtag expert past D, off Dizzle) · noproj (~6.0 fallback): Braden Smith, Hopkins, McDermott · no board splits under BASE.md (old Powell/Green/LeVert flags were crowd-driven) · no trades 9/26–9/28; every '27–'29 pick own (FetchTeamPicks 9/29) · years 2+ read pending the future projections, so '28/'29 slots are the open 1.01–1.12 range · '27 2nd/3rd/4th are Dynatyze template by slot (no crowd band; wide crowd bands are cross-check only)
+Notes: Contending year 1 · targets by Δw ours: Sabonis, Clingan, Reaves, Harden, Siakam, Markkanen · open deal: Michael countered Cade for Reaves + Sabonis + Siakam, undecided (Bonin.shapes.md) · 2026 rookies now priced off Dizzle's slot-prefix rows (Lendeborg 1222, Carr 707, Karaban 335, Braden Smith 82); Hopkins has no Dizzle dynasty row → rookie-chart ~400, no Hashtag expert row → 35 · McDermott, Potter 0 (Hashtag expert past D, off Dizzle) · noproj (~6.0 fallback): Braden Smith, Hopkins, McDermott · no board splits under BASE.md (old Powell/Green/LeVert flags were crowd-driven) · no trades 9/26–9/28; every '27–'29 pick own (FetchTeamPicks 9/29) · '28/'29 slots are sim.py future's own-pick band ('28 02–10, '29 02–09; no-trades read) · '27 2nd/3rd/4th are Dynatyze template by slot (no crowd band; wide crowd bands are cross-check only)
 
 ## Players
 player | AGE POS | BASE | FPts/G GP | Δw Δw'26–'27-ours Δw'26–'27-theirs ΔP(title)-ours | flags
@@ -53,15 +53,15 @@ own 2nd | own 2.11 | Dynatyze '27 2.11 (template) | 573
 own 3rd | own 3.11 | Dynatyze '27 3.11 (template) | 225
 own 4th | own 4.11 | Dynatyze '27 4.11 (template) | 105
 Gone: none.
-### Sept '28 — modelled; open slot 1.01–1.12 until the future projections land
-own 1st | own 1.01–1.12 | Dynatyze '28 R1 (w 0.48) | 1335 (2076–831)
-own 2nd | own 2.01–2.12 | Dynatyze '28 R2 template | 541 (741–379)
-own 3rd | own 3.01–3.12 | Dynatyze '28 R3 (w 0.23) | 217 (322–130)
-own 4th | own 4.01–4.12 | Dynatyze R4 template, capped at 3.12 | 91 (130–38)
+### Sept '28 — modelled off sim.py future own-pick band 02–10 (middle 80% of 600 paths)
+own 1st | own 1.02–1.10 | Dynatyze '28 R1 (w 0.48) | 1358 (1893–962)
+own 2nd | own 2.02–2.10 | Dynatyze '28 R2 template | 552 (697–431)
+own 3rd | own 3.02–3.10 | Dynatyze '28 R3 (w 0.23) | 224 (297–158)
+own 4th | own 4.02–4.10 | Dynatyze R4 template, capped at 3.12 | 98 (130–57)
 Gone: none.
-### Sept '29 — modelled; open slot 1.01–1.12 until the future projections land
-own 1st | own 1.01–1.12 | Dynatyze '29 R1 template | 877 (1281–583)
-own 2nd | own 2.01–2.12 | Dynatyze '29 R2 template | 380 (518–264)
-own 3rd | own 3.01–3.12 | Dynatyze '29 R3 (w 0.14) | 138 (219–68)
-own 4th | own 4.01–4.12 | Dynatyze R4 template, capped at 3.12 | 37 (68–0)
+### Sept '29 — modelled off sim.py future own-pick band 02–09 (middle 80% of 600 paths)
+own 1st | own 1.02–1.09 | Dynatyze '29 R1 template | 922 (1180–709)
+own 2nd | own 2.02–2.09 | Dynatyze '29 R2 template | 399 (488–319)
+own 3rd | own 3.02–3.09 | Dynatyze '29 R3 (w 0.14) | 150 (202–102)
+own 4th | own 4.02–4.09 | Dynatyze R4 template, capped at 3.12 | 46 (68–16)
 Gone: none.

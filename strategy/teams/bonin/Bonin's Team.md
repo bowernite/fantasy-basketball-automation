@@ -66,25 +66,25 @@ Every '27–'29 pick is his own; none traded (`FetchTeamPicks` 9/29).
 
 Gone: none.
 
-### Sept '28 — modelled; open slot 1.01–1.12 until the future projections land
+### Sept '28 — modelled off `sim.py future` own-pick slot band 02–10 (middle 80% of 600 paths; no-trades read)
 
 | Pick | Origin | Ordinal | Board row | rank | **VALUE** |
 | ---- | ------ | ------: | --------- | ---: | --------: |
-| own 1st | own 1.01–1.12 | 1–12 | Dynatyze '28 R1 (w 0.48) | 70–156 | **1335** (2076–831) |
-| own 2nd | own 2.01–2.12 | 13–24 | Dynatyze '28 R2, template | 169–248 | **541** (741–379) |
-| own 3rd | own 3.01–3.12 | 25–36 | Dynatyze '28 R3 (w 0.23) | 267–356 | **217** (322–130) |
-| own 4th | own 4.01–4.12 | 37–48 | Dynatyze '28 R4, template, capped at 3.12 | 338–422 | **91** (130–38) |
+| own 1st | own 1.02–1.10 | 2–10 | Dynatyze '28 R1 (w 0.48) | 77–140 | **1358** (1893–962) |
+| own 2nd | own 2.02–2.10 | 14–22 | Dynatyze '28 R2, template | 176–233 | **552** (697–431) |
+| own 3rd | own 3.02–3.10 | 26–34 | Dynatyze '28 R3 (w 0.23) | 276–340 | **224** (297–158) |
+| own 4th | own 4.02–4.10 | 38–46 | Dynatyze '28 R4, template, capped at 3.12 | 346–406 | **98** (130–57) |
 
 Gone: none.
 
-### Sept '29 — modelled; open slot 1.01–1.12 until the future projections land
+### Sept '29 — modelled off `sim.py future` own-pick slot band 02–09 (middle 80% of 600 paths; no-trades read)
 
 | Pick | Origin | Ordinal | Board row | rank | **VALUE** |
 | ---- | ------ | ------: | --------- | ---: | --------: |
-| own 1st | own 1.01–1.12 | 1–12 | Dynatyze '29 R1, template | 111–197 | **877** (1281–583) |
-| own 2nd | own 2.01–2.12 | 13–24 | Dynatyze '29 R2, template | 211–289 | **380** (518–264) |
-| own 3rd | own 3.01–3.12 | 25–36 | Dynatyze '29 R3 (w 0.14) | 309–398 | **138** (219–68) |
-| own 4th | own 4.01–4.12 | 37–48 | Dynatyze '29 R4, template, capped at 3.12 | 380–463 | **37** (68–0) |
+| own 1st | own 1.02–1.09 | 2–9 | Dynatyze '29 R1, template | 119–174 | **922** (1180–709) |
+| own 2nd | own 2.02–2.09 | 14–21 | Dynatyze '29 R2, template | 218–268 | **399** (488–319) |
+| own 3rd | own 3.02–3.09 | 26–33 | Dynatyze '29 R3 (w 0.14) | 317–374 | **150** (202–102) |
+| own 4th | own 4.02–4.09 | 38–45 | Dynatyze '29 R4, template, capped at 3.12 | 388–441 | **46** (68–16) |
 
 Gone: none.
 
@@ -96,4 +96,4 @@ Gone: none.
 
 # Title odds
 
-**Counterparty:** projected PF **30,717**, #2 of 12 · 12.8 W · roster P(title) **13.1%** · `SIT` **contending**. Ours P(title) 55.5%. **`ΔP(title) ours`** is in the table. Years 2+ wait on the future projections.
+**Counterparty:** projected PF **30,717**, #2 of 12 · 12.8 W · roster P(title) **13.1%** · `SIT` **contending**. Ours P(title) 55.5%. **`ΔP(title) ours`** is in the table. Years 2+: `Team Projections.md` forward table (`sim.py future`, no-trades read).

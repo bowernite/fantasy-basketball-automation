@@ -62,23 +62,23 @@ Feed misses: Kris Murray has no GP in either feed (durability map); Hawkins has 
 
 Gone: own 1st → Joe · own 3rd → Jon
 
-### Sept '28 — modelled, no projected finish (slot open 1.01–1.12 until `future` lands)
+### Sept '28 — modelled off `sim.py future` own-pick band (Chris 01–03, middle 80% of 600 paths)
 
 | Pick | Origin | Ordinal | Board row | rank | **VALUE** |
 | ---- | ------ | ------: | --------- | ---: | --------: |
-| own 1st | own (1.01–1.12 open) | 1–12 | Dynatyze '28 1.01–1.12 (w 0.48) | 70–156 | **1335** (831–2076) |
-| own 4th | own (4.01–4.12 open) | 37–48 | Dynatyze '28 R4 template, 4.01–4.03 capped at '28 3.12 | 356–422 | **91** (38–130) |
+| own 1st | own (1.01–1.03 band) | 1–3 | Dynatyze '28 1.01–1.03 (w 0.48) | 70–85 | **1894** (2076–1714) |
+| own 4th | own (4.01–4.03 band) | 37–39 | Dynatyze '28 4.01–4.03 template, capped at '28 3.12 | 338–353 | **130** |
 
 Gone: own 2nd → Joe · own 3rd → Matthew
 
-### Sept '29 — modelled, no projected finish (slot open 1.01–1.12 until `future` lands)
+### Sept '29 — modelled off `sim.py future` own-pick band (Chris 01–02, middle 80% of 600 paths)
 
 | Pick | Origin | Ordinal | Board row | rank | **VALUE** |
 | ---- | ------ | ------: | --------- | ---: | --------: |
-| own 1st | own (1.01–1.12 open) | 1–12 | Dynatyze '29 R1 template, w 0 ('28 R1 + '28→'29 gap, modelled) | 111–197 | **877** (583–1281) |
-| own 2nd | own (2.01–2.12 open) | 13–24 | Dynatyze '29 2.01–2.12 template (w 0) | 211–289 | **380** (264–518) |
-| own 3rd | own (3.01–3.12 open) | 25–36 | Dynatyze '29 3.01–3.12 (w 0.14) | 309–398 | **138** (68–219) |
-| own 4th | own (4.01–4.12 open) | 37–48 | Dynatyze '29 R4 template, 4.01–4.03 capped at '29 3.12; 4.11–4.12 past `D` | 398–463 | **37** (0–68) |
+| own 1st | own (1.01–1.02 band) | 1–2 | Dynatyze '29 1.01–1.02, template | 111–119 | **1230** (1281–1180) |
+| own 2nd | own (2.01–2.02 band) | 13–14 | Dynatyze '29 2.01–2.02, template | 211–218 | **503** (518–488) |
+| own 3rd | own (3.01–3.02 band) | 25–26 | Dynatyze '29 3.01–3.02 (w 0.14) | 309–317 | **210** (219–202) |
+| own 4th | own (4.01–4.02 band) | 37–38 | Dynatyze '29 4.01–4.02 template, capped at '29 3.12 | 380–388 | **68** |
 
 Gone: none
 
@@ -90,8 +90,8 @@ Gone: none
 - Daniels (23.5) is the one young piece with real BASE.
 - 9/28: sold Fox to us for Middleton + Brett '27 2nd + his own '27 2nd back (485835); flipped his only 2026 rookie, Ejiofor, to Jon for McBride (485848). No consistent sell/buy direction.
 - 37/38 bodies: can take one extra body without a cut. In the Fox deal he asked for a body back to stay even.
-- '27 1st is Joe's; his '28–'29 1sts are his main future capital.
-- Years 2+: pending `future` (`Team Projections.md` §Years 2+).
+- '27 1st is Joe's; his '28–'29 1sts are his main future capital: `sim.py future` puts his own picks at '28 01–03 and '29 01–02 (no-trades read; the worst-4 lottery is the sim's assumption and matters most for him), so '28 1st 1894, '29 1st 1230.
+- Years 2+ read: `Team Projections.md` '27-28+ table (no trades).
 
 # Title odds
 

@@ -65,24 +65,24 @@ Stamps: boards Dizzle 7/10/26 (depth 450) · Hashtag expert 9/24/26 (depth 777) 
 
 Own 2nd and 3rd → Jon.
 
-### Sept '28 — modelled, open slot ('27–'28 finish not projected)
+### Sept '28 — modelled off `sim.py future` own-pick band 02–09 (middle 80% of 600 paths)
 
 | Pick | Origin | Ordinal | Board row | rank | **VALUE** |
 | ---- | ------ | ------: | --------- | ---: | --------: |
-| 1st | own (1.01–1.12) | 1–12 | Dynatyze '28 1.01–1.12 (w 0.48) | 70–156 | **1335** (831–2076) |
-| 2nd | own (2.01–2.12) | 13–24 | Dynatyze '28 2.01–2.12 template (w 0) | 169–248 | **541** (379–741) |
-| 4th | own (4.01–4.12) | 37–48 | Dynatyze '28 4.01–4.12 template (w 0), capped at '28 3.12 | 338–422 | **91** (38–130) |
+| 1st | own (1.02–1.09) | 2–9 | Dynatyze '28 1.02–1.09 (w 0.48) | 77–132 | **1408** (1038–1893) |
+| 2nd | own (2.02–2.09) | 14–21 | Dynatyze '28 2.02–2.09 template (w 0) | 176–226 | **567** (457–697) |
+| 4th | own (4.02–4.09) | 38–45 | Dynatyze '28 4.02–4.09 template (w 0), capped at '28 3.12 (130) | 346–399 | **103** (67–130) |
 
 Own 3rd → Brett.
 
-### Sept '29 — modelled, open slot ('28–'29 finish not projected)
+### Sept '29 — modelled off `sim.py future` own-pick band 03–10 (middle 80% of 600 paths)
 
 | Pick | Origin | Ordinal | Board row | rank | **VALUE** |
 | ---- | ------ | ------: | --------- | ---: | --------: |
-| 1st | own (1.01–1.12) | 1–12 | Dynatyze '29 1.01–1.12 template (w 0) | 111–197 | **877** (583–1281) |
-| 2nd | own (2.01–2.12) | 13–24 | Dynatyze '29 2.01–2.12 template (w 0) | 211–289 | **380** (264–518) |
-| 3rd | own (3.01–3.12) | 25–36 | Dynatyze '29 3.01–3.12 (w 0.14) | 309–398 | **138** (68–219) |
-| 4th | own (4.01–4.12) | 37–48 | Dynatyze '29 4.01–4.12 template (w 0), capped at '29 3.12 | 380–463 | **37** (0–68) |
+| 1st | own (1.03–1.10) | 3–10 | Dynatyze '29 1.03–1.10 template (w 0) | 127–182 | **857** (662–1089) |
+| 2nd | own (2.03–2.10) | 15–22 | Dynatyze '29 2.03–2.10 template (w 0) | 225–275 | **375** (300–461) |
+| 3rd | own (3.03–3.10) | 27–34 | Dynatyze '29 3.03–3.10 (w 0.14) | 325–382 | **136** (90–186) |
+| 4th | own (4.03–4.10) | 39–46 | Dynatyze '29 4.03–4.10 template (w 0), capped at '29 3.12 (68) | 395–448 | **38** (8–68) |
 
 None of their own '29 picks gone.
 
@@ -90,7 +90,7 @@ None of their own '29 picks gone.
 
 **Counterfactual:** `Δw '26–'27 ours` swaps him onto our roster against our replacement (center 24.8 · forward 25.0 · guard 26.1); `Δw '26–'27 theirs` against Henry's (center 16.5 · forward 16.7 · guard 16.9). Formula **`Δw`**: `Eval Definitions §Δw`. `Δw '26–'27 ours` is the only cross-team-comparable column; the two season columns are fitted at different `R`, so the theirs−ours gap is not a number and no target is ranked on `Δw '26–'27 theirs`.
 
-**Picks:** all modelled off one Dynatyze snapshot (`strategy/board-snapshots/dynatyze/pick-board-2026-09-29.tsv`) plus the 9/29 crowd bands (`future-picks.md` step 2; prices from `pick_prices.py`). VALUE = mean over the slot range; band = min–max over it. `w` is a label, never a weight; `w 0` = template, no market. Crowd averaged 50/50 only for bands ≤ 12 picks wide. '28/'29 2nds use the template alone. A range-only slot is worth more than its modal slot.
+**Picks:** all modelled off one Dynatyze snapshot (`strategy/board-snapshots/dynatyze/pick-board-2026-09-29.tsv`) plus the 9/29 crowd bands (`future-picks.md` step 2; prices from `pick_prices.py`). Slots: '27 is a `Team Projections` prior; '28/'29 are `sim.py future`'s own-pick band (Henry '28 02–09, '29 03–10), a no-trades read. VALUE = mean over the slot range; band = min–max over it. `w` is a label, never a weight; `w 0` = template, no market. Crowd averaged 50/50 only for bands ≤ 12 picks wide. '28/'29 2nds use the template alone. A range-only slot is worth more than its modal slot.
 
 # Title odds
 

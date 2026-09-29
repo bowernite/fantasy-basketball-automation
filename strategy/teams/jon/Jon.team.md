@@ -1,7 +1,7 @@
 # Jon (Shai Gilgeous-Alexander the Great) · 38 bodies · tanking · sim 2026-09-29
 Stamps: boards Dizzle 7/10/26 · Hashtag 9/24/26 · crowd 9/29/26 · proj 9/29/26 · roster 9/29/26 · AGE 9/29/26 · Dynatyze picks 9/29/26 (snapshot)
 Title: PF 12/12 (25384) · 3.6 W · P(title) 0.0% · ours P(title) 55.5%
-Notes: tanking, last in PF by 800, young core (Peterson 19.7, Fears, Bailey, Traore, Okorie, Steinbach, Graves, Thomas all ≤20.4) · targets on ours by Δw ours / ΔP(title) ours: SGA (+1.91 / 13.0%, age 28.2), Şengün (+1.36 / 9.0%), Sharpe (+0.53 / 4.2%) · '26 draft done: Peterson (1.02), Steinbach (Chris 1.11), Graves (Todd 2.01), Okorie (own 2.02), Meleek Thomas (Josh 2.10); own 3.02 went to Josh · 9/28: McBride → Chris for Ejiofor · 38 bodies, full: any deal netting him a body needs a cut on his side · Sharpe 24→32 and Shannon 9→19 FPts/G proj are role bets · low GPp is both feeds, not a join miss: Moody 23, Love 18, Spencer 21, Ejiofor 34, Veesaar 33 (FanScout only) · no projection (6.0-shrunk rate, win columns an upper bound): Brazile, Onyenso; Ivey is an NBA free agent (last-season rate shrunk) · Dizzle board (7/10) predates the draft: rookies price off its slot-prefixed rows, Brazile off its rookie chart (~342) · no board splits · picks per `eval-pick/future-picks.md` step 2 (`pick_prices.py`, 9/29 snapshots): VALUE = V(Dynatyze rank); the '27 crowd band is averaged 50/50 only for bands ≤ 12 picks wide (1.01–2.02), wider bands cross-check only; `w` is a label, not a weight; '27 2nds/3rds and all '28/'29 2nds are the Dynatyze template · 4ths are the Dynatyze template alone, capped at the same year's 3.12 (206 in '27) · VALUE = mean over the prior's slots (a range is worth more than its modal slot), band in parens · Brian '27 1st is 1.10 on PF but Brian out-wins Michael, so 1.11 as likely · '28/'29 slots left open 1.01–1.12 until `future` lands
+Notes: tanking, last in PF by 800, young core (Peterson 19.7, Fears, Bailey, Traore, Okorie, Steinbach, Graves, Thomas all ≤20.4) · targets on ours by Δw ours / ΔP(title) ours: SGA (+1.91 / 13.0%, age 28.2), Şengün (+1.36 / 9.0%), Sharpe (+0.53 / 4.2%) · '26 draft done: Peterson (1.02), Steinbach (Chris 1.11), Graves (Todd 2.01), Okorie (own 2.02), Meleek Thomas (Josh 2.10); own 3.02 went to Josh · 9/28: McBride → Chris for Ejiofor · 38 bodies, full: any deal netting him a body needs a cut on his side · Sharpe 24→32 and Shannon 9→19 FPts/G proj are role bets · low GPp is both feeds, not a join miss: Moody 23, Love 18, Spencer 21, Ejiofor 34, Veesaar 33 (FanScout only) · no projection (6.0-shrunk rate, win columns an upper bound): Brazile, Onyenso; Ivey is an NBA free agent (last-season rate shrunk) · Dizzle board (7/10) predates the draft: rookies price off its slot-prefixed rows, Brazile off its rookie chart (~342) · no board splits · picks per `eval-pick/future-picks.md` step 2 (`pick_prices.py`, 9/29 snapshots): VALUE = V(Dynatyze rank); the '27 crowd band is averaged 50/50 only for bands ≤ 12 picks wide (1.01–2.02), wider bands cross-check only; `w` is a label, not a weight; '27 2nds/3rds and all '28/'29 2nds are the Dynatyze template · 4ths are the Dynatyze template alone, capped at the same year's 3.12 (206 in '27) · VALUE = mean over the prior's slots (a range is worth more than its modal slot), band in parens · Brian '27 1st is 1.10 on PF but Brian out-wins Michael, so 1.11 as likely · '28/'29 slots = `sim.py future` own-pick slot band (middle 80% of paths, no-trades read): '28 02–09, '29 04–12
 
 ## Players
 player | AGE POS | BASE | FPts/G GP | Δw Δw'26–'27-ours Δw'26–'27-theirs ΔP(title)-ours | flags
@@ -56,15 +56,15 @@ pick | origin | rookie | VALUE
 3rd | Henry (3.02–3.09 prior) | Dynatyze '27 3.02–3.09 template | 340 (262–427)
 4th | own (4.01–4.07 prior) | Dynatyze '27 R4 template, 4.01–4.03 capped at '27 3.12 (206) | 188 (154–206)
 Gone: own 3rd → Brian
-### Sept '28 — modelled, no projected finish ('27–'28: slot open, 1.01–1.12 until `future` lands)
-1st | own (1.01–1.12 open) | Dynatyze '28 1.01–1.12 (w 0.48) | 1335 (831–2076)
-2nd | own (2.01–2.12 open) | Dynatyze '28 2.01–2.12 template | 541 (379–741)
-3rd | own (3.01–3.12 open) | Dynatyze '28 3.01–3.12 (w 0.23) | 217 (130–322)
-4th | own (4.01–4.12 open) | Dynatyze '28 R4 template, 4.01–4.03 capped at '28 3.12 | 91 (38–130)
+### Sept '28 — modelled, `future` own-pick slot band ('27–'28: Jon 02–09)
+1st | own (1.02–1.09) | Dynatyze '28 1.02–1.09 (w 0.48) | 1408 (1038–1893)
+2nd | own (2.02–2.09) | Dynatyze '28 2.02–2.09 template | 567 (457–697)
+3rd | own (3.02–3.09) | Dynatyze '28 3.02–3.09 (w 0.23) | 232 (172–297)
+4th | own (4.02–4.09) | Dynatyze '28 R4 template, 4.02–4.03 capped at '28 3.12 | 103 (67–130)
 Gone: none
-### Sept '29 — modelled, no projected finish ('28–'29: slot open, 1.01–1.12 until `future` lands)
-1st | own (1.01–1.12 open) | Dynatyze '29 1.01–1.12 template (w 0) | 877 (583–1281)
-2nd | own (2.01–2.12 open) | Dynatyze '29 2.01–2.12 template | 380 (264–518)
-3rd | own (3.01–3.12 open) | Dynatyze '29 3.01–3.12 (w 0.14) | 138 (68–219)
-4th | own (4.01–4.12 open) | Dynatyze '29 R4 template, 4.01–4.03 capped at '29 3.12, 4.11–4.12 past D = 0 | 37 (0–68)
+### Sept '29 — modelled, `future` own-pick slot band ('28–'29: Jon 04–12)
+1st | own (1.04–1.12) | Dynatyze '29 1.04–1.12 template (w 0) | 774 (583–1009)
+2nd | own (2.04–2.12) | Dynatyze '29 2.04–2.12 template | 343 (264–434)
+3rd | own (3.04–3.12) | Dynatyze '29 3.04–3.12 (w 0.14) | 116 (68–171)
+4th | own (4.04–4.12) | Dynatyze '29 R4 template, 4.11–4.12 past D = 0 | 26 (0–61)
 Gone: none

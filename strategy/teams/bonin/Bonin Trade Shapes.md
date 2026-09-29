@@ -15,7 +15,7 @@ Refresh 9/29/26: every row re-priced on 9/29 rosters (both teams at 38), with th
 - Michael's 2.11 became Cameron Carr (his R2.11), so Carr replaces (2.11) in every row.
 - Dropped Middleton > Michael '27 3rd and Walker+Chris '27 2nd > Hart: both assets went to Chris in the Fox deal (9/28).
 - No 4th-round rows: Michael hasn't asked for a small pick.
-- Pick BASE: our '27 1st 1176 · '28 1st 1335 · Michael '27 1st 1231.
+- Pick BASE: our '27 1st 1176 · '28 1st 931 ('28 band 09–12 from `sim.py future`) · Michael '27 1st 1231.
 - Michael is at 38, so an N-for-1 makes him cut (usually McDermott).
 
 Re-priced 9/29/26 (4b): ΔBASE, Δage and Score now read BASE and AGE from Bonin.team.md and Ours.team.md. Before, they came from the stale pre-draft human evals.
@@ -25,6 +25,7 @@ Re-priced 9/29/26 (4b): ΔBASE, Δage and Score now read BASE and AGE from Bonin
 - Cade+Tyus Jones+Post+Emanuel Sharp > Sabonis+Siakam+White+Hart drops to −1116 ΔBASE and moves to Doesn't meet our minimums.
 - Bane+Gordon > Reaves rises to +1365 ΔBASE and moves to Too lopsided.
 - No eval_gap rows. Every other row moved ≤ ±200 Score.
+- 7b 9/29: our '28 1st re-priced 1335 → 931 off the `future` slot band. Kuminga + '28 1st > Siakam re-simmed: Score +1300 → +1700, ΔBASE +100 → +500; stays Above floor, re-sorted. No other row holds a '28/'29 pick.
 
 Floors, since no live bid benchmarks them:
 - Cade rows: our 4:24p shapes. Above ≥ +1900, Floor +1200…+1800.
@@ -74,6 +75,7 @@ Names: Draymond = Draymond Green; bare Green = Jalen Green; Smith = Jabari Smith
 | <ul style="list-style-type:disc;margin:0;padding-left:1.25em"><li>**Cade**</li><li>**Keegan Murray**</li><li>**Vassell**</li><li>**Collins**</li></ul> | <ul style="list-style-type:disc;margin:0;padding-left:1.25em"><li>**Reaves**</li><li>**Sabonis**</li><li>**Siakam**</li><li>**White**</li></ul> | **+1900** | -600 | **+2.4** | **+1.2** | **+19%** | +4.6 |  |
 | <ul style="list-style-type:disc;margin:0;padding-left:1.25em"><li>**Cade**</li><li>**Jabari Smith**</li><li>**Tyus Jones**</li></ul> | <ul style="list-style-type:disc;margin:0;padding-left:1.25em"><li>**Reaves**</li><li>**Sabonis**</li><li>**Siakam**</li></ul> | **+1900** | -400 | **+2.4** | **+1.0** | **+16%** | +5.8 |  |
 | <ul style="list-style-type:disc;margin:0;padding-left:1.25em"><li>**Cade**</li><li>**Camara**</li><li>**Tyus Jones**</li></ul> | <ul style="list-style-type:disc;margin:0;padding-left:1.25em"><li>**Reaves**</li><li>**Sabonis**</li><li>**Siakam**</li></ul> | **+1900** | -200 | **+2.6** | **+1.0** | **+14%** | +5.0 |  |
+| <ul style="list-style-type:disc;margin:0;padding-left:1.25em"><li>**Kuminga**</li><li>**['28 1st]**</li></ul> | <ul style="list-style-type:disc;margin:0;padding-left:1.25em"><li>**Siakam**</li></ul> | **+1700** | **+500** | **+1.3** | **+0.6** | **+8%** | +14.0 |  |
 | <ul style="list-style-type:disc;margin:0;padding-left:1.25em"><li>**Kuminga**</li><li>**Walker**</li></ul> | <ul style="list-style-type:disc;margin:0;padding-left:1.25em"><li>**White**</li></ul> | **+1600** | **+800** | **+0.8** | **+0.4** | **+5%** | +8.8 |  |
 | <ul style="list-style-type:disc;margin:0;padding-left:1.25em"><li>**Edey**</li><li>**Tyus Jones**</li></ul> | <ul style="list-style-type:disc;margin:0;padding-left:1.25em"><li>**Sabonis**</li><li>**Draymond**</li></ul> | **+1600** | **+300** | **+1.7** | **+0.7** | **+8%** | +7.1 |  |
 | <ul style="list-style-type:disc;margin:0;padding-left:1.25em"><li>**Smith**</li><li>**['27 1st]**</li></ul> | <ul style="list-style-type:disc;margin:0;padding-left:1.25em"><li>**Clingan**</li></ul> | **+1600** | **+700** | **+0.6** | **+0.5** | **+8%** | +1.2 |  |
@@ -85,7 +87,6 @@ Names: Draymond = Draymond Green; bare Green = Jalen Green; Smith = Jabari Smith
 | <ul style="list-style-type:disc;margin:0;padding-left:1.25em"><li>**Simons**</li><li>**Walker**</li></ul> | <ul style="list-style-type:disc;margin:0;padding-left:1.25em"><li>**White**</li></ul> | **+1400** | **+800** | **+0.7** | **+0.3** | **+3%** | +6.6 |  |
 | <ul style="list-style-type:disc;margin:0;padding-left:1.25em"><li>**Murray**</li><li>**['27 1st]**</li></ul> | <ul style="list-style-type:disc;margin:0;padding-left:1.25em"><li>**Clingan**</li></ul> | **+1400** | **+300** | **+0.7** | **+0.6** | **+9%** | 0.0 |  |
 | <ul style="list-style-type:disc;margin:0;padding-left:1.25em"><li>**Eason**</li><li>**Kuminga**</li></ul> | <ul style="list-style-type:disc;margin:0;padding-left:1.25em"><li>**Harden**</li></ul> | **+1300** | **+600** | **+0.6** | **+0.6** | **+3%** | +11.9 |  |
-| <ul style="list-style-type:disc;margin:0;padding-left:1.25em"><li>**Kuminga**</li><li>**['28 1st]**</li></ul> | <ul style="list-style-type:disc;margin:0;padding-left:1.25em"><li>**Siakam**</li></ul> | **+1300** | **+100** | **+1.3** | **+0.6** | **+8%** | +14.0 |  |
 | <ul style="list-style-type:disc;margin:0;padding-left:1.25em"><li>**Sharpe**</li><li>**Walker**</li></ul> | <ul style="list-style-type:disc;margin:0;padding-left:1.25em"><li>**White**</li></ul> | **+1300** | **+500** | **+0.5** | **+0.5** | **+5%** | +9.1 |  |
 | <ul style="list-style-type:disc;margin:0;padding-left:1.25em"><li>**Camara**</li><li>**Walker**</li></ul> | <ul style="list-style-type:disc;margin:0;padding-left:1.25em"><li>**Siakam**</li></ul> | **+1300** | **+600** | **+0.6** | **+0.4** | **+4%** | +6.7 |  |
 | <ul style="list-style-type:disc;margin:0;padding-left:1.25em"><li>**Eason**</li><li>**Kuminga**</li></ul> | <ul style="list-style-type:disc;margin:0;padding-left:1.25em"><li>**Zubac**</li></ul> | **+1100** | **+400** | **+0.4** | **+0.4** | **+6%** | +4.3 |  |

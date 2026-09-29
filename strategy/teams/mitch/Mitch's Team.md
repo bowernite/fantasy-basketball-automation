@@ -66,24 +66,24 @@ Every future pick priced off its own year's market (`eval-pick` `future-picks.md
 
 Gone: own 2nd → Brett · own 3rd → Joe
 
-### Sept '28 — market, no projection (full-range prior)
+### Sept '28 — modelled off `future` own-pick band (Mitch 06–12, Matthew 01–09)
 
-| Pick | Origin                     | Ordinal | Board row                                           |    rank | **VALUE** |
-| ---- | -------------------------- | ------: | --------------------------------------------------- | ------: | --------: |
-| 1st  | own (1.01–1.12 prior)      |    1–12 | Dynatyze '28 1.01–1.12                              |  70–156 |  **1335** |
-| 1st  | Matthew (1.01–1.12 prior)  |    1–12 | Dynatyze '28 1.01–1.12                              |  70–156 |  **1335** |
-| 4th  | own (4.01–4.12 prior)      |   37–48 | Dynatyze '28 4.01–4.12 (template), capped at 3.12   | 338–422 |    **91** |
+| Pick | Origin                   | Ordinal | Board row                         |    rank |            **VALUE** |
+| ---- | ------------------------ | ------: | --------------------------------- | ------: | -------------------: |
+| 1st  | own (1.06–1.12 band)     |    6–12 | Dynatyze '28 1.06–1.12 (w 0.48)   | 109–156 | **1051** (831–1308) |
+| 1st  | Matthew (1.01–1.09 band) |     1–9 | Dynatyze '28 1.01–1.09 (w 0.48)   |  70–132 | **1482** (1038–2076) |
+| 4th  | own (4.06–4.12 band)     |   42–48 | Dynatyze '28 4.06–4.12 template   | 376–422 |      **68** (38–99) |
 
 Gone: own 2nd → Matthew · own 3rd → Matthew
 
-### Sept '29 — market, no projection (full-range prior)
+### Sept '29 — modelled off `future` own-pick band (Mitch 07–12)
 
-| Pick | Origin                 | Ordinal | Board row                                           |    rank | **VALUE** |
-| ---- | ---------------------- | ------: | --------------------------------------------------- | ------: | --------: |
-| 1st  | own (1.01–1.12 prior)  |    1–12 | Dynatyze '29 1.01–1.12 (template, modelled)         | 111–197 |   **877** |
-| 2nd  | own (2.01–2.12 prior)  |   13–24 | Dynatyze '29 2.01–2.12 (template)                   | 211–289 |   **380** |
-| 3rd  | own (3.01–3.12 prior)  |   25–36 | Dynatyze '29 3.01–3.12                              | 309–398 |   **138** |
-| 4th  | own (4.01–4.12 prior)  |   37–48 | Dynatyze '29 4.01–4.12 (template), capped at 3.12   | 380–463 |    **37** |
+| Pick | Origin               | Ordinal | Board row                         |    rank |           **VALUE** |
+| ---- | -------------------- | ------: | --------------------------------- | ------: | ------------------: |
+| 1st  | own (1.07–1.12 band) |    7–12 | Dynatyze '29 1.07–1.12 template   | 158–197 | **691** (583–816) |
+| 2nd  | own (2.07–2.12 band) |   19–24 | Dynatyze '29 2.07–2.12 template   | 254–289 | **311** (264–360) |
+| 3rd  | own (3.07–3.12 band) |   31–36 | Dynatyze '29 3.07–3.12 (w 0.14)   | 358–398 |   **97** (68–127) |
+| 4th  | own (4.07–4.12 band) |   43–48 | Dynatyze '29 4.07–4.12 template   | 426–463 |     **14** (0–33) |
 
 Gone: none
 
@@ -93,7 +93,7 @@ Gone: none
 
 Roster moves since 9/26: drafted Dybantsa (1.03), Caleb Wilson (1.04), Morez Johnson (1.10), De Larrea (2.03); Acuff in from Matthew for Wagler, Murray-Boyles and Tarris Reed (trade 485850); Mikel Brown and Mara in from Joe for Stirtz and Flemings (485851); 9/28 import added Bagley, Hayes, Dennis Smith, Ishchenko and Lawal. Full at 38, so any deal netting Mitch bodies needs his cuts.
 
-Pick bands (VALUE is the central): '27 1st 1231–2224 · '28 1sts 830–2075 each · '29 1st 585–1280 · '29 2nd 265–520. Every 1st is a prior, not a mode. '28/'29 slots stay the open 1.01–1.12 range until the `future` projections land; carrying the year-1 finish would be false precision.
+Pick bands (VALUE is the central): '27 1st 1231–2224; '28/'29 bands in the pick rows. Every 1st is a prior, not a mode. '28/'29 slots come from `sim.py future`'s own-pick band (middle 80% of 600 paths, a no-trades read): Mitch '28 06–12, '29 07–12; Matthew '28 01–09. VALUE = mean over the band.
 
 # Title odds
 

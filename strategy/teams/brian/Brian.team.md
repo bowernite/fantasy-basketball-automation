@@ -1,7 +1,7 @@
 # Brian W. (Yao Ming Dynasty) · 38 bodies · Contending · sim 2026-09-29
 Stamps: boards Dizzle 7/10/26 · Hashtag 9/24/26 · crowd 9/29/26 · Dynatyze picks 9/29/26 · proj 9/29/26 · roster 9/29/26 · AGE 9/29/26
 Title: PF 3/12 (30308) · 13.1 W · P(title) 7.3% · ours P(title) 55.5%
-Notes: Contending, Jokić-led · target this season's production (ΔP ours): Jokić, Randle, Zion, Murphy, LaMelo, Pritchard, Nurkić, Herro · Nurkić widest BASE-vs-win gap (470) · full at 38: a deal netting him bodies triggers sim cuts on his side · no board splits under BASE.md (Marković, Reese, Zikarsky dropped: Dizzle ranks all three past 200) · Dizzle 7/10 is the stalest board · noproj on ~6.0 fallback: Hansen, Baba Miller, Lanier, Zikarsky · '27 slot 1.10, 1.11 a coin flip (13.1 W vs Michael 12.8) · '27 2nd and Jon's 3rd are Dynatyze template by slot (608, 376); wide crowd bands are cross-check only · '28/'29 slots open 1.01–1.12 until future projections land; bands '28 1st 831–2076, 2nd 379–741, 3rd 130–322, 4th 38–130; '29 1st 583–1281, 2nd 264–518, 3rd 68–219, 4th 0–68
+Notes: Contending, Jokić-led · target this season's production (ΔP ours): Jokić, Randle, Zion, Murphy, LaMelo, Pritchard, Nurkić, Herro · Nurkić widest BASE-vs-win gap (470) · full at 38: a deal netting him bodies triggers sim cuts on his side · no board splits under BASE.md (Marković, Reese, Zikarsky dropped: Dizzle ranks all three past 200) · Dizzle 7/10 is the stalest board · noproj on ~6.0 fallback: Hansen, Baba Miller, Lanier, Zikarsky · '27 slot 1.10, 1.11 a coin flip (13.1 W vs Michael 12.8) · '27 2nd and Jon's 3rd are Dynatyze template by slot (608, 376); wide crowd bands are cross-check only · '28/'29 slots from sim.py future own-pick band (no-trades read): '28 03–11, bands 1st 893–1714, 2nd 403–651, 3rd 144–277, 4th 47–130; '29 02–09, bands 1st 709–1180, 2nd 319–488, 3rd 102–202, 4th 16–68
 
 ## Players
 player | AGE POS | BASE | FPts/G GP | Δw Δw'26–'27-ours Δw'26–'27-theirs ΔP(title)-ours | flags
@@ -52,15 +52,15 @@ own 2nd | own 2.10 | Dynatyze '27 2.10 (template) | 608
 3rd | Jon (3.01–3.07 prior) | Dynatyze '27 3.01–3.07 (template) | 376
 own 4th | own 4.10 | Dynatyze '27 4.10 (template) | 116
 Gone: own 1st → Jon; own 3rd → Brett.
-### Sept '28 — modelled, slot open 1.01–1.12
-own 1st | own (1.01–1.12 open) | Dynatyze '28 R1 (w 0.48) | 1335
-own 2nd | own (2.01–2.12 open) | Dynatyze '28 R2 (template) | 541
-own 3rd | own (3.01–3.12 open) | Dynatyze '28 R3 (w 0.23) | 217
-own 4th | own (4.01–4.12 open) | Dynatyze '28 R4 (template), cap '28 3.12 | 91
+### Sept '28 — modelled off future own-pick band (Brian 03–11)
+own 1st | own (1.03–1.11 band) | Dynatyze '28 1.03–1.11 (w 0.48) | 1247
+own 2nd | own (2.03–2.11 band) | Dynatyze '28 2.03–2.11 (template) | 519
+own 3rd | own (3.03–3.11 band) | Dynatyze '28 3.03–3.11 (w 0.23) | 206
+own 4th | own (4.03–4.11 band) | Dynatyze '28 4.03–4.11 (template), 4.03 cap '28 3.12 | 89
 Gone: none.
-### Sept '29 — modelled, slot open 1.01–1.12
-own 1st | own (1.01–1.12 open) | Dynatyze '29 R1 (template) | 877
-own 2nd | own (2.01–2.12 open) | Dynatyze '29 R2 (template) | 380
-own 3rd | own (3.01–3.12 open) | Dynatyze '29 R3 (w 0.14) | 138
-own 4th | own (4.01–4.12 open) | Dynatyze '29 R4 (template), cap '29 3.12 | 37
+### Sept '29 — modelled off future own-pick band (Brian 02–09)
+own 1st | own (1.02–1.09 band) | Dynatyze '29 1.02–1.09 (template) | 922
+own 2nd | own (2.02–2.09 band) | Dynatyze '29 2.02–2.09 (template) | 399
+own 3rd | own (3.02–3.09 band) | Dynatyze '29 3.02–3.09 (w 0.14) | 150
+own 4th | own (4.02–4.09 band) | Dynatyze '29 4.02–4.09 (template), 4.02–4.03 cap '29 3.12 | 46
 Gone: none.

@@ -64,25 +64,25 @@ Stamps: boards Dizzle Points 7/10/26 (depth 450) · Hashtag expert Points 9/24/2
 
 Gone: own 3rd → Josh.
 
-### Sept '28 — modelled, open slot range 1.01–1.12
+### Sept '28 — modelled off `future` own-pick band (Hlina 06–12)
 
-| Pick | Origin | Ordinal | Board row                                |    rank | **VALUE** |
-| ---- | ------ | ------: | ---------------------------------------- | ------: | --------: |
-| 1st  | own    |    1–12 | Dynatyze '28 R1 (w 0.48)                 |  70–156 |  **1335** |
-| 2nd  | own    |   13–24 | Dynatyze '28 R2 template                 | 169–248 |   **541** |
-| 3rd  | own    |   25–36 | Dynatyze '28 R3 (w 0.23)                 | 267–356 |   **217** |
-| 4th  | own    |   37–48 | Dynatyze '28 R4 template, capped at 3.12 | 338–422 |    **91** |
+| Pick | Origin               | Ordinal | Board row                         |    rank |            **VALUE** |
+| ---- | -------------------- | ------: | --------------------------------- | ------: | -------------------: |
+| 1st  | own (1.06–1.12 band) |    6–12 | Dynatyze '28 1.06–1.12 (w 0.48)   | 109–156 | **1051** (831–1308) |
+| 2nd  | own (2.06–2.12 band) |   18–24 | Dynatyze '28 2.06–2.12 template   | 205–248 |   **459** (379–545) |
+| 3rd  | own (3.06–3.12 band) |   30–36 | Dynatyze '28 3.06–3.12 (w 0.23)   | 308–356 |   **174** (130–221) |
+| 4th  | own (4.06–4.12 band) |   42–48 | Dynatyze '28 4.06–4.12 template   | 376–422 |      **68** (38–99) |
 
 Gone: none.
 
-### Sept '29 — modelled, open slot range 1.01–1.12
+### Sept '29 — modelled off `future` own-pick band (Hlina 07–12)
 
-| Pick | Origin | Ordinal | Board row                                |    rank | **VALUE** |
-| ---- | ------ | ------: | ---------------------------------------- | ------: | --------: |
-| 1st  | own    |    1–12 | Dynatyze '29 R1 template                 | 111–197 |   **877** |
-| 2nd  | own    |   13–24 | Dynatyze '29 R2 template                 | 211–289 |   **380** |
-| 3rd  | own    |   25–36 | Dynatyze '29 R3 (w 0.14)                 | 309–398 |   **138** |
-| 4th  | own    |   37–48 | Dynatyze '29 R4 template, capped at 3.12 | 380–463 |    **37** |
+| Pick | Origin               | Ordinal | Board row                         |    rank |           **VALUE** |
+| ---- | -------------------- | ------: | --------------------------------- | ------: | ------------------: |
+| 1st  | own (1.07–1.12 band) |    7–12 | Dynatyze '29 1.07–1.12 template   | 158–197 | **691** (583–816) |
+| 2nd  | own (2.07–2.12 band) |   19–24 | Dynatyze '29 2.07–2.12 template   | 254–289 | **311** (264–360) |
+| 3rd  | own (3.07–3.12 band) |   31–36 | Dynatyze '29 3.07–3.12 (w 0.14)   | 358–398 |   **97** (68–127) |
+| 4th  | own (4.07–4.12 band) |   43–48 | Dynatyze '29 4.07–4.12 template   | 426–463 |     **14** (0–33) |
 
 Gone: none.
 
@@ -111,7 +111,7 @@ Gone: none.
 - A prior is worth more than its modal slot, because the curve is convex. The gap is carried unsized (`eval-pick` future picks §Traps).
 - **'27 2nd and 3rd** are the Dynatyze template: crowd bands wider than 12 picks are cross-check only. The own 2nd is 694 (831–573); Josh's 3rd is 262.
 - **Every 4th** is the Dynatyze template, capped at the same draft's 3.12.
-- **'28–'29 slots** stay open at 1.01–1.12 until the `future` projections land. VALUE is the mean over the range. Bands: '28 1st 2076–831 · 2nd 741–379 · 3rd 322–130 · 4th 130–38; '29 1st 1281–583 · 2nd 518–264 · 3rd 219–68 · 4th 68–0.
+- **'28–'29 slots** come from `sim.py future`'s own-pick slot band (middle 80% of 600 paths; a no-trades read): '28 06–12, '29 07–12. VALUE is the mean over the band; each row's band is in its table.
 
 # Title odds
 

@@ -1,6 +1,6 @@
 # Hlina Trade Shapes
 
-Counterparty: Hlina (Matthew the Apostle, 161021). Contending: PF 5th (30,029), 11.7 W, 6.1% title (Team Projections year 1; years 2+ pending `future`). 71 PF behind Josh for the top-4 cut. 36 bodies, so he takes up to 2 extra bodies without a cut.
+Counterparty: Hlina (Matthew the Apostle, 161021). Contending: PF 5th (30,029), 11.7 W, 6.1% title (Team Projections year 1; years 2+ read: `Team Projections.md` '27-28+ table (no trades)). 71 PF behind Josh for the top-4 cut. 36 bodies, so he takes up to 2 extra bodies without a cut.
 
 History: 9/27 asked the price for Cade. 9/28 passed on every Cade shape floated (Maxey+Buzelis, plus Paolo+J. Williams and Maxey+Miller rows that sent a '27 2nd; both 2nds went to Chris in the Fox deal, so those rows are gone). 9/28 executed: our '26 2nd (used on Cenac) for LaRavia+Drummond (485845), and Duren for Green+Jabari Smith+Camara (485450).
 

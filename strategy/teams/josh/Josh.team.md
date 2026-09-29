@@ -1,7 +1,7 @@
 # Josh (Jesus Christ and his Disciples) · 38 bodies · contending · sim 2026-09-29
 Stamps: boards Dizzle 7/10/26 · Hashtag 9/24/26 · crowd 9/29/26 · Dynatyze picks 9/29/26 · proj 9/29/26 · roster 9/29/26 · AGE 9/29/26 (Dizzle DOB)
 Title: PF 4/12 (30100) · 11.8 W · P(title) 9.4% · ours P(title) 55.5%
-Notes: contending now, star-age cliff after (Kawhi 35 · Lillard 36 · McCollum 35 · Conley 39); years 2+ read: `Team Projections.md` '27-28+ table (no trades) · top-4 cut is a coin flip with Hlina (71 PF behind), which also decides Hlina's holding of his '27 1st (1.09 vs lottery prior) · no trades since 9/22 (Kawhi + Turner from us for Bridges, Gordon, Collins) · 9/28 drafted Koa Peat (3.02, Jon's pick) and Ryan Conwell (3.10); 9 import adds: Conley, Hield, Evans, Thybulle, Peavy, Vanderbilt, Capela, Collins, Bassey · full at 38: any deal netting him bodies needs his cuts (full-Score cut rule picks Conley first, not Capela), so shape body-even or have him send more · take this season's production: Kawhi, Towns, Murray, Embiid, Mitchell (top ΔP(title)-ours) · Lillard projection is GP given he plays (missed season) · Conwell no rate projection: priced at the ~6.0 no-projection fallback · Small projects 10 FPts/G vs last season's 21 · Westbrook BASE 88: Hashtag expert dropped him (unsigned FA) · no board splits · picks per `eval-pick/future-picks.md` step 2 off Dynatyze 9/29 + crowd 9/29 via `pick_prices.py` (VALUE = V(Dynatyze rank); wide crowd bands cross-check only; `w` is a label), modelled; bands: Hlina '27 3rd 225–348 · '28 1st 831–2076 · 2nd 379–741 · 3rd 130–322 · 4th 38–130 · '29 1st 583–1281 · 2nd 264–518 · 3rd 68–219 · 4th 0–68; '28/'29 slot open 1.01–1.12 (a range is worth more than its modal slot)
+Notes: contending now, star-age cliff after (Kawhi 35 · Lillard 36 · McCollum 35 · Conley 39); years 2+ read: `Team Projections.md` '27-28+ table (no trades) · top-4 cut is a coin flip with Hlina (71 PF behind), which also decides Hlina's holding of his '27 1st (1.09 vs lottery prior) · no trades since 9/22 (Kawhi + Turner from us for Bridges, Gordon, Collins) · 9/28 drafted Koa Peat (3.02, Jon's pick) and Ryan Conwell (3.10); 9 import adds: Conley, Hield, Evans, Thybulle, Peavy, Vanderbilt, Capela, Collins, Bassey · full at 38: any deal netting him bodies needs his cuts (full-Score cut rule picks Conley first, not Capela), so shape body-even or have him send more · take this season's production: Kawhi, Towns, Murray, Embiid, Mitchell (top ΔP(title)-ours) · Lillard projection is GP given he plays (missed season) · Conwell no rate projection: priced at the ~6.0 no-projection fallback · Small projects 10 FPts/G vs last season's 21 · Westbrook BASE 88: Hashtag expert dropped him (unsigned FA) · no board splits · picks per `eval-pick/future-picks.md` step 2 off Dynatyze 9/29 + crowd 9/29 via `pick_prices.py` (VALUE = V(Dynatyze rank); wide crowd bands cross-check only; `w` is a label), modelled; bands: Hlina '27 3rd 225–348 · '28 1st 2076–1038 · 2nd 741–457 · 3rd 322–172 · 4th 130–67 · '29 1st 1281–877 · 2nd 518–383 · 3rd 219–140 · 4th 68–42; '28/'29 slots from sim.py future own-pick band (no-trades read; worst-4 lottery is the sim's assumption): '28 01–09, '29 01–06 (a range is worth more than its modal slot)
 
 ## Players
 player | AGE POS | BASE | FPts/G GP | Δw Δw'26–'27-ours Δw'26–'27-theirs ΔP(title)-ours | flags
@@ -52,15 +52,15 @@ pick | origin | rookie | VALUE
 3rd | Hlina (3.05–3.11 prior) | Dynatyze '27 3.05–3.11 template | 284 (225–348)
 4th | own 4.09 | Dynatyze '27 4.09 template | 129
 Gone: own 1st → Hlina · own 3rd → Hlina
-### Sept '28 — modelled, finish not yet projected → 1.01–1.12 open
-1st | own (1.01–1.12) | Dynatyze '28 R1 (w 0.48) | 1335
-2nd | own (2.01–2.12) | Dynatyze '28 R2 template | 541 (379–741)
-3rd | own (3.01–3.12) | Dynatyze '28 R3 (w 0.23) | 217
-4th | own (4.01–4.12) | Dynatyze '28 R4 template, capped at 3.12 | 91
+### Sept '28 — modelled off future own-pick band (Josh 01–09)
+1st | own (1.01–1.09 band) | Dynatyze '28 1.01–1.09 (w 0.48) | 1482 (2076–1038)
+2nd | own (2.01–2.09 band) | Dynatyze '28 2.01–2.09 (template) | 587 (741–457)
+3rd | own (3.01–3.09 band) | Dynatyze '28 3.01–3.09 (w 0.23) | 242 (322–172)
+4th | own (4.01–4.09 band) | Dynatyze '28 4.01–4.09 (template), capped at '28 3.12 | 106 (130–67)
 Gone: none
-### Sept '29 — modelled, finish not yet projected → 1.01–1.12 open
-1st | own (1.01–1.12) | Dynatyze '29 R1 template | 877
-2nd | own (2.01–2.12) | Dynatyze '29 R2 template | 380 (264–518)
-3rd | own (3.01–3.12) | Dynatyze '29 R3 (w 0.14) | 138
-4th | own (4.01–4.12) | Dynatyze '29 R4 template, capped at 3.12 | 37
+### Sept '29 — modelled off future own-pick band (Josh 01–06)
+1st | own (1.01–1.06 band) | Dynatyze '29 1.01–1.06 (template) | 1062 (1281–877)
+2nd | own (2.01–2.06 band) | Dynatyze '29 2.01–2.06 (template) | 448 (518–383)
+3rd | own (3.01–3.06 band) | Dynatyze '29 3.01–3.06 (w 0.14) | 179 (219–140)
+4th | own (4.01–4.06 band) | Dynatyze '29 4.01–4.06 (template), capped at '29 3.12 | 60 (68–42)
 Gone: none

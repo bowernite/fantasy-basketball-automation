@@ -63,27 +63,27 @@ Stamps: boards Dizzle 7/10/26 · Hashtag 9/24/26 · crowd 9/29/26 · proj 9/29/2
 
 Gone: own 2nd → Chris · Chris 2nd → Chris (9/28, Fox trade)
 
-### Sept '28 — modelled, open slot range 1.01–1.12
+### Sept '28 — modelled, `future` own-pick slot band
 
-| Pick | Origin  | Ordinal | Board row                                  |    rank | **VALUE** |
-| ---- | ------- | ------: | ------------------------------------------ | ------: | --------: |
-| 1st  | own     |    1–12 | Dynatyze '28 R1 (w 0.48)                   |  70–156 |  **1335** |
-| 2nd  | own     |   13–24 | Dynatyze '28 R2 template                   | 169–248 |   **541** |
-| 3rd  | Matthew |   25–36 | Dynatyze '28 R3 (w 0.23)                   | 267–356 |   **217** |
-| 3rd  | Henry   |   25–36 | Dynatyze '28 R3 (w 0.23)                   | 267–356 |   **217** |
-| 3rd  | own     |   25–36 | Dynatyze '28 R3 (w 0.23)                   | 267–356 |   **217** |
-| 4th  | own     |   37–48 | Dynatyze '28 R4 template, capped at 3.12   | 338–422 |    **91** |
+| Pick | Origin              | Ordinal | Board row                              |    rank | **VALUE** |
+| ---- | ------------------- | ------: | -------------------------------------- | ------: | --------: |
+| 1st  | own (1.09–1.12)     |    9–12 | Dynatyze '28 1.09–1.12 (w 0.48)        | 132–156 |   **931** |
+| 2nd  | own (2.09–2.12)     |   21–24 | Dynatyze '28 2.09–2.12 template        | 226–248 |   **417** |
+| 3rd  | Matthew (3.01–3.09) |   25–33 | Dynatyze '28 3.01–3.09 (w 0.23)        | 267–332 |   **242** |
+| 3rd  | Henry (3.02–3.09)   |   26–33 | Dynatyze '28 3.02–3.09 (w 0.23)        | 276–332 |   **232** |
+| 3rd  | own (3.09–3.12)     |   33–36 | Dynatyze '28 3.09–3.12 (w 0.23)        | 332–356 |   **151** |
+| 4th  | own (4.09–4.12)     |   45–48 | Dynatyze '28 4.09–4.12 template        | 399–422 |    **52** |
 
 Gone: none
 
-### Sept '29 — modelled, open slot range 1.01–1.12
+### Sept '29 — modelled, `future` own-pick slot band
 
-| Pick | Origin | Ordinal | Board row                                  |    rank | **VALUE** |
-| ---- | ------ | ------: | ------------------------------------------ | ------: | --------: |
-| 1st  | own    |    1–12 | Dynatyze '29 R1 template                   | 111–197 |   **877** |
-| 2nd  | own    |   13–24 | Dynatyze '29 R2 template                   | 211–289 |   **380** |
-| 3rd  | own    |   25–36 | Dynatyze '29 R3 (w 0.14)                   | 309–398 |   **138** |
-| 4th  | own    |   37–48 | Dynatyze '29 R4 template, capped at 3.12   | 380–463 |    **37** |
+| Pick | Origin          | Ordinal | Board row                              |    rank | **VALUE** |
+| ---- | --------------- | ------: | -------------------------------------- | ------: | --------: |
+| 1st  | own (1.06–1.12) |    6–12 | Dynatyze '29 1.06–1.12 template        | 150–197 |   **718** |
+| 2nd  | own (2.06–2.12) |   18–24 | Dynatyze '29 2.06–2.12 template        | 247–289 |   **321** |
+| 3rd  | own (3.06–3.12) |   30–36 | Dynatyze '29 3.06–3.12 (w 0.14)        | 350–398 |   **103** |
+| 4th  | own (4.06–4.12) |   42–48 | Dynatyze '29 4.06–4.12 template        | 418–463 |    **18** |
 
 Gone: none
 
@@ -98,7 +98,7 @@ Gone: none
 - BASE: board ranks sourced, curve modelled. Dizzle is the oldest board (7/10). No board splits at D 456. Tyus Jones and Quinten Post are off Dizzle; their AGE is from Hashtag (9/12).
 - Projections: Emanuel Sharp has no projection (rate 6.0 is the fallback, GP from the durability map). Overrides: Sharpe GP 0 (out for the season); Mark Williams GP 10 (torn left labrum, surgery 9/10/26, out 5+ months).
 - Aging: Butler 37, Kyrie 34.
-- Picks: ranks sourced, VALUE modelled. '27 picks are Dynatyze rank by slot; the 1st also averages in the 50/50 crowd band (Pick 9–14), and the wide crowd bands are cross-check only. Mitch 2nd 694 (831–573) · 3rds 243 (3.10) / 206 (3.12) · every 4th is the Dynatyze template, capped at that draft's 3.12 (206). '28–'29 slots stay open 1.01–1.12 until the `future` projections land; VALUE = mean over the range. Bands: '28 1st 2076–831 · 2nd 741–379 · 3rd 322–130 · 4th 130–38 · '29 1st 1281–583 · 2nd 518–264 · 3rd 219–68 · 4th 68–0. Mitch '27 2nd is a 2.05–2.11 prior, not a mode.
+- Picks: ranks sourced, VALUE modelled. '27 picks are Dynatyze rank by slot; the 1st also averages in the 50/50 crowd band (Pick 9–14), and the wide crowd bands are cross-check only. Mitch 2nd 694 (831–573) · 3rds 243 (3.10) / 206 (3.12) · every 4th is the Dynatyze template, capped at that draft's 3.12 (206). '28–'29 slots are the `sim.py future` own-pick slot band of the pick's original owner (middle 80% of paths; a no-trades read, so no rebuilds or restocking); VALUE = mean over the band. Our own '28 picks sit at 09–12 (1st 1038–831 · 2nd 457–379 · 3rd 172–130 · 4th 67–38) and our own '29 picks at 06–12 (1st 877–583 · 2nd 383–264 · 3rd 140–68 · 4th 42–0). Matthew '28 3rd is 01–09 (322–172), Henry '28 3rd 02–09 (297–172). Mitch '27 2nd is a 2.05–2.11 prior, not a mode.
 
 # Title odds
 

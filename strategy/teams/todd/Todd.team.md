@@ -1,7 +1,7 @@
 # Todd (The Han Dybantsy) · 35 bodies · tanking · sim 2026-09-29
 Stamps: boards Dizzle 7/10/26 · Hashtag 9/24/26 · crowd 9/29/26 · proj 9/29/26 · roster 9/29/26 · AGE 9/29/26
 Title: PF 8/12 (27876) · 7.6 W · P(title) 0.2% · ours P(title) 55.5%
-Notes: SIT boundary: 8th PF sits on the 8/9 playoff bubble (reads fringe), but 0.2% title odds and his 9/27 texts (Gobert/Porter/Brunson likely available in-season) read tanking · targets for us by ΔP(title)-ours: Tatum 11.5% · Brunson 7.4% · Porter 6.4% · Boozer 6.0% (1.01 rookie, prices as a producer now) · Haliburton 4.5% · no 9/26+ trades; his 2026 picks are players now (1.01 Boozer, 2.04 Swain, 2.08 Karim Lopez, 3.01 Anderson, 3.03 Thornton) · 3 open roster spots, so he can take N-for-1 with no cut · Dizzle 2½ months stale; Simmons off Dizzle (depth 450 < D), BASE Hashtag alone · noproj (6.0-shrink rate): Thornton, Diawara, Amari Williams · Simmons in neither GP feed (map 53) · no board splits at D 456 · pick VALUE = mean over prior slots, off Dynatyze (the '27 crowd band averages 50/50 only on 1.01–2.02); bands: '27 1st 3070–1353 · 2nd 944–645 · 3rd 399–262, '28 1st 2076–831 · 2nd 741–379, '29 1st 1281–583 · 2nd 518–264 · Dynatyze class-strength dial neutral, stamped 6/12/26 (stale) · '28/'29 slot prior is the open 1.01–1.12 range until future lands
+Notes: SIT boundary: 8th PF sits on the 8/9 playoff bubble (reads fringe), but 0.2% title odds and his 9/27 texts (Gobert/Porter/Brunson likely available in-season) read tanking · targets for us by ΔP(title)-ours: Tatum 11.5% · Brunson 7.4% · Porter 6.4% · Boozer 6.0% (1.01 rookie, prices as a producer now) · Haliburton 4.5% · no 9/26+ trades; his 2026 picks are players now (1.01 Boozer, 2.04 Swain, 2.08 Karim Lopez, 3.01 Anderson, 3.03 Thornton) · 3 open roster spots, so he can take N-for-1 with no cut · Dizzle 2½ months stale; Simmons off Dizzle (depth 450 < D), BASE Hashtag alone · noproj (6.0-shrink rate): Thornton, Diawara, Amari Williams · Simmons in neither GP feed (map 53) · no board splits at D 456 · pick VALUE = mean over prior slots, off Dynatyze (the '27 crowd band averages 50/50 only on 1.01–2.02); bands: '27 1st 3070–1353 · 2nd 944–645 · 3rd 399–262, '28 1st 1893–1038 · 2nd 697–457, '29 1st 1180–662 · 2nd 488–300 · Dynatyze class-strength dial neutral, stamped 6/12/26 (stale) · '28/'29 slots = sim.py future own-pick band ('28 02–09, '29 02–10; no-trades read)
 
 ## Players
 player | AGE POS | BASE | FPts/G GP | Δw Δw'26–'27-ours Δw'26–'27-theirs ΔP(title)-ours | flags
@@ -50,15 +50,15 @@ own 2nd | own | Dynatyze '27 2.03–2.09 template | 787
 own 3rd | own | Dynatyze '27 3.03–3.09 template | 327
 own 4th | own | Dynatyze '27 4.03–4.09 template, 4.01–4.03 capped at 3.12 | 168
 Gone: none
-### Sept '28 — modelled, open prior 1.01–1.12 (no year-2 projection until future lands)
-own 1st | own | Dynatyze '28 1.01–1.12 w 0.48 | 1335
-own 2nd | own | Dynatyze '28 2.01–2.12 template | 541
-own 3rd | own | Dynatyze '28 3.01–3.12 w 0.23 | 217
-own 4th | own | Dynatyze '28 4.01–4.12 template, 4.01–4.03 capped at 3.12 | 91
+### Sept '28 — modelled off sim.py future own-pick band (Todd 02–09, middle 80% of 600 paths)
+own 1st | own | Dynatyze '28 1.02–1.09 w 0.48 | 1408
+own 2nd | own | Dynatyze '28 2.02–2.09 template | 567
+own 3rd | own | Dynatyze '28 3.02–3.09 w 0.23 | 232
+own 4th | own | Dynatyze '28 4.02–4.09 template, 4.02–4.03 capped at 3.12 | 103
 Gone: none
-### Sept '29 — modelled, open prior 1.01–1.12 (no year-3 projection until future lands)
-own 1st | own | Dynatyze '29 1.01–1.12 template | 877
-own 2nd | own | Dynatyze '29 2.01–2.12 template | 380
-own 3rd | own | Dynatyze '29 3.01–3.12 w 0.14 | 138
-own 4th | own | Dynatyze '29 4.01–4.12 template, 4.01–4.03 capped at 3.12, 4.11–4.12 past D = 0 | 37
+### Sept '29 — modelled off sim.py future own-pick band (Todd 02–10, middle 80% of 600 paths)
+own 1st | own | Dynatyze '29 1.02–1.10 template | 893
+own 2nd | own | Dynatyze '29 2.02–2.10 template | 388
+own 3rd | own | Dynatyze '29 3.02–3.10 w 0.14 | 143
+own 4th | own | Dynatyze '29 4.02–4.10 template, 4.02–4.03 capped at 3.12 | 42
 Gone: none

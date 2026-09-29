@@ -1,7 +1,7 @@
 # Henry (Mongol Khans Freak Militia) · 37 bodies · tanking (fringe boundary) · sim 2026-09-29
 Stamps: boards Dizzle 7/10/26 · Hashtag 9/24/26 · crowd 9/29/26 · proj 9/29/26 · roster 9/29/26 · AGE 9/29/26 · Dynatyze picks 9/29/26 (snapshot)
 Title: PF 9/12 (26806) · 6.2 W · P(title) 0.0% · ours P(title) 55.5%
-Notes: playoff cut 8 of 12, Todd 8th at 27876 PF / 7.6 W → tanking, fringe on ±2–3-rank noise; sells Δw, buys BASE/youth · targets on ours by Δw ours / ΔP(title) ours: Giannis (+2.36 / 13.3%, age 31.8), Edwards, Okongwu, Mobley · 37 bodies: takes one extra body from us without a cut · noproj (6.0-shrunk rate, win columns an upper bound): Holmes, Oweh, Mitchell, Saunders, Kaufman-Renn, Martinelli · Dizzle off its rookie chart (no dynasty row): Oweh, Mitchell, Martinelli ~342, Kaufman-Renn ~400 · BASE 0: McGowens (Hashtag 546, past D; off Dizzle, depth 450 < D) · NBA free agents: Cam Thomas, Nembhard · Dizzle predates the 9/28 league draft (7/10) · no board splits at D=456 · '26 draft done: Jefferson (3.04), Oweh (3.09, Brett's pick) · picks all modelled off one 9/29 Dynatyze snapshot + 9/29 crowd bands (values from `pick_prices.py`): '27 slot a prior (9th PF → 1.02–1.09), '28/'29 open 1.01–1.12 (no future projections yet); w = 0 cells are template, no market; '28/'29 2nds Dynatyze template alone; 4ths Dynatyze template capped at same-year 3.12 (the '27 4th cap is 206); bands = min–max over the slot range; range-only slots worth more than their modal slot
+Notes: playoff cut 8 of 12, Todd 8th at 27876 PF / 7.6 W → tanking, fringe on ±2–3-rank noise; sells Δw, buys BASE/youth · targets on ours by Δw ours / ΔP(title) ours: Giannis (+2.36 / 13.3%, age 31.8), Edwards, Okongwu, Mobley · 37 bodies: takes one extra body from us without a cut · noproj (6.0-shrunk rate, win columns an upper bound): Holmes, Oweh, Mitchell, Saunders, Kaufman-Renn, Martinelli · Dizzle off its rookie chart (no dynasty row): Oweh, Mitchell, Martinelli ~342, Kaufman-Renn ~400 · BASE 0: McGowens (Hashtag 546, past D; off Dizzle, depth 450 < D) · NBA free agents: Cam Thomas, Nembhard · Dizzle predates the 9/28 league draft (7/10) · no board splits at D=456 · '26 draft done: Jefferson (3.04), Oweh (3.09, Brett's pick) · picks all modelled off one 9/29 Dynatyze snapshot + 9/29 crowd bands (values from `pick_prices.py`): '27 slot a prior (9th PF → 1.02–1.09), '28/'29 slots = `sim.py future` own-pick band ('28 02–09, '29 03–10; no-trades read); w = 0 cells are template, no market; '28/'29 2nds Dynatyze template alone; 4ths Dynatyze template capped at same-year 3.12 (the '27 4th cap is 206); bands = min–max over the slot range; range-only slots worth more than their modal slot
 
 ## Players
 player | AGE POS | BASE | FPts/G GP | Δw Δw'26–'27-ours Δw'26–'27-theirs ΔP(title)-ours | flags
@@ -50,14 +50,14 @@ pick | origin | rookie | VALUE
 1st | own (1.02–1.09 prior) | crowd '27 Pick 2 → Pick 9–14 · Dynatyze '27 1.02–1.09 (w 0.56) | 2418 (1353–3836)
 4th | own (4.02–4.09 prior) | Dynatyze '27 4.02–4.09 template (w 0), capped at '27 3.12 (206) | 173 (129–206)
 Gone: own 2nd and 3rd → Jon
-### Sept '28 — modelled, open slot ('27–'28 finish not projected)
-1st | own (1.01–1.12) | Dynatyze '28 1.01–1.12 (w 0.48) | 1335 (831–2076)
-2nd | own (2.01–2.12) | Dynatyze '28 2.01–2.12 template (w 0) | 541 (379–741)
-4th | own (4.01–4.12) | Dynatyze '28 4.01–4.12 template (w 0), capped at '28 3.12 | 91 (38–130)
+### Sept '28 — modelled off sim.py future own-pick band 02–09 (middle 80% of 600 paths)
+1st | own (1.02–1.09) | Dynatyze '28 1.02–1.09 (w 0.48) | 1408 (1038–1893)
+2nd | own (2.02–2.09) | Dynatyze '28 2.02–2.09 template (w 0) | 567 (457–697)
+4th | own (4.02–4.09) | Dynatyze '28 4.02–4.09 template (w 0), capped at '28 3.12 (130) | 103 (67–130)
 Gone: own 3rd → Brett
-### Sept '29 — modelled, open slot ('28–'29 finish not projected)
-1st | own (1.01–1.12) | Dynatyze '29 1.01–1.12 template (w 0) | 877 (583–1281)
-2nd | own (2.01–2.12) | Dynatyze '29 2.01–2.12 template (w 0) | 380 (264–518)
-3rd | own (3.01–3.12) | Dynatyze '29 3.01–3.12 (w 0.14) | 138 (68–219)
-4th | own (4.01–4.12) | Dynatyze '29 4.01–4.12 template (w 0), capped at '29 3.12 | 37 (0–68)
+### Sept '29 — modelled off sim.py future own-pick band 03–10 (middle 80% of 600 paths)
+1st | own (1.03–1.10) | Dynatyze '29 1.03–1.10 template (w 0) | 857 (662–1089)
+2nd | own (2.03–2.10) | Dynatyze '29 2.03–2.10 template (w 0) | 375 (300–461)
+3rd | own (3.03–3.10) | Dynatyze '29 3.03–3.10 (w 0.14) | 136 (90–186)
+4th | own (4.03–4.10) | Dynatyze '29 4.03–4.10 template (w 0), capped at '29 3.12 (68) | 38 (8–68)
 Gone: none

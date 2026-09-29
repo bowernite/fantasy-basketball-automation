@@ -65,29 +65,29 @@ Future picks per `eval-pick/future-picks.md` step 2 via `pick_prices.py`: VALUE 
 
 Gone: own 1st → Hlina · own 3rd → Hlina
 
-### Sept '28 — modelled, finish not yet projected → 1.01–1.12 open
+### Sept '28 — modelled off `sim.py future` own-pick band (Josh 01–09, middle 80% of 600 paths, no-trades read)
 
-| Pick | Origin          | Ordinal | Board row                                              | rank          | **VALUE** |
-| ---- | --------------- | ------: | ------------------------------------------------------ | ------------: | --------: |
-| 1st  | own (1.01–1.12) |    1–12 | Dynatyze '28 R1 (w 0.48)                               | 70–156        |  **1335** |
-| 2nd  | own (2.01–2.12) |   13–24 | Dynatyze '28 R2 (template) | 169–248 | **541** (379–741) |
-| 3rd  | own (3.01–3.12) |   25–36 | Dynatyze '28 R3 (w 0.23)                               | 267–356       |   **217** |
-| 4th  | own (4.01–4.12) |   37–48 | Dynatyze '28 R4 (template), capped at 3.12             | 338–422       |    **91** |
-
-Gone: none
-
-### Sept '29 — modelled, finish not yet projected → 1.01–1.12 open
-
-| Pick | Origin          | Ordinal | Board row                                              | rank          | **VALUE** |
-| ---- | --------------- | ------: | ------------------------------------------------------ | ------------: | --------: |
-| 1st  | own (1.01–1.12) |    1–12 | Dynatyze '29 R1 (template)          | 111–197       |   **877** |
-| 2nd  | own (2.01–2.12) |   13–24 | Dynatyze '29 R2 (template) | 211–289 | **380** (264–518) |
-| 3rd  | own (3.01–3.12) |   25–36 | Dynatyze '29 R3 (w 0.14)                               | 309–398       |   **138** |
-| 4th  | own (4.01–4.12) |   37–48 | Dynatyze '29 R4 (template), capped at 3.12             | 380–463       |    **37** |
+| Pick | Origin               | Ordinal | Board row                                           | rank    | **VALUE**              |
+| ---- | -------------------- | ------: | --------------------------------------------------- | ------: | ---------------------: |
+| 1st  | own (1.01–1.09 band) |     1–9 | Dynatyze '28 1.01–1.09 (w 0.48)                     | 70–132  | **1482** (2076–1038)   |
+| 2nd  | own (2.01–2.09 band) |   13–21 | Dynatyze '28 2.01–2.09 (template)                   | 169–226 | **587** (741–457)      |
+| 3rd  | own (3.01–3.09 band) |   25–33 | Dynatyze '28 3.01–3.09 (w 0.23)                     | 267–332 | **242** (322–172)      |
+| 4th  | own (4.01–4.09 band) |   37–45 | Dynatyze '28 4.01–4.09 (template), capped at '28 3.12 | 338–399 | **106** (130–67)       |
 
 Gone: none
 
-Bands: Hlina '27 3rd 225–348 · '28 1st 831–2076 · 2nd 379–741 · 3rd 130–322 · 4th 38–130 · '29 1st 583–1281 · 2nd 264–518 · 3rd 68–219 · 4th 0–68.
+### Sept '29 — modelled off `sim.py future` own-pick band (Josh 01–06, middle 80% of 600 paths, no-trades read)
+
+| Pick | Origin               | Ordinal | Board row                                           | rank    | **VALUE**              |
+| ---- | -------------------- | ------: | --------------------------------------------------- | ------: | ---------------------: |
+| 1st  | own (1.01–1.06 band) |     1–6 | Dynatyze '29 1.01–1.06 (template)                   | 111–150 | **1062** (1281–877)    |
+| 2nd  | own (2.01–2.06 band) |   13–18 | Dynatyze '29 2.01–2.06 (template)                   | 211–247 | **448** (518–383)      |
+| 3rd  | own (3.01–3.06 band) |   25–30 | Dynatyze '29 3.01–3.06 (w 0.14)                     | 309–350 | **179** (219–140)      |
+| 4th  | own (4.01–4.06 band) |   37–42 | Dynatyze '29 4.01–4.06 (template), capped at '29 3.12 | 380–418 | **60** (68–42)         |
+
+Gone: none
+
+Bands: Hlina '27 3rd 225–348 · '28 1st 2076–1038 · 2nd 741–457 · 3rd 322–172 · 4th 130–67 · '29 1st 1281–877 · 2nd 518–383 · 3rd 219–140 · 4th 68–42. '28/'29 slots are `sim.py future`'s own-pick band for Josh (no trades, no restocking; the worst-4 lottery is the sim's assumption); a range is worth more than its modal slot.
 
 # Details
 
@@ -95,7 +95,7 @@ Bands: Hlina '27 3rd 225–348 · '28 1st 831–2076 · 2nd 379–741 · 3rd 130
 
 **Reads:**
 
-- Contending now, star-age cliff after (Kawhi 35 · Lillard 36 · McCollum 35 · Conley 39). Years 2+ pending the `future` projections.
+- Contending now, star-age cliff after (Kawhi 35 · Lillard 36 · McCollum 35 · Conley 39). Years 2+ read: `Team Projections.md` '27-28+ table (no trades).
 - Top-4 cut is a coin flip with Hlina (71 PF behind), which also decides Hlina's holding of Josh's '27 1st (1.09 vs lottery prior).
 - No trades since 9/22 (Kawhi + Turner from us for Bridges, Gordon, Collins). 9/28: drafted Koa Peat (3.02, Jon's pick) and Ryan Conwell (3.10); 9 import adds (Conley, Hield, Evans, Thybulle, Peavy, Vanderbilt, Capela, Collins, Bassey).
 - Full at 38: any deal netting him bodies needs his cuts (full-Score rule cuts Conley first), so shape body-even or have him send more.

@@ -1,7 +1,7 @@
 # Mitch (The Don) · 38 bodies · contending (fringe boundary) · sim 2026-09-29
 Stamps: boards Dizzle 7/10/26 · Hashtag 9/24/26 · crowd 9/29/26 · Dynatyze picks 9/29/26 · proj 9/29/26 · roster 9/29/26 · AGE 9/29/26
 Title: PF 6/12 (29876) · 10.9 W · P(title) 7.0% · ours P(title) 55.5%
-Notes: SIT on the boundary: 6th PF, 7.0%, Hlina/Josh within ~225 PF above, carry both contending and fringe · 9/28 rookie haul: drafted Dybantsa (1.03), Caleb Wilson (1.04), Morez Johnson (1.10), De Larrea (2.03); Acuff in from Matthew for Wagler + Murray-Boyles + Tarris Reed (trade 485850); Mikel Brown + Mara in from Joe for Stirtz + Flemings (485851); 9/28 import adds Bagley, Hayes, Dennis Smith, Ishchenko, Lawal · full at 38, so any deal netting him bodies needs his cuts · this season's production: Luka · Flagg · Deni · Kessler · Wagner lead Δw'26–'27-ours; rookies are BASE, not wins (Dybantsa 5166 BASE at +0.33, Acuff/Brown ~0) · Kessler 5 GP last season, GPp 68 blind to whole-year risk · 5 noproj bodies at ~6 FPts/G · Lawal's Dizzle rank is the rookie-chart fallback (~400) · no board splits · years 2+ read: `Team Projections.md` '27-28+ table (no trades) · future picks priced off their own year's market (Dynatyze snapshot 9/29; '27 1st blends the crowd band 50/50), bands: '27 1st 1230–2225 · '28 1sts (own, Matthew) 830–2075 each, full range · '29 1st 585–1280 (template, modelled) · '29 2nd 265–520 (template) · every 1st is a prior, not a mode; R2 and R4 cells are Dynatyze template (w 0); class dial stale neutral
+Notes: SIT on the boundary: 6th PF, 7.0%, Hlina/Josh within ~225 PF above, carry both contending and fringe · 9/28 rookie haul: drafted Dybantsa (1.03), Caleb Wilson (1.04), Morez Johnson (1.10), De Larrea (2.03); Acuff in from Matthew for Wagler + Murray-Boyles + Tarris Reed (trade 485850); Mikel Brown + Mara in from Joe for Stirtz + Flemings (485851); 9/28 import adds Bagley, Hayes, Dennis Smith, Ishchenko, Lawal · full at 38, so any deal netting him bodies needs his cuts · this season's production: Luka · Flagg · Deni · Kessler · Wagner lead Δw'26–'27-ours; rookies are BASE, not wins (Dybantsa 5166 BASE at +0.33, Acuff/Brown ~0) · Kessler 5 GP last season, GPp 68 blind to whole-year risk · 5 noproj bodies at ~6 FPts/G · Lawal's Dizzle rank is the rookie-chart fallback (~400) · no board splits · years 2+ read: `Team Projections.md` '27-28+ table (no trades) · future picks priced off their own year's market (Dynatyze snapshot 9/29; '27 1st blends the crowd band 50/50), '27 1st band 1230–2225 · '28/'29 slots from `sim.py future` own-pick band (middle 80% of 600 paths, no-trades read): Mitch '28 06–12, '29 07–12; Matthew '28 01–09; VALUE = mean over the band (bands in the pick rows) · every 1st is a prior, not a mode; R2 and R4 cells are Dynatyze template (w 0); class dial stale neutral
 
 ## Players
 player | AGE POS | BASE | FPts/G GP | Δw Δw'26–'27-ours Δw'26–'27-theirs ΔP(title)-ours | flags
@@ -51,14 +51,14 @@ pick | origin | rookie | VALUE
 1st | own (1.05–1.11 prior) | Dynatyze '27 1.05–1.11 · crowd Pick 5–8 / 9–14 | 1723
 4th | own (4.05–4.11 prior) | Dynatyze '27 4.05–4.11 template | 142
 Gone: own 2nd → Brett · own 3rd → Joe
-### Sept '28 — market, no projection (full-range prior)
-1st | own (1.01–1.12 prior) | Dynatyze '28 1.01–1.12 | 1335
-1st | Matthew (1.01–1.12 prior) | Dynatyze '28 1.01–1.12 | 1335
-4th | own (4.01–4.12 prior) | Dynatyze '28 4.01–4.12 template, capped at 3.12 | 91
+### Sept '28 — modelled off future own-pick band (Mitch 06–12, Matthew 01–09)
+1st | own (1.06–1.12 band) | Dynatyze '28 1.06–1.12 (w 0.48) | 1051 (831–1308)
+1st | Matthew (1.01–1.09 band) | Dynatyze '28 1.01–1.09 (w 0.48) | 1482 (1038–2076)
+4th | own (4.06–4.12 band) | Dynatyze '28 4.06–4.12 template | 68 (38–99)
 Gone: own 2nd → Matthew · own 3rd → Matthew
-### Sept '29 — market, no projection (full-range prior)
-1st | own (1.01–1.12 prior) | Dynatyze '29 1.01–1.12 template (modelled) | 877
-2nd | own (2.01–2.12 prior) | Dynatyze '29 2.01–2.12 template | 380
-3rd | own (3.01–3.12 prior) | Dynatyze '29 3.01–3.12 | 138
-4th | own (4.01–4.12 prior) | Dynatyze '29 4.01–4.12 template, capped at 3.12 | 37
+### Sept '29 — modelled off future own-pick band (Mitch 07–12)
+1st | own (1.07–1.12 band) | Dynatyze '29 1.07–1.12 template | 691 (583–816)
+2nd | own (2.07–2.12 band) | Dynatyze '29 2.07–2.12 template | 311 (264–360)
+3rd | own (3.07–3.12 band) | Dynatyze '29 3.07–3.12 (w 0.14) | 97 (68–127)
+4th | own (4.07–4.12 band) | Dynatyze '29 4.07–4.12 template | 14 (0–33)
 Gone: none

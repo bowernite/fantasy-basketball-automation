@@ -1,7 +1,7 @@
 # Matt Hlina (Matthew the Apostle) · 36 bodies · contending · sim 2026-09-29
 Stamps: boards Dizzle 7/10/26 · Hashtag 9/24/26 · crowd 9/29/26 · proj 9/29/26 · roster 9/29/26 · AGE 9/29/26 (Dizzle DOB; Kawamura, Nnaji, Pokusevski API DOB) · picks Dynatyze 9/29/26 + crowd 9/29/26
 Title: PF 5/12 (30029) · 11.7 W · P(title) 6.1% · ours P(title) 55.5%
-Notes: contending: PF 5th, 71 PF behind Josh (11.7 W vs 11.8) → the top-4 cut is a coin flip; he holds both his own and Josh's '27 1st, so it swaps which one lands 1.09 · 9/28 trades: Duren in for Green, Jabari Smith, Camara (485450, to us); our '26 2nd in for LaRavia + Drummond (485845), used on Cenac · drafted Ament (2.06), Cenac (2.09), Philon (3.06) · 9 import adds 9/28: Bufkin, Kawamura, Thiero, P. Williams, J. Edwards, McNeeley, Hukporti, Nnaji, Pokusevski · 36 bodies: takes up to 2 extra bodies from us without a cut · targets on ours by Δw ours / ΔP(title) ours: Maxey (+1.45 / 11.1%), Banchero (+1.42 / 10.5%), then Duren (+1.06 / 6.3%), J. Williams (+0.88 / 6.6%), Edgecombe (+0.75 / 6.1%) · noproj (rate is the ~6.0 no-projection fallback, win columns an upper bound): Essengue, Thiero, Hukporti, Kawamura, Bufkin, Pokusevski (NBA free agent) · BASE 0: Kawamura off all 3 boards (hand-checked 9/29); Bufkin, Nnaji, Pokusevski past D on Hashtag and off Dizzle (depth 450 < D) · no board splits at D 456 · Dizzle is the oldest board (7/10), predates the draft and import · '27 own 1st is a 1.05–1.11 prior (band 2224–1231); if Hlina takes the top-4 cut from Josh, own = 1.09 (1353) and Josh's 1st becomes the prior · Matthew '27 1st is a 1.01–1.08 prior (band 4589–1888) · a prior is worth more than its modal slot (convex curve), unsized · '27 2nd/3rd are Dynatyze template (crowd bands wider than 12 picks are cross-check only): 2nd 694 (831–573); Josh 3rd 262 · every 4th is Dynatyze template, capped at the draft's 3.12 (206 in '27) · values from `pick_prices.py` (9/29 snapshots) · '28–'29 slots open 1.01–1.12 until `future` lands; VALUE = mean over the range, bands '28 1st 2076–831 · 2nd 741–379 · 3rd 322–130 · 4th 130–38 · '29 1st 1281–583 · 2nd 518–264 · 3rd 219–68 · 4th 68–0
+Notes: contending: PF 5th, 71 PF behind Josh (11.7 W vs 11.8) → the top-4 cut is a coin flip; he holds both his own and Josh's '27 1st, so it swaps which one lands 1.09 · 9/28 trades: Duren in for Green, Jabari Smith, Camara (485450, to us); our '26 2nd in for LaRavia + Drummond (485845), used on Cenac · drafted Ament (2.06), Cenac (2.09), Philon (3.06) · 9 import adds 9/28: Bufkin, Kawamura, Thiero, P. Williams, J. Edwards, McNeeley, Hukporti, Nnaji, Pokusevski · 36 bodies: takes up to 2 extra bodies from us without a cut · targets on ours by Δw ours / ΔP(title) ours: Maxey (+1.45 / 11.1%), Banchero (+1.42 / 10.5%), then Duren (+1.06 / 6.3%), J. Williams (+0.88 / 6.6%), Edgecombe (+0.75 / 6.1%) · noproj (rate is the ~6.0 no-projection fallback, win columns an upper bound): Essengue, Thiero, Hukporti, Kawamura, Bufkin, Pokusevski (NBA free agent) · BASE 0: Kawamura off all 3 boards (hand-checked 9/29); Bufkin, Nnaji, Pokusevski past D on Hashtag and off Dizzle (depth 450 < D) · no board splits at D 456 · Dizzle is the oldest board (7/10), predates the draft and import · '27 own 1st is a 1.05–1.11 prior (band 2224–1231); if Hlina takes the top-4 cut from Josh, own = 1.09 (1353) and Josh's 1st becomes the prior · Matthew '27 1st is a 1.01–1.08 prior (band 4589–1888) · a prior is worth more than its modal slot (convex curve), unsized · '27 2nd/3rd are Dynatyze template (crowd bands wider than 12 picks are cross-check only): 2nd 694 (831–573); Josh 3rd 262 · every 4th is Dynatyze template, capped at the draft's 3.12 (206 in '27) · values from `pick_prices.py` (9/29 snapshots) · '28/'29 slots from `sim.py future` own-pick band (middle 80% of 600 paths, no-trades read): '28 06–12, '29 07–12; VALUE = mean over the band (bands in the pick rows)
 
 ## Players
 player | AGE POS | BASE | FPts/G GP | Δw Δw'26–'27-ours Δw'26–'27-theirs ΔP(title)-ours | flags
@@ -53,15 +53,15 @@ pick | origin | rookie | VALUE
 3rd | Josh (3.09) | Dynatyze '27 3.09 template | 262
 4th | own (4.05–4.11 prior) | Dynatyze '27 4.05–4.11 template | 142 (105–182)
 Gone: own 3rd → Josh
-### Sept '28 — modelled, open slot range 1.01–1.12
-1st | own | Dynatyze '28 R1 (w 0.48) | 1335
-2nd | own | Dynatyze '28 R2 template | 541
-3rd | own | Dynatyze '28 R3 (w 0.23) | 217
-4th | own | Dynatyze '28 R4 template, capped at 3.12 | 91
+### Sept '28 — modelled off future own-pick band (Hlina 06–12)
+1st | own (1.06–1.12 band) | Dynatyze '28 1.06–1.12 (w 0.48) | 1051 (831–1308)
+2nd | own (2.06–2.12 band) | Dynatyze '28 2.06–2.12 template | 459 (379–545)
+3rd | own (3.06–3.12 band) | Dynatyze '28 3.06–3.12 (w 0.23) | 174 (130–221)
+4th | own (4.06–4.12 band) | Dynatyze '28 4.06–4.12 template | 68 (38–99)
 Gone: none
-### Sept '29 — modelled, open slot range 1.01–1.12
-1st | own | Dynatyze '29 R1 template | 877
-2nd | own | Dynatyze '29 R2 template | 380
-3rd | own | Dynatyze '29 R3 (w 0.14) | 138
-4th | own | Dynatyze '29 R4 template, capped at 3.12 | 37
+### Sept '29 — modelled off future own-pick band (Hlina 07–12)
+1st | own (1.07–1.12 band) | Dynatyze '29 1.07–1.12 template | 691 (583–816)
+2nd | own (2.07–2.12 band) | Dynatyze '29 2.07–2.12 template | 311 (264–360)
+3rd | own (3.07–3.12 band) | Dynatyze '29 3.07–3.12 (w 0.14) | 97 (68–127)
+4th | own (4.07–4.12 band) | Dynatyze '29 4.07–4.12 template | 14 (0–33)
 Gone: none

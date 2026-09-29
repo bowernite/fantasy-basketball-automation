@@ -63,25 +63,25 @@ His five 2026 picks are rostered players now: 1.01 Boozer · 2.04 Swain · 2.08 
 
 Gone: none
 
-### Sept '28 — modelled, open prior 1.01–1.12 (no year-2 projection until `future` lands)
+### Sept '28 — modelled off `sim.py future` own-pick slot band (Todd 02–09, middle 80% of 600 paths; no-trades read)
 
 | Pick | Origin | Ordinal | Board row | rank | **VALUE** |
 | ---- | ------ | ------: | --------- | ---: | --------: |
-| own 1st | own | 1–12 | Dynatyze '28 1.01–1.12 (w 0.48), no crowd row · band 2076–831 | 70–156 | **1335** |
-| own 2nd | own | 13–24 | Dynatyze '28 2.01–2.12 (w 0, template) · band 741–379 | 169–248 | **541** |
-| own 3rd | own | 25–36 | Dynatyze '28 3.01–3.12 (w 0.23) · band 322–130 | 267–356 | **217** |
-| own 4th | own | 37–48 | Dynatyze '28 4.01–4.12 alone (w 0, template), 4.01–4.03 capped at 3.12 · band 130–38 | 338–422 | **91** |
+| own 1st | own | 2–9 | Dynatyze '28 1.02–1.09 (w 0.48), no crowd row · band 1893–1038 | 77–132 | **1408** |
+| own 2nd | own | 14–21 | Dynatyze '28 2.02–2.09 (w 0, template) · band 697–457 | 176–226 | **567** |
+| own 3rd | own | 26–33 | Dynatyze '28 3.02–3.09 (w 0.23) · band 297–172 | 276–332 | **232** |
+| own 4th | own | 38–45 | Dynatyze '28 4.02–4.09 alone (w 0, template), 4.02–4.03 capped at 3.12 · band 130–67 | 346–399 | **103** |
 
 Gone: none
 
-### Sept '29 — modelled, open prior 1.01–1.12 (no year-3 projection until `future` lands)
+### Sept '29 — modelled off `sim.py future` own-pick slot band (Todd 02–10, middle 80% of 600 paths; no-trades read)
 
 | Pick | Origin | Ordinal | Board row | rank | **VALUE** |
 | ---- | ------ | ------: | --------- | ---: | --------: |
-| own 1st | own | 1–12 | Dynatyze '29 1.01–1.12 (w 0, template) · band 1281–583 | 111–197 | **877** |
-| own 2nd | own | 13–24 | Dynatyze '29 2.01–2.12 (w 0, template) · band 518–264 | 211–289 | **380** |
-| own 3rd | own | 25–36 | Dynatyze '29 3.01–3.12 (w 0.14) · band 219–68 | 309–398 | **138** |
-| own 4th | own | 37–48 | Dynatyze '29 4.01–4.12 alone (w 0, template), 4.01–4.03 capped at 3.12, 4.11–4.12 past `D` = 0 · band 68–0 | 380–463 | **37** |
+| own 1st | own | 2–10 | Dynatyze '29 1.02–1.10 (w 0, template) · band 1180–662 | 119–182 | **893** |
+| own 2nd | own | 14–22 | Dynatyze '29 2.02–2.10 (w 0, template) · band 488–300 | 218–275 | **388** |
+| own 3rd | own | 26–34 | Dynatyze '29 3.02–3.10 (w 0.14) · band 202–90 | 317–382 | **143** |
+| own 4th | own | 38–46 | Dynatyze '29 4.02–4.10 alone (w 0, template), 4.02–4.03 capped at 3.12 · band 68–8 | 388–448 | **42** |
 
 Gone: none
 

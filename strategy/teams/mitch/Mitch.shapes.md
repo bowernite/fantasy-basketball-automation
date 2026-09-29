@@ -22,9 +22,11 @@ Cade: still ours. Michael's live Cade deal (undecided, `Bonin.shapes.md`) re-sim
 
 Non-Cade rows have no benchmark and are tiered by judgment: Above floor at Score ≥ +1000, Floor at +400 to +900, Below bar under that. Too lopsided = our ΔBASE ≥ +1250. Minimums per `trades`. Both gate on raw sim numbers before tiering, so a row can round to `0%` and still fail ΔP(title).
 
-Refresh 9/29: every row re-simmed on the 9/29 rosters (both teams at 38) and projections, with the F/C flex and the full-Score cut rule. Rows that netted us bodies now name the sim's cut in Out (Tyus Jones first, then Post), so every row is body-even on our side. Mitch's cuts (Dennis Smith) stay in the sim. Pick BASE comes from the 9/29 evals: our '27 1st 1176, '28 1st 1335, '28 2nd 541, Henry and Matthew '28 3rds 217 each, Mitch '27 2nd 694 (we hold it); his '27 1st 1723 and '28 1st 1335. Dropped rows whose assets moved or were used: '26 picks (drafted), Chris '27 2nd and our own '27 2nd (to Chris in the Fox deal 9/28, which also drops the 9/25 proposed Cade+'27 1st+'28 1st+own '27 2nd > Deni+Flagg), Murray-Boyles (to Matthew), Matković (to Brian), and Mitch's '27 3rd, '28 2nd and '28 3rd.
+Refresh 9/29: every row re-simmed on the 9/29 rosters (both teams at 38) and projections, with the F/C flex and the full-Score cut rule. Rows that netted us bodies now name the sim's cut in Out (Tyus Jones first, then Post), so every row is body-even on our side. Mitch's cuts (Dennis Smith) stay in the sim. Pick BASE comes from the 9/29 evals: our '27 1st 1176, '28 1st 931, '28 2nd 417, Henry '28 3rd 232, Matthew '28 3rd 242, Mitch '27 2nd 694 (we hold it); his '27 1st 1723 and '28 1st 1051. Dropped rows whose assets moved or were used: '26 picks (drafted), Chris '27 2nd and our own '27 2nd (to Chris in the Fox deal 9/28, which also drops the 9/25 proposed Cade+'27 1st+'28 1st+own '27 2nd > Deni+Flagg), Murray-Boyles (to Matthew), Matković (to Brian), and Mitch's '27 3rd, '28 2nd and '28 3rd.
 
 Re-priced 9/29 after the sim switched ΔBASE and Δage to the `.team.md` evals: all rows re-simmed, none with an eval gap or a cut on our side. The Michael Cade benchmark re-simmed the same way at +3233 / +669 (rounded row unchanged).
+
+Re-priced 9/29 after '28/'29 picks moved to `sim.py future` own-pick bands (our '28 09–12, Mitch '28 06–12, Henry 02–09, Matthew 01–09): the 6 rows holding a '28 pick re-simmed; the rest keep their numbers. Cheaper '28 picks pushed Cade+Tyus Jones+'27 1st+'28 1st+'28 2nd > Deni+Flagg to ΔBASE +1700 (Too lopsided) and pulled Cade+Tyus Jones > Deni+Franz+Mitch '28 1st to +1200 (Below bar).
 
 Score is the first number on each row (sim `score_us`); Δage is the last (sim `dage_us`) and is not in Score.
 
@@ -46,7 +48,7 @@ Edey+Reid > JJJ+Queen | +900 +700 +0.2 +0.1 +2% -1.4
 White+Mitch '27 2nd > Keyonte | +800 +600 0.0 0.0 +3% -2.1 | Mitch rejected 9/28
 Kyrie+Mitch '27 2nd > JJJ | +700 +600 +0.1 +0.1 +1% -3.7
 Fox > JJJ | +600 +600 0.0 -0.1 +1% -1.8
-Jabari Smith+Henry '28 3rd+Matthew '28 3rd > Queen | +600 0 +0.3 +0.2 +5% -0.6
+Jabari Smith+Henry '28 3rd+Matthew '28 3rd > Queen | +500 0 +0.3 +0.2 +5% -0.6
 White > Queen | +500 +200 +0.1 +0.1 +3% -4.9 | Mitch rejected 9/28
 Reid > Queen | +500 +100 +0.2 +0.2 +3% -5.4
 Fox > Keyonte | +400 +300 -0.1 -0.2 +2% -6.0
@@ -55,7 +57,6 @@ Fox > Keyonte | +400 +300 -0.1 -0.2 +2% -6.0
 
 Cade+Hunter+Tyus Jones > Deni+Kessler+JJJ | +2600 +1200 +1.6 +0.7 +10% +0.7
 Cade+Kuminga+Tyus Jones > Deni+Franz+Queen | +2600 +1100 +1.6 +0.6 +11% -0.6
-Cade+Tyus Jones+'27 1st+'28 1st+'28 2nd > Deni+Flagg | +2500 +1200 +1.3 +0.6 +10% +0.4
 Cade+Kuminga+Tyus Jones > Deni+Kessler+JJJ | +2400 +1000 +1.6 +0.6 +10% +0.9
 Cade+Butler+Tyus Jones > Deni+Franz+Queen | +2400 +1100 +1.2 +0.6 +10% -2.1
 Cade+Tyus Jones+Post+Mitch '27 2nd > Deni+Franz+Queen | +2400 +900 +1.7 +0.6 +10% +0.1
@@ -74,10 +75,12 @@ Cade+Collins+Tyus Jones > Deni+Franz+Queen | +2000 +1000 +1.0 +0.3 +8% -1.8
 Cade+Kuminga+Hunter > Deni+Kessler+JJJ | +2000 +600 +1.4 +0.7 +10% +0.8
 Cade+Kuminga+Walker > Deni+Kessler+JJJ | +2000 +700 +1.4 +0.6 +9% +1.0
 Cade+Eason+Tyus Jones > Deni+Franz+Queen | +2000 +700 +1.3 +0.6 +10% -0.8
+Cade+Tyus Jones+Post+'28 1st > Deni+Kessler+JJJ | +2000 +600 +1.7 +0.6 +10% +2.6
 Cade+Mark+Tyus Jones > Deni+Franz+Queen | +1900 +600 +1.2 +0.7 +10% -0.7
 Cade+Sharpe+Tyus Jones > Deni+JJJ+Keyonte | +1900 +900 +1.0 +0.4 +8% +0.2
 Cade+Butler+Melton > Deni+Franz+Queen | +1900 +800 +0.8 +0.5 +9% -2.4
 Cade+Eason+Tyus Jones > Deni+Kessler+JJJ | +1900 +600 +1.3 +0.6 +9% +0.8
+Cade+Tyus Jones > Deni+Franz+Mitch '28 1st | +1900 +1200 +0.7 +0.2 +6% -1.1
 Cade+Vassell+Tyus Jones > Deni+Kessler+JJJ | +1800 +500 +1.3 +0.5 +9% +0.6
 Cade+Mark+Tyus Jones > Deni+Kessler+JJJ | +1800 +500 +1.2 +0.7 +10% +0.8
 Cade+Tyus Jones+Post > Deni+JJJ+Queen | +1700 +600 +1.4 +0.4 +7% -0.1 | Mitch rejected 9/25
@@ -86,7 +89,6 @@ Cade+VanVleet+Tyus Jones > Deni+Franz+Queen | +1700 +400 +1.3 +0.5 +10% -2.3
 Cade+Mark+Tyus Jones > Deni+JJJ+Keyonte | +1700 +700 +0.8 +0.4 +8% +0.3
 Cade+Queta+Melton > Deni+Franz+Queen | +1700 +700 +0.8 +0.3 +8% -1.6
 Cade+Gordon+Melton > Deni+Franz+Queen | +1600 +700 +0.8 +0.3 +9% -2.3
-Cade+Tyus Jones+Post+'28 1st > Deni+Kessler+JJJ | +1600 +200 +1.7 +0.6 +10% +2.6
 Cade+Tyus Jones+Post > Deni+Kessler+Queen | +1600 +100 +1.8 +0.6 +9% -0.6
 Cade+Mark+Tyus Jones > Deni+Keyonte+Kessler | +1600 +200 +1.2 +0.6 +11% -0.3
 Cade+Tyus Jones+Post > Deni+Keyonte+Queen | +1500 +400 +1.4 +0.4 +8% -1.4
@@ -150,19 +152,19 @@ Cade+Garland > Flagg+Kessler | -1000 -900 -0.1 -0.3 0% -3.6
 
 Cade+Tyus Jones > Deni+Flagg | +5600 +4200 +1.3 +0.6 +10% -2.7
 Bridges+Jabari Smith > JJJ+Queen | +2700 +2400 +0.3 +0.2 +3% -2.0
-Cade+Tyus Jones > Deni+JJJ+Mitch '27 1st+Mitch '28 1st | +2500 +2200 +0.4 0.0 +3% -1.6
 Cade+Collins+Tyus Jones > Deni+Franz+Keyonte | +3200 +2100 +0.9 +0.2 +9% -1.4
 Cade+Bane > Deni+Flagg | +2300 +2000 +0.1 +0.1 +3% -3.8
 Green+Camara > JJJ+Queen | +2500 +2000 +0.7 +0.3 +3% -1.1
 Bridges > JJJ | +1800 +1900 0.0 0.0 -2% -1.5
 Green+Jabari Smith > JJJ+Queen | +2400 +1900 +0.5 +0.4 +3% +0.3
+Cade+Tyus Jones > Deni+JJJ+Mitch '27 1st+Mitch '28 1st | +2200 +1900 +0.4 0.0 +3% -1.6
+Cade+Tyus Jones+'27 1st+'28 1st+'28 2nd > Deni+Flagg | +3000 +1700 +1.3 +0.6 +10% +0.4
 Kyrie+Jabari Smith > JJJ+Queen | +2300 +1700 +0.4 +0.3 +5% -5.0
-Cade+Tyus Jones > Deni+Kessler+Mitch '27 1st+Mitch '28 1st | +2400 +1700 +0.7 +0.2 +6% -1.9
 Cade+Tyus Jones+Post > Deni+Franz+Queen | +3100 +1600 +1.7 +0.6 +10% -0.7
 White > JJJ | +1800 +1600 0.0 +0.1 +3% +0.4
 Green+Reid > JJJ+Queen | +1900 +1500 +0.4 +0.3 +2% -1.6
 Cade+Tyus Jones+Post > Deni+Kessler+JJJ | +2900 +1500 +1.7 +0.6 +10% +0.8
-Cade+Tyus Jones > Deni+Franz+Mitch '28 1st | +2200 +1400 +0.7 +0.2 +6% -1.1
+Cade+Tyus Jones > Deni+Kessler+Mitch '27 1st+Mitch '28 1st | +2100 +1400 +0.7 +0.2 +6% -1.9
 Cade+Melton+Tyus Jones > Deni+Franz+Queen | +2700 +1400 +1.4 +0.5 +10% -1.2
 Cade+Melton+Tyus Jones > Deni+Franz+Reed | +2100 +1300 +0.8 +0.1 +6% -0.8
 Cade+Bane+Collins > Deni+Flagg | +800 +1300 -0.7 -0.4 -3% -4.4

@@ -67,25 +67,25 @@ VALUE = mean over the prior's slots, band in parens. Ranks sourced, conversions 
 
 Gone: own 3rd → Brian.
 
-### Sept '28 — modelled, no projected finish ('27–'28: slot open, 1.01–1.12 until `future` lands)
+### Sept '28 — modelled, `future` own-pick slot band ('27–'28: Jon 02–09)
 
 | Pick | Origin | Ordinal | Board row | rank | **VALUE** |
 | ---- | ------ | ------: | --------- | ---: | --------: |
-| 1st | own (1.01–1.12 open) | 1–12 | Dynatyze '28 1.01–1.12 (w 0.48) | 70–156 | **1335** (831–2076) |
-| 2nd | own (2.01–2.12 open) | 13–24 | Dynatyze '28 2.01–2.12 template | 169–248 | **541** (379–741) |
-| 3rd | own (3.01–3.12 open) | 25–36 | Dynatyze '28 3.01–3.12 (w 0.23) | 267–356 | **217** (130–322) |
-| 4th | own (4.01–4.12 open) | 37–48 | Dynatyze '28 R4 template, 4.01–4.03 capped at '28 3.12 | 338–422 | **91** (38–130) |
+| 1st | own (1.02–1.09) | 2–9 | Dynatyze '28 1.02–1.09 (w 0.48) | 77–132 | **1408** (1038–1893) |
+| 2nd | own (2.02–2.09) | 14–21 | Dynatyze '28 2.02–2.09 template | 176–226 | **567** (457–697) |
+| 3rd | own (3.02–3.09) | 26–33 | Dynatyze '28 3.02–3.09 (w 0.23) | 276–332 | **232** (172–297) |
+| 4th | own (4.02–4.09) | 38–45 | Dynatyze '28 R4 template, 4.02–4.03 capped at '28 3.12 | 346–399 | **103** (67–130) |
 
 Gone: none.
 
-### Sept '29 — modelled, no projected finish ('28–'29: slot open, 1.01–1.12 until `future` lands)
+### Sept '29 — modelled, `future` own-pick slot band ('28–'29: Jon 04–12)
 
 | Pick | Origin | Ordinal | Board row | rank | **VALUE** |
 | ---- | ------ | ------: | --------- | ---: | --------: |
-| 1st | own (1.01–1.12 open) | 1–12 | Dynatyze '29 1.01–1.12 template (w 0) | 111–197 | **877** (583–1281) |
-| 2nd | own (2.01–2.12 open) | 13–24 | Dynatyze '29 2.01–2.12 template | 211–289 | **380** (264–518) |
-| 3rd | own (3.01–3.12 open) | 25–36 | Dynatyze '29 3.01–3.12 (w 0.14) | 309–398 | **138** (68–219) |
-| 4th | own (4.01–4.12 open) | 37–48 | Dynatyze '29 R4 template, 4.01–4.03 capped at '29 3.12, 4.11–4.12 past D = 0 | 380–463 | **37** (0–68) |
+| 1st | own (1.04–1.12) | 4–12 | Dynatyze '29 1.04–1.12 template (w 0) | 135–197 | **774** (583–1009) |
+| 2nd | own (2.04–2.12) | 16–24 | Dynatyze '29 2.04–2.12 template | 232–289 | **343** (264–434) |
+| 3rd | own (3.04–3.12) | 28–36 | Dynatyze '29 3.04–3.12 (w 0.14) | 333–398 | **116** (68–171) |
+| 4th | own (4.04–4.12) | 40–48 | Dynatyze '29 R4 template, 4.11–4.12 past D = 0 | 403–463 | **26** (0–61) |
 
 Gone: none.
 
@@ -109,7 +109,7 @@ Gone: none.
 - Dizzle (7/10) predates the draft. Rookies price off its slot-prefixed rows; Brazile prices off its rookie chart (`~342`). No board splits (`BASE.md`).
 - Picks follow `eval-pick/future-picks.md` step 2 (`pick_prices.py`, 9/29 snapshots). VALUE = V(Dynatyze rank); the '27 crowd band is averaged 50/50 only for bands ≤ 12 picks wide (1.01–2.02), wider bands are cross-check only; `w` is a label, not a weight. '27 2nds/3rds and all '28/'29 2nds are the Dynatyze template. 4ths are the Dynatyze template alone, capped at the same year's 3.12 (206 in '27).
 - Brian's '27 1st is 1.10 on PF, but Brian out-wins Michael, so 1.11 is as likely.
-- '28/'29 slots stay open (1.01–1.12) until `future` lands.
+- '28/'29 slots come from `sim.py future`'s own-pick slot band (middle 80% of paths, a no-trades read): '28 02–09, '29 04–12.
 
 # Title odds
 
