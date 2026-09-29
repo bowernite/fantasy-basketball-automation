@@ -190,7 +190,8 @@ A body the season snapshot has no line for played for somebody else, so his line
 `seasonAverage`). A player who **missed the whole season** carries no rate anywhere and reads
 0/0. Neither reaches the rate `Δw` runs on: `our_roster` takes that from the projection
 (`projections`), which is the same number whether or not he played. Only a player the
-projection feed does not carry keeps the file's rate — and prints `noproj`.
+projection feed does not carry runs on the file's rate shrunk toward a fringe body's
+(`projections` §Joining names) — and prints `noproj`.
 
 ⚠️ **A July snapshot also carries unsigned players** (`proTeamAbbreviation` "FA") — **7 of
 the 12 roster files hold 1–3**, Beal, Sochan and Kuminga among them. They have no NBA

@@ -1,4 +1,5 @@
 import type { ScoreWeightingDebugInfo } from "../prioritization/score-weighting";
+import { NO_PROJECTION_RATE } from "../data/player-data";
 import { interpolateColors } from "../utils/interpolate-colors";
 import type { Player } from "../types";
 import { saveLineup } from "../lineup/lineup-dom-actions";
@@ -242,7 +243,7 @@ function setScoreTooltip(
   predictedScoreDiv.title = "";
 
   if (!hasSeasonProjectionAvg && debugInfo.seasonProjectionWeight > 0.2) {
-    predictedScoreDiv.title = `No preseason projection available, and we're weighting a guess of ~20 at ${(
+    predictedScoreDiv.title = `No preseason projection available, and we're weighting a guess of ~${NO_PROJECTION_RATE} at ${(
       debugInfo.seasonProjectionWeight * 100
     ).toFixed(0)}%\n`;
   }

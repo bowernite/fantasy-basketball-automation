@@ -16,25 +16,33 @@ import sleeper
 
 REPO = os.path.join(HERE, os.pardir, os.pardir, os.pardir)
 ROSTERS = os.path.join(REPO, "strategy", "lineup-math", "rosters", "roster-*.json")
+POOL = os.path.join(REPO, "strategy", "lineup-math", "data", "players-*.json")
 OUT = os.path.join(REPO, "src", "data", "player-data.ts")
 
 
-def player_rates(roster_players, feed_rows):
-    """League spelling -> FPts/G for every rostered player, plus every unrostered
-    feed player under the feed's spelling, and the rostered names with no
-    projection. Same precedence as the sim: override, then feed, then
-    `sleeper.unprojected_rate`."""
+def player_rates(roster_players, feed_rows, pool_players=()):
+    """League spelling -> FPts/G for every rostered player, then every unrostered
+    player in last season's pool, then every remaining feed player under the
+    feed's spelling; plus the rostered names with no projection. Same precedence
+    as the sim: override, then feed, then `sleeper.unprojected_rate`."""
     idx = sleeper.index(feed_rows)
-    rostered_keys = {sleeper.norm(p["n"]) for p in roster_players}
-    unrostered = [{"n": row["name"]} for row in feed_rows
-                  if sleeper.norm(row["name"]) not in rostered_keys]
+    rostered = {p["n"] for p in roster_players}
+    seen = {sleeper.norm(n) for n in rostered}
+    unrostered = []
+    for player in list(pool_players) + [{"n": row["name"], "avg": 0.0, "gp": 0}
+                                        for row in feed_rows]:
+        key = sleeper.norm(player["n"])
+        if key not in seen:
+            seen.add(key)
+            unrostered.append(player)
     rates, missing = {}, []
     for player in roster_players + unrostered:
         projected = overrides.lookup_rate(player["n"])
         if projected is None:
             projected = sleeper.lookup(player["n"], idx)
         if projected is None:
-            missing.append(player["n"])
+            if player["n"] in rostered:
+                missing.append(player["n"])
             projected = sleeper.unprojected_rate(player["avg"], player["gp"])
         rates[player["n"]] = round(projected, 1)
     return rates, missing
@@ -48,6 +56,7 @@ def render(rates, feed_date):
     for name, rate in sorted(rates.items(), key=lambda item: -item[1]):
         lines.append("  %s: { projectedSeasonAvg: %.1f }," % (json.dumps(name, ensure_ascii=False), rate))
     lines += ["};", "",
+              "export const NO_PROJECTION_RATE = %.1f;" % sleeper.NO_PROJECTION_RATE, "",
               "export type PlayerData = (typeof PLAYER_DATA)[keyof typeof PLAYER_DATA];", ""]
     return "\n".join(lines)
 
@@ -59,13 +68,28 @@ def write():
     for path in sorted(glob.glob(ROSTERS)):
         with open(path) as f:
             roster_players += json.load(f)
-    rates, missing = player_rates(roster_players, snap["rows"])
+    rates, missing = player_rates(roster_players, snap["rows"], last_season_pool())
     with open(OUT, "w") as f:
         f.write(render(rates, sleeper.stamp(snap["updated"])))
     print("wrote %d players -> %s" % (len(rates), os.path.relpath(OUT)))
     if missing:
         print("no projection (last season shrunk toward %.1f): %s"
               % (sleeper.NO_PROJECTION_RATE, ", ".join(sorted(set(missing)))))
+
+
+
+def last_season_pool():
+    """Every player in the newest pool as {n, avg, gp} for its latest season
+    (`players-2025-26.json` -> "2025"); 0/0 if he didn't play it."""
+    path = max(glob.glob(POOL))
+    season = os.path.basename(path)[len("players-"):][:4]
+    with open(path) as f:
+        pool = json.load(f)
+    rows = []
+    for name, player in pool.items():
+        avg, gp = player["seasons"].get(season, (0.0, 0))
+        rows.append({"n": name, "avg": avg, "gp": gp})
+    return rows
 
 
 if __name__ == "__main__":

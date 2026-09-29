@@ -46,6 +46,18 @@ class PlayerRates(unittest.TestCase):
         self.assertGreater(rates["Full Season"], 15)
         self.assertLess(rates["Full Season"], 17.3)
 
+    def test_an_unrostered_free_agent_is_covered_off_last_season_under_the_league_spelling(self):
+        pool = [{"n": "Jaden Ivey", "avg": 15.7, "gp": 37},
+                {"n": "Jaren Jackson Jr.", "avg": 40.0, "gp": 60}]
+        rates, missing = extension_data.player_rates([rostered("Zach Edey")], ROWS, pool)
+        expected = sleeper.lookup("Jaren Jackson", sleeper.index(ROWS))
+        self.assertEqual(rates["Jaren Jackson Jr."], round(expected, 1))
+        self.assertNotIn("Jaren Jackson", rates)
+        self.assertLess(rates["Jaden Ivey"], 15.7)
+        self.assertGreater(rates["Jaden Ivey"], sleeper.NO_PROJECTION_RATE)
+        self.assertEqual(len(rates), len(ROWS) + 1)
+        self.assertEqual(missing, [])  # only rostered names are published
+
     def test_a_rate_override_beats_the_feed(self):
         fd, path = tempfile.mkstemp(suffix=".json")
         os.close(fd)
@@ -73,6 +85,8 @@ export const PLAYER_DATA = {
   "Nikola Jokić": { projectedSeasonAvg: 60.2 },
   "De'Aaron Fox": { projectedSeasonAvg: 33.1 },
 };
+
+export const NO_PROJECTION_RATE = 6.0;
 
 export type PlayerData = (typeof PLAYER_DATA)[keyof typeof PLAYER_DATA];
 ''')

@@ -104,7 +104,7 @@ Read this before quoting anything in `findings.md`.
   `dizzle-dynasty` re-snapshots under a new month and leaves the old file in place.
 - **An unusable projection snapshot stops the run.** Missing, unparseable, or joining to
   nobody, `our_roster` raises naming the file — because "no index" is row-for-row identical
-  to "the feed carries nobody": every rate reverts to last season's average, and only
+  to "the feed carries nobody": every rate falls back to the no-projection rate, and only
   `players` prints the `noproj` column that would say so. A row the feed genuinely does not
   carry is still just that row (`findings.md` §*GP is the dominant input*).
 

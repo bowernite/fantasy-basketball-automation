@@ -1,4 +1,8 @@
-import { PLAYER_DATA, type PlayerData } from "../data/player-data";
+import {
+  NO_PROJECTION_RATE,
+  PLAYER_DATA,
+  type PlayerData,
+} from "../data/player-data";
 import type { Player } from "../types";
 import { adjustPredictedScoreForInjury } from "./injury-adjustments";
 
@@ -14,7 +18,7 @@ export function getPlayerPredictedScore(player: Player) {
     alert(`NaN weighted score for ${player.playerName}`);
   }
   const displayWeightedScore = isOffseason()
-    ? (weightedScoreDebugInfo.seasonProjectionAvg ?? 20)
+    ? (weightedScoreDebugInfo.seasonProjectionAvg ?? NO_PROJECTION_RATE)
     : blendedScore;
   const [adjustedForOpponent, opponentAdjustmentDebugInfo] =
     adjustPredictedScoreBasedOnOpponent(blendedScore, player.opponentInfo);
@@ -61,7 +65,7 @@ function getPlayerWeightedScore(player: Player) {
   // Early season: rely more on projections
   // Late season: rely more on actual performance
   const weightedScore =
-    seasonProjectionWeight * (playerData?.projectedSeasonAvg ?? 20) +
+    seasonProjectionWeight * (playerData?.projectedSeasonAvg ?? NO_PROJECTION_RATE) +
     actualPerformanceWeight * actualPerformance;
   // console.log(`weightedScore data for ${player.playerName}:`, {
   //   seasonProjectionWeight,

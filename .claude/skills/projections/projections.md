@@ -33,7 +33,7 @@ Rate snapshot: `strategy/board-snapshots/projections/sleeper-2026.json`. GP snap
 
 ## Browser extension
 
-The Safari extension's `src/data/player-data.ts` is generated from the rate snapshot + overrides + rosters (`extension_data.py`); never hand-edit it. After any rate refresh, `rate` override edit, or roster re-cut, run `bun run safari:dev` from the repo root (regenerates, rebuilds, reinstalls; Safari picks it up without a restart). Live check: a player's projection pill on our Fleaflicker team page matches the file.
+The Safari extension's `src/data/player-data.ts` is generated from the rate snapshot + overrides + rosters + last season's player pool (`extension_data.py`); never hand-edit it. It covers every rostered, pool and feed player; anyone else reads `NO_PROJECTION_RATE` with a ⚠️. After any rate refresh, `rate` override edit, or roster re-cut, run `bun run safari:dev` from the repo root (regenerates, rebuilds, reinstalls; Safari picks it up without a restart). Live check: a player's projection pill on our Fleaflicker team page matches the file.
 
 ## Manual overrides
 
@@ -76,8 +76,7 @@ and a player with no projection both leave a stale rate wearing a fresh label. `
 **refuses** a normalised-name collision; `apply()` returns the unmatched names. The feed
 drops generational suffixes Fleaflicker keeps.
 
-A player with no projection keeps last season's rate and **must carry `no projection`**
-(`Eval Template.md`).
+A player with no projection (his feed row is ADP-only: RotoWire projects him no minutes) gets `sleeper.unprojected_rate`: last season's rate shrunk toward a fringe body's 6.0 FPts/G by games played (0 GP → 6.0), in the sim and the extension alike. He **must carry `no projection`** (`Eval Template.md`).
 
 ## Projected GP
 
