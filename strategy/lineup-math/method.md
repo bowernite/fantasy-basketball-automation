@@ -9,7 +9,7 @@ Read this before quoting anything in `findings.md`.
   over periods 20–23, and it is R1's *label* Fleaflicker cannot express, so period 20 arrives
   here marked `regular` (`league-info`). Read only "these 20 score, those don't" off this
   line.
-- **Calibration 1.052** (28,643 sim vs 27,229 real). ⚠️ **Not a 1% fit, and the
+- **Calibration 1.097** (29,875 sim vs 27,229 real). ⚠️ **Not a fit, and the
   cause is the roster, not the model:** the numerator is the roster file as it stands and
   27,229 is what the roster *before the last trade* scored — `sim.py calibration` prints that
   caveat under the ratio, because the ratio is read there and nowhere else. Absolute PF is
@@ -19,10 +19,10 @@ Read this before quoting anything in `findings.md`.
   factor to divide by.
 - **Lineups are set optimally every night** (exact max-weight matching), so absolute PF is an
   upper bound — and it flatters breadth specifically: nearly all of breadth's payoff sits on
-  the ~32 light nights (`findings.md` §*The slot-fill curve* owns the share) and all of it
+  the light nights (`findings.md` §*The slot-fill curve* owns the share) and all of it
   requires noticing them.
 - **Availability is a per-team-game draw at GP/82** — blind to rest days tracking a team's own
-  schedule density, and **~6% too noisy** (sim weekly CV 20.4% vs real 19.2% with *zero*
+  schedule density, and **~24% too noisy** (sim weekly CV 23.9% vs real 19.2% with *zero*
   per-game scoring noise), so "variance is third-order" survives by an over-statement.
   Absence *blocks* draw a length from `gauss(9, 6)` truncated at 1, so the realised block is
   not 9 — which is why `mean_block` is measured off the same draw rather than quoted.
@@ -130,7 +130,7 @@ either here** (`league-info`).
 12 roster files, projected rates, padded to 38, one engine — so the body count, the projections
 and the sim's own optimism cancel out of the margin instead of booking as an edge. `tests/`
 pins it: inflate every team's rates 10% together and no band's `P(title)` moves more than
-**0.008**. ⚠️ **Not exactly zero, and the residual is ours** — `pad`'s leftover FA/PAD
+**0.012** (`test_matched`'s tolerance; no report prints the actual residual). ⚠️ **Not exactly zero, and the residual is ours** — `pad`'s leftover FA/PAD
 bodies carry fixed grades no rate feed reaches, so the team holding the most real
 bodies rescales hardest.
 
@@ -181,20 +181,20 @@ projections, same one snapshot of the field — and adds these:
   level in a period is `engine.run`'s **mean**; the deviation around it is drawn at `WITHIN_CV`
   0.1005 of that period's level — the same decomposition `σ` prices a bracket round with, so
   pinning the seeds reproduces `seed_title`. The engine's own relative weekly spread is
-  **0.040**, because **availability is the only thing that moves in it**: scored off single
+  far narrower (no report prints it), because **availability is the only thing that moves in it**: scored off single
   engine seasons the favourite wins nearly every week and the standings never shuffle.
 - **Injuries reach it as each roster's own projected-GP haircut**, per regular period and per
   bracket round. ⚠️ **What it does not carry is one injury persisting into the bracket** — the
-  engine's regular-to-bracket correlation is **−0.40**, a GP budget spent early rather than a
+  engine's regular-to-bracket correlation is negative (no report prints it), a GP budget spent early rather than a
   durable absence, so resampling whole engine seasons would import that artifact instead.
 - ⚠️ **The slate is this year's.** 19 regular pairings from `league-2026-27.json`,
   seats not re-dealt. Period 20 is R1 on the wire (`league-info`) and still a
   generated full slate; 21–23 have dates and no games. NBA nights are
   `nba-schedule-2026-27.json` (80 games/team until Cup knockouts fill).
 - **Calibration, and the only one available:** a simulated season's twelve win totals spread
-  **4.36** against last season's actual **4.17**, on a projected level cv of **0.0937** against
+  **4.29** against last season's actual **4.17**, on a projected level cv of **0.0755** against
   the wire's **0.0909**. Both realised, so both carry matchup luck. **One league-season is a
   bound, not a fit** — a team that stopped setting lineups is inside the 4.17, and a projected
-  spread slightly wider than the wire's makes every `P(title)` that much too concentrated.
+  level spread narrower than the wire's makes every `P(title)` that much too diffuse.
 - ⚠️ **`P(title)` is title-probability currency** and the standing rule against mixing `Δw` with
   `ΔP(title)` binds it (`Eval Definitions §ΔP(title)`). Never netted against `Δw`.

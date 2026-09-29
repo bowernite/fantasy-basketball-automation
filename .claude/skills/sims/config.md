@@ -49,24 +49,13 @@ Joint `Δw (season)` and `ΔP(title)`, one row per deal. Each deal gets `results
 | `out_us_extra_base` | Our picks to them (sum if multiple) |
 | `in_from_us_extra_base` | Their picks to us (sum if multiple) — despite the name, **not** a mirror of `out_us_extra_base` |
 
-Each pick goes in exactly one field; setting both for the same pick nets it to 0. Player arrays still need full mirrors (`out_us`, `in_from_them`, `out_them`, `in_from_us`). Show picks in the `.md` **Out** column in parentheses; the JSON carries the BASE integer separately. `dage_us` reads Sept '26 picks from the `*_picks` fields and later picks from the deal `label`, which must be the `.shapes.md` line's `out > in` (e.g. `Cade+KC '27 2nd+2.09 > SGA`).
-
-**Pick bodies** — every win column also moves each pick's mock rookie body between the two sides: the joint `Δw (season)` / `ΔP(title)` on the padded rosters, and formula `Δw` as a piece in the per-piece sum. Name Sept '26 picks by slot, `"<round>.<slot padded to 2>"` e.g. `"2.09"`. Each pick move needs both ends set, like the player arrays:
-
-| Field | Removes/adds |
-|---|---|
-| `out_us_picks` | Our pick leaves our pad (going to them) |
-| `in_from_us_picks` | Same pick arrives on their pad |
-| `out_them_picks` | Their pick leaves their pad (going to us) |
-| `in_from_them_picks` | Same pick arrives on our pad |
-
-E.g. our `2.09` to them, their `1.11` to us: `out_us_picks`/`in_from_us_picks` = `["2.09"]`, `out_them_picks`/`in_from_them_picks` = `["1.11"]`. Required for every Sept '26 pick that moves; later picks are BASE-only and skip these. An unknown slot, or one the sender doesn't hold, refuses. Does not touch `*_extra_base`, which still carries BASE separately.
+Each pick goes in exactly one field; setting both for the same pick nets it to 0. Player arrays still need full mirrors (`out_us`, `in_from_them`, `out_them`, `in_from_us`). Show picks in the `.md` **Out** column in parentheses; the JSON carries the BASE integer separately. Picks move no bodies in any win column. `dage_us` reads picks (rounds 1–4) from the deal `label`, which must be the `.shapes.md` line's `out > in` (e.g. `Cade+Chris '27 2nd > SGA`). A `*_picks` field refuses.
 
 **Stdout → archive:** `score_us` → **Score** · `delta_base_us` → **ΔBASE** · `fdw_us` → **Δw** · `dw_us` → **Δw (season)** · `dp_title_us` → **ΔP(title)** · `dage_us` → **Δage**. Round per `trade-shapes` Skill.
 
 ## `player-effects`
 
-Isolated incoming value. Section gets `player_results` after it runs. `source: "their"` = their names incoming onto us (eval `ours` columns). `source: "us"` = our names incoming onto them. Unknown names refuse.
+Isolated incoming value. Section gets `player_results` after it runs. `source: "their"` = their names incoming onto us (eval `ours` columns). `source: "us"` = our names incoming onto them. Unknown names refuse. A full 38-man side makes room by cutting its lowest-value body (`sim.arrival_basis`); `eval-columns` and `title-column` do the same on ours.
 
 ## `reports` / `title-column`
 

@@ -14,4 +14,4 @@ Single-season wins a typical team in this format gets from the player's projecte
 - **The rate is projected** — same `FPts/Gp` as the sim (`projections`); never hand-adjust rate or `GP` for role change or injury.
 - **One season only** — multi-year value is BASE's entirely.
 
-`sim.league_pf` owns the curve. `findings.md` §*PF → wins* owns `K` — re-run `K`, never quote a remembered figure. Re-cut the curve when the calendar or the twelve roster files move (`sim.py league-curve`).
+`sim.league_pf` owns the curve. `findings.md` §*Replacement level* owns `K` — re-run `K` (`sim.py replacement`), never quote a remembered figure. Re-cut the curve when the calendar or the twelve roster files move (`sim.py league-curve`).

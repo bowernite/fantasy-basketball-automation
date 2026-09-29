@@ -1,8 +1,8 @@
 # League curve
 
-How formula `Δw` is measured. Definition: `strategy/Definitions/Delta w.md`. `K`: `findings.md` §*PF → wins*. This-roster value: `Delta w (season).md`.
+How formula `Δw` is measured. Definition: `strategy/Definitions/Delta w.md`. `K`: `findings.md` §*Replacement level*. This-roster value: `Delta w (season).md`.
 
-Reproduced 2026-09-03. Re-cut: `./run sim.py league-curve`. Shipped table: `simlib/league_curve.py`.
+Re-cut 2026-09-29 (post-draft rosters, F/C flex). Re-cut: `./run sim.py league-curve`. Shipped table: `simlib/league_curve.py`.
 
 ## Measurement
 
@@ -10,13 +10,13 @@ Add one synthetic Clippers forward (60 GP, SF/PF) as the 38th body on each of th
 
 | rate | 0 | 5 | 8 | 11 | 14 | 17 | 20 | 23 | 26 | 30 | 35 | 40 | 48 |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| **PF @ 38, GP 60** | 0 | 12 | 19 | 35 | 61 | 104 | 168 | 255 | 358 | 522 | 738 | 955 | 1304 |
+| **PF @ 38, GP 60** | 0 | 15 | 25 | 38 | 57 | 90 | 148 | 233 | 335 | 497 | 712 | 930 | 1278 |
 
-Linear region (rate ≥ 26): **43.1 PF per rate point at GP 60 = 0.718 PF/G**. x-intercept **17.8**. GP scales: 78/60 = 1.30 at rates 14, 26, 40.
+Linear region (rate ≥ 26): **43.0 PF per rate point at GP 60 = 0.717 PF/G**. x-intercept **18.4**. GP scales: 78/60 = 1.30 at rates 14, 26, 40.
 
-A 14-rate body is **+61 PF (+0.10 wins)** — starts on light nights, never zero.
+A 14-rate body is **+57 PF (+0.09 wins)** — starts on light nights, never zero.
 
-One NBA team is enough for the shape (light nights and packed nights). Clippers-specific empty nights move 17.8 a little, not 0.72. Last-slot add, not a starter swap. Equal weight on all 12, including thin tanks and our 35-body roster. 20-GP stars were not swept — scale from 60; season `Δw` for that edge.
+One NBA team is enough for the shape (light nights and packed nights). Clippers-specific empty nights move 18.4 a little, not 0.72. Last-slot add, not a starter swap. Equal weight on all 12. 20-GP stars were not swept — scale from 60; season `Δw` for that edge.
 
 ## Rejected
 

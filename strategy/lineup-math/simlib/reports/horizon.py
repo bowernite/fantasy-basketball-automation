@@ -36,7 +36,7 @@ def _aged_roster(path, years):
     return roster_mod.pad(out)
 
 
-def _sept_slot(rank):
+def _draft_slot(rank):
     if rank <= 4:
         return "1.%02d" % (13 - rank)
     return LOTTERY_PRIOR[rank]
@@ -52,14 +52,14 @@ def _year_rows(years):
         t = bracket.measure(_aged_roster(path, years), os.path.basename(path))
         rows.append((tid, teams[tid], int(t.pf)))
     rows.sort(key=lambda x: -x[2])
-    return [(i + 1, tid, name, pf, _sept_slot(i + 1))
+    return [(i + 1, tid, name, pf, _draft_slot(i + 1))
             for i, (tid, name, pf) in enumerate(rows)]
 
 
 def report_horizon(years=(0, 1, 2)):
     print("Naive horizon: today's projected rates + GP, then per player")
     print("  rate += age-bucket YoY mean x years (pool, rotation players);")
-    print("  GP re-projected off the shifted rate. Same 28 bodies, no")
+    print("  GP re-projected off the shifted rate. Same bodies, no")
     print("  trades, no draft picks, no attrition. Not BASE, not Delta w.")
     print("Age buckets (FPts/G per year): 20-25 +0.65, 25-30 -0.90,")
     print("  30-35 -3.43, 35+ -3.15. Re-measure -> season PF rank.")
