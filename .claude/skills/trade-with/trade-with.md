@@ -6,7 +6,7 @@ Otherwise:
 
 1. Load `strategy/teams/my-team/Ours.team.md` as well
 2. Load `trades` Skill
-3. Use `read-messages` Skill to catch up on talks so far
+3. Use `read-messages-ff` Skill to catch up on talks so far
 
 Follow `trades` Skill. Brainstorm first (`trades` §Brainstorm); sim only the short list.
 
