@@ -1,0 +1,4790 @@
+{
+"A.J. Lawson": {
+"bbref": "lawsoaj01",
+"bpm": -1.78,
+"bpm_g": 50,
+"debut": 2022,
+"pick": null
+},
+"AJ Green": {
+"bbref": "greenaj01",
+"bpm": -2.768,
+"bpm_g": 151,
+"debut": 2022,
+"pick": null
+},
+"AJ Griffin": {
+"bbref": "griffaj01",
+"bpm": -9.6,
+"bpm_g": 20,
+"debut": 2022,
+"pick": 16
+},
+"AJ Johnson": {
+"bbref": "johnsaj01",
+"bpm": -8.599,
+"bpm_g": 77,
+"debut": 2024,
+"pick": 23
+},
+"Aaron Gordon": {
+"bbref": "gordoaa01",
+"bpm": 1.407,
+"bpm_g": 87,
+"debut": 2014,
+"pick": 4
+},
+"Aaron Holiday": {
+"bbref": "holidaa01",
+"bpm": -1.254,
+"bpm_g": 119,
+"debut": 2018,
+"pick": 23
+},
+"Aaron Nesmith": {
+"bbref": "nesmiaa01",
+"bpm": -1.95,
+"bpm_g": 90,
+"debut": 2020,
+"pick": 14
+},
+"Aaron Wiggins": {
+"bbref": "wiggiaa01",
+"bpm": 0.178,
+"bpm_g": 141,
+"debut": 2021,
+"pick": 55
+},
+"Ace Bailey": {
+"bbref": "baileac01",
+"bpm": -4.4,
+"bpm_g": 72,
+"debut": 2025,
+"pick": 5
+},
+"Adama Bal": {
+"bbref": "balad01",
+"bpm": -5.4,
+"bpm_g": 8,
+"debut": 2025,
+"pick": null
+},
+"Adem Bona": {
+"bbref": "bonaad01",
+"bpm": -2.81,
+"bpm_g": 129,
+"debut": 2024,
+"pick": 41
+},
+"Adou Thiero": {
+"bbref": "thierad01",
+"bpm": -4.4,
+"bpm_g": 25,
+"debut": 2025,
+"pick": 36
+},
+"Ajay Mitchell": {
+"bbref": "mitchaj01",
+"bpm": 0.545,
+"bpm_g": 93,
+"debut": 2024,
+"pick": 38
+},
+"Al Horford": {
+"bbref": "horfoal01",
+"bpm": 1.371,
+"bpm_g": 105,
+"debut": 2007,
+"pick": 3
+},
+"Alec Burks": {
+"bbref": "burksal01",
+"bpm": -1.192,
+"bpm_g": 115,
+"debut": 2011,
+"pick": 12
+},
+"Aleksej Pokusevski": {
+"bbref": "pokusal01",
+"bpm": -1.9,
+"bpm_g": 28,
+"debut": 2020,
+"pick": 17
+},
+"Alex Antetokounmpo": {
+"bbref": "antetal01",
+"bpm": 5.4,
+"bpm_g": 6,
+"debut": 2025,
+"pick": null
+},
+"Alex Caruso": {
+"bbref": "carusal01",
+"bpm": 2.931,
+"bpm_g": 110,
+"debut": 2017,
+"pick": null
+},
+"Alex Morales": {
+"bbref": "moralal01",
+"bpm": -16.0,
+"bpm_g": 4,
+"debut": 2025,
+"pick": null
+},
+"Alex Sarr": {
+"bbref": "sarral01",
+"bpm": -1.63,
+"bpm_g": 115,
+"debut": 2024,
+"pick": 2
+},
+"Alijah Martin": {
+"bbref": "martial01",
+"bpm": -4.3,
+"bpm_g": 23,
+"debut": 2025,
+"pick": 39
+},
+"Alondes Williams": {
+"bbref": "willial06",
+"bpm": 9.7,
+"bpm_g": 5,
+"debut": 2022,
+"pick": null
+},
+"Alperen \u015eeng\u00fcn": {
+"bbref": "sengual01",
+"bpm": 4.303,
+"bpm_g": 148,
+"debut": 2021,
+"pick": 16
+},
+"Amari Bailey": {
+"bbref": "baileam01",
+"bpm": -8.3,
+"bpm_g": 10,
+"debut": 2023,
+"pick": 41
+},
+"Amari Williams": {
+"bbref": "william01",
+"bpm": -2.1,
+"bpm_g": 22,
+"debut": 2025,
+"pick": 46
+},
+"Amen Thompson": {
+"bbref": "thompam01",
+"bpm": 3.299,
+"bpm_g": 148,
+"debut": 2023,
+"pick": 4
+},
+"Amir Coffey": {
+"bbref": "coffeam01",
+"bpm": -2.246,
+"bpm_g": 118,
+"debut": 2019,
+"pick": null
+},
+"Andersson Garcia": {
+"bbref": "garcian01",
+"bpm": -5.7,
+"bpm_g": 5,
+"debut": 2025,
+"pick": null
+},
+"Andre Drummond": {
+"bbref": "drumman01",
+"bpm": -1.61,
+"bpm_g": 103,
+"debut": 2012,
+"pick": 9
+},
+"Andre Iguodala": {
+"bbref": "iguodan01",
+"bpm": null,
+"bpm_g": 0,
+"debut": 2004,
+"pick": 9
+},
+"Andre Jackson": {
+"bbref": "jacksan01",
+"bpm": -4.944,
+"bpm_g": 115,
+"debut": 2023,
+"pick": 36
+},
+"Andrew Nembhard": {
+"bbref": "nembhan01",
+"bpm": -1.599,
+"bpm_g": 122,
+"debut": 2022,
+"pick": 31
+},
+"Andrew Wiggins": {
+"bbref": "wiggian01",
+"bpm": 1.059,
+"bpm_g": 128,
+"debut": 2014,
+"pick": 1
+},
+"Anfernee Simons": {
+"bbref": "simonan01",
+"bpm": -0.1,
+"bpm_g": 125,
+"debut": 2018,
+"pick": 24
+},
+"Anthony Black": {
+"bbref": "blackan01",
+"bpm": -1.314,
+"bpm_g": 142,
+"debut": 2023,
+"pick": 6
+},
+"Anthony Davis": {
+"bbref": "davisan02",
+"bpm": 4.555,
+"bpm_g": 71,
+"debut": 2012,
+"pick": 1
+},
+"Anthony Edwards": {
+"bbref": "edwaran01",
+"bpm": 4.387,
+"bpm_g": 140,
+"debut": 2020,
+"pick": 1
+},
+"Anthony Gill": {
+"bbref": "gillan01",
+"bpm": -3.514,
+"bpm_g": 106,
+"debut": 2020,
+"pick": null
+},
+"Antonio Reeves": {
+"bbref": "reevean01",
+"bpm": -2.367,
+"bpm_g": 54,
+"debut": 2024,
+"pick": 47
+},
+"Ariel Hukporti": {
+"bbref": "hukpoar01",
+"bpm": -3.344,
+"bpm_g": 79,
+"debut": 2024,
+"pick": 58
+},
+"Asa Newell": {
+"bbref": "newelas01",
+"bpm": -1.5,
+"bpm_g": 44,
+"debut": 2025,
+"pick": 23
+},
+"Ausar Thompson": {
+"bbref": "thompau01",
+"bpm": 2.474,
+"bpm_g": 132,
+"debut": 2023,
+"pick": 5
+},
+"Austin Reaves": {
+"bbref": "reaveau01",
+"bpm": 2.27,
+"bpm_g": 124,
+"debut": 2021,
+"pick": null
+},
+"Avery Bradley": {
+"bbref": "bradlav01",
+"bpm": null,
+"bpm_g": 0,
+"debut": 2010,
+"pick": 19
+},
+"Ayo Dosunmu": {
+"bbref": "dosunay01",
+"bpm": -0.04,
+"bpm_g": 115,
+"debut": 2021,
+"pick": 38
+},
+"Bam Adebayo": {
+"bbref": "adebaba01",
+"bpm": 2.0,
+"bpm_g": 151,
+"debut": 2017,
+"pick": 14
+},
+"Baylor Scheierman": {
+"bbref": "scheiba01",
+"bpm": -0.06,
+"bpm_g": 108,
+"debut": 2024,
+"pick": 30
+},
+"Ben Saraf": {
+"bbref": "sarafbe01",
+"bpm": -7.3,
+"bpm_g": 44,
+"debut": 2025,
+"pick": 26
+},
+"Ben Sheppard": {
+"bbref": "sheppbe01",
+"bpm": -2.508,
+"bpm_g": 128,
+"debut": 2023,
+"pick": 26
+},
+"Ben Simmons": {
+"bbref": "simmobe01",
+"bpm": 0.159,
+"bpm_g": 66,
+"debut": 2017,
+"pick": 1
+},
+"Bennedict Mathurin": {
+"bbref": "mathube01",
+"bpm": -2.729,
+"bpm_g": 126,
+"debut": 2022,
+"pick": 6
+},
+"Bez Mbeng": {
+"bbref": "mbengbe01",
+"bpm": -4.9,
+"bpm_g": 15,
+"debut": 2025,
+"pick": null
+},
+"Bilal Coulibaly": {
+"bbref": "coulibi01",
+"bpm": -2.921,
+"bpm_g": 115,
+"debut": 2023,
+"pick": 7
+},
+"Bismack Biyombo": {
+"bbref": "biyombi01",
+"bpm": -4.638,
+"bpm_g": 53,
+"debut": 2011,
+"pick": 7
+},
+"Blake Griffin": {
+"bbref": "griffbl01",
+"bpm": null,
+"bpm_g": 0,
+"debut": 2010,
+"pick": 1
+},
+"Blake Hinson": {
+"bbref": "hinsobl01",
+"bpm": -0.6,
+"bpm_g": 14,
+"debut": 2025,
+"pick": null
+},
+"Blake Wesley": {
+"bbref": "weslebl01",
+"bpm": -3.991,
+"bpm_g": 89,
+"debut": 2022,
+"pick": 25
+},
+"Bobby Portis": {
+"bbref": "portibo01",
+"bpm": 0.084,
+"bpm_g": 116,
+"debut": 2015,
+"pick": 22
+},
+"Bobi Klintman": {
+"bbref": "klintbo01",
+"bpm": -4.82,
+"bpm_g": 20,
+"debut": 2024,
+"pick": 37
+},
+"Bogdan Bogdanovi\u0107": {
+"bbref": "bogdabo01",
+"bpm": -2.329,
+"bpm_g": 77,
+"debut": 2017,
+"pick": 27
+},
+"Bojan Bogdanovi\u0107": {
+"bbref": "bogdabo02",
+"bpm": -3.2,
+"bpm_g": 57,
+"debut": 2014,
+"pick": 31
+},
+"Bol Bol": {
+"bbref": "bolbo01",
+"bpm": 1.508,
+"bpm_g": 79,
+"debut": 2019,
+"pick": 44
+},
+"Bones Hyland": {
+"bbref": "hylanbo01",
+"bpm": 1.953,
+"bpm_g": 95,
+"debut": 2021,
+"pick": 26
+},
+"Bradley Beal": {
+"bbref": "bealbr01",
+"bpm": -2.066,
+"bpm_g": 59,
+"debut": 2012,
+"pick": 3
+},
+"Branden Carlson": {
+"bbref": "carlsbr01",
+"bpm": 1.016,
+"bpm_g": 74,
+"debut": 2024,
+"pick": null
+},
+"Brandin Podziemski": {
+"bbref": "podzibr01",
+"bpm": 0.419,
+"bpm_g": 146,
+"debut": 2023,
+"pick": 19
+},
+"Brandon Clarke": {
+"bbref": "clarkbr01",
+"bpm": 0.627,
+"bpm_g": 66,
+"debut": 2019,
+"pick": 21
+},
+"Brandon Ingram": {
+"bbref": "ingrabr01",
+"bpm": 0.348,
+"bpm_g": 95,
+"debut": 2016,
+"pick": 2
+},
+"Brandon Miller": {
+"bbref": "millebr02",
+"bpm": 1.13,
+"bpm_g": 92,
+"debut": 2023,
+"pick": 2
+},
+"Brandon Williams": {
+"bbref": "willibr03",
+"bpm": 0.6,
+"bpm_g": 99,
+"debut": 2021,
+"pick": null
+},
+"Brice Sensabaugh": {
+"bbref": "sensabr01",
+"bpm": -1.919,
+"bpm_g": 146,
+"debut": 2023,
+"pick": 28
+},
+"Bronny James": {
+"bbref": "jamesbr02",
+"bpm": -5.435,
+"bpm_g": 69,
+"debut": 2024,
+"pick": 55
+},
+"Brook Lopez": {
+"bbref": "lopezbr01",
+"bpm": -0.023,
+"bpm_g": 155,
+"debut": 2008,
+"pick": 10
+},
+"Brooks Barnhizer": {
+"bbref": "barnhbr01",
+"bpm": -3.1,
+"bpm_g": 40,
+"debut": 2025,
+"pick": 44
+},
+"Bruce Brown": {
+"bbref": "brownbr01",
+"bpm": -2.867,
+"bpm_g": 123,
+"debut": 2018,
+"pick": 42
+},
+"Bryce McGowens": {
+"bbref": "mcgowbr01",
+"bpm": -5.353,
+"bpm_g": 55,
+"debut": 2022,
+"pick": 40
+},
+"Bub Carrington": {
+"bbref": "carrica01",
+"bpm": -4.65,
+"bpm_g": 164,
+"debut": 2024,
+"pick": 14
+},
+"Buddy Boeheim": {
+"bbref": "boehebu01",
+"bpm": -4.9,
+"bpm_g": 14,
+"debut": 2022,
+"pick": null
+},
+"Buddy Hield": {
+"bbref": "hieldbu01",
+"bpm": -1.0,
+"bpm_g": 133,
+"debut": 2016,
+"pick": 6
+},
+"CJ Huntley": {
+"bbref": "huntlcj01",
+"bpm": -4.4,
+"bpm_g": 4,
+"debut": 2025,
+"pick": null
+},
+"CJ McCollum": {
+"bbref": "mccolcj01",
+"bpm": -0.767,
+"bpm_g": 132,
+"debut": 2013,
+"pick": 10
+},
+"Cade Cunningham": {
+"bbref": "cunnica01",
+"bpm": 5.046,
+"bpm_g": 134,
+"debut": 2021,
+"pick": 1
+},
+"Caleb Houstan": {
+"bbref": "houstca01",
+"bpm": -1.608,
+"bpm_g": 76,
+"debut": 2022,
+"pick": 32
+},
+"Caleb Love": {
+"bbref": "loveca01",
+"bpm": -3.1,
+"bpm_g": 49,
+"debut": 2025,
+"pick": null
+},
+"Caleb Martin": {
+"bbref": "martica02",
+"bpm": -2.637,
+"bpm_g": 103,
+"debut": 2019,
+"pick": null
+},
+"Cam Christie": {
+"bbref": "chrisca02",
+"bpm": -4.199,
+"bpm_g": 68,
+"debut": 2024,
+"pick": 46
+},
+"Cam Spencer": {
+"bbref": "spencca01",
+"bpm": 1.762,
+"bpm_g": 97,
+"debut": 2024,
+"pick": 53
+},
+"Cam Thomas": {
+"bbref": "thomaca02",
+"bpm": -3.148,
+"bpm_g": 67,
+"debut": 2021,
+"pick": 27
+},
+"Cam Whitmore": {
+"bbref": "whitmca01",
+"bpm": -0.75,
+"bpm_g": 72,
+"debut": 2023,
+"pick": 20
+},
+"Cameron Johnson": {
+"bbref": "johnsca02",
+"bpm": 1.3,
+"bpm_g": 111,
+"debut": 2019,
+"pick": 11
+},
+"Cameron Payne": {
+"bbref": "payneca01",
+"bpm": -0.083,
+"bpm_g": 94,
+"debut": 2015,
+"pick": 14
+},
+"Caris LeVert": {
+"bbref": "leverca01",
+"bpm": 0.271,
+"bpm_g": 124,
+"debut": 2016,
+"pick": 20
+},
+"Carmelo Anthony": {
+"bbref": "anthoca01",
+"bpm": null,
+"bpm_g": 0,
+"debut": 2003,
+"pick": 3
+},
+"Carter Bryant": {
+"bbref": "bryanca01",
+"bpm": -3.0,
+"bpm_g": 71,
+"debut": 2025,
+"pick": 14
+},
+"Cason Wallace": {
+"bbref": "wallaca01",
+"bpm": 1.106,
+"bpm_g": 145,
+"debut": 2023,
+"pick": 10
+},
+"Cedric Coward": {
+"bbref": "cowarce01",
+"bpm": -0.2,
+"bpm_g": 62,
+"debut": 2025,
+"pick": 11
+},
+"Chaney Johnson": {
+"bbref": "johnsch06",
+"bpm": 0.1,
+"bpm_g": 17,
+"debut": 2025,
+"pick": null
+},
+"Charles Bassey": {
+"bbref": "bassech01",
+"bpm": -0.304,
+"bpm_g": 49,
+"debut": 2021,
+"pick": 53
+},
+"Chaz Lanier": {
+"bbref": "laniech01",
+"bpm": -5.1,
+"bpm_g": 34,
+"debut": 2025,
+"pick": 37
+},
+"Chet Holmgren": {
+"bbref": "holmgch01",
+"bpm": 3.63,
+"bpm_g": 101,
+"debut": 2023,
+"pick": 2
+},
+"Chris Boucher": {
+"bbref": "bouchch01",
+"bpm": 1.476,
+"bpm_g": 59,
+"debut": 2017,
+"pick": null
+},
+"Chris Livingston": {
+"bbref": "livinch01",
+"bpm": -5.675,
+"bpm_g": 24,
+"debut": 2023,
+"pick": 58
+},
+"Chris Ma\u00f1on": {
+"bbref": "manonch01",
+"bpm": 0.1,
+"bpm_g": 9,
+"debut": 2025,
+"pick": null
+},
+"Chris Paul": {
+"bbref": "paulch01",
+"bpm": -0.016,
+"bpm_g": 98,
+"debut": 2005,
+"pick": 4
+},
+"Chris Youngblood": {
+"bbref": "youngch01",
+"bpm": -2.3,
+"bpm_g": 34,
+"debut": 2025,
+"pick": null
+},
+"Christian Braun": {
+"bbref": "braunch01",
+"bpm": -0.237,
+"bpm_g": 123,
+"debut": 2022,
+"pick": 21
+},
+"Christian Koloko": {
+"bbref": "kolokch01",
+"bpm": -3.602,
+"bpm_g": 64,
+"debut": 2022,
+"pick": 33
+},
+"Christian Wood": {
+"bbref": "woodch01",
+"bpm": -2.8,
+"bpm_g": 50,
+"debut": 2015,
+"pick": null
+},
+"Chucky Hepburn": {
+"bbref": "hepbuch01",
+"bpm": -23.8,
+"bpm_g": 2,
+"debut": 2025,
+"pick": null
+},
+"Chuma Okeke": {
+"bbref": "okekech01",
+"bpm": -2.886,
+"bpm_g": 56,
+"debut": 2020,
+"pick": 16
+},
+"Clint Capela": {
+"bbref": "capelca01",
+"bpm": -0.192,
+"bpm_g": 130,
+"debut": 2014,
+"pick": 25
+},
+"Coby White": {
+"bbref": "whiteco01",
+"bpm": -1.061,
+"bpm_g": 124,
+"debut": 2019,
+"pick": 7
+},
+"Cody Martin": {
+"bbref": "martico01",
+"bpm": -2.142,
+"bpm_g": 57,
+"debut": 2019,
+"pick": 36
+},
+"Cody Williams": {
+"bbref": "willico04",
+"bpm": -6.269,
+"bpm_g": 117,
+"debut": 2024,
+"pick": 10
+},
+"Colby Jones": {
+"bbref": "jonesco02",
+"bpm": -2.67,
+"bpm_g": 40,
+"debut": 2023,
+"pick": 34
+},
+"Cole Anthony": {
+"bbref": "anthoco01",
+"bpm": -1.547,
+"bpm_g": 102,
+"debut": 2020,
+"pick": 15
+},
+"Colin Castleton": {
+"bbref": "castlco01",
+"bpm": -5.36,
+"bpm_g": 30,
+"debut": 2023,
+"pick": null
+},
+"Collin Gillespie": {
+"bbref": "gilleco01",
+"bpm": 2.5,
+"bpm_g": 113,
+"debut": 2023,
+"pick": null
+},
+"Collin Murray-Boyles": {
+"bbref": "murraco01",
+"bpm": 1.0,
+"bpm_g": 57,
+"debut": 2025,
+"pick": 9
+},
+"Collin Sexton": {
+"bbref": "sextoco01",
+"bpm": 0.023,
+"bpm_g": 131,
+"debut": 2018,
+"pick": 8
+},
+"Cooper Flagg": {
+"bbref": "flaggco01",
+"bpm": 1.4,
+"bpm_g": 70,
+"debut": 2025,
+"pick": 1
+},
+"Corey Kispert": {
+"bbref": "kispeco01",
+"bpm": -2.823,
+"bpm_g": 119,
+"debut": 2021,
+"pick": 15
+},
+"Cormac Ryan": {
+"bbref": "ryanco01",
+"bpm": -0.8,
+"bpm_g": 11,
+"debut": 2025,
+"pick": null
+},
+"Craig Porter": {
+"bbref": "portecr01",
+"bpm": 1.601,
+"bpm_g": 115,
+"debut": 2023,
+"pick": null
+},
+"Curtis Jones": {
+"bbref": "jonescu01",
+"bpm": -3.5,
+"bpm_g": 10,
+"debut": 2025,
+"pick": null
+},
+"D'Angelo Russell": {
+"bbref": "russeda01",
+"bpm": -0.988,
+"bpm_g": 84,
+"debut": 2015,
+"pick": 2
+},
+"D.J. Augustin": {
+"bbref": "augusdj01",
+"bpm": null,
+"bpm_g": 0,
+"debut": 2008,
+"pick": 9
+},
+"DaQuan Jeffries": {
+"bbref": "jeffrda01",
+"bpm": -4.43,
+"bpm_g": 50,
+"debut": 2019,
+"pick": null
+},
+"DaRon Holmes": {
+"bbref": "holmeda01",
+"bpm": -0.5,
+"bpm_g": 25,
+"debut": 2025,
+"pick": 22
+},
+"Daeqwon Plowden": {
+"bbref": "plowdda01",
+"bpm": -3.721,
+"bpm_g": 38,
+"debut": 2024,
+"pick": null
+},
+"Dalano Banton": {
+"bbref": "bantoda01",
+"bpm": -1.063,
+"bpm_g": 73,
+"debut": 2021,
+"pick": 46
+},
+"Dalen Terry": {
+"bbref": "terryda01",
+"bpm": -2.967,
+"bpm_g": 121,
+"debut": 2022,
+"pick": 18
+},
+"Dalton Knecht": {
+"bbref": "knechda01",
+"bpm": -2.536,
+"bpm_g": 132,
+"debut": 2024,
+"pick": 17
+},
+"Damian Lillard": {
+"bbref": "lillada01",
+"bpm": 2.941,
+"bpm_g": 131,
+"debut": 2012,
+"pick": 6
+},
+"Damion Baugh": {
+"bbref": "baughda01",
+"bpm": -7.1,
+"bpm_g": 15,
+"debut": 2024,
+"pick": null
+},
+"Daniel Gafford": {
+"bbref": "gaffoda01",
+"bpm": 2.278,
+"bpm_g": 112,
+"debut": 2019,
+"pick": 38
+},
+"Daniel Theis": {
+"bbref": "theisda01",
+"bpm": -2.259,
+"bpm_g": 98,
+"debut": 2017,
+"pick": null
+},
+"Danilo Gallinari": {
+"bbref": "gallida01",
+"bpm": -1.9,
+"bpm_g": 49,
+"debut": 2008,
+"pick": 6
+},
+"Daniss Jenkins": {
+"bbref": "jenkida01",
+"bpm": -2.038,
+"bpm_g": 79,
+"debut": 2024,
+"pick": null
+},
+"Danny Green": {
+"bbref": "greenda02",
+"bpm": -6.6,
+"bpm_g": 2,
+"debut": 2009,
+"pick": 46
+},
+"Danny Wolf": {
+"bbref": "wolfda01",
+"bpm": -2.5,
+"bpm_g": 57,
+"debut": 2025,
+"pick": 27
+},
+"Dant\u00e9 Exum": {
+"bbref": "exumda01",
+"bpm": -1.053,
+"bpm_g": 75,
+"debut": 2014,
+"pick": 5
+},
+"Dario \u0160ari\u0107": {
+"bbref": "saricda01",
+"bpm": -5.8,
+"bpm_g": 21,
+"debut": 2016,
+"pick": 12
+},
+"Dariq Whitehead": {
+"bbref": "whiteda01",
+"bpm": -4.692,
+"bpm_g": 26,
+"debut": 2023,
+"pick": 22
+},
+"Darius Garland": {
+"bbref": "garlada01",
+"bpm": 1.863,
+"bpm_g": 120,
+"debut": 2019,
+"pick": 5
+},
+"Darren Collison": {
+"bbref": "collida01",
+"bpm": null,
+"bpm_g": 0,
+"debut": 2009,
+"pick": 21
+},
+"David Jones Garcia": {
+"bbref": "jonesda06",
+"bpm": 6.4,
+"bpm_g": 11,
+"debut": 2025,
+"pick": null
+},
+"David Roddy": {
+"bbref": "roddyda01",
+"bpm": -1.303,
+"bpm_g": 38,
+"debut": 2022,
+"pick": 23
+},
+"Davion Mitchell": {
+"bbref": "mitchda01",
+"bpm": -1.774,
+"bpm_g": 144,
+"debut": 2021,
+"pick": 9
+},
+"Davis Bertans": {
+"bbref": "bertada01",
+"bpm": -1.4,
+"bpm_g": 43,
+"debut": 2016,
+"pick": 42
+},
+"Day'Ron Sharpe": {
+"bbref": "sharpda01",
+"bpm": 1.177,
+"bpm_g": 112,
+"debut": 2021,
+"pick": 29
+},
+"De'Aaron Fox": {
+"bbref": "foxde01",
+"bpm": 1.367,
+"bpm_g": 134,
+"debut": 2017,
+"pick": 5
+},
+"De'Andre Hunter": {
+"bbref": "huntede01",
+"bpm": -1.375,
+"bpm_g": 109,
+"debut": 2019,
+"pick": 4
+},
+"De'Anthony Melton": {
+"bbref": "meltode01",
+"bpm": -2.315,
+"bpm_g": 55,
+"debut": 2018,
+"pick": 46
+},
+"DeAndre Jordan": {
+"bbref": "jordade01",
+"bpm": -1.024,
+"bpm_g": 68,
+"debut": 2008,
+"pick": 35
+},
+"DeJon Jarreau": {
+"bbref": "jarrede01",
+"bpm": -4.66,
+"bpm_g": 20,
+"debut": 2021,
+"pick": null
+},
+"DeMar DeRozan": {
+"bbref": "derozde01",
+"bpm": -0.1,
+"bpm_g": 154,
+"debut": 2009,
+"pick": 9
+},
+"DeMarcus Cousins": {
+"bbref": "couside01",
+"bpm": null,
+"bpm_g": 0,
+"debut": 2010,
+"pick": 5
+},
+"Dean Wade": {
+"bbref": "wadede01",
+"bpm": 0.25,
+"bpm_g": 118,
+"debut": 2019,
+"pick": null
+},
+"Deandre Ayton": {
+"bbref": "aytonde01",
+"bpm": -0.829,
+"bpm_g": 112,
+"debut": 2018,
+"pick": 1
+},
+"Dejounte Murray": {
+"bbref": "murrade01",
+"bpm": -0.667,
+"bpm_g": 45,
+"debut": 2016,
+"pick": 29
+},
+"Delon Wright": {
+"bbref": "wrighde01",
+"bpm": -0.428,
+"bpm_g": 87,
+"debut": 2015,
+"pick": 20
+},
+"Deni Avdija": {
+"bbref": "avdijde01",
+"bpm": 3.152,
+"bpm_g": 138,
+"debut": 2020,
+"pick": 9
+},
+"Dennis Schr\u00f6der": {
+"bbref": "schrode01",
+"bpm": -2.2,
+"bpm_g": 145,
+"debut": 2013,
+"pick": 17
+},
+"Dennis Smith": {
+"bbref": "smithde03",
+"bpm": -0.8,
+"bpm_g": 56,
+"debut": 2017,
+"pick": 9
+},
+"Dereck Lively": {
+"bbref": "livelde01",
+"bpm": 2.86,
+"bpm_g": 43,
+"debut": 2023,
+"pick": 12
+},
+"Derik Queen": {
+"bbref": "queende01",
+"bpm": -0.8,
+"bpm_g": 81,
+"debut": 2025,
+"pick": 13
+},
+"Derrick Favors": {
+"bbref": "favorde01",
+"bpm": null,
+"bpm_g": 0,
+"debut": 2010,
+"pick": 3
+},
+"Derrick Jones": {
+"bbref": "jonesde02",
+"bpm": -0.457,
+"bpm_g": 127,
+"debut": 2016,
+"pick": null
+},
+"Derrick Rose": {
+"bbref": "rosede01",
+"bpm": -2.8,
+"bpm_g": 24,
+"debut": 2008,
+"pick": 1
+},
+"Derrick White": {
+"bbref": "whitede01",
+"bpm": 3.349,
+"bpm_g": 153,
+"debut": 2017,
+"pick": 29
+},
+"Desmond Bane": {
+"bbref": "banede01",
+"bpm": 2.223,
+"bpm_g": 151,
+"debut": 2020,
+"pick": 30
+},
+"Devin Booker": {
+"bbref": "bookede01",
+"bpm": 1.229,
+"bpm_g": 139,
+"debut": 2015,
+"pick": 13
+},
+"Devin Carter": {
+"bbref": "cartede02",
+"bpm": -2.892,
+"bpm_g": 74,
+"debut": 2024,
+"pick": 13
+},
+"Devin Vassell": {
+"bbref": "vassede01",
+"bpm": -0.282,
+"bpm_g": 131,
+"debut": 2020,
+"pick": 11
+},
+"Devonte' Graham": {
+"bbref": "grahade01",
+"bpm": -3.9,
+"bpm_g": 23,
+"debut": 2018,
+"pick": 34
+},
+"Dillon Brooks": {
+"bbref": "brookdi01",
+"bpm": -1.785,
+"bpm_g": 131,
+"debut": 2017,
+"pick": 45
+},
+"Dillon Jones": {
+"bbref": "jonesdi01",
+"bpm": -3.839,
+"bpm_g": 61,
+"debut": 2024,
+"pick": 26
+},
+"Domantas Sabonis": {
+"bbref": "sabondo01",
+"bpm": 4.218,
+"bpm_g": 89,
+"debut": 2016,
+"pick": 11
+},
+"Dominick Barlow": {
+"bbref": "barlodo01",
+"bpm": -1.463,
+"bpm_g": 106,
+"debut": 2022,
+"pick": null
+},
+"Donovan Clingan": {
+"bbref": "clingdo01",
+"bpm": 1.465,
+"bpm_g": 144,
+"debut": 2024,
+"pick": 7
+},
+"Donovan Mitchell": {
+"bbref": "mitchdo01",
+"bpm": 4.395,
+"bpm_g": 141,
+"debut": 2017,
+"pick": 13
+},
+"Donte DiVincenzo": {
+"bbref": "divindo01",
+"bpm": 1.274,
+"bpm_g": 144,
+"debut": 2018,
+"pick": 17
+},
+"Dorian Finney-Smith": {
+"bbref": "finnedo01",
+"bpm": -2.221,
+"bpm_g": 100,
+"debut": 2016,
+"pick": null
+},
+"Doug McDermott": {
+"bbref": "mcderdo01",
+"bpm": -3.69,
+"bpm_g": 71,
+"debut": 2014,
+"pick": 11
+},
+"Drake Powell": {
+"bbref": "poweldr01",
+"bpm": -6.0,
+"bpm_g": 63,
+"debut": 2025,
+"pick": 22
+},
+"Draymond Green": {
+"bbref": "greendr01",
+"bpm": -0.45,
+"bpm_g": 136,
+"debut": 2012,
+"pick": 35
+},
+"Drew Eubanks": {
+"bbref": "eubandr01",
+"bpm": -1.923,
+"bpm_g": 103,
+"debut": 2018,
+"pick": null
+},
+"Drew Peterson": {
+"bbref": "peterdr01",
+"bpm": -2.542,
+"bpm_g": 31,
+"debut": 2023,
+"pick": null
+},
+"Drew Timme": {
+"bbref": "timmedr01",
+"bpm": -3.325,
+"bpm_g": 36,
+"debut": 2024,
+"pick": null
+},
+"Dru Smith": {
+"bbref": "smithdr01",
+"bpm": 2.183,
+"bpm_g": 84,
+"debut": 2022,
+"pick": null
+},
+"Duncan Robinson": {
+"bbref": "robindu01",
+"bpm": -0.425,
+"bpm_g": 151,
+"debut": 2018,
+"pick": null
+},
+"Duop Reath": {
+"bbref": "reathdu01",
+"bpm": -0.546,
+"bpm_g": 78,
+"debut": 2023,
+"pick": null
+},
+"Dwight Howard": {
+"bbref": "howardw01",
+"bpm": null,
+"bpm_g": 0,
+"debut": 2004,
+"pick": 1
+},
+"Dwight Powell": {
+"bbref": "poweldw01",
+"bpm": -0.747,
+"bpm_g": 118,
+"debut": 2014,
+"pick": 45
+},
+"Dylan Cardwell": {
+"bbref": "cardwdy01",
+"bpm": -1.9,
+"bpm_g": 44,
+"debut": 2025,
+"pick": null
+},
+"Dylan Harper": {
+"bbref": "harpedy01",
+"bpm": 1.4,
+"bpm_g": 69,
+"debut": 2025,
+"pick": 2
+},
+"Dyson Daniels": {
+"bbref": "daniedy01",
+"bpm": 1.4,
+"bpm_g": 152,
+"debut": 2022,
+"pick": 8
+},
+"E.J. Liddell": {
+"bbref": "liddeej01",
+"bpm": -3.553,
+"bpm_g": 38,
+"debut": 2023,
+"pick": 41
+},
+"Ed Davis": {
+"bbref": "davised01",
+"bpm": null,
+"bpm_g": 0,
+"debut": 2010,
+"pick": 13
+},
+"Egor D\u00ebmin": {
+"bbref": "demineg01",
+"bpm": -1.6,
+"bpm_g": 52,
+"debut": 2025,
+"pick": 8
+},
+"Elijah Harkless": {
+"bbref": "harklej01",
+"bpm": -5.1,
+"bpm_g": 36,
+"debut": 2024,
+"pick": null
+},
+"Emanuel Miller": {
+"bbref": "milleem01",
+"bpm": 0.155,
+"bpm_g": 11,
+"debut": 2024,
+"pick": null
+},
+"Emoni Bates": {
+"bbref": "batesem01",
+"bpm": -6.12,
+"bpm_g": 25,
+"debut": 2023,
+"pick": 49
+},
+"Enes Freedom": {
+"bbref": "kanteen01",
+"bpm": null,
+"bpm_g": 0,
+"debut": 2011,
+"pick": 3
+},
+"Enrique Freeman": {
+"bbref": "freemen01",
+"bpm": -5.331,
+"bpm_g": 26,
+"debut": 2024,
+"pick": 50
+},
+"Eric Bledsoe": {
+"bbref": "bledser01",
+"bpm": null,
+"bpm_g": 0,
+"debut": 2010,
+"pick": 18
+},
+"Eric Gordon": {
+"bbref": "gordoer01",
+"bpm": -1.067,
+"bpm_g": 45,
+"debut": 2008,
+"pick": 7
+},
+"Ethan Thompson": {
+"bbref": "thompet01",
+"bpm": -4.9,
+"bpm_g": 32,
+"debut": 2025,
+"pick": null
+},
+"Evan Fournier": {
+"bbref": "fournev01",
+"bpm": -4.3,
+"bpm_g": 32,
+"debut": 2012,
+"pick": 20
+},
+"Evan Mobley": {
+"bbref": "mobleev01",
+"bpm": 3.835,
+"bpm_g": 136,
+"debut": 2021,
+"pick": 3
+},
+"Franz Wagner": {
+"bbref": "wagnefr01",
+"bpm": 2.883,
+"bpm_g": 94,
+"debut": 2021,
+"pick": 8
+},
+"Fred VanVleet": {
+"bbref": "vanvlfr01",
+"bpm": 2.272,
+"bpm_g": 133,
+"debut": 2016,
+"pick": null
+},
+"GG Jackson": {
+"bbref": "jacksgg01",
+"bpm": -2.615,
+"bpm_g": 84,
+"debut": 2023,
+"pick": 45
+},
+"Gabe Vincent": {
+"bbref": "vincega01",
+"bpm": -4.127,
+"bpm_g": 125,
+"debut": 2019,
+"pick": null
+},
+"Garrett Temple": {
+"bbref": "templga01",
+"bpm": -4.172,
+"bpm_g": 50,
+"debut": 2009,
+"pick": null
+},
+"Garrison Mathews": {
+"bbref": "mathega01",
+"bpm": -1.527,
+"bpm_g": 62,
+"debut": 2019,
+"pick": null
+},
+"Gary Harris": {
+"bbref": "harriga01",
+"bpm": -2.6,
+"bpm_g": 96,
+"debut": 2014,
+"pick": 19
+},
+"Gary Payton": {
+"bbref": "paytoga02",
+"bpm": 1.67,
+"bpm_g": 135,
+"debut": 2016,
+"pick": null
+},
+"Gary Trent": {
+"bbref": "trentga02",
+"bpm": -3.377,
+"bpm_g": 139,
+"debut": 2018,
+"pick": 37
+},
+"George Hill": {
+"bbref": "hillge01",
+"bpm": null,
+"bpm_g": 0,
+"debut": 2008,
+"pick": 26
+},
+"Georges Niang": {
+"bbref": "niangge01",
+"bpm": -2.606,
+"bpm_g": 161,
+"debut": 2016,
+"pick": 50
+},
+"Giannis Antetokounmpo": {
+"bbref": "antetgi01",
+"bpm": 9.5,
+"bpm_g": 103,
+"debut": 2013,
+"pick": 15
+},
+"Goga Bitadze": {
+"bbref": "bitadgo01",
+"bpm": 2.643,
+"bpm_g": 134,
+"debut": 2019,
+"pick": 18
+},
+"Goran Dragic": {
+"bbref": "dragigo01",
+"bpm": null,
+"bpm_g": 0,
+"debut": 2008,
+"pick": 45
+},
+"Gordon Hayward": {
+"bbref": "haywago01",
+"bpm": -2.1,
+"bpm_g": 51,
+"debut": 2010,
+"pick": 9
+},
+"Gradey Dick": {
+"bbref": "dickgr01",
+"bpm": -3.434,
+"bpm_g": 130,
+"debut": 2023,
+"pick": 13
+},
+"Grant Nelson": {
+"bbref": "nelsogr02",
+"bpm": 2.2,
+"bpm_g": 4,
+"debut": 2025,
+"pick": null
+},
+"Grant Williams": {
+"bbref": "willigr01",
+"bpm": 0.615,
+"bpm_g": 52,
+"debut": 2019,
+"pick": 22
+},
+"Grayson Allen": {
+"bbref": "allengr01",
+"bpm": 0.764,
+"bpm_g": 115,
+"debut": 2018,
+"pick": 21
+},
+"Greg Monroe": {
+"bbref": "monrogr01",
+"bpm": null,
+"bpm_g": 0,
+"debut": 2010,
+"pick": 7
+},
+"Guerschon Yabusele": {
+"bbref": "yabusgu01",
+"bpm": -1.587,
+"bpm_g": 137,
+"debut": 2017,
+"pick": 16
+},
+"Gui Santos": {
+"bbref": "santogu01",
+"bpm": -1.097,
+"bpm_g": 124,
+"debut": 2023,
+"pick": 55
+},
+"Harrison Barnes": {
+"bbref": "barneha02",
+"bpm": -0.048,
+"bpm_g": 159,
+"debut": 2012,
+"pick": 7
+},
+"Harrison Ingram": {
+"bbref": "ingraha01",
+"bpm": 0.842,
+"bpm_g": 12,
+"debut": 2024,
+"pick": 48
+},
+"Haywood Highsmith": {
+"bbref": "highsha01",
+"bpm": -1.407,
+"bpm_g": 81,
+"debut": 2018,
+"pick": null
+},
+"Herbert Jones": {
+"bbref": "joneshe01",
+"bpm": -3.232,
+"bpm_g": 76,
+"debut": 2021,
+"pick": 35
+},
+"Hugo Gonz\u00e1lez": {
+"bbref": "gonzahu01",
+"bpm": -1.5,
+"bpm_g": 74,
+"debut": 2025,
+"pick": 28
+},
+"Hunter Dickinson": {
+"bbref": "dickihu01",
+"bpm": -11.4,
+"bpm_g": 5,
+"debut": 2025,
+"pick": null
+},
+"Hunter Sallis": {
+"bbref": "sallihu01",
+"bpm": -10.6,
+"bpm_g": 7,
+"debut": 2025,
+"pick": null
+},
+"Hunter Tyson": {
+"bbref": "tysonhu01",
+"bpm": -5.383,
+"bpm_g": 72,
+"debut": 2023,
+"pick": 37
+},
+"Immanuel Quickley": {
+"bbref": "quickim01",
+"bpm": 2.336,
+"bpm_g": 103,
+"debut": 2020,
+"pick": 25
+},
+"Isaac Jones": {
+"bbref": "jonesis01",
+"bpm": -2.653,
+"bpm_g": 47,
+"debut": 2024,
+"pick": null
+},
+"Isaac Okoro": {
+"bbref": "okorois01",
+"bpm": -2.262,
+"bpm_g": 118,
+"debut": 2020,
+"pick": 5
+},
+"Isaiah Collier": {
+"bbref": "colliis01",
+"bpm": -3.984,
+"bpm_g": 130,
+"debut": 2024,
+"pick": 29
+},
+"Isaiah Crawford": {
+"bbref": "crawfis01",
+"bpm": -3.569,
+"bpm_g": 29,
+"debut": 2024,
+"pick": null
+},
+"Isaiah Hartenstein": {
+"bbref": "harteis01",
+"bpm": 3.652,
+"bpm_g": 104,
+"debut": 2018,
+"pick": 43
+},
+"Isaiah Jackson": {
+"bbref": "jacksis01",
+"bpm": -1.033,
+"bpm_g": 60,
+"debut": 2021,
+"pick": 22
+},
+"Isaiah Joe": {
+"bbref": "joeis01",
+"bpm": 1.888,
+"bpm_g": 145,
+"debut": 2020,
+"pick": 49
+},
+"Isaiah Livers": {
+"bbref": "liveris01",
+"bpm": -4.059,
+"bpm_g": 59,
+"debut": 2021,
+"pick": 42
+},
+"Isaiah Mobley": {
+"bbref": "mobleis01",
+"bpm": -5.573,
+"bpm_g": 11,
+"debut": 2022,
+"pick": 49
+},
+"Isaiah Roby": {
+"bbref": "robyis01",
+"bpm": null,
+"bpm_g": 0,
+"debut": 2019,
+"pick": 45
+},
+"Isaiah Stevens": {
+"bbref": "steveis01",
+"bpm": -4.8,
+"bpm_g": 6,
+"debut": 2024,
+"pick": null
+},
+"Isaiah Stewart": {
+"bbref": "stewais01",
+"bpm": 0.332,
+"bpm_g": 130,
+"debut": 2020,
+"pick": 16
+},
+"Ivica Zubac": {
+"bbref": "zubaciv01",
+"bpm": 1.825,
+"bpm_g": 128,
+"debut": 2016,
+"pick": 32
+},
+"JD Davison": {
+"bbref": "davisjd01",
+"bpm": -2.955,
+"bpm_g": 44,
+"debut": 2022,
+"pick": 53
+},
+"Ja Morant": {
+"bbref": "moranja01",
+"bpm": 1.286,
+"bpm_g": 70,
+"debut": 2019,
+"pick": 2
+},
+"Ja'Kobe Walter": {
+"bbref": "walteja01",
+"bpm": -1.432,
+"bpm_g": 124,
+"debut": 2024,
+"pick": 19
+},
+"JaVale McGee": {
+"bbref": "mcgeeja01",
+"bpm": -1.3,
+"bpm_g": 46,
+"debut": 2008,
+"pick": 18
+},
+"Jabari Smith": {
+"bbref": "smithja05",
+"bpm": -0.7,
+"bpm_g": 134,
+"debut": 2022,
+"pick": 3
+},
+"Jabari Walker": {
+"bbref": "walkeja01",
+"bpm": -1.781,
+"bpm_g": 124,
+"debut": 2022,
+"pick": 57
+},
+"Jacob Toppin": {
+"bbref": "toppija01",
+"bpm": -1.895,
+"bpm_g": 22,
+"debut": 2023,
+"pick": null
+},
+"Jaden Hardy": {
+"bbref": "hardyja02",
+"bpm": -4.75,
+"bpm_g": 114,
+"debut": 2022,
+"pick": 37
+},
+"Jaden Ivey": {
+"bbref": "iveyja01",
+"bpm": 0.0,
+"bpm_g": 67,
+"debut": 2022,
+"pick": 5
+},
+"Jaden McDaniels": {
+"bbref": "mcdanja02",
+"bpm": -0.141,
+"bpm_g": 155,
+"debut": 2020,
+"pick": 28
+},
+"Jae Crowder": {
+"bbref": "crowdja01",
+"bpm": -2.859,
+"bpm_g": 59,
+"debut": 2012,
+"pick": 34
+},
+"Jae'Sean Tate": {
+"bbref": "tateja01",
+"bpm": -2.202,
+"bpm_g": 98,
+"debut": 2020,
+"pick": null
+},
+"Jahmai Mashack": {
+"bbref": "mashaja01",
+"bpm": -7.0,
+"bpm_g": 31,
+"debut": 2025,
+"pick": 59
+},
+"Jahmir Young": {
+"bbref": "youngja05",
+"bpm": -4.54,
+"bpm_g": 20,
+"debut": 2024,
+"pick": null
+},
+"Jahmyl Telfort": {
+"bbref": "telfoja01",
+"bpm": -13.8,
+"bpm_g": 8,
+"debut": 2025,
+"pick": null
+},
+"Jaime Jaquez": {
+"bbref": "jaqueja01",
+"bpm": -0.368,
+"bpm_g": 141,
+"debut": 2023,
+"pick": 18
+},
+"Jake LaRavia": {
+"bbref": "laravja01",
+"bpm": -0.576,
+"bpm_g": 148,
+"debut": 2022,
+"pick": 19
+},
+"Jakob Poeltl": {
+"bbref": "poeltja01",
+"bpm": 1.821,
+"bpm_g": 103,
+"debut": 2016,
+"pick": 9
+},
+"Jalen Bridges": {
+"bbref": "bridgja01",
+"bpm": -12.5,
+"bpm_g": 8,
+"debut": 2024,
+"pick": null
+},
+"Jalen Brunson": {
+"bbref": "brunsja01",
+"bpm": 3.194,
+"bpm_g": 139,
+"debut": 2018,
+"pick": 33
+},
+"Jalen Duren": {
+"bbref": "durenja01",
+"bpm": 3.999,
+"bpm_g": 148,
+"debut": 2022,
+"pick": 13
+},
+"Jalen Green": {
+"bbref": "greenja05",
+"bpm": 0.051,
+"bpm_g": 114,
+"debut": 2021,
+"pick": 2
+},
+"Jalen Hood-Schifino": {
+"bbref": "hoodsja01",
+"bpm": -12.267,
+"bpm_g": 36,
+"debut": 2023,
+"pick": 17
+},
+"Jalen Johnson": {
+"bbref": "johnsja05",
+"bpm": 3.4,
+"bpm_g": 108,
+"debut": 2021,
+"pick": 20
+},
+"Jalen McDaniels": {
+"bbref": "mcdanja01",
+"bpm": -7.919,
+"bpm_g": 54,
+"debut": 2019,
+"pick": 52
+},
+"Jalen Pickett": {
+"bbref": "pickeja02",
+"bpm": -1.904,
+"bpm_g": 99,
+"debut": 2023,
+"pick": 32
+},
+"Jalen Slawson": {
+"bbref": "slawsja01",
+"bpm": -3.28,
+"bpm_g": 25,
+"debut": 2023,
+"pick": 54
+},
+"Jalen Smith": {
+"bbref": "smithja04",
+"bpm": 0.175,
+"bpm_g": 117,
+"debut": 2020,
+"pick": 10
+},
+"Jalen Suggs": {
+"bbref": "suggsja01",
+"bpm": 1.701,
+"bpm_g": 92,
+"debut": 2021,
+"pick": 5
+},
+"Jalen Williams": {
+"bbref": "willija06",
+"bpm": 3.385,
+"bpm_g": 102,
+"debut": 2022,
+"pick": 12
+},
+"Jalen Wilson": {
+"bbref": "wilsoja03",
+"bpm": -4.59,
+"bpm_g": 133,
+"debut": 2023,
+"pick": 51
+},
+"Jamal Cain": {
+"bbref": "cainja01",
+"bpm": -2.361,
+"bpm_g": 77,
+"debut": 2022,
+"pick": null
+},
+"Jamal Murray": {
+"bbref": "murraja01",
+"bpm": 2.543,
+"bpm_g": 142,
+"debut": 2016,
+"pick": 7
+},
+"Jamal Shead": {
+"bbref": "sheadja01",
+"bpm": -3.16,
+"bpm_g": 157,
+"debut": 2024,
+"pick": 45
+},
+"Jamaree Bouyea": {
+"bbref": "bouyeja01",
+"bpm": -0.89,
+"bpm_g": 51,
+"debut": 2022,
+"pick": null
+},
+"James Harden": {
+"bbref": "hardeja01",
+"bpm": 4.112,
+"bpm_g": 149,
+"debut": 2009,
+"pick": 3
+},
+"James Johnson": {
+"bbref": "johnsja01",
+"bpm": -8.029,
+"bpm_g": 21,
+"debut": 2009,
+"pick": 16
+},
+"James Wiseman": {
+"bbref": "wisemja01",
+"bpm": -6.88,
+"bpm_g": 5,
+"debut": 2020,
+"pick": 2
+},
+"Jamir Watkins": {
+"bbref": "watkija01",
+"bpm": -3.3,
+"bpm_g": 50,
+"debut": 2025,
+"pick": 43
+},
+"Jamison Battle": {
+"bbref": "battlja01",
+"bpm": -2.452,
+"bpm_g": 120,
+"debut": 2024,
+"pick": null
+},
+"Jarace Walker": {
+"bbref": "walkeja02",
+"bpm": -1.655,
+"bpm_g": 151,
+"debut": 2023,
+"pick": 8
+},
+"Jared Butler": {
+"bbref": "butleja02",
+"bpm": -1.44,
+"bpm_g": 100,
+"debut": 2021,
+"pick": 40
+},
+"Jared McCain": {
+"bbref": "mccaija01",
+"bpm": -1.736,
+"bpm_g": 90,
+"debut": 2024,
+"pick": 16
+},
+"Jaren Jackson": {
+"bbref": "jacksja02",
+"bpm": 1.159,
+"bpm_g": 122,
+"debut": 2018,
+"pick": 4
+},
+"Jarred Vanderbilt": {
+"bbref": "vandeja01",
+"bpm": -1.322,
+"bpm_g": 101,
+"debut": 2018,
+"pick": 41
+},
+"Jarrett Allen": {
+"bbref": "allenja01",
+"bpm": 3.551,
+"bpm_g": 138,
+"debut": 2017,
+"pick": 22
+},
+"Jase Richardson": {
+"bbref": "richaja02",
+"bpm": -2.5,
+"bpm_g": 54,
+"debut": 2025,
+"pick": 25
+},
+"Javon Small": {
+"bbref": "smallja01",
+"bpm": 1.0,
+"bpm_g": 41,
+"debut": 2025,
+"pick": 48
+},
+"Javonte Cooke": {
+"bbref": "cookeja01",
+"bpm": -11.7,
+"bpm_g": 19,
+"debut": 2025,
+"pick": null
+},
+"Javonte Green": {
+"bbref": "greenja02",
+"bpm": 0.105,
+"bpm_g": 150,
+"debut": 2019,
+"pick": null
+},
+"Jaxson Hayes": {
+"bbref": "hayesja02",
+"bpm": 0.511,
+"bpm_g": 122,
+"debut": 2019,
+"pick": 8
+},
+"Jay Huff": {
+"bbref": "huffja01",
+"bpm": 1.759,
+"bpm_g": 146,
+"debut": 2021,
+"pick": null
+},
+"Jaylen Brown": {
+"bbref": "brownja02",
+"bpm": 1.749,
+"bpm_g": 134,
+"debut": 2016,
+"pick": 3
+},
+"Jaylen Clark": {
+"bbref": "clarkja02",
+"bpm": -1.585,
+"bpm_g": 108,
+"debut": 2024,
+"pick": 53
+},
+"Jaylen Wells": {
+"bbref": "wellsja01",
+"bpm": -2.62,
+"bpm_g": 148,
+"debut": 2024,
+"pick": 39
+},
+"Jaylin Williams": {
+"bbref": "willija07",
+"bpm": 3.371,
+"bpm_g": 112,
+"debut": 2022,
+"pick": 34
+},
+"Jaylon Tyson": {
+"bbref": "tysonja01",
+"bpm": -1.065,
+"bpm_g": 113,
+"debut": 2024,
+"pick": 20
+},
+"Jayson Kent": {
+"bbref": "kentja01",
+"bpm": 4.2,
+"bpm_g": 5,
+"debut": 2025,
+"pick": null
+},
+"Jayson Tatum": {
+"bbref": "tatumja01",
+"bpm": 5.127,
+"bpm_g": 88,
+"debut": 2017,
+"pick": 3
+},
+"Jeff Green": {
+"bbref": "greenje02",
+"bpm": -2.503,
+"bpm_g": 62,
+"debut": 2007,
+"pick": 5
+},
+"Jerami Grant": {
+"bbref": "grantje01",
+"bpm": -0.723,
+"bpm_g": 104,
+"debut": 2014,
+"pick": 39
+},
+"Jeremiah Fears": {
+"bbref": "fearsje01",
+"bpm": -2.7,
+"bpm_g": 82,
+"debut": 2025,
+"pick": 7
+},
+"Jeremiah Robinson-Earl": {
+"bbref": "robinje02",
+"bpm": -3.175,
+"bpm_g": 88,
+"debut": 2021,
+"pick": 32
+},
+"Jeremy Sochan": {
+"bbref": "sochaje01",
+"bpm": -1.2,
+"bpm_g": 98,
+"debut": 2022,
+"pick": 9
+},
+"Jericho Sims": {
+"bbref": "simsje01",
+"bpm": -3.056,
+"bpm_g": 120,
+"debut": 2021,
+"pick": 58
+},
+"Jett Howard": {
+"bbref": "howarje01",
+"bpm": -3.626,
+"bpm_g": 115,
+"debut": 2023,
+"pick": 11
+},
+"Jevon Carter": {
+"bbref": "carteje01",
+"bpm": -1.504,
+"bpm_g": 89,
+"debut": 2018,
+"pick": 32
+},
+"Jimmy Butler": {
+"bbref": "butleji01",
+"bpm": 5.145,
+"bpm_g": 93,
+"debut": 2011,
+"pick": 30
+},
+"Joan Beringer": {
+"bbref": "berinjo01",
+"bpm": 0.4,
+"bpm_g": 40,
+"debut": 2025,
+"pick": 17
+},
+"Jock Landale": {
+"bbref": "landajo01",
+"bpm": 0.091,
+"bpm_g": 110,
+"debut": 2021,
+"pick": null
+},
+"Joe Harris": {
+"bbref": "harrijo01",
+"bpm": -5.9,
+"bpm_g": 16,
+"debut": 2014,
+"pick": 33
+},
+"Joe Ingles": {
+"bbref": "inglejo01",
+"bpm": -2.774,
+"bpm_g": 46,
+"debut": 2014,
+"pick": null
+},
+"Joel Embiid": {
+"bbref": "embiijo01",
+"bpm": 4.433,
+"bpm_g": 57,
+"debut": 2016,
+"pick": 3
+},
+"John Collins": {
+"bbref": "collijo01",
+"bpm": 0.05,
+"bpm_g": 109,
+"debut": 2017,
+"pick": 19
+},
+"John Konchar": {
+"bbref": "konchjo01",
+"bpm": 1.261,
+"bpm_g": 102,
+"debut": 2019,
+"pick": null
+},
+"John Poulakidas": {
+"bbref": "poulajo01",
+"bpm": -2.2,
+"bpm_g": 13,
+"debut": 2025,
+"pick": null
+},
+"John Tonje": {
+"bbref": "tonjejo01",
+"bpm": -5.1,
+"bpm_g": 6,
+"debut": 2025,
+"pick": 53
+},
+"John Wall": {
+"bbref": "walljo01",
+"bpm": null,
+"bpm_g": 0,
+"debut": 2010,
+"pick": 1
+},
+"Johni Broome": {
+"bbref": "broomjo01",
+"bpm": -16.2,
+"bpm_g": 11,
+"debut": 2025,
+"pick": 35
+},
+"Johnny Furphy": {
+"bbref": "furphjo01",
+"bpm": -2.994,
+"bpm_g": 85,
+"debut": 2024,
+"pick": 35
+},
+"Johnny Juzang": {
+"bbref": "juzanjo01",
+"bpm": -2.547,
+"bpm_g": 85,
+"debut": 2022,
+"pick": null
+},
+"Jonas Valan\u010di\u016bnas": {
+"bbref": "valanjo01",
+"bpm": 0.333,
+"bpm_g": 146,
+"debut": 2012,
+"pick": 5
+},
+"Jonathan Isaac": {
+"bbref": "isaacjo01",
+"bpm": -0.272,
+"bpm_g": 123,
+"debut": 2017,
+"pick": 6
+},
+"Jonathan Kuminga": {
+"bbref": "kuminjo01",
+"bpm": -1.207,
+"bpm_g": 83,
+"debut": 2021,
+"pick": 7
+},
+"Jonathan Mogbo": {
+"bbref": "mogbojo01",
+"bpm": -1.434,
+"bpm_g": 103,
+"debut": 2024,
+"pick": 31
+},
+"Jordan Clarkson": {
+"bbref": "clarkjo01",
+"bpm": -2.689,
+"bpm_g": 109,
+"debut": 2014,
+"pick": 46
+},
+"Jordan Goodwin": {
+"bbref": "goodwjo01",
+"bpm": 1.038,
+"bpm_g": 99,
+"debut": 2021,
+"pick": null
+},
+"Jordan Hawkins": {
+"bbref": "hawkijo01",
+"bpm": -5.781,
+"bpm_g": 107,
+"debut": 2023,
+"pick": 14
+},
+"Jordan McLaughlin": {
+"bbref": "mclaujo01",
+"bpm": -0.524,
+"bpm_g": 90,
+"debut": 2019,
+"pick": null
+},
+"Jordan Miller": {
+"bbref": "millejo02",
+"bpm": -0.944,
+"bpm_g": 97,
+"debut": 2023,
+"pick": 48
+},
+"Jordan Poole": {
+"bbref": "poolejo01",
+"bpm": -1.021,
+"bpm_g": 107,
+"debut": 2019,
+"pick": 28
+},
+"Jordan Walsh": {
+"bbref": "walshjo01",
+"bpm": -1.577,
+"bpm_g": 120,
+"debut": 2023,
+"pick": 38
+},
+"Jose Alvarado": {
+"bbref": "alvarjo01",
+"bpm": -1.179,
+"bpm_g": 125,
+"debut": 2021,
+"pick": null
+},
+"Josh Giddey": {
+"bbref": "giddejo01",
+"bpm": 2.869,
+"bpm_g": 124,
+"debut": 2021,
+"pick": 6
+},
+"Josh Green": {
+"bbref": "greenjo02",
+"bpm": -2.643,
+"bpm_g": 126,
+"debut": 2020,
+"pick": 18
+},
+"Josh Hart": {
+"bbref": "hartjo01",
+"bpm": 2.892,
+"bpm_g": 143,
+"debut": 2017,
+"pick": 30
+},
+"Josh Minott": {
+"bbref": "minotjo01",
+"bpm": 2.355,
+"bpm_g": 95,
+"debut": 2022,
+"pick": 45
+},
+"Josh Oduro": {
+"bbref": "odurojo01",
+"bpm": -7.7,
+"bpm_g": 3,
+"debut": 2025,
+"pick": null
+},
+"Josh Okogie": {
+"bbref": "okogijo01",
+"bpm": -0.285,
+"bpm_g": 118,
+"debut": 2018,
+"pick": 20
+},
+"Josh Richardson": {
+"bbref": "richajo01",
+"bpm": -2.147,
+"bpm_g": 51,
+"debut": 2015,
+"pick": 40
+},
+"Jrue Holiday": {
+"bbref": "holidjr01",
+"bpm": 1.253,
+"bpm_g": 115,
+"debut": 2009,
+"pick": 17
+},
+"Julian Champagnie": {
+"bbref": "champju02",
+"bpm": 0.05,
+"bpm_g": 164,
+"debut": 2022,
+"pick": null
+},
+"Julian Phillips": {
+"bbref": "phillju01",
+"bpm": -3.227,
+"bpm_g": 127,
+"debut": 2023,
+"pick": 35
+},
+"Julian Reese": {
+"bbref": "reeseju01",
+"bpm": -5.1,
+"bpm_g": 13,
+"debut": 2025,
+"pick": null
+},
+"Julian Strawther": {
+"bbref": "strawju01",
+"bpm": -3.472,
+"bpm_g": 122,
+"debut": 2023,
+"pick": 29
+},
+"Julius Randle": {
+"bbref": "randlju01",
+"bpm": 1.407,
+"bpm_g": 148,
+"debut": 2014,
+"pick": 7
+},
+"Justin Champagnie": {
+"bbref": "champju01",
+"bpm": -0.447,
+"bpm_g": 131,
+"debut": 2021,
+"pick": null
+},
+"Justin Edwards": {
+"bbref": "edwarju01",
+"bpm": -2.278,
+"bpm_g": 108,
+"debut": 2024,
+"pick": null
+},
+"Jusuf Nurki\u0107": {
+"bbref": "nurkiju01",
+"bpm": -0.23,
+"bpm_g": 92,
+"debut": 2014,
+"pick": 16
+},
+"KJ Martin": {
+"bbref": "martike04",
+"bpm": -3.891,
+"bpm_g": 103,
+"debut": 2020,
+"pick": 52
+},
+"KJ Simpson": {
+"bbref": "simpskj01",
+"bpm": -5.293,
+"bpm_g": 56,
+"debut": 2024,
+"pick": 42
+},
+"Kadary Richmond": {
+"bbref": "richmka01",
+"bpm": 3.6,
+"bpm_g": 3,
+"debut": 2025,
+"pick": null
+},
+"Kam Jones": {
+"bbref": "joneska03",
+"bpm": -6.2,
+"bpm_g": 37,
+"debut": 2025,
+"pick": 38
+},
+"Karl-Anthony Towns": {
+"bbref": "townska01",
+"bpm": 3.447,
+"bpm_g": 147,
+"debut": 2015,
+"pick": 1
+},
+"Karlo Matkovi\u0107": {
+"bbref": "matkoka01",
+"bpm": -0.39,
+"bpm_g": 104,
+"debut": 2024,
+"pick": 52
+},
+"Kasparas Jaku\u010dionis": {
+"bbref": "jakucka01",
+"bpm": -0.4,
+"bpm_g": 53,
+"debut": 2025,
+"pick": 20
+},
+"Kawhi Leonard": {
+"bbref": "leonaka01",
+"bpm": 6.223,
+"bpm_g": 102,
+"debut": 2011,
+"pick": 15
+},
+"Keaton Wallace": {
+"bbref": "wallake01",
+"bpm": -2.552,
+"bpm_g": 84,
+"debut": 2024,
+"pick": null
+},
+"Keegan Murray": {
+"bbref": "murrake02",
+"bpm": -1.948,
+"bpm_g": 99,
+"debut": 2022,
+"pick": 4
+},
+"Keion Brooks": {
+"bbref": "brookke02",
+"bpm": -3.5,
+"bpm_g": 14,
+"debut": 2024,
+"pick": null
+},
+"Kel'el Ware": {
+"bbref": "wareke01",
+"bpm": 1.101,
+"bpm_g": 141,
+"debut": 2024,
+"pick": 15
+},
+"Keldon Johnson": {
+"bbref": "johnske04",
+"bpm": -0.311,
+"bpm_g": 159,
+"debut": 2019,
+"pick": 29
+},
+"Kelly Olynyk": {
+"bbref": "olynyke01",
+"bpm": -0.407,
+"bpm_g": 86,
+"debut": 2013,
+"pick": 13
+},
+"Kelly Oubre": {
+"bbref": "oubreke01",
+"bpm": -1.891,
+"bpm_g": 110,
+"debut": 2015,
+"pick": 15
+},
+"Kemba Walker": {
+"bbref": "walkeke02",
+"bpm": null,
+"bpm_g": 0,
+"debut": 2011,
+"pick": 9
+},
+"Kendrick Nunn": {
+"bbref": "nunnke01",
+"bpm": null,
+"bpm_g": 0,
+"debut": 2019,
+"pick": null
+},
+"Kennedy Chandler": {
+"bbref": "chandke01",
+"bpm": -5.7,
+"bpm_g": 11,
+"debut": 2022,
+"pick": 38
+},
+"Kenrich Williams": {
+"bbref": "willike04",
+"bpm": 0.421,
+"bpm_g": 125,
+"debut": 2018,
+"pick": null
+},
+"Kentavious Caldwell-Pope": {
+"bbref": "caldwke01",
+"bpm": -1.838,
+"bpm_g": 128,
+"debut": 2013,
+"pick": 8
+},
+"Keon Ellis": {
+"bbref": "elliske01",
+"bpm": 0.763,
+"bpm_g": 152,
+"debut": 2022,
+"pick": null
+},
+"Keon Johnson": {
+"bbref": "johnske07",
+"bpm": -3.264,
+"bpm_g": 84,
+"debut": 2021,
+"pick": 21
+},
+"Keshad Johnson": {
+"bbref": "johnske10",
+"bpm": -0.9,
+"bpm_g": 48,
+"debut": 2024,
+"pick": null
+},
+"Keshon Gilbert": {
+"bbref": "gilbeke01",
+"bpm": -4.6,
+"bpm_g": 4,
+"debut": 2025,
+"pick": null
+},
+"Kevin Durant": {
+"bbref": "duranke01",
+"bpm": 3.924,
+"bpm_g": 140,
+"debut": 2007,
+"pick": 2
+},
+"Kevin Huerter": {
+"bbref": "huertke01",
+"bpm": -1.3,
+"bpm_g": 138,
+"debut": 2018,
+"pick": 19
+},
+"Kevin Knox": {
+"bbref": "knoxke01",
+"bpm": -3.573,
+"bpm_g": 45,
+"debut": 2018,
+"pick": 9
+},
+"Kevin Love": {
+"bbref": "loveke01",
+"bpm": 0.277,
+"bpm_g": 60,
+"debut": 2008,
+"pick": 5
+},
+"Kevin McCullar": {
+"bbref": "mcculke01",
+"bpm": -3.504,
+"bpm_g": 25,
+"debut": 2024,
+"pick": 56
+},
+"Kevin Porter": {
+"bbref": "porteke02",
+"bpm": 0.308,
+"bpm_g": 113,
+"debut": 2019,
+"pick": 30
+},
+"Kevon Looney": {
+"bbref": "looneke01",
+"bpm": -0.155,
+"bpm_g": 97,
+"debut": 2015,
+"pick": 30
+},
+"Keyonte George": {
+"bbref": "georgke01",
+"bpm": -1.093,
+"bpm_g": 121,
+"debut": 2023,
+"pick": 16
+},
+"Khaman Maluach": {
+"bbref": "maluakh01",
+"bpm": -3.7,
+"bpm_g": 46,
+"debut": 2025,
+"pick": 10
+},
+"Khris Middleton": {
+"bbref": "middlkh01",
+"bpm": -2.513,
+"bpm_g": 100,
+"debut": 2012,
+"pick": 39
+},
+"Killian Hayes": {
+"bbref": "hayeski01",
+"bpm": -4.883,
+"bpm_g": 29,
+"debut": 2020,
+"pick": 7
+},
+"Klay Thompson": {
+"bbref": "thompkl01",
+"bpm": -1.196,
+"bpm_g": 141,
+"debut": 2011,
+"pick": 11
+},
+"Kobe Brown": {
+"bbref": "brownko01",
+"bpm": -2.462,
+"bpm_g": 101,
+"debut": 2023,
+"pick": 30
+},
+"Kobe Bufkin": {
+"bbref": "bufkiko01",
+"bpm": -7.323,
+"bpm_g": 26,
+"debut": 2023,
+"pick": 15
+},
+"Kobe Sanders": {
+"bbref": "sandeko01",
+"bpm": -2.9,
+"bpm_g": 68,
+"debut": 2025,
+"pick": 50
+},
+"Koby Brea": {
+"bbref": "breako01",
+"bpm": 0.2,
+"bpm_g": 12,
+"debut": 2025,
+"pick": 41
+},
+"Kon Knueppel": {
+"bbref": "knuepko01",
+"bpm": 2.8,
+"bpm_g": 81,
+"debut": 2025,
+"pick": 4
+},
+"Kris Dunn": {
+"bbref": "dunnkr01",
+"bpm": -0.136,
+"bpm_g": 156,
+"debut": 2016,
+"pick": 5
+},
+"Kris Murray": {
+"bbref": "murrakr01",
+"bpm": -2.321,
+"bpm_g": 126,
+"debut": 2023,
+"pick": 23
+},
+"Kristaps Porzi\u0146\u0123is": {
+"bbref": "porzikr01",
+"bpm": 3.489,
+"bpm_g": 74,
+"debut": 2015,
+"pick": 4
+},
+"Kyle Anderson": {
+"bbref": "anderky01",
+"bpm": 1.045,
+"bpm_g": 104,
+"debut": 2014,
+"pick": 30
+},
+"Kyle Filipowski": {
+"bbref": "filipky01",
+"bpm": -1.052,
+"bpm_g": 149,
+"debut": 2024,
+"pick": 32
+},
+"Kyle Kuzma": {
+"bbref": "kuzmaky01",
+"bpm": -3.561,
+"bpm_g": 134,
+"debut": 2017,
+"pick": 27
+},
+"Kyle Lowry": {
+"bbref": "lowryky01",
+"bpm": -3.9,
+"bpm_g": 49,
+"debut": 2006,
+"pick": 24
+},
+"Kyrie Irving": {
+"bbref": "irvinky01",
+"bpm": 4.206,
+"bpm_g": 108,
+"debut": 2011,
+"pick": 1
+},
+"Kyshawn George": {
+"bbref": "georgky01",
+"bpm": -2.9,
+"bpm_g": 116,
+"debut": 2024,
+"pick": 24
+},
+"LJ Cryer": {
+"bbref": "cryerlj01",
+"bpm": -4.7,
+"bpm_g": 18,
+"debut": 2025,
+"pick": null
+},
+"LaMarcus Aldridge": {
+"bbref": "aldrila01",
+"bpm": null,
+"bpm_g": 0,
+"debut": 2006,
+"pick": 2
+},
+"LaMelo Ball": {
+"bbref": "ballla01",
+"bpm": 4.108,
+"bpm_g": 119,
+"debut": 2020,
+"pick": 3
+},
+"Lachlan Olbrich": {
+"bbref": "olbrila01",
+"bpm": -3.4,
+"bpm_g": 37,
+"debut": 2025,
+"pick": 55
+},
+"Landry Shamet": {
+"bbref": "shamela01",
+"bpm": -1.34,
+"bpm_g": 101,
+"debut": 2018,
+"pick": 26
+},
+"Larry Nance": {
+"bbref": "nancela02",
+"bpm": -1.285,
+"bpm_g": 59,
+"debut": 2015,
+"pick": 27
+},
+"Lauri Markkanen": {
+"bbref": "markkla01",
+"bpm": 1.069,
+"bpm_g": 89,
+"debut": 2017,
+"pick": 7
+},
+"Lawson Lovering": {
+"bbref": "loverla01",
+"bpm": -3.6,
+"bpm_g": 2,
+"debut": 2025,
+"pick": null
+},
+"LeBron James": {
+"bbref": "jamesle01",
+"bpm": 4.631,
+"bpm_g": 130,
+"debut": 2003,
+"pick": 1
+},
+"Leaky Black": {
+"bbref": "blackle01",
+"bpm": -3.461,
+"bpm_g": 41,
+"debut": 2023,
+"pick": null
+},
+"Leonard Miller": {
+"bbref": "millele01",
+"bpm": -1.829,
+"bpm_g": 59,
+"debut": 2023,
+"pick": 33
+},
+"Liam McNeeley": {
+"bbref": "mcneeli01",
+"bpm": -1.3,
+"bpm_g": 31,
+"debut": 2025,
+"pick": 29
+},
+"Lindy Waters": {
+"bbref": "waterli01",
+"bpm": -2.974,
+"bpm_g": 92,
+"debut": 2021,
+"pick": null
+},
+"Lonzo Ball": {
+"bbref": "balllo01",
+"bpm": -0.45,
+"bpm_g": 70,
+"debut": 2017,
+"pick": 2
+},
+"Lou Williams": {
+"bbref": "willilo02",
+"bpm": null,
+"bpm_g": 0,
+"debut": 2005,
+"pick": 45
+},
+"Lucas Williamson": {
+"bbref": "willilu01",
+"bpm": -7.6,
+"bpm_g": 7,
+"debut": 2025,
+"pick": null
+},
+"Luguentz Dort": {
+"bbref": "dortlu01",
+"bpm": -0.884,
+"bpm_g": 140,
+"debut": 2019,
+"pick": null
+},
+"Luka Don\u010di\u0107": {
+"bbref": "doncilu01",
+"bpm": 8.16,
+"bpm_g": 114,
+"debut": 2018,
+"pick": 3
+},
+"Luka Garza": {
+"bbref": "garzalu01",
+"bpm": 0.703,
+"bpm_g": 108,
+"debut": 2021,
+"pick": 52
+},
+"Luke Kennard": {
+"bbref": "kennalu01",
+"bpm": 0.555,
+"bpm_g": 143,
+"debut": 2017,
+"pick": 12
+},
+"Luke Kornet": {
+"bbref": "kornelu01",
+"bpm": 3.445,
+"bpm_g": 141,
+"debut": 2017,
+"pick": null
+},
+"Luke Travers": {
+"bbref": "travelu01",
+"bpm": -6.45,
+"bpm_g": 24,
+"debut": 2024,
+"pick": 56
+},
+"Mac McClung": {
+"bbref": "mccluma01",
+"bpm": -6.008,
+"bpm_g": 13,
+"debut": 2021,
+"pick": null
+},
+"Malachi Smith": {
+"bbref": "smithma02",
+"bpm": -0.8,
+"bpm_g": 15,
+"debut": 2025,
+"pick": null
+},
+"Malaki Branham": {
+"bbref": "branhma01",
+"bpm": -2.827,
+"bpm_g": 75,
+"debut": 2022,
+"pick": 20
+},
+"Malcolm Brogdon": {
+"bbref": "brogdma01",
+"bpm": 0.667,
+"bpm_g": 63,
+"debut": 2016,
+"pick": 36
+},
+"Malevy Leons": {
+"bbref": "leonsma01",
+"bpm": -4.658,
+"bpm_g": 31,
+"debut": 2024,
+"pick": null
+},
+"Malik Beasley": {
+"bbref": "beaslma01",
+"bpm": -0.476,
+"bpm_g": 161,
+"debut": 2016,
+"pick": 19
+},
+"Malik Monk": {
+"bbref": "monkma01",
+"bpm": -1.044,
+"bpm_g": 127,
+"debut": 2017,
+"pick": 11
+},
+"MarJon Beauchamp": {
+"bbref": "beaucma01",
+"bpm": -3.529,
+"bpm_g": 49,
+"debut": 2022,
+"pick": 24
+},
+"Marcus Morris": {
+"bbref": "morrima03",
+"bpm": -3.8,
+"bpm_g": 49,
+"debut": 2011,
+"pick": 14
+},
+"Marcus Sasser": {
+"bbref": "sassema01",
+"bpm": -1.04,
+"bpm_g": 95,
+"debut": 2023,
+"pick": 25
+},
+"Marcus Smart": {
+"bbref": "smartma01",
+"bpm": -1.952,
+"bpm_g": 96,
+"debut": 2014,
+"pick": 6
+},
+"Mark Sears": {
+"bbref": "searsma01",
+"bpm": -2.2,
+"bpm_g": 7,
+"debut": 2025,
+"pick": null
+},
+"Mark Williams": {
+"bbref": "willima07",
+"bpm": 2.635,
+"bpm_g": 104,
+"debut": 2022,
+"pick": 15
+},
+"Markelle Fultz": {
+"bbref": "fultzma01",
+"bpm": -6.931,
+"bpm_g": 26,
+"debut": 2017,
+"pick": 1
+},
+"Marvin Bagley": {
+"bbref": "baglema01",
+"bpm": 0.119,
+"bpm_g": 91,
+"debut": 2018,
+"pick": 2
+},
+"Mason Plumlee": {
+"bbref": "plumlma01",
+"bpm": -0.366,
+"bpm_g": 94,
+"debut": 2013,
+"pick": 22
+},
+"Matas Buzelis": {
+"bbref": "buzelma01",
+"bpm": -1.764,
+"bpm_g": 157,
+"debut": 2024,
+"pick": 11
+},
+"Matisse Thybulle": {
+"bbref": "thybuma01",
+"bpm": 4.6,
+"bpm_g": 45,
+"debut": 2019,
+"pick": 20
+},
+"Max Christie": {
+"bbref": "chrisma02",
+"bpm": -2.003,
+"bpm_g": 155,
+"debut": 2022,
+"pick": 35
+},
+"Max Shulga": {
+"bbref": "shulgma01",
+"bpm": -11.5,
+"bpm_g": 11,
+"debut": 2025,
+"pick": 57
+},
+"Max Strus": {
+"bbref": "strusma01",
+"bpm": 0.816,
+"bpm_g": 62,
+"debut": 2019,
+"pick": null
+},
+"Maxi Kleber": {
+"bbref": "klebima01",
+"bpm": -3.856,
+"bpm_g": 77,
+"debut": 2017,
+"pick": null
+},
+"Maxime Raynaud": {
+"bbref": "raynama01",
+"bpm": -2.4,
+"bpm_g": 74,
+"debut": 2025,
+"pick": 42
+},
+"Maxwell Lewis": {
+"bbref": "lewisma05",
+"bpm": -9.39,
+"bpm_g": 62,
+"debut": 2023,
+"pick": 40
+},
+"Micah Peavy": {
+"bbref": "peavymi01",
+"bpm": -5.2,
+"bpm_g": 61,
+"debut": 2025,
+"pick": 40
+},
+"Micah Potter": {
+"bbref": "pottemi01",
+"bpm": -1.178,
+"bpm_g": 85,
+"debut": 2021,
+"pick": null
+},
+"Michael Porter": {
+"bbref": "portemi01",
+"bpm": 1.15,
+"bpm_g": 129,
+"debut": 2019,
+"pick": 14
+},
+"Mikal Bridges": {
+"bbref": "bridgmi01",
+"bpm": 1.1,
+"bpm_g": 164,
+"debut": 2018,
+"pick": 10
+},
+"Mike Conley": {
+"bbref": "conlemi01",
+"bpm": 0.12,
+"bpm_g": 125,
+"debut": 2007,
+"pick": 4
+},
+"Mike Muscala": {
+"bbref": "muscami01",
+"bpm": -5.3,
+"bpm_g": 53,
+"debut": 2013,
+"pick": 44
+},
+"Miles Bridges": {
+"bbref": "bridgmi02",
+"bpm": 1.418,
+"bpm_g": 141,
+"debut": 2018,
+"pick": 12
+},
+"Miles Kelly": {
+"bbref": "kellymi02",
+"bpm": -5.1,
+"bpm_g": 14,
+"debut": 2025,
+"pick": null
+},
+"Miles McBride": {
+"bbref": "mcbrimi01",
+"bpm": 0.469,
+"bpm_g": 105,
+"debut": 2021,
+"pick": 36
+},
+"Mitchell Robinson": {
+"bbref": "robinmi01",
+"bpm": 3.456,
+"bpm_g": 77,
+"debut": 2018,
+"pick": 36
+},
+"Mo Bamba": {
+"bbref": "bambamo01",
+"bpm": -1.689,
+"bpm_g": 36,
+"debut": 2018,
+"pick": 6
+},
+"Mohamed Diawara": {
+"bbref": "diawamo01",
+"bpm": -1.7,
+"bpm_g": 69,
+"debut": 2025,
+"pick": 51
+},
+"Montrezl Harrell": {
+"bbref": "harremo01",
+"bpm": null,
+"bpm_g": 0,
+"debut": 2015,
+"pick": 32
+},
+"Mont\u00e9 Morris": {
+"bbref": "morrimo01",
+"bpm": -2.282,
+"bpm_g": 51,
+"debut": 2017,
+"pick": 51
+},
+"Moritz Wagner": {
+"bbref": "wagnemo01",
+"bpm": 0.618,
+"bpm_g": 66,
+"debut": 2018,
+"pick": 25
+},
+"Moses Moody": {
+"bbref": "moodymo01",
+"bpm": -0.542,
+"bpm_g": 134,
+"debut": 2021,
+"pick": 14
+},
+"Mouhamadou Gueye": {
+"bbref": "gueyemo01",
+"bpm": -10.669,
+"bpm_g": 13,
+"debut": 2023,
+"pick": null
+},
+"Mouhamed Gueye": {
+"bbref": "gueyemo02",
+"bpm": -1.09,
+"bpm_g": 110,
+"debut": 2023,
+"pick": 39
+},
+"Moussa Cisse": {
+"bbref": "cissemo01",
+"bpm": -2.9,
+"bpm_g": 38,
+"debut": 2025,
+"pick": null
+},
+"Moussa Diabat\u00e9": {
+"bbref": "diabamo01",
+"bpm": -0.075,
+"bpm_g": 144,
+"debut": 2022,
+"pick": 43
+},
+"Myles Turner": {
+"bbref": "turnemy01",
+"bpm": -0.245,
+"bpm_g": 143,
+"debut": 2015,
+"pick": 11
+},
+"Myron Gardner": {
+"bbref": "gardnmy01",
+"bpm": 0.9,
+"bpm_g": 45,
+"debut": 2025,
+"pick": null
+},
+"N'Faly Dante": {
+"bbref": "nfalyda01",
+"bpm": -1.05,
+"bpm_g": 8,
+"debut": 2024,
+"pick": null
+},
+"Nae'Qwan Tomlin": {
+"bbref": "tomlina01",
+"bpm": -2.346,
+"bpm_g": 69,
+"debut": 2024,
+"pick": null
+},
+"Naji Marshall": {
+"bbref": "marshna01",
+"bpm": -0.697,
+"bpm_g": 143,
+"debut": 2020,
+"pick": null
+},
+"Nassir Little": {
+"bbref": "littlna01",
+"bpm": -3.0,
+"bpm_g": 45,
+"debut": 2019,
+"pick": 25
+},
+"Nate Williams": {
+"bbref": "willije02",
+"bpm": -5.412,
+"bpm_g": 34,
+"debut": 2022,
+"pick": null
+},
+"Naz Reid": {
+"bbref": "reidna01",
+"bpm": 1.257,
+"bpm_g": 157,
+"debut": 2019,
+"pick": null
+},
+"Neemias Queta": {
+"bbref": "quetane01",
+"bpm": 1.228,
+"bpm_g": 138,
+"debut": 2021,
+"pick": 39
+},
+"Nemanja Bjelica": {
+"bbref": "bjeline01",
+"bpm": null,
+"bpm_g": 0,
+"debut": 2015,
+"pick": 35
+},
+"Nic Claxton": {
+"bbref": "claxtni01",
+"bpm": 0.648,
+"bpm_g": 139,
+"debut": 2019,
+"pick": 31
+},
+"Nick Richards": {
+"bbref": "richani01",
+"bpm": -4.58,
+"bpm_g": 105,
+"debut": 2020,
+"pick": 42
+},
+"Nick Smith": {
+"bbref": "smithni01",
+"bpm": -5.367,
+"bpm_g": 90,
+"debut": 2023,
+"pick": 27
+},
+"Nickeil Alexander-Walker": {
+"bbref": "alexani01",
+"bpm": 0.38,
+"bpm_g": 160,
+"debut": 2019,
+"pick": 17
+},
+"Nicolas Batum": {
+"bbref": "batumni01",
+"bpm": -0.076,
+"bpm_g": 152,
+"debut": 2008,
+"pick": 25
+},
+"Nigel Hayes-Davis": {
+"bbref": "hayesni01",
+"bpm": -7.3,
+"bpm_g": 27,
+"debut": 2017,
+"pick": null
+},
+"Nikola Joki\u0107": {
+"bbref": "jokicni01",
+"bpm": 13.733,
+"bpm_g": 135,
+"debut": 2015,
+"pick": 41
+},
+"Nikola Jovi\u0107": {
+"bbref": "jovicni01",
+"bpm": -1.62,
+"bpm_g": 93,
+"debut": 2022,
+"pick": 27
+},
+"Nikola Topi\u0107": {
+"bbref": "topicni01",
+"bpm": -8.4,
+"bpm_g": 10,
+"debut": 2025,
+"pick": 12
+},
+"Nikola Vu\u010devi\u0107": {
+"bbref": "vucevni01",
+"bpm": 2.086,
+"bpm_g": 137,
+"debut": 2011,
+"pick": 16
+},
+"Nique Clifford": {
+"bbref": "cliffni01",
+"bpm": -4.9,
+"bpm_g": 75,
+"debut": 2025,
+"pick": 24
+},
+"Noa Essengue": {
+"bbref": "essenno01",
+"bpm": -23.7,
+"bpm_g": 2,
+"debut": 2025,
+"pick": 12
+},
+"Noah Clowney": {
+"bbref": "clownno01",
+"bpm": -3.688,
+"bpm_g": 112,
+"debut": 2023,
+"pick": 21
+},
+"Noah Penda": {
+"bbref": "pendano01",
+"bpm": -1.5,
+"bpm_g": 59,
+"debut": 2025,
+"pick": 32
+},
+"Nolan Traore": {
+"bbref": "traorno01",
+"bpm": -6.8,
+"bpm_g": 56,
+"debut": 2025,
+"pick": 19
+},
+"Norchad Omier": {
+"bbref": "omierno01",
+"bpm": 6.0,
+"bpm_g": 6,
+"debut": 2025,
+"pick": null
+},
+"Norman Powell": {
+"bbref": "powelno01",
+"bpm": 1.549,
+"bpm_g": 118,
+"debut": 2015,
+"pick": 46
+},
+"OG Anunoby": {
+"bbref": "anunoog01",
+"bpm": 1.318,
+"bpm_g": 141,
+"debut": 2017,
+"pick": 23
+},
+"Obi Toppin": {
+"bbref": "toppiob01",
+"bpm": 2.003,
+"bpm_g": 103,
+"debut": 2020,
+"pick": 8
+},
+"Ochai Agbaji": {
+"bbref": "agbajoc01",
+"bpm": -2.324,
+"bpm_g": 126,
+"debut": 2022,
+"pick": 14
+},
+"Olivier Sarr": {
+"bbref": "sarrol01",
+"bpm": -1.505,
+"bpm_g": 19,
+"debut": 2021,
+"pick": null
+},
+"Olivier-Maxence Prosper": {
+"bbref": "prospol01",
+"bpm": -1.09,
+"bpm_g": 105,
+"debut": 2023,
+"pick": 24
+},
+"Onyeka Okongwu": {
+"bbref": "okongon01",
+"bpm": 1.0,
+"bpm_g": 148,
+"debut": 2020,
+"pick": 6
+},
+"Orlando Robinson": {
+"bbref": "robinor01",
+"bpm": -3.0,
+"bpm_g": 48,
+"debut": 2022,
+"pick": null
+},
+"Oscar Tshiebwe": {
+"bbref": "tshieos01",
+"bpm": -1.663,
+"bpm_g": 41,
+"debut": 2023,
+"pick": null
+},
+"Oshae Brissett": {
+"bbref": "brissos01",
+"bpm": -2.243,
+"bpm_g": 61,
+"debut": 2019,
+"pick": null
+},
+"Oso Ighodaro": {
+"bbref": "ighodos01",
+"bpm": -1.052,
+"bpm_g": 143,
+"debut": 2024,
+"pick": 40
+},
+"Otto Porter": {
+"bbref": "porteot01",
+"bpm": -3.2,
+"bpm_g": 15,
+"debut": 2013,
+"pick": 3
+},
+"Ousmane Dieng": {
+"bbref": "diengou01",
+"bpm": -2.659,
+"bpm_g": 94,
+"debut": 2022,
+"pick": 11
+},
+"P.J. Washington": {
+"bbref": "washipj01",
+"bpm": -1.247,
+"bpm_g": 113,
+"debut": 2019,
+"pick": 12
+},
+"PJ Hall": {
+"bbref": "hallpj01",
+"bpm": -1.8,
+"bpm_g": 38,
+"debut": 2024,
+"pick": null
+},
+"Pac\u00f4me Dadiet": {
+"bbref": "dadiepa01",
+"bpm": -4.526,
+"bpm_g": 47,
+"debut": 2024,
+"pick": 25
+},
+"Paolo Banchero": {
+"bbref": "banchpa01",
+"bpm": 2.219,
+"bpm_g": 118,
+"debut": 2022,
+"pick": 1
+},
+"Pascal Siakam": {
+"bbref": "siakapa01",
+"bpm": 1.257,
+"bpm_g": 140,
+"debut": 2016,
+"pick": 27
+},
+"Pat Connaughton": {
+"bbref": "connapa01",
+"bpm": -1.086,
+"bpm_g": 83,
+"debut": 2015,
+"pick": 41
+},
+"Pat Spencer": {
+"bbref": "spencpa01",
+"bpm": -2.04,
+"bpm_g": 105,
+"debut": 2023,
+"pick": null
+},
+"Patrick Baldwin": {
+"bbref": "baldwpa01",
+"bpm": -0.109,
+"bpm_g": 33,
+"debut": 2022,
+"pick": 28
+},
+"Patrick Beverley": {
+"bbref": "beverpa01",
+"bpm": -1.1,
+"bpm_g": 73,
+"debut": 2012,
+"pick": 42
+},
+"Patrick Williams": {
+"bbref": "willipa01",
+"bpm": -4.127,
+"bpm_g": 135,
+"debut": 2020,
+"pick": 4
+},
+"Patty Mills": {
+"bbref": "millspa02",
+"bpm": -3.934,
+"bpm_g": 61,
+"debut": 2009,
+"pick": 55
+},
+"Paul George": {
+"bbref": "georgpa01",
+"bpm": 0.596,
+"bpm_g": 78,
+"debut": 2010,
+"pick": 10
+},
+"Paul Millsap": {
+"bbref": "millspa01",
+"bpm": null,
+"bpm_g": 0,
+"debut": 2006,
+"pick": 47
+},
+"Paul Reed": {
+"bbref": "reedpa01",
+"bpm": 4.318,
+"bpm_g": 110,
+"debut": 2020,
+"pick": 58
+},
+"Payton Pritchard": {
+"bbref": "pritcpa01",
+"bpm": 2.904,
+"bpm_g": 159,
+"debut": 2020,
+"pick": 26
+},
+"Payton Sandfort": {
+"bbref": "sandfpa01",
+"bpm": -5.8,
+"bpm_g": 4,
+"debut": 2025,
+"pick": null
+},
+"Pelle Larsson": {
+"bbref": "larsspe01",
+"bpm": -2.036,
+"bpm_g": 125,
+"debut": 2024,
+"pick": 44
+},
+"Pete Nance": {
+"bbref": "nancepe01",
+"bpm": -2.863,
+"bpm_g": 60,
+"debut": 2023,
+"pick": null
+},
+"Peyton Watson": {
+"bbref": "watsope01",
+"bpm": -1.534,
+"bpm_g": 122,
+"debut": 2022,
+"pick": 30
+},
+"Precious Achiuwa": {
+"bbref": "achiupr01",
+"bpm": -1.732,
+"bpm_g": 130,
+"debut": 2020,
+"pick": 20
+},
+"Quentin Grimes": {
+"bbref": "grimequ01",
+"bpm": -0.6,
+"bpm_g": 150,
+"debut": 2021,
+"pick": 25
+},
+"Quenton Jackson": {
+"bbref": "jacksqu01",
+"bpm": -1.255,
+"bpm_g": 77,
+"debut": 2022,
+"pick": null
+},
+"Quinten Post": {
+"bbref": "postqu01",
+"bpm": -0.638,
+"bpm_g": 109,
+"debut": 2024,
+"pick": 52
+},
+"RJ Barrett": {
+"bbref": "barrerj01",
+"bpm": 0.402,
+"bpm_g": 115,
+"debut": 2019,
+"pick": 3
+},
+"Rajon Rondo": {
+"bbref": "rondora01",
+"bpm": null,
+"bpm_g": 0,
+"debut": 2006,
+"pick": 21
+},
+"Rasheer Fleming": {
+"bbref": "flemira01",
+"bpm": -3.8,
+"bpm_g": 55,
+"debut": 2025,
+"pick": 31
+},
+"RayJ Dennis": {
+"bbref": "dennira01",
+"bpm": -3.368,
+"bpm_g": 28,
+"debut": 2024,
+"pick": null
+},
+"Rayan Rupert": {
+"bbref": "ruperra01",
+"bpm": -4.921,
+"bpm_g": 116,
+"debut": 2023,
+"pick": 43
+},
+"Reed Sheppard": {
+"bbref": "sheppre01",
+"bpm": 0.993,
+"bpm_g": 134,
+"debut": 2024,
+"pick": 3
+},
+"Reggie Jackson": {
+"bbref": "jacksre01",
+"bpm": -3.419,
+"bpm_g": 113,
+"debut": 2011,
+"pick": 24
+},
+"Richaun Holmes": {
+"bbref": "holmeri01",
+"bpm": -1.379,
+"bpm_g": 71,
+"debut": 2015,
+"pick": 37
+},
+"Ricky Council": {
+"bbref": "councri01",
+"bpm": -2.593,
+"bpm_g": 105,
+"debut": 2023,
+"pick": null
+},
+"Ricky Rubio": {
+"bbref": "rubiori01",
+"bpm": null,
+"bpm_g": 0,
+"debut": 2011,
+"pick": 5
+},
+"Riley Minix": {
+"bbref": "minixri01",
+"bpm": 0.44,
+"bpm_g": 10,
+"debut": 2024,
+"pick": null
+},
+"Rob Dillingham": {
+"bbref": "dilliro01",
+"bpm": -5.968,
+"bpm_g": 114,
+"debut": 2024,
+"pick": 8
+},
+"Robert Covington": {
+"bbref": "covinro01",
+"bpm": 2.2,
+"bpm_g": 29,
+"debut": 2013,
+"pick": null
+},
+"Robert Williams": {
+"bbref": "williro04",
+"bpm": 4.12,
+"bpm_g": 79,
+"debut": 2018,
+"pick": 27
+},
+"Robin Lopez": {
+"bbref": "lopezro01",
+"bpm": -6.1,
+"bpm_g": 16,
+"debut": 2008,
+"pick": 15
+},
+"Rocco Zikarsky": {
+"bbref": "zikarro01",
+"bpm": 2.4,
+"bpm_g": 5,
+"debut": 2025,
+"pick": 45
+},
+"Ron Harper": {
+"bbref": "harpero02",
+"bpm": 0.573,
+"bpm_g": 30,
+"debut": 2022,
+"pick": null
+},
+"Ronald Holland": {
+"bbref": "hollaro01",
+"bpm": -2.509,
+"bpm_g": 159,
+"debut": 2024,
+"pick": 5
+},
+"Royce O'Neale": {
+"bbref": "onealro01",
+"bpm": 0.406,
+"bpm_g": 153,
+"debut": 2017,
+"pick": null
+},
+"Rudy Gay": {
+"bbref": "gayru01",
+"bpm": null,
+"bpm_g": 0,
+"debut": 2006,
+"pick": 8
+},
+"Rudy Gobert": {
+"bbref": "goberru01",
+"bpm": 1.438,
+"bpm_g": 148,
+"debut": 2013,
+"pick": 27
+},
+"Rui Hachimura": {
+"bbref": "hachiru01",
+"bpm": -1.503,
+"bpm_g": 127,
+"debut": 2019,
+"pick": 9
+},
+"Russell Westbrook": {
+"bbref": "westbru01",
+"bpm": -0.778,
+"bpm_g": 139,
+"debut": 2008,
+"pick": 4
+},
+"Ryan Dunn": {
+"bbref": "dunnry01",
+"bpm": -2.544,
+"bpm_g": 144,
+"debut": 2024,
+"pick": 28
+},
+"Ryan Kalkbrenner": {
+"bbref": "kalkbry01",
+"bpm": 1.8,
+"bpm_g": 69,
+"debut": 2025,
+"pick": 34
+},
+"Ryan Nembhard": {
+"bbref": "nembhry01",
+"bpm": -4.1,
+"bpm_g": 60,
+"debut": 2025,
+"pick": null
+},
+"Ryan Rollins": {
+"bbref": "rolliry01",
+"bpm": -0.102,
+"bpm_g": 130,
+"debut": 2022,
+"pick": 44
+},
+"Saben Lee": {
+"bbref": "leesa01",
+"bpm": -1.4,
+"bpm_g": 24,
+"debut": 2020,
+"pick": 38
+},
+"Saddiq Bey": {
+"bbref": "beysa01",
+"bpm": -0.573,
+"bpm_g": 135,
+"debut": 2020,
+"pick": 19
+},
+"Sam Hauser": {
+"bbref": "hausesa01",
+"bpm": 0.695,
+"bpm_g": 149,
+"debut": 2021,
+"pick": null
+},
+"Sam Merrill": {
+"bbref": "merrisa01",
+"bpm": 0.215,
+"bpm_g": 123,
+"debut": 2020,
+"pick": 60
+},
+"Sandro Mamukelashvili": {
+"bbref": "mamuksa01",
+"bpm": 2.584,
+"bpm_g": 141,
+"debut": 2021,
+"pick": 54
+},
+"Santi Aldama": {
+"bbref": "aldamsa01",
+"bpm": 2.603,
+"bpm_g": 108,
+"debut": 2021,
+"pick": 30
+},
+"Sasha Vezenkov": {
+"bbref": "vezenal01",
+"bpm": -0.9,
+"bpm_g": 42,
+"debut": 2023,
+"pick": 57
+},
+"Scoot Henderson": {
+"bbref": "hendesc01",
+"bpm": -2.2,
+"bpm_g": 96,
+"debut": 2023,
+"pick": 3
+},
+"Scottie Barnes": {
+"bbref": "barnesc01",
+"bpm": 3.393,
+"bpm_g": 145,
+"debut": 2021,
+"pick": 4
+},
+"Scotty Pippen": {
+"bbref": "pippesc02",
+"bpm": 1.372,
+"bpm_g": 89,
+"debut": 2022,
+"pick": null
+},
+"Sean Pedulla": {
+"bbref": "pedulse01",
+"bpm": -11.8,
+"bpm_g": 7,
+"debut": 2025,
+"pick": null
+},
+"Serge Ibaka": {
+"bbref": "ibakase01",
+"bpm": null,
+"bpm_g": 0,
+"debut": 2009,
+"pick": 24
+},
+"Seth Curry": {
+"bbref": "curryse01",
+"bpm": -1.456,
+"bpm_g": 78,
+"debut": 2013,
+"pick": null
+},
+"Shaedon Sharpe": {
+"bbref": "sharpsh01",
+"bpm": -1.341,
+"bpm_g": 122,
+"debut": 2022,
+"pick": 7
+},
+"Shai Gilgeous-Alexander": {
+"bbref": "gilgesh01",
+"bpm": 11.594,
+"bpm_g": 144,
+"debut": 2018,
+"pick": 11
+},
+"Shake Milton": {
+"bbref": "miltosh01",
+"bpm": -2.886,
+"bpm_g": 105,
+"debut": 2018,
+"pick": 54
+},
+"Sharife Cooper": {
+"bbref": "coopesh01",
+"bpm": -3.9,
+"bpm_g": 41,
+"debut": 2021,
+"pick": 48
+},
+"Sidy Cissoko": {
+"bbref": "cissosi01",
+"bpm": -4.249,
+"bpm_g": 97,
+"debut": 2023,
+"pick": 44
+},
+"Simone Fontecchio": {
+"bbref": "fontesi01",
+"bpm": -1.259,
+"bpm_g": 145,
+"debut": 2022,
+"pick": null
+},
+"Sion James": {
+"bbref": "jamessi01",
+"bpm": -2.0,
+"bpm_g": 82,
+"debut": 2025,
+"pick": 33
+},
+"Skal Labissi\u00e8re": {
+"bbref": "labissk01",
+"bpm": 1.329,
+"bpm_g": 7,
+"debut": 2016,
+"pick": 28
+},
+"Spencer Dinwiddie": {
+"bbref": "dinwisp01",
+"bpm": -1.747,
+"bpm_g": 155,
+"debut": 2014,
+"pick": 38
+},
+"Spencer Jones": {
+"bbref": "jonessp01",
+"bpm": -3.852,
+"bpm_g": 84,
+"debut": 2024,
+"pick": null
+},
+"Stanley Umude": {
+"bbref": "umudest01",
+"bpm": -7.392,
+"bpm_g": 24,
+"debut": 2022,
+"pick": null
+},
+"Stephen Curry": {
+"bbref": "curryst01",
+"bpm": 5.958,
+"bpm_g": 113,
+"debut": 2009,
+"pick": 7
+},
+"Stephon Castle": {
+"bbref": "castlst01",
+"bpm": -0.872,
+"bpm_g": 149,
+"debut": 2024,
+"pick": 4
+},
+"Steven Adams": {
+"bbref": "adamsst01",
+"bpm": 0.016,
+"bpm_g": 90,
+"debut": 2013,
+"pick": 12
+},
+"Svi Mykhailiuk": {
+"bbref": "mykhasv01",
+"bpm": -2.477,
+"bpm_g": 88,
+"debut": 2018,
+"pick": 47
+},
+"T.J. McConnell": {
+"bbref": "mccontj01",
+"bpm": 1.739,
+"bpm_g": 135,
+"debut": 2015,
+"pick": null
+},
+"T.J. Warren": {
+"bbref": "warretj01",
+"bpm": -4.5,
+"bpm_g": 11,
+"debut": 2014,
+"pick": 14
+},
+"Taelon Peter": {
+"bbref": "peterta01",
+"bpm": -4.6,
+"bpm_g": 38,
+"debut": 2025,
+"pick": 54
+},
+"Taj Gibson": {
+"bbref": "gibsota01",
+"bpm": -4.917,
+"bpm_g": 47,
+"debut": 2009,
+"pick": 26
+},
+"Talen Horton-Tucker": {
+"bbref": "hortota01",
+"bpm": -1.839,
+"bpm_g": 109,
+"debut": 2019,
+"pick": 46
+},
+"Tari Eason": {
+"bbref": "easonta01",
+"bpm": 0.933,
+"bpm_g": 117,
+"debut": 2022,
+"pick": 17
+},
+"Taurean Prince": {
+"bbref": "princta02",
+"bpm": -2.043,
+"bpm_g": 106,
+"debut": 2016,
+"pick": 12
+},
+"Taylor Hendricks": {
+"bbref": "hendrta01",
+"bpm": -2.453,
+"bpm_g": 62,
+"debut": 2023,
+"pick": 9
+},
+"Terance Mann": {
+"bbref": "mannte01",
+"bpm": -2.318,
+"bpm_g": 130,
+"debut": 2019,
+"pick": 48
+},
+"Terrence Ross": {
+"bbref": "rosste01",
+"bpm": null,
+"bpm_g": 0,
+"debut": 2012,
+"pick": 8
+},
+"Terrence Shannon": {
+"bbref": "shannte01",
+"bpm": -2.96,
+"bpm_g": 75,
+"debut": 2024,
+"pick": 27
+},
+"Terry Rozier": {
+"bbref": "roziete01",
+"bpm": -1.162,
+"bpm_g": 125,
+"debut": 2015,
+"pick": 16
+},
+"Thaddeus Young": {
+"bbref": "youngth01",
+"bpm": 0.3,
+"bpm_g": 33,
+"debut": 2007,
+"pick": 12
+},
+"Thanasis Antetokounmpo": {
+"bbref": "antetth01",
+"bpm": -4.05,
+"bpm_g": 68,
+"debut": 2015,
+"pick": 51
+},
+"Thomas Bryant": {
+"bbref": "bryanth01",
+"bpm": 0.362,
+"bpm_g": 126,
+"debut": 2017,
+"pick": 42
+},
+"Tidjane Sala\u00fcn": {
+"bbref": "salauti01",
+"bpm": -3.522,
+"bpm_g": 97,
+"debut": 2024,
+"pick": 6
+},
+"Tim Hardaway": {
+"bbref": "hardati02",
+"bpm": -1.387,
+"bpm_g": 157,
+"debut": 2013,
+"pick": 24
+},
+"Tobias Harris": {
+"bbref": "harrito02",
+"bpm": 0.702,
+"bpm_g": 136,
+"debut": 2011,
+"pick": 19
+},
+"Toby Okani": {
+"bbref": "okanito01",
+"bpm": -10.7,
+"bpm_g": 6,
+"debut": 2025,
+"pick": null
+},
+"Tolu Smith": {
+"bbref": "smithto05",
+"bpm": -0.556,
+"bpm_g": 16,
+"debut": 2024,
+"pick": null
+},
+"Tony Bradley": {
+"bbref": "bradlto01",
+"bpm": -2.825,
+"bpm_g": 55,
+"debut": 2017,
+"pick": 28
+},
+"Torrey Craig": {
+"bbref": "craigto01",
+"bpm": -1.638,
+"bpm_g": 79,
+"debut": 2017,
+"pick": null
+},
+"Tosan Evbuomwan": {
+"bbref": "evbuoto01",
+"bpm": -4.458,
+"bpm_g": 33,
+"debut": 2023,
+"pick": null
+},
+"Toumani Camara": {
+"bbref": "camarto01",
+"bpm": -0.561,
+"bpm_g": 160,
+"debut": 2023,
+"pick": 52
+},
+"Trae Young": {
+"bbref": "youngtr01",
+"bpm": 0.879,
+"bpm_g": 91,
+"debut": 2018,
+"pick": 5
+},
+"Trayce Jackson-Davis": {
+"bbref": "jackstr02",
+"bpm": 0.463,
+"bpm_g": 115,
+"debut": 2023,
+"pick": 57
+},
+"Tre Johnson": {
+"bbref": "johnstr03",
+"bpm": -5.0,
+"bpm_g": 60,
+"debut": 2025,
+"pick": 6
+},
+"Tre Jones": {
+"bbref": "jonestr01",
+"bpm": 1.383,
+"bpm_g": 111,
+"debut": 2020,
+"pick": 41
+},
+"Tre Mann": {
+"bbref": "manntr01",
+"bpm": -4.729,
+"bpm_g": 66,
+"debut": 2021,
+"pick": 18
+},
+"Trendon Watford": {
+"bbref": "watfotr01",
+"bpm": -2.444,
+"bpm_g": 97,
+"debut": 2021,
+"pick": null
+},
+"Trentyn Flowers": {
+"bbref": "flowetr01",
+"bpm": -6.475,
+"bpm_g": 8,
+"debut": 2024,
+"pick": null
+},
+"Trevon Scott": {
+"bbref": "scotttr01",
+"bpm": -5.3,
+"bpm_g": 6,
+"debut": 2021,
+"pick": null
+},
+"Trevor Ariza": {
+"bbref": "arizatr01",
+"bpm": null,
+"bpm_g": 0,
+"debut": 2004,
+"pick": 43
+},
+"Trevor Keels": {
+"bbref": "keelstr01",
+"bpm": -14.5,
+"bpm_g": 8,
+"debut": 2022,
+"pick": 42
+},
+"Trey Alexander": {
+"bbref": "alexatr01",
+"bpm": -7.491,
+"bpm_g": 33,
+"debut": 2024,
+"pick": null
+},
+"Trey Jemison": {
+"bbref": "jemistr01",
+"bpm": -7.259,
+"bpm_g": 51,
+"debut": 2023,
+"pick": null
+},
+"Trey Lyles": {
+"bbref": "lylestr01",
+"bpm": -0.883,
+"bpm_g": 127,
+"debut": 2015,
+"pick": 12
+},
+"Trey Murphy": {
+"bbref": "murphtr02",
+"bpm": 1.687,
+"bpm_g": 119,
+"debut": 2021,
+"pick": 17
+},
+"Tristan Enaruna": {
+"bbref": "enarutr01",
+"bpm": -1.0,
+"bpm_g": 9,
+"debut": 2025,
+"pick": null
+},
+"Tristan Vukcevic": {
+"bbref": "vukcetr01",
+"bpm": -0.208,
+"bpm_g": 84,
+"debut": 2023,
+"pick": 42
+},
+"Tristan da Silva": {
+"bbref": "dasiltr01",
+"bpm": -1.58,
+"bpm_g": 151,
+"debut": 2024,
+"pick": 18
+},
+"Tristen Newton": {
+"bbref": "newtotr01",
+"bpm": -17.467,
+"bpm_g": 9,
+"debut": 2024,
+"pick": 49
+},
+"Troy Brown": {
+"bbref": "browntr01",
+"bpm": -2.6,
+"bpm_g": 59,
+"debut": 2018,
+"pick": 15
+},
+"Ty Jerome": {
+"bbref": "jeromty01",
+"bpm": 4.9,
+"bpm_g": 85,
+"debut": 2019,
+"pick": 24
+},
+"TyTy Washington": {
+"bbref": "washity02",
+"bpm": -3.05,
+"bpm_g": 32,
+"debut": 2022,
+"pick": 29
+},
+"Tyler Burton": {
+"bbref": "burtoty01",
+"bpm": -5.3,
+"bpm_g": 12,
+"debut": 2025,
+"pick": null
+},
+"Tyler Herro": {
+"bbref": "herroty01",
+"bpm": 2.77,
+"bpm_g": 110,
+"debut": 2019,
+"pick": 13
+},
+"Tyler Kolek": {
+"bbref": "kolekty01",
+"bpm": -1.476,
+"bpm_g": 103,
+"debut": 2024,
+"pick": 34
+},
+"Tyler Smith": {
+"bbref": "smithty02",
+"bpm": -2.237,
+"bpm_g": 35,
+"debut": 2024,
+"pick": 33
+},
+"Tyrese Haliburton": {
+"bbref": "halibty01",
+"bpm": 6.335,
+"bpm_g": 142,
+"debut": 2020,
+"pick": 12
+},
+"Tyrese Martin": {
+"bbref": "martity01",
+"bpm": -2.947,
+"bpm_g": 106,
+"debut": 2022,
+"pick": 51
+},
+"Tyrese Maxey": {
+"bbref": "maxeyty01",
+"bpm": 3.951,
+"bpm_g": 122,
+"debut": 2020,
+"pick": 21
+},
+"Tyrese Proctor": {
+"bbref": "proctty01",
+"bpm": -2.8,
+"bpm_g": 50,
+"debut": 2025,
+"pick": 49
+},
+"Tyson Etienne": {
+"bbref": "etienty01",
+"bpm": -4.155,
+"bpm_g": 31,
+"debut": 2024,
+"pick": null
+},
+"Tyus Jones": {
+"bbref": "jonesty01",
+"bpm": -1.032,
+"bpm_g": 148,
+"debut": 2015,
+"pick": 24
+},
+"Udonis Haslem": {
+"bbref": "hasleud01",
+"bpm": null,
+"bpm_g": 0,
+"debut": 2003,
+"pick": null
+},
+"Ulrich Chomche": {
+"bbref": "chomcul01",
+"bpm": -7.4,
+"bpm_g": 7,
+"debut": 2024,
+"pick": 57
+},
+"Usman Garuba": {
+"bbref": "garubus01",
+"bpm": -10.9,
+"bpm_g": 6,
+"debut": 2021,
+"pick": 23
+},
+"VJ Edgecombe": {
+"bbref": "edgecvj01",
+"bpm": -0.5,
+"bpm_g": 75,
+"debut": 2025,
+"pick": 3
+},
+"Victor Oladipo": {
+"bbref": "oladivi01",
+"bpm": null,
+"bpm_g": 0,
+"debut": 2013,
+"pick": 2
+},
+"Victor Wembanyama": {
+"bbref": "wembavi01",
+"bpm": 8.944,
+"bpm_g": 110,
+"debut": 2023,
+"pick": 1
+},
+"Vince Williams": {
+"bbref": "willivi01",
+"bpm": -1.725,
+"bpm_g": 67,
+"debut": 2022,
+"pick": 47
+},
+"Vladislav Goldin": {
+"bbref": "goldivl01",
+"bpm": -0.5,
+"bpm_g": 9,
+"debut": 2025,
+"pick": null
+},
+"V\u00edt Krej\u010d\u00ed": {
+"bbref": "krejcvi01",
+"bpm": -0.525,
+"bpm_g": 122,
+"debut": 2021,
+"pick": 37
+},
+"Walker Kessler": {
+"bbref": "kesslwa01",
+"bpm": 1.919,
+"bpm_g": 63,
+"debut": 2022,
+"pick": 22
+},
+"Walter Clayton": {
+"bbref": "claytwa01",
+"bpm": -4.3,
+"bpm_g": 69,
+"debut": 2025,
+"pick": 18
+},
+"Wayne Ellington": {
+"bbref": "ellinwa01",
+"bpm": null,
+"bpm_g": 0,
+"debut": 2009,
+"pick": 28
+},
+"Wendell Carter": {
+"bbref": "cartewe01",
+"bpm": -0.879,
+"bpm_g": 146,
+"debut": 2018,
+"pick": 7
+},
+"Wendell Moore": {
+"bbref": "moorewe01",
+"bpm": -2.5,
+"bpm_g": 42,
+"debut": 2022,
+"pick": 26
+},
+"Wesley Matthews": {
+"bbref": "matthwe02",
+"bpm": -2.8,
+"bpm_g": 36,
+"debut": 2009,
+"pick": null
+},
+"Will Barton": {
+"bbref": "bartowi01",
+"bpm": null,
+"bpm_g": 0,
+"debut": 2012,
+"pick": 40
+},
+"Will Richard": {
+"bbref": "richawi02",
+"bpm": -1.7,
+"bpm_g": 69,
+"debut": 2025,
+"pick": 56
+},
+"Will Riley": {
+"bbref": "rileywi01",
+"bpm": -4.5,
+"bpm_g": 74,
+"debut": 2025,
+"pick": 21
+},
+"Xavier Tillman": {
+"bbref": "tillmxa01",
+"bpm": -5.1,
+"bpm_g": 63,
+"debut": 2020,
+"pick": 35
+},
+"Yang Hansen": {
+"bbref": "yangha01",
+"bpm": -9.5,
+"bpm_g": 43,
+"debut": 2025,
+"pick": 16
+},
+"Yanic Konan Niederh\u00e4user": {
+"bbref": "konanya01",
+"bpm": -2.2,
+"bpm_g": 41,
+"debut": 2025,
+"pick": 30
+},
+"Yuki Kawamura": {
+"bbref": "kawamyu01",
+"bpm": -3.205,
+"bpm_g": 40,
+"debut": 2024,
+"pick": null
+},
+"Yves Missi": {
+"bbref": "missiyv01",
+"bpm": -2.383,
+"bpm_g": 139,
+"debut": 2024,
+"pick": 21
+},
+"Zaccharie Risacher": {
+"bbref": "risacza01",
+"bpm": -3.028,
+"bpm_g": 142,
+"debut": 2024,
+"pick": 1
+},
+"Zach Collins": {
+"bbref": "colliza01",
+"bpm": 0.027,
+"bpm_g": 74,
+"debut": 2017,
+"pick": 10
+},
+"Zach Edey": {
+"bbref": "edeyza01",
+"bpm": -0.014,
+"bpm_g": 77,
+"debut": 2024,
+"pick": 9
+},
+"Zach LaVine": {
+"bbref": "lavinza01",
+"bpm": -0.059,
+"bpm_g": 113,
+"debut": 2014,
+"pick": 13
+},
+"Zeke Nnaji": {
+"bbref": "nnajize01",
+"bpm": -2.35,
+"bpm_g": 109,
+"debut": 2020,
+"pick": 22
+},
+"Ziaire Williams": {
+"bbref": "willizi02",
+"bpm": -2.018,
+"bpm_g": 119,
+"debut": 2021,
+"pick": 10
+},
+"Zion Williamson": {
+"bbref": "willizi01",
+"bpm": 4.237,
+"bpm_g": 92,
+"debut": 2019,
+"pick": 1
+},
+"Zyon Pullin": {
+"bbref": "pullizy01",
+"bpm": -9.2,
+"bpm_g": 8,
+"debut": 2024,
+"pick": null
+},
+"\u00d6mer Yurtseven": {
+"bbref": "yurtsom01",
+"bpm": -3.726,
+"bpm_g": 57,
+"debut": 2021,
+"pick": null
+}
+}

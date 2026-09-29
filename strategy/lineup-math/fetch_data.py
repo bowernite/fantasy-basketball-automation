@@ -28,10 +28,12 @@
     what's missing.
 """
 import collections
+import csv
 import datetime
 import json
 import os
 import time
+import urllib.parse
 import urllib.request
 import zoneinfo
 
@@ -331,16 +333,121 @@ def player_pool(path=None):
     return out
 
 
+# Pinned so a refit is reproducible; bump after the mirror's end-of-season push
+BBREF_REPO = "sumitrodatta/bball-reference-datasets"
+BBREF_COMMIT = "76a70b41ad1c13948f25c62c921ed822e5db7f0e"   # 2025-26 end of season
+BBREF_FILES = ("Player Totals.csv", "Advanced.csv", "Player Career Info.csv",
+               "Draft Pick History.csv")
+BBREF_DIR = os.path.join(HERE, "data", "bbref")
+BBREF_BPM_SEASONS = 3      # BPM reaches back past one missed season, no further
+
+
+def bbref_mirror(commit=BBREF_COMMIT):
+    """The pinned mirror's CSVs under `data/bbref/<commit>/`, downloaded once"""
+    d = os.path.join(BBREF_DIR, commit)
+    os.makedirs(d, exist_ok=True)
+    for name in BBREF_FILES:
+        path = os.path.join(d, name)
+        if os.path.exists(path):
+            continue
+        url = ("https://raw.githubusercontent.com/%s/%s/Data/%s"
+               % (BBREF_REPO, commit, urllib.parse.quote(name)))
+        tmp = path + ".part"
+        with urllib.request.urlopen(url, timeout=120) as r, open(tmp, "wb") as f:
+            f.write(r.read())
+        os.replace(tmp, path)
+        print("  fetched", name)
+    return d
+
+
+def _csv_rows(d, name):
+    with open(os.path.join(d, name), newline="", encoding="utf-8") as f:
+        return list(csv.DictReader(f))
+
+
+def _nba_season_rows(rows):
+    """One row per (player, season): the multi-team aggregate (`2TM`, `TOT`)
+    where a player was traded, else his only row"""
+    out = {}
+    for r in rows:
+        if r["lg"] != "NBA":
+            continue
+        k = (r["player_id"], int(r["season"]))
+        agg = r["team"].endswith("TM") or r["team"] == "TOT"
+        if k not in out or agg:
+            out[k] = r
+    return out
+
+
+def _born_close(a, b, days=2):
+    """Fleaflicker's DOB is a UTC midnight, so it can sit a day off BBRef's"""
+    da, db = datetime.date.fromisoformat(a), datetime.date.fromisoformat(b)
+    return abs((da - db).days) <= days
+
+
+def bbref_players(mirror_dir, pool):
+    """pool name -> {bbref, debut, pick, bpm, bpm_g}. `debut` is the start
+    year of his first NBA season; `bpm` the games-weighted mean of his last two
+    played seasons within BBREF_BPM_SEASONS of the newest. Joined on name +
+    birthday, then on birthday + a shared name token for spellings no
+    normalisation reaches. A pool player with no match is left out"""
+    from simlib.board import _key
+    career = [c for c in _csv_rows(mirror_dir, "Player Career Info.csv")
+              if len(c["birth_date"]) == 10]
+    by_key = collections.defaultdict(list)
+    for c in career:
+        by_key[_key(c["player"])].append(c)
+    adv = _nba_season_rows(_csv_rows(mirror_dir, "Advanced.csv"))
+    newest = max((s for _, s in adv), default=0)
+    seasons = collections.defaultdict(list)
+    for (pid, s), r in adv.items():
+        g, bpm = int(r["g"] or 0), r["bpm"]
+        if g and bpm not in ("", "NA") and s > newest - BBREF_BPM_SEASONS:
+            seasons[pid].append((s, g, float(bpm)))
+    picks = {}
+    for r in _csv_rows(mirror_dir, "Draft Pick History.csv"):
+        if (r["lg"] == "NBA" and r["player_id"] not in picks
+                and r["overall_pick"].isdigit()):
+            picks[r["player_id"]] = int(r["overall_pick"])
+    out = {}
+    for name, v in pool.items():
+        born = v.get("born")
+        if not born:
+            continue
+        k = _key(name)
+        named = by_key.get(k, [])
+        hits = [c for c in named if _born_close(c["birth_date"], born)]
+        if not hits and len(named) == 1:
+            hits = [c for c in named if _born_close(c["birth_date"], born, 370)]
+        if not hits:
+            toks = set(k.split())
+            hits = [c for c in career if _born_close(c["birth_date"], born)
+                    and toks & set(_key(c["player"]).split())]
+        if len(hits) != 1:
+            continue
+        c = hits[0]
+        last2 = sorted(seasons.get(c["player_id"], []))[-2:]
+        g = sum(x[1] for x in last2)
+        out[name] = {"bbref": c["player_id"], "debut": int(c["from"]) - 1,
+                     "pick": picks.get(c["player_id"]),
+                     "bpm": round(sum(x[1] * x[2] for x in last2) / g, 3) if g else None,
+                     "bpm_g": g}
+    return out
+
+
 USAGE = """usage: ./run fetch_data.py [pool]
        ./run fetch_data.py roster [team id ...]
        ./run fetch_data.py teams
+       ./run fetch_data.py bbref
 
 Rebuilds the data files sim.py reads, into rosters/ and data/.
 
   (no argument)   nba-schedule + league  (~30 requests)
   pool            + players  (~20 min, resumable)
   roster [ids]    roster + teams files, all 12 if no ids
-  teams           teams file alone: id -> team name labels"""
+  teams           teams file alone: id -> team name labels
+  bbref           pinned BBRef mirror -> data/bbref/ (gitignored), and
+                  bbref-<season>.json: BPM, debut, NBA pick per pool player"""
 
 
 def write(name, build, **dump):
@@ -370,6 +477,12 @@ if __name__ == "__main__":
     if args[:1] == ["teams"] and len(args) == 1:
         write("teams-%s.json" % SEASON_TAG,
               lambda: team_names(league_rosters()), indent=0, sort_keys=True)
+        sys.exit(0)
+    if args == ["bbref"]:
+        pool = load_pool()
+        write("bbref-%s.json" % SEASON_TAG,
+              lambda: bbref_players(bbref_mirror(), pool),
+              indent=0, sort_keys=True)
         sys.exit(0)
     if args[:1] == ["roster"]:
         # validated before the first request -- `roster abc` used to make a

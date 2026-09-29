@@ -26,7 +26,7 @@ class FetchDataCLI(unittest.TestCase):
     def test_help_names_every_thing_it_can_be_asked_for(self):
         p = self.fetch("--help")
         self.assertEqual(p.returncode, 0, p.stdout + p.stderr)
-        for word in ("pool", "roster", "teams"):
+        for word in ("pool", "roster", "teams", "bbref"):
             self.assertIn(word, p.stdout)
 
 class DataFileWrites(unittest.TestCase):

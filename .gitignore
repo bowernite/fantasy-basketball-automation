@@ -190,3 +190,6 @@ __pycache__/
 
 # Track project skills (global ignore covers .claude/*)
 !.claude/skills/
+
+# BBRef mirror pull (fetch_data.py bbref)
+strategy/lineup-math/data/bbref/

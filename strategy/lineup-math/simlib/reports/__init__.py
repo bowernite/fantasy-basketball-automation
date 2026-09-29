@@ -9,6 +9,7 @@ from .playoffs import report_playoffs, report_weeks
 from .tables import report_players
 from .title import report_title
 from .horizon import report_horizon
+from .progression import report_progression
 
 
 REPORTS = {
@@ -21,6 +22,7 @@ REPORTS = {
     "market": report_market, "gp": report_gp,
     "playoffs": report_playoffs,
     "weeks": report_weeks,     "title": report_title, "horizon": report_horizon,
+    "progression": report_progression,
 }
 
 BLURB = {
@@ -42,11 +44,13 @@ BLURB = {
     "title": "the whole season simulated: standings -> seeds -> bracket -> "
              "P(title)",
     "horizon": "naive Y1-Y3 PF ranks: pool age-bucket rate drift, same rosters",
+    "progression": "every rostered player's FP/G, GP and exit odds by season "
+                   "over 20 years, and his weighted 20-year value (WRV)",
 }
 
 # Reads the board and the pool, not the roster, so its table doesn't change
 # under `--roster`
-ROSTER_FREE = {"market"}
+ROSTER_FREE = {"market", "progression"}
 
 # rounded up from an 18-core box; `engine.run` shards trials across cores, so a
 # smaller box runs slower than this
