@@ -58,7 +58,7 @@ VALUE = mean over the prior's slots, band in parens. Ranks sourced, conversions 
 | Pick | Origin | Ordinal | Board row | rank | **VALUE** |
 | ---- | ------ | ------: | --------- | ---: | --------: |
 | 1st | own (1.01–1.07 prior) | 1–7 | crowd Pick 1 … Pick 5-8 · Dynatyze '27 1.01–1.07 (w 0.56) | crowd 22–72 · Dyn 28–75 | **2956** (1982–4589) |
-| 1st | Brian (1.10, 1.11 as likely) | 10–11 | crowd Pick 9-14 · Dynatyze '27 1.10 / 1.11 (w 0.56) | crowd 125 · Dyn 98 / 106 | **1262** (1231–1292) |
+| 1st | Brian (1.10 prior) | 10 | Dynatyze '27 1.10 (w 0.56); crowd Pick 9-14 cross-check only | crowd 125 · Dyn 98 | **1292** |
 | 2nd | own (2.01–2.07 prior) | 13–19 | Dynatyze '27 2.01–2.07 template | 128–170 | **904** (734–1095) |
 | 2nd | Henry (2.02–2.09 prior) | 14–21 | Dynatyze '27 2.02–2.09 template | 135–185 | **821** (645–1060) |
 | 3rd | Chris (3.02–3.09 prior) | 26–33 | Dynatyze '27 3.02–3.09 template | 234–290 | **340** (262–427) |
@@ -108,7 +108,7 @@ Gone: none.
 - Board ranks are sourced; BASE and every VALUE are modelled (curve at `D` = 456).
 - Dizzle (7/10) predates the draft. Rookies price off its slot-prefixed rows; Brazile prices off its rookie chart (`~342`). No board splits (`BASE.md`).
 - Picks follow `eval-pick/future-picks.md` step 2 (`pick_prices.py`, 9/29 snapshots). VALUE = V(Dynatyze rank); the '27 crowd band is averaged 50/50 only for bands ≤ 12 picks wide (1.01–2.02), wider bands are cross-check only; `w` is a label, not a weight. '27 2nds/3rds and all '28/'29 2nds are the Dynatyze template. 4ths are the Dynatyze template alone, capped at the same year's 3.12 (206 in '27).
-- Brian's '27 1st is 1.10 on PF, but Brian out-wins Michael, so 1.11 is as likely.
+- Brian's '27 1st is 1.10 on PF (slot 10 in the canonical table, no 1.11 blend).
 - '28/'29 slots come from `sim.py future`'s own-pick slot band (middle 80% of paths, a no-trades read): '28 02–09, '29 04–12.
 
 # Title odds
