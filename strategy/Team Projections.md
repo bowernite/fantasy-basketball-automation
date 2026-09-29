@@ -1,78 +1,67 @@
-# Team projections — where each team finishes, and where its picks land
+# Team projections
 
-Evaluated **2026-09-29**, post-draft: rosters re-cut 9/29 (rookie draft, FA auction and every 9/26–9/28 trade on the wire), F/C flex, projections from the 9/29 refresh, Sharpe `gp=0` and Williams `gp=10` overrides, no-projection players priced ~6.0 FPts/G (last-season rate shrunk to 6.0), full-roster cuts by score. Keyed to who **produces** a pick, not who holds it. Slots written `1.01`–`1.12`; every round uses the same slot (`league-info` §Drafting).
+Run 2026-09-29 (see [Notes](#notes)).
 
-| Column | Source |
-| --- | --- |
-| **'26-27** | `sim.py horizon` '26-27 block (`sim.team_levels()` projected season PF rank) — all 12 roster files, padded to 38, same engine. Re-run before treating as live. **PF order is the finish prior** (draft uses record rank; H2H can move a team ± a few). |
-| **P(title)** | `sim.py title` — same 12 files, seed simulated, twelve sum to 1. This year only. Re-run before treating as live. |
-| **'27-28 +** | Pending the `future` projection work (see [Years 2+](#years-2)). |
-| **Sept slots** | Top-4 finish → `13 − rank` exact. Bottom-8 → lottery **prior** band only (`league-info`). |
+## '26-27
 
-## Master table — projected finish → pick slot
+| Rank | Team | PF | Wins | P(title) % | Sept '27 slot |
+| ---: | --- | ---: | ---: | ---: | --- |
+| 1 | Brett | **32,172** | **16.2** | **55.5** | **1.12** |
+| 2 | Michael | 30,717 | 12.8 | 13.1 | 1.11 |
+| 3 | Brian | 30,308 | 13.1 | 7.3 | 1.10 |
+| 4 | Josh | 30,100 | 11.8 | 9.4 | 1.09 |
+| 5 | Hlina | 30,029 | 11.7 | 6.1 | 1.05–1.11 (prior) |
+| 6 | Mitch | 29,876 | 10.9 | 7.0 | 1.05–1.11 (prior) |
+| 7 | Joe | 28,671 | 9.4 | 1.5 | 1.03–1.10 (prior) |
+| 8 | Todd | 27,876 | 7.6 | 0.2 | 1.03–1.09 (prior) |
+| 9 | Henry | 26,806 | 6.2 | 0.0 | 1.02–1.09 (prior) |
+| 10 | Chris | 26,327 | 5.6 | 0.0 | 1.02–1.09 (prior) |
+| 11 | Matthew | 26,187 | 5.2 | 0.0 | 1.01–1.08 (prior) |
+| 12 | Jon | 25,384 | 3.6 | 0.0 | 1.01–1.07 (prior) |
 
-| Team       | '26-27 | Sept '27          | '27-28 + |
-| ---------- | ------ | ----------------- | -------- |
-| Brett (us) | **1**  | **1.12**          | pending  |
-| Michael    | 2      | 1.11              | pending  |
-| Brian      | 3      | 1.10              | pending  |
-| Josh       | 4      | 1.09              | pending  |
-| Hlina      | 5      | 1.05–1.11 (prior) | pending  |
-| Mitch      | 6      | 1.05–1.11 (prior) | pending  |
-| Joe        | 7      | 1.03–1.10 (prior) | pending  |
-| Todd       | 8      | 1.03–1.09 (prior) | pending  |
-| Henry      | 9      | 1.02–1.09 (prior) | pending  |
-| Chris      | 10     | 1.02–1.09 (prior) | pending  |
-| Matthew    | 11     | 1.01–1.08 (prior) | pending  |
-| Jon        | 12     | 1.01–1.07 (prior) | pending  |
+## '27-28 to '32-33, no trades
 
-Two coin flips on the slot map, both from wins diverging from PF:
-
-- **Michael / Brian (1.11 vs 1.10):** Brian projects **13.1 W** at #3 PF, ahead of Michael's **12.8** at #2. Draft order follows record, so Brian at 1.11 is at least as likely.
-- **Top-4 cut (Josh / Hlina):** Hlina sits 71 PF behind Josh (30,029 vs 30,100) at 11.7 W vs 11.8. Josh's 1.09 vs Hlina's lottery prior is a coin flip.
-
-## Year-1 sim
-
-Measured 2026-09-29. PF from `sim.py horizon` ('26-27); wins from `sim.py title` (19 matchups, 20k seasons). Sorted by PF.
-
-| rank | team | PF | wins |
-| ---: | --- | ---: | ---: |
-| 1 | Brett (us) | **32,172** | **16.2** |
-| 2 | Michael | 30,717 | 12.8 |
-| 3 | Brian | 30,308 | 13.1 |
-| 4 | Josh | 30,100 | 11.8 |
-| 5 | Hlina | 30,029 | 11.7 |
-| 6 | Mitch | 29,876 | 10.9 |
-| 7 | Joe | 28,671 | 9.4 |
-| 8 | Todd | 27,876 | 7.6 |
-| 9 | Henry | 26,806 | 6.2 |
-| 10 | Chris | 26,327 | 5.6 |
-| 11 | Matthew | 26,187 | 5.2 |
-| 12 | Jon | 25,384 | 3.6 |
-
-## Title odds (this year)
-
-`sim.py title`, 2026-09-29. Unconditional `P(title)` — regular season, then the bracket. Not the PF-rank finish prior above. Ours: 1-seed 85%, `P(title | 1-seed)` 56%.
-
-| Team | P(title) |
-| --- | ---: |
-| Brett (us) | **55.5%** |
-| Michael | 13.1% |
-| Josh | 9.4% |
-| Brian | 7.3% |
-| Mitch | 7.0% |
-| Hlina | 6.1% |
-| Joe | 1.5% |
-| Todd | 0.2% |
-| Henry | 0.0% |
-| Chris | 0.0% |
-| Matthew | 0.0% |
-| Jon | 0.0% |
-
-## Years 2+
-
-**Pending the `future` projection work** (forward-projected rosters, 4 rookies per team per year from '27). Until it lands there is no current multi-year read: the 9/28 judgment arcs predate the draft, the auction and the 9/28 trades, and were dropped rather than carried stale. Do not substitute `sim.py horizon`'s '27-28 / '28-29 blocks — same bodies, no picks, no trades.
+| Team: PF (k) · mean rank · P(title) % | '27-28 | '28-29 | '29-30 | '30-31 † | '31-32 † | '32-33 † | Rookie share † '30-31 / '31-32 / '32-33 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Brett | **30.7 · 2.1 · 39** | **29.4 · 4.2 · 13** | **28.1 · 5.6 · 5** | **27.0 · 6.6 · 2** | **25.9 · 7.5 · 1** | **25.2 · 8.2 · 1** | 19 / 30 / 44% |
+| Michael | 27.2 · 6.6 · 3 | 26.3 · 8.0 · 1 | 25.5 · 8.5 · 1 | 25.2 · 8.5 · 1 | 24.9 · 8.5 · 1 | 24.9 · 8.5 · 1 | 35 / 48 / 60% |
+| Brian | 27.3 · 6.5 · 3 | 26.5 · 7.7 · 1 | 25.9 · 8.0 · 1 | 25.4 · 8.3 · 1 | 25.2 · 8.3 · 1 | 25.0 · 8.3 · 1 | 29 / 41 / 53% |
+| Josh | 26.1 · 8.3 · 1 | 24.3 · 10.1 · <1 | 23.0 · 10.5 · <1 | 22.7 · 10.5 · <1 | 22.6 · 10.5 · 0 | 23.0 · 10.3 · <1 | 43 / 61 / 76% |
+| Hlina | 29.5 · 3.3 · 17 | 31.0 · 2.8 · 25 | 31.3 · 2.7 · 27 | 31.2 · 2.7 · 25 | 30.7 · 2.9 · 23 | 30.2 · 3.0 · 22 | 21 / 25 / 32% |
+| Mitch | 30.0 · 2.9 · 25 | 31.3 · 2.6 · 32 | 31.2 · 2.8 · 31 | 31.1 · 2.8 · 29 | 30.8 · 2.9 · 27 | 30.3 · 3.0 · 26 | 14 / 19 / 24% |
+| Joe | 27.2 · 6.6 · 4 | 27.4 · 6.7 · 4 | 26.9 · 6.9 · 3 | 26.5 · 7.1 · 2 | 26.3 · 7.1 · 2 | 26.3 · 6.9 · 2 | 41 / 52 / 62% |
+| Todd | 26.6 · 7.5 · 2 | 27.2 · 6.9 · 3 | 27.1 · 6.7 · 3 | 27.2 · 6.4 · 3 | 27.0 · 6.4 · 3 | 26.8 · 6.3 · 4 | 32 / 42 / 51% |
+| Henry | 26.7 · 7.5 · 2 | 27.4 · 6.6 · 2 | 27.7 · 6.2 · 3 | 27.5 · 6.1 · 3 | 27.3 · 6.0 · 3 | 26.9 · 6.2 · 3 | 27 / 36 / 47% |
+| Chris | 22.4 · 11.7 · 0 | 20.8 · 11.9 · 0 | 20.2 · 11.8 · 0 | 20.5 · 11.7 · 0 | 21.5 · 11.2 · 0 | 22.7 · 10.6 · 0 | 55 / 71 / 82% |
+| Matthew | 26.3 · 7.8 · 2 | 27.7 · 6.2 · 5 | 29.0 · 4.7 · 10 | 29.7 · 4.0 · 14 | 30.0 · 3.4 · 19 | 29.8 · 3.4 · 19 | 17 / 22 / 27% |
+| Jon | 26.9 · 7.0 · 3 | 29.3 · 4.5 · 12 | 30.1 · 3.6 · 17 | 30.4 · 3.4 · 20 | 30.3 · 3.3 · 20 | 30.1 · 3.2 · 22 | 28 / 33 / 39% |
 
 # Notes
 
-- Draft / lottery rules: `league-info`. Slot pricing: `eval-pick`.
+Inputs: 9/29 rosters (post rookie draft, FA auction and trades), 9/29 projections and boards, pick ledger fetched 9/29 15:00.
+
+**'26-27 table**
+
+- PF: `sim.py horizon`, '26-27 block (projected season PF, every roster padded to 38). Wins (of 19 matchups) and P(title): `sim.py title` (20k seasons; ±0.4 points on ours, less elsewhere). Ours: 1-seed 85%, P(title | 1-seed) 56%.
+- Rank is by PF. The draft follows record rank, so it is only the finish prior (`league-info` §Drafting). Top 4: slot = 13 − rank, exact. Bottom 8: lottery prior band only.
+- Two slot coin flips. Brian projects more wins than Michael (13.1 vs 12.8), so 1.10/1.11 may swap. Josh vs Hlina for the top-4 cut is 71 PF and 0.1 W apart, so Josh's 1.09 vs Hlina's prior band is a coin flip.
+
+**'27-28 to '32-33 table**
+
+- `sim.py future`, 600 paths, seed 1. A "no trades" read, uncalibrated, not a forecast. '26-27 comes from `title` only; `future`'s own season 1 runs on the model's GP and is not shown.
+- Method: every player follows his own progression path (FP/G, GP, exit). Each offseason: exits leave; a 4-round draft slots each pick by its original team's sampled finish and hands the rookie to the current holder ('30+ picks stay with their team); rookies are fresh paths cloned from the 2026 class at that ordinal; cuts to 38 by BASE (frozen at today's boards) + 300·formula Δw as a proxy for Score; pads with FA filler. The '26-27 schedule repeats every season.
+- Mean rank is the mean PF rank over paths, not record rank. P(title) sums to 100 per season; whole points, `<1` = 0.1–0.4.
+- † Rookie share = share of the team's top-12 FP held by rookies the sim drafted, all clones of the 2026 class. By '30-31 to '32-33 they carry 14–82% of a top 12, so read those seasons as a trend, not a number.
+- Seed noise: another seed moves P(title) ~0.4 points on average, up to ~3 for a favourite. Same inputs repeat to the digit.
+- Known biases:
+  - Every class copies 2026's strong top (plus the model's top-5 over-projection), and the '27 top is known to be weak. That inflates teams with low slots, or holding picks from teams that finish low: ~1–2k PF in '30-31 to '32-33 for Chris and Josh, ~0.5–1k for Michael, Brian and Joe, and Hlina's, Jon's and Joe's extra '27 1sts in '27-28.
+  - No trades or FA pickups, so aging cores decline without restocking.
+  - Progression pulls high projections toward the mean (Cunningham 47.6 → 43.6, Giddey 42.1 → 36.3 FP/G by '30-31). With late draft slots, that is most of our fall from 30.7k to 25.2k.
+  - Unsized: role vets 29+ run high; BASE never ages; bracket R1 wins don't move the draft cut.
+  - Negligible: the cut proxy (≈0 cuts after '28), the reused schedule, and four players with no birthday (Lewis, Ilyasova, Marković, Ishchenko) exiting after '26-27.
+
+**Re-run**
+
+- '26-27: `strategy/lineup-math/run sim.py horizon title` (PF from the '26-27 block only).
+- '27-28 on: `strategy/lineup-math/run sim.py future` (~1 min). After a trade, injury or projections/boards/BASE refresh, follow `sims` §Future seasons and read `Δ vs last run`.
+- Slot pricing off these finishes: `eval-pick`.
