@@ -82,7 +82,7 @@ How it is assigned and what it changes about what a team pays up for and sells d
 
 ## `ΔP(title)`
 
-Sim-measured change in **P(title)** from a player being on the roster — regular season, seeds and byes, then the bracket (`player_title` / `incoming_title`). Seed is simulated, not assumed. **A different currency from `Δw (season)`, never combined with it** — **table column** after formula **`Δw`** and **`Δw (season)`**, before `W20`–`W23`. Per-player inputs `W20`–`W23` are the next columns (§Columns).
+Sim-measured change in **P(title)** from a player being on the roster — regular season, seeds and byes, then the bracket (`player_title` / `incoming_title`). Seed is simulated, not assumed. Measured against a 68-GP replacement body at the slot group's rate, like `Δw (season)`, so **negatives are real (below replacement) — never floor; |ΔP| < ~0.3 pts is a tie with zero**. **A different currency from `Δw (season)`, never combined with it** — **table column** after formula **`Δw`** and **`Δw (season)`**, before `W20`–`W23`. Per-player inputs `W20`–`W23` are the next columns (§Columns).
 
 Which report to run for whom, the two ΔP reads (`player_title` vs `incoming_title`), and what the figure may decide: `Bracket value.md`.
 

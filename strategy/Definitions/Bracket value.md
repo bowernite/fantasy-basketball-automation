@@ -2,7 +2,7 @@
 
 Expands `Eval Definitions §ΔP(title)` and §*Counterparty title reads*.
 
-**`ΔP(title)`** is the change in probability of winning the title from a player being on the roster — 19 regular periods, standings (record then points-for), then the bracket with its byes (`league-info` §*Matchup periods*). Seed is simulated, not held. Same replacement-body counterfactual as **`Δw (season)`**. Re-run it, never quote a remembered figure. **Eval files:** `100 ×` the sim figure, **one decimal, `%` suffix** (e.g. **9.8%**); the sim report keeps two decimals without `%`.
+**`ΔP(title)`** is the change in probability of winning the title from a player being on the roster — 19 regular periods, standings (record then points-for), then the bracket with its byes (`league-info` §*Matchup periods*). Seed is simulated, not held. Same replacement-body counterfactual as **`Δw (season)`**: our P(title) with the player minus with a 68-GP body at the slot group's rate R (`sim.py replacement`, ~24.8–26.3 FPts/G). Re-run it, never quote a remembered figure. **Eval files:** `100 ×` the sim figure, **one decimal, `%` suffix** (e.g. **9.8%**); the sim report keeps two decimals without `%`.
 
 **Two ΔP reads, like `Δw (season)`** (`Eval Definitions §Columns`):
 
@@ -12,6 +12,8 @@ Expands `Eval Definitions §ΔP(title)` and §*Counterparty title reads*.
 **`W20`–`W23`** (`Columns.md`) are expected points in each bracket period: `FPts/Gp` × that player's NBA games inside the period × `GPp` ÷ his NBA team's games. `sim.py weeks` — closed-form, any roster. Points, never wins: never fed into either win column's units, read against the 0.1-win floor, or compared to a season rate. Round count and window come off the period data, never a remembered shape.
 
 ⚠️ **`W20`–`W23` and `ΔP(title)` both carry availability, so never add them.** Summing counts the same GP haircut twice on top of mixing currencies.
+
+⚠️ **`ΔP(title)` is a delta, so negatives are real — never floor at 0.** Negative = below replacement (cut/upgrade candidate); flooring breaks sign agreement with `Δw (season)` and biases `Score`. Noise is ~±0.1–0.15 pts across blocks plus ~±0.15 from base runs: **|ΔP| < ~0.3 pts is a tie with zero.** Assumes a replacement body is obtainable; with the FA pool ~empty after the Sept '26 expansion, bench rows' level (not order) may shift — unverified.
 
 ⚠️ **`P(title)` and `ΔP(title)` are different numbers.** `P(title)` is the whole roster's odds; `ΔP(title)` is one player's contribution. Name which you are printing.
 
