@@ -49,7 +49,7 @@ Joint `Δw (season)` and `ΔP(title)`, one row per deal. Each deal gets `results
 | `out_us_extra_base` | Our picks to them (sum if multiple) |
 | `in_from_us_extra_base` | Their picks to us (sum if multiple) — despite the name, **not** a mirror of `out_us_extra_base` |
 
-Each pick goes in exactly one field; setting both for the same pick nets it to 0. Player arrays still need full mirrors (`out_us`, `in_from_them`, `out_them`, `in_from_us`). Show picks in the `.md` **Out** column in parentheses; the JSON carries the BASE integer separately. Picks move no bodies in any win column. `dage_us` reads picks (rounds 1–4) from the deal `label`, which must be the `.shapes.md` line's `out > in` (e.g. `Cade+Chris '27 2nd > SGA`). A `*_picks` field refuses.
+Each pick goes in exactly one field; setting both for the same pick nets it to 0. Player arrays still need full mirrors (`out_us`, `in_from_them`, `out_them`, `in_from_us`). The JSON carries pick BASE separately; `.md` pick format per `trade-shapes`. Picks move no bodies in any win column. `dage_us` reads picks (rounds 1–4) from the deal `label`, which must be the `.shapes.md` line's `out > in` (e.g. `Cade+Chris '27 2nd > SGA`). A `*_picks` field refuses.
 
 **Stdout → archive:** `score_us` → **Score** · `delta_base_us` → **ΔBASE** · `fdw_us` → **Δw** · `dw_us` → **Δw (season)** · `dp_title_us` → **ΔP(title)** · `dage_us` → **Δage**. Round per `trade-shapes` Skill.
 

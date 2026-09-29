@@ -4,7 +4,7 @@
 
 # Future-year projections
 
-Per-player progression model: `strategy/lineup-math/simlib/progression.py` (sampler), `fit_progression.py` (fit + backtest, how-to in its docstring), `sim.py progression` (report). Gates G1–G6 are defined in `simlib/progression_eval.py`; latest results in `data/progression-backtest.txt`. Today it's a review-only read for years 2–7; its limits print in the report preamble (`LIMITS`). Design notes and round reports sat in `/tmp/ff-future-proj/` (may be gone).
+Per-player progression model: `strategy/lineup-math/simlib/progression.py` (sampler), `fit_progression.py` (fit + backtest, how-to in its docstring), `sim.py progression` (report). Gates G1–G6 are defined in `simlib/progression_eval.py`; latest results in `data/progression-backtest.txt`. Today it's a review-only read for years 2–7; its limits print in the report preamble (`LIMITS`).
 
 - [ ] **Preseason freeze** — pending until all 12 rosters are re-cut after the last preseason move (`projections` Skill). Then measure year-1 error and σ_u off it (σ_u .12 is a prior until then). First real check of year 1; do it before trusting any year-2 band
 - [ ] **Aging role vets overvalued** — age 29+ at 20–27 FP/G, 7-yr value pred/real 1.15–1.28 across cutoffs; 27–34 FP/G 1.07–1.19 (1.32 at 2020, CI .85–2.24). G3 fails every cutoff. Opinion: probably the post-2016 era churning role vets faster; try an era term in drift like exit's, else a flat haircut calibrated on G3. Re-read after each refit

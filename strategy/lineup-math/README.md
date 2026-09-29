@@ -84,6 +84,7 @@ says which:
 | `value` | replacement, `Δw`, break-evens, the slot an arrival takes |
 | `bracket` | the seed bands and the draw, the projected field a bracket week is played against, `P(title|seed)` |
 | `title` | the season end to end — head-to-head standings, seeding, the bracket played out, `ΔP(title)` |
+| `progression` `future` | one player's seasons ahead (FP/G, GP, exit); the whole league rolled forward on them (exits, drafts off `data/picks-<season>.json`, cuts to 38) |
 | `reports/` | one module per group of reports, plus the `REPORTS` registry |
 
 No module imports a row below its own, so the layering is checkable by reading the import

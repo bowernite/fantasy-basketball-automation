@@ -63,9 +63,9 @@ Use that exact `<ul>` wrapper even for a single asset.
 
 **Players** — `**Name**` inside each `<li>`. **Name** = last name or eval nickname, **bold**. No age or projection metadata. Out-side players from our eval; In-side from theirs.
 
-**Picks** — **Out** only, as their own `<li>`. Square brackets, bold: `**['27 1st]**`, `**['27 2.09]**` (slot notation per `eval-pick`). Not parentheses, not `+`-joined to a player.
+**Picks** — on the side that sends them (ours in **Out**, theirs in **In**), as their own `<li>`. Square brackets, bold: `**['27 1st]**`, `**[Chris '27 2.09]**` (ours bare, others original owner first per `AGENTS.md` §Naming; slot notation per `eval-pick`). Not parentheses, not `+`-joined to a player.
 
-**Rebuild for sim** — deal `label` = the agent line's `out > in` (`Δage` reads later picks from it); strip list markup and bold; player arrays = bare names only. Picks → JSON pick BASE fields (`sims` [config.md](../sims/config.md)); pick label in JSON is `'27 1st` without brackets.
+**Rebuild for sim** — deal `label` = the agent line's `out > in` (`Δage` reads later picks from it); strip list markup and bold; player arrays = bare names only. Picks → JSON pick BASE fields (`sims` [config.md](../sims/config.md)); pick label in JSON is `Chris '27 1st` without brackets.
 
 **Bold** asset names and picks in **Out** / **In**. Bold **Score**, **ΔBASE**, **Δw**, **Δw (season)**, **ΔP(title)** when positive, **Δage** when negative; prefix `+` on positive win numbers. **`ΔP(title)` always carries `%`** — inside bold/strike when those apply (e.g. `**+10%**`, `~~**+6%**~~`, `-2%`, `0%`). In **Status**, bold the status verb (`**proposed**`, `**rejected**`, etc.). Leave non-beneficial numbers plain. When **Status** is a rejection, strike through every other cell (`~~…~~`) including each `<li>` body (`<li>~~**Kessler**~~</li>`); leave **Status** plain (verb still bold).
 
@@ -81,7 +81,7 @@ One shape per line:
 
 `Cade+'27 1st > Brunson | +2200 +700 +1.9 +0.8 +9% +1.4 | Us proposed 9/10`
 
-- Players: bare name. Picks: `'27 1st` (no brackets). Join assets with `+`.
+- Players: bare name. Picks: `'27 1st`, `Chris '27 2nd` (no brackets). Join assets with `+`.
 - Six numbers, space-separated, already rounded. `?` for a number not yet priced. Keep `+` and `%`. Omit status when blank. Strip bold and strike; status text carries a rejection.
 - Keep section headers (`## Above floor`, …) and any prose under them. Strip `**` from prose.
 

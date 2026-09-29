@@ -132,6 +132,9 @@ def _preamble(fetched, flat):
     print("  (strong top); role vets 29+ run high and top-5 picks over-project (progression")
     print("  limits); schedule = 2026-27 every season. Held flat (no birthday): %s."
           % (", ".join(flat) or "none"))
+    print("Season 1 GP is the sim's projection; from season 2 GP is the progression model's,")
+    print("  several games lower for a team's top players, so every PF steps down into season 2. Compare")
+    print("  teams within a season (rk, P), not PF levels across the step.")
     print("PF = mean regular-season PF (k); rk = mean PF rank; P = P(title) %, sums to 100 per season.")
 
 

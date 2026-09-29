@@ -1,6 +1,6 @@
 # out > in | Score ΔBASE Δw Δw(season) ΔP(title) Δage | status
 
-Counterparty: Chris (King Christopher of Bavaria, 161014). Year 1 (Team Projections 9/29): PF 10th (26,327), 5.6 W, 0% P(title), fringe/tanking boundary; not a short-term competitor. 37 bodies (one open spot). Every row re-priced 9/29 on 9/29 rosters + projections (F/C flex, full-Score cuts), with ΔBASE and Δage read from `Chris.team.md` / `Ours.team.md` (config `$TMPDIR/ff-sim-chris-4b.json`).
+Counterparty: Chris (King Christopher of Bavaria, 161014). Year 1 (Team Projections 9/29): PF 10th (26,327), 5.6 W, 0% P(title), fringe/tanking boundary; not a short-term competitor. 37 bodies (one open spot). Every row re-priced 9/29 on 9/29 rosters + projections (F/C flex, full-Score cuts), with ΔBASE and Δage read from `Chris.team.md` / `Ours.team.md`.
 
 What he's said: 9/21 won't deal win-now players to a tier-1 contender (wants a tier-2 buyer). 9/25 passed on Cade+Walker+Kuminga > Fox+Daniels+Anunoby+Quickley+Bridges+Stewart: "Don't want to give up the depth". 9/28 we floated Chris '27 2nd+own '27 2nd > Daniels, '27 1st > Daniels, and the two 2nds > Fox; he took Fox and asked for a body back to stay even (offered Matković, Middleton or Ellis; refused Chaney). No answer on the Daniels options. He values bodies/depth and sells to us for picks despite the 9/21 line. Daniels (23.5) is the piece least likely to count as win-now in his head.
 

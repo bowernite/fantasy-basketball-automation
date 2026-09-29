@@ -56,6 +56,21 @@ Rebuild tmp JSON from `.shapes.md` rows + eval rosters (edit JSON directly), the
 - Eval sim columns (`eval-team`): `./run sim_run.py --eval <team_id>` (`eval-columns`). Do not import `sim` for those columns.
 - Any built-in report from `sim.py --help`
 
+# Future seasons
+
+`strategy/lineup-math/run sim.py future` (~1 min, all cores): each team's PF, PF rank and P(title) for seasons 1–7, with pick counts and roster flow per draft. Reads every roster file, `data/picks-2025-26.json` (pick ledger) and `data/progression-params.json`. Its preamble lists the assumptions and known biases. Quote them with the numbers.
+
+After a trade, an injury, or a projections / boards / BASE refresh:
+
+1. Run `sim.py future` before the change, if its last run predates the current inputs. This is the baseline.
+2. Update the inputs:
+   - Trade: `./run fetch_data.py roster` and `./run fetch_data.py picks`.
+   - Injury or projections: `projections`.
+   - Boards: the board's skill.
+3. Run `sim.py future` again and read `Δ vs last run`. The seeds are fixed, so a Δ is the change and not noise.
+
+Never refit `progression-params.json` for this. That's once per offseason, per `fit_progression.py`'s docstring.
+
 # Write configs, not scripts
 
 **Agents: JSON + `sim_run.py` for pricing**; tier, sort, and archive by hand. Avoid your own scripts whenever possible — rely on your own logic. The table below is the config surface.

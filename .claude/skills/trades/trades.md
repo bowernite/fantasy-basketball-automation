@@ -88,7 +88,7 @@ Load `sims` Skill — **§Agent workflow** (JSON + `sim_run.py` for pricing). Av
 
 Archive both files (`trade-shapes`): read/rebuild from **`strategy/teams/<owner>/<Name>.shapes.md`**; also write **`<Name> Trade Shapes.md`**. Never read the HTML file. Tiers: above floor / floor / below bar, then **`## Too lopsided`** (our **ΔBASE ≥ +1250**), then **`## Doesn't meet our minimums`** at the absolute bottom (fails any threshold in §General guidlines — archive fail table). Run configs go in **`$TMPDIR/ff-sim-<tag>.json`** only.
 
-Each row: **`Out | In`** (picks in **Out** only, in parentheses) + `Score` + our five big numbers + optional **Status** (rejected, interested, etc.). Tier and sort per `trade-shapes` §Tiering. Skip duplicate bodies already in the file; refresh numbers when re-pricing an existing shape. Display rounding: `trade-shapes` Skill.
+Each row: **`Out | In`** (picks per `trade-shapes` §Table format) + `Score` + our five big numbers + optional **Status** (rejected, interested, etc.). Tier and sort per `trade-shapes` §Tiering. Skip duplicate bodies already in the file; refresh numbers when re-pricing an existing shape. Display rounding: `trade-shapes` Skill.
 
 ```bash
 strategy/lineup-math/run sim_run.py "$TMPDIR/ff-sim-<tag>.json"   # new deals only
@@ -120,7 +120,7 @@ Our roster is full at 38 with no filler, so every extra incoming body costs us a
 
 # Shapes
 
-Whenever presenting deals (to the user or in reports) — packages, variants, or side-by-side options — use a single markdown table: `Out | In | Score | ΔBASE | Δw | Δw (season) | ΔP(title) | Δage`, sorted by `Score`, plus `Players (us)` (our net bodies) when body counts are uneven. Picks in **Out** only, in parentheses — e.g. `Duren+('27 1st)` (`sims` Skill §Team archive). `ΔBASE` is a band, not a point value, wherever `Eval Definitions §BASE` calls for one.
+Whenever presenting deals (to the user or in reports) — packages, variants, or side-by-side options — use a single markdown table: `Out | In | Score | ΔBASE | Δw | Δw (season) | ΔP(title) | Δage`, sorted by `Score`, plus `Players (us)` (our net bodies) when body counts are uneven. Picks on the side that sends them, in parentheses — e.g. `Duren+('27 1st)`, `Brunson+(Todd '27 1st)` (`sims` Skill §Team archive). `ΔBASE` is a band, not a point value, wherever `Eval Definitions §BASE` calls for one.
 
 - Benchmark comparisons go in the table: a benchmark row and/or a short `vs <benchmark>` column. Never a per-deal bullet or prose list after the table
 - Commentary: 1–3 short lines after the table, max

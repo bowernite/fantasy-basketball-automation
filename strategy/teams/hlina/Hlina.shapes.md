@@ -8,7 +8,7 @@ Cade rows tier against the live Cade floor: Michael's counter Cade+Jones+Post > 
 
 Competitor read: Hlina is 6th in title odds, not a top competitor. Every Cade row taking two or more of his players costs him 2.8 to 5.5% title and 0.5 to 2.1 formula Δw. The Paolo rows are near-even for him on formula Δw (−0.1 to +0.2) and on board BASE.
 
-Priced 9/29 on 9/29 rosters and projections, ΔBASE and Δage from the `.team.md` evals, body-even on our side (our worst body, Jones then Post, rides along on net +body shapes). Incoming picks: Matthew '27 1st 2822, Hlina '27 1st 1723; our '27 4th 93 (`/tmp/ff-pick-prices.md`).
+Priced 9/29 on 9/29 rosters and projections, ΔBASE and Δage from the `.team.md` evals, body-even on our side (our worst body, Jones then Post, rides along on net +body shapes). Incoming picks: Matthew '27 1st 2822, Hlina '27 1st 1723; our '27 4th 93 (`pick_prices.py`, 9/29 snapshots).
 
 ## Above floor
 

@@ -10,7 +10,7 @@ Todd 9/28: passed on Matković+(Henry '28 3rd) > Mitchell (2:35p, doesn't want 3
 
 Benchmarks: Cade rows tier against Michael's live Cade counter, Cade+Jones+Post > Reaves+Sabonis+Siakam (+3200 +700 +3.1 +1.2 +17% +5.3, re-simmed 9/29 on the fixed sim): floor = within ~300, below bar = clearly under. If Cade goes to Michael, every Cade row here is dead. Todd's old favorite, Cade+Sharpe+Mark(+Jones) > Haliburton+Porter+NAW+Claxton, now reads +2000 (rejected 9/27). Non-Cade rows tier on their own: above floor ≥ ~+1200, floor ~+600…+1100.
 
-Refreshed 9/29/26 on the 9/29 rosters (F/C flex, full-Score cuts). All six numbers are sim output; ΔBASE, Δage and Score read BASE and age from `Todd.team.md` / `Ours.team.md`. Picks at `/tmp/ff-pick-prices.md` VALUE: ours '27 1st 1176 · Mitch '27 2nd 694 · own '27 3rd 206 · '28 1st 1335 · '28 2nd 541; Todd's '27 1st 2215 · '27 2nd 787 · '28 1st 1335 · '28 2nd 541. Sharpe rows with no other Out player have no Δage (Sharpe's age weight is 0, GP 0).
+Refreshed 9/29/26 on the 9/29 rosters (F/C flex, full-Score cuts). All six numbers are sim output; ΔBASE, Δage and Score read BASE and age from `Todd.team.md` / `Ours.team.md`. Picks at `pick_prices.py` (9/29 snapshots) VALUE: ours '27 1st 1176 · Mitch '27 2nd 694 · own '27 3rd 206 · '28 1st 1335 · '28 2nd 541; Todd's '27 1st 2215 · '27 2nd 787 · '28 1st 1335 · '28 2nd 541. Sharpe rows with no other Out player have no Δage (Sharpe's age weight is 0, GP 0).
 
 9/29 changes: rows are body-even. Where a shape netted us bodies, our sim cuts (Jones, then Post, then Emanuel Sharp) moved into Out, so statused rows now carry them though the floated versions didn't. '26 1.01 rows re-priced with Boozer (the pick). Dropped: rows sending Chaney, Matković, own or Chris '27 2nd, or 2.09, or taking Todd's other '26 picks (assets moved or used). New: Fox 1-for-1s, Mitch '27 2nd in place of the dead 2nds, Poeltl > Gobert.
 
@@ -110,9 +110,9 @@ Cade+Sharpe+Mark+Kuminga > Tatum+Porter+NAW+Gobert | +2800 +800 +2.1 +1.2 +13% +
 Cade+Sharpe+Mark+Ellis+Jones > Haliburton+Porter+NAW+Claxton+Mitchell | +2700 +1200 +2.1 +0.9 +9% +2.6
 Cade+Sharpe+Mark+Jones > Tatum+Porter+NAW+Mitchell | +2700 +900 +1.8 +1.1 +12% +3.3 | Us proposed 9/25
 Cade+Walker+Jones+Post+Emanuel Sharp > Brunson+Porter+NAW+Claxton+Dëmin | +2700 +800 +2.9 +0.9 +11% +3.0
-Cade+Sharpe+Mark+Kuminga+Jones > Brunson+Porter+NAW+Claxton+Dëmin+'27 1st | +2600 +1000 +2.0 +0.9 +11% +1.9 | Us proposed 9/24
+Cade+Sharpe+Mark+Kuminga+Jones > Brunson+Porter+NAW+Claxton+Dëmin+Todd '27 1st | +2600 +1000 +2.0 +0.9 +11% +1.9 | Us proposed 9/24
 Cade+Sharpe+Mark+Jones > Tatum+Porter+Claxton+Dëmin | +2600 +900 +1.6 +1.0 +12% +2.4 | Us proposed 9/24
-Cade+Sharpe+Kuminga+Jones > Brunson+Porter+NAW+Claxton+'27 1st | +2600 +1000 +2.1 +0.8 +10% +2.4
+Cade+Sharpe+Kuminga+Jones > Brunson+Porter+NAW+Claxton+Todd '27 1st | +2600 +1000 +2.1 +0.8 +10% +2.4
 Cade+Sharpe+Jones > Tatum+Porter+Claxton | +2600 +1000 +1.7 +0.9 +12% +3.2
 Cade+Sharpe+Mark+Jones+Post+own '27 3rd > Haliburton+Porter+NAW+Claxton+Mitchell | +2600 +1100 +2.0 +0.9 +9% +2.9
 Cade+Sharpe+Mark+Kuminga+Eason > Haliburton+Brunson+Porter+Claxton | +2600 +900 +1.3 +1.0 +12% +3.2 | Todd rejected 9/24
@@ -136,7 +136,7 @@ Cade+Sharpe+Mark+Jones+'28 1st > Tatum+Porter+NAW+Claxton | +2400 +300 +2.2 +1.2
 Cade+Mark+Jones > Tatum+Porter+Claxton | +2400 +800 +1.5 +0.9 +11% +3.2
 Cade+Suggs+Eason > Brunson+Porter+Boozer | +2300 +1200 +0.8 +0.5 +9% +0.9
 Cade+Garland+Eason+Jones > Brunson+Porter+NAW+Boozer | +2300 +1200 +1.2 +0.5 +8% +0.8
-Cade+Jones+Post > Brunson+Porter+NAW+'27 1st | +2300 +1100 +1.7 +0.6 +7% +2.4
+Cade+Jones+Post > Brunson+Porter+NAW+Todd '27 1st | +2300 +1100 +1.7 +0.6 +7% +2.4
 Cade+Sharpe+Mark+Jones+Post+'27 1st > Haliburton+Porter+NAW+Claxton+Gobert | +2300 +600 +2.5 +1.1 +9% +5.3
 Cade+Bona+Jones+Post+Emanuel Sharp > Brunson+Porter+NAW+Claxton+Bryant | +2300 +500 +2.6 +0.8 +10% +3.7
 Cade+Sharpe+Mark+Kuminga+Jones > Haliburton+Porter+NAW+Claxton+Mitchell | +2300 +800 +1.9 +0.8 +9% +2.7 | Todd rejected 9/25
@@ -147,7 +147,7 @@ Cade+Suggs+Vassell > Brunson+Porter+Boozer | +2200 +1200 +0.9 +0.4 +8% +0.8
 Cade+Sharpe+Mark+Jones > Tatum+Porter+Claxton+Mitchell | +2200 +500 +1.7 +1.0 +12% +3.2
 Cade+Sharpe+Mark+Eason+Jones > Haliburton+Porter+NAW+Claxton+Dëmin | +2200 +900 +1.5 +0.8 +9% +1.8 | Us proposed 9/24
 Cade+Sharpe+Mark+Kuminga+Jones > Haliburton+Porter+NAW+Gobert+Dosunmu | +2200 +800 +2.1 +0.9 +7% +3.8
-Cade+Sharpe+Mark+Kuminga > Haliburton+Porter+NAW+Claxton+'27 2nd | +2200 +1000 +1.4 +0.7 +7% +2.1
+Cade+Sharpe+Mark+Kuminga > Haliburton+Porter+NAW+Claxton+Todd '27 2nd | +2200 +1000 +1.4 +0.7 +7% +2.1
 Cade+Sharpe+Mark+Jones > Tatum+NAW+Claxton+Dosunmu | +2100 +800 +1.5 +1.0 +8% +3.0
 Cade+Sharpe+Mark+Jones > Tatum+Porter+Claxton+Nesmith | +2100 +500 +1.5 +1.0 +12% +3.1
 Cade+Sharpe+Jones+Post+Emanuel Sharp > Brunson+Porter+NAW+Claxton+Dëmin | +2100 +200 +2.7 +1.0 +11% +2.9
@@ -158,9 +158,9 @@ Cade+Murray > Tatum+Brunson | +2000 +1000 +0.8 +0.7 +8% +4.0
 Cade+Sharpe+Mark+Jones > Haliburton+Porter+NAW+Claxton | +2000 +800 +1.5 +0.8 +7% +2.6 | Todd rejected 9/27
 Cade+Suggs+Smith > Brunson+Porter+Boozer | +2000 +1100 +0.5 +0.4 +8% +1.3
 Cade+Mark+Jones > Tatum+Porter+Gobert | +2000 +500 +1.6 +0.9 +10% +4.9
-Cade+Walker+Jones > Brunson+Porter+NAW+'27 1st | +2000 +900 +1.5 +0.5 +7% +2.5
+Cade+Walker+Jones > Brunson+Porter+NAW+Todd '27 1st | +2000 +900 +1.5 +0.5 +7% +2.5
 Cade+Sharpe+Mark+Kuminga+Jones > Haliburton+Porter+NAW+Claxton+Bryant | +2000 +800 +1.4 +0.7 +7% +2.6
-Cade+Sharpe+Mark+Jones > Brunson+Porter+NAW+Claxton+'27 1st | +2000 +500 +1.7 +0.9 +10% +2.4 | Us proposed 9/24
+Cade+Sharpe+Mark+Jones > Brunson+Porter+NAW+Claxton+Todd '27 1st | +2000 +500 +1.7 +0.9 +10% +2.4 | Us proposed 9/24
 Cade+Sharpe+Mark+Kyrie+Eason > Brunson+Porter+NAW+Boozer | +2000 +800 +0.5 +0.7 +10% -1.0
 Cade+Sharpe+Mark+Eason+Jones > Haliburton+Porter+NAW+Claxton+Dosunmu | +1900 +600 +1.6 +0.9 +7% +2.4
 Cade+Suggs > Tatum+Brunson | +1900 +900 +0.8 +0.6 +7% +4.2
@@ -171,22 +171,22 @@ Cade+Sharpe+Mark+Kuminga > Haliburton+Brunson+Porter | +1900 +600 +1.0 +0.8 +9% 
 Cade+Kuminga+Jones+Post+Emanuel Sharp > Brunson+Porter+NAW+Claxton+Bryant | +1900 +100 +2.5 +0.9 +10% +3.7
 Cade+Mark+Jones+Post+Emanuel Sharp > Brunson+Porter+NAW+Claxton+Dëmin | +1800 0 +2.6 +1.0 +11% +2.9
 Cade+Jones+Post+Emanuel Sharp > Brunson+Porter+NAW+Claxton | +1800 0 +2.6 +0.9 +10% +3.7
-Cade+Jones+Post > Brunson+Porter+Claxton+'27 1st | +1800 +600 +1.6 +0.5 +8% +2.2
+Cade+Jones+Post > Brunson+Porter+Claxton+Todd '27 1st | +1800 +600 +1.6 +0.5 +8% +2.2
 Cade+Sharpe+Mark+Jones+own '27 3rd > Haliburton+Porter+NAW+Claxton | +1800 +600 +1.5 +0.8 +7% +2.8
 Cade+Sharpe+Jones > Tatum+Porter+Dosunmu | +1800 +500 +1.4 +0.8 +9% +3.1
 Cade+Smith+Walker > Tatum+Brunson | +1800 +900 +0.4 +0.5 +6% +4.8
 Cade+Sharpe+Mark+Eason+Jones > Haliburton+Porter+NAW+Claxton+Mitchell | +1800 +400 +1.6 +0.8 +9% +2.5
 Cade+Sharpe+Mark > Haliburton+Brunson+Claxton | +1800 +900 +0.9 +0.7 +6% +3.3
 Cade+Jones > Tatum+Porter | +1800 +600 +1.2 +0.6 +9% +3.4 | Us proposed 9/10
-Cade+Sharpe+Mark+Kuminga+Jones > Brunson+Porter+NAW+Claxton+Dëmin+'28 1st | +1800 +100 +2.0 +0.9 +11% +1.7
+Cade+Sharpe+Mark+Kuminga+Jones > Brunson+Porter+NAW+Claxton+Dëmin+Todd '28 1st | +1800 +100 +2.0 +0.9 +11% +1.7
 Cade+Kuminga+Jones > Haliburton+Porter+NAW | +1800 +900 +1.4 +0.4 +4% +2.6
-Cade+Kuminga+Jones > Brunson+Porter+NAW+'27 1st | +1800 +600 +1.6 +0.5 +7% +2.4
+Cade+Kuminga+Jones > Brunson+Porter+NAW+Todd '27 1st | +1800 +600 +1.6 +0.5 +7% +2.4
 Cade+Sharpe+Mark+Jones > Haliburton+Porter+NAW+Gobert | +1700 +500 +1.6 +0.8 +7% +4.1
 Cade+Sharpe+Mark+Eason+Kuminga+Suggs > Brunson+Porter+NAW+Boozer | +1700 +200 +0.6 +0.9 +12% +1.3
-Cade+Sharpe+Mark+Jones > Brunson+Porter+NAW+Gobert+'27 1st | +1700 +200 +1.8 +0.9 +9% +3.7
+Cade+Sharpe+Mark+Jones > Brunson+Porter+NAW+Gobert+Todd '27 1st | +1700 +200 +1.8 +0.9 +9% +3.7
 Cade+Butler+Jones+Post+Emanuel Sharp > Brunson+Porter+NAW+Claxton+Bryant | +1700 0 +2.2 +0.9 +10% +2.2
 Cade+Green > Tatum+Brunson | +1600 +900 +0.6 +0.6 +5% +4.4
-Cade+Sharpe+Mark > Tatum+Porter+'27 1st | +1600 +700 +0.1 +0.7 +8% +1.7
+Cade+Sharpe+Mark > Tatum+Porter+Todd '27 1st | +1600 +700 +0.1 +0.7 +8% +1.7
 Cade+Garland+Suggs+Jones > Brunson+Porter+NAW+Boozer | +1600 +600 +1.1 +0.4 +7% +0.9
 Cade+Walker+Jones+Post > Brunson+Porter+NAW+Claxton | +1600 -100 +2.4 +0.8 +10% +3.8
 Cade+Sharpe+Mark+Eason+Kuminga > Haliburton+Porter+NAW+Claxton+Dëmin | +1500 +300 +1.3 +0.8 +8% +1.8
@@ -199,28 +199,28 @@ Cade+Sharpe+Mark+Eason+Jones > Haliburton+Porter+NAW+Claxton+Bryant | +1500 +400
 Cade+Sharpe+Mark+Jones > Haliburton+Porter+NAW+Dëmin | +1500 +500 +1.1 +0.6 +6% +1.8
 Cade+Sharpe+Mark > Tatum+Brunson | +1500 +300 +0.5 +0.9 +8% +4.3
 Cade+Sharpe+Mark > Haliburton+Brunson+Gobert | +1400 +600 +0.9 +0.7 +5% +5.1
-Cade+Jones+Post > Brunson+Porter+NAW+'28 1st | +1400 +200 +1.7 +0.6 +7% +2.2
+Cade+Jones+Post > Brunson+Porter+NAW+Todd '28 1st | +1400 +200 +1.7 +0.6 +7% +2.2
 Cade+Sharpe+Jones > Haliburton+Porter+NAW | +1400 +600 +1.2 +0.5 +4% +2.6
-Cade+Sharpe+Mark+Jones > Brunson+Porter+NAW+Dëmin+'27 1st | +1400 +200 +1.3 +0.7 +8% +1.7
-Cade+Sharpe+Jones > Brunson+Porter+NAW+'27 1st | +1400 +300 +1.3 +0.6 +7% +2.4
+Cade+Sharpe+Mark+Jones > Brunson+Porter+NAW+Dëmin+Todd '27 1st | +1400 +200 +1.3 +0.7 +8% +1.7
+Cade+Sharpe+Jones > Brunson+Porter+NAW+Todd '27 1st | +1400 +300 +1.3 +0.6 +7% +2.4
 Cade+Sharpe+Mark+Eason+Kyrie > Brunson+Porter+Claxton+Boozer | +1400 +300 +0.4 +0.6 +9% -1.2
-Cade+Sharpe+Mark+Kuminga > Brunson+Porter+NAW+Claxton+'27 1st | +1400 -100 +1.5 +0.9 +10% +2.4
+Cade+Sharpe+Mark+Kuminga > Brunson+Porter+NAW+Claxton+Todd '27 1st | +1400 -100 +1.5 +0.9 +10% +2.4
 Cade+Sharpe+Mark+Kuminga > Haliburton+Porter+NAW+Claxton | +1400 +200 +1.4 +0.7 +7% +2.6
 Cade+Kuminga+Jones+Post > Brunson+Porter+NAW+Claxton | +1300 -400 +2.4 +0.8 +10% +3.7
 Cade+Sharpe+Mark+Eason > Haliburton+Brunson+Porter | +1300 +100 +0.6 +0.8 +9% +3.3
-Cade+Jones > Brunson+Porter+'27 1st+'28 1st | +1300 +700 +0.7 +0.2 +4% +0.6
+Cade+Jones > Brunson+Porter+Todd '27 1st+Todd '28 1st | +1300 +700 +0.7 +0.2 +4% +0.6
 Cade+Jones+Post > Haliburton+Porter+Dëmin | +1300 +700 +1.0 +0.1 +3% +1.3
 Cade+Sharpe+Mark+Jones > Haliburton+Porter+Claxton+Gobert | +1200 0 +1.5 +0.8 +7% +4.0
 Cade+Jones+Post+Emanuel Sharp > Brunson+Porter+NAW+Dëmin | +1200 -200 +2.2 +0.7 +8% +3.0
 Cade+Garland+Sharpe+Mark > Brunson+Porter+NAW+Boozer | +1200 +100 +0.8 +0.7 +9% +0.8
 Cade+Jones > Tatum+Ja | +1200 +700 +0.5 +0.3 +4% +3.2
-Cade+Sharpe+Mark+Kuminga > Haliburton+Porter+Claxton+'27 1st | +1200 +600 +0.2 +0.5 +5% +1.0
-Cade+Eason+Jones > Brunson+Porter+NAW+'27 1st | +1200 +200 +1.2 +0.5 +7% +2.3
+Cade+Sharpe+Mark+Kuminga > Haliburton+Porter+Claxton+Todd '27 1st | +1200 +600 +0.2 +0.5 +5% +1.0
+Cade+Eason+Jones > Brunson+Porter+NAW+Todd '27 1st | +1200 +200 +1.2 +0.5 +7% +2.3
 Cade+Garland+Mark+Jones > Haliburton+Brunson+Porter+Claxton | +1200 +100 +1.2 +0.6 +8% +2.6
-Cade+Sharpe+Mark+Jones > Brunson+Porter+NAW+Dosunmu+'27 1st | +1200 0 +1.4 +0.8 +7% +2.3
-Cade+Sharpe+Mark+Jones > Brunson+Porter+NAW+Claxton+'28 1st | +1100 -400 +1.7 +0.9 +10% +2.3
-Cade+Mark+Jones > Brunson+Porter+NAW+'27 1st | +1100 +100 +1.2 +0.6 +7% +2.4
-Cade+Sharpe+Mark+Jones > Brunson+Porter+NAW+Claxton+'27 2nd+'28 2nd | +1100 -400 +1.7 +0.9 +10% +2.5
+Cade+Sharpe+Mark+Jones > Brunson+Porter+NAW+Dosunmu+Todd '27 1st | +1200 0 +1.4 +0.8 +7% +2.3
+Cade+Sharpe+Mark+Jones > Brunson+Porter+NAW+Claxton+Todd '28 1st | +1100 -400 +1.7 +0.9 +10% +2.3
+Cade+Mark+Jones > Brunson+Porter+NAW+Todd '27 1st | +1100 +100 +1.2 +0.6 +7% +2.4
+Cade+Sharpe+Mark+Jones > Brunson+Porter+NAW+Claxton+Todd '27 2nd+Todd '28 2nd | +1100 -400 +1.7 +0.9 +10% +2.5
 Cade+Sharpe+Mark+Kuminga > Haliburton+Brunson+Claxton | +1100 +200 +0.6 +0.6 +5% +3.3
 Cade+Sharpe+Mark+Jones > Haliburton+Porter+NAW+Mitchell | +1100 +100 +1.2 +0.6 +6% +2.7
 Cade+Jones > Tatum+Claxton | +1000 +200 +0.8 +0.4 +5% +3.2
@@ -228,12 +228,12 @@ Cade+Garland+Jones > Brunson+Porter+Boozer | +1000 +400 +0.7 +0.2 +5% +0.4
 Cade+Sharpe+Mark+Jones+Post > Brunson+Porter+NAW+Claxton+Dëmin | +1000 -800 +2.1 +1.0 +11% +2.9
 Cade+Sharpe+Jones+Post > Brunson+Porter+NAW+Claxton | +1000 -700 +2.2 +0.9 +10% +3.7
 Cade+Sharpe+Jones > Haliburton+Porter+Claxton | +900 +100 +1.1 +0.4 +5% +2.4
-Cade+Sharpe+Jones > Brunson+Porter+Claxton+'27 1st | +900 -200 +1.2 +0.6 +7% +2.2
-Cade+Jones+Post > Brunson+Porter+NAW+'27 2nd | +900 -300 +1.7 +0.6 +7% +3.2
-Cade+Kuminga+Jones > Brunson+Porter+NAW+'28 1st | +900 -300 +1.6 +0.5 +7% +2.3
+Cade+Sharpe+Jones > Brunson+Porter+Claxton+Todd '27 1st | +900 -200 +1.2 +0.6 +7% +2.2
+Cade+Jones+Post > Brunson+Porter+NAW+Todd '27 2nd | +900 -300 +1.7 +0.6 +7% +3.2
+Cade+Kuminga+Jones > Brunson+Porter+NAW+Todd '28 1st | +900 -300 +1.6 +0.5 +7% +2.3
 Cade+Kyrie+Jones+Post+Emanuel Sharp > Brunson+Porter+NAW+Claxton+Dëmin | +900 -600 +2.1 +0.6 +8% -0.1
 Cade+Sharpe+Mark+Eason > Haliburton+Porter+NAW+Claxton | +900 -200 +1.0 +0.8 +7% +2.5
-Cade+Sharpe+Mark+Jones > Brunson+Porter+NAW+Gobert+'28 1st | +800 -700 +1.8 +0.9 +9% +3.5
+Cade+Sharpe+Mark+Jones > Brunson+Porter+NAW+Gobert+Todd '28 1st | +800 -700 +1.8 +0.9 +9% +3.5
 Cade+Sharpe > Tatum+Porter | +800 -300 +0.8 +0.7 +9% +3.4
 Cade+Jones+Post+Emanuel Sharp > Brunson+NAW+Claxton+Gobert | +800 -600 +2.3 +0.7 +6% +5.1
 Cade+Mark+Jones+Post > Brunson+Porter+NAW+Claxton | +700 -900 +2.0 +0.9 +10% +3.7
@@ -241,8 +241,8 @@ Cade+Sharpe+Mark+Kyrie > Brunson+Porter+Boozer | +700 0 0.0 +0.4 +6% -1.8
 Cade+Jones+Post+Emanuel Sharp > Brunson+Porter+NAW+Bryant | +600 -700 +1.8 +0.6 +7% +3.9
 Cade+Jones > Tatum+Gobert | +600 -100 +0.9 +0.5 +4% +5.6
 Cade+Sharpe+Jones > Haliburton+NAW+Claxton | +600 +300 +0.8 +0.2 0% +2.3
-Cade+Sharpe+Jones > Brunson+Porter+Gobert+'27 1st | +600 -500 +1.3 +0.6 +7% +3.8
-Cade+Suggs+Jones > Brunson+Porter+NAW+'27 1st | +600 -400 +1.1 +0.4 +6% +2.3
+Cade+Sharpe+Jones > Brunson+Porter+Gobert+Todd '27 1st | +600 -500 +1.3 +0.6 +7% +3.8
+Cade+Suggs+Jones > Brunson+Porter+NAW+Todd '27 1st | +600 -400 +1.1 +0.4 +6% +2.3
 Garland > Brunson | +500 +100 +0.3 +0.2 +3% +3.4
 Cade+Suggs+Jones > Haliburton+Porter+NAW | +500 0 +0.9 +0.2 +3% +2.5
 Queta > Gobert | +500 +300 +0.4 +0.2 0% +7.1
@@ -259,19 +259,19 @@ Cade+Sharpe+Mark+Kuminga > Haliburton+Porter+Claxton+Dëmin | +400 -500 +0.8 +0.
 Cade+Sharpe+Jones+Post > Brunson+Porter+NAW+Dëmin | +400 -1000 +1.8 +0.7 +8% +3.0
 Cade+Jones > Tatum+Dëmin | +400 0 +0.4 +0.2 +3% +2.0
 Mark > Gobert | +400 -100 +0.4 +0.4 +3% +9.5
-Cade+Sharpe > Brunson+Porter+'27 1st+'28 1st | +300 -200 +0.3 +0.3 +4% +0.6
+Cade+Sharpe > Brunson+Porter+Todd '27 1st+Todd '28 1st | +300 -200 +0.3 +0.3 +4% +0.6
 Suggs+Walker > Porter | +300 -300 +0.3 +0.3 +5% +3.3
 Edey+'27 1st > Brunson | +300 -100 +0.6 +0.3 +2% +7.9
-Cade+Sharpe+Jones > Brunson+Porter+Dëmin+'27 1st | +300 -500 +0.8 +0.4 +5% +1.4
+Cade+Sharpe+Jones > Brunson+Porter+Dëmin+Todd '27 1st | +300 -500 +0.8 +0.4 +5% +1.4
 Cade+Suggs > Brunson+Haliburton | +200 +100 +0.2 0.0 +1% +3.4
-Cade+Sharpe+Mark > Brunson+Porter+NAW+'27 1st | +100 -800 +0.8 +0.7 +7% +2.4
+Cade+Sharpe+Mark > Brunson+Porter+NAW+Todd '27 1st | +100 -800 +0.8 +0.7 +7% +2.4
 Cade+Jones > Tatum+Dosunmu | +100 -300 +0.5 +0.2 +2% +3.1
 Camara+Eason > Porter | +100 -400 +0.1 +0.1 +4% +2.3
-Cade+Sharpe+Jones > Brunson+Porter+Dosunmu+'27 1st | 0 -700 +0.9 +0.4 +4% +2.1
+Cade+Sharpe+Jones > Brunson+Porter+Dosunmu+Todd '27 1st | 0 -700 +0.9 +0.4 +4% +2.1
 Cade+Jones > Haliburton+Porter | 0 -300 +0.6 0.0 +2% +2.4
 Sharpe > Mitchell | 0 -300 +0.2 +0.2 +3% ?
 White > Claxton | 0 0 -0.1 0.0 +1% +0.8
-Cade+Jones > Brunson+Porter+'27 1st | 0 -600 +0.7 +0.2 +4% +2.2
+Cade+Jones > Brunson+Porter+Todd '27 1st | 0 -600 +0.7 +0.2 +4% +2.2
 Cade+Jones > Tatum+Mitchell | -100 -500 +0.5 +0.2 +3% +3.5
 Green+Smith+'27 1st > Brunson | -200 -400 -0.1 +0.2 +2% +7.6
 Bane > Porter | -300 -600 +0.1 +0.2 +3% -0.1
@@ -348,7 +348,7 @@ Green+Smith > Porter | -1200 -1100 -0.5 +0.1 0% +4.2
 Green+'27 1st > NAW | -1000 -900 +0.2 +0.2 -3% +6.0
 Cade+Jones+Post > Brunson+Porter+Dëmin | -1000 -1900 +1.1 +0.3 +5% +3.0
 White+Green+Smith > Brunson | -1000 -700 -1.3 -0.3 -1% +5.1
-Cade+Sharpe > Brunson+Porter+'27 1st | -1000 -1500 +0.3 +0.3 +4% +2.2 | Todd proposed 9/24
+Cade+Sharpe > Brunson+Porter+Todd '27 1st | -1000 -1500 +0.3 +0.3 +4% +2.2 | Todd proposed 9/24
 Giddey+Suggs > Haliburton | -1000 -100 -1.1 -0.6 -7% +2.2
 Bane+Edey+Smith > Haliburton | -1000 +100 -1.7 -0.8 -8% +1.0
 Cade+Sharpe+Jones > Brunson+Porter+NAW | -800 -1900 +1.3 +0.6 +7% +3.9
@@ -359,7 +359,7 @@ Giddey+Camara > Haliburton | -600 +500 -1.0 -0.8 -9% +2.0
 Giddey+Walker+'27 1st > Haliburton | -600 0 -0.6 -0.4 -5% +4.1
 Giddey+Smith > Haliburton | -600 +400 -1.2 -0.7 -6% +2.8
 Giddey+Edey > Tatum | -500 -100 -0.8 -0.2 -3% +4.5
-Cade+Sharpe+Mark > Haliburton+NAW+'27 1st | -500 0 -0.7 -0.1 -4% +0.4
+Cade+Sharpe+Mark > Haliburton+NAW+Todd '27 1st | -500 0 -0.7 -0.1 -4% +0.4
 Cade+Jones+Post > Brunson+Porter+Claxton | -400 -1600 +1.6 +0.5 +8% +3.8
 Cade+Jones > Haliburton+NAW | -400 -200 +0.3 -0.2 -3% +2.3
 Giddey+Bane > Tatum | -400 +100 -0.9 -0.2 -3% +2.9
@@ -368,7 +368,7 @@ Cade+Sharpe+Mark+Jones > Brunson+Porter+NAW+Claxton | -200 -1700 +1.7 +0.9 +10% 
 Cade+Jones+Post > Brunson+Porter+Ja | -200 -1100 +1.2 +0.4 +6% +3.9
 Walker+'27 1st+'28 1st > Porter | -100 -1200 +1.1 +0.6 +7% +9.3
 Giddey+Kuminga+Walker > Haliburton | -100 +500 -0.9 -0.5 -5% +2.7
-Cade+Sharpe+Mark > Haliburton+Porter+'27 1st | -100 -200 -0.5 +0.2 +1% +0.6
+Cade+Sharpe+Mark > Haliburton+Porter+Todd '27 1st | -100 -200 -0.5 +0.2 +1% +0.6
 Giddey+Mark+Smith > Tatum | -100 0 -1.2 +0.1 +1% +4.8
 Green > Ja | 0 +300 -0.3 -0.1 -2% +2.5
 Cade+Jones+Post > Brunson+Porter+NAW | +100 -1100 +1.7 +0.6 +7% +3.9
@@ -380,7 +380,7 @@ Smith+Walker > Ja | +200 +300 -0.5 -0.1 0% +3.8
 Bridges+Walker > Porter | +300 +200 -0.1 +0.1 0% +0.4
 Giddey+Suggs+Walker > Tatum | +300 +400 -0.8 0.0 -1% +4.3
 White > Ja | +300 +400 -0.5 -0.1 0% +0.5
-Cade+Sharpe > Haliburton+Claxton+'27 1st | +400 +700 -0.2 -0.1 -3% 0.0
+Cade+Sharpe > Haliburton+Claxton+Todd '27 1st | +400 +700 -0.2 -0.1 -3% 0.0
 Poeltl > Gobert | +400 +100 +0.7 +0.3 0% +3.3
 Cade+Garland+Mark > Tatum+Haliburton | +400 +400 -0.6 +0.2 +1% +2.2
 Reid+Green > Brunson | +400 +400 -0.2 +0.1 0% +4.2
