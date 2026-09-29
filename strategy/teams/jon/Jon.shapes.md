@@ -1,6 +1,6 @@
 # out > in | Score ΔBASE Δw Δw(season) ΔP(title) Δage | status
 
-Counterparty: Jon (161015). Tanking: 12th PF (25,384), 3.6 W, 0% title; we're 1st at 55.5% (`Team Projections.md` year 1; years 2+ pending `future`). Both rosters are at 38, so every row is body-even on our side: our worst bodies (Tyus Jones, then Post) go in Out per `trades` §Uneven bodies. Jon cuts his worst (Proctor) on the rows that net him a body (the 4-for-3 and the Cade 2-for-1s).
+Counterparty: Jon (161015). Tanking: 12th PF (25,384), 3.6 W, 0% title; we're 1st at 55.5% (`Team Projections.md` year 1; years 2+ read: `Team Projections.md` '27-28+ table (no trades)). Both rosters are at 38, so every row is body-even on our side: our worst bodies (Tyus Jones, then Post) go in Out per `trades` §Uneven bodies. Jon cuts his worst (Proctor) on the rows that net him a body (the 4-for-3 and the Cade 2-for-1s).
 
 What Jon has said: he won't trade Şengün, Ware is untouchable, and he won't take Shaedon Sharpe ("he's bad", 9/25). He rates Fears ≈ Day'Ron Sharpe and would rather not give both. He likes picks: he asked for our '26 2.09 in every thread from 9/22 to 9/28, and he raised Raynaud himself on 9/25. Screening: don't float deals where his incoming side is non-marginally older (~28+).
 

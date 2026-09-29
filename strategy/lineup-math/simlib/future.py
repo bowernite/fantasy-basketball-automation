@@ -118,8 +118,8 @@ def offseason(league, s, standings, ledger, template, key, years):
     order = draft_order(standings, random.Random("%s/lottery/%d" % (key, s)))
     sampler = prog.Sampler(prog.params())
     out = {t: [p for p in roster if p["rates"][s + 1] is not None] for t, roster in league.items()}
-    flow = {t: {"exits": len(league[t]) - len(out[t]), "picks": [], "rookies": 0, "cuts": 0}
-            for t in league}
+    flow = {t: {"exits": len(league[t]) - len(out[t]), "picks": [], "rookies": 0, "cuts": 0,
+                "own_slot": order.index(t) + 1} for t in league}
     for rnd in range(1, ROUNDS + 1):
         for slot, owner in enumerate(order, 1):
             ordinal = (rnd - 1) * len(order) + slot

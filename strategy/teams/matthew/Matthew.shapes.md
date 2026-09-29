@@ -1,6 +1,6 @@
 # out > in | Score ΔBASE Δw Δw(season) ΔP(title) Δage | status
 
-Counterparty: Matthew Pook, Pharaoh Mattankhamun-Ra (160941). Not Hlina (Matthew the Apostle). Tanking: year 1 11th PF (26,187), 5.2 W, 0% title (Team Projections, 9/29). Years 2+ are pending the `future` projections. His roster is young, so send him young players and picks; older or short-window players only go as small add-ons. He has 37 bodies and 1 open slot.
+Counterparty: Matthew Pook, Pharaoh Mattankhamun-Ra (160941). Not Hlina (Matthew the Apostle). Tanking: year 1 11th PF (26,187), 5.2 W, 0% title (Team Projections, 9/29). Years 2+ read: `Team Projections.md` '27-28+ table (no trades). His roster is young, so send him young players and picks; older or short-window players only go as small add-ons. He has 37 bodies and 1 open slot.
 
 Rules:
 - 9/25: no In-side Amen shapes. He won't trade Amen, whom we just sent him.

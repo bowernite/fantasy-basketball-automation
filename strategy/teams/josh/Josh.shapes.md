@@ -1,6 +1,6 @@
 # out > in | Score ΔBASE Δw Δw(season) ΔP(title) Δage | status
 
-Counterparty: Josh (161024). Contending: 4th PF (30,100), 11.8 W, 9.4% title, year 1 only (`Team Projections.md`; years 2+ wait on `future`). Win-now (Brett 9/27). Full at 38, like us: bodies he nets get cut by full Score (Capela, then Conley or Plowden, per `cut_them`). Columns: `Out | In` + Score + our five big numbers (`trades` §The big numbers).
+Counterparty: Josh (161024). Contending: 4th PF (30,100), 11.8 W, 9.4% title, year 1 (`Team Projections.md`; years 2+ read: the '27-28+ table, no trades). Win-now (Brett 9/27). Full at 38, like us: bodies he nets get cut by full Score (Capela, then Conley or Plowden, per `cut_them`). Columns: `Out | In` + Score + our five big numbers (`trades` §The big numbers).
 
 Refresh 9/29/26: every row re-priced on the 9/29 rosters (F/C flex, full-Score cuts, 9/29 boards and pick prices). Cade is still ours, so rows lose the old `if Cade (Siakam)` / `+Fox` scenario tags. Rows where we took his net +body now send our cut (Tyus Jones, plus Post on 1-for-3s) in Out. Dropped rows (Q9): anything sending Middleton, Chaney, own '27 2nd (Chris's since the 9/28 Fox deal), Matković (Brian's) or 2.09, or taking Jon 3.02 / 3.10 (spent on Peat / Conwell). Duplicate rows merged.
 

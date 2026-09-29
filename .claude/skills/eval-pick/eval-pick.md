@@ -20,14 +20,15 @@ which in the output.
 
 ## 2. Resolve the slot
 
-- **Next draft:** read it. `FetchLeagueDraftBoard` gives real slots and marks acquired
+- **Next draft, once its order is set:** read it. `FetchLeagueDraftBoard` gives real slots and marks acquired
   picks.
-- **Later drafts:** project the **originating** team's record rank (never the current
+- **The draft the current season sets:** project the **originating** team's record rank (never the current
   holder) from `strategy/Team Projections.md`, with a range, then apply `league-info`'s
   draft-order rule. The order rule **splits by record band, not by round** — every round shares one
   order, so a projected top-4 finish resolves to an exact slot in every round, and a
   projected bottom-8 finish is a **prior only** in every round. Publish a range for the
   latter; never derive it.
+- **Every later draft:** `future-picks.md` step 1.
 - **Never read a displayed future slot** — Fleaflicker shows placeholders copied from
   the last finish.
 

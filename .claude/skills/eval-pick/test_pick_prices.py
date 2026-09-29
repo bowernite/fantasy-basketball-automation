@@ -109,6 +109,20 @@ class TestPickPrices(unittest.TestCase):
         self.assertAlmostEqual(price(out, "'28", '01–12', 2),
                                sum(price(out, "'28", f'{s:02d}', 2) for s in range(1, 13)) / 12, delta=1)
 
+    def test_a_range_tagged_with_a_draft_year_prints_under_that_draft_only(self):
+        out = run(setup([]), '28:1.03-1.09')
+        self.assertAlmostEqual(price(out, "'28", '03–09', 1),
+                               sum(price(out, "'28", f'{s:02d}', 1) for s in range(3, 10)) / 7, delta=1)
+        for year in ("'27", "'29"):
+            with self.assertRaises(AssertionError):
+                price(out, year, '03–09', 1)
+
+    def test_a_range_tagged_with_a_draft_the_board_does_not_cover_is_refused(self):
+        out = subprocess.run([sys.executable, SCRIPT, '--snapshots', setup([]), '30:1.01-1.05'],
+                             capture_output=True, text=True)
+        self.assertNotEqual(out.returncode, 0)
+        self.assertIn("'30", out.stderr)
+
     def test_a_4th_never_takes_a_crowd_band_even_a_narrow_one(self):
         root = setup([(2027, 4, 1, 316, 0)], crowd_bands=[(440, '2027 Draft (Pick 37-40)')])
         self.assertEqual(price(run(root), "'27", '01', 4), round(V(316)))

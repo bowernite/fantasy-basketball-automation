@@ -1,6 +1,6 @@
 # Future-pick VALUE table (`future-picks.md` owns the rule) off the dated snapshots. Reads, never fetches.
 #
-#   python3 .claude/skills/eval-pick/pick_prices.py 1.05-1.11 1.03-1.09   # slot ranges to average, any round
+#   python3 .claude/skills/eval-pick/pick_prices.py 1.05-1.11 28:1.03-1.09   # slot ranges to average, any round; YY: = that draft only
 #
 # Guard, offline: python3 .claude/skills/eval-pick/test_pick_prices.py
 import argparse, csv, glob, os, re, sys
@@ -17,22 +17,27 @@ ROUND_NAMES = ('1st', '2nd', '3rd', '4th')
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--snapshots', default=SNAPSHOTS)
-    ap.add_argument('ranges', nargs='*', type=slot_range, help='R.SS-R.SS, e.g. 1.05-1.11; the round is ignored')
+    ap.add_argument('ranges', nargs='*', type=slot_range,
+                    help='[YY:]R.SS-R.SS, e.g. 1.05-1.11 or 28:1.03-1.09 (that draft only); the round is ignored')
     args = ap.parse_args()
-    ranges = [(1, SLOTS)] + [r for r in args.ranges if r != (1, SLOTS)]
     D = TEAMS * ROSTER_SIZE
     _, V = curve(D)
     dyn_path, cells = dynatyze_cells(args.snapshots)
     crowd_stamp, bands = crowd_bands(args.snapshots)
+    years = sorted({y for y, _, _ in cells})
+    uncovered = sorted({yy for yy, _, _ in args.ranges if yy is not None} - {y % 100 for y in years})
+    if uncovered:
+        sys.exit(f"NO DRAFT on {os.path.basename(dyn_path)} for " + ', '.join(f"'{yy:02d}" for yy in uncovered))
     print(f'DYNATYZE {os.path.basename(dyn_path)} · CROWD {crowd_stamp} · D {D}')
-    for year in sorted({y for y, _, _ in cells}):
+    for year in years:
         prices, used, capped = draft_prices(V, cells, bands, year)
         print(f"\n## '{year % 100:02d} (Sept {year} draft)\n")
         print('| slot | ' + ' | '.join(ROUND_NAMES) + ' |')
         print('|---' * (ROUNDS + 1) + '|')
         for s in range(1, SLOTS + 1):
             print(table_row(f'{s:02d}', [prices[r, s] for r in range(1, ROUNDS + 1)]))
-        for lo, hi in ranges:
+        ranges = [(1, SLOTS)] + [(lo, hi) for yy, lo, hi in args.ranges if yy in (None, year % 100)]
+        for lo, hi in dict.fromkeys(ranges):
             means = [sum(prices[r, s] for s in range(lo, hi + 1)) / (hi - lo + 1) for r in range(1, ROUNDS + 1)]
             print(table_row(f'{lo:02d}–{hi:02d}', means))
         print()
@@ -82,11 +87,12 @@ def span(ordinals):
 
 
 def slot_range(text):
-    m = re.fullmatch(r'(\d)\.(\d\d)-(\d)\.(\d\d)', text)
-    lo, hi = (int(m.group(2)), int(m.group(4))) if m and m.group(1) == m.group(3) else (0, 0)
+    """'[YY:]R.SS-R.SS' -> (YY or None, lo, hi)"""
+    m = re.fullmatch(r'(?:(\d\d):)?(\d)\.(\d\d)-(\d)\.(\d\d)', text)
+    lo, hi = (int(m.group(3)), int(m.group(5))) if m and m.group(2) == m.group(4) else (0, 0)
     if not 1 <= lo <= hi <= SLOTS:
-        raise argparse.ArgumentTypeError(f'{text!r}: want R.SS-R.SS, one round, slots 01-{SLOTS} in order')
-    return lo, hi
+        raise argparse.ArgumentTypeError(f'{text!r}: want [YY:]R.SS-R.SS, one round, slots 01-{SLOTS} in order')
+    return (int(m.group(1)) if m.group(1) else None), lo, hi
 
 
 def crowd_bands(root):

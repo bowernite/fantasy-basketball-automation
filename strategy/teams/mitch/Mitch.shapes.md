@@ -1,6 +1,6 @@
 # out > in | Score ΔBASE Δw Δw(season) ΔP(title) Δage | status
 
-Counterparty: Mitch (The Don, 161020). Contending on the fringe boundary: 6th PF 29,876, 10.9 W, 7.0% title (`Team Projections.md` year 1, 9/29; years 2+ pending `future`). Full at 38 bodies. Columns: `Out | In` plus `Score` and our five big numbers.
+Counterparty: Mitch (The Don, 161020). Contending on the fringe boundary: 6th PF 29,876, 10.9 W, 7.0% title (`Team Projections.md` year 1, 9/29; years 2+ read: `Team Projections.md` '27-28+ table (no trades)). Full at 38 bodies. Columns: `Out | In` plus `Score` and our five big numbers.
 
 9/28 moves (`Mitch.team.md`): drafted Dybantsa, Caleb Wilson, Morez Johnson and De Larrea. Sent Wagler + Murray-Boyles + Tarris Reed to Matthew for Acuff, and Stirtz + Flemings to Joe for Mikel Brown + Mara. His '27 3rd, '28 2nd and '28 3rd are gone; Matthew's '28 1st came in. He is stacking young, high-BASE bodies. Leave his 2026 rookies out of shapes.
 

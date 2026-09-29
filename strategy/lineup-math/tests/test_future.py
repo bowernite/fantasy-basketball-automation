@@ -128,10 +128,36 @@ class Report(unittest.TestCase):
         for y in range(len(self.saved["drafts"])):
             self.assertEqual(sum(sum(t["picks"][y]) for t in self.saved["teams"].values()), 48)
 
+    def test_every_draft_slots_each_original_teams_pick_exactly_once_per_path(self):
+        teams = self.saved["teams"].values()
+        for y in range(len(self.saved["drafts"])):
+            for t in teams:
+                self.assertEqual(sum(t["own_slots"][y]), self.saved["paths"])
+            for slot in range(12):
+                self.assertEqual(sum(t["own_slots"][y][slot] for t in teams), self.saved["paths"])
+
+    def test_each_original_teams_printed_slot_band_is_its_drawn_slots_less_the_tails(self):
+        from simlib.reports import future as rep
+        section = self.out[0].split("\nOwn-pick slot band")[1].split("\n\n")[0]
+        lines = section.splitlines()
+        header = next(i for i, line in enumerate(lines) if line.split()[:1] == ["team"])
+        rows = {line.split()[0]: line.split()[1:] for line in lines[header + 1:]}
+        self.assertEqual(sorted(rows), sorted(self.saved["teams"]))
+        for owner, t in self.saved["teams"].items():
+            for y, hist in enumerate(t["own_slots"]):
+                self.assertEqual(rows[owner][2 * y], "1.%02d-1.%02d" % rep.slot_band(hist))
+
     def test_a_re_run_on_the_same_inputs_is_identical_and_says_so(self):
         table = lambda text: text.split("\nΔ")[0].split("ran in")[0].rstrip()
         self.assertEqual(table(self.out[0]), table(self.out[1]))
         self.assertIn("same as the last run", self.out[1])
+
+
+class SlotBand(unittest.TestCase):
+    def test_the_band_drops_up_to_a_tenth_of_paths_off_each_end(self):
+        from simlib.reports import future as rep
+        self.assertEqual(rep.slot_band([60, 0, 0, 0, 480, 0, 0, 0, 0, 0, 0, 60]), (5, 5))
+        self.assertEqual(rep.slot_band([61, 0, 0, 0, 479, 0, 0, 0, 0, 0, 0, 60]), (1, 5))
 
 
 def entry(name, gp, rate=35.0, age=26.0):

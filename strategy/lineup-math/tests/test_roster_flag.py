@@ -13,7 +13,8 @@ class RosterScopedReports(unittest.TestCase):
     def test_the_roster_free_report_measures_the_same_thing_for_every_team(self):
         for name in sorted(sim.ROSTER_FREE):
             with self.subTest(report=name):
-                self.assertEqual(render(name), render(name, THEIR_ROSTER))
+                untimed = lambda text: re.sub(r"ran in \d+ s", "ran in N s", text)
+                self.assertEqual(untimed(render(name)), untimed(render(name, THEIR_ROSTER)))
 
     def test_a_roster_the_labels_do_not_carry_is_headed_by_its_own_filename(self):
         self.assertEqual(roster_mod.label("roster-999999-%s.json"

@@ -58,7 +58,7 @@ Rebuild tmp JSON from `.shapes.md` rows + eval rosters (edit JSON directly), the
 
 # Future seasons
 
-`strategy/lineup-math/run sim.py future` (~1 min, all cores): each team's PF, PF rank and P(title) for seasons 1–7, with pick counts and roster flow per draft. Reads every roster file, `data/picks-2025-26.json` (pick ledger) and `data/progression-params.json`. Its preamble lists the assumptions and known biases; quote them with the numbers. Season 1 there runs on the model's GP. The year-1 numbers of record are `sim.py title`.
+`strategy/lineup-math/run sim.py future` (~1 min, all cores): each team's PF, PF rank and P(title) for seasons 1–7, with pick counts and roster flow per draft, and each original team's own-pick slot band (`eval-pick` prices later drafts off it). Reads every roster file, `data/picks-2025-26.json` (pick ledger) and `data/progression-params.json`. Its preamble lists the assumptions and known biases; quote them with the numbers. Season 1 there runs on the model's GP. The year-1 numbers of record are `sim.py title`.
 
 After a trade, an injury, or a projections / boards / BASE refresh:
 

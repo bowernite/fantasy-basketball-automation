@@ -28,6 +28,7 @@ def report_future():
     _main_table(out)
     _projection_basis(out)
     _picks_table(out)
+    _slots_table(out)
     _delta(out)
     _save(out)
     print("\nran in %.0f s (%d paths x %d seasons x 12 teams; %d engine / %d title trials each)"
@@ -107,6 +108,8 @@ def summary(runs, teams1, title1):
                        for k in range(1, future.ROUNDS + 1)] for s in range(YEARS - 1)],
             "slot1": [_mean([slot for f in flows for rnd, slot in f[s]["picks"] if rnd == 1])
                       for s in range(YEARS - 1)],
+            "own_slots": [[sum(1 for f in flows if f[s]["own_slot"] == k) for k in range(1, 13)]
+                          for s in range(YEARS - 1)],
             **{k: [sum(f[s][k] for f in flows) / n for s in range(YEARS - 1)]
                for k in ("rookies", "exits", "cuts", "drafted_fp")}}
     return out
@@ -184,6 +187,29 @@ def _picks_table(out):
         print("  %-8s" % "" + "".join("  %-17s" % ("%.1f/%.1f/%.1f %2.0f%%" % (t["rookies"][s], t["exits"][s], t["cuts"][s],
                                                                           100 * t["drafted_fp"][s]))
                                       for s in range(YEARS - 1)))
+
+
+def _slots_table(out):
+    print("\nOwn-pick slot band by ORIGINAL team: the middle 80% of paths, then the mean slot. All 4 rounds")
+    print("  share it. The draft this season sets takes its slot from `Team Projections`; later drafts' pick")
+    print("  prices use these bands (`eval-pick`).")
+    print("  %-8s" % "team" + "".join("  %-14s" % d for d in out["drafts"]))
+    for o in _order(out):
+        hists = out["teams"][o]["own_slots"]
+        print("  %-8s" % o + "".join("  %-14s" % ("1.%02d-1.%02d %4.1f" % (slot_band(h) + (_mean_slot(h),)))
+                                     for h in hists))
+
+
+def slot_band(hist):
+    """(lo, hi) slots once up to a tenth of paths is dropped off each end of
+    `hist`, the path count per slot 1..12"""
+    slots = [k + 1 for k, count in enumerate(hist) for _ in range(count)]
+    tail = len(slots) // 10
+    return slots[tail], slots[-1 - tail]
+
+
+def _mean_slot(hist):
+    return sum((k + 1) * c for k, c in enumerate(hist)) / sum(hist)
 
 
 def _delta(out):

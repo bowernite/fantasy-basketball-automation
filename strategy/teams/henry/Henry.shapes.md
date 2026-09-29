@@ -1,6 +1,6 @@
 # out > in | Score ΔBASE Δw Δw(season) ΔP(title) Δage | status
 
-Counterparty: Henry (161019). Tanking, fringe boundary: 9th PF (26,806), 6.2 W, 0.0% P(title) (`Team Projections.md` year 1, 9/29; years 2+ pending `future`). 37 bodies, so he takes one extra body without a cut. 9/28 text: "Giannis is available, send offers." Likes simple deals; understands body constraints. Likely wants youth, BASE, picks (guess, not stated).
+Counterparty: Henry (161019). Tanking, fringe boundary: 9th PF (26,806), 6.2 W, 0.0% P(title) (`Team Projections.md` year 1, 9/29; years 2+ read: `Team Projections.md` '27-28+ table (no trades)). 37 bodies, so he takes one extra body without a cut. 9/28 text: "Giannis is available, send offers." Likes simple deals; understands body constraints. Likely wants youth, BASE, picks (guess, not stated).
 
 Rules for this target: we receive ≤ bodies we send (Brett 9/28). Simpler shapes preferred. Our picks are ~15% cheaper to us than listed VALUE while contending (Brett 9/28, size assumed); ΔBASE here is raw.
 

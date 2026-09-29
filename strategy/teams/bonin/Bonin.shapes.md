@@ -1,6 +1,6 @@
 # out > in | Score ΔBASE Δw Δw(season) ΔP(title) Δage | status
 
-Counterparty: Michael (161016). Contending: 2nd PF (30,717), 12.8 W, 13.1% title; ours 55.5% (`Team Projections.md`, year 1 only; years 2+ pending). Columns: `Out | In` + Score + our five big numbers.
+Counterparty: Michael (161016). Contending: 2nd PF (30,717), 12.8 W, 13.1% title; ours 55.5% (`Team Projections.md`, year 1; years 2+ read: `Team Projections.md` '27-28+ table (no trades)). Columns: `Out | In` + Score + our five big numbers.
 
 What Michael has said (texts 8/8–9/28/26): he's trying to get younger, not add end-of-career guys. He won the title last year. Trade block 9/28 (Fleaflicker `isOnTradingBlock`): Sabonis, Markkanen, Nembhard, Draymond, Klay, DeRozan; no picks, no note.
 - 9/28 11:56a: turned down Edey+Murray / Edey+Suggs > Sabonis+Markkanen and Kuminga+Eason > Sabonis / Markkanen ("worth more than those combos"). Called Cade > Reaves+Sabonis+Siakam "a lot but interesting since Cade's a beast".

@@ -6,8 +6,8 @@ Load when a deal involves a pick from any draft but the next one. `SKILL.md` own
 
 # Procedure, any year
 
-1. **Year and slot** (`SKILL.md` §1, §2). `<YEAR>` = the draft held that September, `FetchLeagueDraftBoard?season=<YEAR>`, set by the **preceding** season's finish. No `Team Projections` finish for that season → open range 1.01–1.12.
-2. **VALUE: run `pick_prices.py`** (this directory) and copy the cell, or the range row for a slot range; never compute a price by hand. Pass every range the eval uses (`pick_prices.py 1.05-1.11 1.03-1.09`). Re-cut stale snapshots first (`dynatyze`, `hashtag-basketball`). The rule it applies, identical for every year and round:
+1. **Year and slot** (`SKILL.md` §1, §2). `<YEAR>` = the draft held that September, `FetchLeagueDraftBoard?season=<YEAR>`, set by the **preceding** season's finish. The draft the current season sets: slot per `SKILL.md` §2. Every later draft: the **original owner's** band in `sim.py future`'s *Own-pick slot band* table (`sims` §Future seasons), same band every round.
+2. **VALUE: run `pick_prices.py`** (this directory) and copy the cell, or the range row for a slot range; never compute a price by hand. Pass every range the eval uses, tagged with its draft (`pick_prices.py 27:1.05-1.11 28:1.03-1.09`). Re-cut stale snapshots first (`dynatyze`, `hashtag-basketball`). The rule it applies, identical for every year and round:
    - **Dynatyze** pick board cell (year × slot, `strategy/board-snapshots/dynatyze/`) → implied rank → `Eval Definitions §BASE` curve.
    - **`w` is a label, never a weight**: `w > 0` = market-anchored, `w = 0` = template. Say which.
    - **Hashtag crowd `/keeper`** band containing the ordinal: averaged 50/50 in `V` with the Dynatyze value only when its pick rows name `<YEAR>`'s class, the band spans ≤ 12 picks, and the pick is not a 4th. Wider bands, other years and convergence-notice pulls: cross-check only.
