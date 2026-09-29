@@ -145,7 +145,7 @@ Our bottom 9 on the `dPtitle` basis, 9/28, post-485845: roster after the three c
 
 Nominating opens with our $1 bid: if nobody bids, the row is ours. One nominee at a time, first match wins:
 
-1. **Endgame** row (§Bidding).
+1. **Endgame** row (§Bidding), once no Early row is left. Until then, nominate Early rows: nobody can outbid us on it, and rival max bids only fall.
 2. **Mid:** the first unsold Mid row we still bid on, then the top-Score target we still bid on. Only once half the league's auction spots are filled, on our last spot, or when no Early row is left.
 3. **Early:** the Early list in order, then the priciest unsold row we bid $0 on, by live `Market$`. Skip any row we bid on, any row under $5 live `Market$`, and unsigned (`fa`) or `noproj` rows.
 

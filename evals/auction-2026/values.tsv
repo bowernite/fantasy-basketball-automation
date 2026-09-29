@@ -84,7 +84,7 @@ player_id	name	POS	AGE	NBA	FPts/Gp	GPp	BASE	Δw	Δw '26–'27 ours	sheet_pts	Win
 2452	Trayce Jackson-Davis	SF/PF	26.6	TOR	13.5	56	42	0.08	-0.08	517.25	36	11	5	17		rot2	0.12	-15	1	-16
 2327	Vince Williams	PG/SG/SF	26.1	FA	13.6	49	112	0.08	-0.11	772.75	0	27	28	22	0	rot2 · fa	-0.25	18	14	-8
 1297	Cameron Payne	PG	32.1	FA	15.1	41	188	0.08	-0.15	366.5	0	2	52	15	0	frag · fa · GPp<map	-0.22	86	63	48
-2769	Bogoljub Marković	SF/PF	–	MIL	11.4	47	145	0.05	-0.13		15	0	38	14	0	nopool · '25 rookie	-0.19	41	30	16
+2769	Bogoljub Marković	SF/PF	–	MIL	11.4	47	145	0.05	-0.13		15	0	38	14	0	nopool · '25 rookie · fa	-0.19	41	30	16
 2474	Jaylen Clark	PG/SG	25.0	MIN	8.6	70	63	0.04	-0.13	833.75	10	31	12	22		rot0	-0.38	-59	1	-21
 1280	Kevon Looney	SF/PF	30.6	LAL	16.2	32	69	0.10	-0.11	304.5	36	0	14	14		frag · GPp<map	-0.18	-14	1	-13
 2477	Rayan Rupert	SG/SF	22.3	PHI	11.4	26	31	0.06	-0.12	785.5	21	28	2	21		rot0 · GPp<map	-0.15	-64	1	-20

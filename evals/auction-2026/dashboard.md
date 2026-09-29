@@ -1,7 +1,7 @@
-# Auction live · room 0.92× even (8) · 21:27:41
+# Auction live · room 2.97× hot (8) · 21:46:32
 
 **Us** $110 · 3 spots · max bid 108
-**Nominate** Jaxson Hayes (early)
+**Nominate** John Konchar (early)
 
 ## Card: Score, live Market$, gap, our cap
 
@@ -13,9 +13,9 @@
 | ~~Koa Peat~~ drafted Josh | | | | |
 | ~~Alex Karaban~~ drafted Michael | | | | |
 | ~~Quinten Post~~ Brett $90 | | | | |
-| Isaiah Evans | 185 | 23 | +98 | 85 |
+| ~~Isaiah Evans~~ Josh $84 | | | | |
 | ~~Goga Bitadze~~ Joe $66 | | | | |
-| Dru Smith | 183 | 43 | +77 | 86 |
+| Dru Smith | 183 | 29 | +52 | 108 |
 | ~~Dominick Barlow~~ Joe $65 | | | | |
 | ~~Marvin Bagley~~ Mitch $81 | | | | |
 | ~~Meleek Thomas~~ drafted Jon | | | | |
@@ -23,74 +23,72 @@
 | ~~Chris Cenac~~ drafted Hlina | | | | |
 | ~~Vít Krejčí~~ Todd $31 | | | | |
 | ~~Julian Strawther~~ Brian $39 | | | | |
-| Zach Collins | 110 | 24 | +49 | 0 |
+| ~~Zach Collins~~ Josh $28 | | | | |
 | ~~Patrick Williams~~ Hlina $27 | | | | |
 | ~~Harrison Barnes~~ Brian $51 | | | | |
 | ~~Caleb Love~~ Jon $31 | | | | |
 | ~~Al Horford~~ Bonin $51 | | | | |
 | ~~Spencer Jones~~ Chris $32 | | | | |
-| Nae'Qwan Tomlin | 48 | 30 | +2 | 0 |
-| Tyus Jones | 48 | 20 | +12 | 0 |
-| Bogoljub Marković | 41 | 13 | +14 | 0 |
-| Henri Veesaar | 40 | 11 | +15 | 0 |
-| Jaxson Hayes | 38 | 52 | -27 | 0 |
-| Pat Spencer | 36 | 34 | -10 | 0 |
+| ~~Nae'Qwan Tomlin~~ Brian $27 | | | | |
+| Tyus Jones | 48 | 14 | +8 | 23 |
+| ~~Henri Veesaar~~ Jon $74 | | | | |
+| ~~Jaxson Hayes~~ Mitch $67 | | | | |
+| ~~Pat Spencer~~ Jon $18 | | | | |
 | ~~Kentavious Caldwell-Pope~~ Joe $8 | | | | |
 | ~~Luka Garza~~ Henry $30 | | | | |
 | ~~Liam McNeeley~~ Hlina $52 | | | | |
-| Matisse Thybulle | 9 | 20 | -14 | 0 |
+| Matisse Thybulle | 9 | 14 | -9 | 23 |
 
 ## Rivals: max bid · $ left · spots
 
-- Josh 177 · $183 · 7
-- Bonin 145 · $149 · 5
-- Henry 135 · $140 · 6
-- Jon 120 · $122 · 3
-- Mitch 92 · $93 · 2
-- Hlina 68 · $72 · 5
-- Brian 67 · $70 · 4
-- Chris 61 · $65 · 5
+- Hlina 68 · $71 · 4
+- Josh 60 · $62 · 3
+- Brian 39 · $40 · 2
+- Bonin 39 · $39 · 1
 - Matthew 34 · $43 · 10
+- Mitch 26 · $26 · 1
 - Joe 17 · $20 · 4
+- Chris 17 · $19 · 3
+- Henry 13 · $15 · 3
 - Todd 1 · $3 · 3
 
 ## Last sales
 
-- Vít Krejčí → Todd $31
-- Dillon Mitchell → Henry $20
-- Kobe Bufkin → Hlina $6
-- Caleb Love → Jon $31
-- Trevon Brazile → Jon $40
-- Vsevolod Ishchenko → Mitch $8
-- Spencer Jones → Chris $32
-- Buddy Hield → Josh $13
+- Justin Edwards → Hlina $1
+- Kris Murray → Chris $43
+- Bryce McGowens → Henry $50
+- Isaiah Evans → Josh $84
+- Henri Veesaar → Jon $74
+- Kam Jones → Bonin $30
+- Richie Saunders → Henry $50
+- Ugonna Onyenso → Jon $30
 
 ## Top unsold: live Market$ · BASE · Δw ours
 
 | Player | Mkt | BASE | ours |
 |---|---:|---:|---:|
-| Jaxson Hayes | 52 | 129 | -0.12 |
-| Dru Smith | 43 | 210 | -0.09 |
-| Pat Spencer | 34 | 148 | -0.16 |
-| Nae'Qwan Tomlin | 30 | 109 | -0.02 |
-| Jarred Vanderbilt | 29 | 66 | -0.08 |
-| Jamir Watkins | 29 | 110 | -0.06 |
-| Craig Porter | 29 | 61 | -0.05 |
-| John Konchar | 27 | 17 | -0.15 |
-| Jonas Valančiūnas | 26 | 67 | -0.12 |
-| Richie Saunders | 24 | 349 | -0.18 |
-| Zach Collins | 24 | 140 | -0.07 |
-| Kris Murray | 24 | 45 | -0.11 |
-| Isaiah Evans | 23 | 325 | -0.16 |
-| D'Angelo Russell | 22 | 170 | -0.13 |
-| Kenrich Williams | 22 | 32 | -0.07 |
-| Trendon Watford | 22 | 66 | -0.10 |
-| Quenton Jackson | 22 | 11 | -0.14 |
-| Guerschon Yabusele | 22 | 122 | -0.13 |
-| Matisse Thybulle | 20 | 23 | -0.05 |
-| Tyus Jones | 20 | 135 | -0.05 |
-| Justin Edwards | 20 | 76 | -0.08 |
-| Vince Williams | 20 | 112 | -0.11 |
-| Jaylen Clark | 20 | 63 | -0.13 |
-| Emanuel Sharp | 19 | 274 | -0.18 |
-| Rayan Rupert | 19 | 31 | -0.12 |
+| Dru Smith | 29 | 210 | -0.09 |
+| Jamir Watkins | 20 | 110 | -0.06 |
+| John Konchar | 19 | 17 | -0.15 |
+| Jonas Valančiūnas | 18 | 67 | -0.12 |
+| D'Angelo Russell | 15 | 170 | -0.13 |
+| Trendon Watford | 15 | 66 | -0.10 |
+| Quenton Jackson | 15 | 11 | -0.14 |
+| Guerschon Yabusele | 15 | 122 | -0.13 |
+| Matisse Thybulle | 14 | 23 | -0.05 |
+| Tyus Jones | 14 | 135 | -0.05 |
+| Vince Williams | 14 | 112 | -0.11 |
+| Jaylen Clark | 14 | 63 | -0.13 |
+| Emanuel Sharp | 13 | 274 | -0.18 |
+| Tre Mann | 13 | 65 | -0.10 |
+| Nick Richards | 13 | 36 | -0.09 |
+| Jabari Walker | 13 | 1 | -0.08 |
+| Rayan Rupert | 13 | 31 | -0.12 |
+| Svi Mykhailiuk | 13 | 0 | -0.13 |
+| Tyrese Martin | 11 | 116 | -0.14 |
+| Josh Green | 10 | 87 | -0.16 |
+| Micah Peavy | 10 | 89 | -0.12 |
+| Kobe Brown | 10 | 0 | -0.18 |
+| Cameron Payne | 9 | 188 | -0.15 |
+| Bogoljub Marković | 9 | 145 | -0.13 |
+| Kevon Looney | 9 | 69 | -0.11 |
