@@ -1,0 +1,80 @@
+SOURCE   Dynatyze (https://dynatyze.com/basketball/dynasty-rankings)
+TITLE    NBA Dynasty Rankings 2026-27 — Dated Values | Dynatyze
+UPDATED  2026-09-19   
+ROWS     75  (free tier cap — not a full board)
+#	PLAYER	POS	TEAM	DYNVAL
+1	Victor Wembanyama	C	SAS	9,999
+2	Shai Gilgeous-Alexander	G	OKC	9,906
+3	Luka Dončić	G	LAL	9,815
+4	Nikola Jokić	C	DEN	9,725
+5	Cooper Flagg	F	DAL	9,632
+6	Cade Cunningham	G	DET	9,548
+7	Jayson Tatum	F	BOS	9,404
+8	Anthony Edwards	G	MIN	9,372
+9	Tyrese Maxey	G	PHI	9,318
+10	Jalen Johnson	F	ATL	9,157
+11	Tyrese Haliburton	G	IND	9,141
+12	Cameron Boozer	C	MEM	9,046
+13	Scottie Barnes	F	TOR	8,934
+14	Darryn Peterson	G	UTA	8,827
+15	Alperen Sengun	C	HOU	8,782
+16	Chet Holmgren	C	OKC	8,719
+17	Giannis Antetokounmpo	F	MIA	8,593
+18	Evan Mobley	C	CLE	8,480
+19	AJ Dybantsa	F	WAS	8,391
+20	Amen Thompson	G	HOU	8,373
+21	Dylan Harper	G	SAS	8,364
+22	Jalen Williams	G	OKC	8,322
+23	Donovan Mitchell	G	CLE	8,026
+24	Franz Wagner	F	ORL	7,952
+25	Austin Reaves	G	LAL	7,949
+26	Caleb Wilson	F	CHI	7,789
+27	Kon Knueppel	G	CHA	7,714
+28	Deni Avdija	F	POR	7,709
+29	Darius Garland	G	LAC	7,693
+30	LaMelo Ball	G	MIN	7,624
+31	Jamal Murray	G	DEN	7,565
+32	Josh Giddey	G	CHI	7,445
+33	Devin Booker	G	PHX	7,401
+34	Trey Murphy III	G	NOP	7,372
+35	Karl-Anthony Towns	C	NYK	7,348
+36	Jalen Brunson	G	NYK	7,319
+37	Jalen Duren	C	DET	7,096
+38	Jaren Jackson Jr.	C	UTA	7,067
+39	Trae Young	G	WAS	7,033
+40	Paolo Banchero	F	ORL	7,024
+41	2027 Early 1st	PICK	DRAFT	7,012
+42	Jaylen Brown	G	PHI	6,923
+43	VJ Edgecombe	G	PHI	6,799
+44	Bam Adebayo	C	MIA	6,769
+45	Brandon Miller	F	CHA	6,767
+46	Lauri Markkanen	C	UTA	6,609
+47	Alex Sarr	C	WAS	6,598
+48	Stephon Castle	G	SAS	6,562
+49	Desmond Bane	G	ORL	6,537
+50	Donovan Clingan	C	POR	6,441
+51	Zach Edey	C	MEM	6,321
+52	Keyonte George	G	UTA	6,153
+53	Keaton Wagler	G	LAC	6,137
+54	Walker Kessler	C	LAL	6,077
+55	Onyeka Okongwu	C	ATL	6,076
+56	Mikel Brown	G	BKN	6,031
+57	Domantas Sabonis	C	SAC	5,968
+58	Kel'el Ware	C	MIL	5,896
+59	Ivica Zubac	C	IND	5,872
+60	De'Aaron Fox	G	SAS	5,801
+61	Anthony Davis	C	WAS	5,717
+62	James Harden	G	CLE	5,711
+63	Brandon Ingram	F	LAC	5,671
+64	Kevin Durant	F	HOU	5,642
+65	OG Anunoby	F	NYK	5,638
+66	Stephen Curry	G	GSW	5,567
+67	Derrick White	G	BOS	5,499
+68	Darius Acuff Jr.	G	SAC	5,480
+69	Collin Murray-Boyles	F	TOR	5,425
+70	Zion Williamson	F	NOP	5,276
+71	2027 Mid 1st	PICK	DRAFT	5,250
+72	Matas Buzelis	F	CHI	5,215
+73	Pascal Siakam	F	IND	5,193
+74	Dyson Daniels	G	ATL	5,150
+75	Kyrie Irving	G	DAL	5,107

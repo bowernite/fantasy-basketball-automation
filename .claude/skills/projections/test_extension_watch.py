@@ -77,6 +77,27 @@ class Watch(unittest.TestCase):
         watcher.poll(now=140)
         self.assertEqual(builds, ["{}", "fixed"])
 
+    def test_inputs_returning_to_a_once_failed_state_rebuild_after_a_later_success(self):
+        watcher, inputs, builds, _ = setup()
+        results = iter([False, True, True])
+        watcher.build = lambda: builds.append(open(inputs).read()) or next(results)
+        for text, second in [("x", 0), ("y", 100), ("x", 200)]:
+            edit(inputs, text)
+            watcher.poll(now=second)
+            watcher.poll(now=second + 20)
+        self.assertEqual(builds, ["x", "y", "x"])
+
+    def test_an_input_that_cannot_be_listed_yet_waits_instead_of_crashing(self):
+        watcher, _, builds, _ = setup()
+
+        def no_pool_file():
+            raise FileNotFoundError("players-*.json")
+
+        watcher.paths = no_pool_file
+        watcher.poll(now=0)
+        watcher.poll(now=20)
+        self.assertEqual(builds, [])
+
     def test_a_successful_build_notifies_that_the_extension_is_live(self):
         watcher, _, _, notices = setup()
         watcher.poll(now=0)

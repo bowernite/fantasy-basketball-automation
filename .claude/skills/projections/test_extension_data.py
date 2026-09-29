@@ -104,6 +104,15 @@ class InputPaths(unittest.TestCase):
         self.assertTrue(opened)
         self.assertEqual(set(opened) - inputs, set())
 
+    def test_a_missing_pool_file_reads_as_a_missing_input(self):
+        real = extension_data.POOL
+        extension_data.POOL = os.path.join(tempfile.mkdtemp(), "players-*.json")
+        try:
+            with self.assertRaises(FileNotFoundError):
+                extension_data.input_paths()
+        finally:
+            extension_data.POOL = real
+
 
 class Render(unittest.TestCase):
     def test_renders_the_typescript_module_the_extension_imports(self):

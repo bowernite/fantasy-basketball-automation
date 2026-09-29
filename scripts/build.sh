@@ -72,11 +72,11 @@ mkdir -p ./extension/dist
 log_step "🔄 Transpiling TypeScript to JavaScript"
 # Transpile TypeScript to JavaScript
 if [ "$TRANSPILE_CMD" = "bun build" ]; then
-  $TRANSPILE_CMD "./main.ts" --outfile="./extension/dist/main.js"
-  $TRANSPILE_CMD "./page-load__set-lineup.ts" --outfile="./extension/dist/page-load__set-lineup.js"
+  $TRANSPILE_CMD "./main.ts" --outfile="./extension/dist/main.js" &&
+    $TRANSPILE_CMD "./page-load__set-lineup.ts" --outfile="./extension/dist/page-load__set-lineup.js"
 else
-  $TRANSPILE_CMD "./main.ts" --outFile "./extension/dist/main.js"
-  $TRANSPILE_CMD "./page-load__set-lineup.ts" --outFile "./extension/dist/page-load__set-lineup.js"
+  $TRANSPILE_CMD "./main.ts" --outFile "./extension/dist/main.js" &&
+    $TRANSPILE_CMD "./page-load__set-lineup.ts" --outFile "./extension/dist/page-load__set-lineup.js"
 fi
 
 # Check if transpilation was successful

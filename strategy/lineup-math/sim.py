@@ -93,7 +93,7 @@ from simlib.score import board_base
 from simlib.cuts import arrival_basis
 from simlib.value import (
     OutOfBracket, breakeven, breakeven_cell, breakeven_fmt, breakeven_value,
-    cut_worst, deal_formula_wins, formula_player_wins, league_pf,
+    deal_formula_wins, formula_player_wins, league_pf, partial_order,
     group_body, group_fits, group_replacement, incoming_wins, replacement, thin,
     value_key)
 from simlib.bracket import (

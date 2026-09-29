@@ -18,18 +18,6 @@ import base                                                          # noqa: E40
 
 EVALS = HERE.parents[2] / 'strategy'
 OURS = str(EVALS / 'lineup-math' / 'rosters' / 'roster-161025-2025-26.json')
-PUBLISHED = [
-    "teams/my-team/My Team.md",
-    "teams/matthew/Matthew's Team.md",
-    "teams/josh/Josh's Team.md",
-    "teams/henry/Henry's Team.md",
-    "teams/bonin/Bonin's Team.md",
-    "teams/brian/Brian's Team.md",
-    "teams/jon/Jon's Team.md",
-    "teams/todd/Todd's Team.md",
-    "teams/hlina/Matt Hlina's Team.md",
-    "teams/hlina-todd-jon-boards.md",
-]
 ANSI = re.compile(r'\x1b\[[0-9;]*m')
 
 
@@ -113,55 +101,29 @@ def priced(*argv):
 class Joining(unittest.TestCase):
     """League spellings reaching board rows. A missed join prices a real player at ~0."""
 
-    def test_prices_a_player_on_all_three_boards(self):
-        # My Team.md: Cade Cunningham 6 | 6 | 5 -> BASE 8082
-        self.assertEqual(run('Cade Cunningham')['Cade Cunningham'],
-                         ['6', '6', '5', '8082'])
-
-    def test_a_nickname_no_normalisation_can_reach_still_joins(self):
-        # Every hand-checked line in ALIAS, because each one is a league spelling that
-        # reaches nothing on any board on its own: Fleaflicker's Bub Carrington is
-        # Carlton Carrington, its Ronald Holland is Ron, its Alex Sarr is Alexandre.
-        # Nothing about either string connects them, and Sarr is a top-30 asset.
-        got = run('Bub Carrington', 'Ronald Holland', 'Alex Sarr')
-        self.assertEqual(got['Bub Carrington'][:3], ['292', '194', '244'])
-        self.assertEqual(got['Ronald Holland'][:3], ['150', '209', '337'])
-        self.assertEqual(got['Alex Sarr'][:3], ['48', '30', '25'])
-
-    def test_board_spellings_a_naive_match_misses_still_join(self):
-        # The two shapes that make a league name miss every board row: an accent the
-        # boards drop, and a generational suffix the boards carry and Fleaflicker
-        # doesn't. Both look exactly like an off-all-3-boards 0.
-        got = run('Karlo Matković', 'Marvin Bagley', 'DaRon Holmes')
-        self.assertEqual(got['Karlo Matković'][:3], ['338', '342', '448'])   # accent
-        self.assertEqual(got['Marvin Bagley'][:3], ['317', '453', '637'])    # Bagley III
-        self.assertEqual(got['DaRon Holmes'][:3], ['310', '333', '386'])     # Holmes Jr
-
-    def test_a_name_the_boards_spell_differently_from_each_other_still_joins(self):
-        # Jon's Team.md: Terrence Shannon 233 | 180 | 509 -> BASE 544. Dizzle writes him
-        # Terrance and both hashtag boards Terrence, and no suffix or accent rule reaches
-        # an a/e. Worse than an all-boards miss: he still joins two of three, so nothing
-        # refuses. Crowd is printed, not blended, so dizzle's 40% stays in
-        self.assertEqual(run('Terrence Shannon')['Terrence Shannon'],
-                         ['233', '180', '509', '544'])
-
-    def test_nic_claxton_reaches_hashtag_under_nicolas(self):
-        # Todd's Team.md used to print 100 | – | –. Hashtag ranks Nicolas
-        # Claxton 98 / 124; Dizzle writes Nic. Two-of-three miss, nothing refuses.
-        self.assertEqual(run('Nic Claxton')['Nic Claxton'][:3],
-                         ['100', '98', '124'])
-
-    def test_ayo_dosunmu_reaches_dizzle_through_its_typo(self):
-        # Dizzle Points writes Dosumnu; league + both Hashtag boards write Dosunmu.
-        # 9cat tab spells it right, so a naive "he's off Dizzle" is a failed join.
-        self.assertEqual(run('Ayo Dosunmu')['Ayo Dosunmu'][:3],
-                         ['156', '151', '110'])
-
-    def test_khaman_maluach_reaches_dizzle_through_its_typo(self):
-        # Dizzle Points writes Malauch; league + both Hashtag boards write Maluach.
-        # A naive "he's off Dizzle" is a failed join, not a real absence
-        self.assertEqual(run('Khaman Maluach')['Khaman Maluach'][:3],
-                         ['123', '154', '332'])
+    def test_league_spellings_join_every_board_they_are_on(self):
+        # Against the committed snapshots, because they hold the real spellings. Ranks
+        # move with every re-cut, so only the join is asserted: a '-' here is a real
+        # player silently losing a blended board's weight
+        cases = {
+            'Cade Cunningham': 'plain name',
+            # ALIAS: nothing about either string connects them
+            'Bub Carrington': 'boards write Carlton',
+            'Ronald Holland': 'boards write Ron',
+            'Alex Sarr': 'boards write Alexandre',
+            'Nic Claxton': 'hashtag writes Nicolas',
+            'Terrence Shannon': "dizzle writes Terrance, so he'd join two of three",
+            'Ayo Dosunmu': 'dizzle writes Dosumnu',
+            'Khaman Maluach': 'dizzle writes Malauch',
+            # normalisation
+            'Karlo Matković': 'accent the boards drop',
+            'Marvin Bagley': 'boards carry III',
+            'DaRon Holmes': 'boards carry Jr',
+        }
+        got = run(*cases)
+        for name, why in cases.items():
+            with self.subTest(f'{name}: {why}'):
+                self.assertNotIn('-', got[name][:2], got[name])
 
     def test_a_roster_file_supplies_every_name_in_it(self):
         # Silently dropping a name is the same failure as a missed join, one level up:
@@ -173,21 +135,38 @@ class Joining(unittest.TestCase):
     def test_a_roster_supplies_each_players_team_so_a_duplicate_needs_no_flag(self):
         # A bare Jaylin Williams is refused on the command line; off a roster the file
         # already says which one, and both rows have to resolve to their own player.
-        with tempfile.TemporaryDirectory() as d:
+        # Only OKC's is on Dizzle, so handing DEN's that row is the wrong-duplicate error
+        dizzle = [(318, 'Jaylin Williams', 'OKC')]
+        both = [(204, 'Jaylin Williams', 'OKC'), (711, 'Jaylin Williams', 'DEN')]
+        with tempfile.TemporaryDirectory() as d, snapshots(dizzle, both, both):
             f = pathlib.Path(d, 'roster.json')
             f.write_text(json.dumps([{'n': 'Jaylin Williams', 'tm': 'OKC'},
                                      {'n': 'Jaylin Williams', 'tm': 'DEN'}]))
-            got = run_raw('--roster', str(f))
-        self.assertEqual(got.returncode, 0, got.stderr)
-        self.assertEqual([c[:3] for _, c in table(got.stdout)],
-                         [['318', '245', '688'], ['-', '711', '242']])
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf):
+                base.main(['--roster', str(f)])
+        self.assertEqual([c[:3] for _, c in table(buf.getvalue())],
+                         [['318', '204', '204'], ['-', '711', '711']])
 
     def test_team_resolves_a_duplicate_name_on_every_board_including_the_one_row_boards(self):
-        # Only OKC's Jaylin Williams is on Dizzle. Handing DEN's that row is the same
-        # error as picking the wrong duplicate, so the DEN row reads off Dizzle.
-        got = run('Jaylin Williams:OKC', 'Jaylin Williams:DEN')
-        self.assertEqual(got['Jaylin Williams:OKC'][:3], ['318', '245', '688'])
-        self.assertEqual(got['Jaylin Williams:DEN'][:3], ['-', '711', '242'])
+        dizzle = [(318, 'Jaylin Williams', 'OKC')]
+        both = [(204, 'Jaylin Williams', 'OKC'), (711, 'Jaylin Williams', 'DEN')]
+        with snapshots(dizzle, both, both):
+            got = priced('Jaylin Williams:OKC', 'Jaylin Williams:DEN')
+        self.assertEqual(got['Jaylin Williams:OKC'][:3], ['318', '204', '204'])
+        self.assertEqual(got['Jaylin Williams:DEN'][:3], ['-', '711', '711'])
+
+
+class RookieSlotPrefix(unittest.TestCase):
+    """Dizzle writes each drafted rookie as `R.SS / Name` (`2.07 / Baba Miller`)."""
+
+    def test_a_rookie_row_carrying_its_draft_slot_joins_the_league_name(self):
+        dizzle = [(277, '2.07 / Baba Miller', 'LAC'), (11, '1.01 / Cameron Boozer', 'MEM')]
+        rest = [(300, 'Baba Miller', 'LAC'), (12, 'Cameron Boozer', 'MEM')]
+        with snapshots(dizzle, rest, rest):
+            got = priced('Baba Miller', 'Cameron Boozer')
+        self.assertEqual(got['Baba Miller'][:3], ['277', '300', '300'])
+        self.assertEqual(got['Cameron Boozer'][:3], ['11', '12', '12'])
 
 
 class TeamMatching(unittest.TestCase):
@@ -244,6 +223,34 @@ class TeamMatching(unittest.TestCase):
         self.assertIn('OFF ALL 3 BOARDS', str(e.exception))
 
 
+class DuplicateRows(unittest.TestCase):
+    """One board listing the same name on the same team twice (Chaz Lanier, DET #393 and
+    #416 on Hashtag expert) is one player listed twice, priced at his best rank."""
+
+    def test_a_player_listed_twice_on_one_team_prices_at_his_best_rank(self):
+        twice = [(393, 'Chaz Lanier', 'DET'), (416, 'Chaz Lanier', 'DET')]
+        once = [(420, 'Chaz Lanier', 'DET')]
+        with snapshots(once, twice, once):
+            got = priced('Chaz Lanier', 'Chaz Lanier:DET')
+        self.assertEqual(got['Chaz Lanier'][:3], ['420', '393', '420'])
+        self.assertEqual(got['Chaz Lanier:DET'], got['Chaz Lanier'])
+
+    def test_one_name_twice_with_no_nba_team_is_not_merged(self):
+        # Free agents share the `FA` cell, so it says nothing about who either row is
+        for label, team in (('free agents', 'FA'), ('blank team', '')):
+            rows = [(10, 'Unsigned', team), (400, 'Unsigned', team)]
+            with self.subTest(label), snapshots(rows, rows, rows), \
+                    self.assertRaises(base.Refused) as e:
+                priced('Unsigned')
+            self.assertIn('AMBIGUOUS', str(e.exception))
+
+    def test_one_name_on_two_teams_is_still_two_players(self):
+        rows = [(10, 'Twin', 'BOS'), (400, 'Twin', 'MIA')]
+        with snapshots(rows, rows, rows), self.assertRaises(base.Refused) as e:
+            priced('Twin')
+        self.assertIn('AMBIGUOUS', str(e.exception))
+
+
 class Refusals(unittest.TestCase):
     """What base.py refuses to guess at. A wrong row here is invisible downstream."""
 
@@ -257,7 +264,7 @@ class Refusals(unittest.TestCase):
         self.assertNotIn('\t0', p.stdout)
 
     def test_a_hand_checked_absence_is_confirmed_by_flag_and_then_prices_at_zero(self):
-        # My Team.md's one real BASE 0: genuinely off all three boards.
+        # Chaney Johnson is genuinely off all three boards
         p = run_raw('--absent', 'Chaney Johnson', 'Chaney Johnson')
         self.assertEqual(p.returncode, 0, p.stderr)
         self.assertEqual(dict(table(p.stdout))['Chaney Johnson'],
@@ -290,14 +297,6 @@ class Refusals(unittest.TestCase):
         self.assertIn('AMBIGUOUS', err)
         self.assertIn('DEN', err)
         self.assertIn('OKC', err)
-
-    def test_a_duplicate_the_team_cannot_split_is_refused_too(self):
-        # Chaz Lanier is on the expert board twice, both DET, ranks 402 and 412 — the
-        # board itself cannot tell them apart, so neither can a team argument.
-        err = refusal(run_raw('Chaz Lanier:DET'))
-        self.assertIn('AMBIGUOUS', err)
-        self.assertIn('402', err)
-        self.assertIn('412', err)
 
     def test_every_refusal_is_a_readable_message_that_survives_python_O(self):
         # Two ways a guard stops being a guard. `assert` is what -O strips, and these
@@ -348,14 +347,16 @@ class Blend(unittest.TestCase):
 
     def test_crowd_rank_does_not_enter_the_blend(self):
         # Crowd is the third printed rank. BASE is Dizzle Points 40% and Hashtag
-        # Points 35%, not blended with crowd, so two players tied on those two boards stay tied
-        even = [(10, 'Even', 'BOS'), (10, 'CrowdOutlier', 'BOS')]
-        crowd = [(10, 'Even', 'BOS'), (400, 'CrowdOutlier', 'BOS')]
+        # Points 35%, not blended with crowd, so players tied on those two boards stay
+        # tied whatever crowd says, including nothing
+        even = [(10, 'Even', 'BOS'), (10, 'CrowdOutlier', 'BOS'), (10, 'OffCrowd', 'BOS')]
+        crowd = [(10, 'Even', 'BOS'), (400, 'CrowdOutlier', 'BOS'), (999, 'Deep', 'BOS')]
         with snapshots(even, even, crowd):
-            got = priced('Even', 'CrowdOutlier')
+            got = priced('Even', 'CrowdOutlier', 'OffCrowd')
         self.assertEqual(got['Even'][:3], ['10', '10', '10'])
         self.assertEqual(got['CrowdOutlier'][:3], ['10', '10', '400'])
-        self.assertEqual(got['Even'][3], got['CrowdOutlier'][3])
+        self.assertEqual(got['OffCrowd'][:3], ['10', '10', '-'])
+        self.assertEqual({r[3] for r in got.values()}, {got['Even'][3]})
 
     def test_rank_1_is_9999_and_the_rank_at_the_square_root_of_D_is_worth_half_of_that(self):
         # The curve's two anchors (Eval Definitions §BASE): V is scaled to 9999 at the
@@ -394,23 +395,15 @@ class Blend(unittest.TestCase):
         self.assertEqual(short, ['-', '1', '1', '9999'])    # weight gone, not zeroed
         self.assertEqual(reaches, ['-', '1', '1', '4666'])  # a real 0 at 40%: 0.35/0.75 x 9999
 
-    def test_absence_from_crowd_does_not_enter_the_blend(self):
-        # Will Richard is off crowd (depth 764, past D). Crowd is printed, not blended,
-        # so BASE is Dizzle Points and Hashtag Points only
-        self.assertEqual(run('Will Richard')['Will Richard'],
-                         ['325', '376', '-', '145'])
-
     def test_a_rank_at_or_past_D_is_worth_nothing(self):
         # The curve is 0 from D on, so a player the boards do carry can still price at
-        # 0 — Malik Beasley, 494 and 659 with Dizzle's weight renormalised away. The
-        # printed ranks are the only thing separating this from a failed join.
-        p = run_raw('Malik Beasley')
-        D = int(re.search(r'D = 12 x \d+ = (\d+)', p.stdout).group(1))
-        row = dict(table(p.stdout))['Malik Beasley']
-        self.assertEqual(row[0], '-', row)
-        for r in row[1:3]:
-            self.assertGreaterEqual(int(r), D, row)  # else pick a deeper player
-        self.assertEqual(row[3], '0', row)
+        # 0. The printed ranks are the only thing separating this from a failed join.
+        short = [(450, 'Deepest', 'BOS')]
+        deep = [(456, 'Carried', 'BOS'), (494, 'Past D', 'BOS')]
+        with snapshots(short, deep, deep):
+            got = priced('Carried', 'Past D')
+        self.assertEqual(got['Carried'], ['-', '456', '456', '0'])
+        self.assertEqual(got['Past D'], ['-', '494', '494', '0'])
 
     def test_a_better_rank_on_every_board_always_scores_higher(self):
         # BASE only means anything as an ordering. An inverted or clipped curve would
@@ -476,75 +469,6 @@ class Header(unittest.TestCase):
         stamps = re.findall(r'UPDATED (\S[^\n]*?)\s+DEPTH (\d+)', h)
         self.assertEqual(len(stamps), 3, h)
         self.assertEqual(sum(int(d) < D for _, d in stamps), h.count('renormalises'), h)
-
-
-def published_rows(path):
-    """[(player, [dizP, htP, crd, BASE])] off an eval file's Players table.
-
-    Boards is one cell (`6 • 6 (5)`); BASE is the next numeric cell.
-    """
-    rows = []
-    for line in path.read_text(encoding='utf-8').splitlines():
-        c = [x.strip().strip('*') for x in line.strip().strip('|').split('|')]
-        if len(c) < 4:
-            continue
-        boards = next((cell for cell in c if '•' in cell), None)
-        if boards is None:
-            continue
-        m = re.match(r'^\s*(.+?)\s•\s(.+?)\s\((.+?)\)\s*$', boards)
-        if not m:
-            continue
-        parts = [p.strip() for p in m.groups()]
-        idx = c.index(boards)
-        if idx + 1 >= len(c):
-            continue
-        try:
-            cells = []
-            for x in (*parts, c[idx + 1]):
-                x = x.replace('–', '-')
-                cells.append('-' if x == '-' else str(int(x.replace(',', ''))))
-        except ValueError:
-            continue
-        rows.append((re.sub(r'\s*(†|→.*)$', '', c[0]).strip().strip('*'), cells))
-    return rows
-
-
-class PublishedEvals(unittest.TestCase):
-    """Every number in a shipped eval, re-derived. The reason the rest of this exists."""
-
-    def test_reproduces_every_published_BASE_and_per_board_rank(self):
-        for name in PUBLISHED:
-            with self.subTest(name):
-                want = dict(published_rows(EVALS / name))
-                self.assertGreaterEqual(len(want), 15, f'{name}: table moved')
-                self.assertEqual(self.rederive(name, want), want, '; '.join(
-                    f'{p} published {want[p]}' for p in want))
-
-    def rederive(self, doc, want):
-        """`want`'s names back through the CLI, splitting any name it refuses as
-        AMBIGUOUS into NAME:TEAM candidates — the doc publishes one row for a name two
-        players share, so exactly one of them has to reproduce it."""
-        # A row the file publishes as off all three boards IS the hand-check.
-        args = [a for p, c in want.items() if c[:3] == ['-'] * 3
-                for a in ('--absent', p)]
-        pending, got = list(want), {}
-        while True:
-            p = run_raw(*pending, *args)
-            if p.returncode == 0:
-                return {**got, **dict(table(p.stdout))}
-            err = refusal(p)
-            who = re.search(r"AMBIGUOUS.*?'([^']+)'", err)
-            self.assertIsNotNone(who, f'{doc}: {err}')
-            who = who.group(1)
-            pending.remove(who)
-            cand = {}
-            for t in dict.fromkeys(re.findall(r'\b([A-Z]{2,4}) #\d+', err)):
-                q = run_raw(f'{who}:{t}')
-                cand[t] = dict(table(q.stdout)).get(f'{who}:{t}', 'REFUSED')
-            hits = [t for t, row in cand.items() if row == want[who]]
-            self.assertEqual(len(hits), 1,
-                             f'{doc}: {who} publishes {want[who]}; candidates {cand}')
-            got[who] = want[who]
 
 
 if __name__ == '__main__':

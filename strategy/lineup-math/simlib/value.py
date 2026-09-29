@@ -181,7 +181,7 @@ def incoming_wins(roster, players, blocks=None, trials=TRIALS, seed0=101, R=None
     return out
 
 
-def cut_worst(rows, n):
+def partial_order(rows, n):
     """The `n` real bodies lowest on the partial (board BASE + formula Δw at Score's rate) -- the order a cut shortlists in, not the cut itself (`cuts.best_cut`)"""
     partial = partial_cut_scores(rows)
     real = [p for p in rows if p["n"] in partial]

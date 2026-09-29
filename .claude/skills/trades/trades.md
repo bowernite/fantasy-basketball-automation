@@ -115,7 +115,7 @@ Skip for opening information-gathering messages.
 Our roster is full at 38 with no filler, so every extra incoming body costs us a real player.
 
 - **Build shapes body-even on our side:** when a shape nets us bodies, add our worst players (the sim's `cut_us`) to **Out**. It costs us what a cut would, and they get something for it.
-- **The sim cuts the rest.** Any side a deal takes over 38 drops the bodies whose cut leaves that side's `Score` highest, sim terms included (`Score.md`). `trade-screen` names them in `cut_us` / `cut_them` and charges ours in `ΔBASE`, `Δw` and `Score`. A `cut_us` means the shape isn't body-even yet: move him into **Out** and re-run. Never pick a cut by hand.
+- **The sim cuts the rest.** Any side a deal takes over 38 drops the bodies whose cut leaves that side's `Score` highest, sim terms included (`Score.md`). `trade-screen` names them in `cut_us` / `cut_them` and charges ours in `ΔBASE`, `Δw` and `Score`. A `cut_us` means the shape isn't body-even yet: move him into **Out** and re-run (Score can move by his board-vs-eval BASE gap, `Score.md`). Never pick a cut by hand.
 - A counterparty at 38 cuts for each extra body we send (`cut_them`).
 
 # Shapes

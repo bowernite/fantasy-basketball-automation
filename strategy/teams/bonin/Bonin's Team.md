@@ -1,93 +1,105 @@
-# Bonin (`Pascals of Pangea`)
+# Michael (`Pascals of Pangea`)
 
-> _28 bodies · **contending** · sim 2026-09-02_
+> _38 bodies · **contending** · sim 2026-09-29_
 
 ## Players
 
-| Player | AGE | POS | Boards | **BASE** | FPts/G proj (last) | GP proj (last) | **Δw** | **Δw '26–'27 ours** | **Δw '26–'27 theirs** | **ΔP(title) ours** | W20 | W21 | W22 | W23 | flag |
-| --- | ---: | --- | :---: | ---: | :---: | :---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |
-| Austin Reaves | 28.2 | PG/SG | 29 • 24 (44) | **4405** | 39 (38) | 72 (51) | **+1.74** | **+1.21** | **+1.53** | 13.7% | 141 | 106 | 141 | 106 |  |
-| Donovan Clingan | 22.5 | C | 46 • 43 (46) | **3066** | 38 (36) | 74 (77) | **+1.66** | **+1.37** | **+1.55** | 11.7% | 139 | 105 | 139 | 105 | 2yr role |
-| Lauri Markkanen | 29.2 | C/PF | 45 • 61 (52) | **2722** | 39 (41) | 66 (42) | **+1.58** | **+1.09** | **+1.36** | 11.1% | 128 | 96 | 96 | 128 |  |
-| Domantas Sabonis | 30.3 | C/PF | 55 • 58 (73) | **2526** | 43 (37) | 72 (19) | **+2.07** | **+1.48** | **+1.79** | 13.1% | 117 | 155 | 155 | 117 | fragile |
-| James Harden | 37.0 | PG/SG | 59 • 55 (88) | **2498** | 36 (42) | 70 (70) | **+1.46** | **+1.07** | **+1.38** | 4.8% | 95 | 126 | 95 | 63 |  |
-| Ivica Zubac | 29.4 | C | 67 • 65 (74) | **2192** | 34 (32) | 72 (48) | **+1.30** | **+0.72** | **+1.02** | 3.8% | 91 | 91 | 121 | 91 |  |
-| Pascal Siakam | 32.4 | PF/SF | 71 • 64 (75) | **2145** | 38 (38) | 70 (62) | **+1.58** | **+1.16** | **+1.35** | 8.2% | 99 | 99 | 131 | 99 |  |
-| Derrick White | 32.1 | PG/SG | 74 • 78 (78) | **1922** | 34 (33) | 74 (77) | **+1.34** | **+0.82** | **+1.28** | 8.0% | 94 | 125 | 94 | 125 |  |
-| Scoot Henderson | 22.5 | PG/SG | 94 • 77 (105) | **1706** | 25 (23) | 64 (30) | **+0.56** | **+0.31** | **+0.33** | 3.7% | 80 | 60 | 80 | 60 |  |
-| Norman Powell | 33.2 | PG/SG | 128 • 107 (640) | **1199** | 28 (31) | 66 (58) | **+0.77** | **+0.18** | **+0.48** | 1.4% | 92 | 69 | 69 | 92 | board split |
-| Josh Hart | 31.4 | PG/SG | 116 • 130 (109) | **1142** | 32 (30) | 70 (66) | **+1.13** | **+0.61** | **+0.95** | 5.7% | 84 | 84 | 84 | 112 |  |
-| Andrew Nembhard | 26.6 | SF/SG | 117 • 142 (152) | **1083** | 26 (31) | 66 (58) | **+0.64** | **+0.28** | **+0.37** | 1.0% | 65 | 65 | 86 | 65 |  |
-| Ty Jerome | 29.1 | SF/SG | 136 • 176 (141) | **858** | 33 (34) | 61 (15) | **+1.05** | **+0.57** | **+0.84** | 5.3% | 75 | 100 | 100 | 100 | fragile · 2yr role |
-| Ronald Holland | 21.1 | PF/SF | 150 • 211 (347) | **710** | 18 (17) | 74 (78) | **+0.23** | **-0.09** | **+0.06** | -1.2% | 49 | 65 | 49 | 65 | 1yr role |
-| DeMar DeRozan | 37.0 | SF/SG | 207 • 152 (167) | **688** | 22 (29) | 72 (77) | **+0.46** | **+0.19** | **+0.34** | 0.5% | 61 | 81 | 81 | 61 | free agent |
-| Ryan Kalkbrenner | 24.6 | C | 238 • 136 (217) | **686** | 17 (20) | 70 (69) | **+0.21** | **-0.15** | **-0.07** | -1.3% | 30 | 61 | 45 | 61 | 1yr role |
-| Nique Clifford | 24.5 | PG/SG | 199 • 197 (206) | **577** | 20 (18) | 72 (75) | **+0.32** | **-0.12** | **-0.08** | -0.0% | 54 | 71 | 71 | 54 | 1yr role |
-| Jordan Poole | 27.1 | PG/SG | 209 • 190 (181) | **569** | 17 (20) | 48 (39) | **+0.13** | **-0.11** | **-0.11** | 0.1% | 41 | 41 | 41 | 30 |  |
-| Hugo González | 20.5 | PG/SG | 184 • 238 (248) | **540** | 14 (11) | 72 (74) | **+0.12** | **-0.06** | **-0.07** | 0.1% | 38 | 50 | 38 | 50 | 0yr role |
-| Draymond Green | 36.4 | PF/SF | 195 • 248 (611) | **493** | 25 (24) | 66 (68) | **+0.55** | **+0.15** | **+0.35** | 1.0% | 82 | 82 | 61 | 82 | board split |
-| Sandro Mamukelashvili | 27.2 | C/PF | 220 • 225 (575) | **471** | 24 (23) | 74 (80) | **+0.58** | **+0.19** | **+0.28** | 2.4% | 90 | 67 | 90 | 67 | board split · 1yr role |
-| Oso Ighodaro | 24.1 | PF/SF | 275 • 199 (162) | **427** | 17 (19) | 72 (82) | **+0.20** | **-0.16** | **-0.04** | -0.4% | 46 | 61 | 61 | 61 | 1yr role |
-| Leonard Miller | 22.7 | PF/SF | 322 • 206 (587) | **354** | 11 (15) | 59 (47) | **+0.06** | **-0.16** | **-0.16** | -1.5% | 33 | 25 | 25 | 33 | board split · 1yr role |
-| Caris LeVert | 32.0 | PG/SG | 367 • 196 (563) | **334** | 15 (16) | 50 (60) | **+0.09** | **-0.15** | **-0.15** | -1.2% | 27 | 27 | 27 | 37 | board split |
-| Precious Achiuwa | 26.9 | PF/SF | 371 • 319 (619) | **149** | 22 (24) | 72 (73) | **+0.43** | **-0.07** | **+0.03** | 0.0% | 59 | 79 | 79 | 59 | board split |
-| Klay Thompson | 36.5 | PG/SG | 390 • 341 (654) | **115** | 20 (17) | 64 (69) | **+0.30** | **-0.06** | **-0.02** | 1.2% | 49 | 65 | 49 | 49 | board split |
-| Doug McDermott | 34.6 | PF/SF | - • 546 (264) | **0** | 9 (9) | 40 (29) | **+0.02** | **-0.19** | **-0.20** | -1.6% | – | – | – | – | board split · free agent · 1yr role · no projection |
-| Micah Potter | 28.4 | C | - • 614 (-) | **0** | 9 (20) | 56 (47) | **+0.03** | **-0.11** | **-0.19** | -1.1% | 24 | 18 | 24 | 18 | 1 board · 1yr role |
+| Player                | AGE | POS   |     Boards      | **BASE** | FPts/G proj (last) | GP proj (last) |    **Δw** | **Δw '26–'27 ours** | **Δw '26–'27 theirs** | **ΔP(title) ours** | W20 | W21 | W22 | W23 | flag |
+| --------------------- | ---: | ----- | :-------------: | -------: | :----------------: | :------------: | --------: | ------------------: | --------------------: | -----------------: | --: | --: | --: | --: | ---- |
+| Austin Reaves         | 28.3 | PG/SG |   29 • 24 (43)  | **4405** |      39 (38)       |    72 (51)     | **+1.71** |           **+1.06** |             **+1.49** |           **8.8%** | 141 | 106 | 141 | 106 |      |
+| Donovan Clingan       | 22.6 | C     |   46 • 43 (48)  | **3066** |      36 (36)       |    74 (77)     | **+1.48** |           **+1.13** |             **+1.37** |           **7.8%** | 133 | 100 | 133 | 100 | rot2 |
+| Lauri Markkanen       | 29.4 | C/PF  |   45 • 61 (52)  | **2722** |      39 (41)       |    66 (42)     | **+1.53** |           **+1.03** |             **+1.29** |           **7.4%** | 128 |  96 |  96 | 128 |      |
+| Domantas Sabonis      | 30.4 | C/PF  |   55 • 58 (67)  | **2526** |      47 (37)       |    72 (19)     | **+2.33** |           **+1.73** |             **+2.06** |          **11.2%** | 126 | 168 | 168 | 126 | frag |
+| James Harden          | 37.1 | PG/SG |   59 • 55 (81)  | **2498** |      37 (42)       |    70 (70)     | **+1.50** |           **+1.05** |             **+1.47** |           **3.0%** |  98 | 130 |  98 |  65 |      |
+| Ivica Zubac           | 29.5 | C     |   67 • 65 (79)  | **2192** |      34 (32)       |    72 (48)     | **+1.26** |           **+0.75** |             **+0.94** |           **4.0%** |  91 |  91 | 121 |  91 |      |
+| Pascal Siakam         | 32.5 | PF/SF |   71 • 64 (75)  | **2145** |      38 (38)       |    70 (62)     | **+1.54** |           **+1.04** |             **+1.26** |           **6.2%** |  99 |  99 | 132 |  99 |      |
+| Derrick White         | 32.2 | PG/SG |   74 • 78 (80)  | **1922** |      34 (33)       |    74 (77)     | **+1.29** |           **+0.73** |             **+1.28** |           **5.0%** |  94 | 125 |  94 | 125 |      |
+| Scoot Henderson       | 22.7 | PG/SG |  94 • 77 (114)  | **1706** |      25 (23)       |    64 (30)     | **+0.52** |           **+0.16** |             **+0.31** |           **1.5%** |  81 |  61 |  81 |  61 |      |
+| Norman Powell         | 33.3 | PG/SG | 128 • 107 (533) | **1199** |      28 (31)       |    66 (58)     | **+0.74** |           **+0.14** |             **+0.48** |           **0.9%** |  93 |  70 |  70 |  93 | board split |
+| Josh Hart             | 31.6 | PG/SG | 116 • 130 (104) | **1142** |      32 (30)       |    70 (66)     | **+1.08** |           **+0.44** |             **+0.90** |           **3.3%** |  84 |  84 |  84 | 112 |      |
+| Andrew Nembhard       | 26.7 | SF/SG | 117 • 142 (144) | **1083** |      26 (32)       |    66 (57)     | **+0.61** |           **+0.16** |             **+0.29** |           **0.4%** |  65 |  65 |  87 |  65 |      |
+| Yaxel Lendeborg       | 24.0 | PF/SF |   – • 135 (100) | **1009** |       25 (–)       |     72 (–)     | **+0.58** |           **+0.16** |             **+0.28** |          **-0.6%** |  90 |  90 |  68 |  90 | nopool |
+| Ty Jerome             | 29.2 | SF/SG | 136 • 176 (187) |  **858** |      33 (33)       |    61 (15)     | **+1.01** |           **+0.50** |             **+0.80** |           **3.5%** |  75 | 100 | 100 | 100 | frag · rot2 |
+| Ronald Holland        | 21.2 | PF/SF | 150 • 211 (335) |  **710** |      18 (17)       |    74 (78)     | **+0.20** |           **-0.03** |             **+0.06** |          **-1.0%** |  49 |  65 |  49 |  65 | rot1 |
+| DeMar DeRozan         | 37.1 | SF/SG | 207 • 152 (169) |  **688** |      23 (29)       |    72 (77)     | **+0.42** |           **+0.21** |             **+0.32** |          **-0.6%** |  61 |  81 |  81 |  61 |      |
+| Ryan Kalkbrenner      | 24.7 | C     | 238 • 136 (152) |  **686** |      17 (20)       |    70 (69)     | **+0.18** |           **-0.11** |             **-0.05** |          **-1.0%** |  30 |  61 |  46 |  61 | rot1 |
+| Nique Clifford        | 24.6 | PG/SG | 199 • 197 (190) |  **577** |      20 (18)       |    72 (75)     | **+0.28** |           **-0.14** |             **-0.08** |          **-0.6%** |  54 |  72 |  72 |  54 | rot1 |
+| Jordan Poole          | 27.3 | PG/SG | 209 • 190 (208) |  **569** |      17 (20)       |    48 (39)     | **+0.12** |           **-0.10** |             **-0.14** |           **0.0%** |  41 |  41 |  41 |  31 |      |
+| Hugo González         | 20.6 | PG/SG | 184 • 238 (215) |  **540** |      14 (11)       |    72 (74)     | **+0.11** |           **-0.04** |             **-0.07** |          **-0.1%** |  38 |  51 |  38 |  51 | rot0 |
+| Draymond Green        | 36.6 | PF/SF | 195 • 248 (608) |  **493** |      25 (24)       |    66 (68)     | **+0.50** |           **+0.12** |             **+0.20** |          **-0.7%** |  81 |  81 |  61 |  81 | board split |
+| Cameron Carr          | 21.9 | PG/SG |   – • 218 (148) |  **488** |       16 (–)       |     58 (–)     | **+0.13** |           **-0.08** |             **-0.18** |           **0.1%** |  48 |  36 |  48 |  36 | nopool |
+| Sandro Mamukelashvili | 27.4 | C/PF  | 220 • 225 (567) |  **471** |      24 (23)       |    74 (80)     | **+0.54** |           **+0.09** |             **+0.26** |           **0.5%** |  90 |  67 |  90 |  67 | rot1 |
+| Oso Ighodaro          | 24.2 | PF/SF | 275 • 199 (212) |  **427** |      18 (19)       |    72 (82)     | **+0.20** |           **-0.09** |             **-0.04** |          **-0.7%** |  48 |  64 |  64 |  64 | rot1 |
+| Alex Karaban          | 23.9 | PF/SF |   – • 245 (313) |  **389** |       14 (–)       |     44 (–)     | **+0.07** |           **-0.13** |             **-0.23** |          **-1.1%** |  23 |  31 |  31 |  23 | nopool |
+| Leonard Miller        | 22.8 | PF/SF | 322 • 206 (583) |  **354** |      11 (15)       |    59 (46)     | **+0.06** |           **-0.09** |             **-0.16** |          **-1.0%** |  33 |  25 |  25 |  33 | rot1 |
+| Caris LeVert          | 32.1 | PG/SG | 367 • 196 (560) |  **334** |      10 (16)       |    50 (60)     | **+0.05** |           **-0.16** |             **-0.19** |          **-0.6%** |  18 |  18 |  18 |  25 | board split |
+| Precious Achiuwa      | 27.0 | PF/SF | 371 • 319 (617) |  **149** |      22 (24)       |    72 (73)     | **+0.39** |           **-0.07** |             **+0.01** |          **-0.9%** |  59 |  79 |  79 |  59 |      |
+| Al Horford            | 40.3 | C/PF  | 309 • 515 (692) |  **117** |      15 (21)       |    56 (45)     | **+0.10** |           **-0.05** |             **-0.14** |          **-0.9%** |  42 |  42 |  31 |  42 |      |
+| Klay Thompson         | 36.6 | PG/SG | 390 • 341 (657) |  **115** |      15 (17)       |    64 (69)     | **+0.11** |           **-0.10** |             **-0.15** |           **0.0%** |  36 |  48 |  36 |  36 |      |
+| Craig Porter          | 26.6 | PG/SG | 366 • 456 (462) |   **61** |      11 (17)       |    66 (64)     | **+0.06** |           **-0.05** |             **-0.13** |          **-0.6%** |  26 |  35 |  26 |  17 | rot1 |
+| Kenrich Williams      | 31.8 | SF/SG | 404 • 550 (761) |   **32** |      13 (14)       |    64 (56)     | **+0.09** |           **-0.08** |             **-0.15** |          **-0.5%** |  31 |  42 |  31 |  42 | rot2 |
+| Kam Jones             | 24.6 | PG/SG |     410 • – (–) |   **28** |      10 (11)       |    16 (37)     | **+0.04** |           **-0.18** |             **-0.23** |          **-0.7%** |   6 |   6 |   6 |   8 | rot0 |
+| John Konchar          | 30.5 | PG/SG |   – • 440 (728) |   **17** |      10 (18)       |    38 (56)     | **+0.05** |           **-0.16** |             **-0.22** |          **-0.4%** |  14 |  14 |  14 |  19 |      |
+| Doug McDermott        | 34.7 | PF/SF |   – • 546 (308) |    **0** |       8 (9)        |    40 (29)     | **+0.03** |           **-0.13** |             **-0.22** |          **-1.1%** |   – |   – |   – |   – | rot1 · fa · noproj |
+| Micah Potter          | 28.4 | C     |     – • 614 (–) |    **0** |       9 (20)       |    56 (47)     | **+0.04** |           **-0.08** |             **-0.21** |          **-0.7%** |  24 |  18 |  24 |  18 | rot1 |
+| Braden Smith          | 23.2 | PG/SG |     – • – (433) |    **0** |       6 (–)        |     21 (–)     | **+0.01** |           **-0.17** |             **-0.23** |          **-0.7%** |   – |   – |   – |   – | nopool · noproj |
+| Bryce Hopkins         | 24.0 | SF/SG |     – • – (353) |    **0** |       6 (–)        |     16 (–)     | **+0.01** |           **-0.13** |             **-0.23** |          **-1.1%** |   – |   – |   – |   – | nopool · noproj |
 
-`Boards` = Dizzle Points • Hashtag Points (Hashtag crowd in parens — printed, not blended) (`Eval Definitions §BASE`). `FPts/G proj (last)` and `GP proj (last)` = projection, then last season's actual in parens. Cell formats, rounding and flag names: `Eval Template.md`.
-
-**Inputs, dated.** Boards: Dizzle Points `UPDATED 7/10/2026`, depth **450** — below `D`, so an absence there renormalises its weight for that player only · Hashtag expert Points `25 August 2026`, depth **772** · Hashtag crowd `/keeper` `02 September 2026`, depth **764**; Hashtag Points reaches past `D`, so an absence there is a value of 0. Crowd is printed, not blended. `D` = 12 × 38 = **456**. ⚠️ **The wire's `maxRosterSize` still reads 28 today; 38 is the announced size from Sept '26** and is the one being valued (`Eval Definitions §BASE`). Projections: Sleeper **2026-09-02**, depth 528. `GPp` = mean(Hashtag, FanScout) / one feed / map fallback (`Eval Definitions §Durability`). Hashtag GP depth **430** · FanScout fetched **2026-09-02**, depth **481**. Roster file **2026-09-02** (wire + assumed-through overlays per `Pending Trades.md` where noted). `AGE` from DOB as of 2026-09-02. `REPL` on his roster (`Δw '26–'27 theirs`) guard/forward/center **20.2 / 20.0 / 20.3**; `REPL` on ours (`Δw '26–'27 ours`) **24.6 / 23.1 / 24.8**; both padded to 38.
-
-**Sourced vs modelled** (`Eval Definitions §Sourced vs modelled`): per-board ranks, `FPts/G`, `GP`, `AGE`, `POS` and pick ownership are sourced; `FPts/Gp`, `GPp`, `Δw`, `Δw (season)`, `W20`–`W23`, `ΔP(title) ours`, `REPL` are modelled. No discount is applied anywhere in this file.
-
-**σ** (`Eval Definitions §σ`) — these belong to the **`Δw '26–'27 theirs` ordering, not the published BASE sort**. Adjacent pairs the sim does not resolve: Markkanen/Siakam 0.2σ · González/Clifford 0.7σ · Miller/LeVert 1.5σ.
+σ (`Δw '26–'27 theirs` order): Markkanen/White 0.7σ · DeRozan/Henderson 1.6σ · Ighodaro/Kalkbrenner 1.7σ · Porter/Poole 1.8σ · Horford/Thompson 1.7σ · Potter → Hopkins tail (Potter, Konchar, McDermott, Karaban, Braden Smith, Kam Jones, Hopkins) all ≤1.8σ.
 
 ## Picks
 
-Ownership sourced 2026-09-02 (`FetchTrades`, 26 completed, 0 pending; `FetchLeagueDraftBoard` for Sept '26). The league has traded into **2025–2028**; 2025 is complete. Sept '26 slots are read off the board; '27–'28 are modelled off `strategy/Team Projections.md` (stamped 2026-09-02). Ranks sourced, conversions modelled. Crowd `/keeper` vote-convergence notice is live → Dizzle alone for pick VALUE (`eval-pick` §4).
+Holds all 12 of his own '27–'29 picks (R1–R4); none acquired, none traded. '26 picks are spent — Lendeborg (1.12), Carr (Chris 2.11), Karaban (2.12), Braden Smith (3.12) are players above.
 
-`≤` marks a value the current class's lookup can only bound, not price (`eval-pick` §*Future picks*). Own 2027 1st prices below Dynatyze `Mid 1st` → haircut 0, central not bound.
+### Sept '27 — modelled off projected finish ('26-27 PF #2 → 1.11; 1.10 coin flip with Brian)
 
-### Sept '26 — sourced, locked off the '25-26 finish (1st by record → own slot 1.12)
+| Pick    | Origin | Ordinal | Board row                                               |    rank | **VALUE**          |
+| ------- | ------ | ------: | ------------------------------------------------------- | ------: | -----------------: |
+| own 1st | own    |  10–11  | crowd `Pick 9-14` + Dynatyze 1.10–1.11 (w 0.56)         | 125 / 106 | **1197** (–1241) |
+| own 2nd | own    |  22–23  | crowd `Pick 15-30`                                      |     183 | **656**            |
+| own 3rd | own    |  34–35  | crowd `Pick 31-44` (band ceiling) · Dynatyze template   | 211 / ~297–306 | **225–518** |
+| own 4th | own    |  46–47  | Dynatyze R4 template (w 0)                              | ~364–372 | **117–105**       |
 
-| Pick | Origin | Ordinal | Board row | rank | **VALUE** |
-| --- | --- | ---: | --- | ---: | --------: |
-| **1.12** | own | 12 | `1.12 / Morez Johnson Jr.` | 102 | **1,410** |
-| **2.11** | King Christopher | 23 | `1.23 / Allen Graves` | 187 | **634** |
-| **2.12** | own | 24 | `1.24 / Bruce Thornton` | 206 | **540** |
-| **3.12** | own | 36 | `2.06 / Henri Veesaar` | 276 | **297** |
+Gone: none.
 
-Gone: none of his own '26 picks.
+### Sept '28 — modelled; years 2+ projection pending, year-1 slot carried (1.11, range 1.05–1.12)
 
-### Sept '27 — modelled off projected finish (Pascals 4th in '26-27 → **1.09**)
+| Pick    | Origin | Ordinal | Board row                          |      rank | **VALUE**             |
+| ------- | ------ | ------: | ---------------------------------- | --------: | --------------------: |
+| own 1st | own    |  5–12   | Dynatyze R1 (w 0.48)               | 101–156 (1.11: 148) | **1425–831** (893) |
+| own 2nd | own    | 17–24   | '27 crowd + Dynatyze year gap (w 0) | ~198–248 (2.11: 225) | **578–379** (461) |
+| own 3rd | own    | 29–36   | Dynatyze R3 (w 0.23)               | 300–356 (3.11: ~348) | **238–130** (144) |
+| own 4th | own    | 41–48   | Dynatyze R4 template (w 0)         | 368–422 (4.11: ~414) | **111–38** (47) |
 
-| Pick | Origin | Ordinal | Board row | rank | **VALUE** |
-| --- | --- | ---: | --- | ---: | --------: |
-| own **1st** | own **1.09** | 9 | `1.09 / Brayden Burries` | 95 | **1,524** |
-| own **2nd** | own **2.09** | 21 | `1.21 / Karim Lopez` | 185 | **≤ 645** |
-| own **3rd** | own **3.09** | 33 | `2.03 / Richie Saunders` | 255 | **≤ 357** |
+Gone: none.
 
-Gone: none of his own '27 picks.
+### Sept '29 — modelled; years 2+ projection pending, year-1 slot carried (1.11, range 1.03–1.12)
 
-### Sept '28 — modelled off projected finish (Pascals 8th in '27-28 → 1.03–1.09 prior)
+| Pick    | Origin | Ordinal | Board row                            |      rank | **VALUE**            |
+| ------- | ------ | ------: | ------------------------------------ | --------: | -------------------: |
+| own 1st | own    |  3–12   | Dynatyze R1 chained off '28 (w 0)    | 127–197 (1.11: 190) | **1089–583** (618) |
+| own 2nd | own    | 15–24   | '28 2nd + Dynatyze year gap (w 0)    | 240–282 (2.11: 266) | **406–282** (325) |
+| own 3rd | own    | 27–36   | Dynatyze R3 (w 0.14)                 | 341–398 (3.11: 390) | **156–68** (79) |
+| own 4th | own    | 39–48   | Dynatyze R4 template (w 0)           | 410–456 (4.11: 456) | **52–0** (0) |
 
-| Pick | Origin | Ordinal | Board row | rank | **VALUE** |
-| --- | --- | ---: | --- | ---: | --------: |
-| own **1st** | own (1.03–1.09 prior) | 3–9 | Darryn Peterson → Brayden Burries | 17–95 | **3,270 – 1,524** |
-| own **2nd** | own (2.03–2.09 prior) | 15–21 | Bennett Stirtz → Karim Lopez | 139–185 | **≤ 971 – 645** |
-| own **3rd** | own (3.03–3.09 prior) | 27–33 | Koa Peat → Richie Saunders | 236–255 | **≤ 420 – 357** |
-
-Modelled baseline **5,623 – 1,524**; Dynatyze `Early 1st` (rank 41 → **3,270**, 2026-07-29) caps the top. Late end under `Mid 1st` (**2,021**) → haircut 0 there.
-
-Gone: none of his own '28 picks.
+Gone: none.
 
 # Details
 
-**Counterfactual:** formula **`Δw`** is the league-curve value — one column, same on every roster (`Eval Definitions §Δw`). Each **`Δw (season)`** column swaps the player for a replacement-level 68-GP body of his own slot group. `Δw '26–'27 theirs` is fitted at his `R` (guard/forward/center **20.2 / 20.0 / 20.3**); `Δw '26–'27 ours` is `incoming_wins` onto our padded roster at our `R` (**24.6 / 23.1 / 24.8**). `Δw '26–'27 ours` is the only cross-team-comparable column; the theirs−ours gap is not a number (`Eval Definitions §Δw (season)`).
+**Counterfactual:** `Δw '26–'27` columns swap each player against a 68-GP replacement body of his own slot group — ours `R` guard 26.1 · forward 25.0 · center 24.8; theirs guard 20.2 · forward 20.0 · center 19.9. Formula **`Δw`**: `Eval Definitions §Δw`. `Δw '26–'27 ours` is the only cross-team-comparable column; the theirs−ours gap is not a number, and no target is ranked on theirs (`Eval Definitions §Δw (season)`).
 
-Contending year-1 (`Team Projections.md` cliffs him years 2–3). What to take from him is this season's production on our roster (`Eval Definitions §SIT`): Sabonis, Clingan, Siakam, Markkanen, Reaves.
+**Reads:**
+
+- Contending year 1 — sell-side is youth/BASE, buy-side is this season's production. Targets by `Δw '26–'27 ours`: Sabonis (+1.73, 11.2% ΔP), Clingan, Reaves, Harden, Siakam, Markkanen (all ~+1.0–1.1). Harden's ΔP (3.0%) trails his win column — his bracket-week games (W23 65) are thin.
+- Open deal: Michael countered Cade for Reaves + Sabonis + Siakam; undecided (`Bonin.shapes.md`).
+- 2026 rookies (Lendeborg, Carr, Karaban, Braden Smith) are absent from Dizzle (July board predates the draft) → BASE is Hashtag expert alone; `nopool` = no NBA sample, so their win columns are projection-only.
+- Braden Smith, Bryce Hopkins, Doug McDermott: `noproj` — rate is the ~6.0 no-projection fallback (McDermott 8.3, shrunk off last season). Treat their win columns as a floor-level placeholder.
+- `board split` (a board past `D` while another ranks him inside 200): Powell, Green, LeVert — crowd prices each as unrosterable.
+
+**Sourced vs modelled:** board ranks, AGE, POS, last-season `FPts/G`/`GP`, pick ownership = sourced. BASE, `FPts/G proj`, `GP proj`, both win columns, `ΔP(title)`, W20–W23, every pick VALUE and every slot = modelled. `SIT` = judgment. Ages: Dizzle DOB as of 9/29; Konchar, Hopkins, McDermott, Potter off Hashtag's age field (not on Dizzle).
+
+**Staleness:** Dizzle points board 7/10/26 (predates the draft), Hashtag expert 8/25/26, crowd 9/12/26 (snapshot; pick rows read live 9/29). Dynatyze pick board read 9/29; its class-strength dial is stamped 6/12/26. '28/'29 slots are judgment until the `future` projections land; '27 3rd upper end is a crowd band-width ceiling.
 
 # Title odds
 
-**Counterparty.** Projected season PF **4th of 12 (30,450)** — 3–4 seed. Roster `P(title)` **10.5%**. `SIT` **contending**. Per-player **`ΔP(title) ours`** is `incoming_title` onto our roster (`Bracket value.md`).
+**Counterparty:** projected '26-27 PF 30,717 — 2nd of 12, 12.8 W, P(title) 13.1% (`sim.py horizon` / `title`, 9/29) · **contending**. Our P(title) today 55.5%; **`ΔP(title) ours`** in the table (`--eval 161016`).

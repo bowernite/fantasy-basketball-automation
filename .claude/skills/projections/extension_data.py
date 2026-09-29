@@ -81,7 +81,10 @@ def write():
 def input_paths():
     """Every file `write` reads, plus the code that turns them into rates."""
     code = [__file__, sleeper.__file__, overrides.__file__, sleeper.scoring.__file__]
-    return ([sleeper.SNAPSHOT, overrides.OVERRIDES, max(glob.glob(POOL))]
+    pools = glob.glob(POOL)
+    if not pools:
+        raise FileNotFoundError(POOL)
+    return ([sleeper.SNAPSHOT, overrides.OVERRIDES, max(pools)]
             + sorted(glob.glob(ROSTERS)) + code)
 
 

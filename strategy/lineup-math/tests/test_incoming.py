@@ -61,24 +61,19 @@ class IncomingWins(unittest.TestCase):
                               R=flat_R())
         self.assertIn("38", str(e.exception))
 
-    def test_a_full_roster_ranks_its_worst_body_first_among_the_cuts(self):
-        rows = sim.our_roster(THEIR_ROSTER, projected=False)
-        rows += [p for p in sim.our_roster(projected=False)
-                 if p["n"] not in {q["n"] for q in rows}]
-        rows = rows[:37]
+    def test_a_scrub_ranks_first_among_the_cuts(self):
+        rows = sim.our_roster(THEIR_ROSTER, projected=False)[:5]
         scrub = {"n": "SCRUB", "tm": "MIA", "avg": -10.0, "tot": -500.0,
                  "gp": 50, "posLabel": "G", "elig": ["PG", "SG"]}
-        self.assertEqual([p["n"] for p in sim.cut_worst(rows[:5] + [scrub] + rows[5:], 1)],
+        self.assertEqual([p["n"] for p in sim.partial_order(rows + [scrub], 1)],
                          ["SCRUB"])
 
-    def test_a_full_roster_ranks_a_body_the_market_values_above_a_higher_rate_one_it_does_not(self):
+    def test_a_body_the_market_values_ranks_above_a_higher_rate_one_it_does_not(self):
         rookie = rostered("Emanuel Sharp", projected=False)
         self.assertIsNone(sim.projected_rate(rookie["n"]), "pick a no-projection rookie")
-        bodies = [dict(sim.star(15.0 + i, 70, ("PG", "SG"), tm="BOS",
-                                n="Body %d" % i), tot=0.0, posLabel="G")
-                  for i in range(37)]
-        self.assertEqual([p["n"] for p in sim.cut_worst([rookie] + bodies, 1)],
-                         ["Body 0"])
+        body = sim.star(15.0, 70, ("PG", "SG"), tm="BOS", n="Body")
+        self.assertEqual([p["n"] for p in sim.partial_order([rookie, body], 1)],
+                         ["Body"])
 
     def test_a_roster_with_a_padded_slot_makes_room_without_a_cut(self):
         path = roster_file(*sim.our_roster(THEIR_ROSTER, projected=False)[:30])

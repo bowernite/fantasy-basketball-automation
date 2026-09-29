@@ -54,13 +54,17 @@ repeatedly-made error. So:
   mid-move (`DAL -> DEN`), so normalise the abbreviation and count both ends of a move —
   but then match it exactly, and only to disambiguate a duplicate name. Matching a team
   *loosely* is how `SAC` reads as the Spurs and `PHX` as the 76ers.
+- **One name on the same team twice on one board is one player listed twice** — take his
+  best rank. The same name on different teams stays two players; a shared `FA` or blank
+  team cell counts as no team.
 - `hashtag_id` is a stable key but exists on the crowd board only; there is no shared id
   across boards.
 - **Hand-check every all-boards absence before recording 0.** A player missing from *all*
   boards is far more often a join failure than a genuine 0 — search the surname on each
-  board before writing the row. Record a 0 only once you have looked.
+  board before writing the row. Record a 0 only once you have looked. The same goes for a
+  row with no blended rank (`- -`) but a crowd rank: `base.py` prices it 0 without refusing.
 
-`base.py` enforces all three: it **refuses** an all-boards absence until `--absent NAME`
+`base.py` enforces the normalising, the team match and the duplicate rule. It **refuses** an all-boards absence until `--absent NAME`
 records the hand-check, and refuses a colliding name until `NAME:TEAM` splits it. A
 nickname no normalisation can reach (`Bub` / `Carlton Carrington`) goes in its `ALIAS`
 table, one hand-checked line per name.

@@ -201,7 +201,7 @@ def deal_cuts(deal, their, our_proj, their_proj, before):
     staying_us, over_us = _overfill(our_proj, deal["out_us"], deal["in_from_them"])
     staying_them, over_them = _overfill(their_proj, deal["out_them"],
                                         deal["in_from_us"])
-    cut_them = _names(sim.cut_worst(staying_them, over_them))
+    cut_them = _names(sim.partial_order(staying_them, over_them))
     cut_us = _names(cuts.best_cut(staying_us, over_us, our_score)) if over_us else []
     if over_them:
         cut_them = _names(cuts.best_cut(staying_them, over_them, their_score))

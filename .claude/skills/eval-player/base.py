@@ -83,6 +83,7 @@ ALIAS = {'bub carrington': 'carlton carrington',
 
 def key(name):
     s = unicodedata.normalize('NFKD', name).encode('ascii', 'ignore').decode()
+    s = re.sub(r'^\s*\d+\.\d+\s*/\s*', '', s)              # dizzle's rookie `2.07 / `
     s = re.sub(r'\b(jr|sr|ii|iii|iv|v)\b', '',
                s.lower().replace('.', '').replace("'", '').replace('-', ' '))
     s = ' '.join(s.split())
@@ -90,13 +91,19 @@ def key(name):
 
 
 def load(path, rankcol, namecol, teamcol):
+    """-> {key: [(rank, team)]}. One name on one team twice is one player listed twice,
+    kept at his best rank (`eval-player`)."""
     rows = {}
     with open(path, newline='', encoding='utf-8') as f:
         for row in csv.DictReader(f):
-            r = row[rankcol]
+            r, team = row[rankcol], row[teamcol]
             if r and r.isdigit():
-                rows.setdefault(key(row[namecol]), []).append((int(r), row[teamcol]))
-    return rows
+                listed = rows.setdefault(key(row[namecol]), {})
+                nba = frozenset(franchises(team) - {'FA'})
+                same = nba or object()           # no NBA team says nothing about who he is
+                if same not in listed or int(r) < listed[same][0]:
+                    listed[same] = (int(r), team)
+    return {k: sorted(listed.values()) for k, listed in rows.items()}
 
 
 def stamp(path):

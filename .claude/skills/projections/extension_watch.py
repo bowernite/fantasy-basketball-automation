@@ -11,6 +11,7 @@ import hashlib
 import os
 import plistlib
 import shutil
+import signal
 import subprocess
 import sys
 import time
@@ -26,6 +27,7 @@ LABEL = "dev.abramczyk.ff-extension-watch"
 PLIST = os.path.expanduser("~/Library/LaunchAgents/%s.plist" % LABEL)
 POLL_SECONDS = 5
 QUIET_SECONDS = 15
+BUILD_TIMEOUT_SECONDS = 600
 
 
 class Watcher:
@@ -50,13 +52,13 @@ class Watcher:
         if now - self.pending_since < self.quiet:
             return
         if self.build():
-            self.built = current
+            self.built, self.failed = current, None
             with open(self.state, "w") as f:
                 f.write(current)
             self.notify("Extension updated", "Reload Fleaflicker to see the new projections")
         else:
             self.failed = current
-            self.notify("Extension rebuild failed", "Click for the log; fix the input and save again")
+            self.notify("Extension rebuild failed", "Click for the log. Retries on the next input change, or run `extension_watch.py install` to retry now")
 
 
 def read_state(path):
@@ -79,7 +81,7 @@ def watch():
     os.makedirs(os.path.dirname(STATE), exist_ok=True)
     watcher = Watcher(paths=extension_data.input_paths, build=build_extension,
                       notify=notify, state=STATE, quiet=QUIET_SECONDS)
-    log("watching %d inputs" % len(extension_data.input_paths()))
+    log("watching projection inputs")
     while True:
         watcher.poll(time.monotonic())
         time.sleep(POLL_SECONDS)
@@ -87,12 +89,17 @@ def watch():
 
 def build_extension():
     log("inputs changed -> bun run safari:dev")
-    result = subprocess.run(["bun", "run", "safari:dev"], cwd=REPO, text=True,
-                            env=dict(os.environ, SKIP_CLIPBOARD="1"),
-                            stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    print(result.stdout, end="", flush=True)
-    log("build exited %d" % result.returncode)
-    return result.returncode == 0
+    build = subprocess.Popen(["bun", "run", "safari:dev"], cwd=REPO, start_new_session=True,
+                             env=dict(os.environ, SKIP_CLIPBOARD="1"))
+    try:
+        code = build.wait(timeout=BUILD_TIMEOUT_SECONDS)
+    except subprocess.TimeoutExpired:
+        os.killpg(build.pid, signal.SIGKILL)
+        build.wait()
+        log("build timed out after %ds" % BUILD_TIMEOUT_SECONDS)
+        return False
+    log("build exited %d" % code)
+    return code == 0
 
 
 def notify(title, message):

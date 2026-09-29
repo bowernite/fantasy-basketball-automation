@@ -5,16 +5,31 @@ import os
 import subprocess
 import tempfile
 import unittest
+from unittest import mock
 
 import sim
+from fetch_data import TEAM
+from simlib import cuts, runner
 from simlib.runner import (
-    _simmed_date, check_config, deal_delta_age, deal_delta_base, enrich_config,
+    TEAM_SLUG, _simmed_date, check_config, deal_delta_age, deal_delta_base, enrich_config,
     parse_config, resolve_roster, run_config, sim_tmp_path, team_sims_path,
     team_sim_path, team_trade_shapes_path)
-from simlib import cuts
 from tests.harness import cheap_monte_carlo
 
 EXAMPLES = os.path.join(sim.HERE, "sims", "examples")
+
+
+def full_counterparty():
+    """A league seat other than ours at the wire cap"""
+    for tid in TEAM_SLUG:
+        rows = sim.our_roster(resolve_roster(tid))
+        if tid != TEAM and len(rows) == sim.MAX_WIRE:
+            return tid
+    raise unittest.SkipTest("no counterparty at the wire cap")
+
+
+def by_value(rows):
+    return sorted(rows, key=lambda p: -p["avg"] * p["gp"])
 
 
 class ResolveRoster(unittest.TestCase):
@@ -38,12 +53,20 @@ class DealDeltaBase(unittest.TestCase):
 
 class DealDeltaAge(unittest.TestCase):
     def test_a_body_with_no_age_and_no_weight_does_not_blank_the_change(self):
-        # Chaney Johnson: AGE "–", FPts/G under 18, so weight 0
-        got = deal_delta_age({
-            "label": "Chaney+'28 1st > '27 1st",
-            "out_us": ["Chaney Johnson"],
-            "in_from_them": [],
-        }, 161020)
+        root = tempfile.mkdtemp()
+        os.makedirs(os.path.join(root, "lineup-math"))
+        for slug, row in (("my-team", "| Rookie | – | G | – | **100** | 10 | 50 |"),
+                          ("mitch", "| Vet | 30 | G | – | **900** | 30 | 70 |")):
+            os.makedirs(os.path.join(root, "teams", slug))
+            with open(os.path.join(root, "teams", slug, "X Team.md"), "w") as f:
+                f.write("| Player | AGE | POS | Boards | BASE | FPts/G proj | GP proj |\n"
+                        "| --- | --- | --- | --- | --- | --- | --- |\n%s\n" % row)
+        with mock.patch.object(runner, "HERE", os.path.join(root, "lineup-math")):
+            got = deal_delta_age({
+                "label": "Rookie+'28 1st > '27 1st",
+                "out_us": ["Rookie"],
+                "in_from_them": [],
+            }, 161020)
         self.assertAlmostEqual(got, 1.0)
 
 
@@ -223,99 +246,61 @@ class ConfigRun(unittest.TestCase):
                   + 250 * got["dw_us"] + 80 * got["dp_title_us"])
         self.assertEqual(got["score_us"], round(expect))
 
-    def test_trade_screen_prices_a_deal_that_overfills_our_roster_as_if_it_named_our_worst_body(self):
-        named = {
-            "out_us": ["Jalen Suggs"],
-            "in_from_them": ["Jordan Clarkson", "Taurean Prince"],
-            "out_them": ["Jordan Clarkson", "Taurean Prince"],
-            "in_from_us": ["Jalen Suggs"],
-        }
-        self.assertEqual(len(sim.our_roster()), sim.MAX_WIRE, "needs our roster full")
-        cfg = {"kind": "trade-screen", "their_roster": 161022,
-               "their_label": "Todd", "deals": [dict(named, label="overfill")]}
+    def test_a_deal_that_overfills_our_roster_cuts_the_body_whose_named_cut_scores_best(self):
+        ours = sim.our_roster()
+        self.assertEqual(len(ours), sim.MAX_WIRE, "needs our roster full")
+        their = next(tid for tid in TEAM_SLUG if tid != TEAM)
+        star = by_value(ours)[0]["n"]
+        pair = [p["n"] for p in by_value(sim.our_roster(resolve_roster(their)))[:2]]
+        named = {"out_us": [star], "in_from_them": pair, "out_them": pair,
+                 "in_from_us": [star]}
+        candidates = [p["n"] for p in cuts.shortlist(
+            [p for p in ours if p["n"] != star], 1)]
+        cfg = {"kind": "trade-screen", "their_roster": their,
+               "deals": [dict(named, label="auto")]
+               + [dict(named, label=n, out_us=[star, n]) for n in candidates]}
         with cheap_monte_carlo():
-            auto = enrich_config(cfg)["deals"][0]["results"]
-        self.assertNotIn("error", auto)
-        cut, = auto["cut_us"]
+            rows = {d["label"]: d["results"] for d in enrich_config(cfg)["deals"]}
+        base = sim.board_base(ours)
+        score = {n: -base[n] + 300 * rows[n]["fdw_us"] + 250 * rows[n]["dw_us"]
+                 + 80 * rows[n]["dp_title_us"] for n in candidates}
+        cut = max(score, key=score.get)
+        auto = rows["auto"]
+        self.assertEqual(auto["cut_us"], [cut])
         self.assertEqual(auto["cut_them"], [])
-        cfg["deals"] = [dict(named, label="named", out_us=["Jalen Suggs", cut])]
-        with cheap_monte_carlo():
-            by_hand = enrich_config(cfg)["deals"][0]["results"]
         for col in ("fdw_us", "dw_us", "dp_title_us"):
-            self.assertEqual(auto[col], by_hand[col], col)
-        cut_base = sim.board_base([p for p in sim.our_roster() if p["n"] == cut])[cut]
+            self.assertEqual(auto[col], rows[cut][col], col)
+        named_base = deal_delta_base(named, their)
         self.assertEqual(auto["delta_base_us"],
-                         deal_delta_base(named, 161022) - cut_base)
-        self.assertEqual(auto["score_us"], round(
+                         None if named_base is None else named_base - base[cut])
+        self.assertEqual(auto["score_us"], None if named_base is None else round(
             auto["delta_base_us"] + 300 * auto["fdw_us"] + 250 * auto["dw_us"]
             + 80 * auto["dp_title_us"]))
 
-    def test_trade_screen_cuts_their_worst_body_when_a_deal_overfills_their_roster(self):
-        named = {
-            "out_us": ["Jalen Suggs", "Keon Ellis"],
-            "in_from_them": ["Deni Avdija"],
-            "out_them": ["Deni Avdija"],
-            "in_from_us": ["Jalen Suggs", "Keon Ellis"],
-        }
-        self.assertEqual(len(sim.our_roster("roster-161020-2025-26.json")),
-                         sim.MAX_WIRE, "needs their roster full")
-        cfg = {"kind": "trade-screen", "their_roster": 161020,
-               "their_label": "Mitch", "deals": [dict(named, label="overfill")]}
-        with cheap_monte_carlo():
-            auto = enrich_config(cfg)["deals"][0]["results"]
-        self.assertNotIn("error", auto)
-        cut, = auto["cut_them"]
-        self.assertEqual(auto["cut_us"], [])
-        cfg["deals"] = [dict(named, label="named", out_them=["Deni Avdija", cut])]
-        with cheap_monte_carlo():
-            by_hand = enrich_config(cfg)["deals"][0]["results"]
-        for col in ("fdw_them", "dw_them", "dp_title_them", "dw_us"):
-            self.assertEqual(auto[col], by_hand[col], col)
-
-    def test_trade_screen_cuts_the_body_whose_named_cut_scores_best_for_us(self):
-        named = {
-            "out_us": ["Jalen Suggs"],
-            "in_from_them": ["Jordan Clarkson", "Taurean Prince"],
-            "out_them": ["Jordan Clarkson", "Taurean Prince"],
-            "in_from_us": ["Jalen Suggs"],
-        }
-        ours = sim.our_roster()
-        staying = [p for p in ours if p["n"] != "Jalen Suggs"]
-        candidates = [p["n"] for p in cuts.shortlist(staying, 1)]
-        base = sim.board_base(ours)
-        cfg = {"kind": "trade-screen", "their_roster": 161022,
-               "their_label": "Todd",
+    def test_a_deal_that_overfills_their_roster_cuts_the_body_whose_named_cut_scores_best_for_them(self):
+        their = full_counterparty()
+        theirs = sim.our_roster(resolve_roster(their))
+        star = by_value(theirs)[0]["n"]
+        pair = [p["n"] for p in by_value(sim.our_roster())[:2]]
+        named = {"out_us": pair, "in_from_them": [star], "out_them": [star],
+                 "in_from_us": pair}
+        candidates = [p["n"] for p in cuts.shortlist(
+            [p for p in theirs if p["n"] != star], 1)]
+        cfg = {"kind": "trade-screen", "their_roster": their,
                "deals": [dict(named, label="auto")]
-               + [dict(named, label=n, out_us=["Jalen Suggs", n])
-                  for n in candidates]}
+               + [dict(named, label=n, out_them=[star, n]) for n in candidates]}
         with cheap_monte_carlo():
             rows = {d["label"]: d["results"] for d in enrich_config(cfg)["deals"]}
-        score = {n: -base[n] + 300 * rows[n]["fdw_us"] + 250 * rows[n]["dw_us"]
-                 + 80 * rows[n]["dp_title_us"] for n in candidates}
-        self.assertEqual(rows["auto"]["cut_us"], [max(score, key=score.get)])
-
-    def test_trade_screen_cuts_the_body_whose_named_cut_scores_best_for_them(self):
-        named = {
-            "out_us": ["Jalen Suggs", "Keon Ellis"],
-            "in_from_them": ["Deni Avdija"],
-            "out_them": ["Deni Avdija"],
-            "in_from_us": ["Jalen Suggs", "Keon Ellis"],
-        }
-        theirs = sim.our_roster("roster-161020-2025-26.json")
-        staying = [p for p in theirs if p["n"] != "Deni Avdija"]
-        candidates = [p["n"] for p in cuts.shortlist(staying, 1)]
         base = sim.board_base(theirs)
-        cfg = {"kind": "trade-screen", "their_roster": 161020,
-               "their_label": "Mitch",
-               "deals": [dict(named, label="auto")]
-               + [dict(named, label=n, out_them=["Deni Avdija", n])
-                  for n in candidates]}
-        with cheap_monte_carlo():
-            rows = {d["label"]: d["results"] for d in enrich_config(cfg)["deals"]}
         score = {n: -base[n] + 300 * rows[n]["fdw_them"]
                  + 250 * rows[n]["dw_them"] + 80 * rows[n]["dp_title_them"]
                  for n in candidates}
-        self.assertEqual(rows["auto"]["cut_them"], [max(score, key=score.get)])
+        cut = max(score, key=score.get)
+        auto = rows["auto"]
+        self.assertEqual(auto["cut_them"], [cut])
+        self.assertEqual(auto["cut_us"], [])
+        for col in ("fdw_them", "dw_them", "dp_title_them", "dw_us"):
+            self.assertEqual(auto[col], rows[cut][col], col)
 
     def test_trade_screen_title_note_is_both_rosters(self):
         cfg = {
