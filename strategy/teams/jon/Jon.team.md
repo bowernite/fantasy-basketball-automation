@@ -48,7 +48,7 @@ Trayce Jackson-Davis | 26.6 PF/SF | 36 | 14 56 | +0.08 -0.07 -0.06 -0.8% | rot2
 ## Picks
 pick | origin | rookie | VALUE
 ### Sept '27 — modelled off projected finish ('26–'27: Jon 12th → 1.01–1.07 prior)
-1st | own (1.01–1.07 prior) | crowd Pick 1 to Pick 5-8 · Dynatyze '27 1.01–1.07 (w 0.56) | 2974 (1982–4589)
+1st | own (1.01–1.07 prior) | crowd Pick 1 to Pick 5-8 · Dynatyze '27 1.01–1.07 (w 0.56) | 2956 (1982–4589)
 1st | Brian (1.10, 1.11 as likely) | crowd Pick 9-14 · Dynatyze '27 1.10 / 1.11 (w 0.56) | 1262 (1231–1292)
 2nd | own (2.01–2.07 prior) | Dynatyze '27 2.01–2.07 template | 904 (734–1095)
 2nd | Henry (2.02–2.09 prior) | Dynatyze '27 2.02–2.09 template | 821 (645–1060)

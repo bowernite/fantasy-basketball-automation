@@ -46,8 +46,8 @@ Aleksej Pokusevski | 24.8 C/PF | 0 | 6 41 | +0.02 -0.14 -0.27 -1.1% | miss · ro
 ## Picks
 pick | origin | rookie | VALUE
 ### Sept '27 — modelled off projected finish (Hlina 5th → 1.05–1.11 prior, coin flip with Josh for 1.09 · Matthew 11th → 1.01–1.08 prior · Josh 4th → 1.09)
-1st | own (1.05–1.11 prior) | crowd Pick 5–8 / 9–14 · Dynatyze '27 1.05–1.11 (w 0.56) | 1697 (1231–2224)
-1st | Matthew (1.01–1.08 prior) | crowd Pick 1 / 2 / 3–4 / 5–8 · Dynatyze '27 1.01–1.08 (w 0.56) | 2843 (1888–4589)
+1st | own (1.05–1.11 prior) | crowd Pick 5–8 / 9–14 · Dynatyze '27 1.05–1.11 (w 0.56) | 1723 (1231–2224)
+1st | Matthew (1.01–1.08 prior) | crowd Pick 1 / 2 / 3–4 / 5–8 · Dynatyze '27 1.01–1.08 (w 0.56) | 2822 (1888–4589)
 1st | Josh (1.09) | crowd Pick 9–14 · Dynatyze '27 1.09 (w 0.56) | 1353
 2nd | own (2.05–2.11 prior) | Dynatyze '27 2.05–2.11 template | 694 (573–831)
 3rd | Josh (3.09) | Dynatyze '27 3.09 template | 262
