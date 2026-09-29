@@ -38,22 +38,17 @@ def project(player, years=20, n=1000, seed=1, p=None):
     return out
 
 
-_JOB = {}
-
-
 def project_many(players, years=20, n=1000, seed=1):
     """`project` for each player, across processes"""
-    _JOB.update(players=players, years=years, n=n, seed=seed, p=params())
-    shard.retire()                 # workers fork with `_JOB` as it is now
-    jobs = shard.chunks(len(players), shard.n_workers(None, len(players), floor=8))
+    p = params()
+    parts = shard.chunks(len(players), shard.n_workers(None, len(players), floor=8))
+    jobs = [(players[s:s + c], years, n, seed, p) for s, c in parts]
     return [ys for part in shard.mapped(_project_chunk, jobs, len(jobs)) for ys in part]
 
 
 def _project_chunk(job):
-    start, count = job
-    j = _JOB
-    return [project(pl, j["years"], j["n"], j["seed"], j["p"])
-            for pl in j["players"][start:start + count]]
+    players, years, n, seed, p = job
+    return [project(pl, years, n, seed, p) for pl in players]
 
 
 def wrv(years):
@@ -125,15 +120,16 @@ class _Sampler:
     def __init__(self, p):
         self.p, self.k, v = p, p["knobs"], p["vet"]
         self.drift, self.exit = _Model(v["drift"]), _Model(v["exit"])
+        self.exit_cap = v.get("exit_level_cap", float("inf"))
         self.scale, self.resq, self.zsd = _Model(v["scale"]), v["resq"], v["zsd"]
         self.star_ll = v.get("star_ll")
         self.resq_star, self.zsd_star = v.get("resq_star"), v.get("zsd_star")
         self.gp_ref = p.get("gp_ref", 60.0)
-        self.beta = v["bpm_beta"]
+        self.beta, self.beta_ll = v["bpm_beta"], v.get("bpm_beta_ll") or []
         self.bpm_ref = _Model(v["bpm_ref"]) if "bpm_ref" in v else None
         self.gamma = p["board"]["gamma"]
         g = p["gp"]
-        self.hurdle = _Model(g["hurdle"])
+        self.hurdle, self.gp_mean = _Model(g["hurdle"]), _Model(g["mean"])
         self.lo, self.hi = math.log(MIN_RATE), math.log(1.1 * p["league_max"])
         r = p.get("rookie")
         self.rookie = r and {"drift": _Model(r["drift"]), "scale": _Model(r["scale"]),
@@ -146,6 +142,9 @@ class _Sampler:
         p, k = self.p, self.k
         rates, gps = [pl["rate1"]], [pl["gp1"]]
         bpm, dev = self._bpm(pl)
+        lL1 = self._vars(pl["age1"], pl["rate1"], 0.0, 0.0, 0)["lL"]
+        bpm_steps = [max(b + _at(self.beta_ll, t) * lL1, 0.0) * dev
+                     for t, b in enumerate(self.beta, 1)]
         bres = min(max(pl.get("bres") or 0.0, -p["board"]["clip"]), p["board"]["clip"])
         # year 2 chains straight off the GP projection: its own noise adds
         # little once shrunk by the chain's 0.3 slope
@@ -170,19 +169,22 @@ class _Sampler:
         tau = lr
         for t in range(t, years):
             if st.alive:
-                v = self._vars(st.age, math.exp(tau), st.gpavg(), bpm, st.cy)
-                st.alive = rng.random() >= _logistic(self.exit(v))
+                v = self._vars(st.age, math.exp(tau), st.gpavg(),
+                               self._bpm_on_path(st.age, math.exp(tau), dev), st.cy)
+                if not _lost_season(t, gps):
+                    ve = self._vars(st.age, min(math.exp(tau), self.exit_cap), st.gpavg(), v["bpm"], st.cy)
+                    st.alive = rng.random() >= _logistic(self.exit(ve))
             if not st.alive:
                 rates.append(None)
                 gps.append(0.0)
                 continue
             sd, phi = self._sd(v, st.age, young), self._phi(v["lL"])
-            step = self.drift(v) + _at(self.beta, t) * dev - _at(self.gamma, t) * bres
+            step = self.drift(v) + _at(bpm_steps, t) - _at(self.gamma, t) * bres
             if t == 1 and pl.get("rate_mult"):
                 step += math.log(pl["rate_mult"])
             tau = min(max(tau + step + sd * math.sqrt(phi) * self._eps(v["lL"], rng),
                           self.lo), self.hi)
-            gp = self._gp_next(st.gp, st.age, rng)
+            gp = self._gp_next(st.gp, st.age, rates[-1] or math.exp(tau), rng)
             st.advance(gp)
             v2 = self._vars(st.age, math.exp(tau), gp, bpm, st.cy)
             sd2, phi2 = self._sd(v2, st.age, young), self._phi(v2["lL"])
@@ -202,19 +204,22 @@ class _Sampler:
         t = 1
         while st.cy < 3 and t < years:
             ve = _rookie_vars(lr, st.cy, ad, lp_exit, self._gp_feature(st.gp))
-            if rng.random() < _logistic(r["exit"](ve)):
+            h = 0.0 if _lost_season(t, gps) else _logistic(r["exit"](ve))
+            if rng.random() < h:
                 st.alive = False
                 return t
+            rate_now = math.exp(lr)
             vg = dict(ve, lp=lp_grow)
             sd = max(r["scale"](vg), 0.05) * r["zsd"] * k["smult_rookie"]
             step = r["drift"](vg) - _at(self.gamma, t) * bres
             if t == 1 and pl.get("rate_mult"):
                 step += math.log(pl["rate_mult"])
             lr = min(max(lr + step + sd * _draw(r["resq"], rng), self.lo), self.hi)
-            if rng.random() < _logistic(r["miss"](ve)):
+            # miss was fit over all players, exit's share included; this path has already stayed
+            if rng.random() < _logistic(r["miss"](ve)) / (1.0 - h):
                 gp = _draw(self.p["gp"]["low_pool"], rng)
             else:
-                gp = self._gp_mean_draw(st.gp, st.age, rng)
+                gp = self._gp_mean_draw(st.gp, st.age, rate_now, rng)
             st.advance(gp)
             rates.append(self._clip(lr))
             gps.append(gp)
@@ -222,11 +227,11 @@ class _Sampler:
         return t
 
     def _eps(self, lL, rng):
-        """A one-step miss in SD units of the level's scale; stars draw from
-        their own pool"""
+        """A one-step miss in SDs of the pooled residual; stars draw from their
+        own pool, at its own width"""
         if self.star_ll is not None and lL >= self.star_ll:
-            return _draw(self.resq_star, rng) * self.zsd_star
-        return _draw(self.resq, rng) * self.zsd
+            return _draw(self.resq_star, rng) * self.zsd_star / self.zsd
+        return _draw(self.resq, rng)
 
     def _gp_feature(self, gp):
         """GP against the current season norm, the scale exit was fit on"""
@@ -242,6 +247,14 @@ class _Sampler:
     def _clip(self, lr):
         return min(max(math.exp(lr), MIN_RATE), math.exp(self.hi))
 
+    def _bpm_on_path(self, age, level, dev):
+        """BPM where the path stands: typical for its level and age, plus the
+        player's own excess. Holding year 1's BPM would keep a declining star
+        at his peak impact for good"""
+        if self.bpm_ref is None:
+            return 0.0
+        return min(max(self.bpm_ref(self._vars(age, level, 60.0, 0.0, 0)) + dev, -8.0), 12.0)
+
     def _bpm(self, pl):
         """(BPM, its excess over the level-typical BPM). The drift's level
         terms already carry the typical BPM, so only the excess moves a path;
@@ -251,7 +264,8 @@ class _Sampler:
         typical = self.bpm_ref(self._vars(pl["age1"], pl["rate1"], 60.0, 0.0, 0))
         bpm = pl.get("bpm")
         bpm = typical if bpm is None else min(max(bpm, -8.0), 12.0)
-        return bpm, bpm - typical
+        cap = self.p["vet"].get("bpm_dev_clip", float("inf"))
+        return bpm, min(max(bpm - typical, -cap), cap)
 
     def _sd(self, v, age, young):
         k = self.k
@@ -262,17 +276,17 @@ class _Sampler:
         k = self.k
         return min(k["phi0"] + k["phi1"] * max(lL, 0.0), 0.9)
 
-    def _gp_next(self, gp_t, age, rng):
+    def _gp_next(self, gp_t, age, rate, rng):
         """Next season's GP: a transient lost season, else the linear mean in
-        this season's GP and age past 28 plus an empirical residual"""
-        if rng.random() < _logistic(self.hurdle(_gp_vars(gp_t, age))):
+        this season's GP, age past 28 and rate below 20, plus an empirical
+        residual"""
+        if rng.random() < _logistic(self.hurdle(_gp_vars(gp_t, age, rate))):
             return _draw(self.p["gp"]["low_pool"], rng)
-        return self._gp_mean_draw(gp_t, age, rng)
+        return self._gp_mean_draw(gp_t, age, rate, rng)
 
-    def _gp_mean_draw(self, gp_t, age, rng):
+    def _gp_mean_draw(self, gp_t, age, rate, rng):
         g = self.p["gp"]
-        mean = g["c0"] + g["b_gp"] * gp_t + g["b_age"] * max(age - 28, 0.0)
-        return min(max(mean + _draw(g["resq"], rng), ACTIVE), 82.0)
+        return min(max(self.gp_mean(_gp_vars(gp_t, age, rate)) + _draw(g["resq"], rng), ACTIVE), 82.0)
 
 
 class _State:
@@ -283,7 +297,8 @@ class _State:
         self.age, self.cy, self.gp, self.gp_prev, self.alive = age, cy, gp, gp_prev, True
 
     def gpavg(self):
-        return self.gp if self.gp_prev is None else (self.gp + self.gp_prev) / 2
+        """A season with no games has no row in the fit, so it isn't averaged in"""
+        return self.gp if not self.gp_prev else (self.gp + self.gp_prev) / 2
 
     def advance(self, gp):
         self.age += 1
@@ -296,12 +311,19 @@ def _rookie_vars(lr, c, ad, lp, gp):
             "lL": min(max(lr - math.log(30), -1.6), 0.7), "ad": ad, "lp": lp, "gp": gp}
 
 
+def _lost_season(t, gps):
+    """A sampled season under 20 GP was drawn as transient -- fit on players
+    who were back within two seasons -- so it doesn't also count toward exit"""
+    return t > 1 and gps[-1] < ACTIVE
+
+
 def _at(schedule, t):
     return schedule[t - 1] if t <= len(schedule) else 0.0
 
 
-def _gp_vars(gp, age):
-    return {"1": 1.0, "gpraw": gp, "a28": max(age - 28, 0.0)}
+def _gp_vars(gp, age, rate):
+    return {"1": 1.0, "gpraw": gp, "a28": max(age - 28, 0.0),
+            "lo20": min(math.log(max(rate, 1.0) / 20), 0.0)}
 
 
 LL_LO, LL_HI = -1.4, math.log(55 / 30)

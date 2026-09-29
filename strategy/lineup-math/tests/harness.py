@@ -27,7 +27,7 @@ import sim
 from simlib import (bracket, cuts, engine, gp, roster as roster_mod, shard,
                     stats, title, value)
 from simlib import reports
-from simlib.reports import deals, durability
+from simlib.reports import deals, durability, progression as progression_report
 
 THEIR_ROSTER = "roster-161020-2025-26.json"
 ROOKIE_ROSTER = "roster-160941-2025-26.json"
@@ -41,6 +41,7 @@ def cheap_monte_carlo(trials=4, blocks=1, seasons=200):
     real_run, real_many, real_wins, real_boot = (
         engine.run, engine.run_many, value.player_wins, gp.gp_bootstrap)
     was_blocks, was_seasons = value.PLAYER_BLOCKS, title.SEASON_TRIALS
+    was_paths = progression_report.PATHS
     engine.run = lambda roster, **kw: real_run(roster, **dict(kw, trials=trials))
     engine.run_many = lambda rosters, **kw: real_many(
         rosters, **dict(kw, trials=trials))
@@ -49,6 +50,7 @@ def cheap_monte_carlo(trials=4, blocks=1, seasons=200):
     gp.gp_bootstrap = lambda rows, **kw: real_boot(rows, **dict(kw, n=50))
     value.PLAYER_BLOCKS = blocks
     title.SEASON_TRIALS = seasons
+    progression_report.PATHS = 200
     bracket.team_levels.cache_clear()
     cuts.cache_clear()
     try:
@@ -57,6 +59,7 @@ def cheap_monte_carlo(trials=4, blocks=1, seasons=200):
         engine.run, engine.run_many, value.player_wins, gp.gp_bootstrap = (
             real_run, real_many, real_wins, real_boot)
         value.PLAYER_BLOCKS, title.SEASON_TRIALS = was_blocks, was_seasons
+        progression_report.PATHS = was_paths
         bracket.team_levels.cache_clear()
         cuts.cache_clear()
 

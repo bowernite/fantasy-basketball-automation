@@ -17,11 +17,16 @@ from . import shard
 GATE_YEARS = (2, 3, 4, 5)
 BUCKET_MIN = 100
 TUNE_N, TEST_N = 100, 200
-SMULT_GRID = (0.5, 0.6, 0.7, 0.8, 0.9, 1.0)
-PHI1_GRID = (0.0, 0.75, 1.5)
-FLOOR_GRID = (0.08, 0.11, 0.14)
+# spread knobs, tuned one at a time over their grids, twice round
+TUNE_GRID = collections.OrderedDict([
+    ("smult", (0.8, 0.9, 1.0, 1.1, 1.2, 1.35)),
+    ("sd_floor", (0.06, 0.09, 0.12, 0.15)),
+    ("phi1", (0.0, 0.75, 1.5)),
+    ("young_mult_rookie", (1.1, 1.3, 1.5, 1.8, 2.1)),
+])
 PICK_FLOOR_GRID = (1, 3, 6)
 ACTIVE = prog.ACTIVE
+WORKERS = 6            # a backtest is ~200 of these calls; all cores for that long runs the laptop hot
 
 
 # ---------------------------------------------------------------- scores
@@ -60,14 +65,10 @@ def ece(probs, outcomes, bins=10):
 
 # ---------------------------------------------------------------- simulate
 
-_JOB = {}
-
-
 def simulate(params, origins, years, n, seed=7, mode="model"):
     """Per origin: (rates, gps) by year for each of n paths"""
-    _JOB.update(params=params, origins=origins, years=years, n=n, seed=seed, mode=mode)
-    shard.retire()                 # workers fork with `_JOB` as it is now
-    jobs = shard.chunks(len(origins), shard.n_workers(None, len(origins)))
+    parts = shard.chunks(len(origins), shard.n_workers(WORKERS, len(origins)))
+    jobs = [(params, origins[s:s + c], years, n, seed, mode) for s, c in parts]
     out = []
     for part in shard.mapped(_chunk, jobs, len(jobs)):
         out.extend(part)
@@ -75,10 +76,9 @@ def simulate(params, origins, years, n, seed=7, mode="model"):
 
 
 def _chunk(job):
-    start, count = job
-    p, years, n, seed, mode = (_JOB[k] for k in ("params", "years", "n", "seed", "mode"))
+    p, origins, years, n, seed, mode = job
     res = []
-    for o in _JOB["origins"][start:start + count]:
+    for o in origins:
         if mode == "persist":
             res.append(_persist(p, o, years, n, seed))
         else:
@@ -98,7 +98,7 @@ def _persist(p, o, years, n, seed):
         r, g = [o["rate1"]], [o["gp1"]]
         gp, age = o["gp1"], o["age1"]
         for t in range(1, years):
-            gp = s._gp_next(gp, age, rng)
+            gp = s._gp_next(gp, age, o["rate1"], rng)
             age += 1
             r.append(o["rate1"] * math.exp(sds[min(t, len(sds)) - 1] * rng.gauss(0, 1)))
             g.append(gp)
@@ -157,24 +157,26 @@ def buckets(o):
 # ---------------------------------------------------------------- tune
 
 def tune(params_path, origins_path):
-    """Choose smult and phi1 (and the rookie growth pick floor) on origins
+    """Choose the spread knobs (and the rookie growth pick floor) on origins
     whose gated years are all realised; writes them into the params file"""
     with open(params_path) as f:
         p = json.load(f)
     with open(origins_path) as f:
         origins = json.load(f)
     vets = [o for o in origins if o["stage"] != "D"]
-    best = None
-    for sm in SMULT_GRID:
-        for phi1 in PHI1_GRID:
-            for floor in FLOOR_GRID:
-                p["knobs"].update(smult=sm, phi1=phi1, sd_floor=floor)
-                loss = _calib_loss(p, vets)
-                if best is None or loss < best[0]:
-                    best = (loss, sm, phi1, floor)
-    p["knobs"].update(smult=best[1], phi1=best[2], sd_floor=best[3])
-    print("  tuned smult %.2f phi1 %.2f floor %.2f (loss %.4f, %d origins)"
-          % (best[1], best[2], best[3], best[0], len(vets)))
+    scored = {}
+    for _ in range(2):
+        for knob, grid in TUNE_GRID.items():
+            losses = {}
+            for x in grid:
+                p["knobs"][knob] = x
+                key = tuple(sorted(p["knobs"].items()))
+                if key not in scored:
+                    scored[key] = _calib_loss(p, vets)
+                losses[x] = scored[key]
+            p["knobs"][knob] = min(grid, key=losses.get)
+    print("  tuned %s (loss %.4f, %d origins)"
+          % (" ".join("%s %.2f" % (k, p["knobs"][k]) for k in TUNE_GRID), min(losses.values()), len(vets)))
     rookies = [o for o in origins if o["stage"] == "D"]
     if "rookie" in p and rookies:
         top = [o for o in rookies if (o.get("pick") or 61) <= 5]
@@ -230,8 +232,8 @@ def backtest(full_path, single_path, test_path, train_path):
             "single": simulate(single, test, years, TEST_N),
             "persist": simulate(full, test, years, TEST_N, mode="persist")}
     k = full["knobs"]
-    print("knobs  full: smult %.2f phi1 %.2f floor %.2f pick floor %d · single: smult %.2f floor %.2f"
-          % (k["smult"], k["phi1"], k["sd_floor"], k["growth_pick_floor"],
+    print("knobs  full: %s pick floor %d · single: smult %.2f floor %.2f"
+          % (" ".join("%s %.2f" % (x, k[x]) for x in TUNE_GRID), k["growth_pick_floor"],
              single["knobs"]["smult"], single["knobs"]["sd_floor"]))
     rows = {m: {t: cells(test, s, t - 1) for t in range(2, years + 1)} for m, s in sims.items()}
     verdict = [g1(rows["full"]), g2(rows), g3(test, sims["full"], full),

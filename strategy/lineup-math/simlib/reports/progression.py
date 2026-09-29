@@ -1,11 +1,12 @@
-"""Player progression for every rostered player and held 2026 draftee: FP/G,
-GP and P(still playing) by future season, and the 20-season weighted value.
+"""Player progression for every rostered player: FP/G, GP and P(still
+playing) by future season, and the 20-season weighted value.
 
     ./run sim.py progression                                   # the table
     ./run -m simlib.reports.progression player "Cade Cunningham"  # 20 years, one player
     ./run -m simlib.reports.progression freeze                 # preseason archive (each October)
 """
 import csv, glob, json, math, os, re, shutil, sys
+import fetch_data
 from fetch_data import LIVE_SEASON, LIVE_TAG, SEASON, SEASON_TAG
 from .. import progression as prog, roster as roster_mod
 from ..board import _key, pool
@@ -22,10 +23,11 @@ SNAPSHOTS = os.path.join(EVALS, "board-snapshots")
 INJURY = os.path.join(SNAPSHOTS, "projections", "injury-overrides.json")
 ARCHIVE = os.path.join(SNAPSHOTS, "archive")
 BBREF = "bbref-%s.json" % SEASON_TAG
+STAR_HINGES = (38, 46)                 # FP/G
 
 
 def report_progression():
-    rows = rostered()
+    rows, unplaced = rostered()
     runs = prog.project_many([pl for _, pl, _ in rows], YEARS, PATHS)
     p = prog.params()
     print("PROGRESSION  per player, %d paths, params fit %s through %d-%02d (%s)"
@@ -42,7 +44,9 @@ def report_progression():
     print("  years 1-7 weighted 1.0, then 0.95^(t-7); split 1-3 / 4-7 / 8-20 in 1000s.")
     print("  Diagnostic only: not BASE, not Delta w, not in Score. Beyond year 7 the")
     print("  backtest has little to check against. Flags: noproj (no feed rate), noBPM,")
-    print("  board+/- (board ranks him well below/above his inputs: review), inj x (override).")
+    print("  board+/- (board ranks him well below/above his inputs: review), inj x (override),")
+    print("  noBBRef (no BBRef join: career year off the pool, no BPM), noDOB (no birthday\n"
+          "  in the pool or either Dizzle tab: not projected).")
     head = "  %-24s  %-7s %4s %3s  %11s  " % ("player", "owner", "age", "stg", _label(1) + " /GP")
     head += "  ".join("%-17s" % (_label(t) + " FP/G") for t in SHOWN[:3])
     head += "  %-14s  %-11s  %s" % (_label(SHOWN[3]) + " FP/G", "P(act/use)5", "WRV 1-3/4-7/8-20 = tot")
@@ -50,6 +54,8 @@ def report_progression():
     order = sorted(zip(rows, runs), key=lambda x: (x[0][0], -prog.wrv(x[1])))
     for (owner, pl, flags), ys in order:
         print(_row(owner, pl, flags, ys))
+    for owner, name in unplaced:
+        print("  %-24s  %-7s %4s  noDOB" % (name, owner, "-"))
 
 
 def _row(owner, pl, flags, ys):
@@ -79,26 +85,26 @@ def _label(t):
 # ---------------------------------------------------------------- inputs
 
 def rostered():
-    """[(owner, player, flags)] for all 12 roster files plus each team's held
-    2026 draftees. A player with no birthday anywhere is left out"""
+    """([(owner, player, flags)], [(owner, name)]) over all 12 roster files:
+    the projectable, then those with no birthday anywhere"""
     owners, bb, injured = owner_names(), _load(BBREF), injury_overrides()
-    rookies = rookie_class()
-    out = []
+    newbies = newcomers()
+    out, unplaced = [], []
     for path in sorted(glob.glob(os.path.join(ROSTER_DIR, "roster-*-%s.json" % SEASON_TAG))):
         tid = os.path.basename(path).split("-")[1]
         owner = owners.get(tid, tid)
         for row in roster_mod.our_roster(path):
-            pl = _vet(row, bb.get(row["n"]))
+            pl = _vet(row, bb.get(row["n"])) or _draftee(row, newbies.get(_key(row["n"])))
             if pl:
                 out.append((owner, pl, []))
-        for pick in roster_mod.held_picks(path):
-            pl = _draftee(pick, rookies.get(_key(pick["name"])))
-            if pl:
-                out.append((owner, pl, []))
+            else:
+                unplaced.append((owner, row["n"]))
     for _, pl, flags in out:
         if projected_rate(pl["name"]) is None:
             flags.append("noproj")
-        if pl["stage"] != "D" and pl["bpm"] is None:
+        if pl["stage"] != "D" and pl["name"] not in bb:
+            flags.append("noBBRef")
+        elif pl["stage"] != "D" and pl["bpm"] is None:
             flags.append("noBPM")
         hurt = injured.get(_key(pl["name"]))
         if hurt:
@@ -108,7 +114,7 @@ def rostered():
         pl["bres"] = bres
         if bres is not None and abs(bres) > prog.params()["board"]["flag"]:
             flags.append("board%+.1f" % bres)
-    return out
+    return out, unplaced
 
 
 def _vet(row, bb):
@@ -116,7 +122,8 @@ def _vet(row, bb):
     if not v.get("born"):
         return None
     age1 = age_at(v["born"], LIVE_SEASON)
-    cy1 = LIVE_SEASON - bb["debut"] + 1 if bb else 1
+    debut = bb["debut"] if bb else min(int(y) for y in v["seasons"])
+    cy1 = LIVE_SEASON - debut + 1
     last = v.get("seasons", {}).get(str(SEASON))
     return {"name": row["n"], "tm": row["tm"], "rate1": max(row["avg"], prog.MIN_RATE),
             "gp1": float(row["gp"]), "age1": age1, "cy1": cy1,
@@ -125,31 +132,51 @@ def _vet(row, bb):
             "pick": bb and bb["pick"], "age_rookie": age1 - (cy1 - 1)}
 
 
-def _draftee(pick, rk):
+def _draftee(row, rk):
+    """A rostered player with no NBA season, so none in the pool"""
     if not rk:
         return None
     age1 = age_at(rk["born"], LIVE_SEASON)
-    rate = projected_rate(pick["name"])
-    return {"name": pick["name"], "tm": pick["tm"],
+    rate = projected_rate(row["n"])
+    return {"name": row["n"], "tm": row["tm"],
             "rate1": rate if rate is not None else roster_mod.PICK["avg"],
-            "gp1": float(projected_gp(pick["name"]) or roster_mod.PICK["gp"]),
+            "gp1": float(projected_gp(row["n"]) or roster_mod.PICK["gp"]),
             "age1": age1, "cy1": 1, "stage": "D", "bpm": None, "gp_last": None,
             "pick": rk["pick"], "age_rookie": age1}
 
 
-def rookie_class():
-    """key(name) -> {born, pick}: NBA overall pick off the Dizzle rookie tab's
-    `Draft Pick` (round.pick, 30 a round)"""
-    path = _base().newest(os.path.join(SNAPSHOTS, "dizzle-dynasty"), "rookie-ranks-points.csv")
+def newcomers():
+    """key(name) -> {born, pick (NBA overall)} for players the pool can't carry.
+    The Dizzle rookie tab wins (`Draft Pick` is round.pick, 30 a round); the
+    dynasty tab covers earlier draftees, their pick off BBRef's draft history"""
+    dz = os.path.join(SNAPSHOTS, "dizzle-dynasty")
+    picks = _nba_picks()
     out = {}
-    with open(path, newline="", encoding="utf-8") as f:
-        for row in csv.DictReader(f):
-            m = re.match(r"(\d)\.(\d+)$", (row.get("Draft Pick") or "").strip())
-            if row.get("DOB"):
-                out[_key(row["Player"])] = {
-                    "born": row["DOB"],
-                    "pick": (int(m.group(1)) - 1) * 30 + int(m.group(2)) if m else None}
+    for row in _csv(_base().newest(dz)):
+        if row.get("DOB"):
+            out[_key(row["Player"])] = {"born": row["DOB"], "pick": picks.get(_key(row["Player"]))}
+    for row in _csv(_base().newest(dz, "rookie-ranks-points.csv")):
+        m = re.match(r"(\d)\.(\d+)$", (row.get("Draft Pick") or "").strip())
+        if row.get("DOB"):
+            out[_key(row["Player"])] = {
+                "born": row["DOB"],
+                "pick": (int(m.group(1)) - 1) * 30 + int(m.group(2).ljust(2, "0")) if m else None}
     return out
+
+
+def _nba_picks():
+    """key(name) -> NBA overall pick, the newest draft winning a shared name"""
+    rows = _csv(os.path.join(fetch_data.bbref_mirror(), "Draft Pick History.csv"))
+    out = {}
+    for r in sorted(rows, key=lambda r: -int(r["season"])):
+        if r["lg"] == "NBA" and r["overall_pick"].isdigit():
+            out.setdefault(_key(r["player"]), int(r["overall_pick"]))
+    return out
+
+
+def _csv(path):
+    with open(path, newline="", encoding="utf-8") as f:
+        return list(csv.DictReader(f))
 
 
 def owner_names():
@@ -190,8 +217,10 @@ def board_residuals(players):
 def _bres_features(pl, sampler):
     lL = math.log(pl["rate1"] / 30)
     a = pl["age1"] - 28
-    return (lL, lL * lL, a, a * a, a * lL, sampler._bpm(pl)[0], math.log(max(pl["gp1"], 1.0)),
-            float(pl["stage"] == "D"), float(pl["stage"] == "S"))
+    # log rank bends hard at the very top; without the hinges every star reads board-loved
+    top = [max(lL - math.log(x / 30), 0.0) for x in STAR_HINGES]
+    return (lL, lL * lL, *top, a, a * a, a * lL, sampler._bpm(pl)[0],
+            math.log(max(pl["gp1"], 1.0)), float(pl["stage"] == "D"), float(pl["stage"] == "S"))
 
 
 def _board_rank(pl):
@@ -250,10 +279,13 @@ def _V():
 # ---------------------------------------------------------------- CLI
 
 def detail(names):
-    rows = {pl["name"]: (owner, pl, flags) for owner, pl, flags in rostered()}
+    projected, unplaced = rostered()
+    rows = {pl["name"]: (owner, pl, flags) for owner, pl, flags in projected}
     for name in names:
+        if name in {n for _, n in unplaced}:
+            sys.exit("%s: no birthday in the pool or either Dizzle tab -- not projected" % name)
         if name not in rows:
-            sys.exit("%s: not on a roster or held pick -- spelling as in the roster files" % name)
+            sys.exit("%s: not on a roster -- spelling as in the roster files" % name)
         owner, pl, flags = rows[name]
         ys = prog.project(pl, YEARS, PATHS)
         print("%s (%s, age %.1f, stage %s, BPM %s, board resid %s) %s"
@@ -278,7 +310,7 @@ def freeze():
     dest = os.path.join(ARCHIVE, "%s-preseason" % LIVE_TAG)
     if os.path.exists(dest):
         sys.exit("%s already exists -- a preseason is frozen once" % dest)
-    rows = rostered()
+    rows, unplaced = rostered()
     runs = prog.project_many([pl for _, pl, _ in rows], YEARS, PATHS)
     os.makedirs(dest)
     for src in freeze_sources():
@@ -288,6 +320,8 @@ def freeze():
                     "years": [y._asdict() for y in ys]}
                    for (o, pl, fl), ys in zip(rows, runs)], f, indent=0)
     print("froze %d players and %d inputs into %s" % (len(rows), len(freeze_sources()), dest))
+    if unplaced:
+        print("not frozen, no birthday: %s" % ", ".join(n for _, n in unplaced))
 
 
 def freeze_sources():

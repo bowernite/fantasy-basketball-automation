@@ -51,6 +51,11 @@ class WhatMovesAPath(unittest.TestCase):
         self.assertEqual(hi[0], lo[0])
         self.assertGreater(hi[5].rate_p50, lo[5].rate_p50 * 1.05)
 
+    def test_a_box_score_outlier_at_the_ceiling_does_not_grow_past_thirty(self):
+        ys = prog.project(vet(rate1=64.0, age1=32.0, bpm=13.5, cy1=12), years=4, n=1500)
+        self.assertLess(ys[1].rate_p50, 64.0)
+        self.assertLess(ys[3].rate_p50, 64.0)
+
     def test_a_board_that_ranks_him_below_his_inputs_pulls_him_down_from_year_two(self):
         base = prog.project(vet(), years=6, n=1500)
         doubted = prog.project(vet(bres=1.0), years=6, n=1500)
@@ -63,6 +68,12 @@ class WhatMovesAPath(unittest.TestCase):
         self.assertEqual(base[0], hurt[0])
         for t in (1, 2, 3):
             self.assertLess(hurt[t].rate_p50, base[t].rate_p50 * 0.92)
+
+    def test_a_deep_bench_body_plays_fewer_games_than_a_starter_with_the_same_history(self):
+        bench = prog.project(vet(rate1=12.0, age1=26.0, bpm=-2.0, gp1=70.0), years=3, n=3000)
+        starter = prog.project(vet(rate1=30.0, age1=26.0, bpm=1.0, gp1=70.0), years=3, n=3000)
+        self.assertLess(bench[1].gp_mean / bench[1].p_active,
+                        starter[1].gp_mean / starter[1].p_active - 3)
 
     def test_two_runs_of_one_player_are_identical(self):
         self.assertEqual(prog.project(vet(), years=5, n=300),
