@@ -48,8 +48,7 @@ BLURB = {
                    "over 20 years, and his weighted 20-year value (WRV)",
 }
 
-# Reads the board and the pool, not the roster, so its table doesn't change
-# under `--roster`
+# Ignore `--roster`: market reads the board and the pool, progression every roster file
 ROSTER_FREE = {"market", "progression"}
 
 # rounded up from an 18-core box; `engine.run` shards trials across cores, so a

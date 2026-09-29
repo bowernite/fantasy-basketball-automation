@@ -1,4 +1,4 @@
 {
- "note": "Major injuries the progression model can't see (Achilles, ACL, ...). rate_mult multiplies his FP/G path from year 2 ('27-28) on; year 1 stays the projection, so put a lost season in overrides-2026.json gp. Read by sim.py progression. Example row: \"Name\": {\"rate_mult\": 0.9, \"reason\": \"torn Achilles 2026-05\"}",
+ "note": "Major injuries the progression model can't see (Achilles, ACL, ...). rate_mult multiplies his FP/G path from year 2 on; year 1 stays the projection, so a lost season goes in that season's overrides file as gp. Read by sim.py progression. Example row: \"Name\": {\"rate_mult\": 0.9, \"reason\": \"torn Achilles 2026-05\"}",
  "players": {}
 }

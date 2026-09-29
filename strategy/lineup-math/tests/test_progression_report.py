@@ -1,27 +1,65 @@
 import unittest
 from tests.harness import *
+from simlib import progression as prog
+from simlib.board import pool
 from simlib.reports import progression as rep
+
+
+OURS = ["Cade Cunningham", "Cooper Flagg", "Emanuel Sharp"]
+THEIRS = ["Naz Reid", "Thomas Sorber"]
+
+
+def league(extra=()):
+    """A two-team league of roster files, so no test rides on live rosters"""
+    d = os.path.join(tempfile.mkdtemp(), "rosters")
+    os.makedirs(d)
+    ours = int(roster_mod.OURS.split("-")[1])
+    theirs = next(int(t) for t in rep.owner_names() if int(t) != ours)
+    known = rep.newcomers()
+    for tid, names in ((ours, OURS + list(extra)), (theirs, THEIRS)):
+        rows = [{"n": n, "tm": (pool().get(n) or known.get(rep._key(n)) or {"tm": "SAC"})["tm"],
+                 "avg": 0.0, "tot": 0.0, "gp": 0, "posLabel": "G", "elig": ["PG"]} for n in names]
+        with open(os.path.join(d, "roster-%d-%s.json" % (tid, fetch_data.SEASON_TAG)), "w") as f:
+            json.dump(rows, f)
+    return d
+
+
+def rendered(rosters):
+    with mock.patch.object(rep, "ROSTER_DIR", rosters):
+        return render("progression")
+
+
+def placed(rosters):
+    with mock.patch.object(rep, "ROSTER_DIR", rosters):
+        return {pl["name"]: (owner, pl, flags) for owner, pl, flags in rep.rostered()[0]}
 
 
 class Report(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.out = render("progression")
+        cls.rosters = league()
+        cls.out = rendered(cls.rosters)
+        cls.rows = placed(cls.rosters)
 
     def test_every_player_in_every_roster_file_gets_one_row_under_his_owner(self):
         owners = rep.owner_names()
-        expected = []
-        for path in glob.glob(os.path.join(sim.HERE, "rosters", "roster-*.json")):
-            with open(path) as f:
-                expected += [(r["n"], owners[path.split("roster-")[1].split("-")[0]])
-                             for r in json.load(f)]
-        got = [(name, line[28:35].strip()) for name, line in table_rows(self.out)]
-        self.assertEqual(sorted(expected), sorted(got))
+        us = owners[roster_mod.OURS.split("-")[1]]
+        got = {name: line.split() for name, line in table_rows(self.out)}
+        self.assertEqual(sorted(OURS + THEIRS), sorted(got))
+        for name in OURS:
+            self.assertIn(us, got[name])
 
     def test_a_drafted_rookie_with_no_nba_season_is_a_draftee_at_his_nba_pick(self):
-        rows = {pl["name"]: pl for _, pl, _ in rep.rostered()[0]}
-        self.assertEqual(("D", 45), (rows["Emanuel Sharp"]["stage"], rows["Emanuel Sharp"]["pick"]))
-        self.assertEqual(("D", 15), (rows["Thomas Sorber"]["stage"], rows["Thomas Sorber"]["pick"]))
+        self.assertEqual(("D", 45), (self.rows["Emanuel Sharp"][1]["stage"], self.rows["Emanuel Sharp"][1]["pick"]))
+        self.assertEqual(("D", 15), (self.rows["Thomas Sorber"][1]["stage"], self.rows["Thomas Sorber"][1]["pick"]))
+
+    def test_a_player_with_one_nba_season_done_is_in_his_second_career_year(self):
+        pl = self.rows["Cooper Flagg"][1]
+        self.assertEqual(("S", 2), (pl["stage"], pl["cy1"]))
+
+    def test_a_top_five_pick_carries_the_flag_for_his_known_over_projection(self):
+        self.assertIn("top5", self.rows["Cooper Flagg"][2])
+        self.assertNotIn("top5", self.rows["Emanuel Sharp"][2])
 
     def test_a_tenth_pick_the_rookie_tab_writes_as_1_1_is_pick_ten(self):
         self.assertEqual(10, rep.newcomers()[rep._key("Brayden Burries")]["pick"])
@@ -35,7 +73,7 @@ class Report(unittest.TestCase):
         with open(bb, "w") as f:
             json.dump(rows, f)
         with mock.patch.object(rep, "BBREF", bb):
-            owner, pl, flags = next(r for r in rep.rostered()[0] if r[1]["name"] == "Naz Reid")
+            owner, pl, flags = placed(self.rosters)["Naz Reid"]
         self.assertEqual("V", pl["stage"])
         self.assertIn("noBBRef", flags)
 
@@ -44,9 +82,9 @@ class Report(unittest.TestCase):
         with open(path, "w") as f:
             json.dump({"players": {"Cade Cunningham": {"rate_mult": 0.8,
                                                        "reason": "torn Achilles"}}}, f)
-        before = cade_row(self.out)
+        before = dict(table_rows(self.out))["Cade Cunningham"]
         with mock.patch.object(rep, "INJURY", path):
-            after = cade_row(render("progression"))
+            after = dict(table_rows(rendered(self.rosters)))["Cade Cunningham"]
         self.assertIn("inj x0.80", after)
         self.assertEqual(before.split()[5:8], after.split()[5:8])   # year 1 as projected
         self.assertLess(float(after.split()[8]), float(before.split()[8]) * 0.9)
@@ -57,38 +95,36 @@ class Report(unittest.TestCase):
 
 
 class BoardResidual(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        universe = rep.board_universe()
+        cls.scored = [(pl, b) for pl, b in zip(universe, rep.board_residuals(universe)) if b is not None]
+
     def test_the_twenty_best_producers_are_not_read_as_board_loved_just_for_being_the_best(self):
-        players = [pl for _, pl, _ in rep.rostered()[0] if pl.get("bres") is not None]
-        top = sorted(players, key=lambda pl: -pl["rate1"])[:20]
-        self.assertLess(abs(sum(pl["bres"] for pl in top) / len(top)), 0.2)
+        top = sorted(self.scored, key=lambda x: -x[0]["rate1"])[:20]
+        self.assertLess(abs(sum(b for _, b in top) / len(top)), 0.2)
+
+    def test_among_the_best_producers_the_residual_does_not_track_age(self):
+        stars = [(pl["age1"], b) for pl, b in self.scored if pl["rate1"] >= 34]
+        self.assertLess(abs(statistics.correlation(*zip(*stars))), 0.15)
+
+    def test_the_residual_runs_on_the_scale_its_nudge_was_measured_on(self):
+        sd = statistics.pstdev(b for _, b in self.scored)
+        self.assertAlmostEqual(sd, prog.params()["board"]["sd"], delta=0.05)
 
 
     def test_a_players_board_residual_does_not_move_when_another_team_leaves_the_league(self):
-        before = {pl["name"]: pl["bres"] for o, pl, _ in rep.rostered()[0] if o == "Brett"}
-        rosters = os.path.join(tempfile.mkdtemp(), "rosters")
-        shutil.copytree(os.path.join(sim.HERE, "rosters"), rosters)
-        for path in glob.glob(os.path.join(rosters, "roster-*.json")):
-            if roster_mod.OURS not in path:
-                os.remove(path)
-        with mock.patch.object(rep, "ROSTER_DIR", rosters):
-            after = {pl["name"]: pl["bres"] for o, pl, _ in rep.rostered()[0]}
-        self.assertEqual(before, after)
+        rosters = league()
+        before = placed(rosters)["Cade Cunningham"][1]["bres"]
+        os.remove(next(p for p in glob.glob(os.path.join(rosters, "*.json")) if roster_mod.OURS not in p))
+        self.assertEqual(before, placed(rosters)["Cade Cunningham"][1]["bres"])
 
 
 class NoBirthday(unittest.TestCase):
     def test_a_rostered_player_with_no_birthday_anywhere_keeps_a_flagged_row_with_no_projection(self):
-        rosters = os.path.join(tempfile.mkdtemp(), "rosters")
-        shutil.copytree(os.path.join(sim.HERE, "rosters"), rosters)
-        ours = os.path.join(rosters, roster_mod.OURS)
-        with open(ours) as f:
-            rows = json.load(f) + [{"n": "Nobody Known", "tm": "SAC", "avg": 0.0, "tot": 0.0,
-                                    "gp": 0, "posLabel": "G", "elig": ["PG"]}]
-        with open(ours, "w") as f:
-            json.dump(rows, f)
-        with mock.patch.object(rep, "ROSTER_DIR", rosters):
-            out = dict(table_rows(render("progression")))
-        self.assertEqual(len(rows), len([line for line in out.values() if "Brett" in line]))
-        self.assertEqual(["Nobody", "Known", "Brett", "-", "noDOB"], out["Nobody Known"].split())
+        out = dict(table_rows(rendered(league(extra=["Nobody Known"]))))
+        self.assertEqual(len(OURS + THEIRS) + 1, len(out))
+        self.assertEqual("noDOB", out["Nobody Known"].split()[-1])
 
 
 def table_rows(out):
@@ -99,15 +135,11 @@ def table_rows(out):
             if line.startswith("  ")]
 
 
-def cade_row(out):
-    return next(line for line in out.splitlines() if line.startswith("  Cade Cunningham "))
-
-
 class Freeze(unittest.TestCase):
     def test_a_preseason_is_archived_once_with_its_inputs_and_every_players_path(self):
         root = tempfile.mkdtemp()
         with mock.patch.object(rep, "ARCHIVE", root), mock.patch.object(rep, "PATHS", 200), \
-                contextlib.redirect_stdout(io.StringIO()):
+                mock.patch.object(rep, "ROSTER_DIR", league()), contextlib.redirect_stdout(io.StringIO()):
             rep.freeze()
             with self.assertRaises(SystemExit):
                 rep.freeze()

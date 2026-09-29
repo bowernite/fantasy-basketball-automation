@@ -333,7 +333,7 @@ def player_pool(path=None):
     return out
 
 
-# Pinned so a refit is reproducible; bump after the mirror's end-of-season push
+# Pinned so a refit is reproducible
 BBREF_REPO = "sumitrodatta/bball-reference-datasets"
 BBREF_COMMIT = "76a70b41ad1c13948f25c62c921ed822e5db7f0e"   # 2025-26 end of season
 BBREF_FILES = ("Player Totals.csv", "Advanced.csv", "Player Career Info.csv",
@@ -385,6 +385,15 @@ def _born_close(a, b, days=2):
     return abs((da - db).days) <= days
 
 
+def nba_picks(mirror_dir):
+    """[{player_id, player, season, pick}] for every NBA draftee, newest draft first"""
+    rows = [{"player_id": r["player_id"], "player": r["player"], "season": int(r["season"]),
+             "pick": int(r["overall_pick"])}
+            for r in _csv_rows(mirror_dir, "Draft Pick History.csv")
+            if r["lg"] == "NBA" and r["overall_pick"].isdigit()]
+    return sorted(rows, key=lambda r: -r["season"])
+
+
 def bbref_players(mirror_dir, pool):
     """pool name -> {bbref, debut, pick, bpm, bpm_g}. `debut` is the start
     year of his first NBA season; `bpm` the games-weighted mean of his last two
@@ -405,10 +414,8 @@ def bbref_players(mirror_dir, pool):
         if g and bpm not in ("", "NA") and s > newest - BBREF_BPM_SEASONS:
             seasons[pid].append((s, g, float(bpm)))
     picks = {}
-    for r in _csv_rows(mirror_dir, "Draft Pick History.csv"):
-        if (r["lg"] == "NBA" and r["player_id"] not in picks
-                and r["overall_pick"].isdigit()):
-            picks[r["player_id"]] = int(r["overall_pick"])
+    for r in nba_picks(mirror_dir):
+        picks.setdefault(r["player_id"], r["pick"])
     out = {}
     for name, v in pool.items():
         born = v.get("born")

@@ -15,6 +15,7 @@ import numpy as np
 import pandas as pd
 import statsmodels.api as sm
 import fetch_data
+from simlib.progression import ACTIVE, BPM_CLIP, LL_ROOKIE, LL_VET, USABLE
 
 warnings.filterwarnings("ignore")
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -26,7 +27,6 @@ FIRST = 1983            # first season a vet pair or exit row may start from
 ROOKIE_FIRST = 1985
 GP_FIRST = 2000         # GP habits before this era don't carry
 SHORT_SEASONS = {1999: 50, 2012: 66, 2020: 72, 2021: 72}
-ACTIVE = 20             # GP82 that counts as a season played
 EXIT_HALF_LIFE = 8      # seasons
 ROOKIE_HALF_LIFE = 10   # seasons
 OLD_AGE = (32, 35)      # exit blends from the main fit into OLD_EXIT across these ages
@@ -40,9 +40,9 @@ CUTOFFS = (2004, 2009, 2013, 2020)   # 2020: the latest with post-2016 exit rows
 PROXY_ERR = 0.18        # log miss of a preseason rate projection on the season it projects [prior]
 PROXY_NOISE_GRID = (0.0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35)
 TRANSPORT_CUT = 2022    # BBRef end-year; the pool origins' scored seasons all fall after it
-LAST = 2026             # newest completed season in the pinned mirror
+LAST = None             # newest completed season in the mirror; set from it on load
 
-VET_DRIFT = ["1", "a", "a2", "ay", "lL", "lL*a", "lL*a2", "lL*ay", "lL^2"]
+VET_DRIFT = ["1", "a", "a2", "ay", "lL", "lL*a", "lL*a2", "lL*ay", "lL^2", "a*lo2", "a2*lo2"]
 VET_EXIT = VET_DRIFT + ["a34", "gp", "bpm", "cy3", "cy4", "cy5"]
 VET_SCALE = ["1", "lL", "ay"]
 AGE_DRIFT = ["1", "a", "a2", "ay"]                 # the single-age-curve baseline
@@ -53,19 +53,21 @@ ROOKIE_EXIT = ["1", "c1", "c2", "lL", "lL^2", "ad", "lp", "gp"]
 ROOKIE_SCALE = ["1", "lL", "c1"]
 GP_TERMS = ["1", "gpraw", "a28", "lo20"]   # lo20: deep-bench bodies sit more, starters don't
 
-# Starting knobs; `tune` overwrites smult/phi1/pick floor from the sampler run
-KNOBS = {"smult": 1.1, "phi0": 0.3, "phi1": 0.0, "sd_floor": 0.12,
-         "young_mult": 1.15, "young_mult_rookie": 1.1, "smult_rookie": 1.0,
+# Starting knobs; `progression_eval.tune` sets those in its TUNE_GRID and the pick floor
+KNOBS = {"smult": 1.1, "phi0": 0.3, "phi1": 0.0, "sd_floor": 0.12, "young_mult": 1.15,
+         "young_mult_draftee": 1.1, "young_mult_soph": 1.1, "old_mult": 1.0,
          "sigma_u": 0.15, "sigma_u_rookie": 0.25, "growth_pick_floor": 1}
 
-BOARD = {"gamma": [0.02, 0.02, 0.02, 0.02], "clip": 1.0, "flag": 0.8}
-USABLE = 25.0           # FP/G on >= ACTIVE GP: a starter in 12 x 9
+# the residual is rescaled to `sd`, the scale gamma was measured on (reconcile/boards.md)
+BOARD = {"gamma": [0.02, 0.02, 0.02, 0.02], "clip": 1.0, "flag": 0.8, "sd": 0.55}
 WRV_RG = 18.0           # FP/G of the ~216th player (12 teams x 18 scorers)
 
 
 def main(argv):
+    global LAST
     mirror = fetch_data.bbref_mirror()
     P = panel(mirror)
+    LAST = int(P.season.max())
     if "--backtest" in argv:
         dev = "--cutoff" in argv
         return backtest(P, [int(argv[argv.index("--cutoff") + 1])] if dev else CUTOFFS, dev)
@@ -137,7 +139,7 @@ def panel(d):
     for k in range(1, 9):
         df = _lag(df, ["nfpg", "gp82"], k)
     print("panel: %d player-seasons %d-%d, repo scale %.2f FP/G vs mirror %.2f"
-          % (len(df), df.season.min(), df.season.max(), ref, scale[LAST]))
+          % (len(df), df.season.min(), df.season.max(), ref, scale[df.season.max()]))
     return df
 
 
@@ -172,19 +174,21 @@ def repo_scale():
 # ---------------------------------------------------------------- design
 
 def base_vars(age, level, gp=None, bpm=None, cy=None, c=None, ad=None, lp=None,
-              rookie=False, gp_ref=60.0):
+              rookie=False, gp_ref=None):
     age = np.asarray(age, float)
-    lo, hi = (-1.6, 0.7) if rookie else (-1.4, np.log(55 / 30))
+    lo, hi = LL_ROOKIE if rookie else LL_VET
     v = {"1": np.ones_like(age), "a": age - 28, "a2": np.maximum(age - 31, 0),
          "ay": np.maximum(24 - age, 0), "a34": np.maximum(age - 34, 0),
          "a28": np.maximum(age - 28, 0),
          "lo20": np.minimum(np.log(np.maximum(np.asarray(level, float), 1) / 20), 0),
          "lL": np.clip(np.log(np.maximum(np.asarray(level, float), 1) / 30), lo, hi)}
+    v["lo2"] = np.minimum(v["lL"], 0) ** 2     # curvature below 30 FP/G only: above, data thin out with age
     if gp is not None:
-        v["gp"] = (np.clip(np.asarray(gp, float), 0, 82) - gp_ref) / 10
         v["gpraw"] = np.asarray(gp, float)
+    if gp_ref is not None:
+        v["gp"] = (np.clip(np.asarray(gp, float), 0, 82) - gp_ref) / 10
     if bpm is not None:
-        v["bpm"] = np.clip(np.nan_to_num(np.asarray(bpm, float)), -8, 12)
+        v["bpm"] = np.clip(np.nan_to_num(np.asarray(bpm, float)), *BPM_CLIP)
     if cy is not None:
         for n in (3, 4, 5):
             v["cy%d" % n] = (np.asarray(cy) == n).astype(float)
@@ -229,7 +233,7 @@ def fit(P, cut, single=False):
     out = {"vet": vet_fit(P, cut, dt, et, st), "gp": gp_fit(P, cut),
            "gp_ref": float(P[(P.season <= cut) & (P.season > cut - 3)].gpn.mean()),
            "board": BOARD, "usable": USABLE, "wrv_rg": WRV_RG,
-           "league_max": float(P[P.season == P.season.max()].nfpg.max()),
+           "league_max": float(P[P.season == min(cut, P.season.max())].nfpg.max()),
            "knobs": dict(KNOBS)}
     if single:
         out["vet"]["bpm_beta"] = []
@@ -331,7 +335,7 @@ def bpm_ref(P, cut):
     O = P[(P.season <= cut) & (P.season >= FIRST) & (P.c >= 2) & (P.gp82 >= ACTIVE)
           & P.bpm2.notna() & (P.lvl2 >= 6)]
     X = design(base_vars(O.age, O.lvl2), BPM_REF)
-    return _model(BPM_REF, sm.OLS(np.clip(O.bpm2.values, -8, 12), X).fit().params)
+    return _model(BPM_REF, sm.OLS(np.clip(O.bpm2.values, *BPM_CLIP), X).fit().params)
 
 
 def bpm_schedule(P, cut, drift, ref, proxy, steps=4, horizons=6):
@@ -350,7 +354,7 @@ def bpm_schedule(P, cut, drift, ref, proxy, steps=4, horizons=6):
         ok = ((O["gp82_p%d" % (j + 1)] >= ACTIVE) & (O.season + 1 + j <= cut)).values
         y = np.log(O["nfpg_p%d" % (j + 1)].values[ok]) - path[j - 1][ok]
         v = base_vars(O.age.values[ok] + 1, level1[ok])
-        dev = np.clip(np.clip(O.bpm2.values[ok], -8, 12) - design(v, ref["terms"]) @ np.array(ref["coef"]),
+        dev = np.clip(np.clip(O.bpm2.values[ok], *BPM_CLIP) - design(v, ref["terms"]) @ np.array(ref["coef"]),
                       -BPM_DEV_CLIP, BPM_DEV_CLIP)
         X = sm.add_constant(np.column_stack([dev, dev * v["lL"]]))
         cum.append(sm.OLS(y, X).fit().params[1:] if ok.sum() > 200 else cum[-1])
@@ -476,13 +480,13 @@ def proxy_gp(gp, age, rate, g):
     return (1 - low) * mean + low * np.mean(g["low_pool"])
 
 
-def origins(P, lo, hi, ref, last=LAST):
+def origins(P, lo, hi, ref, last=None):
     """Backtest players at origin seasons lo..hi: year 1 = origin + 1.
     Stage D = rookie season is year 1, S = one season done, V = two or more.
     Year 1 is `proxy_fit`'s and `proxy_gp`'s stand-ins for the preseason
     feeds; a draftee's is his actual rookie season, which the rookie stage is
     fit on. Outcomes after season `last` are left unseen"""
-    drift = ref["vet"]["drift"]
+    drift, last = ref["vet"]["drift"], last or LAST
     O = P[(P.season >= lo) & (P.season <= hi)]
     rows = []
     # a player with no year-1 season at all has left the league: the feeds
@@ -525,51 +529,52 @@ def _origin(r, stage, proj, last, gp1, cy1, rookie_row=False):
 
 
 def transport_origins(P, ref):
-    """Repo pool 2021-25 (start-years) as origins, scored on its own FP/G and
-    GP: does a fit on BBRef travel to the league's own numbers?"""
+    """Repo pool 2021-23 (start-years) as origins, scored on its own FP/G and
+    GP: does a fit on BBRef travel to the league's own numbers? Year 1 goes
+    through the same stand-ins as the backtest's"""
     with open(os.path.join(HERE, "data", "players-%s.json" % fetch_data.SEASON_TAG)) as f:
         pool = json.load(f)
     with open(os.path.join(HERE, "data", "bbref-%s.json" % fetch_data.SEASON_TAG)) as f:
         ids = json.load(f)
-    drift, b, g = ref["vet"]["drift"], ref["proxy"]["b"], ref["gp"]
     bpm2 = {(r.player_id, r.season): r.bpm2 for r in P.itertuples() if r.bpm2 == r.bpm2}
     rows = []
     for name, v in pool.items():
         if name not in ids or not v.get("born"):
             continue
         s, bb = v["seasons"], ids[name]
-        b_id = bb["bbref"]
         born = datetime.date.fromisoformat(v["born"])
         for o in (2021, 2022, 2023):
             cur, prev, nxt = s.get(str(o)), s.get(str(o - 1)), s.get(str(o + 1))
-            if not cur or cur[1] < ACTIVE:
+            cy1 = o + 1 - bb["debut"] + 1
+            if not cur or cur[1] < ACTIVE or not nxt or cy1 < 2:
                 continue
             hist = ((cur[0] * cur[1] + prev[0] * prev[1]) / (cur[1] + prev[1])
                     if prev and prev[1] >= ACTIVE else cur[0])
-            age1 = (datetime.date(o + 2, 2, 1) - born).days / 365.2425
-            aged = hist * float(np.exp(design(base_vars([age1 - 1], [hist]), drift["terms"])
-                                       @ np.array(drift["coef"]))[0])
-            z = np.random.default_rng(zlib.crc32(("%s%d" % (b_id, o)).encode())).standard_normal()
-            proj = (float(np.exp(b[0] + b[1] * (np.log(nxt[0]) + ref["proxy"]["noise"] * z)
-                                 + b[2] * np.log(aged)))
-                    if nxt and nxt[1] >= ACTIVE else aged)
-            if proj < 8 or not nxt:
-                continue
-            cy1 = o + 1 - bb["debut"] + 1
-            row = {"id": name, "origin": o, "stage": "S" if cy1 == 2 else ("D" if cy1 == 1 else "V"),
-                   "rate1": proj, "gp1": float(proxy_gp([cur[1]], [age1 - 1], [cur[0]], g)[0]),
-                   "age1": age1, "gp_last": float(cur[1]), "bpm": bpm2.get((b_id, o + 1)),
-                   "cy1": cy1, "pick": bb["pick"], "age_rookie": age1 - (cy1 - 1),
-                   "rate": [], "gp": []}
-            if row["stage"] == "D":
-                continue
-            for k in range(1, 5):
-                x = s.get(str(o + k))
-                seen = o + k <= fetch_data.SEASON
-                row["rate"].append(float(x[0]) if (seen and x) else None)
-                row["gp"].append((float(x[1]) if x else 0.0) if seen else None)
-            rows.append(row)
-    return rows
+            # BBRef keys seasons by end-year: the origin is o + 1
+            rows.append({"name": name, "o": o, "player_id": bb["bbref"], "season": o + 1,
+                         "age": (datetime.date(o + 1, 2, 1) - born).days / 365.2425,
+                         "lvl2": hist, "nfpg": cur[0], "gp82": float(cur[1]), "nfpg_p1": nxt[0],
+                         "active1": nxt[1] >= ACTIVE, "bb": bb})
+    O = pd.DataFrame(rows)
+    O = O.assign(aged=_aged(O, ref["vet"]["drift"]), proj=_proxy_rate(O, ref["vet"]["drift"], ref["proxy"]),
+                 gp_proj=proxy_gp(O.gp82, O.age, O.nfpg, ref["gp"]))
+    out = []
+    for r in O.itertuples():
+        proj = r.proj if r.active1 else r.aged
+        if proj < 8:
+            continue
+        cy1 = r.o + 1 - r.bb["debut"] + 1
+        row = {"id": r.name, "origin": r.o, "stage": "S" if cy1 == 2 else "V", "rate1": float(proj),
+               "gp1": float(r.gp_proj), "age1": r.age + 1, "gp_last": r.gp82,
+               "bpm": bpm2.get((r.player_id, r.season)), "cy1": cy1, "pick": r.bb["pick"],
+               "age_rookie": r.age + 1 - (cy1 - 1), "rate": [], "gp": []}
+        for k in range(1, 5):
+            x = pool[r.name]["seasons"].get(str(r.o + k))
+            seen = r.o + k <= fetch_data.SEASON
+            row["rate"].append(float(x[0]) if (seen and x) else None)
+            row["gp"].append((float(x[1]) if x else 0.0) if seen else None)
+        out.append(row)
+    return out
 
 
 # ---------------------------------------------------------------- tune / backtest (pypy)

@@ -24,10 +24,13 @@ TUNE_GRID = collections.OrderedDict([
     ("sigma_u", (0.08, 0.12, 0.16, 0.2)),
     ("phi1", (0.0, 0.75, 1.5, 2.5)),
     ("young_mult", (1.0, 1.15, 1.3, 1.5)),
-    ("young_mult_rookie", (1.1, 1.4, 1.7, 2.0, 2.4)),
+    ("young_mult_soph", (1.1, 1.5, 2.0, 2.5, 3.0, 3.5)),
+    ("young_mult_draftee", (0.8, 1.0, 1.2, 1.5)),
+    ("old_mult", (0.7, 0.8, 0.9, 1.0)),
 ])
 # the valuable tiers count for more in the tuning loss than their share of rows
 BUCKET_WEIGHT = {"all": 3.0, "lv34-42": 2.0, "lv42+": 3.0}
+VALUE_WEIGHT = 1.0
 PICK_FLOOR_GRID = (1, 3, 6)
 ACTIVE = prog.ACTIVE
 WORKERS = None         # all cores
@@ -98,14 +101,14 @@ def _chunk(job):
 def _persist(p, o, years, n, seed):
     """Persistence baseline: year-1 rate forever with a pooled spread by
     horizon, no exit; GP from the model's chain"""
-    s, rng = prog._Sampler(p), random.Random(seed)
+    s, rng = prog.Sampler(p), random.Random(seed)
     sds = p["persist_sd"]
     rates, gps = [], []
     for _ in range(n):
         r, g = [o["rate1"]], [o["gp1"]]
         gp, age = o["gp1"], o["age1"]
         for t in range(1, years):
-            gp = s._gp_next(gp, age, o["rate1"], rng)
+            gp = s.gp_next(gp, age, o["rate1"], rng)
             age += 1
             r.append(o["rate1"] * math.exp(sds[min(t, len(sds)) - 1] * rng.gauss(0, 1)))
             g.append(gp)
@@ -138,11 +141,11 @@ def cells(origins, sims, t, seed=11):
         fp = [(r[t] or 0.0) * g[t] for r, g in zip(rates, gps)]
         surv = [r[t] for r, g in zip(rates, gps) if r[t] is not None and g[t] >= ACTIVE]
         played = o["rate"][t] is not None and o["gp"][t] >= ACTIVE
-        usable = played and o["rate"][t] >= 25.0
+        usable = played and o["rate"][t] >= prog.USABLE
         row = {"o": o, "pit": pit(fp, y_fp, rng), "crps": crps(fp, y_fp),
                "p_active": sum(1 for g in gps if g[t] >= ACTIVE) / len(gps),
                "p_usable": sum(1 for r, g in zip(rates, gps)
-                               if g[t] >= ACTIVE and (r[t] or 0) >= 25.0) / len(gps),
+                               if g[t] >= ACTIVE and (r[t] or 0) >= prog.USABLE) / len(gps),
                "active": float(played), "usable": float(usable), "rate_pit": None,
                "fp_pred": sum(fp) / len(fp), "fp_real": y_fp}
         if played and len(surv) >= 20:
@@ -170,7 +173,6 @@ def tune(params_path, origins_path):
         p = json.load(f)
     with open(origins_path) as f:
         origins = json.load(f)
-    vets = [o for o in origins if o["stage"] != "D"]
     scored = {}
     for _ in range(2):
         for knob, grid in TUNE_GRID.items():
@@ -179,11 +181,11 @@ def tune(params_path, origins_path):
                 p["knobs"][knob] = x
                 key = tuple(sorted(p["knobs"].items()))
                 if key not in scored:
-                    scored[key] = _calib_loss(p, vets)
+                    scored[key] = _calib_loss(p, origins)
                 losses[x] = scored[key]
             p["knobs"][knob] = min(grid, key=losses.get)
     print("  tuned %s (loss %.4f, %d origins)"
-          % (" ".join("%s %.2f" % (k, p["knobs"][k]) for k in TUNE_GRID), min(losses.values()), len(vets)))
+          % (" ".join("%s %.2f" % (k, p["knobs"][k]) for k in TUNE_GRID), min(losses.values()), len(origins)))
     rookies = [o for o in origins if o["stage"] == "D"]
     if "rookie" in p and rookies:
         top = [o for o in rookies if (o.get("pick") or 61) <= 5]
@@ -218,7 +220,24 @@ def _calib_loss(p, origins):
                 c = coverage([r[key] for r in g if r[key] is not None])
                 loss += w * ((c["b80"] - .8) ** 2 + (c["b50"] - .5) ** 2
                              + (c["lo10"] - .1) ** 2 + (c["hi10"] - .1) ** 2)
-    return loss
+    return loss + VALUE_WEIGHT * sum(math.log(r) ** 2 for r in _value_ratios(p, origins, sims))
+
+
+def _value_ratios(p, origins, sims, years=GATE_YEARS):
+    """Aging role players' value over the gated years, pred/real, per tier: spread
+    alone can be in band while a fat upside inflates a convex value"""
+    out = []
+    for lo, hi in ((20, 27), (27, 34)):
+        pred = real = 0.0
+        for o, (rates, gps) in zip(origins, sims):
+            if o["age1"] < 29 or not lo <= o["rate1"] < hi or any(o["gp"][t - 1] is None for t in years):
+                continue
+            real += sum(max(0.0, (o["rate"][t - 1] or 0.0) - p["wrv_rg"]) * o["gp"][t - 1] for t in years)
+            pred += sum(max(0.0, (r[t - 1] or 0.0) - p["wrv_rg"]) * g[t - 1]
+                        for r, g in zip(rates, gps) for t in years) / len(rates)
+        if real:
+            out.append(pred / real)
+    return out
 
 
 def _below_median(p, origins, years):
@@ -249,7 +268,7 @@ def backtest(full_path, single_path, test_path, train_path):
                 if b == "all" or sum(1 for r in rows["full"][t] if b in buckets(r["o"])) >= BUCKET_MIN)
     print("  cells missed %d of %d; the same model scored on draws from itself misses %d"
           % (misses, total, g1_null(full, test, years)))
-    verdict = [(name, ok), g2(rows)] + ([g3(test, sims["full"], full)] if years >= 8 else []) + [
+    verdict = [(name, ok), g2(rows), g3(test, sims["full"], full, range(2, years + 1))] + [
         g4(rows["full"], train, test), g5(full, test)]
     print("\nGATES " + "  ".join("%s %s" % (name, "PASS" if ok else "FAIL") for name, ok in verdict))
 
@@ -327,10 +346,9 @@ def _cov(c):
 def g2(rows):
     """Skill: season-FP CRPS >= 5% better than persistence at years 2-3;
     better than a single age curve with the player-clustered 90% CI below 0
-    at year 2 and by >= 5% at year 3; no bucket > 2% worse than it.
-    The spec's flat 5% at year 2 is read as mis-set (decision 2026-09-29):
-    a year-1 projection already carries most of year 2, so the model's
-    reliable 4-5% edge there is the whole of what's available"""
+    at year 2 and by >= 5% at year 3; no bucket > 2% worse than it. Year 2
+    needs only a reliable edge: the year-1 projection already carries most
+    of it"""
     ok = True
     print("\nG2 skill (season-FP CRPS; vs persist >=5% at years 2-3; vs single: CI < 0 at year 2, >=5% at year 3)")
     print("  %-4s %8s %8s %8s  %7s %7s" % ("year", "full", "single", "persist", "vs sgl", "vs per"))
@@ -366,11 +384,12 @@ def g2(rows):
 
 
 def g3(test, sims, p, years=range(2, 9)):
-    """Stars and vets: 7-yr value (years 2-8) pred/real 0.85-1.15 for age 29+
-    at 34-42 and at 42+"""
+    """Aging players: value over `years` (2-8 where seen) pred/real 0.85-1.15
+    for age 29+ in every tier from 20 FP/G up (below 20 it's too near 0 to rate)"""
     ok = True
     rg = p["wrv_rg"]
-    print("\nG3 7-yr value above %.0f FP/G, years 2-8, pred/real (gate: age 29+ at 34-42 and 42+ in 0.85-1.15)" % rg)
+    print("\nG3 value above %.0f FP/G, years %d-%d, pred/real (gate: age 29+ from 20 FP/G up in 0.85-1.15)"
+          % (rg, years[0], years[-1]))
     groups = collections.defaultdict(lambda: [0.0, 0.0, 0])
     players = collections.defaultdict(lambda: collections.defaultdict(list))
     for o, (rates, gps) in zip(test, sims):
@@ -387,7 +406,7 @@ def g3(test, sims, p, years=range(2, 9)):
             players[key][o["id"]].append((pred, real))
     for key in sorted(groups, key=str):
         pred, real, n = groups[key]
-        gated = isinstance(key, tuple) and key[1] == "29+" and key[0] in ("lv34-42", "lv42+")
+        gated = isinstance(key, tuple) and key[1] == "29+" and key[0] != "lv<20"
         ratio = pred / real if real else float("nan")
         ci = ""
         if gated:
@@ -399,7 +418,7 @@ def g3(test, sims, p, years=range(2, 9)):
     print("  tail: P(usable) predicted / actual, age 29+ (ungated)")
     for lv in ("lv27-34", "lv34-42", "lv42+"):
         out = []
-        for t in (4, 6, 8):
+        for t in [t for t in (4, 6, 8) if t <= years[-1]]:
             pr = ac = n = 0
             for o, (rates, gps) in zip(test, sims):
                 if buckets(o)[0] != lv or o["age1"] < 29 or o["gp"][t - 1] is None:

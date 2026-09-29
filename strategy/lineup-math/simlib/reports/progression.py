@@ -5,7 +5,7 @@ playing) by future season, and the 20-season weighted value.
     ./run -m simlib.reports.progression player "Cade Cunningham"  # 20 years, one player
     ./run -m simlib.reports.progression freeze                 # preseason archive (each October)
 """
-import csv, glob, json, math, os, re, shutil, sys
+import csv, glob, json, math, os, re, shutil, statistics, sys
 import fetch_data
 from fetch_data import LIVE_SEASON, LIVE_TAG, SEASON, SEASON_TAG
 from .. import progression as prog, roster as roster_mod
@@ -46,7 +46,8 @@ def report_progression():
     print("  backtest has little to check against. Flags: noproj (no feed rate), noBPM,")
     print("  board+/- (board ranks him well below/above his inputs: review), inj x (override),")
     print("  noBBRef (no BBRef join: career year off the pool, no BPM), noDOB (no birthday\n"
-          "  in the pool or either Dizzle tab: not projected).")
+          "  in the pool or either Dizzle tab: not projected), top5 (top-5 NBA pick in his\n"
+          "  first seasons: the backtest has such picks landing below his median ~60% of the time).")
     head = "  %-24s  %-7s %4s %3s  %11s  " % ("player", "owner", "age", "stg", _label(1) + " /GP")
     head += "  ".join("%-17s" % (_label(t) + " FP/G") for t in SHOWN[:3])
     head += "  %-14s  %-11s  %s" % (_label(SHOWN[3]) + " FP/G", "P(act/use)5", "WRV 1-3/4-7/8-20 = tot")
@@ -106,6 +107,8 @@ def rostered():
             flags.append("noBBRef")
         elif pl["stage"] != "D" and pl["bpm"] is None:
             flags.append("noBPM")
+        if pl["stage"] in ("D", "S") and (pl["pick"] or 61) <= 5:
+            flags.append("top5")
         hurt = injured.get(_key(pl["name"]))
         if hurt:
             pl["rate_mult"] = hurt["rate_mult"]
@@ -164,11 +167,9 @@ def newcomers():
 
 def _nba_picks():
     """key(name) -> NBA overall pick, the newest draft winning a shared name"""
-    rows = _csv(os.path.join(fetch_data.bbref_mirror(), "Draft Pick History.csv"))
     out = {}
-    for r in sorted(rows, key=lambda r: -int(r["season"])):
-        if r["lg"] == "NBA" and r["overall_pick"].isdigit():
-            out.setdefault(_key(r["player"]), int(r["overall_pick"]))
+    for r in fetch_data.nba_picks(fetch_data.bbref_mirror()):
+        out.setdefault(_key(r["player"]), r["pick"])
     return out
 
 
@@ -199,17 +200,19 @@ def injury_overrides():
 
 def board_residuals(players):
     """Per player, the log BASE-blend rank left over once the model's own
-    inputs (level, age, BPM, GP, stage) are fitted out. Fit once on the whole
-    board universe -- every pool player and every Dizzle draftee -- so who is
+    inputs (level, age and their interplay, BPM, GP, stage) are fitted out,
+    rescaled to the SD the nudge was measured on. Fit once on the whole board
+    universe -- every pool player and every Dizzle draftee -- so who is
     rostered doesn't move anyone's. Positive = the boards rank him worse than
     those inputs imply. None where no board carries him"""
-    s = prog._Sampler(prog.params())
-    beta = _bres_fit(s)
+    s = prog.Sampler(prog.params())
+    beta, scale = _bres_fit(s)
     out = []
     for pl in players:
         r = _board_rank(pl)
         f = _bres_features(pl, s)
-        out.append(None if r is None else math.log(r) - beta[0] - sum(b * x for b, x in zip(beta[1:], f)))
+        out.append(None if r is None else
+                   scale * (math.log(r) - beta[0] - sum(b * x for b, x in zip(beta[1:], f))))
     return out
 
 
@@ -220,7 +223,9 @@ def _bres_fit(sampler):
             r = _board_rank(pl)
             if r is not None:
                 fit.append((_bres_features(pl, sampler), math.log(r)))
-        _CACHE["bres"] = ols([f for f, _ in fit], lambda f: f, [y for _, y in fit])
+        beta = ols([f for f, _ in fit], lambda f: f, [y for _, y in fit])
+        res = [y - beta[0] - sum(b * x for b, x in zip(beta[1:], f)) for f, y in fit]
+        _CACHE["bres"] = beta, prog.params()["board"]["sd"] / statistics.pstdev(res)
     return _CACHE["bres"]
 
 
@@ -252,8 +257,10 @@ def _bres_features(pl, sampler):
     a = pl["age1"] - 28
     # log rank bends hard at the very top; without the hinges every star reads board-loved
     top = [max(lL - math.log(x / 30), 0.0) for x in STAR_HINGES]
-    return (lL, lL * lL, *top, a, a * a, a * lL, sampler._bpm(pl)[0],
-            math.log(max(pl["gp1"], 1.0)), float(pl["stage"] == "D"), float(pl["stage"] == "S"))
+    # boards discount age harder the better the player, so age enters with level
+    return (lL, lL * lL, *top, a, a * a, a * lL, a * a * lL, *(a * x for x in top), a * a * top[0],
+            sampler.bpm(pl)[0], math.log(max(pl["gp1"], 1.0)),
+            float(pl["stage"] == "D"), float(pl["stage"] == "S"))
 
 
 def _board_rank(pl):
@@ -273,10 +280,16 @@ def _board_rank(pl):
         num, tot = num + w * (_V()(r) if r is not None else 0.0), tot + w
     if not seen:
         return None
-    blend = num / tot
-    a, D = math.sqrt(_D()), _D()
-    K = 9999 * (a + 1) / (D - 1)
-    return min(max((K * D - blend * a) / (blend + K), 1.0), float(D))
+    return _rank_worth(num / tot)
+
+
+def _rank_worth(value):
+    """The rank BASE's value curve prices at `value`, found on the curve itself (it falls with rank)"""
+    V, lo, hi = _V(), 1.0, float(_D())
+    for _ in range(60):
+        mid = (lo + hi) / 2
+        lo, hi = (mid, hi) if V(mid) > value else (lo, mid)
+    return (lo + hi) / 2
 
 
 def _base():

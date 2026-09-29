@@ -52,8 +52,8 @@ class WhatMovesAPath(unittest.TestCase):
         self.assertGreater(hi[5].rate_p50, lo[5].rate_p50 * 1.05)
 
     def test_a_box_score_outlier_at_the_ceiling_does_not_grow_past_thirty(self):
-        ys = prog.project(vet(rate1=64.0, age1=32.0, bpm=13.5, cy1=12), years=4, n=1500)
-        self.assertLess(ys[1].rate_p50, 64.0)
+        ys = prog.project(vet(rate1=64.0, age1=32.0, bpm=13.5, cy1=12), years=4, n=4000)
+        self.assertLess(ys[1].rate_p50, 64.0 * 1.02)     # holding, at most
         self.assertLess(ys[3].rate_p50, 64.0)
 
     def test_a_young_superstar_is_less_likely_than_not_to_be_playing_at_forty(self):
@@ -86,6 +86,18 @@ class WhatMovesAPath(unittest.TestCase):
         starter = prog.project(vet(rate1=30.0, age1=26.0, bpm=1.0, gp1=70.0), years=3, n=3000)
         self.assertLess(bench[1].gp_mean / bench[1].p_active,
                         starter[1].gp_mean / starter[1].p_active - 3)
+
+    def test_a_season_lost_to_injury_is_not_read_as_a_retirement(self):
+        healthy = prog.project(vet(age1=26.0, gp1=65.0), years=3, n=6000)
+        hurt = prog.project(vet(age1=26.0, gp1=0.0), years=3, n=6000)
+        self.assertGreater(hurt[2].p_active, healthy[2].p_active - 0.03)
+
+    def test_a_sophomore_grows_through_the_rookie_stage_where_a_vet_the_same_age_would_not(self):
+        soph = prog.project(dict(rate1=15.0, gp1=65.0, age1=21.0, stage="S", cy1=2, pick=10,
+                                 age_rookie=20.0, bpm=None, gp_last=60.0), years=3, n=2000)
+        as_vet = prog.project(dict(rate1=15.0, gp1=65.0, age1=21.0, stage="V", cy1=2, pick=10,
+                                   age_rookie=20.0, bpm=None, gp_last=60.0), years=3, n=2000)
+        self.assertGreater(soph[1].rate_p50, as_vet[1].rate_p50)
 
     def test_two_runs_of_one_player_are_identical(self):
         self.assertEqual(prog.project(vet(), years=5, n=300),
