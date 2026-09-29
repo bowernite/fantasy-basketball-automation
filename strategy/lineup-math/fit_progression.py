@@ -1,22 +1,16 @@
 """Fit the player progression model on BBRef history, and backtest it
 
-    uv run --with pandas,statsmodels python fit_progression.py              # refit -> data/progression-params.json
-    uv run --with pandas,statsmodels python fit_progression.py --backtest   # walk-forward gates -> data/progression-backtest.txt
-    uv run --with pandas,statsmodels python fit_progression.py --backtest --cutoff 2013   # one cutoff, printed only
+    uv run --with pandas==2.3.3,statsmodels==0.15.0,numpy==2.2.6 python fit_progression.py [--backtest [--cutoff YEAR]]
 
-One at a time: a refit or backtest keeps the machine's cores busy for minutes.
+- No flag: refit -> `data/progression-params.json`
+- `--backtest`: walk-forward gates at each of CUTOFFS -> `data/progression-backtest.txt`
+- `--cutoff YEAR`: that cutoff only, printed, report untouched
+- Refit each offseason after the mirror's end-of-season push (bump `fetch_data.BBREF_COMMIT`, then `./run fetch_data.py bbref`)
+- Run one refit or backtest at a time
 
-CPython, not `./run`: the regressions need pandas/statsmodels, which pypy
-lacks. The sampler (`simlib/progression.py`) stays stdlib and reads the params
-this writes. Spread knobs are tuned by running that sampler under pypy
-(`simlib/progression_eval.py`), so what is tuned and gated is the sampler as
-built. Refit once per offseason, after the mirror's end-of-season push (bump
-`fetch_data.BBREF_COMMIT`).
-
-Units: FP/G on the current repo scale (our scoring, era-normalised), GP per 82.
-Seasons are BBRef end-years here; the repo pool keys start-years.
+CPython for pandas/statsmodels; the stdlib sampler (`simlib/progression.py`) reads the params. Spread knobs are tuned by running that sampler under pypy (`simlib/progression_eval.py`). FP/G is on the repo's scale (our scoring, era-normalised), GP per 82; seasons are BBRef end-years (the pool keys start-years).
 """
-import datetime, json, os, subprocess, sys, warnings
+import datetime, json, os, subprocess, sys, warnings, zlib
 import numpy as np
 import pandas as pd
 import statsmodels.api as sm
@@ -34,10 +28,14 @@ GP_FIRST = 2000         # GP habits before this era don't carry
 SHORT_SEASONS = {1999: 50, 2012: 66, 2020: 72, 2021: 72}
 ACTIVE = 20             # GP82 that counts as a season played
 EXIT_HALF_LIFE = 8      # seasons
+ROOKIE_HALF_LIFE = 10   # seasons
+ERA_BREAK = 2016        # first season of the regime exit reads as current
 STAR_LL = float(np.log(38 / 30))
 EXIT_LEVEL_CAP = 45.0   # FP/G; above it exit has too few old players to bend the curve further
 BPM_DEV_CLIP = 3.0      # ~p5-p95 of BPM above its level's norm; the effect saturates past it
 CUTOFFS = (2004, 2009, 2013)
+PROXY_ERR = 0.18        # log miss of a preseason rate projection on the season it projects [prior]
+PROXY_NOISE_GRID = (0.0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35)
 TRANSPORT_CUT = 2022    # BBRef end-year; the pool origins' scored seasons all fall after it
 LAST = 2026             # newest completed season in the pinned mirror
 
@@ -55,7 +53,7 @@ GP_TERMS = ["1", "gpraw", "a28", "lo20"]   # lo20: deep-bench bodies sit more, s
 # Starting knobs; `tune` overwrites smult/phi1/pick floor from the sampler run
 KNOBS = {"smult": 1.1, "phi0": 0.3, "phi1": 0.0, "sd_floor": 0.12,
          "young_mult": 1.15, "young_mult_rookie": 1.1, "smult_rookie": 1.0,
-         "u_mult": 0.6, "sigma_u_rookie": 0.25, "growth_pick_floor": 1}
+         "sigma_u": 0.15, "sigma_u_rookie": 0.25, "growth_pick_floor": 1}
 
 BOARD = {"gamma": [0.02, 0.02, 0.02, 0.02], "clip": 1.0, "flag": 0.8}
 USABLE = 25.0           # FP/G on >= ACTIVE GP: a starter in 12 x 9
@@ -237,7 +235,8 @@ def fit(P, cut, single=False):
         out["vet"]["bpm_dev_clip"] = BPM_DEV_CLIP
         out["proxy"] = proxy_fit(P, cut, out["vet"]["drift"])
         out["vet"]["bpm_beta"], out["vet"]["bpm_beta_ll"] = bpm_schedule(
-            P, cut, out["vet"]["drift"], out["vet"]["bpm_ref"], out["proxy"])
+            P, cut, out["vet"]["drift"], out["vet"]["bpm_ref"],
+            proxy_fit(P, cut, out["vet"]["drift"], noise_grid=(0.0,)))
         out["rookie"] = rookie_fit(P, cut)
     return out
 
@@ -259,8 +258,13 @@ def vet_fit(P, cut, dterms, eterms, sterms):
     E = P[(P.season >= FIRST) & (P.season + 3 <= cut) & (P.c >= 3)
           & (P.gp82 >= ACTIVE) & (P.lvl2 >= 6)]
     ex = ~((E.gp82_p1 >= ACTIVE) | (E.gp82_p2 >= ACTIVE) | (E.gp82_p3 >= ACTIVE))
-    H = design(base_vars(E.age, np.minimum(E.lvl2, EXIT_LEVEL_CAP), gp=E.gp2, bpm=E.bpm2, cy=E.c,
-                         gp_ref=E.gpn), eterms)
+    ve = base_vars(E.age, np.minimum(E.lvl2, EXIT_LEVEL_CAP), gp=E.gp2, bpm=E.bpm2, cy=E.c, gp_ref=E.gpn)
+    # from about 2016 the fringe leaves far faster (two-way deals, G League stashes); a level
+    # slope that only turns on in that regime, once enough of it has been seen
+    ve["era"] = (E.season.values >= ERA_BREAK).astype(float)
+    if "lL" in eterms and ve["era"].sum() >= 500:
+        eterms = eterms + ["era", "era*lL"]
+    H = design(ve, eterms)
     # good players' exits fell from 2-5% to ~0-1% a year in the mid-2000s, so
     # the latest seasons speak loudest
     w = 0.5 ** ((cut - 3 - E.season.values) / EXIT_HALF_LIFE)
@@ -270,7 +274,7 @@ def vet_fit(P, cut, dterms, eterms, sterms):
           % (cut, len(O), len(E), 100 * ex.mean()))
     return {"drift": _model(dterms, drift), "scale": _model(sterms, sc),
             "exit": _model(eterms, exit_), "exit_level_cap": EXIT_LEVEL_CAP, "resq": _quantiles(z / z.std()),
-            "zsd": float(z.std()), **_star_pool(z[star])}
+            "zsd": float(z.std()), **_star_pool(z[star]), **_young_pool(z[(O.age <= 24).values & ~star])}
 
 
 def _star_pool(z):
@@ -279,6 +283,16 @@ def _star_pool(z):
     if len(z) < 100:
         return {}
     return {"star_ll": STAR_LL, "resq_star": _quantiles(z / z.std()), "zsd_star": float(z.std())}
+
+
+def _young_pool(z):
+    """Misses at 24 and under, from their own pool: a young player's surprise
+    is a breakout as often as a slump, where an older one's leans down"""
+    if len(z) < 100:
+        return {}
+    q = np.quantile(z / z.std(), [.05, .5, .95])
+    print("  young pool n=%d: p5 %+.2f p50 %+.2f p95 %+.2f (SD units)" % (len(z), *q))
+    return {"resq_young": _quantiles(z / z.std()), "zsd_young": float(z.std())}
 
 
 def median_path(drift, age, level, years):
@@ -308,11 +322,12 @@ def bpm_schedule(P, cut, drift, ref, proxy, steps=4, horizons=6):
     """Per-step drift per point of BPM above `ref`, as `(beta, beta_ll)`:
     the step's slope is beta + beta_ll * lL of year 1. Each is the cumulative
     survivor residual slope at each horizon, differenced; 0 after `steps` (it
-    plateaus). Year 1 is `proxy_fit`'s projection stand-in, the level the
-    sampler starts from, so year 1's own luck doesn't pass for BPM"""
+    plateaus). Year 1 is `proxy_fit`'s noiseless stand-in, a calibrated level:
+    against the actual year 1, that year's luck would pass for BPM; against
+    a noisy stand-in, BPM would be correcting that stand-in's own misses"""
     O = P[(P.season >= FIRST) & (P.c >= 2) & (P.gp82 >= ACTIVE) & (P.gp82_p1 >= ACTIVE)
           & (P.nfpg_p1 >= 10) & P.bpm2.notna() & (P.season + 2 <= cut)]
-    level1 = np.exp(proxy[0] + proxy[1] * np.log(O.nfpg_p1) + proxy[2] * np.log(_aged(O, drift))).values
+    level1 = _proxy_rate(O, drift, proxy).values
     path = median_path(drift, O.age + 1, level1, horizons)
     cum = []
     for j in range(1, horizons + 1):
@@ -367,10 +382,13 @@ def rookie_fit(P, cut):
     y = np.log(D.nfpg_p1.values / np.maximum(D.nfpg.values, 2))
     v = base_vars(D.age, np.maximum(D.nfpg, 2), c=D.c, ad=D.ad, lp=D.lp, rookie=True)
     X = design(v, ROOKIE_DRIFT)
-    drift = sm.QuantReg(y, X).fit(q=0.5).params
+    # rookies' development and hazards drift by era, so recent classes speak
+    # loudest; weighting both sides of a median fit weights its absolute errors
+    w = 0.5 ** ((cut - 1 - D.season.values) / ROOKIE_HALF_LIFE)
+    drift = sm.QuantReg(y * w, X * w[:, None]).fit(q=0.5).params
     res = y - X @ drift
     Z = design(v, ROOKIE_SCALE)
-    sc = sm.QuantReg(np.abs(res), Z).fit(q=0.5).params
+    sc = sm.QuantReg(np.abs(res) * w, Z * w[:, None]).fit(q=0.5).params
     z = res / np.clip(Z @ sc, 0.05, None)
     E = R[R.season + 3 <= cut]
     act = [(E["gp82_p%d" % j] >= ACTIVE).values for j in (1, 2, 3)]
@@ -378,8 +396,9 @@ def rookie_fit(P, cut):
     miss = ~act[0] & (act[1] | act[2])
     H = design(base_vars(E.age, np.maximum(E.nfpg, 2), gp=E.gp82, c=E.c, ad=E.ad,
                          lp=E.lp, rookie=True, gp_ref=E.gpn), ROOKIE_EXIT)
-    ex_p = sm.Logit(ex.astype(float), H).fit(disp=0, maxiter=300).params
-    mi_p = sm.Logit(miss.astype(float), H).fit(disp=0, maxiter=300).params
+    we = 0.5 ** ((cut - 3 - E.season.values) / ROOKIE_HALF_LIFE)
+    ex_p, mi_p = (sm.GLM(y.astype(float), H, family=sm.families.Binomial(), var_weights=we).fit().params
+                  for y in (ex, miss))
     print("  rookie cut %d: %d drift pairs, %d exit rows" % (cut, len(D), len(E)))
     return {"drift": _model(ROOKIE_DRIFT, drift), "scale": _model(ROOKIE_SCALE, sc),
             "exit": _model(ROOKIE_EXIT, ex_p), "miss": _model(ROOKIE_EXIT, mi_p),
@@ -393,44 +412,73 @@ def _aged(O, drift):
     return O.lvl2 * np.exp(design(base_vars(O.age, O.lvl2), drift["terms"]) @ np.array(drift["coef"]))
 
 
-def proxy_fit(P, cut, drift):
-    """The backtest's stand-in for a preseason projection: log rate = b0 +
-    b1 * log(actual year 1) + b2 * log(aged 2-season level), median-fit so
-    that year 2 follows it the way the sampler follows a true level. Like a
-    real projection it is calibrated -- an extreme year 1 is taken at less
-    than face value -- rather than carrying that year's luck"""
+def proxy_fit(P, cut, drift, noise_grid=None):
+    """The backtest's stand-in for a preseason rate projection: log rate =
+    b0 + b1 * log(year 1 seen through noise) + b2 * log(aged 2-season level),
+    median-fit so that year 2 follows it the way the sampler follows a true
+    level. The noise is sized so the stand-in misses the actual year 1 by
+    PROXY_ERR, as a real feed would; the fit keeps it calibrated -- an extreme
+    year 1 is taken at less than face value, not with that year's luck"""
     O = P[(P.season >= 1990) & (P.season + 2 <= cut) & (P.c >= 1) & (P.gp82 >= ACTIVE)
           & (P.gp82_p1 >= ACTIVE) & (P.gp82_p2 >= ACTIVE)]
-    Z = np.column_stack([np.ones(len(O)), np.log(O.nfpg_p1), np.log(_aged(O, drift))])
-    coef, x = np.array(drift["coef"]), np.log(O.nfpg_p1.values)
-    for _ in range(4):
-        y = np.log(O.nfpg_p2.values) - design(base_vars(O.age + 1, np.exp(x)), drift["terms"]) @ coef
-        b = sm.QuantReg(y, Z).fit(q=0.5).params
-        x = Z @ b
-    print("  proxy cut %d: log proj = %.3f + %.3f*log(year 1) + %.3f*log(aged level)" % (cut, *b))
-    return [float(v) for v in b]
+    coef, aged, z = np.array(drift["coef"]), np.log(_aged(O, drift)).values, _row_noise(O)
+    best = None
+    for noise in noise_grid or PROXY_NOISE_GRID:
+        Z = np.column_stack([np.ones(len(O)), np.log(O.nfpg_p1.values) + noise * z, aged])
+        x = np.log(O.nfpg_p1.values)
+        for _ in range(4):
+            y = np.log(O.nfpg_p2.values) - design(base_vars(O.age + 1, np.exp(x)), drift["terms"]) @ coef
+            b = sm.QuantReg(y, Z).fit(q=0.5).params
+            x = Z @ b
+        err = float(np.std(np.log(O.nfpg_p1.values) - x))
+        if best is None or abs(err - PROXY_ERR) < abs(best[0] - PROXY_ERR):
+            best = (err, noise, b)
+    err, noise, b = best
+    print("  proxy cut %d: log proj = %.3f + %.3f*log(year 1 x noise %.2f) + %.3f*log(aged level); "
+          "misses year 1 by %.3f" % (cut, b[0], b[1], noise, b[2], err))
+    return {"b": [float(v) for v in b], "noise": noise}
 
 
-def origins(P, lo, hi, drift, proxy, last=LAST):
+def _row_noise(O):
+    """A standard normal per player-season, the same on every run"""
+    return np.array([np.random.default_rng(zlib.crc32(("%s%d" % (p, s)).encode())).standard_normal()
+                     for p, s in zip(O.player_id, O.season)])
+
+
+def _proxy_rate(O, drift, proxy):
+    b, noise = proxy["b"], proxy["noise"]
+    return np.exp(b[0] + b[1] * (np.log(O.nfpg_p1) + noise * _row_noise(O)) + b[2] * np.log(_aged(O, drift)))
+
+
+def proxy_gp(gp, age, rate, g):
+    """The backtest's stand-in for a preseason GP projection: the GP model's
+    own expectation off the season before -- the feeds see no more than that"""
+    gp, age, rate = (np.asarray(x, float) for x in (gp, age, rate))
+    v = base_vars(age, rate, gp=gp)
+    low = 1 / (1 + np.exp(-(design(v, g["hurdle"]["terms"]) @ np.array(g["hurdle"]["coef"]))))
+    mean = np.clip(design(v, g["mean"]["terms"]) @ np.array(g["mean"]["coef"]), ACTIVE, 82)
+    return (1 - low) * mean + low * np.mean(g["low_pool"])
+
+
+def origins(P, lo, hi, ref, last=LAST):
     """Backtest players at origin seasons lo..hi: year 1 = origin + 1.
     Stage D = rookie season is year 1, S = one season done, V = two or more.
-    Year 1 is the actual year-1 GP and, for the rate, `proxy_fit`'s stand-in
-    for the preseason feed; a draftee's is his actual rookie rate, which the
-    rookie stage is fit on. `u_mult` plays the part of the feed's own error.
-    Outcomes after season `last` are left unseen"""
+    Year 1 is `proxy_fit`'s and `proxy_gp`'s stand-ins for the preseason
+    feeds; a draftee's is his actual rookie season, which the rookie stage is
+    fit on. Outcomes after season `last` are left unseen"""
+    drift = ref["vet"]["drift"]
     O = P[(P.season >= lo) & (P.season <= hi)]
     rows = []
     # a player with no year-1 season at all has left the league: the feeds
     # carry no projection for him, and neither does anything we'd run
     vet = O[(O.gp82 >= ACTIVE) & (O.c >= 1) & (O.gp82_p1 > 0)]
-    vet = vet.assign(aged=_aged(vet, drift))
+    vet = vet.assign(aged=_aged(vet, drift), proj=_proxy_rate(vet, drift, ref["proxy"]),
+                     gp_proj=proxy_gp(vet.gp82, vet.age, vet.nfpg, ref["gp"]))
     for r in vet.itertuples():
-        proj = (np.exp(proxy[0] + proxy[1] * np.log(r.nfpg_p1) + proxy[2] * np.log(r.aged))
-                if r.gp82_p1 >= ACTIVE else r.aged)
+        proj = r.proj if r.gp82_p1 >= ACTIVE else r.aged
         if proj < 8:
             continue
-        rows.append(_origin(r, "S" if r.c == 1 else "V", proj, last,
-                            gp1=0.0 if r.gp82_p1 != r.gp82_p1 else r.gp82_p1, cy1=r.c + 1))
+        rows.append(_origin(r, "S" if r.c == 1 else "V", proj, last, gp1=r.gp_proj, cy1=r.c + 1))
     # draftees: their rookie season is year 1, so the origin is the season before
     rk = P[(P.c == 1) & (P.season - 1 >= lo) & (P.season - 1 <= hi) & (P.gp82 >= 10)
            & (P.pick <= 60) & (P.debut >= ROOKIE_FIRST)]
@@ -460,19 +508,21 @@ def _origin(r, stage, proj, last, gp1, cy1, rookie_row=False):
     return o
 
 
-def transport_origins(P, drift, proxy):
+def transport_origins(P, ref):
     """Repo pool 2021-25 (start-years) as origins, scored on its own FP/G and
     GP: does a fit on BBRef travel to the league's own numbers?"""
     with open(os.path.join(HERE, "data", "players-%s.json" % fetch_data.SEASON_TAG)) as f:
         pool = json.load(f)
     with open(os.path.join(HERE, "data", "bbref-%s.json" % fetch_data.SEASON_TAG)) as f:
         ids = json.load(f)
+    drift, b, g = ref["vet"]["drift"], ref["proxy"]["b"], ref["gp"]
     bpm2 = {(r.player_id, r.season): r.bpm2 for r in P.itertuples() if r.bpm2 == r.bpm2}
     rows = []
     for name, v in pool.items():
         if name not in ids or not v.get("born"):
             continue
-        s, b = v["seasons"], ids[name]
+        s, bb = v["seasons"], ids[name]
+        b_id = bb["bbref"]
         born = datetime.date.fromisoformat(v["born"])
         for o in (2021, 2022, 2023):
             cur, prev, nxt = s.get(str(o)), s.get(str(o - 1)), s.get(str(o + 1))
@@ -483,15 +533,17 @@ def transport_origins(P, drift, proxy):
             age1 = (datetime.date(o + 2, 2, 1) - born).days / 365.2425
             aged = hist * float(np.exp(design(base_vars([age1 - 1], [hist]), drift["terms"])
                                        @ np.array(drift["coef"]))[0])
-            proj = (float(np.exp(proxy[0] + proxy[1] * np.log(nxt[0]) + proxy[2] * np.log(aged)))
+            z = np.random.default_rng(zlib.crc32(("%s%d" % (b_id, o)).encode())).standard_normal()
+            proj = (float(np.exp(b[0] + b[1] * (np.log(nxt[0]) + ref["proxy"]["noise"] * z)
+                                 + b[2] * np.log(aged)))
                     if nxt and nxt[1] >= ACTIVE else aged)
             if proj < 8 or not nxt:
                 continue
-            cy1 = o + 1 - b["debut"] + 1
+            cy1 = o + 1 - bb["debut"] + 1
             row = {"id": name, "origin": o, "stage": "S" if cy1 == 2 else ("D" if cy1 == 1 else "V"),
-                   "rate1": proj, "gp1": float(nxt[1]) if nxt else 0.0, "age1": age1,
-                   "gp_last": float(cur[1]), "bpm": bpm2.get((b["bbref"], o + 1)),
-                   "cy1": cy1, "pick": b["pick"], "age_rookie": age1 - (cy1 - 1),
+                   "rate1": proj, "gp1": float(proxy_gp([cur[1]], [age1 - 1], [cur[0]], g)[0]),
+                   "age1": age1, "gp_last": float(cur[1]), "bpm": bpm2.get((b_id, o + 1)),
+                   "cy1": cy1, "pick": bb["pick"], "age_rookie": age1 - (cy1 - 1),
                    "rate": [], "gp": []}
             if row["stage"] == "D":
                 continue
@@ -529,7 +581,7 @@ def tune(params, P, cut, tag, ref=None):
     """Spread knobs chosen on origins whose years 2-5 all fall <= `cut`.
     Origins are built with `ref`'s drift and proxy (default: `params`')"""
     ref = ref or params
-    tr = origins(P, 1990, cut - 5, ref["vet"]["drift"], ref["proxy"], last=cut)
+    tr = origins(P, 1990, cut - 5, ref, last=cut)
     pp, op = _dump("params-%s.json" % tag, params), _dump("tune-origins-%s.json" % tag, tr)
     out = _eval("tune", pp, op)
     print(out.strip())
@@ -545,7 +597,7 @@ def backtest(P, cutoffs, dev=False):
         print("cutoff", cut)
         full = tune(fit(P, cut), P, cut, "full-%d" % cut)
         single = tune(fit(P, cut, single=True), P, cut, "single-%d" % cut, full)
-        test = origins(P, cut + 1, LAST - 2, full["vet"]["drift"], full["proxy"])
+        test = origins(P, cut + 1, LAST - 2, full)
         paths = [_dump("params-full-%d.json" % cut, full),
                  _dump("params-single-%d.json" % cut, single),
                  _dump("test-origins-%d.json" % cut, test),
@@ -558,7 +610,7 @@ def backtest(P, cutoffs, dev=False):
     # fit before the pool's scored seasons, so the league's own numbers are out of sample
     print("transport cutoff", TRANSPORT_CUT)
     tp = tune(fit(P, TRANSPORT_CUT), P, TRANSPORT_CUT, "full-%d" % TRANSPORT_CUT)
-    tr = transport_origins(P, tp["vet"]["drift"], tp["proxy"])
+    tr = transport_origins(P, tp)
     report.append("=" * 72 + "\nTRANSPORT  repo pool origins 2021-23 (n=%d), fit on outcomes <= %d\n"
                   % (len(tr), TRANSPORT_CUT)
                   + _eval("transport", _dump("params-full-%d.json" % TRANSPORT_CUT, tp),

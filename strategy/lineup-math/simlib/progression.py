@@ -5,7 +5,7 @@ A player is a dict: `rate1`/`gp1` (year-1 projection, printed as-is), `age1`
 (Feb 1 of year 1), `stage` (D no NBA season yet, S one, V two or more), `cy1`
 (career year in year 1), `bpm` (2-season, or None), `gp_last` (last season's
 GP, or None), `pick` (NBA overall, None if undrafted), `age_rookie`, `bres`
-(board residual, or None), `rate_mult` (manual injury hit from year 2 on)."""
+(board residual, or None), `rate_mult` (`injury-overrides.json`)."""
 import collections, functools, json, math, os, random
 from . import shard
 from .data import DATA_DIR
@@ -124,12 +124,14 @@ class _Sampler:
         self.scale, self.resq, self.zsd = _Model(v["scale"]), v["resq"], v["zsd"]
         self.star_ll = v.get("star_ll")
         self.resq_star, self.zsd_star = v.get("resq_star"), v.get("zsd_star")
+        self.resq_young, self.zsd_young = v.get("resq_young"), v.get("zsd_young")
         self.gp_ref = p.get("gp_ref", 60.0)
         self.beta, self.beta_ll = v["bpm_beta"], v.get("bpm_beta_ll") or []
         self.bpm_ref = _Model(v["bpm_ref"]) if "bpm_ref" in v else None
         self.gamma = p["board"]["gamma"]
         g = p["gp"]
         self.hurdle, self.gp_mean = _Model(g["hurdle"]), _Model(g["mean"])
+        self.low_mean = sum(g["low_pool"]) / len(g["low_pool"])
         self.lo, self.hi = math.log(MIN_RATE), math.log(1.1 * p["league_max"])
         r = p.get("rookie")
         self.rookie = r and {"drift": _Model(r["drift"]), "scale": _Model(r["scale"]),
@@ -146,17 +148,10 @@ class _Sampler:
         bpm_steps = [max(b + _at(self.beta_ll, t) * lL1, 0.0) * dev
                      for t, b in enumerate(self.beta, 1)]
         bres = min(max(pl.get("bres") or 0.0, -p["board"]["clip"]), p["board"]["clip"])
-        # year 2 chains straight off the GP projection: its own noise adds
-        # little once shrunk by the chain's 0.3 slope
-        st = _State(pl["age1"], pl["cy1"], pl["gp1"], pl.get("gp_last"))
+        st = _State(pl["age1"], pl["cy1"], self._gp_year_one(pl, rng), pl.get("gp_last"))
         rookie_origin = pl["stage"] in ("D", "S") and self.rookie is not None
         young = k["young_mult_rookie"] if rookie_origin else k["young_mult"]
-        if pl["stage"] == "D":
-            sigma_u = k["sigma_u_rookie"]
-        else:
-            # the projection's own error, in proportion to how noisy his level is
-            v1 = self._vars(pl["age1"], pl["rate1"], pl["gp1"], bpm, pl["cy1"])
-            sigma_u = k["u_mult"] * self._sd(v1, pl["age1"], young)
+        sigma_u = k["sigma_u_rookie"] if pl["stage"] == "D" else k["sigma_u"]
         lr = math.log(pl["rate1"]) + sigma_u * _draw(self.resq, rng)
         t = 1
         if rookie_origin:
@@ -182,13 +177,13 @@ class _Sampler:
             step = self.drift(v) + _at(bpm_steps, t) - _at(self.gamma, t) * bres
             if t == 1 and pl.get("rate_mult"):
                 step += math.log(pl["rate_mult"])
-            tau = min(max(tau + step + sd * math.sqrt(phi) * self._eps(v["lL"], rng),
+            tau = min(max(tau + step + sd * math.sqrt(phi) * self._eps(v["lL"], st.age, rng),
                           self.lo), self.hi)
             gp = self._gp_next(st.gp, st.age, rates[-1] or math.exp(tau), rng)
             st.advance(gp)
             v2 = self._vars(st.age, math.exp(tau), gp, bpm, st.cy)
             sd2, phi2 = self._sd(v2, st.age, young), self._phi(v2["lL"])
-            lr = tau + sd2 * math.sqrt((1 - phi2) / 2) * self._eps(v2["lL"], rng)
+            lr = tau + sd2 * math.sqrt((1 - phi2) / 2) * self._eps(v2["lL"], st.age, rng)
             rates.append(self._clip(lr))
             gps.append(gp)
         return rates, gps
@@ -226,11 +221,13 @@ class _Sampler:
             t += 1
         return t
 
-    def _eps(self, lL, rng):
-        """A one-step miss in SDs of the pooled residual; stars draw from their
-        own pool, at its own width"""
+    def _eps(self, lL, age, rng):
+        """A one-step miss in SDs of the pooled residual; stars and the young
+        draw from their own pools, at their own widths"""
         if self.star_ll is not None and lL >= self.star_ll:
             return _draw(self.resq_star, rng) * self.zsd_star / self.zsd
+        if self.resq_young and age <= 24:
+            return _draw(self.resq_young, rng) * self.zsd_young / self.zsd
         return _draw(self.resq, rng)
 
     def _gp_feature(self, gp):
@@ -242,7 +239,7 @@ class _Sampler:
                 "ay": max(24 - age, 0.0), "a34": max(age - 34, 0.0),
                 "lL": min(max(math.log(max(level, 1.0) / 30), LL_LO), LL_HI),
                 "gp": self._gp_feature(gp), "bpm": bpm,
-                "cy3": float(cy == 3), "cy4": float(cy == 4), "cy5": float(cy == 5)}
+                "cy3": float(cy == 3), "cy4": float(cy == 4), "cy5": float(cy == 5), "era": 1.0}
 
     def _clip(self, lr):
         return min(max(math.exp(lr), MIN_RATE), math.exp(self.hi))
@@ -275,6 +272,16 @@ class _Sampler:
     def _phi(self, lL):
         k = self.k
         return min(k["phi0"] + k["phi1"] * max(lL, 0.0), 0.9)
+
+    def _gp_year_one(self, pl, rng):
+        """Year 1's GP as the chain sees it: drawn by the same equations,
+        centred on the projection, which misses like any forecast"""
+        g, gp1 = self.p["gp"], pl["gp1"]
+        low = _logistic(self.hurdle(_gp_vars(pl.get("gp_last") or gp1, pl["age1"] - 1, pl["rate1"])))
+        if rng.random() < low:
+            return _draw(g["low_pool"], rng)
+        centre = (gp1 - low * self.low_mean) / (1 - low)
+        return min(max(centre + _draw(g["resq"], rng), ACTIVE), 82.0)
 
     def _gp_next(self, gp_t, age, rate, rng):
         """Next season's GP: a transient lost season, else the linear mean in

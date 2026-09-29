@@ -20,13 +20,17 @@ TUNE_N, TEST_N = 100, 200
 # spread knobs, tuned one at a time over their grids, twice round
 TUNE_GRID = collections.OrderedDict([
     ("smult", (0.8, 0.9, 1.0, 1.1, 1.2, 1.35)),
-    ("sd_floor", (0.06, 0.09, 0.12, 0.15)),
-    ("phi1", (0.0, 0.75, 1.5)),
-    ("young_mult_rookie", (1.1, 1.3, 1.5, 1.8, 2.1)),
+    ("sd_floor", (0.03, 0.06, 0.09, 0.12)),
+    ("sigma_u", (0.08, 0.12, 0.16, 0.2)),
+    ("phi1", (0.0, 0.75, 1.5, 2.5)),
+    ("young_mult", (1.0, 1.15, 1.3, 1.5)),
+    ("young_mult_rookie", (1.1, 1.4, 1.7, 2.0, 2.4)),
 ])
+# the valuable tiers count for more in the tuning loss than their share of rows
+BUCKET_WEIGHT = {"all": 3.0, "lv34-42": 2.0, "lv42+": 3.0}
 PICK_FLOOR_GRID = (1, 3, 6)
 ACTIVE = prog.ACTIVE
-WORKERS = 6            # a backtest is ~200 of these calls; all cores for that long runs the laptop hot
+WORKERS = None         # all cores
 
 
 # ---------------------------------------------------------------- scores
@@ -66,9 +70,11 @@ def ece(probs, outcomes, bins=10):
 # ---------------------------------------------------------------- simulate
 
 def simulate(params, origins, years, n, seed=7, mode="model"):
-    """Per origin: (rates, gps) by year for each of n paths"""
+    """Per origin: (rates, gps) by year for each of n paths. Each origin gets
+    its own stream: one shared stream would make every origin's Monte Carlo
+    error the same, and move coverage everywhere at once"""
     parts = shard.chunks(len(origins), shard.n_workers(WORKERS, len(origins)))
-    jobs = [(params, origins[s:s + c], years, n, seed, mode) for s, c in parts]
+    jobs = [(params, origins[s:s + c], s, years, n, seed, mode) for s, c in parts]
     out = []
     for part in shard.mapped(_chunk, jobs, len(jobs)):
         out.extend(part)
@@ -76,14 +82,15 @@ def simulate(params, origins, years, n, seed=7, mode="model"):
 
 
 def _chunk(job):
-    p, origins, years, n, seed, mode = job
+    p, origins, start, years, n, seed, mode = job
     res = []
-    for o in origins:
+    for i, o in enumerate(origins, start):
+        stream = seed * 100003 + i
         if mode == "persist":
-            res.append(_persist(p, o, years, n, seed))
+            res.append(_persist(p, o, years, n, stream))
         else:
             pl = dict(o, stage="V") if mode == "vet" else o
-            runs = prog.paths(pl, years, n, seed, p)
+            runs = prog.paths(pl, years, n, stream, p)
             res.append(([r for r, _ in runs], [g for _, g in runs]))
     return res
 
@@ -206,7 +213,7 @@ def _calib_loss(p, origins):
         for name, g in groups.items():
             if len(g) < 50:
                 continue
-            w = 3.0 if name == "all" else 1.0
+            w = BUCKET_WEIGHT.get(name, 1.0)
             for key in ("pit", "rate_pit"):
                 c = coverage([r[key] for r in g if r[key] is not None])
                 loss += w * ((c["b80"] - .8) ** 2 + (c["b50"] - .5) ** 2
@@ -236,7 +243,12 @@ def backtest(full_path, single_path, test_path, train_path):
           % (" ".join("%s %.2f" % (x, k[x]) for x in TUNE_GRID), k["growth_pick_floor"],
              single["knobs"]["smult"], single["knobs"]["sd_floor"]))
     rows = {m: {t: cells(test, s, t - 1) for t in range(2, years + 1)} for m, s in sims.items()}
-    verdict = [g1(rows["full"]), g2(rows), g3(test, sims["full"], full),
+    name, ok, misses = g1(rows["full"])
+    total = sum(1 for t in GATE_YEARS for b in {"all", *(x for r in rows["full"][t] for x in buckets(r["o"]))}
+                if b == "all" or sum(1 for r in rows["full"][t] if b in buckets(r["o"])) >= BUCKET_MIN)
+    print("  cells missed %d of %d; the same model scored on draws from itself misses %d"
+          % (misses, total, g1_null(full, test, years)))
+    verdict = [(name, ok), g2(rows), g3(test, sims["full"], full),
                g4(rows["full"], train, test), g5(full, test)]
     print("\nGATES " + "  ".join("%s %s" % (name, "PASS" if ok else "FAIL") for name, ok in verdict))
 
@@ -245,14 +257,16 @@ def _band_ok(c, lo, hi, tails):
     return lo <= c["b80"] <= hi and all(tails[0] <= c[x] <= tails[1] for x in ("lo10", "hi10"))
 
 
-def g1(rows):
+def g1(rows, quiet=False):
     """Calibration: overall joint season FP and survivor rate in band; every
-    bucket with n >= 100 in its wider band; P(active)/P(usable) ECE"""
-    ok = True
-    print("\nG1 calibration (randomized PIT; overall 80%% band 76-84, 50%% 45-55, tails 7-13; "
-          "buckets n>=%d: 72-88, tails <=15; ECE <=.03 overall, <=.06 bucket)" % BUCKET_MIN)
-    print("  %-4s %-11s %5s  %-26s  %-26s  %5s %5s" % ("year", "cell", "n", "season FP b80 b50 lo hi",
-                                                      "survivor rate b80 b50 lo hi", "eceA", "eceU"))
+    bucket with n >= 100 in its wider band; P(active)/P(usable) ECE.
+    Returns (name, ok, cells missed)"""
+    ok, misses = True, 0
+    say = (lambda *a: None) if quiet else print
+    say("\nG1 calibration (randomized PIT; overall 80%% band 76-84, 50%% 45-55, tails 7-13; "
+        "buckets n>=%d: 72-88, tails <=15; ECE <=.03 overall, <=.06 bucket)" % BUCKET_MIN)
+    say("  %-4s %-11s %5s  %-26s  %-26s  %5s %5s" % ("year", "cell", "n", "season FP b80 b50 lo hi",
+                                                    "survivor rate b80 b50 lo hi", "eceA", "eceU"))
     for t in GATE_YEARS:
         rs = rows[t]
         groups = collections.OrderedDict([("all", rs)])
@@ -274,13 +288,35 @@ def g1(rows):
                         and ea <= .03 and eu <= .03)
             else:
                 good = (_band_ok(cj, .72, .88, (0, .15))
-                        and (cr is None or len(rp) < BUCKET_MIN or _band_ok(cr, .72, .88, (0, .15)))
+                        and (cr is None or _band_ok(cr, .72, .88, (0, .15)))
                         and ea <= .06 and eu <= .06)
             ok &= good
-            print("  %-4d %-11s %5d  %s  %s  %5.3f %5.3f%s"
-                  % (t, name, len(g), _cov(cj), _cov(cr) if cr else " " * 26, ea, eu,
-                     "" if good else "  <- miss"))
-    return "G1", ok
+            misses += not good
+            say("  %-4d %-11s %5d  %s  %s  %5.3f %5.3f%s"
+                % (t, name, len(g), _cov(cj), _cov(cr) if cr else " " * 26, ea, eu,
+                   "" if good else "  <- miss"))
+    return "G1", ok, misses
+
+
+def g1_null(p, test, years):
+    """G1 again with each realised outcome swapped for a draw from the model
+    itself: the cells a perfectly calibrated forecast would miss by chance"""
+    drawn = simulate(p, test, years, 1, seed=99)
+    null = []
+    for o, (rates, gps) in zip(test, drawn):
+        seen = [g is not None for g in o["gp"]]
+        null.append(dict(o, rate=[r[0] if s else None for r, s in zip(zip(*rates), seen)],
+                         gp=[g[0] if s else None for g, s in zip(zip(*gps), seen)]))
+    sims = simulate(p, null, years, TEST_N)
+    return g1({t: cells(null, sims, t - 1) for t in GATE_YEARS}, quiet=True)[2]
+
+
+def _boot(groups, stat, n=300, seed=5):
+    """Player-clustered bootstrap: `groups` maps player -> rows; returns the
+    5th and 95th percentile of `stat(rows)` over resampled players"""
+    rng, keys = random.Random(seed), list(groups)
+    out = sorted(stat([r for _ in keys for r in groups[rng.choice(keys)]]) for _ in range(n))
+    return out[int(.05 * n)], out[int(.95 * n) - 1]
 
 
 def _cov(c):
@@ -296,10 +332,16 @@ def g2(rows):
     for t in range(2, 9):
         m = {k: sum(r["crps"] for r in rows[k][t]) / len(rows[k][t]) for k in rows}
         vs, vp = m["full"] / m["single"] - 1, m["full"] / m["persist"] - 1
+        ci = ""
         if t in (2, 3):
             ok &= vs <= -.05 and vp <= -.05
-        print("  %-4d %8.0f %8.0f %8.0f  %+6.1f%% %+6.1f%%" % (t, m["full"], m["single"], m["persist"],
-                                                             100 * vs, 100 * vp))
+            by = collections.defaultdict(list)
+            for rf, rsg in zip(rows["full"][t], rows["single"][t]):
+                by[rf["o"]["id"]].append((rf["crps"], rsg["crps"]))
+            lo, hi = _boot(by, lambda xs: sum(a for a, _ in xs) / sum(b for _, b in xs) - 1)
+            ci = "   vs sgl 90%% CI by player [%+.1f%%, %+.1f%%]" % (100 * lo, 100 * hi)
+        print("  %-4d %8.0f %8.0f %8.0f  %+6.1f%% %+6.1f%%%s" % (t, m["full"], m["single"], m["persist"],
+                                                               100 * vs, 100 * vp, ci))
     worst = []
     for t in (2, 3):
         groups = collections.defaultdict(lambda: ([], []))
@@ -325,6 +367,7 @@ def g3(test, sims, p, years=range(2, 9)):
     rg = p["wrv_rg"]
     print("\nG3 7-yr value above %.0f FP/G, years 2-8, pred/real (gate: age 29+ at 34-42 and 42+ in 0.85-1.15)" % rg)
     groups = collections.defaultdict(lambda: [0.0, 0.0, 0])
+    players = collections.defaultdict(lambda: collections.defaultdict(list))
     for o, (rates, gps) in zip(test, sims):
         if any(o["gp"][t - 1] is None for t in years):
             continue
@@ -336,29 +379,47 @@ def g3(test, sims, p, years=range(2, 9)):
             groups[key][0] += pred
             groups[key][1] += real
             groups[key][2] += 1
+            players[key][o["id"]].append((pred, real))
     for key in sorted(groups, key=str):
         pred, real, n = groups[key]
         gated = isinstance(key, tuple) and key[1] == "29+" and key[0] in ("lv34-42", "lv42+")
         ratio = pred / real if real else float("nan")
+        ci = ""
         if gated:
             ok &= .85 <= ratio <= 1.15
+            lo, hi = _boot(players[key], lambda xs: sum(a for a, _ in xs) / max(sum(b for _, b in xs), 1e-9))
+            ci = "  (gated; 90%% CI by player %.2f-%.2f, %d players)" % (lo, hi, len(players[key]))
         print("  %-22s n=%4d  pred/real %.2f%s" % (key if isinstance(key, str) else " ".join(key),
-                                                   n, ratio, "  (gated)" if gated else ""))
+                                                   n, ratio, ci))
+    print("  tail: P(usable) predicted / actual, age 29+ (ungated)")
+    for lv in ("lv27-34", "lv34-42", "lv42+"):
+        out = []
+        for t in (4, 6, 8):
+            pr = ac = n = 0
+            for o, (rates, gps) in zip(test, sims):
+                if buckets(o)[0] != lv or o["age1"] < 29 or o["gp"][t - 1] is None:
+                    continue
+                pr += sum(1 for r, g in zip(rates, gps) if g[t - 1] >= ACTIVE and (r[t - 1] or 0) >= p["usable"]) / len(rates)
+                ac += (o["gp"][t - 1] >= ACTIVE and (o["rate"][t - 1] or 0) >= p["usable"])
+                n += 1
+            out.append("year %d %.2f / %.2f (n=%d)" % (t, pr / max(n, 1), ac / max(n, 1), n))
+        print("    %-8s %s" % (lv, "   ".join(out)))
     return "G3", ok
 
 
 def g4(rows, train, test):
-    """Exit: P(active) Brier beats an age-only table (fit on train) at years 2-5"""
+    """Exit: P(active) Brier beats an age-only table (fit on train) at years
+    2-6, i.e. k = 1..5 steps past the projection year"""
     ok = True
     table = collections.defaultdict(lambda: [0, 0])
     for o in train:
-        for t in range(1, 5):
+        for t in range(1, 6):
             if o["gp"][t] is not None:
                 c = table[(int(o["age1"]), t)]
                 c[0] += o["gp"][t] >= ACTIVE
                 c[1] += 1
-    print("\nG4 exit (Brier of P(active); gate: model beats an age-only table at years 2-5)")
-    for t in GATE_YEARS:
+    print("\nG4 exit (Brier of P(active); gate: model beats an age-only table at years 2-6)")
+    for t in range(2, 7):
         bm = ba = 0.0
         for r in rows[t]:
             c = table.get((int(r["o"]["age1"]), t - 1), [0, 0])
@@ -393,7 +454,12 @@ def g5(p, test):
           if "below_median" in r]
     share = sum(r["below_median"] for r in tr) / max(len(tr), 1)
     ok &= .40 <= share <= .60
-    print("  top-5 picks below predicted median, years 3-5: %.2f (n=%d)" % (share, len(tr)))
+    by = collections.defaultdict(list)
+    for r in tr:
+        by[r["o"]["id"]].append(r["below_median"])
+    lo, hi = _boot(by, lambda xs: sum(xs) / len(xs))
+    print("  top-5 picks below predicted median, years 3-5: %.2f (n=%d, %d players; 90%% CI by player %.2f-%.2f)"
+          % (share, len(tr), len(by), lo, hi))
     for t in (3, 4, 5):
         rs = cells(d, stage, t - 1)
         pred = sum(r["p_active"] for r in rs) / len(rs)
@@ -404,18 +470,22 @@ def g5(p, test):
 
 
 def transport(params_path, origins_path):
-    """G6: repo pool 2021-25, year-2/3 season-FP 80% band within 70-90%"""
+    """G6: repo pool 2021-25, years 2-4 (k = 1..3) season-FP and survivor-rate
+    80% bands within 70-90%"""
     p, origins = json.load(open(params_path)), json.load(open(origins_path))
     sims = simulate(p, origins, 4, TEST_N)
     ok = True
-    print("G6 transport (repo pool; year 1 = projection stand-in, so years 2-3 are scored)")
-    for t in (2, 3):
+    print("G6 transport (repo pool; year 1 = projection stand-in, so years 2-4 are scored)")
+    for t in (2, 3, 4):
         rs = cells(origins, sims, t - 1)
         c = coverage([r["pit"] for r in rs])
         rp = [r["rate_pit"] for r in rs if r["rate_pit"] is not None]
         cr = coverage(rp)
-        ok &= .70 <= c["b80"] <= .90
-        print("  year %d n=%d  season FP %s survivor rate %s" % (t, len(rs), _cov(c), _cov(cr)))
+        ok &= .70 <= c["b80"] <= .90 and .70 <= cr["b80"] <= .90
+        low = [r for r in rs if r["o"]["rate1"] < 20]
+        print("  year %d n=%d  season FP %s survivor rate %s  P(active) ECE %.3f, under 20 FP/G %.3f"
+              % (t, len(rs), _cov(c), _cov(cr), ece([r["p_active"] for r in rs], [r["active"] for r in rs]),
+                 ece([r["p_active"] for r in low], [r["active"] for r in low])))
     print("\nGATES G6 %s" % ("PASS" if ok else "FAIL"))
 
 

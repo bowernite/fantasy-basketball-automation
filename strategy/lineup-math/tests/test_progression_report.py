@@ -63,6 +63,18 @@ class BoardResidual(unittest.TestCase):
         self.assertLess(abs(sum(pl["bres"] for pl in top) / len(top)), 0.2)
 
 
+    def test_a_players_board_residual_does_not_move_when_another_team_leaves_the_league(self):
+        before = {pl["name"]: pl["bres"] for o, pl, _ in rep.rostered()[0] if o == "Brett"}
+        rosters = os.path.join(tempfile.mkdtemp(), "rosters")
+        shutil.copytree(os.path.join(sim.HERE, "rosters"), rosters)
+        for path in glob.glob(os.path.join(rosters, "roster-*.json")):
+            if roster_mod.OURS not in path:
+                os.remove(path)
+        with mock.patch.object(rep, "ROSTER_DIR", rosters):
+            after = {pl["name"]: pl["bres"] for o, pl, _ in rep.rostered()[0]}
+        self.assertEqual(before, after)
+
+
 class NoBirthday(unittest.TestCase):
     def test_a_rostered_player_with_no_birthday_anywhere_keeps_a_flagged_row_with_no_projection(self):
         rosters = os.path.join(tempfile.mkdtemp(), "rosters")

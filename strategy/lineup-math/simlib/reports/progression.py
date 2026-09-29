@@ -11,8 +11,8 @@ from fetch_data import LIVE_SEASON, LIVE_TAG, SEASON, SEASON_TAG
 from .. import progression as prog, roster as roster_mod
 from ..board import _key, pool
 from ..data import DATA_DIR, HERE, ROSTER_DIR, _load
-from ..gp import age_at
-from ..projections import projected_rate
+from ..gp import age_at, project_gp
+from ..projections import projected_rate, unprojected_rate
 from ..stats import ols
 
 YEARS, PATHS = 20, 1000
@@ -151,12 +151,13 @@ def newcomers():
     out = {}
     for row in _csv(_base().newest(dz)):
         if row.get("DOB"):
-            out[_key(row["Player"])] = {"born": row["DOB"], "pick": picks.get(_key(row["Player"]))}
+            out[_key(row["Player"])] = {"name": row["Player"], "tm": row["Team"], "born": row["DOB"],
+                                        "pick": picks.get(_key(row["Player"]))}
     for row in _csv(_base().newest(dz, "rookie-ranks-points.csv")):
         m = re.match(r"(\d)\.(\d+)$", (row.get("Draft Pick") or "").strip())
         if row.get("DOB"):
             out[_key(row["Player"])] = {
-                "born": row["DOB"],
+                "name": row["Player"], "tm": row["NBA Team"], "born": row["DOB"],
                 "pick": (int(m.group(1)) - 1) * 30 + int(m.group(2).ljust(2, "0")) if m else None}
     return out
 
@@ -198,17 +199,52 @@ def injury_overrides():
 
 def board_residuals(players):
     """Per player, the log BASE-blend rank left over once the model's own
-    inputs (level, age, BPM, GP, stage) are fitted out, refit on this set.
-    Positive = the boards rank him worse than those inputs imply. None where
-    no board carries him"""
-    ranks = [_board_rank(pl) for pl in players]
+    inputs (level, age, BPM, GP, stage) are fitted out. Fit once on the whole
+    board universe -- every pool player and every Dizzle draftee -- so who is
+    rostered doesn't move anyone's. Positive = the boards rank him worse than
+    those inputs imply. None where no board carries him"""
     s = prog._Sampler(prog.params())
-    feats = [_bres_features(pl, s) for pl in players]
-    fit = [(f, math.log(r)) for f, r in zip(feats, ranks) if r is not None]
-    beta = ols([f for f, _ in fit], lambda f: f, [y for _, y in fit])
-    return [None if r is None else
-            math.log(r) - beta[0] - sum(b * x for b, x in zip(beta[1:], f))
-            for f, r in zip(feats, ranks)]
+    beta = _bres_fit(s)
+    out = []
+    for pl in players:
+        r = _board_rank(pl)
+        f = _bres_features(pl, s)
+        out.append(None if r is None else math.log(r) - beta[0] - sum(b * x for b, x in zip(beta[1:], f)))
+    return out
+
+
+def _bres_fit(sampler):
+    if "bres" not in _CACHE:
+        fit = []
+        for pl in board_universe():
+            r = _board_rank(pl)
+            if r is not None:
+                fit.append((_bres_features(pl, sampler), math.log(r)))
+        _CACHE["bres"] = ols([f for f, _ in fit], lambda f: f, [y for _, y in fit])
+    return _CACHE["bres"]
+
+
+def board_universe():
+    """Every player the boards could rank: the pool, projected the way a
+    roster file is, plus draftees the pool can't carry yet"""
+    bb, newbies, out = _load(BBREF), newcomers(), []
+    for name, v in pool().items():
+        last = max(v["seasons"].items(), key=lambda kv: int(kv[0]))[1] if v.get("seasons") else (0.0, 0)
+        pl = _vet(_projected_row(name, v["tm"], *last), bb.get(name))
+        if pl:
+            out.append(pl)
+    seen = {_key(n) for n in pool()}
+    for k, rk in newbies.items():
+        if k not in seen:
+            out.append(_draftee(_projected_row(rk["name"], rk["tm"], 0.0, 0), rk))
+    return out
+
+
+def _projected_row(name, tm, last_avg, last_gp):
+    rate = projected_rate(name)
+    if rate is None:
+        rate = unprojected_rate(last_avg, last_gp)
+    return {"n": name, "tm": tm, "avg": rate, "gp": round(project_gp(name, gp=last_gp, rate=rate))}
 
 
 def _bres_features(pl, sampler):
