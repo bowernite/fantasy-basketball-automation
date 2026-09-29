@@ -74,6 +74,18 @@ class IncomingWins(unittest.TestCase):
         self.assertEqual([p["n"] for p in seat[:37]], [p["n"] for p in rows])
         self.assertIn(seat[37]["n"], roster_mod.PAD_NAMES)
 
+    def test_a_full_roster_keeps_a_body_the_market_values_over_a_higher_rate_one_it_does_not(self):
+        rookie = rostered("Emanuel Sharp", projected=False)
+        self.assertIsNone(sim.projected_rate(rookie["n"]), "pick a no-projection rookie")
+        bodies = [dict(sim.star(15.0 + i, 70, ("PG", "SG"), tm="BOS",
+                                n="Body %d" % i), tot=0.0, posLabel="G")
+                  for i in range(37)]
+        seat = sim.arrival_basis(roster_file(rookie, *bodies))
+        names = [p["n"] for p in seat]
+        self.assertIn("Emanuel Sharp", names)
+        self.assertNotIn("Body 0", names)
+        self.assertEqual(len(seat), 38)
+
     def test_a_roster_with_a_padded_slot_makes_room_without_a_cut(self):
         path = roster_file(*sim.our_roster(THEIR_ROSTER, projected=False)[:30])
         self.assertEqual([p["n"] for p in sim.arrival_basis(path)],
