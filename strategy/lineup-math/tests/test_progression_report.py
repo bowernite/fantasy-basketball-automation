@@ -93,6 +93,14 @@ class Report(unittest.TestCase):
         self.assertIn("0.95", self.out)
         self.assertIn("WRV", self.out)
 
+    def test_one_players_view_carries_the_tables_limits(self):
+        out = io.StringIO()
+        with mock.patch.object(rep, "ROSTER_DIR", self.rosters), mock.patch.object(rep, "PATHS", 200), \
+                contextlib.redirect_stdout(out):
+            rep.detail(["Naz Reid"])
+        self.assertIn(rep.LIMITS, out.getvalue())
+        self.assertIn(rep.LIMITS, self.out)
+
 
 class BoardResidual(unittest.TestCase):
     @classmethod

@@ -82,6 +82,8 @@ pulls off consensus` 3 is its only other use and is a formula-`Δw` tiebreak. Re
 slot group is tightest on the roster in question; never carry a count or a premium across
 rosters or forward in time (`Eval Definitions §Non-factors`).
 
+**Who holds value and who fades, years 2–7:** `strategy/lineup-math/run sim.py progression` (one player: its module docstring). A review read beside BASE, never an input to BASE or either win column; its limits print with it.
+
 # Sources
 
 Boards are forward-looking and **not adjusted for our scoring**; `FPts/Gp` is both, but

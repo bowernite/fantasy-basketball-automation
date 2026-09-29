@@ -32,6 +32,8 @@ python3 .claude/skills/projections/test_extension_watch.py
 
 Rate snapshot: `strategy/board-snapshots/projections/sleeper-2026.json`. GP snapshots: `hashtag-gp-2026.json`, `fanscout-gp-2026.json`. **Re-run rate + both GP snapshots before any eval.**
 
+**Each October, once all 12 rosters are re-cut after the last preseason move,** freeze the season's snapshots, once: `strategy/lineup-math/run -m simlib.reports.progression freeze`.
+
 ## Browser extension
 
 The Safari extension's `src/data/player-data.ts` is generated from the rate snapshot + overrides + rosters + last season's player pool (`extension_data.py`); never hand-edit it. It covers every rostered, pool and feed player; anyone else reads `NO_PROJECTION_RATE` with a ⚠️. Live check: a player's projection pill on our Fleaflicker team page matches the file.

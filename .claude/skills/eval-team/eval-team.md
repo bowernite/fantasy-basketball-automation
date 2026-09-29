@@ -92,5 +92,6 @@ Gone: own 3rd → Josh
 
 - Ours: `Title:` drops the ours clause; the key drops `Δw…-theirs` and reads `ΔP(title)`.
 - Players in the human file's order. FPts/G and GP are projections only. Omit a blank `| flags`; omit `σ:` when there are no ties.
+- `trade-screen` sims read each `## Players` row's name, AGE, BASE, FPts/G and GP by position: keep the first four columns as keyed, ` | ` separators, BASE a bare integer, AGE `–` when unknown.
 - Picks: one key line under `## Picks`; keep each year's header and `Gone:` line. A year with no picks: `none held`. Drop Ordinal and rank.
 - `Notes:` targets, role bets, feed misses, pick caveats that change a VALUE read — anything a trade call would use. No definitions, formulas, methodology, `REPL`, or counterfactual text.

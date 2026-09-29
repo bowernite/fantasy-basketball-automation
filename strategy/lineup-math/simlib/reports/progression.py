@@ -24,6 +24,10 @@ INJURY = os.path.join(SNAPSHOTS, "projections", "injury-overrides.json")
 ARCHIVE = os.path.join(SNAPSHOTS, "archive")
 BBREF = "bbref-%s.json" % SEASON_TAG
 STAR_HINGES = (38, 46)                 # FP/G
+LIMITS = ("  Review-only diagnostic for years 2-7: never an input to BASE, Delta w, Score or the\n"
+          "  team sim, and P(act)/P(use) aren't calibrated probabilities. Aging role players\n"
+          "  (29+, under ~30 FP/G) run ~15-28% high: discount them. Draftees' P(act) at career\n"
+          "  years 3-5 misses by up to ~.07 either way. Years 8-20 are extrapolated.")
 
 
 def report_progression():
@@ -42,8 +46,8 @@ def report_progression():
     print("  season done, V vet. WRV = sum over 20 seasons of E[GP x max(0, FP/G - %.0f)],"
           % p["wrv_rg"])
     print("  years 1-7 weighted 1.0, then 0.95^(t-7); split 1-3 / 4-7 / 8-20 in 1000s.")
-    print("  Diagnostic only: not BASE, not Delta w, not in Score. Beyond year 7 the")
-    print("  backtest has little to check against. Flags: noproj (no feed rate), noBPM,")
+    print(LIMITS)
+    print("  Flags: noproj (no feed rate), noBPM,")
     print("  board+/- (board ranks him well below/above his inputs: review), inj x (override),")
     print("  noBBRef (no BBRef join: career year off the pool, no BPM), noDOB (no birthday\n"
           "  in the pool or either Dizzle tab: not projected), top5 (top-5 NBA pick in his\n"
@@ -326,6 +330,7 @@ def _V():
 
 def detail(names):
     projected, unplaced = rostered()
+    print(LIMITS + "\n")
     rows = {pl["name"]: (owner, pl, flags) for owner, pl, flags in projected}
     for name in names:
         if name in {n for _, n in unplaced}:

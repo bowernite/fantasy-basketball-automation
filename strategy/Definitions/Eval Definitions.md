@@ -19,7 +19,7 @@ Every eval publishes three things, side by side, never folded into one number (t
 | **`Δw (season)`** | Wins added to a specific roster, that fantasy season | The sim (§Δw (season)) |
 | **`SIT`** | How much a win is worth to that team right now | Judgment: contending / fringe / tanking (§SIT) |
 
-**BASE owns everything multi-year** — trajectory, age, upside, risk: the boards price all of it into the rank, and nothing in this repo re-derives or stacks on top of that (`AGENTS.md` §Objective). **Formula `Δw` owns typical-team fielded value** — scoring weights, GP, and the 9-slot cap as a league-average curve, no specific roster. **`Δw (season)` owns this roster and the calendar**. The gap between BASE and either win column is the signal; `SIT` says which one the current season should listen to.
+**BASE owns everything multi-year** — trajectory, age, upside, risk: the boards price all of it into the rank, and nothing in this repo re-derives or stacks on top of that (`AGENTS.md` §Objective); `sim.py progression` is a review-only read beside it, never an input. **Formula `Δw` owns typical-team fielded value** — scoring weights, GP, and the 9-slot cap as a league-average curve, no specific roster. **`Δw (season)` owns this roster and the calendar**. The gap between BASE and either win column is the signal; `SIT` says which one the current season should listen to.
 
 **Outside §Score there is no exchange rate between BASE and either win column** — no constant converts wins into BASE units, and none may be derived or remembered. **Formula `Δw` and `Δw (season)` are also not interchangeable** — never convert or net them outside §Score.
 

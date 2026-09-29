@@ -12,8 +12,7 @@ from fetch_data import TEAM
 from simlib import cuts, runner
 from simlib.runner import (
     TEAM_SLUG, _simmed_date, check_config, deal_delta_age, deal_delta_base, enrich_config,
-    parse_config, resolve_roster, run_config, sim_tmp_path, team_sims_path,
-    team_sim_path, team_trade_shapes_path)
+    parse_config, resolve_roster, run_config, sim_tmp_path)
 from tests.harness import cheap_monte_carlo
 
 EXAMPLES = os.path.join(sim.HERE, "sims", "examples")
@@ -41,7 +40,60 @@ class ResolveRoster(unittest.TestCase):
         self.assertTrue(resolve_roster("roster-161024-2025-26").endswith(".json"))
 
 
+def write_team_md(root, slug, filename, rows):
+    folder = os.path.join(root, "teams", slug)
+    os.makedirs(folder, exist_ok=True)
+    with open(os.path.join(folder, filename), "w") as f:
+        f.write("# X · 38 bodies\n\n## Players\n"
+                "player | AGE POS | BASE | FPts/G GP | Δw | flags\n"
+                "%s\nσ: none\n\n## Picks\npick | origin | rookie | VALUE\n"
+                "2nd | own 2.09 | template | 645\n" % "\n".join(rows))
+
+
+def fake_teams_root():
+    root = tempfile.mkdtemp()
+    os.makedirs(os.path.join(root, "lineup-math"))
+    return root
+
+
 class DealDeltaBase(unittest.TestCase):
+    def test_base_comes_from_the_agent_team_md_not_the_human_file_beside_it(self):
+        root = fake_teams_root()
+        write_team_md(root, "my-team", "Ours.team.md",
+                      ["Jalen Suggs | 25.2 PG/SG | 1200 | 30 60 | +0.50"])
+        write_team_md(root, "mitch", "Mitch.team.md",
+                      ["Deni Avdija | 25.7 SF | 2000 | 35 70 | +0.90 | rot2"])
+        with open(os.path.join(root, "teams", "mitch", "Mitch's Team.md"), "w") as f:
+            f.write("| # | Player | AGE | POS | Boards | BASE |\n"
+                    "| 1 | Deni Avdija | 25.7 | SF | – | **9999** |\n")
+        with mock.patch.object(runner, "HERE", os.path.join(root, "lineup-math")):
+            got = deal_delta_base({
+                "out_us": ["Jalen Suggs"],
+                "in_from_them": ["Deni Avdija"],
+            }, 161020)
+        self.assertEqual(got, 800)
+
+    def test_a_player_missing_from_the_team_md_blanks_base_age_and_score_and_says_who(self):
+        mitch = 161020
+        ours = by_value(sim.our_roster())[0]
+        theirs = by_value(sim.our_roster(resolve_roster(mitch)))[0]
+        root = fake_teams_root()
+        write_team_md(root, "my-team", "Ours.team.md",
+                      ["%s | 27.0 PG | 3000 | 40 70 | +1.00" % ours["n"]])
+        write_team_md(root, "mitch", "Mitch.team.md",
+                      ["Someone Else | 27.0 PG | 500 | 20 60 | +0.10"])
+        cfg = {"kind": "trade-screen", "their_roster": mitch, "deals": [{
+            "label": "swap", "out_us": [ours["n"]], "in_from_them": [theirs["n"]],
+            "out_them": [theirs["n"]], "in_from_us": [ours["n"]]}]}
+        out = io.StringIO()
+        with mock.patch.object(runner, "HERE", os.path.join(root, "lineup-math")), \
+                cheap_monte_carlo(), contextlib.redirect_stdout(out):
+            res = run_config(cfg)[0]["deals"][0]["results"]
+        self.assertEqual((res["delta_base_us"], res["dage_us"], res["score_us"]),
+                         (None, None, None))
+        self.assertIn("%s not in Mitch.team.md" % theirs["n"], res["eval_gap"])
+        self.assertIn("%s not in Mitch.team.md" % theirs["n"], out.getvalue())
+
     def test_an_unknown_counterparty_is_refused_rather_than_priced_off_another_team(self):
         with self.assertRaises(ValueError) as ctx:
             deal_delta_base({
@@ -53,14 +105,11 @@ class DealDeltaBase(unittest.TestCase):
 
 class DealDeltaAge(unittest.TestCase):
     def test_a_body_with_no_age_and_no_weight_does_not_blank_the_change(self):
-        root = tempfile.mkdtemp()
-        os.makedirs(os.path.join(root, "lineup-math"))
-        for slug, row in (("my-team", "| Rookie | – | G | – | **100** | 10 | 50 |"),
-                          ("mitch", "| Vet | 30 | G | – | **900** | 30 | 70 |")):
-            os.makedirs(os.path.join(root, "teams", slug))
-            with open(os.path.join(root, "teams", slug, "X Team.md"), "w") as f:
-                f.write("| Player | AGE | POS | Boards | BASE | FPts/G proj | GP proj |\n"
-                        "| --- | --- | --- | --- | --- | --- | --- |\n%s\n" % row)
+        root = fake_teams_root()
+        write_team_md(root, "my-team", "Ours.team.md",
+                      ["Rookie | – PG/SG | 100 | 10 50 | +0.01 | nopool"])
+        write_team_md(root, "mitch", "Mitch.team.md",
+                      ["Vet | 30.0 PG/SG | 900 | 30 70 | +0.50"])
         with mock.patch.object(runner, "HERE", os.path.join(root, "lineup-math")):
             got = deal_delta_age({
                 "label": "Rookie+'28 1st > '27 1st",
@@ -70,21 +119,7 @@ class DealDeltaAge(unittest.TestCase):
         self.assertAlmostEqual(got, 1.0)
 
 
-class TeamTradeShapesPath(unittest.TestCase):
-    def test_slug_resolves_to_name_trade_shapes_md(self):
-        path = team_trade_shapes_path("josh")
-        self.assertTrue(path.endswith(os.path.join("josh", "Josh Trade Shapes.md")))
-
-    def test_team_id_resolves_to_name_trade_shapes_md(self):
-        path = team_trade_shapes_path(161021)
-        self.assertTrue(path.endswith(os.path.join("hlina", "Hlina Trade Shapes.md")))
-
-    def test_team_sims_path_alias(self):
-        self.assertEqual(team_sims_path("josh"), team_trade_shapes_path("josh"))
-
-    def test_team_sim_path_alias(self):
-        self.assertEqual(team_sim_path("josh"), team_trade_shapes_path("josh"))
-
+class SimTmpPath(unittest.TestCase):
     def test_sim_tmp_path_under_tmpdir(self):
         path = sim_tmp_path("josh-kawhi")
         self.assertTrue(path.startswith(tempfile.gettempdir()))

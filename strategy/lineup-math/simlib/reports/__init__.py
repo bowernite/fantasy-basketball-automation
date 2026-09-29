@@ -45,7 +45,8 @@ BLURB = {
              "P(title)",
     "horizon": "naive Y1-Y3 PF ranks: pool age-bucket rate drift, same rosters",
     "progression": "every rostered player's FP/G, GP and exit odds by season "
-                   "over 20 years, and his weighted 20-year value (WRV)",
+                   "over 20 years, and his weighted 20-year value (WRV). Review-only; "
+                   "limits in its preamble",
 }
 
 # Ignore `--roster`: market reads the board and the pool, progression every roster file

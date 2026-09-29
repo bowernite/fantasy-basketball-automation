@@ -42,7 +42,7 @@ Incoming rate for an N-for-1 to be PF-neutral, on our 38. **The row you pick dec
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
 | median FPts/G | 47.8 | 39.0 | 38.1 | 35.7 | 30.7 | 27.5 | 22.8 | 15.7 |
 
-**Only 8 players cleared 45 FPts/G at 30+ GP last season — 3 cleared 50, one cleared 60.** The board discounts age and the format pays rate, but **nothing here measures an age curve — quote no aging term and no horizon.**
+**Only 8 players cleared 45 FPts/G at 30+ GP last season — 3 cleared 50, one cleared 60.** The board discounts age and the format pays rate, but **nothing here measures an age curve — quote no aging term and no horizon.** Per-player trajectories are `sim.py progression`'s (review only).
 
 # Replacement level
 

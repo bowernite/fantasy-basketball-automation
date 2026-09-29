@@ -12,8 +12,7 @@ from simlib.data import HERE
 from simlib.reports import OURS_ONLY, REPORTS
 from simlib.score import SCORE_BODY_FDW, SCORE_DP_TITLE, SCORE_DW, SCORE_FDW
 
-_BASE_CACHE = {}
-_AGE_CACHE = {}
+_TEAM_MD_CACHE = {}
 
 PICK_AGE_WEIGHT = {1: 700, 2: 300, 3: 100, 4: 50}
 _PICK = re.compile(r"'(\d{2})(?: [A-Za-z]+)? ([1-4])(?:st|nd|rd|th)\b")
@@ -36,38 +35,6 @@ TEAM_SLUG = {
     161020: "mitch",
     161022: "todd",
 }
-
-TEAM_SIM_LABEL = {
-    "my-team": "My Team",
-    "bonin": "Bonin",
-    "josh": "Josh",
-    "chris": "Chris",
-    "brian": "Brian",
-    "joe": "Joe",
-    "hlina": "Hlina",
-    "matthew": "Matthew",
-    "henry": "Henry",
-    "jon": "Jon",
-    "mitch": "Mitch",
-    "todd": "Todd",
-}
-
-
-def team_trade_shapes_path(owner):
-    if isinstance(owner, int) or (isinstance(owner, str) and owner.isdigit()):
-        slug = TEAM_SLUG[int(owner)]
-    else:
-        slug = str(owner)
-    label = TEAM_SIM_LABEL.get(slug, slug.title())
-    return os.path.join(HERE, "..", "teams", slug, "%s Trade Shapes.md" % label)
-
-
-def team_sims_path(owner):
-    return team_trade_shapes_path(owner)
-
-
-def team_sim_path(owner):
-    return team_trade_shapes_path(owner)
 
 
 def sim_tmp_path(tag):
@@ -239,69 +206,35 @@ def price_deal(deal, their, our_proj, their_proj, before=None):
             fdw_us, fdw_them)
 
 
-def _eval_rows(path):
-    """Player table cells of a team eval: [_, Player, AGE, POS, Boards,
-    BASE, FPts/G proj, GP proj, ...]."""
+class TeamMdGap(LookupError):
+    """A deal names a team or player the `<Name>.team.md` evals can't price"""
+
+
+def _team_md_players(path):
+    """Player -> row of a `<Name>.team.md` `## Players` table:
+    `player | AGE POS | BASE | FPts/G GP | ...`. AGE is None when blank"""
+    if path in _TEAM_MD_CACHE:
+        return _TEAM_MD_CACHE[path]
+    out = {}
+    in_players = False
     with open(path) as f:
         for line in f:
-            if not line.startswith("|") or line.startswith("| ---"):
+            if line.startswith("## "):
+                in_players = line.strip() == "## Players"
                 continue
-            parts = [p.strip() for p in line.split("|")]
-            if len(parts) < 6 or parts[1] in ("Player", "---"):
+            parts = [p.strip() for p in line.split(" | ")]
+            if not in_players or len(parts) < 4 or parts[0] == "player":
                 continue
-            yield parts
-
-
-def _load_base(path):
-    if path in _BASE_CACHE:
-        return _BASE_CACHE[path]
-    out = {}
-    for parts in _eval_rows(path):
-        m = re.search(r"\*\*([\d,]+)\*\*", parts[5])
-        if m:
-            out[parts[1]] = int(m.group(1).replace(",", ""))
-    _BASE_CACHE[path] = out
+            try:
+                age = float(parts[1].split()[0])
+            except ValueError:
+                age = None
+            fpts, gp = (int(x) for x in parts[3].split()[:2])
+            out[parts[0]] = {"player": parts[0], "source": os.path.basename(path),
+                             "age": age, "base": int(parts[2]),
+                             "fpts": fpts, "gp": gp}
+    _TEAM_MD_CACHE[path] = out
     return out
-
-
-def _load_age(path):
-    """Player -> (age, weight), weight = max(0, FPts/G proj - 18) x GP proj
-    (`trades` skill, Age)."""
-    if path in _AGE_CACHE:
-        return _AGE_CACHE[path]
-    out = {}
-    for parts in _eval_rows(path):
-        if len(parts) < 8:
-            continue
-        try:
-            fpts = int(parts[6].split()[0])
-            gp = int(parts[7].split()[0])
-        except (ValueError, IndexError):
-            continue
-        weight = max(0, fpts - 18) * gp
-        try:
-            out[parts[1]] = (float(parts[2]), weight)
-        except ValueError:
-            if not weight:
-                out[parts[1]] = (0.0, 0)
-    _AGE_CACHE[path] = out
-    return out
-
-
-def _player_base(names, path):
-    table = _load_base(path)
-    total, missing = 0, []
-    for n in names:
-        if n in ("Keon Ellis", "Gary Payton", "Karlo Matković"):
-            if n not in table:
-                table = _load_base(path)
-        if n in table:
-            total += table[n]
-        else:
-            missing.append(n)
-    if missing:
-        raise KeyError("BASE missing for: %s" % ", ".join(missing))
-    return total
 
 
 def _team_id(their_roster):
@@ -319,34 +252,48 @@ def _team_id(their_roster):
     raise ValueError("no team eval for %s" % their_roster)
 
 
-def eval_md_for(their_roster):
-    tid = _team_id(their_roster)
-    slug = TEAM_SLUG.get(tid)
+def _team_md_path(team_ref):
+    slug = TEAM_SLUG.get(_team_id(team_ref))
     if slug is None:
-        raise ValueError("no team eval for %s" % their_roster)
+        raise ValueError("no team eval for %s" % team_ref)
     folder = os.path.join(HERE, "..", "teams", slug)
-    if not os.path.isdir(folder):
-        return None
-    matches = [f for f in os.listdir(folder)
-               if f.endswith("Team.md") and "Trade" not in f]
+    matches = ([f for f in os.listdir(folder) if f.endswith(".team.md")]
+               if os.path.isdir(folder) else [])
     if len(matches) != 1:
-        return None
+        raise TeamMdGap("no single <Name>.team.md in teams/%s" % slug)
     return os.path.join(folder, matches[0])
 
 
+def _team_md_rows(names, team_ref):
+    path = _team_md_path(team_ref)
+    table = _team_md_players(path)
+    missing = [n for n in names if n not in table]
+    if missing:
+        raise TeamMdGap("%s not in %s" % (", ".join(missing),
+                                          os.path.basename(path)))
+    return [table[n] for n in names]
+
+
+def _deal_team_md_rows(deal, their_roster):
+    """(our Out rows, their In rows), with every gap on both sides raised together"""
+    sides, gaps = [], []
+    for names, ref in ((deal["out_us"], TEAM),
+                       (deal["in_from_them"], their_roster)):
+        try:
+            sides.append(_team_md_rows(names, ref))
+        except TeamMdGap as e:
+            gaps.append(str(e))
+    if gaps:
+        raise TeamMdGap("; ".join(gaps))
+    return sides
+
+
 def deal_delta_base(deal, their_roster):
-    their_path = eval_md_for(their_roster)
-    our_path = eval_md_for(TEAM)
-    if not their_path or not our_path:
-        return None
-    try:
-        out = _player_base(deal["out_us"], our_path)
-        inc = _player_base(deal["in_from_them"], their_path)
-        out += int(deal.get("out_us_extra_base") or 0)
-        inc += int(deal.get("in_from_us_extra_base") or 0)
-        return inc - out
-    except KeyError:
-        return None
+    out, inc = _deal_team_md_rows(deal, their_roster)
+    return (sum(r["base"] for r in inc)
+            + int(deal.get("in_from_us_extra_base") or 0)
+            - sum(r["base"] for r in out)
+            - int(deal.get("out_us_extra_base") or 0))
 
 
 def _pick_ages(label_side):
@@ -354,6 +301,11 @@ def _pick_ages(label_side):
     year = date.today().year
     return [(20 - (2000 + int(yy) - year), PICK_AGE_WEIGHT[int(rnd)])
             for yy, rnd in _PICK.findall(label_side)]
+
+
+def _age_weight(row):
+    """weight = max(0, FPts/G - 18) x GP (`trades` skill, Age)"""
+    return max(0, row["fpts"] - 18) * row["gp"]
 
 
 def _weighted_age(rows):
@@ -364,19 +316,16 @@ def _weighted_age(rows):
 def deal_delta_age(deal, their_roster):
     """Our weighted-age change out -> in (`trades` skill, Age). Picks are
     read from the label (`out > in`, `.shapes.md` line format)."""
-    their_path = eval_md_for(their_roster)
-    our_path = eval_md_for(TEAM)
-    if not their_path or not our_path:
-        return None
-    ours, theirs = _load_age(our_path), _load_age(their_path)
+    out, inc = _deal_team_md_rows(deal, their_roster)
+    no_age = [r for r in out + inc if r["age"] is None and _age_weight(r)]
+    if no_age:
+        raise TeamMdGap("; ".join("%s has no AGE in %s" % (r["player"], r["source"])
+                                  for r in no_age))
     out_label, _, in_label = (deal.get("label") or "").partition(" > ")
-    try:
-        out = [ours[n] for n in deal["out_us"]]
-        inc = [theirs[n] for n in deal["in_from_them"]]
-    except KeyError:
-        return None
-    out_age = _weighted_age(out + _pick_ages(out_label))
-    in_age = _weighted_age(inc + _pick_ages(in_label))
+    out_age = _weighted_age([(r["age"] or 0.0, _age_weight(r)) for r in out]
+                            + _pick_ages(out_label))
+    in_age = _weighted_age([(r["age"] or 0.0, _age_weight(r)) for r in inc]
+                           + _pick_ages(in_label))
     if out_age is None or in_age is None:
         return None
     return round(in_age - out_age, 2)
@@ -406,7 +355,9 @@ def _trade_screen_results(sec, deals=None):
             cut_us, cut_them, pricing = deal_cuts(deal, their, our_proj,
                                                    their_proj, before)
             dw_us, dt_us, dw_them, dt_them, fdw_us, fdw_them = pricing
-            delta_base = deal_delta_base(deal, sec["their_roster"])
+            gaps = []
+            delta_base = _unless_gap(gaps, deal_delta_base, deal,
+                                     sec["their_roster"])
             if delta_base is not None and cut_us:
                 delta_base -= sum(sim.board_base(bodies(cut_us, our_proj)).values())
             row["results"] = {
@@ -414,7 +365,8 @@ def _trade_screen_results(sec, deals=None):
                 "fdw_us": round(fdw_us, 2),
                 "dw_us": round(dw_us, 2),
                 "dp_title_us": round(dt_us * 100, 1),
-                "dage_us": deal_delta_age(deal, sec["their_roster"]),
+                "dage_us": _unless_gap(gaps, deal_delta_age, deal,
+                                       sec["their_roster"]),
                 "fdw_them": round(fdw_them, 2),
                 "dw_them": round(dw_them, 2),
                 "dp_title_them": round(dt_them * 100, 1),
@@ -426,6 +378,8 @@ def _trade_screen_results(sec, deals=None):
             row["results"]["score_us"] = deal_score(
                 row["results"],
                 len(deal["in_from_them"]) - len(deal["out_us"]) - len(cut_us))
+            if gaps:
+                row["results"]["eval_gap"] = "; ".join(dict.fromkeys(gaps))
         except (KeyError, ValueError) as e:
             row["results"] = {
                 "error": str(e),
@@ -433,6 +387,14 @@ def _trade_screen_results(sec, deals=None):
             }
         rows.append(row)
     return rows, label
+
+
+def _unless_gap(gaps, price, deal, their_roster):
+    try:
+        return price(deal, their_roster)
+    except TeamMdGap as e:
+        gaps.append(str(e))
+        return None
 
 
 def _player_effects_results(sec):
@@ -483,6 +445,12 @@ def _print_trade_screen(rows, label):
             res["fdw_them"], res["dw_them"], res["dp_title_them"],
             "+".join(res.get("cut_us") or ["–"]),
             "+".join(res.get("cut_them") or ["–"])))
+        if "eval_gap" in res:
+            blank = [col for col, key in (("Score", "score_us"),
+                                          ("ΔBASE", "delta_base_us"),
+                                          ("Δage", "dage_us"))
+                     if res.get(key) is None]
+            print("! %s: %s blank: %s" % (name, "/".join(blank), res["eval_gap"]))
 
 
 def _merge_trade_screen(sec, rows, label):

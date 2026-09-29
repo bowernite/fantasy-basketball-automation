@@ -145,6 +145,8 @@ Method for `Δage` (§The big numbers; `sim_run.py` reports it as `dage_us`). Ea
 
 Example: Cade+('27 1st) > SGA+Fears. Out (24.9×2040 + 19×700) / 2740 = 23.4; In (28.1×2232 + 19.9×666) / 2898 = 26.2 → **+2.8**
 
+Per-player decline and exit risk behind an age gap: `eval-player` §Rules (progression).
+
 # Notes
 
 - `strategy/` holds rosters, per-team valuations and the projections picks depend on. `team-info` maps owner username → real name.

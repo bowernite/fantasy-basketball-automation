@@ -17,6 +17,9 @@ Load when a deal involves a pick from any draft but the next one. `SKILL.md` own
 3. **League comps**: `FetchTrades` history, same round and years-out, priced at today's BASE. Cross-check only — few per cell.
 4. **Current-class slot value** (`SKILL.md` §4 lookup): cross-check only, never the VALUE. Future 1sts price below the same current slot, the gap widening per year out. A future row well above its current-class slot needs a named reason.
 5. **Class-strength dial — check the stamp.** Neutral is not a judgment of average. Boards move after the summer circuit, again once the college season resolves. **A stale neutral dial is missing information.**
+   - **Top-of-class nudge, next class only, our ordinals 1–3 only.** Label that class's top strong / average / weak off ≥3 dated outlets (ESPN, Tankathon, SI or B/R, Dizzle), then read those slots +5% / 0 / −5 to −10% off their VALUE. Later classes and ordinals ≥4 stay neutral. Read (2026-09): 2027 weak, 2028 neutral.
+   - **Don't stack it on a market that already moved the class.** There it's a cross-check only: a source pricing the top >10% off neutral is likely over-reacting.
+   - Re-read the label Jan–Mar. The nudge informs trade judgment (buy/sell, tie calls) only; VALUE stays the market's.
 6. **Scouting cross-check, top slot only.** "This class's 1.01 grades ~Nth on last year's board" anchors the top. **Below it you are extrapolating — bear case, not estimate.**
 7. **Evaluator spread** where published. High/Low per player measures slot differentiation, which the curve assumes and never checks. Overlapping consecutive ranges → the curve's gap is too wide.
 
