@@ -1,20 +1,20 @@
-# Auction live · room ? 0/5 · 20:38:21
+# Auction live · room ? 0/5 · 20:47:41
 
-**Us** $200 · 3 spots · max bid 198
+**Us** $200 · 4 spots · max bid 197
 **Nominate** Brandon Williams (early)
 
 ## Card: Score, live Market$, gap, our cap
 
 | Player | Score | Mkt | Gap | Cap |
 |---|---:|---:|---:|---:|
-| Baylor Scheierman | 296 | 70 | +139 | 155 |
+| Baylor Scheierman | 296 | 70 | +139 | 154 |
 | Sergio De Larrea (in the draft) | | | | |
 | Jayden Quaintance (in the draft) | | | | |
 | Koa Peat (in the draft) | | | | |
 | Alex Karaban (in the draft) | | | | |
 | Henri Veesaar (in the draft) | | | | |
-| Ryan Nembhard | 213 | 56 | +107 | 78 |
-| Dru Smith | 204 | 52 | +104 | 74 |
+| Ryan Nembhard | 213 | 56 | +107 | 77 |
+| Dru Smith | 204 | 52 | +104 | 73 |
 | Goga Bitadze | 191 | 62 | +85 | 0 |
 | Isaiah Evans (in the draft) | | | | |
 | Dominick Barlow | 181 | 72 | +67 | 0 |
@@ -45,7 +45,7 @@
 
 ## Rivals: max bid · $ left · spots
 
-- Mitch 197 · $200 · 4
+- Mitch 196 · $200 · 5
 - Todd 195 · $200 · 6
 - Jon 195 · $200 · 6
 - Bonin 195 · $200 · 6
@@ -55,7 +55,7 @@
 - Brian 192 · $200 · 9
 - Josh 192 · $200 · 9
 - Chris 192 · $200 · 9
-- Matthew 188 · $200 · 13
+- Matthew 190 · $200 · 11
 
 ## Last sales
 
