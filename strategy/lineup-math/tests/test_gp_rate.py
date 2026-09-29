@@ -6,8 +6,7 @@ class MissedSeasonRate(unittest.TestCase):
         p, = sim.our_roster(roster_file(
             {"n": "Tyrese Haliburton", "tm": "IND", "avg": 0.0, "tot": 0.0,
              "gp": 0, "posLabel": "G", "elig": ["PG", "SG"]}))
-        self.assertGreater(p["avg"], 20)
-        self.assertLess(p["avg"], 35)
+        self.assertAlmostEqual(p["avg"], sim.projected_rate("Tyrese Haliburton"))
         self.assertGreater(p["gp"], 45)
 
 class PoolJoinByName(unittest.TestCase):
@@ -56,9 +55,10 @@ class MapRunsOnTheActualRate(unittest.TestCase):
 
     def test_the_map_uses_the_rate_that_happened_not_the_forecast(self):
         actual, _ = sim.pool_seasons(self.OURS)["2025"]
-        forecast = sim.projected_rate(self.OURS)
+        with projection_snapshot(snapshot_with(self.OURS, BENCH_LINE)):
+            forecast = sim.projected_rate(self.OURS)
+            p = rostered(self.OURS)
         self.assertLess(forecast, actual - 5)
-        p = rostered(self.OURS)
 
         self.assertEqual(p["gp"], round(sim.project_gp(self.OURS, rate=actual)))
         self.assertGreater(sim.mapped_gp(self.OURS, rate=actual),
@@ -83,8 +83,9 @@ class MapRunsOnTheActualRate(unittest.TestCase):
         self.assertEqual((raw["avg"], raw["gp"]), (0.0, 0))
 
         actual, _ = sim.pool_seasons(name)["2024"]
-        forecast = sim.projected_rate(name)
-        p = rostered(name)
+        with projection_snapshot(snapshot_with(name, BENCH_LINE)):
+            forecast = sim.projected_rate(name)
+            p = rostered(name)
 
         self.assertEqual(p["gp"], round(sim.project_gp(name, rate=actual)))
         self.assertGreater(sim.mapped_gp(name, rate=actual),
@@ -93,11 +94,11 @@ class MapRunsOnTheActualRate(unittest.TestCase):
     def test_a_row_the_pool_never_saw_is_fitted_on_the_actual_line_it_carries(self):
         name = "Vasilije Micić"
         self.assertEqual(sim.evidence_flags(name), ["nopool"])
-        self.assertLess(sim.projected_rate(name), 15)
-
-        p, = sim.our_roster(roster_file(
-            {"n": name, "tm": "PHX", "avg": 21.5, "tot": 946.0,
-             "gp": 44, "posLabel": "G", "elig": ["PG", "SG"]}))
+        with projection_snapshot(snapshot_with(name, BENCH_LINE)):
+            self.assertLess(sim.projected_rate(name), 15)
+            p, = sim.our_roster(roster_file(
+                {"n": name, "tm": "PHX", "avg": 21.5, "tot": 946.0,
+                 "gp": 44, "posLabel": "G", "elig": ["PG", "SG"]}))
 
         self.assertEqual(p["gp"], round(sim.project_gp(name, gp=44, rate=21.5)))
 

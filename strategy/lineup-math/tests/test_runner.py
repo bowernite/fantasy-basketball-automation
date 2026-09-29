@@ -204,13 +204,13 @@ class ConfigRun(unittest.TestCase):
     def test_trade_screen_score_prices_the_published_numbers_net_of_extra_bodies(self):
         cfg = {
             "kind": "trade-screen",
-            "their_roster": 161020,
-            "their_label": "Mitch",
+            "their_roster": 161022,
+            "their_label": "Todd",
             "deals": [{
                 "label": "probe",
                 "out_us": ["Jalen Suggs", "Keon Ellis"],
-                "in_from_them": ["Deni Avdija"],
-                "out_them": ["Deni Avdija"],
+                "in_from_them": ["Dean Wade"],
+                "out_them": ["Dean Wade"],
                 "in_from_us": ["Jalen Suggs", "Keon Ellis"],
             }],
         }
@@ -292,6 +292,24 @@ class ConfigRun(unittest.TestCase):
             out = enrich_config(cfg)
         # out (19 x 300 + 18 x 700) / 1000 = 18.3; in 19
         self.assertAlmostEqual(out["deals"][0]["results"]["dage_us"], 0.7)
+
+    def test_trade_screen_age_change_counts_a_fourth_round_pick(self):
+        cfg = {
+            "kind": "trade-screen",
+            "their_roster": 161020,
+            "their_label": "Mitch",
+            "deals": [{
+                "label": "'27 4th+'28 1st > '28 1st",
+                "out_us": [],
+                "in_from_them": [],
+                "out_them": [],
+                "in_from_us": [],
+            }],
+        }
+        with cheap_monte_carlo():
+            out = enrich_config(cfg)
+        # out (19 x 50 + 18 x 700) / 750 = 18.07; in 18
+        self.assertAlmostEqual(out["deals"][0]["results"]["dage_us"], -0.07)
 
     def test_trade_screen_age_change_reads_a_later_pick_named_by_owner(self):
         cfg = {

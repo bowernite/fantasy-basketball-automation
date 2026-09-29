@@ -99,13 +99,18 @@ def report_scenarios():
 def report_breakevens():
     print("break-even incoming rate for an N-for-1, by roster size.")
     full, ours = basis(), our_roster()
-    print("two counts: padded to %d, and the file as it stands. incoming on %s."
-          % (len(full), SIM_TM))
+    full_base = engine.run(full)["pf"]
+    counts = [(full, full_base)]
+    if len(ours) < len(full):
+        counts.append((ours, engine.run(ours)["pf"]))
+    print("%s. incoming on %s."
+          % ("two counts: padded to %d, and the file as it stands" % len(full)
+             if len(counts) > 1 else "%d-man file, nothing padded" % len(full),
+             SIM_TM))
     shapes = [("68 GP forward", 68, ("SF", "PF")),
               ("65 GP center", 65, ("C",)),
               ("78 GP forward", 78, ("SF", "PF"))]
-    full_base, ours_base = engine.run(full)["pf"], engine.run(ours)["pf"]
-    for roster, base in ((full, full_base), (ours, ours_base)):
+    for roster, base in counts:
         avail = [n for n in FILLER if any(p["n"] == n for p in roster)]
         print("\n  %d-man roster. give up %s" % (len(roster), ", ".join(
             "%s(%.1f)" % (n, next(p["avg"] for p in roster if p["n"] == n))

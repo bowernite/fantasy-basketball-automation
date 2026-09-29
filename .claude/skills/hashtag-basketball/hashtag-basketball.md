@@ -75,7 +75,7 @@ This board **does** rank the incoming class inline against players, on the crowd
 needs, alongside Recipe B's `DDTYPE=POINT`.
 
 Bands cover the NBA's 60 slots, and are labelled `Pick N` / `Pick N-M` in that space.
-Ours is 12×3, so look them up by **overall ordinal** (`eval-pick`), never by our
+Ours is 12×4, so look them up by **overall ordinal** (`eval-pick`), never by our
 round label.
 
 ## Recipe B — expert dynasty board

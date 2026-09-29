@@ -24,7 +24,7 @@ which in the output.
   picks.
 - **Later drafts:** project the **originating** team's record rank (never the current
   holder) from `strategy/Team Projections.md`, with a range, then apply `league-info`'s
-  draft-order rule. The order rule **splits by record band, not by round** — all three rounds share one
+  draft-order rule. The order rule **splits by record band, not by round** — every round shares one
   order, so a projected top-4 finish resolves to an exact slot in every round, and a
   projected bottom-8 finish is a **prior only** in every round. Publish a range for the
   latter; never derive it.
@@ -33,10 +33,10 @@ which in the output.
 
 ## 3. Ordinal, not label
 
-Charts price the NBA's 60 slots; ours is 12 × 3 taking any player in any order. Our
+Charts price the NBA's 60 slots; ours is 12 × 4 taking any player in any order. Our
 `R.S` = overall ordinal **`(R−1)×12 + S`**, and that ordinal is the lookup. Reading the
-label under-prices every pick after round 1. Our whole draft fits inside their round 1
-plus early round 2.
+label under-prices every pick after round 1. Our whole draft (ordinals 1–48) fits inside
+their round 1 plus the first 18 of round 2.
 
 **Then convert the ordinal to a label in the chart's 30-wide rounds, never ours** — row
 `⌈ord/30⌉`, slot `ord − 30×(⌈ord/30⌉−1)`. Our 2.01 (ord 13) is chart `1.13`; our 3.09
@@ -64,6 +64,10 @@ class's crowd half is then the crowd rank of the slot's player (§5).
 
 That notice tracks vote settling on a newly-loaded class. **Not a class-strength signal,
 and never about a future class** — that is §*Future picks*.
+
+**4th round (ordinals 37–48): never use a crowd pick band** — its bands lump late 3rds and every 4th onto one rank (§7 ceiling). Where the crowd half would be a band, `VALUE` = Dizzle alone; prefix, else chart, labelled.
+
+**No pick prices above an earlier ordinal of the same draft** — cap it at that pick's value and say so.
 
 **The slot→value lookup, and every section that prices a slot uses this one:** prefer the
 prefix over the pick chart for every slot that has one. It is an exact per-slot rank on the

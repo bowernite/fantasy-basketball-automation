@@ -3,8 +3,8 @@
 Re-cut with `sim.py league-curve` when the calendar or the twelve files move.
 """
 CURVE_RATE = (0, 5, 8, 11, 14, 17, 20, 23, 26, 30, 35, 40, 48)
-CURVE_PF60 = (0, 12, 19, 35, 61, 104, 168, 255, 358, 522, 738, 955, 1304)
-CURVE_SLOPE = 43.1
+CURVE_PF60 = (0, 15, 25, 38, 57, 90, 148, 233, 335, 497, 712, 930, 1278)
+CURVE_SLOPE = 43.0
 CURVE_GP = 60
 
 

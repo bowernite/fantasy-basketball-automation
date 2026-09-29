@@ -14,8 +14,8 @@ from simlib.reports import OURS_ONLY, REPORTS
 _BASE_CACHE = {}
 _AGE_CACHE = {}
 
-PICK_AGE_WEIGHT = {1: 700, 2: 300, 3: 100}
-_PICK = re.compile(r"'(\d{2})(?: [A-Za-z]+)? ([123])(?:st|nd|rd)\b")
+PICK_AGE_WEIGHT = {1: 700, 2: 300, 3: 100, 4: 50}
+_PICK = re.compile(r"'(\d{2})(?: [A-Za-z]+)? ([1-4])(?:st|nd|rd|th)\b")
 
 KINDS = ("reports", "trade-screen", "player-effects", "title-column",
          "eval-columns")

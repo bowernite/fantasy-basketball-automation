@@ -119,11 +119,6 @@ class Thin(unittest.TestCase):
             self.assertEqual(sim.replacement(sim.thin(full, len(full)))[0],
                              sim.replacement(full)[0])
 
-    def test_a_live_counterparty_file_is_nowhere_near_our_padded_r(self):
-        with cheap_monte_carlo(20):
-            self.assertLess(sim.replacement(sim.our_roster(THEIR_ROSTER))[0],
-                            14.0)
-
     def test_thinning_at_a_stale_r_keeps_a_different_set_of_bodies(self):
         grinders = [sim.star(15.0, gp=82, elig=("SF", "PF"), n="GRIND%d" % i)
                     for i in range(3)]

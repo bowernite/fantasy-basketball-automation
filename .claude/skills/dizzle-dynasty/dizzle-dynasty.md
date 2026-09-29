@@ -48,8 +48,8 @@ Burries` in the `Player` cell, at that row's real board rank. This is the primar
 pick-pricing source: an exact rank per slot, on the same board the players are priced
 on (`eval-pick` §4). Match on the prefix, never on the name.
 
-- Coverage runs from `1.01` down to roughly the chart's early round 2 — well past our
-  36 slots, but **check the slot you want has a row** rather than assuming.
+- Coverage runs from `1.01` down to roughly the chart's early round 2 — can stop short of
+  our 48 slots (chart `2.18`), so **check the slot you want has a row** rather than assuming.
 - The prefix is the author's slot assignment and **drifts from `Pick Values`' own
   `Who I Might Take` column at a few slots.** They are two columns, not one; prefer the
   prefix and don't reconcile them by name.
@@ -106,7 +106,7 @@ Report `SOURCE` / `TAB` / `FORMAT` / `UPDATED` verbatim when citing these number
   read `1.03`. Never answer "who goes at one of our slots" from it; use the class
   ordinal or the dynasty board's slot prefix.
 - `Pick Values` charts the NBA's 60 slots (1.01–1.30, 2.01–2.30) and the dynasty
-  board's slot prefixes use the same labels. Ours is 12×3, so look up by **overall
+  board's slot prefixes use the same labels. Ours is 12×4, so look up by **overall
   ordinal** (`eval-pick`), never by our round label.
 - Pick labels are floats in the sheet, so a naive read gives `1.1` for 1.10 and
   `2.30000000000004` for 2.30. The recipe and the snapshot both correct this.

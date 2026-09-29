@@ -2,15 +2,15 @@ import unittest
 from tests.harness import *
 
 class UnprojectedRates(unittest.TestCase):
-    UNPROJECTED = {"n": "Chaney Johnson", "tm": "BKN", "avg": 19.1,
+    UNPROJECTED = {"n": "Unprojected Wing", "tm": "BKN", "avg": 19.1,
                    "tot": 343.0, "gp": 18, "posLabel": "SG/SF",
                    "elig": ["SF", "SG"]}
 
     def test_a_player_with_no_projection_is_flagged_on_his_row(self):
         path = roster_file(self.UNPROJECTED)
-        self.assertIsNone(sim.projected_rate("Chaney Johnson"))
+        self.assertIsNone(sim.projected_rate("Unprojected Wing"))
         row, = [l for l in render("players", path).splitlines()
-                if "Chaney Johnson" in l]
+                if "Unprojected Wing" in l]
         self.assertIn("noproj", row)
 
     def test_a_projected_player_is_not_flagged(self):
@@ -66,18 +66,11 @@ class UnusableSnapshot(unittest.TestCase):
         self.assertEqual(priced["Desmond Bane"], raw["Desmond Bane"])
 
 class ProjectedRateReachesTheWinFigure(unittest.TestCase):
-    def _snapshot_with(self, name, stats):
-        snap = json.loads(read_text(SNAPSHOT))
-        for r in snap["rows"]:
-            if r["name"] == name:
-                r["stats"] = stats
-        return json.dumps(snap)
-
     def test_projecting_a_starter_up_pays_wins_without_buying_him_games(self):
         best = max(json.loads(read_text(SNAPSHOT))["rows"],
                    key=lambda r: sim.projected_rate(r["name"]) or 0)
 
-        with projection_snapshot(self._snapshot_with("Josh Giddey",
+        with projection_snapshot(snapshot_with("Josh Giddey",
                                                      best["stats"])):
             up = rostered("Josh Giddey")
             up_pf = sim.run(sim.basis(), trials=8)["pf"]
@@ -88,11 +81,7 @@ class ProjectedRateReachesTheWinFigure(unittest.TestCase):
         self.assertGreater(up_pf - base_pf, 500)
         self.assertEqual(up["gp"], base["gp"])
 
-        with projection_snapshot(self._snapshot_with(
-                "Josh Giddey", {"pts": 3.5, "reb": 1.4, "dreb": 1.0, "ast": 0.8,
-                                "stl": 0.2, "blk": 0.1, "to": 0.7, "fgm": 1.4,
-                                "fga": 3.8, "ftm": 0.6, "fta": 0.8, "tpm": 0.3,
-                                "min": 9.0})):
+        with projection_snapshot(snapshot_with("Josh Giddey", BENCH_LINE)):
             down = rostered("Josh Giddey")
         self.assertLess(down["avg"], 15)
         self.assertEqual(down["gp"], base["gp"])

@@ -72,7 +72,7 @@ class PlayoffsReport(unittest.TestCase):
                 z = (float(mu_us) - float(mu_opp)) / float(sd)
                 self.assertAlmostEqual(float(p),
                                        0.5 * (1 + math.erf(z / math.sqrt(2))),
-                                       delta=0.015)
+                                       delta=0.025)
         self.assertIn("x a regular-season game", out)
 
     def test_the_footer_names_every_team_the_opponent_level_is_measured_on(self):

@@ -108,11 +108,11 @@ so **there is no wire-live check — ask rather than infer** (`get-league-info`)
 
 # Drafting
 
-Rookie draft every offseason. Not an auction; rookies only. 3 rounds × 12 = 36 picks.
+Rookie draft every offseason. Not an auction; rookies only. 4 rounds × 12 = 48 picks, every round tradeable.
 **A season's finish sets the following offseason's draft.**
 
-**Rounds 1–3 share one order** — `draftOrder[]` is a single array for the whole draft, no
-snake — so round-1 positioning propagates into rounds 2 and 3.
+**All 4 rounds share one order** — `draftOrder[]` is a single array for the whole draft, no
+snake — so round-1 positioning propagates into every later round.
 
 - **Top 4 by `recordOverall.rank`** take slots 9–12 in **reverse rank order** — exact on both
   boards. Read `rank`; never a win percentage you compute — a tied matchup splits them (a
@@ -121,7 +121,7 @@ snake — so round-1 positioning propagates into rounds 2 and 3.
   9th) and not by seed. This cut is 4 and the bracket's is wider — a team can play in the
   bracket and still pick 1.07/1.08.
 - **Bottom 8 by record (5th–12th)** fill slots 1–8, worst-to-best, then a **lottery**
-  reorders them — in all three rounds. Its scope is not fixed:
+  reorders them — in every round. Its scope is not fixed:
   the '26 board swapped only slots 2 and 3 and the worst team kept 1.01; the '25 board shows
   no reorder at all.
 

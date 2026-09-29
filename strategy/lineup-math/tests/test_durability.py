@@ -3,7 +3,7 @@ from tests.harness import *
 
 class Durability(unittest.TestCase):
     def test_value_is_proportional_to_games_played(self):
-        full = sim.our_roster() + sim.FA_FILL
+        full = sim.basis()
         trials = 200
 
         def pf(gp):
@@ -94,7 +94,7 @@ class DurabilityHeader(unittest.TestCase):
 class UnsignedPlayer(unittest.TestCase):
     def test_an_unsigned_body_scores_what_he_would_on_the_assumed_schedule(self):
         base = sim.basis()
-        free = {"n": "FREE", "tm": "FA", "avg": 30.0, "tot": 0.0, "gp": 70,
+        free = {"n": "FREE", "tm": "FA", "avg": 45.0, "tot": 0.0, "gp": 70,
                 "posLabel": "F", "elig": ["SF", "PF"]}
         unsigned = sim.run(base + [free], trials=8)["pf"]
         self.assertEqual(unsigned, sim.run(base + [dict(free, tm=sim.SIM_TM)],

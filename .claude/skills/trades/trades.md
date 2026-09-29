@@ -136,7 +136,7 @@ Whenever presenting deals (to the user or in reports) — packages, variants, or
 Method for `Δage` (§The big numbers; `sim_run.py` reports it as `dage_us`). Each side's age is a weighted mean:
 
 - **Player:** age = `AGE`; weight = max(0, `FPts/G` − 18) × `GP` (`<Name>.team.md` columns)
-- **Undrafted pick:** age = 20 − (draft year − current year), e.g. in 2026 a '27 pick is 19, '28 is 18; weight by our round: 1st **700** · 2nd **300** · 3rd **100**
+- **Undrafted pick:** age = 20 − (draft year − current year), e.g. in 2026 a '27 pick is 19, '28 is 18; weight by our round: 1st **700** · 2nd **300** · 3rd **100** · 4th **50**
 - **Drafted pick:** the player's row
 
 Example: Cade+('27 1st) > SGA+Fears. Out (24.9×2040 + 19×700) / 2740 = 23.4; In (28.1×2232 + 19.9×666) / 2898 = 26.2 → **+2.8**

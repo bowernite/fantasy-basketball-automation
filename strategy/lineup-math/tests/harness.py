@@ -133,6 +133,19 @@ def sleeper_rows(*lines):
                                 for n, s in lines]})
 
 
+BENCH_LINE = {"pts": 3.5, "reb": 1.4, "dreb": 1.0, "ast": 0.8, "stl": 0.2,
+              "blk": 0.1, "to": 0.7, "fgm": 1.4, "fga": 3.8, "ftm": 0.6,
+              "fta": 0.8, "tpm": 0.3, "min": 9.0}
+
+
+def snapshot_with(name, stats):
+    """The committed projection snapshot, with `name`'s line set to `stats`"""
+    snap = json.loads(read_text(SNAPSHOT))
+    snap["rows"] = [r for r in snap["rows"] if r["name"] != name]
+    snap["rows"].append({"name": name, "updated": 0, "stats": stats})
+    return json.dumps(snap)
+
+
 def roster_file(*rows):
     path = os.path.join(tempfile.mkdtemp(), "theirs.json")
     with open(path, "w") as f:

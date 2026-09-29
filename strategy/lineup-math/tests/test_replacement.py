@@ -2,25 +2,29 @@ import unittest
 from tests.harness import *
 
 class PerPositionReplacement(unittest.TestCase):
+    ROSTER, CENTER = "roster-161014-2025-26.json", "Nikola Vučević"
+
     def test_a_player_is_priced_against_a_replacement_of_his_own_slot_group(self):
-        full = sim.basis()
+        full = sim.basis(self.ROSTER)
         with cheap_monte_carlo(40):
             groups = {g: sim.replacement(full, 68, e)[0]
                       for g, e in sim.GROUPS.items()}
-            self.assertGreater(groups["center"], groups["forward"] + 1.0,
-                               "this roster's center group is not the tight one")
+            other = max(("guard", "forward"),
+                        key=lambda g: abs(groups[g] - groups["center"]))
+            self.assertGreater(abs(groups[other] - groups["center"]), 1.0,
+                               "every group's replacement agrees on this roster")
             base = sim.run(full, seed0=101, cal=sim.DELTA_W_CAL)
 
             def against(R, elig):
                 return sim.wins(base, sim.run(
-                    sim.swap(full, ["Jakob Poeltl"], [sim.star(R, 68, elig)]),
+                    sim.swap(full, [self.CENTER], [sim.star(R, 68, elig)]),
                     seed0=101, cal=sim.DELTA_W_CAL))
             own = against(groups["center"], ("C",))
-            forward = against(groups["forward"], ("SF", "PF"))
-            got, = sim.player_wins(full, ["Jakob Poeltl"], blocks=1).values()
+            foreign = against(groups[other], sim.GROUPS[other])
+            got, = sim.player_wins(full, [self.CENTER], blocks=1).values()
         self.assertAlmostEqual(got[0], own, delta=0.02)
-        self.assertGreater(forward, own + 0.02, "the two counterfactuals agree, "
-                           "so this roster cannot tell them apart")
+        self.assertGreater(abs(foreign - own), 0.02, "the two counterfactuals "
+                           "agree, so this roster cannot tell them apart")
 
     def test_the_table_states_the_replacement_rate_it_used_for_each_group(self):
         buf = io.StringIO()

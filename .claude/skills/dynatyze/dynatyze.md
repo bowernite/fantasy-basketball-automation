@@ -24,7 +24,7 @@ surfaces:
   `/basketball/players/` href). Coarse `Early`/`Mid 1st` buckets only. Read them even when
   they rank past the players we'd use.
 - **`/basketball/pick-rankings` — the full board**, every slot × round × year at our league
-  shape, so slot labels map 1:1 with no ordinal conversion. **Client-rendered; `curl`
+  shape (toggle `12tm` + `R1`–`R4`), so slot labels map 1:1 with no ordinal conversion. **Client-rendered; `curl`
   returns nothing.** Each row expands to a panel printing an **implied dynasty rank**, an
   uncertainty band, a per-cell trade weight `w`, and a per-year class-strength dial with
   its own stamp.

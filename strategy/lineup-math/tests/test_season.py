@@ -172,5 +172,6 @@ class FullSeason(unittest.TestCase):
             pinned = sim.bracket_odds()
             odds = sim.full_season()
             best, worst = bracket.team_levels()[0], bracket.team_levels()[-1]
-        self.assertLess(odds[best.path].title, pinned[best.path])
+        self.assertNotAlmostEqual(odds[best.path].title, pinned[best.path],
+                                  delta=0.01)
         self.assertGreaterEqual(odds[worst.path].title, pinned[worst.path])

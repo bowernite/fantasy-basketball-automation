@@ -5,15 +5,18 @@ class NoPoolHistory(unittest.TestCase):
     ROOKIE = "Thomas Sorber"
 
     def test_a_player_the_pool_has_never_seen_still_prices_as_a_body(self):
-        raw, = [q for q in sim._load(ROOKIE_ROSTER) if q["n"] == self.ROOKIE]
-        p = rostered(self.ROOKIE, ROOKIE_ROSTER)
+        rookie_line = dict(BENCH_LINE, pts=12.0, reb=7.0, dreb=5.0, min=24.0)
+        with projection_snapshot(snapshot_with(self.ROOKIE, rookie_line)):
+            p, = sim.our_roster(roster_file(
+                {"n": self.ROOKIE, "tm": "WAS", "avg": 0.0, "tot": 0.0,
+                 "gp": 0, "posLabel": "C", "elig": ["C"]}))
+            rate = sim.projected_rate(self.ROOKIE)
 
-        self.assertEqual((raw["avg"], raw["gp"]), (0.0, 0))
         self.assertEqual(sim.evidence_flags(self.ROOKIE), ["nopool"])
-        self.assertAlmostEqual(p["avg"], sim.projected_rate(self.ROOKIE))
+        self.assertAlmostEqual(p["avg"], rate)
         self.assertGreater(p["gp"], 20)
-        self.assertEqual(p["gp"], round(sim.project_gp(
-            self.ROOKIE, gp=0, rate=sim.projected_rate(self.ROOKIE))))
+        self.assertEqual(p["gp"], round(sim.project_gp(self.ROOKIE, gp=0,
+                                                       rate=rate)))
 
     def test_a_body_with_neither_a_pool_season_nor_a_projection_still_prices(self):
         path = roster_file({"n": "Unknown Rookie", "tm": "LAC", "avg": 0.0,

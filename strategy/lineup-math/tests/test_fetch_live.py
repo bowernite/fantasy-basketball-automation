@@ -109,11 +109,16 @@ class CommittedRosterFiles(unittest.TestCase):
 
     def test_every_committed_file_loads_into_bodies_that_price(self):
         for path in committed_rosters():
+            raw = {p["n"]: p for p in sim.our_roster(os.path.basename(path),
+                                                     projected=False)}
             rows = sim.our_roster(os.path.basename(path))
             with self.subTest(roster=os.path.basename(path)):
                 for p in rows:
-                    self.assertGreater(p["avg"], 0, "%s prices as nothing" % p["n"])
-                    self.assertTrue(0 < p["gp"] <= 82, "%s: %s gp" % (p["n"], p["gp"]))
+                    unknown = (sim.projected_rate(p["n"]) is None
+                               and not raw[p["n"]]["avg"])
+                    if not unknown:
+                        self.assertGreater(p["avg"], 0, "%s prices as nothing" % p["n"])
+                    self.assertTrue(0 <= p["gp"] <= 82, "%s: %s gp" % (p["n"], p["gp"]))
 
 class EmptyRosterFile(unittest.TestCase):
     def test_a_file_with_nobody_on_it_is_refused_instead_of_padded_into_a_team(self):

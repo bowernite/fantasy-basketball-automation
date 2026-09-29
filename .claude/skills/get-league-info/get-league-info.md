@@ -37,6 +37,7 @@ Unauthenticated. `https://www.fleaflicker.com/api/<Endpoint>?sport=NBA&league_id
 | `FetchLeagueRules`                                | —                                     | roster limits, roster positions, scoring categories          |
 | `FetchLeagueTransactions` / `FetchLeagueActivity` |                                       | adds/drops/trades                                            |
 | `FetchLeagueDraftBoard`                           |                                       | draft order + picks                                          |
+| `FetchTeamPicks`                                  | `team_id`                             | **current pick ownership, every future season** — `picks[].{season, slot.{round,slot,overall}, ownedBy, originalOwner, traded}`; a traded pick is listed under both teams (dedupe) |
 | `FetchTrades`                                     | `filter=TRADES_COMPLETED`, `result_offset` | **pending trades (default) and the full trade history** — see below |
 
 **On any trade question, fetch `FetchTrades` first.**
@@ -61,8 +62,8 @@ Pending-only fields: `numVetoesRequired`, `expiryIso`, `proposedOn` / `approvedO
 `picksObtained[]`, `playersReleased[]` — releases are how a side over `maxRosterSize` fits
 the deal (`league-info`).
 
-`picksObtained[].{season, slot, ownedBy, originalOwner, traded, lost}` is the **only wire
-source of pick ownership for any other season** — `FetchLeagueDraftBoard` returns `{}` for
+`picksObtained[].{season, slot, ownedBy, originalOwner, traded, lost}` is a pick's trade
+history; for who holds it now read `FetchTeamPicks` — `FetchLeagueDraftBoard` returns `{}` for
 every season but the last completed draft and the next one.
 
 - `ownedBy` is the pick's **current** holder, rewritten in every past trade that carries it — never who received it in that trade (that's the `teams[]` entry). A pick back with its originator drops `originalOwner`/`traded`/`lost` in every past trade too.
@@ -182,8 +183,8 @@ the last completed draft and the next one exist; other seasons return `{}`.
 Structure: `rows[].cells[].slot.{round,slot,overall}` · `rows[].cells[].team` is the
 **current** owner while `draftOrder[]` (index = slot) is the **original** owner ·
 `tradeId` + `fromOtherTeam: true` mark acquired picks · no `player` key = pick unmade.
-`draftOrder[]` is **one array for all three rounds** — no snake, and round-1 lottery
-positioning carries into rounds 2 and 3 (`league-info` owns the order rule). Its `rosters`
+`draftOrder[]` is **one array for every round** — no snake, and round-1 lottery
+positioning carries into every later round (`league-info` owns the order rule). Its `rosters`
 payload omits `rankDraft`. **A pick moved by an approved-but-unexecuted trade still shows as
 the sender's with `tradeId: None`** — cross-check `FetchTrades`.
 
