@@ -1,10 +1,11 @@
-# Auction live · room 0.13× cold (8) · 21:56:36
+# Auction live · room 0.13× cold (8) · 22:03:32
 
-**Us** $110 · 3 spots · max bid 108
-**Nominate** Quenton Jackson (early)
+**Us** $98 · 0 spots · max bid 0
+**Nominate** -
 **WARN ?Dennis Smith jr**
 **WARN ?Ogbaji**
 **WARN ?Zikarsky**
+**WARN ?poki**
 
 ## Card: Score, live Market$, gap, our cap
 
@@ -24,7 +25,7 @@
 | ~~Meleek Thomas~~ drafted Jon | | | | |
 | ~~Brandon Williams~~ Todd $111 | | | | |
 | ~~Chris Cenac~~ drafted Hlina | | | | |
-| Emanuel Sharp | 129 | 19 | +65 | 108 |
+| ~~Emanuel Sharp~~ Brett $10 | | | | |
 | ~~Vít Krejčí~~ Todd $31 | | | | |
 | ~~Julian Strawther~~ Brian $39 | | | | |
 | ~~Zach Collins~~ Josh $28 | | | | |
@@ -34,7 +35,7 @@
 | ~~Al Horford~~ Bonin $51 | | | | |
 | ~~Spencer Jones~~ Chris $32 | | | | |
 | ~~Nae'Qwan Tomlin~~ Brian $27 | | | | |
-| Tyus Jones | 48 | 20 | +12 | 90 |
+| ~~Tyus Jones~~ Brett $1 | | | | |
 | ~~Henri Veesaar~~ Jon $74 | | | | |
 | ~~Jaxson Hayes~~ Mitch $67 | | | | |
 | ~~Pat Spencer~~ Jon $18 | | | | |
@@ -45,52 +46,47 @@
 
 ## Rivals: max bid · $ left · spots
 
-- Hlina 61 · $62 · 2
-- Josh 58 · $58 · 1
-- Brian 39 · $39 · 1
-- Matthew 27 · $31 · 5
-- Joe 17 · $20 · 4
-- Henry 7 · $7 · 1
-- Chris 5 · $5 · 1
+- Matthew 27 · $29 · 3
+- Joe 10 · $10 · 1
 - Todd 1 · $3 · 3
 
 ## Last sales
 
-- Yuki Kawamura → Hlina $8
-- Pete Nance → Matthew $1
-- Drew Eubanks → Henry $1
-- Dennis Smith jr → Mitch $26
-- Rayan Rupert → Henry $7
-- Ogbaji → Matthew $1
-- Ariel Hukporti → Hlina $1
-- Nick Richards → Matthew $6
+- Tyus Jones → Brett $1
+- Tyler Nickel → Joe $1
+- poki → Hlina $1
+- Malique Lewis → Matthew $1
+- Nick Martinelli → Henry $1
+- Oscar Tshiebwe → Matthew $1
+- Adou Thiero → Hlina $1
+- Emanuel Sharp → Brett $10
 
 ## Top unsold: live Market$ · BASE · Δw ours
 
 | Player | Mkt | BASE | ours |
 |---|---:|---:|---:|
-| Jamir Watkins | 29 | 110 | -0.06 |
-| Jonas Valančiūnas | 26 | 67 | -0.12 |
-| D'Angelo Russell | 22 | 170 | -0.13 |
-| Quenton Jackson | 22 | 11 | -0.14 |
-| Guerschon Yabusele | 22 | 122 | -0.13 |
-| Tyus Jones | 20 | 135 | -0.05 |
-| Vince Williams | 20 | 112 | -0.11 |
-| Jaylen Clark | 20 | 63 | -0.13 |
-| Emanuel Sharp | 19 | 274 | -0.18 |
-| Tre Mann | 18 | 65 | -0.10 |
-| Jabari Walker | 18 | 1 | -0.08 |
-| Tyrese Martin | 16 | 116 | -0.14 |
-| Cameron Payne | 14 | 188 | -0.15 |
-| Josh Green | 14 | 87 | -0.16 |
-| Micah Peavy | 14 | 89 | -0.12 |
-| Kobe Brown | 14 | 0 | -0.18 |
-| Anthony Gill | 14 | 0 | -0.15 |
-| Bogoljub Marković | 13 | 145 | -0.13 |
-| Kevon Looney | 13 | 69 | -0.11 |
-| Killian Hayes | 13 | 184 | -0.16 |
-| Marcus Sasser | 13 | 151 | -0.15 |
-| Jordan Hawkins | 13 | 116 | -0.15 |
-| Cole Anthony | 13 | 125 | -0.16 |
-| Caleb Martin | 13 | 36 | -0.09 |
-| Nicolas Batum | 13 | 0 | -0.15 |
+| Jamir Watkins | 56 | 110 | -0.06 |
+| Jonas Valančiūnas | 51 | 67 | -0.12 |
+| D'Angelo Russell | 42 | 170 | -0.13 |
+| Guerschon Yabusele | 42 | 122 | -0.13 |
+| Vince Williams | 38 | 112 | -0.11 |
+| Tre Mann | 35 | 65 | -0.10 |
+| Jabari Walker | 35 | 1 | -0.08 |
+| Tyrese Martin | 31 | 116 | -0.14 |
+| Josh Green | 28 | 87 | -0.16 |
+| Kobe Brown | 28 | 0 | -0.18 |
+| Cameron Payne | 26 | 188 | -0.15 |
+| Anthony Gill | 26 | 0 | -0.15 |
+| Bogoljub Marković | 24 | 145 | -0.13 |
+| Kevon Looney | 24 | 69 | -0.11 |
+| Killian Hayes | 24 | 184 | -0.16 |
+| Marcus Sasser | 24 | 151 | -0.15 |
+| Cole Anthony | 24 | 125 | -0.16 |
+| Caleb Martin | 24 | 36 | -0.09 |
+| Nicolas Batum | 24 | 0 | -0.15 |
+| Dwight Powell | 24 | 0 | -0.15 |
+| Lonzo Ball | 22 | 67 | -0.16 |
+| Jaron Pierre | 21 | 157 | -0.19 |
+| Jamaree Bouyea | 19 | 36 | -0.18 |
+| Jalen Pickett | 19 | 0 | -0.18 |
+| Ochai Agbaji | 19 | 25 | -0.14 |
