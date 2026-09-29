@@ -1,13 +1,13 @@
 {
  "season": "2026",
  "source": "rotowire via sleeper",
- "updated": 1790596260243,
+ "updated": 1790682612419,
  "depth": 529,
  "rows": [
   {
    "name": "Luka Don\u010di\u0107",
    "team": "LAL",
-   "updated": 1790596259434,
+   "updated": 1790682611685,
    "stats": {
     "adp_dynasty": 3.5,
     "adp_std": 3.2,
@@ -36,7 +36,7 @@
   {
    "name": "Shai Gilgeous-Alexander",
    "team": "OKC",
-   "updated": 1790596259979,
+   "updated": 1790682612155,
    "stats": {
     "adp_dynasty": 2.7,
     "adp_std": 4.1,
@@ -64,7 +64,7 @@
   {
    "name": "Giannis Antetokounmpo",
    "team": "MIA",
-   "updated": 1790596259475,
+   "updated": 1790682611719,
    "stats": {
     "adp_dynasty": 18.3,
     "adp_std": 7.3,
@@ -93,7 +93,7 @@
   {
    "name": "Anthony Edwards",
    "team": "MIN",
-   "updated": 1790596259586,
+   "updated": 1790682611811,
    "stats": {
     "adp_dynasty": 7.0,
     "adp_std": 6.0,
@@ -121,7 +121,7 @@
   {
    "name": "Nikola Joki\u0107",
    "team": "DEN",
-   "updated": 1790596259171,
+   "updated": 1790682611459,
    "stats": {
     "adp_dynasty": 4.8,
     "adp_std": 2.5,
@@ -150,7 +150,7 @@
   {
    "name": "Devin Booker",
    "team": "PHX",
-   "updated": 1790596259790,
+   "updated": 1790682611987,
    "stats": {
     "adp_dynasty": 34.4,
     "adp_std": 18.7,
@@ -178,7 +178,7 @@
   {
    "name": "Donovan Mitchell",
    "team": "CLE",
-   "updated": 1790596259089,
+   "updated": 1790682611384,
    "stats": {
     "adp_dynasty": 24.0,
     "adp_std": 12.0,
@@ -206,7 +206,7 @@
   {
    "name": "Tyrese Maxey",
    "team": "PHI",
-   "updated": 1790596259774,
+   "updated": 1790682611973,
    "stats": {
     "adp_dynasty": 11.8,
     "adp_std": 8.5,
@@ -234,7 +234,7 @@
   {
    "name": "Victor Wembanyama",
    "team": "SAS",
-   "updated": 1790596259972,
+   "updated": 1790682612150,
    "stats": {
     "adp_dynasty": 1.3,
     "adp_std": 1.3,
@@ -263,7 +263,7 @@
   {
    "name": "Stephen Curry",
    "team": "GSW",
-   "updated": 1790596259248,
+   "updated": 1790682611528,
    "stats": {
     "adp_dynasty": 70.2,
     "adp_std": 24.8,
@@ -291,7 +291,7 @@
   {
    "name": "Jalen Brunson",
    "team": "NYK",
-   "updated": 1790596259676,
+   "updated": 1790682611886,
    "stats": {
     "adp_dynasty": 44.2,
     "adp_std": 22.8,
@@ -319,7 +319,7 @@
   {
    "name": "Jayson Tatum",
    "team": "BOS",
-   "updated": 1790596258969,
+   "updated": 1790682611280,
    "stats": {
     "adp_dynasty": 10.7,
     "adp_std": 11.1,
@@ -348,7 +348,7 @@
   {
    "name": "Cade Cunningham",
    "team": "DET",
-   "updated": 1790596259199,
+   "updated": 1790682611485,
    "stats": {
     "adp_dynasty": 6.5,
     "adp_std": 5.2,
@@ -377,7 +377,7 @@
   {
    "name": "Joel Embiid",
    "team": "PHI",
-   "updated": 1790596259768,
+   "updated": 1790682611963,
    "stats": {
     "adp_dynasty": 87.5,
     "adp_std": 56.2,
@@ -405,7 +405,7 @@
   {
    "name": "Kevin Durant",
    "team": "HOU",
-   "updated": 1790596259308,
+   "updated": 1790682611573,
    "stats": {
     "adp_dynasty": 68.8,
     "adp_std": 26.5,
@@ -433,7 +433,7 @@
   {
    "name": "Jamal Murray",
    "team": "DEN",
-   "updated": 1790596259183,
+   "updated": 1790682611468,
    "stats": {
     "adp_dynasty": 29.4,
     "adp_std": 30.7,
@@ -461,7 +461,7 @@
   {
    "name": "Kawhi Leonard",
    "team": "TOR",
-   "updated": 1790596260119,
+   "updated": 1790682612282,
    "stats": {
     "adp_dynasty": 73.3,
     "adp_std": 43.3,
@@ -489,7 +489,7 @@
   {
    "name": "Franz Wagner",
    "team": "ORL",
-   "updated": 1790596259748,
+   "updated": 1790682611945,
    "stats": {
     "adp_dynasty": 27.0,
     "adp_std": 34.0,
@@ -517,7 +517,7 @@
   {
    "name": "Paolo Banchero",
    "team": "ORL",
-   "updated": 1790596259704,
+   "updated": 1790682611910,
    "stats": {
     "adp_dynasty": 36.4,
     "adp_std": 28.7,
@@ -546,7 +546,7 @@
   {
    "name": "Jaylen Brown",
    "team": "PHI",
-   "updated": 1790596259755,
+   "updated": 1790682611953,
    "stats": {
     "adp_dynasty": 46.4,
     "adp_std": 31.7,
@@ -574,7 +574,7 @@
   {
    "name": "Austin Reaves",
    "team": "LAL",
-   "updated": 1790596259458,
+   "updated": 1790682611704,
    "stats": {
     "adp_dynasty": 23.3,
     "adp_std": 33.3,
@@ -603,7 +603,7 @@
   {
    "name": "Tyler Herro",
    "team": "MIL",
-   "updated": 1790596259528,
+   "updated": 1790682611763,
    "stats": {
     "adp_dynasty": 74.1,
     "adp_std": 57.4,
@@ -631,7 +631,7 @@
   {
    "name": "Lauri Markkanen",
    "team": "UTA",
-   "updated": 1790596260039,
+   "updated": 1790682612208,
    "stats": {
     "adp_dynasty": 45.6,
     "adp_std": 51.6,
@@ -659,7 +659,7 @@
   {
    "name": "Zion Williamson",
    "team": "NOP",
-   "updated": 1790596259029,
+   "updated": 1790682611335,
    "stats": {
     "adp_dynasty": 86.8,
     "adp_std": 50.5,
@@ -687,7 +687,7 @@
   {
    "name": "Cooper Flagg",
    "team": "DAL",
-   "updated": 1790596259122,
+   "updated": 1790682611415,
    "stats": {
     "adp_dynasty": 5.5,
     "adp_std": 16.2,
@@ -716,7 +716,7 @@
   {
    "name": "Trae Young",
    "team": "WAS",
-   "updated": 1790596260098,
+   "updated": 1790682612262,
    "stats": {
     "adp_dynasty": 55.4,
     "adp_std": 21.7,
@@ -744,7 +744,7 @@
   {
    "name": "Brandon Miller",
    "team": "CHA",
-   "updated": 1790596260225,
+   "updated": 1790682612401,
    "stats": {
     "adp_dynasty": 33.3,
     "adp_std": 45.3,
@@ -772,7 +772,7 @@
   {
    "name": "LaMelo Ball",
    "team": "MIN",
-   "updated": 1790596259572,
+   "updated": 1790682611799,
    "stats": {
     "adp_dynasty": 35.4,
     "adp_std": 32.7,
@@ -801,7 +801,7 @@
   {
    "name": "Jalen Johnson",
    "team": "ATL",
-   "updated": 1790596258909,
+   "updated": 1790682611226,
    "stats": {
     "adp_dynasty": 9.1,
     "adp_std": 14.4,
@@ -830,7 +830,7 @@
   {
    "name": "Anthony Davis",
    "team": "WAS",
-   "updated": 1790596260067,
+   "updated": 1790682612235,
    "stats": {
     "adp_dynasty": 54.3,
     "adp_std": 15.3,
@@ -858,7 +858,7 @@
   {
    "name": "Brandon Ingram",
    "team": "LAC",
-   "updated": 1790596259401,
+   "updated": 1790682611656,
    "stats": {
     "adp_dynasty": 98.6,
     "adp_std": 68.6,
@@ -886,7 +886,7 @@
   {
    "name": "Michael Porter",
    "team": "BKN",
-   "updated": 1790596259639,
+   "updated": 1790682611853,
    "stats": {
     "adp_dynasty": 84.5,
     "adp_std": 63.2,
@@ -914,7 +914,7 @@
   {
    "name": "Pascal Siakam",
    "team": "IND",
-   "updated": 1790596259373,
+   "updated": 1790682611631,
    "stats": {
     "adp_dynasty": 94.6,
     "adp_std": 46.6,
@@ -942,7 +942,7 @@
   {
    "name": "Darius Garland",
    "team": "LAC",
-   "updated": 1790596259395,
+   "updated": 1790682611651,
    "stats": {
     "adp_dynasty": 40.0,
     "adp_std": 55.0,
@@ -970,7 +970,7 @@
   {
    "name": "Trey Murphy",
    "team": "NOP",
-   "updated": 1790596259012,
+   "updated": 1790682611320,
    "stats": {
     "adp_dynasty": 25.5,
     "adp_std": 39.2,
@@ -998,7 +998,7 @@
   {
    "name": "Kyrie Irving",
    "team": "DAL",
-   "updated": 1790596259128,
+   "updated": 1790682611422,
    "stats": {
     "adp_dynasty": 71.4,
     "adp_std": 110.7,
@@ -1026,7 +1026,7 @@
   {
    "name": "Alperen \u015eeng\u00fcn",
    "team": "HOU",
-   "updated": 1790596259317,
+   "updated": 1790682611580,
    "stats": {
     "adp_dynasty": 16.7,
     "adp_std": 10.1,
@@ -1055,7 +1055,7 @@
   {
    "name": "Kon Knueppel",
    "team": "CHA",
-   "updated": 1790596260220,
+   "updated": 1790682612394,
    "stats": {
     "adp_dynasty": 30.6,
     "adp_std": 70.6,
@@ -1083,7 +1083,7 @@
   {
    "name": "Karl-Anthony Towns",
    "team": "NYK",
-   "updated": 1790596259700,
+   "updated": 1790682611907,
    "stats": {
     "adp_dynasty": 32.8,
     "adp_std": 9.5,
@@ -1111,7 +1111,7 @@
   {
    "name": "Deni Avdija",
    "team": "POR",
-   "updated": 1790596259844,
+   "updated": 1790682612037,
    "stats": {
     "adp_dynasty": 21.3,
     "adp_std": 37.3,
@@ -1140,7 +1140,7 @@
   {
    "name": "Desmond Bane",
    "team": "ORL",
-   "updated": 1790596259707,
+   "updated": 1790682611912,
    "stats": {
     "adp_dynasty": 49.4,
     "adp_std": 44.7,
@@ -1168,7 +1168,7 @@
   {
    "name": "Bam Adebayo",
    "team": "MIA",
-   "updated": 1790596259473,
+   "updated": 1790682611716,
    "stats": {
     "adp_dynasty": 48.4,
     "adp_std": 35.7,
@@ -1196,7 +1196,7 @@
   {
    "name": "Julius Randle",
    "team": "BKN",
-   "updated": 1790596259645,
+   "updated": 1790682611858,
    "stats": {
     "adp_dynasty": 97.2,
     "adp_std": 61.8,
@@ -1225,7 +1225,7 @@
   {
    "name": "Jalen Williams",
    "team": "OKC",
-   "updated": 1790596260010,
+   "updated": 1790682612184,
    "stats": {
     "adp_dynasty": 28.2,
     "adp_std": 23.8,
@@ -1253,7 +1253,7 @@
   {
    "name": "Jalen Green",
    "team": "PHX",
-   "updated": 1790596259822,
+   "updated": 1790682612013,
    "stats": {
     "adp_dynasty": 117.2,
     "adp_std": 90.8,
@@ -1281,7 +1281,7 @@
   {
    "name": "Norman Powell",
    "team": "CHI",
-   "updated": 1790596259058,
+   "updated": 1790682611360,
    "stats": {
     "adp_dynasty": 145.5,
     "adp_std": 93.2,
@@ -1308,7 +1308,7 @@
   {
    "name": "LeBron James",
    "team": "PHI",
-   "updated": 1790596259770,
+   "updated": 1790682611966,
    "stats": {
     "adp_dynasty": 157.3,
     "adp_std": 54.3,
@@ -1337,7 +1337,7 @@
   {
    "name": "Scottie Barnes",
    "team": "TOR",
-   "updated": 1790596260103,
+   "updated": 1790682612267,
    "stats": {
     "adp_dynasty": 8.3,
     "adp_std": 13.3,
@@ -1366,7 +1366,7 @@
   {
    "name": "Nickeil Alexander-Walker",
    "team": "ATL",
-   "updated": 1790596258889,
+   "updated": 1790682611205,
    "stats": {
     "adp_dynasty": 62.3,
     "adp_std": 95.3,
@@ -1394,7 +1394,7 @@
   {
    "name": "Coby White",
    "team": "CHA",
-   "updated": 1790596260241,
+   "updated": 1790682612417,
    "stats": {
     "adp_dynasty": 102.0,
     "adp_std": 81.0,
@@ -1422,7 +1422,7 @@
   {
    "name": "James Harden",
    "team": "CLE",
-   "updated": 1790596259082,
+   "updated": 1790682611380,
    "stats": {
     "adp_dynasty": 89.1,
     "adp_std": 36.4,
@@ -1451,7 +1451,7 @@
   {
    "name": "Jaren Jackson",
    "team": "UTA",
-   "updated": 1790596260037,
+   "updated": 1790682612206,
    "stats": {
     "adp_dynasty": 43.1,
     "adp_std": 40.4,
@@ -1479,7 +1479,7 @@
   {
    "name": "Cedric Coward",
    "team": "MEM",
-   "updated": 1790596260148,
+   "updated": 1790682612306,
    "stats": {
     "adp_dynasty": 60.2,
     "adp_std": 134.8,
@@ -1507,7 +1507,7 @@
   {
    "name": "Damian Lillard",
    "team": "POR",
-   "updated": 1790596259866,
+   "updated": 1790682612058,
    "stats": {
     "adp_dynasty": 135.7,
     "adp_std": 147.1,
@@ -1536,7 +1536,7 @@
   {
    "name": "Payton Pritchard",
    "team": "BOS",
-   "updated": 1790596258958,
+   "updated": 1790682611269,
    "stats": {
     "adp_dynasty": 106.0,
     "adp_std": 83.0,
@@ -1564,7 +1564,7 @@
   {
    "name": "Matas Buzelis",
    "team": "CHI",
-   "updated": 1790596259035,
+   "updated": 1790682611340,
    "stats": {
     "adp_dynasty": 61.0,
     "adp_std": 94.0,
@@ -1592,7 +1592,7 @@
   {
    "name": "Jalen Duren",
    "team": "DET",
-   "updated": 1790596259202,
+   "updated": 1790682611489,
    "stats": {
     "adp_dynasty": 41.5,
     "adp_std": 48.2,
@@ -1619,7 +1619,7 @@
   {
    "name": "Evan Mobley",
    "team": "CLE",
-   "updated": 1790596259091,
+   "updated": 1790682611387,
    "stats": {
     "adp_dynasty": 22.0,
     "adp_std": 19.0,
@@ -1647,7 +1647,7 @@
   {
    "name": "Stephon Castle",
    "team": "SAS",
-   "updated": 1790596259935,
+   "updated": 1790682612117,
    "stats": {
     "adp_dynasty": 37.7,
     "adp_std": 64.1,
@@ -1676,7 +1676,7 @@
   {
    "name": "De'Aaron Fox",
    "team": "SAS",
-   "updated": 1790596259940,
+   "updated": 1790682612123,
    "stats": {
     "adp_dynasty": 77.0,
     "adp_std": 52.0,
@@ -1704,7 +1704,7 @@
   {
    "name": "Amen Thompson",
    "team": "HOU",
-   "updated": 1790596259333,
+   "updated": 1790682611595,
    "stats": {
     "adp_dynasty": 19.0,
     "adp_std": 20.0,
@@ -1733,7 +1733,7 @@
   {
    "name": "Domantas Sabonis",
    "team": "SAC",
-   "updated": 1790596259921,
+   "updated": 1790682612107,
    "stats": {
     "adp_dynasty": 67.8,
     "adp_std": 27.5,
@@ -1762,7 +1762,7 @@
   {
    "name": "Keyonte George",
    "team": "UTA",
-   "updated": 1790596260025,
+   "updated": 1790682612196,
    "stats": {
     "adp_dynasty": 42.6,
     "adp_std": 79.6,
@@ -1790,7 +1790,7 @@
   {
    "name": "Collin Sexton",
    "team": "LAL",
-   "updated": 1790596259463,
+   "updated": 1790682611707,
    "stats": {
     "adp_dynasty": 233.8,
     "adp_std": 168.5,
@@ -1818,7 +1818,7 @@
   {
    "name": "Ryan Rollins",
    "team": "MIL",
-   "updated": 1790596259554,
+   "updated": 1790682611784,
    "stats": {
     "adp_dynasty": 82.6,
     "adp_std": 133.6,
@@ -1846,7 +1846,7 @@
   {
    "name": "Tyrese Haliburton",
    "team": "IND",
-   "updated": 1790596259348,
+   "updated": 1790682611608,
    "stats": {
     "adp_dynasty": 12.4,
     "adp_std": 17.7,
@@ -1874,7 +1874,7 @@
   {
    "name": "CJ McCollum",
    "team": "ATL",
-   "updated": 1790596258916,
+   "updated": 1790682611234,
    "stats": {
     "adp_dynasty": 197.4,
     "adp_std": 105.7,
@@ -1902,7 +1902,7 @@
   {
    "name": "AJ Dybantsa",
    "team": "WAS",
-   "updated": 1790596260069,
+   "updated": 1790682612237,
    "stats": {
     "adp_dynasty": 15.6,
     "adp_std": 53.6,
@@ -1930,7 +1930,7 @@
   {
    "name": "RJ Barrett",
    "team": "TOR",
-   "updated": 1790596260107,
+   "updated": 1790682612269,
    "stats": {
     "adp_dynasty": 167.3,
     "adp_std": 100.3,
@@ -1958,7 +1958,7 @@
   {
    "name": "Miles Bridges",
    "team": "PHX",
-   "updated": 1790596259798,
+   "updated": 1790682611992,
    "stats": {
     "adp_dynasty": 118.2,
     "adp_std": 71.8,
@@ -1986,7 +1986,7 @@
   {
    "name": "Cameron Boozer",
    "team": "MEM",
-   "updated": 1790596260141,
+   "updated": 1790682612301,
    "stats": {
     "adp_dynasty": 13.7,
     "adp_std": 25.1,
@@ -2014,7 +2014,7 @@
   {
    "name": "Shaedon Sharpe",
    "team": "POR",
-   "updated": 1790596259875,
+   "updated": 1790682612066,
    "stats": {
     "adp_dynasty": 120.4,
     "adp_std": 99.7,
@@ -2041,7 +2041,7 @@
   {
    "name": "Chet Holmgren",
    "team": "OKC",
-   "updated": 1790596259985,
+   "updated": 1790682612160,
    "stats": {
     "adp_dynasty": 20.1,
     "adp_std": 29.4,
@@ -2069,7 +2069,7 @@
   {
    "name": "Ty Jerome",
    "team": "MEM",
-   "updated": 1790596260163,
+   "updated": 1790682612346,
    "stats": {
     "adp_dynasty": 176.8,
     "adp_std": 176.5,
@@ -2097,7 +2097,7 @@
   {
    "name": "Dejounte Murray",
    "team": "NOP",
-   "updated": 1790596259015,
+   "updated": 1790682611322,
    "stats": {
     "adp_dynasty": 111.3,
     "adp_std": 113.3,
@@ -2126,7 +2126,7 @@
   {
    "name": "Darius Acuff",
    "team": "SAC",
-   "updated": 1790596259886,
+   "updated": 1790682612075,
    "stats": {
     "adp_dynasty": 52.7,
     "adp_std": 170.1,
@@ -2154,7 +2154,7 @@
   {
    "name": "Zach LaVine",
    "team": "SAC",
-   "updated": 1790596259905,
+   "updated": 1790682612091,
    "stats": {
     "adp_dynasty": 147.2,
     "adp_std": 89.8,
@@ -2181,7 +2181,7 @@
   {
    "name": "Darryn Peterson",
    "team": "UTA",
-   "updated": 1790596260049,
+   "updated": 1790682612219,
    "stats": {
     "adp_dynasty": 17.7,
     "adp_std": 42.1,
@@ -2209,7 +2209,7 @@
   {
    "name": "Ja Morant",
    "team": "POR",
-   "updated": 1790596259870,
+   "updated": 1790682612061,
    "stats": {
     "adp_dynasty": 85.6,
     "adp_std": 47.6,
@@ -2237,7 +2237,7 @@
   {
    "name": "Alex Sarr",
    "team": "WAS",
-   "updated": 1790596260090,
+   "updated": 1790682612255,
    "stats": {
     "adp_dynasty": 39.6,
     "adp_std": 62.6,
@@ -2265,7 +2265,7 @@
   {
    "name": "Derrick White",
    "team": "BOS",
-   "updated": 1790596258974,
+   "updated": 1790682611286,
    "stats": {
     "adp_dynasty": 81.3,
     "adp_std": 49.3,
@@ -2293,7 +2293,7 @@
   {
    "name": "Jerami Grant",
    "team": "MEM",
-   "updated": 1790596260152,
+   "updated": 1790682612310,
    "stats": {
     "adp_dynasty": 227.0,
     "adp_std": 165.0,
@@ -2320,7 +2320,7 @@
   {
    "name": "Dylan Harper",
    "team": "SAS",
-   "updated": 1790596259944,
+   "updated": 1790682612125,
    "stats": {
     "adp_dynasty": 14.8,
     "adp_std": 69.5,
@@ -2348,7 +2348,7 @@
   {
    "name": "Kristaps Porzi\u0146\u0123is",
    "team": "GSW",
-   "updated": 1790596259285,
+   "updated": 1790682611553,
    "stats": {
     "adp_dynasty": 139.6,
     "adp_std": 88.6,
@@ -2376,7 +2376,7 @@
   {
    "name": "OG Anunoby",
    "team": "NYK",
-   "updated": 1790596259666,
+   "updated": 1790682611877,
    "stats": {
     "adp_dynasty": 65.7,
     "adp_std": 59.1,
@@ -2404,7 +2404,7 @@
   {
    "name": "Josh Giddey",
    "team": "CHI",
-   "updated": 1790596259043,
+   "updated": 1790682611348,
    "stats": {
     "adp_dynasty": 38.0,
     "adp_std": 38.0,
@@ -2433,7 +2433,7 @@
   {
    "name": "Caleb Wilson",
    "team": "CHI",
-   "updated": 1790596259073,
+   "updated": 1790682611372,
    "stats": {
     "adp_dynasty": 26.8,
     "adp_std": 91.5,
@@ -2461,7 +2461,7 @@
   {
    "name": "VJ Edgecombe",
    "team": "PHI",
-   "updated": 1790596259761,
+   "updated": 1790682611958,
    "stats": {
     "adp_dynasty": 31.3,
     "adp_std": 78.3,
@@ -2489,7 +2489,7 @@
   {
    "name": "Dillon Brooks",
    "team": "PHX",
-   "updated": 1790596259802,
+   "updated": 1790682611994,
    "stats": {
     "adp_dynasty": 207.4,
     "adp_std": 144.7,
@@ -2516,7 +2516,7 @@
   {
    "name": "Jimmy Butler",
    "team": "GSW",
-   "updated": 1790596259242,
+   "updated": 1790682611523,
    "stats": {
     "adp_dynasty": 136.4,
     "adp_std": 67.7,
@@ -2544,7 +2544,7 @@
   {
    "name": "Jabari Smith",
    "team": "HOU",
-   "updated": 1790596259327,
+   "updated": 1790682611590,
    "stats": {
     "adp_dynasty": 93.6,
     "adp_std": 117.6,
@@ -2572,7 +2572,7 @@
   {
    "name": "Aaron Gordon",
    "team": "DEN",
-   "updated": 1790596259165,
+   "updated": 1790682611454,
    "stats": {
     "adp_dynasty": 142.4,
     "adp_std": 122.7,
@@ -2600,7 +2600,7 @@
   {
    "name": "Saddiq Bey",
    "team": "NOP",
-   "updated": 1790596258978,
+   "updated": 1790682611289,
    "stats": {
     "adp_dynasty": 208.1,
     "adp_std": 177.4,
@@ -2628,7 +2628,7 @@
   {
    "name": "Onyeka Okongwu",
    "team": "ATL",
-   "updated": 1790596258923,
+   "updated": 1790682611239,
    "stats": {
     "adp_dynasty": 58.3,
     "adp_std": 72.3,
@@ -2656,7 +2656,7 @@
   {
    "name": "John Collins",
    "team": "DET",
-   "updated": 1790596259197,
+   "updated": 1790682611481,
    "stats": {
     "adp_dynasty": 152.0,
     "adp_std": 114.0,
@@ -2684,7 +2684,7 @@
   {
    "name": "Quentin Grimes",
    "team": "LAL",
-   "updated": 1790596259436,
+   "updated": 1790682611687,
    "stats": {
     "adp_dynasty": 183.5,
     "adp_std": 155.2,
@@ -2712,7 +2712,7 @@
   {
    "name": "Andrew Wiggins",
    "team": "MIA",
-   "updated": 1790596259512,
+   "updated": 1790682611751,
    "stats": {
     "adp_dynasty": 158.7,
     "adp_std": 108.1,
@@ -2740,7 +2740,7 @@
   {
    "name": "Naz Reid",
    "team": "CHA",
-   "updated": 1790596260231,
+   "updated": 1790682612407,
    "stats": {
     "adp_dynasty": 88.8,
     "adp_std": 75.5,
@@ -2768,7 +2768,7 @@
   {
    "name": "Immanuel Quickley",
    "team": "TOR",
-   "updated": 1790596260129,
+   "updated": 1790682612290,
    "stats": {
     "adp_dynasty": 90.6,
     "adp_std": 82.6,
@@ -2796,7 +2796,7 @@
   {
    "name": "Zach Edey",
    "team": "MEM",
-   "updated": 1790596260150,
+   "updated": 1790682612308,
    "stats": {
     "adp_dynasty": 53.0,
     "adp_std": 101.0,
@@ -2824,7 +2824,7 @@
   {
    "name": "Jaime Jaquez",
    "team": "MIL",
-   "updated": 1790596259534,
+   "updated": 1790682611768,
    "stats": {
     "adp_dynasty": 140.0,
     "adp_std": 128.0,
@@ -2852,7 +2852,7 @@
   {
    "name": "Jaden McDaniels",
    "team": "MIN",
-   "updated": 1790596259603,
+   "updated": 1790682611826,
    "stats": {
     "adp_dynasty": 75.8,
     "adp_std": 77.5,
@@ -2880,7 +2880,7 @@
   {
    "name": "Ayo Dosunmu",
    "team": "MIN",
-   "updated": 1790596259585,
+   "updated": 1790682611809,
    "stats": {
     "adp_dynasty": 141.2,
     "adp_std": 131.8,
@@ -2908,7 +2908,7 @@
   {
    "name": "Paul George",
    "team": "BOS",
-   "updated": 1790596258948,
+   "updated": 1790682611259,
    "stats": {
     "adp_dynasty": 131.3,
     "adp_std": 86.3,
@@ -2936,7 +2936,7 @@
   {
    "name": "Jeremiah Fears",
    "team": "NOP",
-   "updated": 1790596258980,
+   "updated": 1790682611291,
    "stats": {
     "adp_dynasty": 103.1,
     "adp_std": 162.4,
@@ -2964,7 +2964,7 @@
   {
    "name": "Mikal Bridges",
    "team": "NYK",
-   "updated": 1790596259668,
+   "updated": 1790682611880,
    "stats": {
     "adp_dynasty": 96.7,
     "adp_std": 74.1,
@@ -2992,7 +2992,7 @@
   {
    "name": "Kyle Kuzma",
    "team": "MIL",
-   "updated": 1790596259540,
+   "updated": 1790682611772,
    "stats": {
     "adp_dynasty": 292.5,
     "adp_std": 156.2,
@@ -3020,7 +3020,7 @@
   {
    "name": "Ivica Zubac",
    "team": "IND",
-   "updated": 1790596259384,
+   "updated": 1790682611641,
    "stats": {
     "adp_dynasty": 59.2,
     "adp_std": 41.8,
@@ -3047,7 +3047,7 @@
   {
    "name": "Anthony Black",
    "team": "ORL",
-   "updated": 1790596259714,
+   "updated": 1790682611917,
    "stats": {
     "adp_dynasty": 108.1,
     "adp_std": 163.4,
@@ -3075,7 +3075,7 @@
   {
    "name": "Jarrett Allen",
    "team": "CLE",
-   "updated": 1790596259077,
+   "updated": 1790682611375,
    "stats": {
     "adp_dynasty": 92.2,
     "adp_std": 66.8,
@@ -3102,7 +3102,7 @@
   {
    "name": "DeMar DeRozan",
    "team": "DEN",
-   "updated": 1790596259161,
+   "updated": 1790682611451,
    "stats": {
     "adp_dynasty": 234.1,
     "adp_std": 107.4,
@@ -3129,7 +3129,7 @@
   {
    "name": "Derik Queen",
    "team": "NOP",
-   "updated": 1790596259021,
+   "updated": 1790682611327,
    "stats": {
     "adp_dynasty": 63.5,
     "adp_std": 112.2,
@@ -3158,7 +3158,7 @@
   {
    "name": "Walker Kessler",
    "team": "LAL",
-   "updated": 1790596259442,
+   "updated": 1790682611692,
    "stats": {
     "adp_dynasty": 51.8,
     "adp_std": 58.5,
@@ -3186,7 +3186,7 @@
   {
    "name": "Jalen Suggs",
    "team": "ORL",
-   "updated": 1790596259742,
+   "updated": 1790682611939,
    "stats": {
     "adp_dynasty": 79.4,
     "adp_std": 98.7,
@@ -3214,7 +3214,7 @@
   {
    "name": "Kevin Porter",
    "team": "MIL",
-   "updated": 1790596259552,
+   "updated": 1790682611782,
    "stats": {
     "adp_dynasty": 143.8,
     "adp_std": 119.5,
@@ -3242,7 +3242,7 @@
   {
    "name": "Jaylen Wells",
    "team": "MEM",
-   "updated": 1790596260196,
+   "updated": 1790682612374,
    "stats": {
     "adp_dynasty": 258.5,
     "adp_std": 239.2,
@@ -3269,7 +3269,7 @@
   {
    "name": "Ace Bailey",
    "team": "UTA",
-   "updated": 1790596260013,
+   "updated": 1790682612186,
    "stats": {
     "adp_dynasty": 110.6,
     "adp_std": 130.6,
@@ -3297,7 +3297,7 @@
   {
    "name": "Grayson Allen",
    "team": "CHA",
-   "updated": 1790596260199,
+   "updated": 1790682612378,
    "stats": {
     "adp_dynasty": 203.6,
     "adp_std": 167.6,
@@ -3324,7 +3324,7 @@
   {
    "name": "Keegan Murray",
    "team": "SAC",
-   "updated": 1790596259913,
+   "updated": 1790682612099,
    "stats": {
     "adp_dynasty": 95.5,
     "adp_std": 102.2,
@@ -3352,7 +3352,7 @@
   {
    "name": "Ajay Mitchell",
    "team": "OKC",
-   "updated": 1790596259991,
+   "updated": 1790682612168,
    "stats": {
     "adp_dynasty": 104.0,
     "adp_std": 154.0,
@@ -3380,7 +3380,7 @@
   {
    "name": "P.J. Washington",
    "team": "DAL",
-   "updated": 1790596259154,
+   "updated": 1790682611444,
    "stats": {
     "adp_dynasty": 132.7,
     "adp_std": 125.1,
@@ -3408,7 +3408,7 @@
   {
    "name": "Scoot Henderson",
    "team": "POR",
-   "updated": 1790596259859,
+   "updated": 1790682612050,
    "stats": {
     "adp_dynasty": 101.4,
     "adp_std": 150.7,
@@ -3435,7 +3435,7 @@
   {
    "name": "Anfernee Simons",
    "team": "PHI",
-   "updated": 1790596259781,
+   "updated": 1790682611980,
    "stats": {
     "adp_dynasty": 195.3,
     "adp_std": 126.3,
@@ -3462,7 +3462,7 @@
   {
    "name": "Bobby Portis",
    "team": "MIA",
-   "updated": 1790596259499,
+   "updated": 1790682611742,
    "stats": {
     "adp_dynasty": 266.2,
     "adp_std": 160.8,
@@ -3490,7 +3490,7 @@
   {
    "name": "Christian Braun",
    "team": "DEN",
-   "updated": 1790596259159,
+   "updated": 1790682611449,
    "stats": {
     "adp_dynasty": 150.0,
     "adp_std": 116.0,
@@ -3518,7 +3518,7 @@
   {
    "name": "Devin Vassell",
    "team": "SAS",
-   "updated": 1790596259969,
+   "updated": 1790682612147,
    "stats": {
     "adp_dynasty": 119.7,
     "adp_std": 97.1,
@@ -3546,7 +3546,7 @@
   {
    "name": "Mikel Brown",
    "team": "BKN",
-   "updated": 1790596259613,
+   "updated": 1790682611834,
    "stats": {
     "adp_dynasty": 47.8,
     "adp_std": 140.5,
@@ -3574,7 +3574,7 @@
   {
    "name": "Keldon Johnson",
    "team": "SAS",
-   "updated": 1790596259950,
+   "updated": 1790682612131,
    "stats": {
     "adp_dynasty": 244.7,
     "adp_std": 201.1,
@@ -3602,7 +3602,7 @@
   {
    "name": "De'Anthony Melton",
    "team": "GSW",
-   "updated": 1790596259264,
+   "updated": 1790682611540,
    "stats": {
     "adp_dynasty": 188.4,
     "adp_std": 181.7,
@@ -3629,7 +3629,7 @@
   {
    "name": "Reed Sheppard",
    "team": "HOU",
-   "updated": 1790596259320,
+   "updated": 1790682611583,
    "stats": {
     "adp_dynasty": 57.4,
     "adp_std": 109.7,
@@ -3656,7 +3656,7 @@
   {
    "name": "Andrew Nembhard",
    "team": "IND",
-   "updated": 1790596259362,
+   "updated": 1790682611620,
    "stats": {
     "adp_dynasty": 125.7,
     "adp_std": 96.1,
@@ -3684,7 +3684,7 @@
   {
    "name": "Cameron Johnson",
    "team": "DEN",
-   "updated": 1790596259169,
+   "updated": 1790682611457,
    "stats": {
     "adp_dynasty": 187.3,
     "adp_std": 123.3,
@@ -3712,7 +3712,7 @@
   {
    "name": "Donovan Clingan",
    "team": "POR",
-   "updated": 1790596259856,
+   "updated": 1790682612048,
    "stats": {
     "adp_dynasty": 72.4,
     "adp_std": 92.7,
@@ -3740,7 +3740,7 @@
   {
    "name": "Kel'el Ware",
    "team": "MIL",
-   "updated": 1790596259569,
+   "updated": 1790682611796,
    "stats": {
     "adp_dynasty": 50.5,
     "adp_std": 76.2,
@@ -3768,7 +3768,7 @@
   {
    "name": "Brandin Podziemski",
    "team": "GSW",
-   "updated": 1790596259282,
+   "updated": 1790682611550,
    "stats": {
     "adp_dynasty": 138.5,
     "adp_std": 127.2,
@@ -3796,7 +3796,7 @@
   {
    "name": "Mark Williams",
    "team": "PHX",
-   "updated": 1790596259843,
+   "updated": 1790682612034,
    "stats": {
     "adp_dynasty": 124.4,
     "adp_std": 124.7,
@@ -3821,7 +3821,7 @@
   {
    "name": "Aaron Nesmith",
    "team": "IND",
-   "updated": 1790596259366,
+   "updated": 1790682611623,
    "stats": {
     "adp_dynasty": 169.8,
     "adp_std": 149.5,
@@ -3849,7 +3849,7 @@
   {
    "name": "Egor D\u00ebmin",
    "team": "BKN",
-   "updated": 1790596259623,
+   "updated": 1790682611839,
    "stats": {
     "adp_dynasty": 122.4,
     "adp_std": 179.7,
@@ -3877,7 +3877,7 @@
   {
    "name": "Myles Turner",
    "team": "MIL",
-   "updated": 1790596259566,
+   "updated": 1790682611794,
    "stats": {
     "adp_dynasty": 127.8,
     "adp_std": 80.5,
@@ -3905,7 +3905,7 @@
   {
    "name": "Max Christie",
    "team": "DAL",
-   "updated": 1790596259114,
+   "updated": 1790682611408,
    "stats": {
     "adp_dynasty": 175.8,
     "adp_std": 297.5,
@@ -3932,7 +3932,7 @@
   {
    "name": "Peyton Watson",
    "team": "CLE",
-   "updated": 1790596259110,
+   "updated": 1790682611403,
    "stats": {
     "adp_dynasty": 91.6,
     "adp_std": 146.6,
@@ -3960,7 +3960,7 @@
   {
    "name": "Kyshawn George",
    "team": "WAS",
-   "updated": 1790596260072,
+   "updated": 1790682612240,
    "stats": {
     "adp_dynasty": 69.2,
     "adp_std": 106.8,
@@ -3988,7 +3988,7 @@
   {
    "name": "Nic Claxton",
    "team": "CHI",
-   "updated": 1790596259037,
+   "updated": 1790682611343,
    "stats": {
     "adp_dynasty": 99.1,
     "adp_std": 103.4,
@@ -4016,7 +4016,7 @@
   {
    "name": "Fred VanVleet",
    "team": "HOU",
-   "updated": 1790596259339,
+   "updated": 1790682611600,
    "stats": {
     "adp_dynasty": 149.1,
     "adp_std": 153.4,
@@ -4044,7 +4044,7 @@
   {
    "name": "Toumani Camara",
    "team": "POR",
-   "updated": 1790596259848,
+   "updated": 1790682612040,
    "stats": {
     "adp_dynasty": 121.3,
     "adp_std": 115.3,
@@ -4072,7 +4072,7 @@
   {
    "name": "Scotty Pippen",
    "team": "MEM",
-   "updated": 1790596260179,
+   "updated": 1790682612360,
    "stats": {
     "adp_dynasty": 209.7,
     "adp_std": 246.1,
@@ -4100,7 +4100,7 @@
   {
    "name": "Maxime Raynaud",
    "team": "SAC",
-   "updated": 1790596259918,
+   "updated": 1790682612105,
    "stats": {
     "adp_dynasty": 137.2,
     "adp_std": 169.8,
@@ -4128,7 +4128,7 @@
   {
    "name": "Jared McCain",
    "team": "OKC",
-   "updated": 1790596259989,
+   "updated": 1790682612165,
    "stats": {
     "adp_dynasty": 159.7,
     "adp_std": 166.1,
@@ -4155,7 +4155,7 @@
   {
    "name": "Sandro Mamukelashvili",
    "team": "LAL",
-   "updated": 1790596259455,
+   "updated": 1790682611701,
    "stats": {
     "adp_dynasty": 199.4,
     "adp_std": 200.7,
@@ -4183,7 +4183,7 @@
   {
    "name": "Keaton Wagler",
    "team": "LAC",
-   "updated": 1790596259428,
+   "updated": 1790682611680,
    "stats": {
     "adp_dynasty": 66.3,
     "adp_std": 180.3,
@@ -4211,7 +4211,7 @@
   {
    "name": "Brayden Burries",
    "team": "MIL",
-   "updated": 1790596259519,
+   "updated": 1790682611756,
    "stats": {
     "adp_dynasty": 107.2,
     "adp_std": 187.8,
@@ -4239,7 +4239,7 @@
   {
    "name": "Jrue Holiday",
    "team": "POR",
-   "updated": 1790596259861,
+   "updated": 1790682612053,
    "stats": {
     "adp_dynasty": 212.2,
     "adp_std": 136.8,
@@ -4267,7 +4267,7 @@
   {
    "name": "De'Andre Hunter",
    "team": "SAC",
-   "updated": 1790596259897,
+   "updated": 1790682612085,
    "stats": {
     "adp_dynasty": 192.1,
     "adp_std": 174.4,
@@ -4294,7 +4294,7 @@
   {
    "name": "Naji Marshall",
    "team": "DAL",
-   "updated": 1790596259139,
+   "updated": 1790682611429,
    "stats": {
     "adp_dynasty": 198.4,
     "adp_std": 247.7,
@@ -4322,7 +4322,7 @@
   {
    "name": "Tari Eason",
    "team": "HOU",
-   "updated": 1790596259311,
+   "updated": 1790682611575,
    "stats": {
     "adp_dynasty": 105.5,
     "adp_std": 111.2,
@@ -4350,7 +4350,7 @@
   {
    "name": "Tim Hardaway",
    "team": "MIA",
-   "updated": 1790596259483,
+   "updated": 1790682611727,
    "stats": {
     "adp_dynasty": 347.3,
     "adp_std": 356.3,
@@ -4377,7 +4377,7 @@
   {
    "name": "Collin Gillespie",
    "team": "PHX",
-   "updated": 1790596259813,
+   "updated": 1790682612008,
    "stats": {
     "adp_dynasty": 174.4,
     "adp_std": 233.7,
@@ -4405,7 +4405,7 @@
   {
    "name": "Josh Hart",
    "team": "NYK",
-   "updated": 1790596259685,
+   "updated": 1790682611895,
    "stats": {
     "adp_dynasty": 113.3,
     "adp_std": 65.3,
@@ -4434,7 +4434,7 @@
   {
    "name": "Day'Ron Sharpe",
    "team": "BKN",
-   "updated": 1790596259650,
+   "updated": 1790682611863,
    "stats": {
     "adp_dynasty": 116.1,
     "adp_std": 224.4,
@@ -4462,7 +4462,7 @@
   {
    "name": "Kelly Oubre",
    "team": "IND",
-   "updated": 1790596259368,
+   "updated": 1790682611626,
    "stats": {
     "adp_dynasty": 217.8,
     "adp_std": 157.5,
@@ -4490,7 +4490,7 @@
   {
    "name": "Tre Johnson",
    "team": "WAS",
-   "updated": 1790596260078,
+   "updated": 1790682612245,
    "stats": {
     "adp_dynasty": 146.7,
     "adp_std": 197.1,
@@ -4517,7 +4517,7 @@
   {
    "name": "Pelle Larsson",
    "team": "MIA",
-   "updated": 1790596259491,
+   "updated": 1790682611734,
    "stats": {
     "adp_dynasty": 256.2,
     "adp_std": 257.8,
@@ -4544,7 +4544,7 @@
   {
    "name": "Jonathan Kuminga",
    "team": "MIN",
-   "updated": 1790596259596,
+   "updated": 1790682611822,
    "stats": {
     "adp_dynasty": 250.8,
     "adp_std": 198.5,
@@ -4572,7 +4572,7 @@
   {
    "name": "Isaiah Stewart",
    "team": "MEM",
-   "updated": 1790596260194,
+   "updated": 1790682612372,
    "stats": {
     "adp_dynasty": 161.5,
     "adp_std": 206.2,
@@ -4600,7 +4600,7 @@
   {
    "name": "Ausar Thompson",
    "team": "DET",
-   "updated": 1790596259239,
+   "updated": 1790682611518,
    "stats": {
     "adp_dynasty": 64.4,
     "adp_std": 73.7,
@@ -4628,7 +4628,7 @@
   {
    "name": "Malik Monk",
    "team": "SAC",
-   "updated": 1790596259911,
+   "updated": 1790682612096,
    "stats": {
     "adp_dynasty": 168.6,
     "adp_std": 132.6,
@@ -4655,7 +4655,7 @@
   {
    "name": "Rui Hachimura",
    "team": "LAC",
-   "updated": 1790596259399,
+   "updated": 1790682611653,
    "stats": {
     "adp_dynasty": 248.7,
     "adp_std": 173.1,
@@ -4682,7 +4682,7 @@
   {
    "name": "Tre Jones",
    "team": "CHI",
-   "updated": 1790596259050,
+   "updated": 1790682611352,
    "stats": {
     "adp_dynasty": 180.3,
     "adp_std": 251.3,
@@ -4710,7 +4710,7 @@
   {
    "name": "Dyson Daniels",
    "team": "ATL",
-   "updated": 1790596258891,
+   "updated": 1790682611209,
    "stats": {
     "adp_dynasty": 80.4,
     "adp_std": 60.7,
@@ -4739,7 +4739,7 @@
   {
    "name": "Tobias Harris",
    "team": "SAS",
-   "updated": 1790596259947,
+   "updated": 1790682612128,
    "stats": {
     "adp_dynasty": 219.8,
     "adp_std": 135.5,
@@ -4767,7 +4767,7 @@
   {
    "name": "Yaxel Lendeborg",
    "team": "GSW",
-   "updated": 1790596259257,
+   "updated": 1790682611535,
    "stats": {
     "adp_dynasty": 115.7,
     "adp_std": 141.1,
@@ -4795,7 +4795,7 @@
   {
    "name": "Terrence Shannon",
    "team": "MIN",
-   "updated": 1790596259607,
+   "updated": 1790682611829,
    "stats": {
     "adp_dynasty": 308.1,
     "adp_std": 375.4,
@@ -4822,7 +4822,7 @@
   {
    "name": "Bennedict Mathurin",
    "team": "NOP",
-   "updated": 1790596258996,
+   "updated": 1790682611304,
    "stats": {
     "adp_dynasty": 178.2,
     "adp_std": 137.8,
@@ -4849,7 +4849,7 @@
   {
    "name": "Max Strus",
    "team": "LAC",
-   "updated": 1790596259425,
+   "updated": 1790682611677,
    "stats": {
     "adp_dynasty": 325.4,
     "adp_std": 373.7,
@@ -4877,7 +4877,7 @@
   {
    "name": "Jusuf Nurki\u0107",
    "team": "UTA",
-   "updated": 1790596260043,
+   "updated": 1790682612213,
    "stats": {
     "adp_dynasty": 220.5,
     "adp_std": 172.2,
@@ -4905,7 +4905,7 @@
   {
    "name": "Rudy Gobert",
    "team": "MIN",
-   "updated": 1790596259591,
+   "updated": 1790682611816,
    "stats": {
     "adp_dynasty": 144.0,
     "adp_std": 84.0,
@@ -4932,7 +4932,7 @@
   {
    "name": "Brice Sensabaugh",
    "team": "UTA",
-   "updated": 1790596260051,
+   "updated": 1790682612222,
    "stats": {
     "adp_dynasty": 252.1,
     "adp_std": 348.4,
@@ -4959,7 +4959,7 @@
   {
    "name": "Wendell Carter",
    "team": "ORL",
-   "updated": 1790596259723,
+   "updated": 1790682611925,
    "stats": {
     "adp_dynasty": 181.8,
     "adp_std": 182.5,
@@ -4987,7 +4987,7 @@
   {
    "name": "Jordan Poole",
    "team": "NOP",
-   "updated": 1790596259018,
+   "updated": 1790682611325,
    "stats": {
     "adp_dynasty": 267.2,
     "adp_std": 142.8,
@@ -5014,7 +5014,7 @@
   {
    "name": "Santi Aldama",
    "team": "DAL",
-   "updated": 1790596259112,
+   "updated": 1790682611406,
    "stats": {
     "adp_dynasty": 129.7,
     "adp_std": 120.1,
@@ -5042,7 +5042,7 @@
   {
    "name": "Miles McBride",
    "team": "NYK",
-   "updated": 1790596259694,
+   "updated": 1790682611902,
    "stats": {
     "adp_dynasty": 245.6,
     "adp_std": 225.6,
@@ -5069,7 +5069,7 @@
   {
    "name": "Isaiah Joe",
    "team": "DET",
-   "updated": 1790596259226,
+   "updated": 1790682611506,
    "stats": {
     "adp_dynasty": 246.4,
     "adp_std": 286.7,
@@ -5096,7 +5096,7 @@
   {
    "name": "Zaccharie Risacher",
    "team": "DAL",
-   "updated": 1790596259148,
+   "updated": 1790682611438,
    "stats": {
     "adp_dynasty": 232.4,
     "adp_std": 222.7,
@@ -5123,7 +5123,7 @@
   {
    "name": "GG Jackson",
    "team": "MEM",
-   "updated": 1790596260160,
+   "updated": 1790682612343,
    "stats": {
     "adp_dynasty": 241.8,
     "adp_std": 328.5,
@@ -5150,7 +5150,7 @@
   {
    "name": "Bilal Coulibaly",
    "team": "WAS",
-   "updated": 1790596260064,
+   "updated": 1790682612232,
    "stats": {
     "adp_dynasty": 163.0,
     "adp_std": 183.0,
@@ -5178,7 +5178,7 @@
   {
    "name": "Jaylon Tyson",
    "team": "CLE",
-   "updated": 1790596259107,
+   "updated": 1790682611401,
    "stats": {
     "adp_dynasty": 165.3,
     "adp_std": 243.3,
@@ -5206,7 +5206,7 @@
   {
    "name": "Collin Murray-Boyles",
    "team": "TOR",
-   "updated": 1790596260123,
+   "updated": 1790682612284,
    "stats": {
     "adp_dynasty": 56.3,
     "adp_std": 139.3,
@@ -5234,7 +5234,7 @@
   {
    "name": "Aaron Wiggins",
    "team": "ATL",
-   "updated": 1790596258930,
+   "updated": 1790682611244,
    "stats": {
     "adp_dynasty": 218.7,
     "adp_std": 229.1,
@@ -5261,7 +5261,7 @@
   {
    "name": "Khaman Maluach",
    "team": "PHX",
-   "updated": 1790596259832,
+   "updated": 1790682612025,
    "stats": {
     "adp_dynasty": 109.0,
     "adp_std": 185.0,
@@ -5289,7 +5289,7 @@
   {
    "name": "Jarace Walker",
    "team": "IND",
-   "updated": 1790596259381,
+   "updated": 1790682611638,
    "stats": {
     "adp_dynasty": 238.1,
     "adp_std": 329.4,
@@ -5317,7 +5317,7 @@
   {
    "name": "Kyle Filipowski",
    "team": "UTA",
-   "updated": 1790596260022,
+   "updated": 1790682612194,
    "stats": {
     "adp_dynasty": 193.3,
     "adp_std": 194.3,
@@ -5345,7 +5345,7 @@
   {
    "name": "Nate Ament",
    "team": "MIL",
-   "updated": 1790596259516,
+   "updated": 1790682611754,
    "stats": {
     "adp_dynasty": 128.6,
     "adp_std": 195.6,
@@ -5372,7 +5372,7 @@
   {
    "name": "Julian Champagnie",
    "team": "SAS",
-   "updated": 1790596259938,
+   "updated": 1790682612120,
    "stats": {
     "adp_dynasty": 186.4,
     "adp_std": 205.7,
@@ -5400,7 +5400,7 @@
   {
    "name": "Duncan Robinson",
    "team": "DET",
-   "updated": 1790596259237,
+   "updated": 1790682611516,
    "stats": {
     "adp_dynasty": 348.5,
     "adp_std": 433.2,
@@ -5427,7 +5427,7 @@
   {
    "name": "Cam Spencer",
    "team": "MEM",
-   "updated": 1790596260190,
+   "updated": 1790682612369,
    "stats": {
     "adp_dynasty": 184.1,
     "adp_std": 273.4,
@@ -5455,7 +5455,7 @@
   {
    "name": "Tristan da Silva",
    "team": "ORL",
-   "updated": 1790596259729,
+   "updated": 1790682611930,
    "stats": {
     "adp_dynasty": 282.8,
     "adp_std": 266.5,
@@ -5482,7 +5482,7 @@
   {
    "name": "Obi Toppin",
    "team": "IND",
-   "updated": 1790596259379,
+   "updated": 1790682611636,
    "stats": {
     "adp_dynasty": 260.7,
     "adp_std": 270.1,
@@ -5509,7 +5509,7 @@
   {
    "name": "Kevin Huerter",
    "team": "DET",
-   "updated": 1790596259219,
+   "updated": 1790682611500,
    "stats": {
     "adp_dynasty": 334.6,
     "adp_std": 427.6,
@@ -5536,7 +5536,7 @@
   {
    "name": "Moritz Wagner",
    "team": "BKN",
-   "updated": 1790596259654,
+   "updated": 1790682611868,
    "stats": {
     "adp_dynasty": 436.6,
     "adp_std": 487.6,
@@ -5564,7 +5564,7 @@
   {
    "name": "Sam Merrill",
    "team": "CLE",
-   "updated": 1790596259084,
+   "updated": 1790682611382,
    "stats": {
     "adp_dynasty": 270.6,
     "adp_std": 230.6,
@@ -5591,7 +5591,7 @@
   {
    "name": "Neemias Queta",
    "team": "BOS",
-   "updated": 1790596258960,
+   "updated": 1790682611272,
    "stats": {
     "adp_dynasty": 133.1,
     "adp_std": 143.4,
@@ -5619,7 +5619,7 @@
   {
    "name": "Donte DiVincenzo",
    "team": "MIN",
-   "updated": 1790596259581,
+   "updated": 1790682611807,
    "stats": {
     "adp_dynasty": 148.8,
     "adp_std": 129.5,
@@ -5646,7 +5646,7 @@
   {
    "name": "Noah Clowney",
    "team": "BKN",
-   "updated": 1790596259619,
+   "updated": 1790682611837,
    "stats": {
     "adp_dynasty": 249.6,
     "adp_std": 292.6,
@@ -5673,7 +5673,7 @@
   {
    "name": "Bradley Beal",
    "team": "LAC",
-   "updated": 1790596259387,
+   "updated": 1790682611643,
    "stats": {
     "adp_dynasty": 243.3,
     "adp_std": 175.3,
@@ -5700,7 +5700,7 @@
   {
    "name": "Derrick Jones",
    "team": "LAC",
-   "updated": 1790596259407,
+   "updated": 1790682611662,
    "stats": {
     "adp_dynasty": 230.5,
     "adp_std": 213.2,
@@ -5727,7 +5727,7 @@
   {
    "name": "Nique Clifford",
    "team": "SAC",
-   "updated": 1790596259894,
+   "updated": 1790682612082,
    "stats": {
     "adp_dynasty": 201.3,
     "adp_std": 285.3,
@@ -5755,7 +5755,7 @@
   {
    "name": "Jake LaRavia",
    "team": "LAL",
-   "updated": 1790596259449,
+   "updated": 1790682611696,
    "stats": {
     "adp_dynasty": 226.2,
     "adp_std": 244.8,
@@ -5783,7 +5783,7 @@
   {
    "name": "Herbert Jones",
    "team": "NOP",
-   "updated": 1790596258986,
+   "updated": 1790682611296,
    "stats": {
     "adp_dynasty": 166.0,
     "adp_std": 178.0,
@@ -5810,7 +5810,7 @@
   {
    "name": "Klay Thompson",
    "team": "MIA",
-   "updated": 1790596259508,
+   "updated": 1790682611749,
    "stats": {
     "adp_dynasty": 312.4,
     "adp_std": 152.7,
@@ -5837,7 +5837,7 @@
   {
    "name": "Jalen Smith",
    "team": "CHI",
-   "updated": 1790596259064,
+   "updated": 1790682611365,
    "stats": {
     "adp_dynasty": 228.2,
     "adp_std": 211.8,
@@ -5865,7 +5865,7 @@
   {
    "name": "Russell Westbrook",
    "team": null,
-   "updated": 1790596258881,
+   "updated": 1790682611198,
    "stats": {
     "adp_dynasty": 307.3,
     "adp_std": 171.3,
@@ -5920,7 +5920,7 @@
   {
    "name": "Khris Middleton",
    "team": "WAS",
-   "updated": 1790596260083,
+   "updated": 1790682612250,
    "stats": {
     "adp_dynasty": 319.4,
     "adp_std": 344.7,
@@ -5947,7 +5947,7 @@
   {
    "name": "Kingston Flemings",
    "team": "ATL",
-   "updated": 1790596258902,
+   "updated": 1790682611218,
    "stats": {
     "adp_dynasty": 78.1,
     "adp_std": 159.4,
@@ -5974,7 +5974,7 @@
   {
    "name": "Gradey Dick",
    "team": "LAC",
-   "updated": 1790596259391,
+   "updated": 1790682611646,
    "stats": {
     "adp_dynasty": 306.7,
     "adp_std": 196.1,
@@ -6001,7 +6001,7 @@
   {
    "name": "Luguentz Dort",
    "team": "ATL",
-   "updated": 1790596258893,
+   "updated": 1790682611211,
    "stats": {
     "adp_dynasty": 247.1,
     "adp_std": 191.4,
@@ -6028,7 +6028,7 @@
   {
    "name": "Deandre Ayton",
    "team": "WAS",
-   "updated": 1790596260055,
+   "updated": 1790682612224,
    "stats": {
     "adp_dynasty": 134.3,
     "adp_std": 104.3,
@@ -6056,7 +6056,7 @@
   {
    "name": "Tristan Vukcevic",
    "team": "WAS",
-   "updated": 1790596260092,
+   "updated": 1790682612257,
    "stats": {
     "adp_dynasty": 229.7,
     "adp_std": 334.1,
@@ -6083,7 +6083,7 @@
   {
    "name": "Ben Saraf",
    "team": "BKN",
-   "updated": 1790596259646,
+   "updated": 1790682611861,
    "stats": {
     "adp_dynasty": 328.3,
     "adp_std": 421.3,
@@ -6110,7 +6110,7 @@
   {
    "name": "Cam Thomas",
    "team": null,
-   "updated": 1790596258868,
+   "updated": 1790682611186,
    "stats": {
     "adp_dynasty": 299.4,
     "adp_std": 121.7,
@@ -6137,7 +6137,7 @@
   {
    "name": "Daniel Gafford",
    "team": "DAL",
-   "updated": 1790596259124,
+   "updated": 1790682611417,
    "stats": {
     "adp_dynasty": 151.5,
     "adp_std": 158.2,
@@ -6162,7 +6162,7 @@
   {
    "name": "Davion Mitchell",
    "team": "MIA",
-   "updated": 1790596259497,
+   "updated": 1790682611739,
    "stats": {
     "adp_dynasty": 200.6,
     "adp_std": 231.6,
@@ -6190,7 +6190,7 @@
   {
    "name": "Daniss Jenkins",
    "team": "DET",
-   "updated": 1790596259222,
+   "updated": 1790682611503,
    "stats": {
     "adp_dynasty": 177.7,
     "adp_std": 261.1,
@@ -6217,7 +6217,7 @@
   {
    "name": "Cameron Carr",
    "team": "LAL",
-   "updated": 1790596259430,
+   "updated": 1790682611682,
    "stats": {
     "adp_dynasty": 170.2,
     "adp_std": 209.8,
@@ -6244,7 +6244,7 @@
   {
    "name": "Nolan Traore",
    "team": "BKN",
-   "updated": 1790596259652,
+   "updated": 1790682611865,
    "stats": {
     "adp_dynasty": 211.5,
     "adp_std": 357.2,
@@ -6271,7 +6271,7 @@
   {
    "name": "Dailyn Swain",
    "team": "CHI",
-   "updated": 1790596259066,
+   "updated": 1790682611368,
    "stats": {
     "adp_dynasty": 164.3,
     "adp_std": 252.3,
@@ -6299,7 +6299,7 @@
   {
    "name": "Sam Hauser",
    "team": "BOS",
-   "updated": 1790596258955,
+   "updated": 1790682611267,
    "stats": {
     "adp_dynasty": 317.1,
     "adp_std": 377.4,
@@ -6326,7 +6326,7 @@
   {
    "name": "Isaiah Hartenstein",
    "team": "OKC",
-   "updated": 1790596259983,
+   "updated": 1790682612157,
    "stats": {
     "adp_dynasty": 83.5,
     "adp_std": 87.2,
@@ -6353,7 +6353,7 @@
   {
    "name": "Caleb Love",
    "team": "PHI",
-   "updated": 1790596259772,
+   "updated": 1790682611971,
    "stats": {
     "adp_dynasty": 330.1,
     "adp_std": 423.4,
@@ -6380,7 +6380,7 @@
   {
    "name": "Jakob Poeltl",
    "team": "TOR",
-   "updated": 1790596260127,
+   "updated": 1790682612287,
    "stats": {
     "adp_dynasty": 154.5,
     "adp_std": 118.2,
@@ -6405,7 +6405,7 @@
   {
    "name": "Brandon Williams",
    "team": "GSW",
-   "updated": 1790596259297,
+   "updated": 1790682611563,
    "stats": {
     "adp_dynasty": 283.3,
     "adp_std": 343.3,
@@ -6432,7 +6432,7 @@
   {
    "name": "Jared Butler",
    "team": null,
-   "updated": 1790596258732,
+   "updated": 1790682611069,
    "stats": {
     "adp_dynasty": 534.0,
     "adp_std": 400.0,
@@ -6459,7 +6459,7 @@
   {
    "name": "Corey Kispert",
    "team": "ATL",
-   "updated": 1790596258912,
+   "updated": 1790682611229,
    "stats": {
     "adp_dynasty": 561.1,
     "adp_std": 591.4,
@@ -6486,7 +6486,7 @@
   {
    "name": "Taylor Hendricks",
    "team": "MEM",
-   "updated": 1790596260157,
+   "updated": 1790682612317,
    "stats": {
     "adp_dynasty": 277.5,
     "adp_std": 315.2,
@@ -6513,7 +6513,7 @@
   {
    "name": "Precious Achiuwa",
    "team": "SAC",
-   "updated": 1790596259882,
+   "updated": 1790682612072,
    "stats": {
     "adp_dynasty": 314.4,
     "adp_std": 309.7,
@@ -6541,7 +6541,7 @@
   {
    "name": "Cason Wallace",
    "team": "OKC",
-   "updated": 1790596259998,
+   "updated": 1790682612173,
    "stats": {
     "adp_dynasty": 100.3,
     "adp_std": 164.3,
@@ -6568,7 +6568,7 @@
   {
    "name": "Paul Reed",
    "team": "DET",
-   "updated": 1790596259235,
+   "updated": 1790682611513,
    "stats": {
     "adp_dynasty": 222.7,
     "adp_std": 203.1,
@@ -6596,7 +6596,7 @@
   {
    "name": "Ja'Kobe Walter",
    "team": "TOR",
-   "updated": 1790596260139,
+   "updated": 1790682612298,
    "stats": {
     "adp_dynasty": 254.2,
     "adp_std": 384.8,
@@ -6623,7 +6623,7 @@
   {
    "name": "Bub Carrington",
    "team": "WAS",
-   "updated": 1790596260059,
+   "updated": 1790682612227,
    "stats": {
     "adp_dynasty": 213.6,
     "adp_std": 256.6,
@@ -6650,7 +6650,7 @@
   {
    "name": "Nikola Jovi\u0107",
    "team": "MIA",
-   "updated": 1790596259489,
+   "updated": 1790682611732,
    "stats": {
     "adp_dynasty": 223.2,
     "adp_std": 271.8,
@@ -6677,7 +6677,7 @@
   {
    "name": "AJ Green",
    "team": "MIL",
-   "updated": 1790596259525,
+   "updated": 1790682611761,
    "stats": {
     "adp_dynasty": 340.2,
     "adp_std": 306.8,
@@ -6704,7 +6704,7 @@
   {
    "name": "Dereck Lively",
    "team": "DAL",
-   "updated": 1790596259134,
+   "updated": 1790682611426,
    "stats": {
     "adp_dynasty": 112.4,
     "adp_std": 138.7,
@@ -6731,7 +6731,7 @@
   {
    "name": "Walter Clayton",
    "team": "MEM",
-   "updated": 1790596260144,
+   "updated": 1790682612303,
    "stats": {
     "adp_dynasty": 185.2,
     "adp_std": 204.8,
@@ -6758,7 +6758,7 @@
   {
    "name": "Nikola Vu\u010devi\u0107",
    "team": "ORL",
-   "updated": 1790596259744,
+   "updated": 1790682611942,
    "stats": {
     "adp_dynasty": 224.4,
     "adp_std": 85.7,
@@ -6786,7 +6786,7 @@
   {
    "name": "Ebuka Okorie",
    "team": "DET",
-   "updated": 1790596259229,
+   "updated": 1790682611508,
    "stats": {
     "adp_dynasty": 172.1,
     "adp_std": 302.4,
@@ -6813,7 +6813,7 @@
   {
    "name": "T.J. McConnell",
    "team": "IND",
-   "updated": 1790596259357,
+   "updated": 1790682611615,
    "stats": {
     "adp_dynasty": 281.0,
     "adp_std": 307.0,
@@ -6841,7 +6841,7 @@
   {
    "name": "LJ Cryer",
    "team": "GSW",
-   "updated": 1790596259244,
+   "updated": 1790682611525,
    "stats": {
     "adp_dynasty": 560.2,
     "adp_std": 590.8,
@@ -6896,7 +6896,7 @@
   {
    "name": "Jock Landale",
    "team": "ATL",
-   "updated": 1790596258914,
+   "updated": 1790682611231,
    "stats": {
     "adp_dynasty": 555.7,
     "adp_std": 585.1,
@@ -6924,7 +6924,7 @@
   {
    "name": "Gary Trent",
    "team": "MIL",
-   "updated": 1790596259564,
+   "updated": 1790682611791,
    "stats": {
     "adp_dynasty": 333.8,
     "adp_std": 426.5,
@@ -6951,7 +6951,7 @@
   {
    "name": "Will Riley",
    "team": "WAS",
-   "updated": 1790596260087,
+   "updated": 1790682612252,
    "stats": {
     "adp_dynasty": 182.2,
     "adp_std": 319.8,
@@ -6978,7 +6978,7 @@
   {
    "name": "Dennis Schr\u00f6der",
    "team": "CHA",
-   "updated": 1790596260236,
+   "updated": 1790682612412,
    "stats": {
     "adp_dynasty": 296.3,
     "adp_std": 189.3,
@@ -7005,7 +7005,7 @@
   {
    "name": "Morez Johnson",
    "team": "DAL",
-   "updated": 1790596259132,
+   "updated": 1790682611424,
    "stats": {
     "adp_dynasty": 76.1,
     "adp_std": 161.4,
@@ -7033,7 +7033,7 @@
   {
    "name": "Bogdan Bogdanovi\u0107",
    "team": "HOU",
-   "updated": 1790596259304,
+   "updated": 1790682611568,
    "stats": {
     "adp_dynasty": 359.5,
     "adp_std": 440.2,
@@ -7060,7 +7060,7 @@
   {
    "name": "Ronald Holland",
    "team": "DET",
-   "updated": 1790596259215,
+   "updated": 1790682611497,
    "stats": {
     "adp_dynasty": 160.4,
     "adp_std": 228.7,
@@ -7087,7 +7087,7 @@
   {
    "name": "Brook Lopez",
    "team": "LAC",
-   "updated": 1790596259411,
+   "updated": 1790682611665,
    "stats": {
     "adp_dynasty": 297.5,
     "adp_std": 313.2,
@@ -7114,7 +7114,7 @@
   {
    "name": "Yves Missi",
    "team": "NOP",
-   "updated": 1790596259010,
+   "updated": 1790682611311,
    "stats": {
     "adp_dynasty": 274.8,
     "adp_std": 250.5,
@@ -7139,7 +7139,7 @@
   {
    "name": "Jaden Hardy",
    "team": "LAL",
-   "updated": 1790596259439,
+   "updated": 1790682611689,
    "stats": {
     "adp_dynasty": 531.4,
     "adp_std": 557.7,
@@ -7166,7 +7166,7 @@
   {
    "name": "Hannes Steinbach",
    "team": "CHA",
-   "updated": 1790596260240,
+   "updated": 1790682612414,
    "stats": {
     "adp_dynasty": 114.0,
     "adp_std": 214.0,
@@ -7194,7 +7194,7 @@
   {
    "name": "Royce O'Neale",
    "team": "CHA",
-   "updated": 1790596260228,
+   "updated": 1790682612404,
    "stats": {
     "adp_dynasty": 289.2,
     "adp_std": 298.8,
@@ -7222,7 +7222,7 @@
   {
    "name": "Christian Anderson",
    "team": "CHA",
-   "updated": 1790596260201,
+   "updated": 1790682612380,
    "stats": {
     "adp_dynasty": 171.5,
     "adp_std": 264.2,
@@ -7249,7 +7249,7 @@
   {
    "name": "Olivier-Maxence Prosper",
    "team": "MEM",
-   "updated": 1790596260184,
+   "updated": 1790682612364,
    "stats": {
     "adp_dynasty": 364.8,
     "adp_std": 281.5,
@@ -7276,7 +7276,7 @@
   {
    "name": "Ousmane Dieng",
    "team": "MIL",
-   "updated": 1790596259523,
+   "updated": 1790682611759,
    "stats": {
     "adp_dynasty": 298.1,
     "adp_std": 317.4,
@@ -7303,7 +7303,7 @@
   {
    "name": "Jamal Shead",
    "team": "TOR",
-   "updated": 1790596260132,
+   "updated": 1790682612293,
    "stats": {
     "adp_dynasty": 237.4,
     "adp_std": 336.7,
@@ -7331,7 +7331,7 @@
   {
    "name": "Draymond Green",
    "team": "GSW",
-   "updated": 1790596259252,
+   "updated": 1790682611530,
    "stats": {
     "adp_dynasty": 235.8,
     "adp_std": 145.5,
@@ -7359,7 +7359,7 @@
   {
    "name": "Justin Champagnie",
    "team": "WAS",
-   "updated": 1790596260062,
+   "updated": 1790682612229,
    "stats": {
     "adp_dynasty": 221.8,
     "adp_std": 199.5,
@@ -7387,7 +7387,7 @@
   {
    "name": "D'Angelo Russell",
    "team": null,
-   "updated": 1790596258852,
+   "updated": 1790682611179,
    "stats": {
     "adp_dynasty": 311.4,
     "adp_std": 148.7,
@@ -7414,7 +7414,7 @@
   {
    "name": "Jordan Miller",
    "team": "LAC",
-   "updated": 1790596259415,
+   "updated": 1790682611667,
    "stats": {
     "adp_dynasty": 562.0,
     "adp_std": 378.0,
@@ -7441,7 +7441,7 @@
   {
    "name": "Moses Moody",
    "team": "GSW",
-   "updated": 1790596259268,
+   "updated": 1790682611543,
    "stats": {
     "adp_dynasty": 268.3,
     "adp_std": 354.3,
@@ -7468,7 +7468,7 @@
   {
    "name": "Isaiah Collier",
    "team": "UTA",
-   "updated": 1790596260018,
+   "updated": 1790682612191,
    "stats": {
     "adp_dynasty": 240.6,
     "adp_std": 236.6,
@@ -7496,7 +7496,7 @@
   {
    "name": "Julian Strawther",
    "team": "DEN",
-   "updated": 1790596259191,
+   "updated": 1790682611475,
    "stats": {
     "adp_dynasty": 324.6,
     "adp_std": 419.6,
@@ -7523,7 +7523,7 @@
   {
    "name": "Devin Carter",
    "team": "BOS",
-   "updated": 1790596258936,
+   "updated": 1790682611249,
    "stats": {
     "adp_dynasty": 236.8,
     "adp_std": 255.5,
@@ -7550,7 +7550,7 @@
   {
    "name": "Quenton Jackson",
    "team": "IND",
-   "updated": 1790596259354,
+   "updated": 1790682611613,
    "stats": {
     "adp_dynasty": 539.4,
     "adp_std": 563.7,
@@ -7577,7 +7577,7 @@
   {
    "name": "Marcus Smart",
    "team": "HOU",
-   "updated": 1790596259323,
+   "updated": 1790682611587,
    "stats": {
     "adp_dynasty": 291.1,
     "adp_std": 245.4,
@@ -7604,7 +7604,7 @@
   {
    "name": "Jordan Goodwin",
    "team": "PHX",
-   "updated": 1790596259817,
+   "updated": 1790682612011,
    "stats": {
     "adp_dynasty": 294.4,
     "adp_std": 275.7,
@@ -7632,7 +7632,7 @@
   {
    "name": "Kasparas Jaku\u010dionis",
    "team": "MIL",
-   "updated": 1790596259532,
+   "updated": 1790682611765,
    "stats": {
     "adp_dynasty": 155.1,
     "adp_std": 216.4,
@@ -7659,7 +7659,7 @@
   {
    "name": "Quinten Post",
    "team": "MEM",
-   "updated": 1790596260181,
+   "updated": 1790682612362,
    "stats": {
     "adp_dynasty": 287.8,
     "adp_std": 290.5,
@@ -7686,7 +7686,7 @@
   {
    "name": "Jay Huff",
    "team": "IND",
-   "updated": 1790596259351,
+   "updated": 1790682611610,
    "stats": {
     "adp_dynasty": 280.7,
     "adp_std": 263.1,
@@ -7713,7 +7713,7 @@
   {
    "name": "Marvin Bagley",
    "team": "DEN",
-   "updated": 1790596259157,
+   "updated": 1790682611447,
    "stats": {
     "adp_dynasty": 458.6,
     "adp_std": 506.6,
@@ -7740,7 +7740,7 @@
   {
    "name": "Ryan Nembhard",
    "team": null,
-   "updated": 1790596258828,
+   "updated": 1790682611156,
    "stats": {
     "adp_dynasty": 316.8,
     "adp_std": 416.5,
@@ -7767,7 +7767,7 @@
   {
    "name": "Danny Wolf",
    "team": "BKN",
-   "updated": 1790596259656,
+   "updated": 1790682611871,
    "stats": {
     "adp_dynasty": 214.0,
     "adp_std": 274.0,
@@ -7794,7 +7794,7 @@
   {
    "name": "Harrison Barnes",
    "team": "SAS",
-   "updated": 1790596259927,
+   "updated": 1790682612112,
    "stats": {
     "adp_dynasty": 540.3,
     "adp_std": 369.3,
@@ -7821,7 +7821,7 @@
   {
    "name": "Alex Karaban",
    "team": "SAC",
-   "updated": 1790596259901,
+   "updated": 1790682612088,
    "stats": {
     "adp_dynasty": 322.3,
     "adp_std": 227.3,
@@ -7848,7 +7848,7 @@
   {
    "name": "Jonas Valan\u010di\u016bnas",
    "team": null,
-   "updated": 1790596258875,
+   "updated": 1790682611191,
    "stats": {
     "adp_dynasty": 358.2,
     "adp_std": 392.8,
@@ -7876,7 +7876,7 @@
   {
    "name": "Landry Shamet",
    "team": "NYK",
-   "updated": 1790596259697,
+   "updated": 1790682611904,
    "stats": {
     "adp_dynasty": 485.0,
     "adp_std": 388.0,
@@ -7903,7 +7903,7 @@
   {
    "name": "Luke Kennard",
    "team": "PHX",
-   "updated": 1790596259830,
+   "updated": 1790682612023,
    "stats": {
     "adp_dynasty": 349.7,
     "adp_std": 434.1,
@@ -7930,7 +7930,7 @@
   {
    "name": "Jordan Clarkson",
    "team": "NYK",
-   "updated": 1790596259679,
+   "updated": 1790682611888,
    "stats": {
     "adp_dynasty": 337.7,
     "adp_std": 218.1,
@@ -7957,7 +7957,7 @@
   {
    "name": "Drake Powell",
    "team": "BKN",
-   "updated": 1790596259641,
+   "updated": 1790682611855,
    "stats": {
     "adp_dynasty": 331.8,
     "adp_std": 424.5,
@@ -7984,7 +7984,7 @@
   {
    "name": "Ricky Council",
    "team": null,
-   "updated": 1790596258740,
+   "updated": 1790682611077,
    "stats": {
     "adp_dynasty": 999.0,
     "adp_std": 999.0,
@@ -8011,7 +8011,7 @@
   {
    "name": "Bones Hyland",
    "team": "MIN",
-   "updated": 1790596259593,
+   "updated": 1790682611818,
    "stats": {
     "adp_dynasty": 551.5,
     "adp_std": 579.2,
@@ -8038,7 +8038,7 @@
   {
    "name": "Carter Bryant",
    "team": "SAS",
-   "updated": 1790596259930,
+   "updated": 1790682612114,
    "stats": {
     "adp_dynasty": 130.4,
     "adp_std": 248.7,
@@ -8065,7 +8065,7 @@
   {
    "name": "Tre Mann",
    "team": "WAS",
-   "updated": 1790596260080,
+   "updated": 1790682612247,
    "stats": {
     "adp_dynasty": 332.8,
     "adp_std": 425.5,
@@ -8092,7 +8092,7 @@
   {
    "name": "Tyson Etienne",
    "team": "BKN",
-   "updated": 1790596258752,
+   "updated": 1790682611087,
    "stats": {
     "adp_dynasty": 999.0,
     "adp_std": 999.0,
@@ -8119,7 +8119,7 @@
   {
    "name": "Cam Whitmore",
    "team": "DEN",
-   "updated": 1790596259193,
+   "updated": 1790682611477,
    "stats": {
     "adp_dynasty": 290.5,
     "adp_std": 219.2,
@@ -8174,7 +8174,7 @@
   {
    "name": "Kentavious Caldwell-Pope",
    "team": "PHI",
-   "updated": 1790596259757,
+   "updated": 1790682611956,
    "stats": {
     "adp_dynasty": 589.1,
     "adp_std": 612.4,
@@ -8201,7 +8201,7 @@
   {
    "name": "Gui Santos",
    "team": "GSW",
-   "updated": 1790596259291,
+   "updated": 1790682611558,
    "stats": {
     "adp_dynasty": 179.7,
     "adp_std": 262.1,
@@ -8228,7 +8228,7 @@
   {
    "name": "Zach Collins",
    "team": "CHI",
-   "updated": 1790596259039,
+   "updated": 1790682611345,
    "stats": {
     "adp_dynasty": 378.3,
     "adp_std": 444.3,
@@ -8256,7 +8256,7 @@
   {
    "name": "Isaiah Jackson",
    "team": "LAC",
-   "updated": 1790596259404,
+   "updated": 1790682611660,
    "stats": {
     "adp_dynasty": 302.4,
     "adp_std": 352.7,
@@ -8284,7 +8284,7 @@
   {
    "name": "Vince Williams",
    "team": null,
-   "updated": 1790596258883,
+   "updated": 1790682611200,
    "stats": {
     "adp_dynasty": 365.0,
     "adp_std": 463.0,
@@ -8311,7 +8311,7 @@
   {
    "name": "Simone Fontecchio",
    "team": "MIA",
-   "updated": 1790596259477,
+   "updated": 1790682611722,
    "stats": {
     "adp_dynasty": 658.8,
     "adp_std": 999.0,
@@ -8338,7 +8338,7 @@
   {
    "name": "Patrick Williams",
    "team": "CHI",
-   "updated": 1790596259069,
+   "updated": 1790682611370,
    "stats": {
     "adp_dynasty": 406.3,
     "adp_std": 455.3,
@@ -8365,7 +8365,7 @@
   {
    "name": "Alex Caruso",
    "team": "OKC",
-   "updated": 1790596259976,
+   "updated": 1790682612152,
    "stats": {
     "adp_dynasty": 263.4,
     "adp_std": 193.7,
@@ -8392,7 +8392,7 @@
   {
    "name": "Kobe Sanders",
    "team": "LAC",
-   "updated": 1790596259422,
+   "updated": 1790682611675,
    "stats": {
     "adp_dynasty": 538.5,
     "adp_std": 562.2,
@@ -8419,7 +8419,7 @@
   {
    "name": "Jose Alvarado",
    "team": "NYK",
-   "updated": 1790596259664,
+   "updated": 1790682611875,
    "stats": {
     "adp_dynasty": 284.0,
     "adp_std": 311.0,
@@ -8446,7 +8446,7 @@
   {
    "name": "Moussa Diabat\u00e9",
    "team": "CHA",
-   "updated": 1790596260208,
+   "updated": 1790682612386,
    "stats": {
     "adp_dynasty": 162.5,
     "adp_std": 186.2,
@@ -8474,7 +8474,7 @@
   {
    "name": "Jamir Watkins",
    "team": "WAS",
-   "updated": 1790596260096,
+   "updated": 1790682612260,
    "stats": {
     "adp_dynasty": 545.2,
     "adp_std": 570.8,
@@ -8501,7 +8501,7 @@
   {
    "name": "Labaron Philon",
    "team": "PHI",
-   "updated": 1790596259776,
+   "updated": 1790682611976,
    "stats": {
     "adp_dynasty": 216.2,
     "adp_std": 240.8,
@@ -8528,7 +8528,7 @@
   {
    "name": "David Roddy",
    "team": "DEN",
-   "updated": 1790596258850,
+   "updated": 1790682611176,
    "stats": {
     "adp_dynasty": 674.0,
     "adp_std": 999.0,
@@ -8555,7 +8555,7 @@
   {
    "name": "Bryce McGowens",
    "team": "NOP",
-   "updated": 1790596259003,
+   "updated": 1790682611309,
    "stats": {
     "adp_dynasty": 668.0,
     "adp_std": 440.0,
@@ -8582,7 +8582,7 @@
   {
    "name": "Baylor Scheierman",
    "team": "BOS",
-   "updated": 1790596258967,
+   "updated": 1790682611278,
    "stats": {
     "adp_dynasty": 257.3,
     "adp_std": 234.3,
@@ -8609,7 +8609,7 @@
   {
    "name": "Georges Niang",
    "team": "GSW",
-   "updated": 1790596259272,
+   "updated": 1790682611545,
    "stats": {
     "adp_dynasty": 527.6,
     "adp_std": 605.6,
@@ -8636,7 +8636,7 @@
   {
    "name": "Karim Lopez",
    "team": "MEM",
-   "updated": 1790596260167,
+   "updated": 1790682612348,
    "stats": {
     "adp_dynasty": 264.3,
     "adp_std": 380.3,
@@ -8663,7 +8663,7 @@
   {
    "name": "Adem Bona",
    "team": "PHI",
-   "updated": 1790596259753,
+   "updated": 1790682611951,
    "stats": {
     "adp_dynasty": 301.7,
     "adp_std": 350.1,
@@ -8691,7 +8691,7 @@
   {
    "name": "Karlo Matkovi\u0107",
    "team": "NOP",
-   "updated": 1790596258999,
+   "updated": 1790682611306,
    "stats": {
     "adp_dynasty": 295.6,
     "adp_std": 288.6,
@@ -8718,7 +8718,7 @@
   {
    "name": "Gary Payton",
    "team": "GSW",
-   "updated": 1790596259278,
+   "updated": 1790682611548,
    "stats": {
     "adp_dynasty": 566.1,
     "adp_std": 633.4,
@@ -8745,7 +8745,7 @@
   {
    "name": "Robert Williams",
    "team": "POR",
-   "updated": 1790596259880,
+   "updated": 1790682612070,
    "stats": {
     "adp_dynasty": 156.6,
     "adp_std": 151.6,
@@ -8773,7 +8773,7 @@
   {
    "name": "Ryan Kalkbrenner",
    "team": "CHA",
-   "updated": 1790596260217,
+   "updated": 1790682612391,
    "stats": {
     "adp_dynasty": 210.1,
     "adp_std": 322.4,
@@ -8799,7 +8799,7 @@
   {
    "name": "Bruce Brown",
    "team": "NYK",
-   "updated": 1790596259673,
+   "updated": 1790682611883,
    "stats": {
     "adp_dynasty": 550.4,
     "adp_std": 618.7,
@@ -8826,7 +8826,7 @@
   {
    "name": "Rob Dillingham",
    "team": "CHA",
-   "updated": 1790596260211,
+   "updated": 1790682611081,
    "stats": {
     "adp_dynasty": 206.5,
     "adp_std": 335.2,
@@ -8853,7 +8853,7 @@
   {
    "name": "Cameron Payne",
    "team": null,
-   "updated": 1790596258834,
+   "updated": 1790682611161,
    "stats": {
     "adp_dynasty": 380.7,
     "adp_std": 483.1,
@@ -8880,7 +8880,7 @@
   {
    "name": "Joan Beringer",
    "team": "MIN",
-   "updated": 1790596259574,
+   "updated": 1790682611802,
    "stats": {
     "adp_dynasty": 123.7,
     "adp_std": 210.1,
@@ -8904,7 +8904,7 @@
   {
    "name": "Jaylin Williams",
    "team": "OKC",
-   "updated": 1790596260003,
+   "updated": 1790682612179,
    "stats": {
     "adp_dynasty": 272.0,
     "adp_std": 338.0,
@@ -8932,7 +8932,7 @@
   {
    "name": "Mac McClung",
    "team": null,
-   "updated": 1790596258815,
+   "updated": 1790682611145,
    "stats": {
     "adp_dynasty": 543.3,
     "adp_std": 347.3,
@@ -8959,7 +8959,7 @@
   {
    "name": "Ryan Dunn",
    "team": "PHX",
-   "updated": 1790596259808,
+   "updated": 1790682612000,
    "stats": {
     "adp_dynasty": 318.4,
     "adp_std": 417.7,
@@ -8986,7 +8986,7 @@
   {
    "name": "Nae'Qwan Tomlin",
    "team": "CLE",
-   "updated": 1790596259105,
+   "updated": 1790682611398,
    "stats": {
     "adp_dynasty": 429.6,
     "adp_std": 482.6,
@@ -9013,7 +9013,7 @@
   {
    "name": "V\u00edt Krej\u010d\u00ed",
    "team": "POR",
-   "updated": 1790596259863,
+   "updated": 1790682612055,
    "stats": {
     "adp_dynasty": 288.1,
     "adp_std": 223.4,
@@ -9040,7 +9040,7 @@
   {
    "name": "Cody Williams",
    "team": "MIN",
-   "updated": 1790596259611,
+   "updated": 1790682611832,
    "stats": {
     "adp_dynasty": 323.1,
     "adp_std": 418.4,
@@ -9067,7 +9067,7 @@
   {
    "name": "Oso Ighodaro",
    "team": "PHX",
-   "updated": 1790596259827,
+   "updated": 1790682612019,
    "stats": {
     "adp_dynasty": 276.5,
     "adp_std": 321.2,
@@ -9094,7 +9094,7 @@
   {
    "name": "Dean Wade",
    "team": "PHI",
-   "updated": 1790596259784,
+   "updated": 1790682611982,
    "stats": {
     "adp_dynasty": 515.4,
     "adp_std": 394.7,
@@ -9122,7 +9122,7 @@
   {
    "name": "Jabari Walker",
    "team": "PHI",
-   "updated": 1790596259786,
+   "updated": 1790682611985,
    "stats": {
     "adp_dynasty": 606.8,
     "adp_std": 623.5,
@@ -9149,7 +9149,7 @@
   {
    "name": "Garrison Mathews",
    "team": null,
-   "updated": 1790596258812,
+   "updated": 1790682611143,
    "stats": {
     "adp_dynasty": 999.0,
     "adp_std": 999.0,
@@ -9176,7 +9176,7 @@
   {
    "name": "Kris Dunn",
    "team": "LAC",
-   "updated": 1790596259393,
+   "updated": 1790682611648,
    "stats": {
     "adp_dynasty": 262.5,
     "adp_std": 221.2,
@@ -9203,7 +9203,7 @@
   {
    "name": "Javonte Green",
    "team": "DET",
-   "updated": 1790596259207,
+   "updated": 1790682611492,
    "stats": {
     "adp_dynasty": 999.0,
     "adp_std": 476.7,
@@ -9230,7 +9230,7 @@
   {
    "name": "Pat Spencer",
    "team": "PHX",
-   "updated": 1790596259840,
+   "updated": 1790682612032,
    "stats": {
     "adp_dynasty": 513.3,
     "adp_std": 397.3,
@@ -9257,7 +9257,7 @@
   {
    "name": "Trendon Watford",
    "team": "NOP",
-   "updated": 1790596259028,
+   "updated": 1790682611332,
    "stats": {
     "adp_dynasty": 598.0,
     "adp_std": 999.0,
@@ -9284,7 +9284,7 @@
   {
    "name": "Joshua Jefferson",
    "team": "BKN",
-   "updated": 1790596259629,
+   "updated": 1790682611844,
    "stats": {
     "adp_dynasty": 202.4,
     "adp_std": 238.7,
@@ -9311,7 +9311,7 @@
   {
    "name": "Will Richard",
    "team": "GSW",
-   "updated": 1790596259289,
+   "updated": 1790682611555,
    "stats": {
     "adp_dynasty": 354.3,
     "adp_std": 438.3,
@@ -9338,7 +9338,7 @@
   {
    "name": "Luke Kornet",
    "team": "SAS",
-   "updated": 1790596259957,
+   "updated": 1790682612137,
    "stats": {
     "adp_dynasty": 271.7,
     "adp_std": 232.1,
@@ -9365,7 +9365,7 @@
   {
    "name": "Richaun Holmes",
    "team": null,
-   "updated": 1790596258764,
+   "updated": 1790682611100,
    "stats": {
     "adp_dynasty": 433.4,
     "adp_std": 359.7,
@@ -9391,7 +9391,7 @@
   {
    "name": "Luka Garza",
    "team": "BOS",
-   "updated": 1790596258945,
+   "updated": 1790682611257,
    "stats": {
     "adp_dynasty": 355.0,
     "adp_std": 439.0,
@@ -9418,7 +9418,7 @@
   {
    "name": "Terance Mann",
    "team": "BKN",
-   "updated": 1790596259634,
+   "updated": 1790682611848,
    "stats": {
     "adp_dynasty": 570.7,
     "adp_std": 600.1,
@@ -9445,7 +9445,7 @@
   {
    "name": "Malaki Branham",
    "team": "ORL",
-   "updated": 1790596259716,
+   "updated": 1790682611920,
    "stats": {
     "adp_dynasty": 999.0,
     "adp_std": 999.0,
@@ -9472,7 +9472,7 @@
   {
    "name": "Keon Ellis",
    "team": "BKN",
-   "updated": 1790596259626,
+   "updated": 1790682611841,
    "stats": {
     "adp_dynasty": 261.8,
     "adp_std": 242.5,
@@ -9499,7 +9499,7 @@
   {
    "name": "Sion James",
    "team": "CHA",
-   "updated": 1790596260213,
+   "updated": 1790682612388,
    "stats": {
     "adp_dynasty": 549.5,
     "adp_std": 577.2,
@@ -9526,7 +9526,7 @@
   {
    "name": "Jamaree Bouyea",
    "team": "PHX",
-   "updated": 1790596259793,
+   "updated": 1790682611990,
    "stats": {
     "adp_dynasty": 999.0,
     "adp_std": 638.7,
@@ -9553,7 +9553,7 @@
   {
    "name": "Dalton Knecht",
    "team": "LAL",
-   "updated": 1790596259446,
+   "updated": 1790682611694,
    "stats": {
     "adp_dynasty": 313.0,
     "adp_std": 415.0,
@@ -9580,7 +9580,7 @@
   {
    "name": "Dominick Barlow",
    "team": "PHI",
-   "updated": 1790596259749,
+   "updated": 1790682611947,
    "stats": {
     "adp_dynasty": 242.5,
     "adp_std": 268.2,
@@ -9607,7 +9607,7 @@
   {
    "name": "Leonard Miller",
    "team": "CHI",
-   "updated": 1790596259053,
+   "updated": 1790682611355,
    "stats": {
     "adp_dynasty": 327.8,
     "adp_std": 364.5,
@@ -9634,7 +9634,7 @@
   {
    "name": "Grant Williams",
    "team": "CHA",
-   "updated": 1790596260243,
+   "updated": 1790682612419,
    "stats": {
     "adp_dynasty": 604.5,
     "adp_std": 999.0,
@@ -9661,7 +9661,7 @@
   {
    "name": "Matisse Thybulle",
    "team": "LAL",
-   "updated": 1790596259465,
+   "updated": 1790682611709,
    "stats": {
     "adp_dynasty": 467.4,
     "adp_std": 543.7,
@@ -9688,7 +9688,7 @@
   {
    "name": "Svi Mykhailiuk",
    "team": "UTA",
-   "updated": 1790596260041,
+   "updated": 1790682612211,
    "stats": {
     "adp_dynasty": 683.0,
     "adp_std": 634.4,
@@ -9715,7 +9715,7 @@
   {
    "name": "Taurean Prince",
    "team": "DET",
-   "updated": 1790596259231,
+   "updated": 1790682611511,
    "stats": {
     "adp_dynasty": 425.0,
     "adp_std": 999.0,
@@ -9742,7 +9742,7 @@
   {
    "name": "Isaac Okoro",
    "team": "CHI",
-   "updated": 1790596259055,
+   "updated": 1790682611357,
    "stats": {
     "adp_dynasty": 484.2,
     "adp_std": 518.8,
@@ -9769,7 +9769,7 @@
   {
    "name": "Kris Murray",
    "team": "MEM",
-   "updated": 1790596260173,
+   "updated": 1790682612355,
    "stats": {
     "adp_dynasty": 404.7,
     "adp_std": 454.1,
@@ -9796,7 +9796,7 @@
   {
    "name": "Chris Cenac",
    "team": "BOS",
-   "updated": 1790596258938,
+   "updated": 1790682611251,
    "stats": {
     "adp_dynasty": 265.5,
     "adp_std": 353.2,
@@ -9823,7 +9823,7 @@
   {
    "name": "Johnny Juzang",
    "team": null,
-   "updated": 1790596258791,
+   "updated": 1790682611117,
    "stats": {
     "adp_dynasty": 436.5,
     "adp_std": 999.0,
@@ -9850,7 +9850,7 @@
   {
    "name": "Nick Richards",
    "team": "MIA",
-   "updated": 1790596259502,
+   "updated": 1790682611744,
    "stats": {
     "adp_dynasty": 389.5,
     "adp_std": 490.2,
@@ -9877,7 +9877,7 @@
   {
    "name": "Henri Veesaar",
    "team": "ATL",
-   "updated": 1790596258927,
+   "updated": 1790682611242,
    "stats": {
     "adp_dynasty": 342.0,
     "adp_std": 381.0,
@@ -9904,7 +9904,7 @@
   {
    "name": "Al Horford",
    "team": "GSW",
-   "updated": 1790596259254,
+   "updated": 1790682611533,
    "stats": {
     "adp_dynasty": 303.6,
     "adp_std": 310.6,
@@ -9931,7 +9931,7 @@
   {
    "name": "Kam Jones",
    "team": "MIL",
-   "updated": 1790596259536,
+   "updated": 1790682611770,
    "stats": {
     "adp_dynasty": 639.8,
     "adp_std": 646.2,
@@ -9958,7 +9958,7 @@
   {
    "name": "Jordan Hawkins",
    "team": "MEM",
-   "updated": 1790596260154,
+   "updated": 1790682612315,
    "stats": {
     "adp_dynasty": 353.8,
     "adp_std": 437.5,
@@ -10012,7 +10012,7 @@
   {
    "name": "Ben Sheppard",
    "team": "IND",
-   "updated": 1790596259370,
+   "updated": 1790682611628,
    "stats": {
     "adp_dynasty": 614.6,
     "adp_std": 630.6,
@@ -10039,7 +10039,7 @@
   {
    "name": "Meleek Thomas",
    "team": "CLE",
-   "updated": 1790596259102,
+   "updated": 1790682611395,
    "stats": {
     "adp_dynasty": 320.5,
     "adp_std": 320.2,
@@ -10066,7 +10066,7 @@
   {
    "name": "Andre Drummond",
    "team": "NYK",
-   "updated": 1790596259681,
+   "updated": 1790682611891,
    "stats": {
     "adp_dynasty": 329.6,
     "adp_std": 422.6,
@@ -10094,7 +10094,7 @@
   {
    "name": "Moussa Cisse",
    "team": "DAL",
-   "updated": 1790596259116,
+   "updated": 1790682611411,
    "stats": {
     "adp_dynasty": 366.3,
     "adp_std": 401.3,
@@ -10119,7 +10119,7 @@
   {
    "name": "Josh Okogie",
    "team": "UTA",
-   "updated": 1790596260047,
+   "updated": 1790682612216,
    "stats": {
     "adp_dynasty": 532.6,
     "adp_std": 642.4,
@@ -10146,7 +10146,7 @@
   {
    "name": "Tarris Reed",
    "team": "SAS",
-   "updated": 1790596259965,
+   "updated": 1790682612145,
    "stats": {
     "adp_dynasty": 204.0,
     "adp_std": 235.0,
@@ -10172,7 +10172,7 @@
   {
    "name": "Hugo Gonz\u00e1lez",
    "team": "BOS",
-   "updated": 1790596258951,
+   "updated": 1790682611262,
    "stats": {
     "adp_dynasty": 205.0,
     "adp_std": 293.0,
@@ -10199,7 +10199,7 @@
   {
    "name": "Bogoljub Markovi\u0107",
    "team": "MIL",
-   "updated": 1790596259545,
+   "updated": 1790682611778,
    "stats": {
     "adp_dynasty": 465.4,
     "adp_std": 509.7,
@@ -10226,7 +10226,7 @@
   {
    "name": "Mitchell Robinson",
    "team": "BOS",
-   "updated": 1790596258963,
+   "updated": 1790682611275,
    "stats": {
     "adp_dynasty": 225.6,
     "adp_std": 192.6,
@@ -10251,7 +10251,7 @@
   {
    "name": "Yanic Konan Niederh\u00e4user",
    "team": "LAC",
-   "updated": 1790596259418,
+   "updated": 1790682611670,
    "stats": {
     "adp_dynasty": 191.7,
     "adp_std": 212.1,
@@ -10278,7 +10278,7 @@
   {
    "name": "Dru Smith",
    "team": "MIA",
-   "updated": 1790596259505,
+   "updated": 1790682611747,
    "stats": {
     "adp_dynasty": 293.8,
     "adp_std": 279.5,
@@ -10305,7 +10305,7 @@
   {
    "name": "Thomas Bryant",
    "team": "CLE",
-   "updated": 1790596259080,
+   "updated": 1790682611377,
    "stats": {
     "adp_dynasty": 414.6,
     "adp_std": 462.6,
@@ -10332,7 +10332,7 @@
   {
    "name": "Kyle Anderson",
    "team": "TOR",
-   "updated": 1790596260100,
+   "updated": 1790682612264,
    "stats": {
     "adp_dynasty": 999.0,
     "adp_std": 999.0,
@@ -10359,7 +10359,7 @@
   {
    "name": "Kennedy Chandler",
    "team": "PHX",
-   "updated": 1790596259806,
+   "updated": 1790682611998,
    "stats": {
     "adp_dynasty": 351.4,
     "adp_std": 398.7,
@@ -10386,7 +10386,7 @@
   {
    "name": "Cole Anthony",
    "team": null,
-   "updated": 1790596258706,
+   "updated": 1790682611048,
    "stats": {
     "adp_dynasty": 362.2,
     "adp_std": 460.8,
@@ -10413,7 +10413,7 @@
   {
    "name": "Allen Graves",
    "team": "TOR",
-   "updated": 1790596260114,
+   "updated": 1790682612277,
    "stats": {
     "adp_dynasty": 153.8,
     "adp_std": 241.5,
@@ -10440,7 +10440,7 @@
   {
    "name": "Jevon Carter",
    "team": "ORL",
-   "updated": 1790596259726,
+   "updated": 1790682611927,
    "stats": {
     "adp_dynasty": 391.5,
     "adp_std": 448.2,
@@ -10467,7 +10467,7 @@
   {
    "name": "Duop Reath",
    "team": "PHX",
-   "updated": 1790596259838,
+   "updated": 1790682612030,
    "stats": {
     "adp_dynasty": 451.5,
     "adp_std": 530.2,
@@ -10494,7 +10494,7 @@
   {
    "name": "Kelly Olynyk",
    "team": null,
-   "updated": 1790596258832,
+   "updated": 1790682611159,
    "stats": {
     "adp_dynasty": 671.4,
     "adp_std": 999.0,
@@ -10521,7 +10521,7 @@
   {
    "name": "Kenrich Williams",
    "team": "OKC",
-   "updated": 1790596260006,
+   "updated": 1790682612182,
    "stats": {
     "adp_dynasty": 999.0,
     "adp_std": 420.6,
@@ -10548,7 +10548,7 @@
   {
    "name": "Josh Minott",
    "team": "BKN",
-   "updated": 1790596259637,
+   "updated": 1790682611851,
    "stats": {
     "adp_dynasty": 255.5,
     "adp_std": 299.2,
@@ -10575,7 +10575,7 @@
   {
    "name": "Bennett Stirtz",
    "team": "OKC",
-   "updated": 1790596259995,
+   "updated": 1790682612171,
    "stats": {
     "adp_dynasty": 215.8,
     "adp_std": 253.5,
@@ -10602,7 +10602,7 @@
   {
    "name": "KJ Simpson",
    "team": "DEN",
-   "updated": 1790596259189,
+   "updated": 1790682611473,
    "stats": {
     "adp_dynasty": 999.0,
     "adp_std": 610.2,
@@ -10629,7 +10629,7 @@
   {
    "name": "Keon Johnson",
    "team": null,
-   "updated": 1790596258774,
+   "updated": 1790682611108,
    "stats": {
     "adp_dynasty": 699.0,
     "adp_std": 999.0,
@@ -10656,7 +10656,7 @@
   {
    "name": "Caris LeVert",
    "team": "MIL",
-   "updated": 1790596259542,
+   "updated": 1790682611775,
    "stats": {
     "adp_dynasty": 339.1,
     "adp_std": 220.4,
@@ -10683,7 +10683,7 @@
   {
    "name": "Daeqwon Plowden",
    "team": "SAC",
-   "updated": 1790596259916,
+   "updated": 1790682612103,
    "stats": {
     "adp_dynasty": 462.3,
     "adp_std": 508.3,
@@ -10710,7 +10710,7 @@
   {
    "name": "Goga Bitadze",
    "team": "ORL",
-   "updated": 1790596259711,
+   "updated": 1790682611915,
    "stats": {
     "adp_dynasty": 196.3,
     "adp_std": 188.3,
@@ -10737,7 +10737,7 @@
   {
    "name": "Buddy Hield",
    "team": "CHI",
-   "updated": 1790596259047,
+   "updated": 1790682611350,
    "stats": {
     "adp_dynasty": 336.6,
     "adp_std": 217.6,
@@ -10764,7 +10764,7 @@
   {
    "name": "Aaron Holiday",
    "team": null,
-   "updated": 1790596258762,
+   "updated": 1790682611098,
    "stats": {
     "adp_dynasty": 999.0,
     "adp_std": 495.4,
@@ -10791,7 +10791,7 @@
   {
    "name": "Orlando Robinson",
    "team": "CHI",
-   "updated": 1790596259060,
+   "updated": 1790682611363,
    "stats": {
     "adp_dynasty": 999.0,
     "adp_std": 999.0,
@@ -10818,7 +10818,7 @@
   {
    "name": "Rayan Rupert",
    "team": "PHI",
-   "updated": 1790596259778,
+   "updated": 1790682611978,
    "stats": {
     "adp_dynasty": 615.2,
     "adp_std": 632.8,
@@ -10845,7 +10845,7 @@
   {
    "name": "Justin Edwards",
    "team": "PHI",
-   "updated": 1790596259764,
+   "updated": 1790682611961,
    "stats": {
     "adp_dynasty": 471.3,
     "adp_std": 511.3,
@@ -10872,7 +10872,7 @@
   {
    "name": "Shake Milton",
    "team": null,
-   "updated": 1790596258819,
+   "updated": 1790682611147,
    "stats": {
     "adp_dynasty": 999.0,
     "adp_std": 999.0,
@@ -10899,7 +10899,7 @@
   {
    "name": "Chris Boucher",
    "team": null,
-   "updated": 1790596258727,
+   "updated": 1790682611065,
    "stats": {
     "adp_dynasty": 583.1,
     "adp_std": 646.4,
@@ -10926,7 +10926,7 @@
   {
    "name": "Aday Mara",
    "team": "OKC",
-   "updated": 1790596259987,
+   "updated": 1790682612163,
    "stats": {
     "adp_dynasty": 126.4,
     "adp_std": 184.7,
@@ -10953,7 +10953,7 @@
   {
    "name": "Jeff Dowtin",
    "team": null,
-   "updated": 1790596258746,
+   "updated": 1790682611083,
    "stats": {
     "adp_dynasty": 478.0,
     "adp_std": 999.0,
@@ -10979,7 +10979,7 @@
   {
    "name": "Trayce Jackson-Davis",
    "team": "TOR",
-   "updated": 1790596260116,
+   "updated": 1790682612279,
    "stats": {
     "adp_dynasty": 363.2,
     "adp_std": 443.8,
@@ -11005,7 +11005,7 @@
   {
    "name": "Antonio Reeves",
    "team": null,
-   "updated": 1790596258844,
+   "updated": 1790682611171,
    "stats": {
     "adp_dynasty": 999.0,
     "adp_std": 594.3,
@@ -11032,7 +11032,7 @@
   {
    "name": "Zuby Ejiofor",
    "team": "ATL",
-   "updated": 1790596258896,
+   "updated": 1790682611214,
    "stats": {
     "adp_dynasty": 190.6,
     "adp_std": 202.6,
@@ -11059,7 +11059,7 @@
   {
    "name": "Mouhamed Gueye",
    "team": "ATL",
-   "updated": 1790596258905,
+   "updated": 1790682611221,
    "stats": {
     "adp_dynasty": 639.6,
     "adp_std": 999.0,
@@ -11086,7 +11086,7 @@
   {
    "name": "Noah Penda",
    "team": "ORL",
-   "updated": 1790596259736,
+   "updated": 1790682611934,
    "stats": {
     "adp_dynasty": 475.6,
     "adp_std": 513.6,
@@ -11113,7 +11113,7 @@
   {
    "name": "Bol Bol",
    "team": null,
-   "updated": 1790596258723,
+   "updated": 1790682611063,
    "stats": {
     "adp_dynasty": 554.5,
     "adp_std": 406.2,
@@ -11140,7 +11140,7 @@
   {
    "name": "Ethan Thompson",
    "team": null,
-   "updated": 1790596258871,
+   "updated": 1790682611188,
    "stats": {
     "adp_dynasty": 455.9,
     "adp_std": 508.0,
@@ -11167,7 +11167,7 @@
   {
    "name": "Caleb Martin",
    "team": "DAL",
-   "updated": 1790596259140,
+   "updated": 1790682611431,
    "stats": {
     "adp_dynasty": 695.9,
     "adp_std": 999.0,
@@ -11194,7 +11194,7 @@
   {
    "name": "Jamal Cain",
    "team": "ORL",
-   "updated": 1790596259720,
+   "updated": 1790682611923,
    "stats": {
     "adp_dynasty": 650.5,
     "adp_std": 318.2,
@@ -11221,7 +11221,7 @@
   {
    "name": "Larry Nance",
    "team": "IND",
-   "updated": 1790596259359,
+   "updated": 1790682611617,
    "stats": {
     "adp_dynasty": 665.0,
     "adp_std": 383.0,
@@ -11248,7 +11248,7 @@
   {
    "name": "Jahmai Mashack",
    "team": "MEM",
-   "updated": 1790596260171,
+   "updated": 1790682612352,
    "stats": {
     "adp_dynasty": 533.3,
     "adp_std": 560.3,
@@ -11275,7 +11275,7 @@
   {
    "name": "Sidy Cissoko",
    "team": "POR",
-   "updated": 1790596259854,
+   "updated": 1790682612044,
    "stats": {
     "adp_dynasty": 604.3,
     "adp_std": 621.3,
@@ -11302,7 +11302,7 @@
   {
    "name": "Asa Newell",
    "team": "ATL",
-   "updated": 1790596258920,
+   "updated": 1790682611237,
    "stats": {
     "adp_dynasty": 286.6,
     "adp_std": 413.6,
@@ -11329,7 +11329,7 @@
   {
    "name": "Jarred Vanderbilt",
    "team": "LAL",
-   "updated": 1790596259467,
+   "updated": 1790682611711,
    "stats": {
     "adp_dynasty": 427.1,
     "adp_std": 480.4,
@@ -11356,7 +11356,7 @@
   {
    "name": "Kevon Looney",
    "team": "LAL",
-   "updated": 1790596259451,
+   "updated": 1790682611699,
    "stats": {
     "adp_dynasty": 383.2,
     "adp_std": 445.8,
@@ -11384,7 +11384,7 @@
   {
    "name": "Steven Adams",
    "team": "HOU",
-   "updated": 1790596259300,
+   "updated": 1790682611566,
    "stats": {
     "adp_dynasty": 335.4,
     "adp_std": 428.7,
@@ -11410,7 +11410,7 @@
   {
    "name": "Mont\u00e9 Morris",
    "team": null,
-   "updated": 1790596258825,
+   "updated": 1790682611154,
    "stats": {
     "adp_dynasty": 999.0,
     "adp_std": 570.3,
@@ -11437,7 +11437,7 @@
   {
    "name": "Dylan Cardwell",
    "team": "SAC",
-   "updated": 1790596259891,
+   "updated": 1790682612080,
    "stats": {
     "adp_dynasty": 239.4,
     "adp_std": 259.7,
@@ -11464,7 +11464,7 @@
   {
    "name": "Javon Small",
    "team": "MEM",
-   "updated": 1790596260186,
+   "updated": 1790682612367,
    "stats": {
     "adp_dynasty": 361.4,
     "adp_std": 442.7,
@@ -11491,7 +11491,7 @@
   {
    "name": "Jett Howard",
    "team": "DAL",
-   "updated": 1790596259126,
+   "updated": 1790682611420,
    "stats": {
     "adp_dynasty": 599.2,
     "adp_std": 338.0,
@@ -11518,7 +11518,7 @@
   {
    "name": "Dalen Terry",
    "team": "GSW",
-   "updated": 1790596259295,
+   "updated": 1790682611561,
    "stats": {
     "adp_dynasty": 350.0,
     "adp_std": 596.5,
@@ -11545,7 +11545,7 @@
   {
    "name": "Micah Peavy",
    "team": "MEM",
-   "updated": 1790596260175,
+   "updated": 1790682612357,
    "stats": {
     "adp_dynasty": 486.7,
     "adp_std": 520.1,
@@ -11572,7 +11572,7 @@
   {
    "name": "Ziaire Williams",
    "team": "LAL",
-   "updated": 1790596259470,
+   "updated": 1790682611714,
    "stats": {
     "adp_dynasty": 360.3,
     "adp_std": 441.3,
@@ -11599,7 +11599,7 @@
   {
    "name": "Tyrese Martin",
    "team": "PHI",
-   "updated": 1790596258806,
+   "updated": 1790682611140,
    "stats": {
     "adp_dynasty": 467.0,
     "adp_std": 575.0,
@@ -11626,7 +11626,7 @@
   {
    "name": "Brandon Boston",
    "team": "CHI",
-   "updated": 1790596259033,
+   "updated": 1790682611338,
    "stats": {
     "adp_dynasty": 999.0,
     "adp_std": 384.0,
@@ -11653,7 +11653,7 @@
   {
    "name": "Jaxson Hayes",
    "team": "UTA",
-   "updated": 1790596260031,
+   "updated": 1790682612201,
    "stats": {
     "adp_dynasty": 544.4,
     "adp_std": 569.7,
@@ -11680,7 +11680,7 @@
   {
    "name": "Jalen Pickett",
    "team": "LAC",
-   "updated": 1790596259420,
+   "updated": 1790682611672,
    "stats": {
     "adp_dynasty": 623.7,
     "adp_std": 999.0,
@@ -11707,7 +11707,7 @@
   {
    "name": "Liam McNeeley",
    "team": "CHA",
-   "updated": 1790596260222,
+   "updated": 1790682612399,
    "stats": {
     "adp_dynasty": 326.1,
     "adp_std": 420.4,
@@ -11734,7 +11734,7 @@
   {
    "name": "Jonathan Mogbo",
    "team": "SAC",
-   "updated": 1790596259908,
+   "updated": 1790682612093,
    "stats": {
     "adp_dynasty": 579.0,
     "adp_std": 606.0,
@@ -11761,7 +11761,7 @@
   {
    "name": "Trevelin Queen",
    "team": null,
-   "updated": 1790596258839,
+   "updated": 1790682611167,
    "stats": {
     "adp_dynasty": 506.2,
     "adp_std": 586.8,
@@ -11788,7 +11788,7 @@
   {
    "name": "Marcus Sasser",
    "team": "DAL",
-   "updated": 1790596259150,
+   "updated": 1790682611441,
    "stats": {
     "adp_dynasty": 659.1,
     "adp_std": 999.0,
@@ -11815,7 +11815,7 @@
   {
    "name": "Keaton Wallace",
    "team": "ATL",
-   "updated": 1790596258879,
+   "updated": 1790682611195,
    "stats": {
     "adp_dynasty": 427.0,
     "adp_std": 659.0,
@@ -11842,7 +11842,7 @@
   {
    "name": "Branden Carlson",
    "team": "POR",
-   "updated": 1790596259852,
+   "updated": 1790682612042,
    "stats": {
     "adp_dynasty": 411.0,
     "adp_std": 501.3,
@@ -11869,7 +11869,7 @@
   {
    "name": "Kyle Lowry",
    "team": null,
-   "updated": 1790596258803,
+   "updated": 1790682611136,
    "stats": {
     "adp_dynasty": 380.0,
     "adp_std": 475.8,
@@ -11896,7 +11896,7 @@
   {
    "name": "Jamison Battle",
    "team": "TOR",
-   "updated": 1790596260110,
+   "updated": 1790682612271,
    "stats": {
     "adp_dynasty": 999.0,
     "adp_std": 999.0,
@@ -11923,7 +11923,7 @@
   {
    "name": "Josh Green",
    "team": "UTA",
-   "updated": 1790596260029,
+   "updated": 1790682612199,
    "stats": {
     "adp_dynasty": 999.0,
     "adp_std": 999.0,
@@ -11950,7 +11950,7 @@
   {
    "name": "Rasheer Fleming",
    "team": "PHX",
-   "updated": 1790596259810,
+   "updated": 1790682612006,
    "stats": {
     "adp_dynasty": 251.3,
     "adp_std": 339.3,
@@ -11977,7 +11977,7 @@
   {
    "name": "Tidjane Sala\u00fcn",
    "team": "CHA",
-   "updated": 1790596260234,
+   "updated": 1790682612409,
    "stats": {
     "adp_dynasty": 300.0,
     "adp_std": 414.0,
@@ -12004,7 +12004,7 @@
   {
    "name": "Pat Connaughton",
    "team": "CHA",
-   "updated": 1790596260204,
+   "updated": 1790682612383,
    "stats": {
     "adp_dynasty": 999.0,
     "adp_std": 999.0,
@@ -12031,7 +12031,7 @@
   {
    "name": "Jalen Wilson",
    "team": "ATL",
-   "updated": 1790596258934,
+   "updated": 1790682611246,
    "stats": {
     "adp_dynasty": 687.7,
     "adp_std": 694.1,
@@ -12058,7 +12058,7 @@
   {
    "name": "Dorian Finney-Smith",
    "team": "ATL",
-   "updated": 1790596258900,
+   "updated": 1790682611216,
    "stats": {
     "adp_dynasty": 638.3,
     "adp_std": 999.0,
@@ -12085,7 +12085,7 @@
   {
    "name": "Killian Hayes",
    "team": null,
-   "updated": 1790596258758,
+   "updated": 1790682611095,
    "stats": {
     "adp_dynasty": 391.0,
     "adp_std": 679.7,
@@ -12112,7 +12112,7 @@
   {
    "name": "E.J. Liddell",
    "team": null,
-   "updated": 1790596258798,
+   "updated": 1790682611124,
    "stats": {
     "adp_dynasty": 999.0,
     "adp_std": 999.0,
@@ -12139,7 +12139,7 @@
   {
    "name": "Kevin Love",
    "team": null,
-   "updated": 1790596258801,
+   "updated": 1790682611126,
    "stats": {
     "adp_dynasty": 533.2,
     "adp_std": 639.8,
@@ -12194,7 +12194,7 @@
   {
    "name": "Colby Jones",
    "team": null,
-   "updated": 1790596258785,
+   "updated": 1790682611110,
    "stats": {
     "adp_dynasty": 660.0,
     "adp_std": 446.0,
@@ -12221,7 +12221,7 @@
   {
    "name": "Maxi Kleber",
    "team": null,
-   "updated": 1790596258794,
+   "updated": 1790682611120,
    "stats": {
     "adp_dynasty": 999.0,
     "adp_std": 303.7,
@@ -12248,7 +12248,7 @@
   {
    "name": "Jordan Walsh",
    "team": "BOS",
-   "updated": 1790596258971,
+   "updated": 1790682611284,
    "stats": {
     "adp_dynasty": 285.1,
     "adp_std": 376.4,
@@ -12275,7 +12275,7 @@
   {
    "name": "Ochai Agbaji",
    "team": "NYK",
-   "updated": 1790596259660,
+   "updated": 1790682611873,
    "stats": {
     "adp_dynasty": 583.7,
     "adp_std": 999.0,
@@ -12302,7 +12302,7 @@
   {
    "name": "Taelon Peter",
    "team": "SAS",
-   "updated": 1790596259960,
+   "updated": 1790682612140,
    "stats": {
     "adp_dynasty": 373.8,
     "adp_std": 395.5,
@@ -12329,7 +12329,7 @@
   {
    "name": "Tyrese Proctor",
    "team": "CLE",
-   "updated": 1790596259098,
+   "updated": 1790682611393,
    "stats": {
     "adp_dynasty": 341.1,
     "adp_std": 430.4,
@@ -12356,7 +12356,7 @@
   {
    "name": "Mason Plumlee",
    "team": null,
-   "updated": 1790596258836,
+   "updated": 1790682611163,
    "stats": {
     "adp_dynasty": 551.0,
     "adp_std": 999.0,
@@ -12383,7 +12383,7 @@
   {
    "name": "Anthony Gill",
    "team": "WAS",
-   "updated": 1790596260074,
+   "updated": 1790682612243,
    "stats": {
     "adp_dynasty": 594.2,
     "adp_std": 654.8,
@@ -12410,7 +12410,7 @@
   {
    "name": "Kai Jones",
    "team": null,
-   "updated": 1790596258778,
+   "updated": 1790682611113,
    "stats": {
     "adp_dynasty": 999.0,
     "adp_std": 380.0,
@@ -12437,7 +12437,7 @@
   {
    "name": "Drew Eubanks",
    "team": "NYK",
-   "updated": 1790596259683,
+   "updated": 1790682611893,
    "stats": {
     "adp_dynasty": 999.0,
     "adp_std": 999.0,
@@ -12464,7 +12464,7 @@
   {
    "name": "Jeremy Sochan",
    "team": "POR",
-   "updated": 1790596259878,
+   "updated": 1790682612068,
    "stats": {
     "adp_dynasty": 305.3,
     "adp_std": 249.3,
@@ -12491,7 +12491,7 @@
   {
    "name": "Ron Harper",
    "team": "BOS",
-   "updated": 1790596258953,
+   "updated": 1790682611264,
    "stats": {
     "adp_dynasty": 487.0,
     "adp_std": 390.0,
@@ -12518,7 +12518,7 @@
   {
    "name": "Kobe Brown",
    "team": "IND",
-   "updated": 1790596259342,
+   "updated": 1790682611603,
    "stats": {
     "adp_dynasty": 539.5,
     "adp_std": 605.6,
@@ -12545,7 +12545,7 @@
   {
    "name": "Amir Coffey",
    "team": null,
-   "updated": 1790596258734,
+   "updated": 1790682611071,
    "stats": {
     "adp_dynasty": 454.2,
     "adp_std": 533.8,
@@ -12572,7 +12572,7 @@
   {
    "name": "Guerschon Yabusele",
    "team": null,
-   "updated": 1790596258887,
+   "updated": 1790682611202,
    "stats": {
     "adp_dynasty": 529.3,
     "adp_std": 607.3,
@@ -12599,7 +12599,7 @@
   {
    "name": "Reece Beekman",
    "team": null,
-   "updated": 1790596258718,
+   "updated": 1790682611058,
    "stats": {
     "adp_dynasty": 504.0,
     "adp_std": 999.0,
@@ -12626,7 +12626,7 @@
   {
    "name": "Tyus Jones",
    "team": "DEN",
-   "updated": 1790596259175,
+   "updated": 1790682611462,
    "stats": {
     "adp_dynasty": 356.3,
     "adp_std": 371.3,
@@ -12653,7 +12653,7 @@
   {
    "name": "Craig Porter",
    "team": "CLE",
-   "updated": 1790596259093,
+   "updated": 1790682611389,
    "stats": {
     "adp_dynasty": 278.3,
     "adp_std": 254.3,
@@ -12680,7 +12680,7 @@
   {
    "name": "Jayden Quaintance",
    "team": "SAS",
-   "updated": 1790596259962,
+   "updated": 1790682612142,
    "stats": {
     "adp_dynasty": 275.4,
     "adp_std": 342.7,
@@ -12733,7 +12733,7 @@
   {
    "name": "Chaney Johnson",
    "team": "BKN",
-   "updated": 1790596259631,
+   "updated": 1790682611846,
    "stats": {
     "adp_dynasty": 558.6,
     "adp_std": 587.6,
@@ -12760,7 +12760,7 @@
   {
    "name": "Cormac Ryan",
    "team": "MIL",
-   "updated": 1790596259557,
+   "updated": 1790682611787,
    "stats": {
     "adp_dynasty": 526.3,
     "adp_std": 551.3,
@@ -12785,7 +12785,7 @@
   {
    "name": "Mike Conley",
    "team": "BOS",
-   "updated": 1790596258941,
+   "updated": 1790682611254,
    "stats": {
     "adp_dynasty": 670.3,
     "adp_std": 395.3,
@@ -12812,7 +12812,7 @@
   {
    "name": "Isaiah Evans",
    "team": "MIN",
-   "updated": 1790596259589,
+   "updated": 1790682611814,
    "stats": {
     "adp_dynasty": 321.7,
     "adp_std": 312.1,
@@ -12839,7 +12839,7 @@
   {
    "name": "Jaylen Clark",
    "team": "MIN",
-   "updated": 1790596259578,
+   "updated": 1790682611805,
    "stats": {
     "adp_dynasty": 589.0,
     "adp_std": 662.3,
@@ -12866,7 +12866,7 @@
   {
    "name": "Nick Smith",
    "team": null,
-   "updated": 1790596258856,
+   "updated": 1790682611181,
    "stats": {
     "adp_dynasty": 405.7,
     "adp_std": 504.1,
@@ -12893,7 +12893,7 @@
   {
    "name": "Trey Lyles",
    "team": "MIN",
-   "updated": 1790596259599,
+   "updated": 1790682611824,
    "stats": {
     "adp_dynasty": 999.0,
     "adp_std": 999.0,
@@ -12920,7 +12920,7 @@
   {
    "name": "Clint Capela",
    "team": "HOU",
-   "updated": 1790596259306,
+   "updated": 1790682611571,
    "stats": {
     "adp_dynasty": 357.8,
     "adp_std": 365.5,
@@ -12946,7 +12946,7 @@
   {
    "name": "Spencer Jones",
    "team": "DEN",
-   "updated": 1790596259179,
+   "updated": 1790682611465,
    "stats": {
     "adp_dynasty": 673.0,
     "adp_std": 999.0,
@@ -12973,7 +12973,7 @@
   {
    "name": "Julian Reese",
    "team": "NOP",
-   "updated": 1790596259025,
+   "updated": 1790682611330,
    "stats": {
     "adp_dynasty": 315.0,
     "adp_std": 368.0,
@@ -12997,7 +12997,7 @@
   {
    "name": "Myron Gardner",
    "team": "MIA",
-   "updated": 1790596259480,
+   "updated": 1790682611725,
    "stats": {
     "adp_dynasty": 999.0,
     "adp_std": 999.0,
@@ -13024,7 +13024,7 @@
   {
    "name": "Pete Nance",
    "team": "MIL",
-   "updated": 1790596259548,
+   "updated": 1790682611780,
    "stats": {
     "adp_dynasty": 541.8,
     "adp_std": 567.5,
@@ -13051,7 +13051,7 @@
   {
    "name": "Dalano Banton",
    "team": null,
-   "updated": 1790596258713,
+   "updated": 1790682611054,
    "stats": {
     "adp_dynasty": 999.0,
     "adp_std": 999.0,
@@ -13078,7 +13078,7 @@
   {
    "name": "Eric Gordon",
    "team": null,
-   "updated": 1790596258754,
+   "updated": 1790682611090,
    "stats": {
     "adp_dynasty": 999.0,
     "adp_std": 999.0,
@@ -13105,7 +13105,7 @@
   {
    "name": "Zeke Nnaji",
    "team": "DEN",
-   "updated": 1790596259187,
+   "updated": 1790682611471,
    "stats": {
     "adp_dynasty": 597.7,
     "adp_std": 615.1,
@@ -13132,7 +13132,7 @@
   {
    "name": "DeAndre Jordan",
    "team": "NOP",
-   "updated": 1790596258990,
+   "updated": 1790682611298,
    "stats": {
     "adp_dynasty": 376.2,
     "adp_std": 289.8,
@@ -13156,7 +13156,7 @@
   {
    "name": "Wendell Moore",
    "team": "DET",
-   "updated": 1790596258821,
+   "updated": 1790682611151,
    "stats": {
     "adp_dynasty": 596.3,
     "adp_std": 614.3,
@@ -13183,7 +13183,7 @@
   {
    "name": "Charles Bassey",
    "team": "GSW",
-   "updated": 1790596259240,
+   "updated": 1790682611521,
    "stats": {
     "adp_dynasty": 999.0,
     "adp_std": 999.0,
@@ -13207,7 +13207,7 @@
   {
    "name": "Sergio De Larrea",
    "team": "DAL",
-   "updated": 1790596259118,
+   "updated": 1790682611413,
    "stats": {
     "adp_dynasty": 269.5,
     "adp_std": 411.2,
@@ -13234,7 +13234,7 @@
   {
    "name": "Jonathan Isaac",
    "team": "ORL",
-   "updated": 1790596259732,
+   "updated": 1790682611932,
    "stats": {
     "adp_dynasty": 552.1,
     "adp_std": 582.4,
@@ -13261,7 +13261,7 @@
   {
    "name": "Blake Hinson",
    "team": "UTA",
-   "updated": 1790596260033,
+   "updated": 1790682612203,
    "stats": {
     "adp_dynasty": 608.2,
     "adp_std": 625.8,
@@ -13288,7 +13288,7 @@
   {
    "name": "Cody Martin",
    "team": null,
-   "updated": 1790596258808,
+   "updated": 1790682611138,
    "stats": {
     "adp_dynasty": 573.8,
     "adp_std": 999.0,
@@ -13315,7 +13315,7 @@
   {
    "name": "Lonzo Ball",
    "team": null,
-   "updated": 1790596258709,
+   "updated": 1790682611051,
    "stats": {
     "adp_dynasty": 310.1,
     "adp_std": 208.4,
@@ -13342,7 +13342,7 @@
   {
    "name": "Caleb Houstan",
    "team": "NOP",
-   "updated": 1790596258983,
+   "updated": 1790682611294,
    "stats": {
     "adp_dynasty": 999.0,
     "adp_std": 999.0,
@@ -13369,7 +13369,7 @@
   {
    "name": "Micah Potter",
    "team": "POR",
-   "updated": 1790596259874,
+   "updated": 1790682612063,
    "stats": {
     "adp_dynasty": 546.0,
     "adp_std": 573.0,
@@ -13396,7 +13396,7 @@
   {
    "name": "Jaden Springer",
    "team": null,
-   "updated": 1790596258859,
+   "updated": 1790682611183,
    "stats": {
     "adp_dynasty": 999.0,
     "adp_std": 999.0,
@@ -13450,7 +13450,7 @@
   {
    "name": "Keshad Johnson",
    "team": "MIA",
-   "updated": 1790596259485,
+   "updated": 1790682611729,
    "stats": {
     "adp_dynasty": 643.7,
     "adp_std": 303.1,
@@ -13476,7 +13476,7 @@
   {
    "name": "Cory Joseph",
    "team": null,
-   "updated": 1790596258787,
+   "updated": 1790682611115,
    "stats": {
     "adp_dynasty": 999.0,
     "adp_std": 999.0,
@@ -13503,7 +13503,7 @@
   {
    "name": "Kessler Edwards",
    "team": null,
-   "updated": 1790596258748,
+   "updated": 1790682611085,
    "stats": {
     "adp_dynasty": 512.0,
     "adp_std": 592.0,
@@ -13529,7 +13529,7 @@
   {
    "name": "Jae'Sean Tate",
    "team": "HOU",
-   "updated": 1790596259329,
+   "updated": 1790682611593,
    "stats": {
     "adp_dynasty": 697.0,
     "adp_std": 999.0,
@@ -13555,8 +13555,8 @@
   },
   {
    "name": "Gary Harris",
-   "team": "DET",
-   "updated": 1790596258756,
+   "team": null,
+   "updated": 1790682611093,
    "stats": {
     "adp_dynasty": 999.0,
     "adp_std": 999.0,
@@ -13583,7 +13583,7 @@
   {
    "name": "Malevy Leons",
    "team": "GSW",
-   "updated": 1790596259260,
+   "updated": 1790682611537,
    "stats": {
     "adp_dynasty": 999.0,
     "adp_std": 590.0,
@@ -13610,7 +13610,7 @@
   {
    "name": "Jeremiah Robinson-Earl",
    "team": null,
-   "updated": 1790596258846,
+   "updated": 1790682611174,
    "stats": {
     "adp_dynasty": 674.3,
     "adp_std": 410.3,
@@ -13637,7 +13637,7 @@
   {
    "name": "Nicolas Batum",
    "team": null,
-   "updated": 1790596258715,
+   "updated": 1790682611056,
    "stats": {
     "adp_dynasty": 999.0,
     "adp_std": 538.2,
@@ -13664,7 +13664,7 @@
   {
    "name": "Sharife Cooper",
    "team": null,
-   "updated": 1790596258736,
+   "updated": 1790682611074,
    "stats": {
     "adp_dynasty": 563.6,
     "adp_std": 593.6,
@@ -13691,7 +13691,7 @@
   {
    "name": "Jase Richardson",
    "team": "ORL",
-   "updated": 1790596259739,
+   "updated": 1790682611936,
    "stats": {
     "adp_dynasty": 273.7,
     "adp_std": 412.1,
@@ -13718,7 +13718,7 @@
   {
    "name": "Koa Peat",
    "team": "PHX",
-   "updated": 1790596259835,
+   "updated": 1790682612028,
    "stats": {
     "adp_dynasty": 279.0,
     "adp_std": 370.0,
@@ -13745,7 +13745,7 @@
   {
    "name": "Johnny Furphy",
    "team": "IND",
-   "updated": 1790596259345,
+   "updated": 1790682611605,
    "stats": {
     "adp_dynasty": 338.5,
     "adp_std": 429.2,
@@ -13772,7 +13772,7 @@
   {
    "name": "David Jones Garcia",
    "team": "SAS",
-   "updated": 1790596259953,
+   "updated": 1790682612133,
    "stats": {
     "adp_dynasty": 493.4,
     "adp_std": 527.7,
@@ -13799,7 +13799,7 @@
   {
    "name": "A.J. Lawson",
    "team": null,
-   "updated": 1790596258796,
+   "updated": 1790682611122,
    "stats": {
     "adp_dynasty": 668.5,
     "adp_std": 399.2,
@@ -13823,7 +13823,7 @@
   {
    "name": "Tyler Kolek",
    "team": "NYK",
-   "updated": 1790596259689,
+   "updated": 1790682611897,
    "stats": {
     "adp_dynasty": 483.6,
     "adp_std": 283.6,
@@ -13850,7 +13850,7 @@
   {
    "name": "Christian Koloko",
    "team": "NOP",
-   "updated": 1790596258994,
+   "updated": 1790682611301,
    "stats": {
     "adp_dynasty": 999.0,
     "adp_std": 389.0,
@@ -13877,7 +13877,7 @@
   {
    "name": "Jericho Sims",
    "team": "MIL",
-   "updated": 1790596259561,
+   "updated": 1790682611789,
    "stats": {
     "adp_dynasty": 999.0,
     "adp_std": 479.1,
@@ -13901,7 +13901,7 @@
   {
    "name": "John Poulakidas",
    "team": "DAL",
-   "updated": 1790596259143,
+   "updated": 1790682611433,
    "stats": {
     "adp_dynasty": 567.8,
     "adp_std": 596.5,
@@ -13926,7 +13926,7 @@
   {
    "name": "John Konchar",
    "team": "NYK",
-   "updated": 1790596259691,
+   "updated": 1790682611899,
    "stats": {
     "adp_dynasty": 611.2,
     "adp_std": 391.8,
@@ -13953,7 +13953,7 @@
   {
    "name": "Bismack Biyombo",
    "team": null,
-   "updated": 1790596258720,
+   "updated": 1790682611060,
    "stats": {
     "adp_dynasty": 519.6,
     "adp_std": 999.0,
@@ -13977,7 +13977,7 @@
   {
    "name": "Tyler Burton",
    "team": null,
-   "updated": 1790596258729,
+   "updated": 1790682611067,
    "stats": {
     "adp_dynasty": 999.0,
     "adp_std": 688.0,
@@ -14001,7 +14001,7 @@
   {
    "name": "Elijah Harkless",
    "team": "DET",
-   "updated": 1790596259212,
+   "updated": 1790682611495,
    "stats": {
     "adp_dynasty": 999.0,
     "adp_std": 999.0,
@@ -14027,7 +14027,7 @@
   {
    "name": "Leaky Black",
    "team": "SAC",
-   "updated": 1790596259888,
+   "updated": 1790682612077,
    "stats": {
     "adp_dynasty": 461.1,
     "adp_std": 396.4,
@@ -14054,7 +14054,7 @@
   {
    "name": "Dwight Powell",
    "team": "DAL",
-   "updated": 1790596259146,
+   "updated": 1790682611436,
    "stats": {
     "adp_dynasty": 600.5,
     "adp_std": 657.2,
@@ -14081,7 +14081,7 @@
   {
    "name": "Mo Bamba",
    "team": "UTA",
-   "updated": 1790596260016,
+   "updated": 1790682612189,
    "stats": {
     "adp_dynasty": 536.2,
     "adp_std": 561.8,
@@ -14108,7 +14108,7 @@
   {
    "name": "Gabe Vincent",
    "team": null,
-   "updated": 1790596258877,
+   "updated": 1790682611193,
    "stats": {
     "adp_dynasty": 527.5,
     "adp_std": 669.0,
@@ -14134,7 +14134,7 @@
   {
    "name": "Julian Phillips",
    "team": "HOU",
-   "updated": 1790596259314,
+   "updated": 1790682611577,
    "stats": {
     "adp_dynasty": 420.0,
     "adp_std": 999.0,
@@ -14161,7 +14161,7 @@
   {
    "name": "Seth Curry",
    "team": null,
-   "updated": 1790596258742,
+   "updated": 1790682611079,
    "stats": {
     "adp_dynasty": 381.6,
     "adp_std": 314.6,
@@ -14188,7 +14188,7 @@
   {
    "name": "Ben Simmons",
    "team": "SAC",
-   "updated": 1790596259925,
+   "updated": 1790682612110,
    "stats": {
     "adp_dynasty": 469.8,
     "adp_std": 552.5,
@@ -14212,7 +14212,7 @@
   {
    "name": "Jalen Slawson",
    "team": "IND",
-   "updated": 1790596259377,
+   "updated": 1790682611633,
    "stats": {
     "adp_dynasty": 446.1,
     "adp_std": 389.4,
@@ -14239,7 +14239,7 @@
   {
    "name": "Malachi Smith",
    "team": "TOR",
-   "updated": 1790596260135,
+   "updated": 1790682612296,
    "stats": {
     "adp_dynasty": 999.0,
     "adp_std": 413.0,
@@ -14264,7 +14264,7 @@
   {
    "name": "DeJon Jarreau",
    "team": null,
-   "updated": 1790596258768,
+   "updated": 1790682611103,
    "stats": {
     "adp_dynasty": 999.0,
     "adp_std": 999.0,
@@ -14291,7 +14291,7 @@
   {
    "name": "Haywood Highsmith",
    "team": "PHX",
-   "updated": 1790596259824,
+   "updated": 1790682612016,
    "stats": {
     "adp_dynasty": 448.8,
     "adp_std": 498.5,
@@ -14315,7 +14315,7 @@
   {
    "name": "Oscar Tshiebwe",
    "team": "HOU",
-   "updated": 1790596259337,
+   "updated": 1790682611598,
    "stats": {
     "adp_dynasty": 482.7,
     "adp_std": 516.1,
@@ -14338,7 +14338,7 @@
   {
    "name": "DaQuan Jeffries",
    "team": null,
-   "updated": 1790596258771,
+   "updated": 1790682611106,
    "stats": {
     "adp_dynasty": 999.0,
     "adp_std": 999.0,
@@ -14363,7 +14363,7 @@
   {
    "name": "Bez Mbeng",
    "team": "MIA",
-   "updated": 1790596259494,
+   "updated": 1790682611737,
    "stats": {
     "adp_dynasty": 511.6,
     "adp_std": 540.6,
@@ -14422,7 +14422,7 @@
   {
    "name": "Cam Reddish",
    "team": null,
-   "updated": 1790596258842,
+   "updated": 1790682611169,
    "stats": {
     "adp_dynasty": 464.0,
     "adp_std": 529.8,

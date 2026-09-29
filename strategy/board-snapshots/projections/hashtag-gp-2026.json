@@ -3,7 +3,7 @@
  "source": "hashtag basketball projections",
  "duration": "0",
  "duration_label": "2026-27 Rest of Season Projections",
- "updated": "25 September 2026 by Joseph Mamone",
+ "updated": "28 September 2026 by Joseph Mamone",
  "depth": 430,
  "rows": [
   {
@@ -178,7 +178,7 @@
   },
   {
    "name": "Jalen Duren",
-   "gp": 70.0,
+   "gp": 68.0,
    "team": "DET"
   },
   {
@@ -292,16 +292,6 @@
    "team": "POR"
   },
   {
-   "name": "Kristaps Porzingis",
-   "gp": 51.0,
-   "team": "GS"
-  },
-  {
-   "name": "Brandon Ingram",
-   "gp": 72.0,
-   "team": "LAC"
-  },
-  {
    "name": "Kon Knueppel",
    "gp": 60.0,
    "team": "CHA"
@@ -362,6 +352,11 @@
    "team": "MIN"
   },
   {
+   "name": "Brandon Ingram",
+   "gp": 42.0,
+   "team": "LAC"
+  },
+  {
    "name": "Zach LaVine",
    "gp": 68.0,
    "team": "SAC"
@@ -415,6 +410,11 @@
    "name": "Keyonte George",
    "gp": 70.0,
    "team": "UTA"
+  },
+  {
+   "name": "Kristaps Porzingis",
+   "gp": 42.0,
+   "team": "GS"
   },
   {
    "name": "Josh Hart",
@@ -600,6 +600,11 @@
    "name": "Kevin Porter Jr.",
    "gp": 60.0,
    "team": "MIL"
+  },
+  {
+   "name": "Yaxel Lendeborg",
+   "gp": 72.0,
+   "team": "GS"
   },
   {
    "name": "Quentin Grimes",
@@ -882,11 +887,6 @@
    "team": "UTA"
   },
   {
-   "name": "Yaxel Lendeborg",
-   "gp": 72.0,
-   "team": "GS"
-  },
-  {
    "name": "Scotty Pippen Jr.",
    "gp": 50.0,
    "team": "MEM"
@@ -1032,14 +1032,14 @@
    "team": "ATL"
   },
   {
-   "name": "Bilal Coulibaly",
-   "gp": 60.0,
-   "team": "WAS"
-  },
-  {
    "name": "Jonathan Kuminga",
    "gp": 70.0,
    "team": "MIN"
+  },
+  {
+   "name": "Bilal Coulibaly",
+   "gp": 60.0,
+   "team": "WAS"
   },
   {
    "name": "Brook Lopez",
