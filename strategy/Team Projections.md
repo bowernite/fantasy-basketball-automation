@@ -43,7 +43,7 @@ Inputs: 9/29 rosters (post rookie draft, FA auction and trades), 9/29 projection
 **'26-27 table**
 
 - PF: `sim.py horizon`, '26-27 block (projected season PF, every roster padded to 38). Wins (of 19 matchups) and P(title): `sim.py title` (20k seasons; ±0.4 points on ours, less elsewhere). Ours: 1-seed 85%, P(title | 1-seed) 56%.
-- Own Sept '27 slot: the slot of the team's own '27 pick, whoever holds it now. The draft follows record rank, not PF rank (`league-info` §Drafting), so every slot here is a prior. PF ranks 1–4 map to 13 − rank; ranks 5–12 take `horizon`'s fixed prior bands (not simmed), which reach 1.09–1.11 because a rank 5–8 team can still finish top 4 by record.
+- Own Sept '27 slot: the slot of the team's own '27 pick, whoever holds it now. The draft follows record rank, not PF rank (`league-info` §Drafting), so every slot here is a prior. PF ranks 1–4 map to 13 − rank; ranks 5–12 take `horizon`'s hard-coded prior bands (`LOTTERY_PRIOR`; not simmed, source undocumented).
 - P(seed 1–4) from `title` (seeds go by record, so ≈ the draft's top-4 cut): Brett 100 · Brian 78 · Michael 76 · Josh 54 · Hlina 49 · Mitch 32 · Joe 10 · Todd 1. Brian projects more wins than Michael (13.1 vs 12.8), so 1.10/1.11 may swap.
 
 **'27-28 to '32-33 table**
@@ -59,10 +59,12 @@ Inputs: 9/29 rosters (post rookie draft, FA auction and trades), 9/29 projection
   - No trades or FA pickups: aging cores restock only through the draft.
   - Progression pulls high projections toward the mean on top of aging (`sim.py progression` medians by '30-31: Cunningham 47.6 → 43.8, Giddey 42.1 → 36.3 FP/G).
   - Unsized: role vets 29+ run high; BASE never ages; bracket R1 wins don't move the draft cut.
-  - Negligible: the cut proxy (under 1 cut per team per offseason from '29), the reused schedule, and four players with no birthday (Lewis, Ilyasova, Marković, Ishchenko) exiting after '26-27.
+  - Cut proxy: bites in the '27 and '28 offseasons (Jon 3.5 and 1.1 cuts, Brett 2.6 and 2.7, Joe 1.2), so it shapes their '27-28 and '28-29; under 1 cut per team per offseason from '29.
+  - Negligible: the reused schedule, and four players with no birthday (Lewis, Ilyasova, Marković, Ishchenko) exiting after '26-27.
 
 **Re-run**
 
 - '26-27: `strategy/lineup-math/run sim.py horizon title` (PF and slots from `horizon`'s '26-27 block only; its later blocks are superseded by `future`).
 - '27-28 on: `strategy/lineup-math/run sim.py future` (~1 min). After a trade, injury or projections/boards/BASE refresh, follow `sims` §Future seasons and read `Δ vs last run`.
+- Progression medians cited in Notes: `strategy/lineup-math/run sim.py progression`.
 - Slot pricing off these finishes: `eval-pick`.
