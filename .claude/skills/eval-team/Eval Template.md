@@ -29,7 +29,7 @@ Sort the table by **BASE** descending unless a file states otherwise. **`σ`** f
 | **Δw 'YY–'YY …** | same |
 | **ΔP(title)** / **ΔP(title) ours** | one decimal, `%` suffix: **16.4%** · may be negative |
 | W20–W23 | integer expected PF · no projection → `–` |
-| Boards | Dizzle • Hashtag (crowd): `51 • 62 (68)` · absent → `–` · Dizzle off its rookie chart (`base.py` `CHART` line) → `~325` |
+| Boards | Dizzle • Hashtag (crowd): `51 • 62 (68)` · absent → `–` · Dizzle off its rookie chart (`base.py` `CHART` line) → `~342` |
 | AGE | one decimal · unknown → `–` |
 | POS | eligibility slash-separated: `PG/SG` |
 

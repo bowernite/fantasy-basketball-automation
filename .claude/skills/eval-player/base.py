@@ -113,9 +113,10 @@ def load(path, rankcol, namecol, teamcol):
 
 
 def load_rookie_chart():
-    """-> {key: [(rank, team)]} off Dizzle's Points rookie tab: class ordinal N -> pick
-    chart row N -> `Top lo-hi` -> floor((lo+hi)/2), `eval-pick` §4's chart fallback,
-    never above the deepest rookie Dizzle's dynasty board slots inline."""
+    """-> {key: [(rank, team)]}, {key: '#N mid->rank'} off Dizzle's Points rookie
+    tab: class ordinal N -> pick chart row N -> `Top lo-hi` -> mid = floor((lo+hi)/2),
+    `eval-pick` §4's chart fallback, never above the deepest rookie Dizzle's dynasty
+    board slots inline."""
     tab, chart = ROOKIE_CHART
     _, _, board, rankcol, namecol, _ = BOARDS[0]
     with open(board, newline='', encoding='utf-8') as f:
@@ -125,15 +126,16 @@ def load_rookie_chart():
     with open(chart, newline='', encoding='utf-8') as f:
         bands = [re.search(r'(\d+)\s*-\s*(\d+)', row['Estimated Value'])
                  for row in csv.DictReader(f)]
-    ranks = {n: max(floor, (int(b.group(1)) + int(b.group(2))) // 2)
-             for n, b in enumerate(bands, 1) if b}
-    rows = {}
+    mids = {n: (int(b.group(1)) + int(b.group(2))) // 2 for n, b in enumerate(bands, 1) if b}
+    rows, notes = {}, {}
     with open(tab, newline='', encoding='utf-8') as f:
         for row in csv.DictReader(f):
             n = row['#']
-            if n.isdigit() and int(n) in ranks:
-                rows.setdefault(key(row['Player']), []).append((ranks[int(n)], row['NBA Team']))
-    return rows
+            if n.isdigit() and int(n) in mids:
+                mid, k = mids[int(n)], key(row['Player'])
+                rows.setdefault(k, []).append((max(floor, mid), row['NBA Team']))
+                notes[k] = f'#{n} {mid}->{max(floor, mid)}'
+    return rows, notes
 
 
 def stamp(path):
@@ -248,11 +250,12 @@ def load_boards():
 
 
 def price(names, size=ROSTER_SIZE):
-    """-> [(label, key, ranks, BASE, charted)] per (label, name, team). A player off all
-    three boards prices 0 here; `main` refuses that rather than print it. `charted`: his
-    Dizzle rank is `load_rookie_chart`'s, for want of a dynasty-board row."""
+    """-> [(label, key, ranks, BASE, chart)] per (label, name, team). A player off all
+    three boards prices 0 here; `main` refuses that rather than print it. `chart` is
+    `load_rookie_chart`'s note wherever his Dizzle rank was looked up there, for want of
+    a dynasty-board row; a Dizzle rank still None then means his team missed the tab's."""
     loaded, depth = load_boards()
-    chart = load_rookie_chart()
+    chart, notes = load_rookie_chart()
     D = TEAMS * size
     _, V = curve(D)
     collide = {k for _, _, b in loaded for k, hits in b.items() if len(hits) > 1}
@@ -264,16 +267,17 @@ def price(names, size=ROSTER_SIZE):
                    % (who, '; '.join(f'{n} {hitlist(b[k])}'
                                      for n, _, b in loaded if k in b)))
         ranks = [pick(b.get(k) or [], team, k in collide) for _, _, b in loaded]
-        charted = ranks[0] is None and k in chart
-        if charted:
-            ranks[0] = pick(chart[k], team, k in collide or bool(team))
-            charted = ranks[0] is not None
+        note = None
+        if ranks[0] is None and k in chart:
+            ranks[0], note = pick(chart[k], team, k in collide or bool(team)), notes[k]
+            if ranks[0] is None:
+                note += ' on ' + '/'.join(t for _, t in chart[k])
         num = tot = 0.0
         for (n, w, _), r in zip(loaded, ranks):
             if r is None and depth[n] < D:
                 continue                 # absence and below-depth indistinguishable
             num, tot = num + w * (V(r) if r is not None else 0.0), tot + w
-        out.append((label, k, ranks, round(num / tot) if tot else 0, charted))
+        out.append((label, k, ranks, round(num / tot) if tot else 0, note))
     return out
 
 
@@ -327,11 +331,16 @@ def main(argv):
     if absent:
         print('ABSENT   BASE 0 as hand-checked, not as a failed join: '
               + ', '.join(lb for lb, k, *_ in out if k in absent))
-    charted = [lb for lb, *_, c in out if c]
+    charted = [f'{lb} {c}' for lb, _, r, _, c in out if c and r[0] is not None]
+    missed = [f'{n} on {t} (tab {c})' for (_, n, t), (_, _, r, _, c) in zip(names, out)
+              if c and r[0] is None]
     if charted:
         print(f'CHART    dizP off {os.path.basename(ROOKIE_CHART[0])} class # -> '
               f'{os.path.basename(ROOKIE_CHART[1])} band midpoint, no dynasty-board row '
               '(eval-player): ' + ', '.join(charted))
+    if missed:
+        print('CHART?   rookie-tab row on another team, so dizP left absent — check '
+              'the trade before believing BASE: ' + '; '.join(missed))
     print('PLAYER\t' + '\t'.join(n for n, _, _ in boards) + '\tBASE')
     for label, _, ranks, base, _ in out:
         print(f'{label}\t' + '\t'.join('-' if r is None else str(r) for r in ranks)

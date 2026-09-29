@@ -1,5 +1,5 @@
 """Score's fixed rates (`Eval Definitions §Score`) and the board BASE a sim cut is charged at."""
-import functools, importlib.util, os
+import functools, importlib.util, os, sys
 from .data import HERE
 
 # Formula Δw sums pieces, so it reads ~0.3 high per extra incoming body; docked per net body
@@ -23,4 +23,8 @@ def _recipe():
 def board_base(rows):
     """{name: BASE} off the committed board snapshots; a body off all three boards is 0"""
     priced = _recipe().price([(p["n"], p["n"], p["tm"]) for p in rows])
+    for label, _, ranks, _, chart in priced:
+        if chart and ranks[0] is None:
+            print(f"CHART?  {label}: rookie-tab row on another team ({chart}), so no Dizzle "
+                  "rank — check the trade before believing his BASE", file=sys.stderr)
     return {label: base for label, _, _, base, _ in priced}

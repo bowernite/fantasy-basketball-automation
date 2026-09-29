@@ -206,6 +206,19 @@ class RookieChart(unittest.TestCase):
             got = priced('Same Name:MIA')
         self.assertEqual(got['Same Name:MIA'][:2], ['-', '300'])
 
+    def test_a_rookie_traded_off_his_tab_team_is_named_not_silently_priced(self):
+        # His crowd row keeps the all-boards refusal quiet, so the header is the only flag
+        rookies = [(1, 'Traded Rookie', 'OKC')]
+        rows = [(12, 'Someone', 'BOS')]
+        with snapshots(rows, rows, [(347, 'Traded Rookie', 'BOS')], rookies=rookies,
+                       chart=[('1.01', 'Top 300-350')]):
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf):
+                base.main(['Traded Rookie:BOS'])
+        line = next(l for l in buf.getvalue().splitlines() if l.startswith('CHART?'))
+        self.assertIn('Traded Rookie on BOS', line)
+        self.assertIn('on OKC', line)
+
     def test_a_dynasty_board_row_outranks_the_chart_for_the_same_rookie(self):
         # The board's own rank is exact; the chart band is the coarser fallback
         with snapshots([(277, '2.07 / Baba Miller', 'LAC')], [(300, 'Baba Miller', 'LAC')],
@@ -235,6 +248,21 @@ class RookieChart(unittest.TestCase):
         line = next(l for l in buf.getvalue().splitlines() if l.startswith('CHART'))
         self.assertIn('Late Pick', line)
         self.assertNotIn('On Board', line)
+
+    def test_the_header_shows_where_the_floor_moved_a_charted_rank(self):
+        # A missed dynasty join on an early rookie floors to the class's tail too; only the
+        # ordinal and the unfloored midpoint beside it tell that apart from a real omission
+        dizzle = [(342, '2.10 / Braden Smith', 'IND')]
+        rookies = [(1, 'Missed Join', 'MEM'), (2, 'Left Out', 'SAS')]
+        chart = [('1.01', 'Top 10-15'), ('1.02', 'Top 250-300')]
+        rows = [(12, 'Someone', 'BOS')]
+        with snapshots(dizzle, rows, rows, rookies=rookies, chart=chart):
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf):
+                base.main(['Missed Join', 'Left Out'])
+        line = next(l for l in buf.getvalue().splitlines() if l.startswith('CHART'))
+        self.assertIn('Missed Join #1 12->342', line)
+        self.assertIn('Left Out #2 275->342', line)
 
 
 class TeamMatching(unittest.TestCase):
