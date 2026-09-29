@@ -10,7 +10,7 @@ from ..score import board_base
 from . import progression as players
 
 PATHS, SEED, YEARS = 300, 1, 7
-T_ENG, T_IN = 20, 200          # inner trials per team-season; the paths carry the spread
+T_ENG, T_IN = 10, 200          # inner trials per team-season; the paths carry the spread
 LAST = os.path.join(tempfile.gettempdir(), "ff-sim-future-last.json")
 LEDGER = "picks-%s.json" % SEASON_TAG
 

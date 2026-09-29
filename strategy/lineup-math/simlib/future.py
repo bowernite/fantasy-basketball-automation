@@ -21,6 +21,8 @@ def simulate(start, teams1, ledger, template, paths, seed, years, t_eng, t_in):
     offseason)"""
     job = (start, teams1, ledger, template, seed, years, t_eng, t_in)
     nw = shard.n_workers(None, paths, floor=8)
+    if nw > 1:
+        shard.retire()  # a pool that already served engine.run hangs on a new job shape
     parts = shard.mapped(_chunk, [(s, c) + job for s, c in shard.chunks(paths, nw)], nw)
     return [run for part in parts for run in part]
 
