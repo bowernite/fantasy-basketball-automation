@@ -110,8 +110,7 @@ class Report(unittest.TestCase):
         from simlib.reports import future as rep
         cls.last = os.path.join(tempfile.mkdtemp(), "last.json")
         cls.out = []
-        with cheap_monte_carlo(), mock.patch.object(rep, "PATHS", 3), \
-                mock.patch.object(rep, "LAST", cls.last):
+        with cheap_monte_carlo(), mock.patch.object(rep, "LAST", cls.last):
             for _ in range(2):
                 buf = io.StringIO()
                 with contextlib.redirect_stdout(buf):

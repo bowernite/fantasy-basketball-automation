@@ -53,8 +53,9 @@ BLURB = {
               "ledger and cuts to 38",
 }
 
-# Ignore `--roster`: market reads the board and the pool, progression and future every roster file
-ROSTER_FREE = {"market", "progression", "future"}
+# Ignore `--roster`; each prints what it reads instead
+ROSTER_FREE = {"market": "no roster: board and pool only",
+               "progression": "every roster file", "future": "every roster file"}
 
 # rounded up from an 18-core box; `engine.run` shards trials across cores, so a
 # smaller box runs slower than this

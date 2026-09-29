@@ -260,7 +260,7 @@ if __name__ == "__main__":
     for i, name in enumerate(args):
         print(("\n" if i else "") + "=" * 72 + "\n"
               + "%s  --  %s" % (name.upper(),
-                                "no roster: board and pool only"
+                                ROSTER_FREE[name]
                                 if name in ROSTER_FREE
                                 else "roster: %s" % roster.label())
               + "\n" + "=" * 72)
