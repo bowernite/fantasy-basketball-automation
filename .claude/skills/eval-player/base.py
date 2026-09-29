@@ -50,13 +50,16 @@ def newest(d, suffix='dynasty-ranks-points.csv'):
     return max(found)[1]
 
 
+DIZZLE = os.path.join(EVALS, 'board-snapshots', 'dizzle-dynasty')
 BOARDS = [
-    ('dizP', 0.40, newest(os.path.join(EVALS, 'board-snapshots', 'dizzle-dynasty')), '#', 'Player', 'Team'),
+    ('dizP', 0.40, newest(DIZZLE), '#', 'Player', 'Team'),
     ('htP', 0.35, os.path.join(EVALS, 'board-snapshots', 'hashtag-basketball',
                                'expert-dynasty-points.csv'), 'rank', 'player', 'team'),
     ('crd', 0, os.path.join(EVALS, 'board-snapshots', 'hashtag-basketball',
                             'crowd-keeper.csv'), 'rank', 'player', 'team'),
 ]
+
+ROOKIE_CHART = (newest(DIZZLE, 'rookie-ranks-points.csv'), os.path.join(DIZZLE, 'pick-values.csv'))
 
 
 def curve(D):
@@ -81,9 +84,12 @@ ALIAS = {'bub carrington': 'carlton carrington',
          'nikola urisic': 'nikola djurisic'}         # NFKD drops Đ outright
 
 
+SLOT_PREFIX = re.compile(r'^\s*\d+\.\d+\s*/\s*')    # dizzle's rookie `2.07 / `
+
+
 def key(name):
     s = unicodedata.normalize('NFKD', name).encode('ascii', 'ignore').decode()
-    s = re.sub(r'^\s*\d+\.\d+\s*/\s*', '', s)              # dizzle's rookie `2.07 / `
+    s = SLOT_PREFIX.sub('', s)
     s = re.sub(r'\b(jr|sr|ii|iii|iv|v)\b', '',
                s.lower().replace('.', '').replace("'", '').replace('-', ' '))
     s = ' '.join(s.split())
@@ -104,6 +110,30 @@ def load(path, rankcol, namecol, teamcol):
                 if same not in listed or int(r) < listed[same][0]:
                     listed[same] = (int(r), team)
     return {k: sorted(listed.values()) for k, listed in rows.items()}
+
+
+def load_rookie_chart():
+    """-> {key: [(rank, team)]} off Dizzle's Points rookie tab: class ordinal N -> pick
+    chart row N -> `Top lo-hi` -> floor((lo+hi)/2), `eval-pick` §4's chart fallback,
+    never above the deepest rookie Dizzle's dynasty board slots inline."""
+    tab, chart = ROOKIE_CHART
+    _, _, board, rankcol, namecol, _ = BOARDS[0]
+    with open(board, newline='', encoding='utf-8') as f:
+        slotted = [int(row[rankcol]) for row in csv.DictReader(f)
+                   if row[rankcol].isdigit() and SLOT_PREFIX.match(row[namecol])]
+    floor = max(slotted, default=0)
+    with open(chart, newline='', encoding='utf-8') as f:
+        bands = [re.search(r'(\d+)\s*-\s*(\d+)', row['Estimated Value'])
+                 for row in csv.DictReader(f)]
+    ranks = {n: max(floor, (int(b.group(1)) + int(b.group(2))) // 2)
+             for n, b in enumerate(bands, 1) if b}
+    rows = {}
+    with open(tab, newline='', encoding='utf-8') as f:
+        for row in csv.DictReader(f):
+            n = row['#']
+            if n.isdigit() and int(n) in ranks:
+                rows.setdefault(key(row['Player']), []).append((ranks[int(n)], row['NBA Team']))
+    return rows
 
 
 def stamp(path):
@@ -218,9 +248,11 @@ def load_boards():
 
 
 def price(names, size=ROSTER_SIZE):
-    """-> [(label, key, ranks, BASE)] per (label, name, team). A player off all three
-    boards prices 0 here; `main` refuses that rather than print it."""
+    """-> [(label, key, ranks, BASE, charted)] per (label, name, team). A player off all
+    three boards prices 0 here; `main` refuses that rather than print it. `charted`: his
+    Dizzle rank is `load_rookie_chart`'s, for want of a dynasty-board row."""
     loaded, depth = load_boards()
+    chart = load_rookie_chart()
     D = TEAMS * size
     _, V = curve(D)
     collide = {k for _, _, b in loaded for k, hits in b.items() if len(hits) > 1}
@@ -232,12 +264,16 @@ def price(names, size=ROSTER_SIZE):
                    % (who, '; '.join(f'{n} {hitlist(b[k])}'
                                      for n, _, b in loaded if k in b)))
         ranks = [pick(b.get(k) or [], team, k in collide) for _, _, b in loaded]
+        charted = ranks[0] is None and k in chart
+        if charted:
+            ranks[0] = pick(chart[k], team, k in collide or bool(team))
+            charted = ranks[0] is not None
         num = tot = 0.0
         for (n, w, _), r in zip(loaded, ranks):
             if r is None and depth[n] < D:
                 continue                 # absence and below-depth indistinguishable
             num, tot = num + w * (V(r) if r is not None else 0.0), tot + w
-        out.append((label, k, ranks, round(num / tot) if tot else 0))
+        out.append((label, k, ranks, round(num / tot) if tot else 0, charted))
     return out
 
 
@@ -248,12 +284,12 @@ def main(argv):
     A, _ = curve(D)
     out = price(names, size)
     blind = [f'{label} ({team or "no team given"})'
-             for (label, _, team), (_, k, ranks, _) in zip(names, out)
+             for (label, _, team), (_, k, ranks, _, _) in zip(names, out)
              if not any(r is not None for r in ranks) and k not in absent]
 
     # A hand-check on a name nobody here has confirms nothing, so it is a typo, and the
     # player it was meant for is back to being an unexplained 0.
-    stray = [n for k, n in absent.items() if k not in {k for _, k, _, _ in out}]
+    stray = [n for k, n in absent.items() if k not in {k for _, k, *_ in out}]
     if stray:
         refuse('--absent NAMES NOBODY BEING PRICED — nothing was hand-checked by: '
                + ', '.join(stray))
@@ -262,7 +298,7 @@ def main(argv):
     # prints real ranks. Drop the flag; it is describing an absence that ended.
     found = [lb + ' (' + ', '.join(f'{n} #{r}' for (n, _, _), r in zip(boards, ranks)
                                    if r is not None) + ')'
-             for lb, k, ranks, _ in out
+             for lb, k, ranks, *_ in out
              if k in absent and any(r is not None for r in ranks)]
     if found:
         refuse('--absent ON A PLAYER THE BOARDS CARRY — no longer off all 3: '
@@ -290,9 +326,14 @@ def main(argv):
               f'DEPTH {depth[n]}  {rule}')
     if absent:
         print('ABSENT   BASE 0 as hand-checked, not as a failed join: '
-              + ', '.join(lb for lb, k, _, _ in out if k in absent))
+              + ', '.join(lb for lb, k, *_ in out if k in absent))
+    charted = [lb for lb, *_, c in out if c]
+    if charted:
+        print(f'CHART    dizP off {os.path.basename(ROOKIE_CHART[0])} class # -> '
+              f'{os.path.basename(ROOKIE_CHART[1])} band midpoint, no dynasty-board row '
+              '(eval-player): ' + ', '.join(charted))
     print('PLAYER\t' + '\t'.join(n for n, _, _ in boards) + '\tBASE')
-    for label, _, ranks, base in out:
+    for label, _, ranks, base, _ in out:
         print(f'{label}\t' + '\t'.join('-' if r is None else str(r) for r in ranks)
               + f'\t{base}')
 

@@ -36,13 +36,17 @@ class Watcher:
         self.state, self.quiet = state, quiet
         self.built, self.failed = read_state(state), None
         self.pending, self.pending_since = None, None
+        self.missing = None
 
     def poll(self, now):
         try:
             current = fingerprint(self.paths())
-        except FileNotFoundError:
-            self.pending = None
+        except FileNotFoundError as error:
+            if error.filename != self.missing:
+                log("waiting for missing input %s" % error.filename)
+            self.pending, self.missing = None, error.filename
             return
+        self.missing = None
         if current in (self.built, self.failed):
             self.pending = None
             return
@@ -81,16 +85,29 @@ def watch():
     os.makedirs(os.path.dirname(STATE), exist_ok=True)
     watcher = Watcher(paths=extension_data.input_paths, build=build_extension,
                       notify=notify, state=STATE, quiet=QUIET_SECONDS)
+    started_on = own_code()
     log("watching projection inputs")
     while True:
+        # Paths and seasons are module constants read at import; launchd's KeepAlive restarts us on the new code
+        if own_code() != started_on:
+            log("watcher code changed; restarting")
+            return
         watcher.poll(time.monotonic())
         time.sleep(POLL_SECONDS)
 
 
+def own_code():
+    return fingerprint(extension_data.code_paths() + [os.path.abspath(__file__)])
+
+
 def build_extension():
     log("inputs changed -> bun run safari:dev")
-    build = subprocess.Popen(["bun", "run", "safari:dev"], cwd=REPO, start_new_session=True,
-                             env=dict(os.environ, SKIP_CLIPBOARD="1"))
+    try:
+        build = subprocess.Popen(["bun", "run", "safari:dev"], cwd=REPO, start_new_session=True,
+                                 env=dict(os.environ, SKIP_CLIPBOARD="1"))
+    except OSError as error:
+        log("could not start the build: %s" % error)
+        return False
     try:
         code = build.wait(timeout=BUILD_TIMEOUT_SECONDS)
     except subprocess.TimeoutExpired:

@@ -32,8 +32,8 @@ xcodebuild \
 
 APP_PATH="$(find "$SAFARI_DERIVED_DATA_DIR" -type d -name "*.app" -path "*/Build/Products/Debug/*" | head -n 1 || true)"
 if [ -z "$APP_PATH" ]; then
-  echo "✅ Build complete, but could not find a .app under: $SAFARI_DERIVED_DATA_DIR"
-  exit 0
+  echo "❌ Build complete, but could not find a .app under: $SAFARI_DERIVED_DATA_DIR"
+  exit 1
 fi
 
 # Safari lists one extension per registered host app, so install a single copy and drop the build output

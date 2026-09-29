@@ -65,7 +65,7 @@ def roster_table(path):
 
 
 @contextlib.contextmanager
-def snapshots(dizP, htP, crd, stamp='Updated 1/1/2026'):
+def snapshots(dizP, htP, crd, stamp='Updated 1/1/2026', rookies=(), chart=()):
     """Run base.py against three made-up boards of `(rank, player, team)` rows.
 
     The committed snapshots are the right input for join questions -- they hold the real
@@ -83,11 +83,17 @@ def snapshots(dizP, htP, crd, stamp='Updated 1/1/2026'):
                 w.writerow(['#', 'Player', 'Team', stamp])   # dizzle stamps its header
                 w.writerows(rows)
             board.append((name, weight, str(p), '#', 'Player', 'Team'))
-        real, base.BOARDS = base.BOARDS, board
+        tab, bands = pathlib.Path(d, 'rookies.csv'), pathlib.Path(d, 'chart.csv')
+        for path, header, rows in ((tab, ['#', 'Player', 'NBA Team'], rookies),
+                                   (bands, ['Pick', 'Estimated Value'], chart)):
+            with path.open('w', newline='', encoding='utf-8') as f:
+                csv.writer(f).writerows([header, *rows])
+        real = base.BOARDS, base.ROOKIE_CHART
+        base.BOARDS, base.ROOKIE_CHART = board, (str(tab), str(bands))
         try:
             yield
         finally:
-            base.BOARDS = real
+            base.BOARDS, base.ROOKIE_CHART = real
 
 
 def priced(*argv):
@@ -167,6 +173,68 @@ class RookieSlotPrefix(unittest.TestCase):
             got = priced('Baba Miller', 'Cameron Boozer')
         self.assertEqual(got['Baba Miller'][:3], ['277', '300', '300'])
         self.assertEqual(got['Cameron Boozer'][:3], ['11', '12', '12'])
+
+
+class RookieChart(unittest.TestCase):
+    """A drafted rookie with no dynasty-board row takes Dizzle's rank off its own rookie
+    tab: class ordinal N -> pick chart row N -> `Top lo-hi` midpoint (`eval-pick` §4)."""
+
+    def test_a_rookie_off_the_dynasty_board_takes_dizzles_rank_from_its_pick_chart(self):
+        rookies = [(1, 'Early Pick', 'OKC'), (2, 'Late Pick', 'DEN')]
+        chart = [('1.01', 'Top 10-15'), ('1.02', 'Top 300-350')]
+        hashtag = [(500, 'Deepest', 'BOS')]
+        with snapshots([(1, 'Veteran', 'BOS')], hashtag, [(347, 'Late Pick', 'DEN')],
+                       rookies=rookies, chart=chart):
+            got = priced('Late Pick')
+        self.assertEqual(got['Late Pick'], ['325', '-', '347', '99'])
+
+    def test_a_charted_rookie_never_ranks_above_the_rookies_the_dynasty_board_slotted(self):
+        # The board slotted its class inline and left him out, so he sits below all of them
+        dizzle = [(291, '2.08 / Emanuel Sharp', 'SAC'), (342, '2.10 / Braden Smith', 'IND')]
+        rookies = [(1, 'Emanuel Sharp', 'SAC'), (2, 'Left Out', 'SAS')]
+        chart = [('1.01', 'Top 250-300'), ('1.02', 'Top 250-300')]
+        rows = [(12, 'Someone', 'BOS')]
+        with snapshots(dizzle, rows, rows, rookies=rookies, chart=chart):
+            got = priced('Left Out')
+        self.assertEqual(got['Left Out'][0], '342')
+
+    def test_a_veteran_sharing_a_rookies_name_does_not_take_his_chart_rank(self):
+        rookies = [(1, 'Same Name', 'DEN')]
+        hashtag = [(300, 'Same Name', 'MIA')]
+        with snapshots([(1, 'Someone', 'BOS')], hashtag, hashtag, rookies=rookies,
+                       chart=[('1.01', 'Top 300-350')]):
+            got = priced('Same Name:MIA')
+        self.assertEqual(got['Same Name:MIA'][:2], ['-', '300'])
+
+    def test_a_dynasty_board_row_outranks_the_chart_for_the_same_rookie(self):
+        # The board's own rank is exact; the chart band is the coarser fallback
+        with snapshots([(277, '2.07 / Baba Miller', 'LAC')], [(300, 'Baba Miller', 'LAC')],
+                       [(393, 'Baba Miller', 'LAC')], rookies=[(1, 'Baba Miller', 'LAC')], chart=[('1.01', 'Top 10-15')]):
+            got = priced('Baba Miller')
+        self.assertEqual(got['Baba Miller'][0], '277')
+
+    def test_a_rookie_past_the_charts_last_row_gets_no_dizzle_rank(self):
+        # The chart stops at 60 while the tab runs on; ordinal 61 has no band to read
+        rookies = [(1, 'Charted', 'OKC'), (2, 'Uncharted', 'DEN')]
+        rows = [(12, 'Someone', 'BOS')]
+        with snapshots(rows, rows, rows, rookies=rookies, chart=[('1.01', 'Top 10-15')]), \
+                self.assertRaises(base.Refused) as e:
+            priced('Uncharted')
+        self.assertIn('OFF ALL 3 BOARDS', str(e.exception))
+
+    def test_the_header_names_every_rank_read_off_the_chart(self):
+        # A charted rank prints in the dizP column like a board rank, so the header is
+        # the only thing telling a reader it is a band midpoint
+        rookies = [(1, 'On Board', 'OKC'), (2, 'Late Pick', 'DEN')]
+        chart = [('1.01', 'Top 10-15'), ('1.02', 'Top 300-350')]
+        rows = [(12, 'On Board', 'OKC')]
+        with snapshots(rows, rows, rows, rookies=rookies, chart=chart):
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf):
+                base.main(['On Board', 'Late Pick'])
+        line = next(l for l in buf.getvalue().splitlines() if l.startswith('CHART'))
+        self.assertIn('Late Pick', line)
+        self.assertNotIn('On Board', line)
 
 
 class TeamMatching(unittest.TestCase):

@@ -23,4 +23,4 @@ def _recipe():
 def board_base(rows):
     """{name: BASE} off the committed board snapshots; a body off all three boards is 0"""
     priced = _recipe().price([(p["n"], p["n"], p["tm"]) for p in rows])
-    return {label: base for label, _, _, base in priced}
+    return {label: base for label, _, _, base, _ in priced}

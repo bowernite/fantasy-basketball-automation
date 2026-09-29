@@ -36,7 +36,7 @@ Rate snapshot: `strategy/board-snapshots/projections/sleeper-2026.json`. GP snap
 
 The Safari extension's `src/data/player-data.ts` is generated from the rate snapshot + overrides + rosters + last season's player pool (`extension_data.py`); never hand-edit it. It covers every rostered, pool and feed player; anyone else reads `NO_PROJECTION_RATE` with a ⚠️. Live check: a player's projection pill on our Fleaflicker team page matches the file.
 
-A launchd agent (`extension_watch.py`) rebuilds and reinstalls it on its own: when the content of any file `extension_data.input_paths()` lists changes (snapshot, overrides, rosters, pool, the rate code) and then sits unchanged for 15 s, it runs `bun run safari:dev` and posts a notification, success or failure (click opens the log). Don't run `safari:dev` after a refresh / override edit / re-cut yourself; reload the Fleaflicker page after the "Extension updated" notification. A failed build isn't retried until an input changes again or the agent restarts. The agent keeps the code it started with: after editing `extension_watch.py` or `input_paths()`, run `install` again.
+A launchd agent (`extension_watch.py`) rebuilds and reinstalls it on its own: when the content of any file `extension_data.input_paths()` lists changes (snapshot, overrides, rosters, pool, the rate code) and then sits unchanged for 15 s, it runs `bun run safari:dev` and posts a notification, success or failure (click opens the log). Don't run `safari:dev` after a refresh / override edit / re-cut yourself; reload the Fleaflicker page after the "Extension updated" notification. A failed build isn't retried until an input changes again or the agent restarts.
 
 | | |
 | --- | --- |

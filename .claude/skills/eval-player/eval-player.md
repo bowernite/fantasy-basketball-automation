@@ -67,7 +67,7 @@ repeatedly-made error. So:
 `base.py` enforces the normalising, the team match and the duplicate rule. It **refuses** an all-boards absence until `--absent NAME`
 records the hand-check, and refuses a colliding name until `NAME:TEAM` splits it. A
 nickname no normalisation can reach (`Bub` / `Carlton Carrington`) goes in its `ALIAS`
-table, one hand-checked line per name.
+table, one hand-checked line per name. A rookie with no Dizzle dynasty row takes his Dizzle rank off the rookie tab + pick chart (`BASE.md` §Depth and absence); `base.py`'s `CHART` header line names every such row.
 
 # Rules
 
