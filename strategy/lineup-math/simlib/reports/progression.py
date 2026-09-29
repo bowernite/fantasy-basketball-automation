@@ -12,7 +12,7 @@ from .. import progression as prog, roster as roster_mod
 from ..board import _key, pool
 from ..data import DATA_DIR, HERE, ROSTER_DIR, _load
 from ..gp import age_at
-from ..projections import projected_gp, projected_rate
+from ..projections import projected_rate
 from ..stats import ols
 
 YEARS, PATHS = 20, 1000
@@ -137,11 +137,8 @@ def _draftee(row, rk):
     if not rk:
         return None
     age1 = age_at(rk["born"], LIVE_SEASON)
-    rate = projected_rate(row["n"])
-    return {"name": row["n"], "tm": row["tm"],
-            "rate1": rate if rate is not None else roster_mod.PICK["avg"],
-            "gp1": float(projected_gp(row["n"]) or roster_mod.PICK["gp"]),
-            "age1": age1, "cy1": 1, "stage": "D", "bpm": None, "gp_last": None,
+    return {"name": row["n"], "tm": row["tm"], "rate1": max(row["avg"], prog.MIN_RATE),
+            "gp1": float(row["gp"]), "age1": age1, "cy1": 1, "stage": "D", "bpm": None, "gp_last": None,
             "pick": rk["pick"], "age_rookie": age1}
 
 
