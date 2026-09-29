@@ -26,14 +26,14 @@ player_id	name	POS	AGE	NBA	FPts/Gp	GPp	BASE	Δw	Δw '26–'27 ours	sheet_pts	Win
 1719	Marvin Bagley	SF/PF	27.5	DEN	15.8	66	197	0.15	0.03	1369.25	67	65	55	64	0		-0.05	174	126	62
 2916	Bennett Stirtz	PG/SG	23.0	OKC	11.3	46	546	0.05	-0.13		15	0	167	46		'26 class				
 1885	Jaxson Hayes	PF/C	26.3	UTA	10.5	68	129	0.06	-0.12	1104.5	98	48	33	58	0		-0.10	38	28	-30
-2619	Quinten Post	C	26.5	MEM	16.3	68	202	0.17	-0.08	1066.5	77	46	57	58	0	rot2	-0.11	153	111	53
-1895	Goga Bitadze	PF/C	27.2	ORL	16.5	54	227	0.15	-0.08	1135.5	62	50	65	58	0	GPp<map	0.12	191	138	80
-2798	Ryan Nembhard	PG/SG	23.5	CHA	13.5	50	324	0.08	-0.16	989.25	31	41	96	53	77	rot1 · GPp<map · '25 rookie	-0.30	213	154	101
+2619	Quinten Post	C	26.5	MEM	16.3	68	273	0.17	-0.08	1066.5	77	46	80	63	0	rot2	-0.11	224	162	99
+1895	Goga Bitadze	PF/C	27.2	ORL	16.5	54	219	0.15	-0.08	1135.5	62	50	62	57	0	GPp<map	0.12	183	132	75
+2798	Ryan Nembhard	PG/SG	23.5	CHA	13.5	50	324	0.08	-0.16	989.25	31	41	96	53	77	rot1 · GPp<map · '25 rookie · fa	-0.30	213	154	101
 2908	Tarris Reed	C	23.1	SAS	13.9	34	475	0.05	-0.12		15	0	144	41		'26 class				
 2854	Joshua Jefferson	SF/PF	22.8	BKN	14.0	16	487	0.03	-0.17		5	0	148	39		'26 class				
 2874	Zuby Ejiofor	PF/C	22.4	ATL	12.9	34	441	0.05	-0.13		15	0	133	38		'26 class				
 904	Harrison Barnes	SF/PF	34.3	SAS	13.7	70	161	0.11	-0.06	1385	36	66	44	54	0		-0.22	90	66	12
-2232	Dru Smith	PG/SG	28.7	MIA	14.9	72	231	0.14	-0.09	1154.75	21	52	66	49	73	rot2	0.31	204	147	98
+2232	Dru Smith	PG/SG	28.7	MIA	14.9	72	210	0.14	-0.09	1154.75	21	52	59	47	73	rot2	0.31	183	132	85
 2021	Patrick Williams	SF/PF	25.1	CHI	13.5	72	151	0.11	-0.07	1025.75	46	43	40	44	0		0.08	102	74	30
 2899	Sergio De Larrea	PG/SG	20.8	DAL	7.3	56	412	0.03	-0.13		5	0	124	33		'26 class	-0.33	291	197	164
 2079	Vít Krejčí	PG/SG	26.3	POR	13.8	64	148	0.10	-0.04	1033.75	41	44	39	43	0	rot2	0.26	118	86	43
@@ -46,7 +46,7 @@ player_id	name	POS	AGE	NBA	FPts/Gp	GPp	BASE	Δw	Δw '26–'27 ours	sheet_pts	Win
 2471	Julian Strawther	PG/SG	24.4	DEN	13.2	68	173	0.10	-0.01	674	41	21	47	34	0	rot0	-0.19	114	83	49
 1045	Kentavious Caldwell-Pope	PG/SG	33.6	PHI	13.2	70	78	0.10	-0.07	836.75	57	31	17	35	0		0.09	27	20	-15
 1880	Terance Mann	SG/SF	29.9	BKN	11.7	58	51	0.06	-0.10	1074	51	46	8	39			0.21	-10	1	-38
-2876	Henri Veesaar	C	22.5	ATL	12.7	33	321	0.04	-0.11		10	0	95	27		'26 class	-0.14	223	161	134
+2876	Henri Veesaar	C	22.5	ATL	12.7	33	155	0.04	-0.11		10	0	42	12		'26 class	-0.30	40	29	17
 2892	Koa Peat	SF/PF	19.7	PHX	7.6	44	351	0.02	-0.14		0	0	105	27		'26 class	-0.12	241	174	147
 2902	Richie Saunders	PG/SG	25.0	MEM	0.0	26	349	0.00	-0.18		0	0	104	27		noproj · '26 class	-0.41	200	144	117
 2373	Pat Spencer	PG/SG	30.2	PHX	11.0	21	148	0.05	-0.16	1071.5	15	46	39	38	0	rot1 · GPp<map	-0.20	36	27	-11
@@ -58,10 +58,10 @@ player_id	name	POS	AGE	NBA	FPts/Gp	GPp	BASE	Δw	Δw '26–'27 ours	sheet_pts	Win
 2913	Isaiah Evans	PG/SG	20.8	MIN	7.1	26	325	0.01	-0.16		0	0	96	25		'26 class	-0.40	185	134	109
 2888	Baba Miller	SF/PF	22.6	LAC	0.0	18	317	0.00	-0.15		0	0	94	24		noproj · '26 class	-0.38	178	129	105
 1704	Jarred Vanderbilt	SF/PF	27.5	LAL	13.7	68	66	0.11	-0.08	914.75	41	36	13	32			-0.21	-9	1	-31
-2776	Jamir Watkins	SF/PF	25.2	WAS	16.6	52	110	0.13	-0.06	861.75	31	33	27	32	0	rot1 · '25 rookie	-0.17	49	36	4
+2776	Jamir Watkins	SF/PF	25.2	WAS	16.6	52	110	0.13	-0.06	861.75	31	33	27	32	0	rot1 · '25 rookie · noproj	-0.17	49	36	4
 2866	Meleek Thomas	SG/SF	20.1	CLE	11.5	52	246	0.05	-0.04		15	0	71	22	0	'26 class	-0.19	165	119	97
 2683	Spencer Jones	SF/PF	25.3	DEN	8.8	70	149	0.04	-0.05	900.25	10	35	40	31	0	rot0	-0.24	58	43	12
-1272	D'Angelo Russell	PG/SG	30.6	MEM	15.1	43	170	0.09	-0.13	460.75	31	8	46	24	0		-0.23	75	55	31
+1272	D'Angelo Russell	PG/SG	30.6	MEM	15.1	43	170	0.09	-0.13	460.75	31	8	46	24	0	fa	-0.23	75	55	31
 2851	Chris Cenac	PF/C	19.6	BOS	13.6	30	244	0.05	-0.11		10	0	70	21	0	'26 class	-0.17	147	106	85
 2894	Emanuel Sharp	PG/SG	22.5	SAC	0.0	56	274	0.00	-0.18		0	0	80	21		noproj · '26 class	-0.36	129	94	73
 2501	Craig Porter	PG/SG	26.6	CLE	10.5	66	61	0.06	-0.05	1072	21	46	12	32		rot1	-0.18	-19	1	-31
@@ -72,7 +72,7 @@ player_id	name	POS	AGE	NBA	FPts/Gp	GPp	BASE	Δw	Δw '26–'27 ours	sheet_pts	Win
 1732	Josh Okogie	PG/SG	28.1	UTA	12.6	66	25	0.08	-0.15	914.5	31	36	0	27		rot2	0.10	-52	1	-26
 2203	Trendon Watford	SG/SF	25.9	NOP	13.0	44	66	0.07	-0.10	759.5	26	27	13	24		GPp<map	-0.00	-9	1	-23
 1268	Tyus Jones	PG/SG	30.4	DEN	9.8	72	135	0.05	-0.05	597.75	15	16	35	22	0		-0.23	48	35	13
-758	Jonas Valančiūnas	C	34.4	FA	15.5	57	67	0.13	-0.12	1133.75	0	50	13	29		fa · GPp<map	-0.23	-13	1	-28
+758	Jonas Valančiūnas	C	34.4	FA	15.5	57	67	0.13	-0.12	1133.75	0	50	13	29		fa · GPp<map · fa	-0.23	-13	1	-28
 2389	Quenton Jackson	PG/SG	28.0	IND	13.7	38	11	0.08	-0.14	824.5	31	31	0	24		rot1 · GPp<map	-0.24	-90	1	-23
 1160	Clint Capela	C	32.4	HOU	10.8	51	15	0.05	-0.14	1030.5	21	44	0	28		GPp<map	-0.23	-94	1	-27
 1431	Guerschon Yabusele	SF/PF	30.8	FA	7.7	56	122	0.03	-0.13	825	0	31	31	24	0	rot1 · fa	-0.28	5	5	-19

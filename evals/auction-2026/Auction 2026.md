@@ -152,7 +152,7 @@ Nominating opens with our $1 bid: if nobody bids, the row is ours. One nominee a
 Lists:
 
 - **Early:** rows we bid $0 on (pass rows and $0-cap targets) the room pays for, in `Sheet #` order since the room prices off the list. This drains rival $ and spots. Left with us at $1, a $0-cap target costs what a $1 body does: Brandon Williams, Harrison Barnes, Marvin Bagley, Dominick Barlow, Javonte Green, Luka Garza, Goga Bitadze, Jaxson Hayes, Simone Fontecchio, Terance Mann, Craig Porter, Pat Spencer, Quinten Post, Clint Capela, John Konchar, Patrick Williams, Al Horford, Jarred Vanderbilt, Josh Okogie, Kris Murray, Caleb Love, Kenrich Williams, Trendon Watford.
-- **Mid:** our targets deep on the Sheet list or off it, where the room's price trails our Score, once rivals have spent: Ryan Nembhard, Sergio De Larrea, Jayden Quaintance, Koa Peat, Alex Karaban, Henri Veesaar.
+- **Mid:** our targets deep on the Sheet list or off it, where the room's price trails our Score, once rivals have spent: Ryan Nembhard, Sergio De Larrea, Jayden Quaintance, Koa Peat, Alex Karaban. Henri Veesaar is off: he tore his ACL and is out for 2026–27.
 - Leave the top-list targets (Dru Smith, Scheierman) for rivals to nominate. The endgame rule catches any that are left.
 - Per-slot $ at the start: us $67 · Mitch $50 · Bonin, Jon, Todd $33 · Joe $25 · Chris, Brian, Henry, Josh, Hlina $22 · Matthew $15. No rival matches us per slot. Mitch comes closest: watch his $ left.
 
