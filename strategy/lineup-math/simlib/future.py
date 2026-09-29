@@ -1,6 +1,6 @@
 """League roll-forward: every roster aged together along progression paths,
 with exits, drafts off the real pick ledger and cuts to 38, season by season."""
-import random
+import random, zlib
 from fetch_data import LIVE_SEASON
 from . import bracket, engine, progression as prog, shard, title
 from .roster import pad
@@ -35,28 +35,55 @@ def _chunk(job):
 
 def _path(key, start, teams1, ledger, template, years, t_eng, t_in):
     sampler = prog.Sampler(prog.params())
-    league = {t: [_player(e, sampler, key, years) for e in entries] for t, entries in start.items()}
+    league = {t: [player(e, sampler, key, years) for e in entries] for t, entries in start.items()}
     teams, pfs, titles, flows = teams1, [{t.path: t.pf for t in teams1}], [], []
     for s in range(years - 1):
         standings = title.sampled_standings(teams, "%s/season/%d" % (key, s))
         league, flow = offseason(league, s, standings, ledger, template, key, years)
         teams = tuple(_measure(league[t.path], s + 1, t.path, t_eng) for t in teams1)
-        odds = title.season_run(teams, trials=t_in, workers=1)[0]
+        odds = title.season_run(teams, trials=t_in, seed0=zlib.crc32(("%s/title/%d" % (key, s)).encode()),
+                                workers=1)[0]
+        for t in teams1:
+            flow[t.path]["drafted_fp"] = _drafted_share(league[t.path], s + 1)
         pfs.append({t.path: t.pf for t in teams})
         titles.append({t.path: odds[t.path].title for t in teams})
         flows.append(flow)
     return pfs, titles, flows
 
 
-def _player(e, sampler, key, years):
+def player(e, sampler, key, years):
     row = e["row"]
     if e["pl"] is None:
-        rates, gps = [row["avg"]] * years, [row["gp"]] * years
+        rates, gps = [row["avg"]] + [None] * (years - 1), [row["gp"]] + [0.0] * (years - 1)
     else:
-        rates, gps = sampler.path(e["pl"], years, random.Random("%s/%s" % (key, row["n"])))
-        rates[0], gps[0] = row["avg"], row["gp"]
+        gp1 = _gp1(e, sampler)
+        rates, gps = sampler.path(dict(e["pl"], gp1=gp1), years, random.Random("%s/%s" % (key, row["n"])))
+        rates[0], gps[0] = row["avg"], gp1
     return {"n": row["n"], "tm": row["tm"], "elig": list(row["elig"]), "base": e["base"],
             "rates": rates, "gps": gps}
+
+
+def _drafted_share(roster, s):
+    """Share of the top 12 bodies' season FP held by rookies drafted in this roll"""
+    fp = sorted(((p["rates"][s] * p["gps"][s], p["n"].startswith("'")) for p in roster), reverse=True)[:12]
+    return sum(x for x, drafted in fp if drafted) / (sum(x for x, _ in fp) or 1.0)
+
+
+def season_one(start):
+    """Season 1's 12 teams, measured as `title` measures them but on `_gp1`"""
+    sampler = prog.Sampler(prog.params())
+    return tuple(bracket.measure(pad([dict(e["row"], gp=int(round(_gp1(e, sampler)))) for e in es]), path)
+                 for path, es in sorted(start.items()))
+
+
+def _gp1(e, sampler):
+    """Season 1's GP on the model's basis, the one every later season is on:
+    its forecast off last season. A projection under 20 GP (injury) stands, as
+    does a draftee's"""
+    row, pl = e["row"], e["pl"]
+    if pl is None or pl["gp_last"] is None or row["gp"] < prog.ACTIVE:
+        return row["gp"]
+    return sampler.gp_expected(pl["gp_last"], pl["age1"] - 1, pl["rate1"])
 
 
 def _measure(roster, s, path, trials):

@@ -314,6 +314,13 @@ class Sampler:
             return _draw(self.p["gp"]["low_pool"], rng)
         return self._gp_mean_draw(gp_t, age, rate, rng)
 
+    def gp_expected(self, gp_t, age, rate):
+        """`gp_next`'s mean, clipping aside"""
+        v = _gp_vars(gp_t, age, rate)
+        low = _logistic(self.hurdle(v))
+        mean = self.gp_mean(v) + sum(self.p["gp"]["resq"]) / len(self.p["gp"]["resq"])
+        return low * self.low_mean + (1 - low) * min(max(mean, ACTIVE), 82.0)
+
     def _gp_mean_draw(self, gp_t, age, rate, rng):
         g = self.p["gp"]
         return min(max(self.gp_mean(_gp_vars(gp_t, age, rate)) + _draw(g["resq"], rng), ACTIVE), 82.0)

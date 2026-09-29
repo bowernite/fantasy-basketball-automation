@@ -1,6 +1,6 @@
 import unittest
 from tests.harness import *
-from simlib import future
+from simlib import future, progression as prog
 
 
 TEAMS = ["T%02d" % i for i in range(1, 13)]
@@ -132,3 +132,28 @@ class Report(unittest.TestCase):
         table = lambda text: text.split("\nΔ")[0].split("ran in")[0].rstrip()
         self.assertEqual(table(self.out[0]), table(self.out[1]))
         self.assertIn("same as the last run", self.out[1])
+
+
+def entry(name, gp, rate=35.0, age=26.0):
+    row = {"n": name, "tm": "BOS", "avg": rate, "gp": gp, "elig": ["PG", "SG"]}
+    pl = {"name": name, "rate1": rate, "gp1": float(gp), "age1": age, "stage": "V", "cy1": 5,
+          "bpm": 2.0, "gp_last": 60.0, "pick": 10, "age_rookie": age - 4}
+    return {"row": row, "pl": pl, "base": 2000}
+
+
+class GamesPlayed(unittest.TestCase):
+    def test_season_one_plays_the_games_the_model_expects_after_last_season_not_the_projections(self):
+        sampler = prog.Sampler(prog.params())
+        e = entry("durable", 72)
+        q = future.player(e, sampler, "gp", 3)
+        self.assertAlmostEqual(q["gps"][0], sampler.gp_expected(60.0, 25.0, 35.0))
+        self.assertLess(q["gps"][0], 70)
+
+    def test_a_season_projected_lost_to_injury_stays_lost(self):
+        q = future.player(entry("hurt", 0), prog.Sampler(prog.params()), "gp", 3)
+        self.assertEqual(q["gps"][0], 0)
+
+    def test_a_player_the_model_cannot_place_plays_season_one_and_leaves(self):
+        e = dict(entry("no birthday", 50), pl=None)
+        q = future.player(e, prog.Sampler(prog.params()), "gp", 3)
+        self.assertEqual(q["rates"], [35.0, None, None])

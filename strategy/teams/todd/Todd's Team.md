@@ -1,95 +1,96 @@
 # Todd (`The Han Dybantsy`)
 
-> _27 bodies · **tanking** · sim 2026-09-02_
+> _35 bodies · **tanking** (8th-PF bubble, see Title odds) · sim 2026-09-29_
+
+Stamps: boards Dizzle 7/10/26 (depth 450) · Hashtag 9/24/26 (depth 777) · crowd 9/29/26 (depth 764, printed only) · proj 9/29/26 · roster 9/29/26 · AGE 9/29/26 (`detail.dob`). `D` = 12 × 38 = 456. Dizzle is 2½ months stale. Simmons is absent from Dizzle (depth < `D`), so his BASE is Hashtag alone. No row has one blended board ≤ 200 and the other at or past `D`, so no `board split` flags (`BASE.md`).
 
 ## Players
 
 | Player | AGE | POS | Boards | **BASE** | FPts/G proj (last) | GP proj (last) | **Δw** | **Δw '26–'27 ours** | **Δw '26–'27 theirs** | **ΔP(title) ours** | W20 | W21 | W22 | W23 | flag |
 | --- | ---: | --- | :---: | ---: | :---: | :---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |
-| Jayson Tatum | 28.5 | SF/SG | 7 • 14 (11) | **7015** | 45 (43) | 70 (16) | **+2.22** | **+1.94** | **+2.51** | 16.7% | 119 | 158 | 119 | 158 | fragile |
-| Tyrese Haliburton | 26.5 | PG/SG | 13 • 15 (14) | **6159** | 39 (–) | 62 (0) | **+1.49** | **+1.02** | **+1.41** | 6.6% | 90 | 90 | 120 | 90 | missed season |
-| Jalen Brunson | 30.0 | PG/SG | 33 • 39 (34) | **3623** | 39 (39) | 72 (74) | **+1.75** | **+1.26** | **+1.74** | 11.3% | 105 | 105 | 105 | 140 |  |
-| Nickeil Alexander-Walker | 28.0 | PG/SG | 83 • 68 (357) | **1932** | 31 (33) | 74 (78) | **+1.15** | **+0.64** | **+1.12** | 4.4% | 87 | 116 | 116 | 87 | board split |
-| Ja Morant | 27.1 | PG/SG | 77 • 74 (77) | **1928** | 28 (34) | 60 (20) | **+0.70** | **+0.42** | **+0.66** | 4.9% | 84 | 63 | 84 | 63 | fragile |
-| Michael Porter | 28.2 | PF/SF | 92 • 71 (89) | **1797** | 37 (38) | 64 (52) | **+1.38** | **+0.91** | **+1.39** | 9.2% | 118 | 88 | 118 | 88 |  |
-| Nic Claxton | 27.4 | C | 100 • 99 (111) | **1449** | 31 (29) | 72 (69) | **+1.05** | **+0.40** | **+0.93** | 3.0% | 111 | 83 | 83 | 111 |  |
-| Egor Dëmin | 20.5 | PG/SG | 112 • 127 (67) | **1184** | 25 (20) | 68 (53) | **+0.60** | **+0.09** | **+0.41** | 2.2% | 85 | 64 | 85 | 64 | 1yr role |
-| Rudy Gobert | 34.2 | C | 137 • 112 (139) | **1119** | 32 (33) | 71 (76) | **+1.10** | **+0.39** | **+1.06** | 2.3% | 84 | 112 | 56 | 112 |  |
-| Ayo Dosunmu | 26.6 | PG/SG | 156 • 126 (98) | **957** | 26 (26) | 73 (69) | **+0.74** | **+0.17** | **+0.61** | 0.4% | 73 | 97 | 48 | 97 |  |
-| Aaron Nesmith | 26.9 | SF/SG | 171 • 158 (187) | **769** | 22 (22) | 71 (46) | **+0.44** | **+0.13** | **+0.41** | 0.0% | 59 | 59 | 79 | 59 |  |
-| Carter Bryant | 20.8 | PF/SF | 155 • 201 (145) | **710** | 16 (9) | 72 (71) | **+0.17** | **-0.04** | **+0.12** | -0.8% | 43 | 43 | 57 | 43 | 0yr role |
-| Davion Mitchell | 28.0 | PG/SG | 180 • 170 (588) | **702** | 26 (24) | 73 (70) | **+0.69** | **+0.14** | **+0.50** | 4.1% | 71 | 95 | 71 | 71 | board split |
-| Yanic Konan Niederhäuser | 23.5 | C | 243 • 160 (136) | **585** | 12 (10) | 51 (41) | **+0.06** | **-0.17** | **-0.18** | -1.4% | 23 | 31 | 23 | 31 | 0yr role |
-| Jalen Smith | 26.5 | C/PF | 273 • 208 (486) | **411** | 20 (23) | 63 (53) | **+0.29** | **-0.06** | **+0.08** | -0.6% | 63 | 47 | 47 | 63 | board split |
-| Ja'Kobe Walter | 22.0 | PG/SG | 287 • 320 (337) | **235** | 17 (16) | 74 (72) | **+0.20** | **-0.06** | **+0.04** | 1.1% | 47 | 47 | 63 | 63 | 2yr role |
-| Kris Dunn | 32.4 | PG/SG | 288 • 351 (712) | **207** | 18 (20) | 70 (82) | **+0.25** | **-0.10** | **-0.05** | -0.9% | 49 | 65 | 49 | 65 | board split |
-| Dean Wade | 29.8 | C/PF | 295 • 344 (557) | **204** | 18 (16) | 66 (59) | **+0.23** | **-0.03** | **+0.22** | -0.2% | 60 | 45 | 60 | 60 | board split · 1yr role |
-| T.J. McConnell | 34.4 | PG/SG | 293 • 362 (688) | **192** | 19 (21) | 62 (57) | **+0.23** | **-0.04** | **+0.01** | -0.8% | 44 | 44 | 58 | 44 | board split |
-| Moritz Wagner | 29.3 | C/PF | 330 • 350 (644) | **159** | 19 (12) | 60 (36) | **+0.22** | **-0.08** | **+0.01** | -0.5% | 56 | 42 | 56 | 42 | board split |
-| Brook Lopez | 38.4 | C | 345 • 336 (642) | **156** | 16 (18) | 64 (75) | **+0.16** | **-0.13** | **-0.12** | -1.2% | 39 | 52 | 39 | 52 | board split |
-| Isaac Okoro | 25.6 | SF/SG | 353 • 348 (630) | **139** | 15 (17) | 70 (63) | **+0.15** | **-0.11** | **-0.08** | -1.3% | 53 | 40 | 40 | 53 | board split |
-| Mohamed Diawara | 21.3 | PF/SF | 316 • 490 (220) | **109** | 7 (7) | 72 (69) | **+0.03** | **-0.17** | **-0.13** | -1.5% | – | – | – | – | board split · 0yr role · no projection |
-| Corey Kispert | 27.5 | PF/SF | 376 • 368 (538) | **105** | 10 (15) | 44 (58) | **+0.03** | **-0.16** | **-0.13** | -1.4% | 16 | 21 | 21 | 16 | board split |
-| Jordan Clarkson | 34.2 | PG/SG | 389 • 383 (606) | **84** | 12 (13) | 70 (72) | **+0.09** | **-0.10** | **-0.12** | -0.1% | 32 | 32 | 32 | 43 | board split |
-| Amari Williams | 24.6 | C/PF | 365 • 483 (350) | **62** | 5 (5) | 16 (22) | **+0.01** | **-0.20** | **-0.16** | -1.7% | – | – | – | – | board split · fragile · 0yr role · no projection |
-| Taurean Prince | 32.4 | PF/SF | 403 • 432 (568) | **45** | 13 (17) | 49 (26) | **+0.06** | **-0.16** | **-0.05** | -1.6% | 23 | 31 | 23 | 31 | board split |
+| Jayson Tatum | 28.6 | SF/SG | 7 • 14 (11) | **7015** | 45 (43) | 70 (16) | **+2.16** | **+1.85** | **+2.45** | **11.5%** | 119 | 159 | 119 | 159 | frag |
+| Cameron Boozer | 19.2 | C/PF | 11 • 12 (15) | **6655** | 36 (–) | 72 (–) | **+1.41** | **+0.83** | **+1.52** | **6.0%** | 96 | 128 | 128 | 128 | nopool |
+| Tyrese Haliburton | 26.6 | PG/SG | 13 • 15 (12) | **6159** | 39 (–) | 60 (0) | **+1.54** | **+0.86** | **+1.37** | **4.5%** | 88 | 88 | 117 | 88 | miss |
+| Jalen Brunson | 30.1 | PG/SG | 33 • 39 (29) | **3623** | 39 (39) | 72 (74) | **+1.70** | **+1.08** | **+1.77** | **7.4%** | 106 | 106 | 106 | 141 | |
+| Ja Morant | 27.1 | PG/SG | 77 • 77 (96) | **1893** | 28 (33) | 60 (20) | **+0.67** | **+0.25** | **+0.67** | **2.3%** | 84 | 63 | 84 | 63 | frag |
+| Nickeil Alexander-Walker | 28.1 | PG/SG | 83 • 71 (83) | **1892** | 32 (33) | 74 (78) | **+1.10** | **+0.51** | **+1.14** | **2.3%** | 87 | 117 | 117 | 87 | |
+| Michael Porter | 28.2 | PF/SF | 92 • 74 (93) | **1760** | 37 (38) | 64 (52) | **+1.35** | **+0.86** | **+1.36** | **6.4%** | 118 | 89 | 118 | 89 | |
+| Nic Claxton | 27.4 | C | 100 • 103 (92) | **1419** | 30 (29) | 72 (69) | **+0.98** | **+0.44** | **+0.99** | **2.6%** | 109 | 82 | 82 | 109 | |
+| Egor Dëmin | 20.6 | PG/SG | 112 • 132 (80) | **1160** | 25 (20) | 68 (52) | **+0.56** | **+0.07** | **+0.44** | **1.5%** | 86 | 65 | 86 | 65 | rot1 |
+| Rudy Gobert | 34.3 | C | 137 • 112 (124) | **1119** | 32 (33) | 71 (76) | **+1.07** | **+0.46** | **+1.17** | **2.0%** | 84 | 112 | 56 | 112 | |
+| Ayo Dosunmu | 26.7 | PG/SG | 156 • 131 (91) | **932** | 27 (26) | 73 (69) | **+0.70** | **+0.11** | **+0.65** | **-0.1%** | 73 | 97 | 49 | 97 | |
+| Dailyn Swain | 21.2 | PF/SF | 144 • 156 (188) | **882** | 19 (–) | 48 (–) | **+0.17** | **-0.05** | **-0.04** | **-0.9%** | 46 | 34 | 34 | 46 | nopool |
+| Aaron Nesmith | 27.0 | SF/SG | 171 • 164 (171) | **749** | 22 (23) | 71 (45) | **+0.41** | **+0.06** | **+0.39** | **-0.3%** | 60 | 60 | 80 | 60 | |
+| Christian Anderson | 20.5 | PG/SG | 153 • 189 (193) | **746** | 16 (–) | 58 (–) | **+0.12** | **-0.15** | **-0.07** | **-0.7%** | 23 | 46 | 34 | 46 | nopool |
+| Carter Bryant | 20.8 | PF/SF | 155 • 196 (198) | **721** | 16 (9) | 72 (71) | **+0.15** | **-0.04** | **+0.09** | **-1.0%** | 43 | 43 | 57 | 43 | rot0 |
+| Davion Mitchell | 28.1 | PG/SG | 180 • 176 (162) | **684** | 26 (24) | 73 (70) | **+0.63** | **+0.08** | **+0.50** | **1.9%** | 70 | 94 | 70 | 70 | |
+| Yanic Konan Niederhäuser | 23.5 | C | 243 • 155 (165) | **602** | 12 (9) | 51 (41) | **+0.06** | **-0.13** | **-0.14** | **-1.0%** | 23 | 31 | 23 | 31 | rot0 |
+| Karim Lopez | 19.5 | PF/SF | 185 • 240 (212) | **534** | 13 (–) | 48 (–) | **+0.07** | **-0.11** | **-0.13** | **-1.1%** | 24 | 32 | 32 | 32 | nopool |
+| Bruce Thornton | 23.0 | PG/SG | 206 • 287 (338) | **414** | 6 (–) | 38 (–) | **+0.02** | **-0.17** | **-0.16** | **-0.7%** | – | – | – | – | nopool · noproj |
+| Jalen Smith | 26.5 | C/PF | 273 • 214 (481) | **399** | 20 (23) | 63 (53) | **+0.26** | **-0.00** | **+0.08** | **-0.6%** | 64 | 48 | 48 | 64 | |
+| Ja'Kobe Walter | 22.1 | PG/SG | 287 • 327 (359) | **228** | 17 (16) | 74 (72) | **+0.18** | **-0.04** | **+0.04** | **0.3%** | 47 | 47 | 63 | 63 | rot2 |
+| Kris Dunn | 32.5 | PG/SG | 288 • 358 (707) | **202** | 19 (20) | 70 (82) | **+0.23** | **-0.10** | **-0.04** | **-0.6%** | 49 | 65 | 49 | 65 | |
+| Brandon Williams | 26.9 | PG/SG | 344 • 295 (299) | **197** | 15 (23) | 73 (66) | **+0.13** | **-0.04** | **-0.03** | **-0.5%** | 55 | 55 | 41 | 55 | miss · rot2 |
+| Dean Wade | 29.9 | C/PF | 295 • 352 (572) | **197** | 18 (16) | 66 (59) | **+0.20** | **+0.01** | **+0.20** | **-0.5%** | 60 | 45 | 60 | 60 | rot1 |
+| T.J. McConnell | 34.5 | PG/SG | 293 • 368 (685) | **188** | 19 (21) | 62 (56) | **+0.21** | **-0.06** | **-0.01** | **-0.5%** | 44 | 44 | 59 | 44 | |
+| Moritz Wagner | 29.4 | C/PF | 330 • 331 (643) | **175** | 19 (12) | 60 (36) | **+0.20** | **-0.05** | **+0.02** | **-0.6%** | 56 | 42 | 56 | 42 | |
+| Brook Lopez | 38.5 | C | 345 • 344 (642) | **150** | 16 (18) | 64 (75) | **+0.14** | **-0.11** | **-0.08** | **-0.9%** | 39 | 52 | 39 | 52 | |
+| Vít Krejčí | 26.3 | PG/SG | 324 • 381 (441) | **143** | 14 (16) | 64 (65) | **+0.09** | **-0.04** | **-0.07** | **-0.0%** | 44 | 33 | 44 | 33 | rot2 |
+| Isaac Okoro | 25.7 | SF/SG | 353 • 356 (634) | **133** | 15 (17) | 70 (63) | **+0.13** | **-0.05** | **-0.08** | **-0.9%** | 53 | 40 | 40 | 53 | |
+| Mohamed Diawara | 21.4 | PF/SF | 316 • 497 (327) | **109** | 7 (7) | 72 (69) | **+0.04** | **-0.12** | **-0.13** | **-1.0%** | – | – | – | – | rot0 · noproj |
+| Corey Kispert | 27.6 | PF/SF | 376 • 374 (537) | **100** | 14 (15) | 44 (58) | **+0.08** | **-0.07** | **-0.08** | **-1.0%** | 23 | 31 | 31 | 23 | |
+| Jordan Clarkson | 34.3 | PG/SG | 389 • 391 (617) | **79** | 12 (13) | 70 (72) | **+0.09** | **-0.12** | **-0.11** | **-0.1%** | 33 | 33 | 33 | 44 | |
+| Amari Williams | 24.7 | C/PF | 365 • 490 (335) | **62** | 5 (5) | 16 (22) | **+0.02** | **-0.14** | **-0.15** | **-1.1%** | – | – | – | – | frag · rot0 · noproj |
+| Ben Simmons | 30.2 | SF/SG | – • 418 (668) | **42** | 6 (–) | 53 (0) | **+0.02** | **-0.14** | **-0.15** | **-1.1%** | 11 | 15 | 15 | 11 | miss |
+| Taurean Prince | 32.5 | PF/SF | 403 • 440 (584) | **41** | 13 (17) | 49 (26) | **+0.07** | **-0.09** | **-0.06** | **-1.1%** | 24 | 32 | 24 | 32 | |
 
-`Boards` = Dizzle Points • Hashtag Points (Hashtag crowd in parens — printed, not blended) (`Eval Definitions §BASE`). `FPts/G proj (last)` and `GP proj (last)` = projection, then last season's actual in parens. Cell formats, rounding and flag names: `Eval Template.md`.
+σ (theirs `Δw (season)` order, `sim.py players`): Haliburton/Porter 1.5σ · Walter/Wagner 1.8σ · Dunn/Swain 0.3σ · Prince/Krejčí 1.0σ · Anderson/Okoro 1.0σ · Okoro/Brook Lopez 0.2σ · Brook Lopez/Kispert 0.5σ · Karim Lopez/Diawara 0.4σ · Diawara/Konan Niederhäuser 1.2σ · Konan Niederhäuser/Simmons 0.4σ · Simmons/Amari Williams 1.4σ · Amari Williams/Thornton 0.9σ.
 
-**Inputs, dated.** Boards: Dizzle Points `UPDATED 7/10/2026`, depth **450** — below `D`, so an absence there renormalises its weight for that player only · Hashtag expert Points `25 August 2026`, depth **772** · Hashtag crowd `/keeper` `02 September 2026`, depth **764**; Hashtag Points reaches past `D`, so an absence there is a value of 0. Crowd is printed, not blended. `D` = 12 × 38 = **456**. ⚠️ **The wire's `maxRosterSize` still reads 28 today; 38 is the announced size from Sept '26** and is the one being valued (`Eval Definitions §BASE`). Projections: Sleeper **2026-09-02**, depth 528. `GPp` = mean(Hashtag, FanScout) / one feed / map fallback (`Eval Definitions §Durability`). Hashtag GP depth **430** · FanScout fetched **2026-09-02**, depth **481**. Roster file **2026-09-02** (wire + assumed-through overlays per `Pending Trades.md` where noted). `AGE` from DOB as of 2026-09-02. `REPL` on his roster (`Δw '26–'27 theirs`) guard/forward/center **19.8 / 16.9 / 19.5**; `REPL` on ours (`Δw '26–'27 ours`) **24.6 / 23.1 / 24.8**; both padded to 38.
-
-**Sourced vs modelled** (`Eval Definitions §Sourced vs modelled`): per-board ranks, `FPts/G`, `GP`, `AGE`, `POS` and pick ownership are sourced; `FPts/Gp`, `GPp`, `Δw`, `Δw (season)`, `W20`–`W23`, `ΔP(title) ours`, `REPL` are modelled. No discount is applied anywhere in this file.
-
-**σ** (`Eval Definitions §σ`) — these belong to the **`Δw '26–'27 theirs` ordering, not the published BASE sort**. Adjacent pairs the sim does not resolve: Aaron Nesmith/Egor Dëmin 0.9σ · T.J. McConnell/Moritz Wagner 0.4σ · Jordan Clarkson/Brook Lopez 0.4σ · Brook Lopez/Mohamed Diawara 0.9σ · Mohamed Diawara/Corey Kispert 0.2σ · Amari Williams/Yanic Konan Niederhäuser 1.4σ.
+Sourced: board ranks, AGE, POS, last-season `FPts/G` and `GP`. Modelled: BASE conversion, `FPts/Gp` (Sleeper line scored by us), `GPp`, both win columns, `ΔP(title) ours`, `W20`–`W23`. Feed misses: Thornton, Diawara and Amari Williams have no Sleeper rate (`noproj` → last season shrunk toward 6.0 FPts/G); Simmons is in neither GP feed (53 `GPp` is the durability map). The rookies' `GPp` are feed means (Swain and Karim Lopez ~48, Thornton 38).
 
 ## Picks
 
-Ownership sourced 2026-09-02 (`FetchTrades`, completed history; `FetchLeagueDraftBoard` for Sept '26). The league has traded into **2025–2028**; 2025 is complete. Sept '26 slots are read off the board; '27–'28 are modelled off `strategy/Team Projections.md` (stamped 2026-09-02). Ranks sourced, conversions modelled. Crowd `/keeper` vote-convergence notice is live → Dizzle alone for pick VALUE (`eval-pick` §4).
+His five 2026 picks are rostered players now: 1.01 Boozer · 2.04 Swain · 2.08 Karim Lopez · 3.01 Anderson · 3.03 Thornton. Ranks sourced (Dynatyze pick board snapshot 9/29, Hashtag crowd 9/29); VALUE modelled (curve at `D` 456, mean over the prior slots).
 
-`≤` marks a value the current class's lookup can only bound, not price (`eval-pick` §*Future picks*).
-
-### Sept '26 — sourced, locked off the '25-26 finish (11th → own slot **1.01**)
+### Sept '27 — modelled off projected finish (Todd 8th PF → 1.03–1.09 prior)
 
 | Pick | Origin | Ordinal | Board row | rank | **VALUE** |
-| --- | --- | ---: | --- | ---: | --------: |
-| **1.01** | own | 1 | `1.01 / Cameron Boozer` | 11 | **6,757** |
-| **2.04** | Mongol Khans | 16 | `1.16 / Dailyn Swain` | 144 | **927** |
-| **2.08** | Yao Ming Dynasty | 20 | `1.20 / Nate Ament` | 162 | **788** |
-| **3.01** | own | 25 | `1.25 / Sergio De Larrea` | 226 | **457** |
-| **3.03** | The Don | 27 | `1.27 / Koa Peat` | 236 | **420** |
+| ---- | ------ | ------: | --------- | ---: | --------: |
+| own 1st | own | 3–9 | Dynatyze '27 1.03–1.09 (w 0.56) · crowd Pick 3-4 / 5-8 / 9-14 · band 3070–1353 | 44–91 · 45/72/125 | **2215** |
+| own 2nd | own | 15–21 | Dynatyze '27 2.03–2.09 template · band 944–645 | 142–185 | **787** |
+| own 3rd | own | 27–33 | Dynatyze '27 3.03–3.09 template · band 399–262 | 242–290 | **327** |
+| own 4th | own | 39–45 | Dynatyze '27 4.03–4.09 alone (template), 4.03 capped at 3.12 · band 206–129 | 312–357 | **168** |
 
-Gone: **own 2.01** → SGA-the-Great.
+Gone: none
 
-### Sept '27 — modelled off projected finish (Han 9th in '26-27 → **1.02–1.09** prior)
-
-| Pick | Origin | Ordinal | Board row | rank | **VALUE** |
-| --- | --- | ---: | --- | ---: | --------: |
-| own **1st** | own (1.02–1.09 prior) | 2–9 | AJ Dybantsa → Brayden Burries | 15–95 | **≤ 3,270 – 1,524** |
-| own **2nd** | own (2.02–2.09 prior) | 14–21 | Hannes Steinbach → Karim Lopez | 125–185 | **≤ 1,111 – 645** |
-| own **3rd** | own (3.02–3.09 prior) | 26–33 | Zuby Ejiofor → Richie Saunders | 227–255 | **≤ 453 – 357** |
-
-Modelled baseline **5,959 – 1,524**; Dynatyze `Early 1st` (rank 41 → **3,270**, 2026-07-29) caps the top. Late end sits under `Mid 1st` (**2,021**) → haircut 0 there.
-
-No '27 picks traded.
-
-### Sept '28 — modelled off projected finish (Han 11th in '27-28 → **1.01–1.08** prior)
+### Sept '28 — modelled, open prior 1.01–1.12 (no year-2 projection until `future` lands)
 
 | Pick | Origin | Ordinal | Board row | rank | **VALUE** |
-| --- | --- | ---: | --- | ---: | --------: |
-| own **1st** | own (1.01–1.08 prior) | 1–8 | Cameron Boozer → Kingston Flemings | 11–69 | **≤ 3,270 – 2,104** |
-| own **2nd** | own (2.01–2.08 prior) | 13–20 | Ebuka Okorie → Nate Ament | 119–162 | **≤ 1,180 – 788** |
-| own **3rd** | own (3.01–3.08 prior) | 25–32 | Sergio De Larrea → Isaiah Evans | 226–254 | **≤ 457 – 360** |
+| ---- | ------ | ------: | --------- | ---: | --------: |
+| own 1st | own | 1–12 | Dynatyze '28 1.01–1.12 (w 0.48), no crowd row · band 2076–831 | 70–156 | **1335** |
+| own 2nd | own | 13–24 | Dynatyze '28 2.01–2.12 (w 0, template) · band 741–379 | 169–248 | **541** |
+| own 3rd | own | 25–36 | Dynatyze '28 3.01–3.12 (w 0.23) · band 322–130 | 267–356 | **217** |
+| own 4th | own | 37–48 | Dynatyze '28 4.01–4.12 alone (w 0, template), 4.01–4.03 capped at 3.12 · band 130–38 | 338–422 | **91** |
 
-No '28 picks traded.
+Gone: none
+
+### Sept '29 — modelled, open prior 1.01–1.12 (no year-3 projection until `future` lands)
+
+| Pick | Origin | Ordinal | Board row | rank | **VALUE** |
+| ---- | ------ | ------: | --------- | ---: | --------: |
+| own 1st | own | 1–12 | Dynatyze '29 1.01–1.12 (w 0, template) · band 1281–583 | 111–197 | **877** |
+| own 2nd | own | 13–24 | Dynatyze '29 2.01–2.12 (w 0, template) · band 518–264 | 211–289 | **380** |
+| own 3rd | own | 25–36 | Dynatyze '29 3.01–3.12 (w 0.14) · band 219–68 | 309–398 | **138** |
+| own 4th | own | 37–48 | Dynatyze '29 4.01–4.12 alone (w 0, template), 4.01–4.03 capped at 3.12, 4.11–4.12 past `D` = 0 · band 68–0 | 380–463 | **37** |
+
+Gone: none
 
 # Details
 
-**Counterfactual:** formula **`Δw`** is the league-curve value — one column, same on every roster (`Eval Definitions §Δw`). Each **`Δw (season)`** column swaps the player for a replacement-level 68-GP body of his own slot group. `Δw '26–'27 theirs` is fitted at his `R` (guard/forward/center **19.8 / 16.9 / 19.5**); `Δw '26–'27 ours` is `incoming_wins` onto our padded roster at our `R` (**24.6 / 23.1 / 24.8**). `Δw '26–'27 ours` is the only cross-team-comparable column; the theirs−ours gap is not a number (`Eval Definitions §Δw (season)`).
-
-Tanking now with a star-heavy roster — **Tatum · Brunson · Porter · Haliburton** are the four trade targets for us (`Eval Definitions §SIT`): highest BASE on the roster and the top **`ΔP(title) ours`** reads (Tatum +16.5%, Porter +12.2%, Brunson +10.3%, Haliburton +6.7%). He keeps picks and youth (Dëmin, Bryant, Diawara); the win-now pieces are misaligned with his `SIT`. Haliburton's wire line shows 0 GP — projection still prices him; treat the **`missed season`** flag as a sourced/modelled mismatch until the roster is re-cut.
+**Counterfactual:** `Δw '26–'27 ours` swaps him onto our 9/29 roster for a 68-GP replacement at our per-group `R` (guard 26.1 · forward 25.0 · center 24.8), cutting our worst body by score; `Δw '26–'27 theirs` swaps him off Todd's roster for one at his `R` (guard 19.5 · forward 17.6 · center 18.2). Formula **`Δw`**: `Eval Definitions §Δw`. Only `Δw '26–'27 ours` compares across teams; the theirs−ours gap is not a number, and no target is ranked on `Δw '26–'27 theirs`.
 
 # Title odds
 
-**Counterparty.** Projected season PF **9th of 12 (27,615)** — outside the bracket on PF, 0.1% P(title). Sim: **7.2** expected wins. `SIT` **tanking** (`Team Projections.md` has him flat mid/bottom). Per-player **`ΔP(title) ours`** is `incoming_title` onto our roster (`Bracket value.md`).
+**Counterparty:** PF 8/12 (27,876), 7.6 W, `P(title)` 0.2% (`sim.py title`, 9/29, `Team Projections.md`). The playoff cut is 8 of 12, so he sits on the 8/9 bubble with no title equity. **`SIT` tanking**, boundary noted: the PF rank reads fringe, the title odds and his own stated plan (sell Gobert / Porter / Brunson in-season, per his 9/27 texts in `Todd.shapes.md`) read tanking. He holds 35 bodies (3 open spots), so he can take an N-for-1 without cutting.
 
-**Ours.** Roster `P(title)` **37.1%** (`sim.py title`).
+**`ΔP(title) ours`** (`--eval 161022`, ours at 55.5%): Tatum 11.5% · Brunson 7.4% · Porter 6.4% · Boozer 6.0% · Haliburton 4.5%. Boozer is the 1.01 rookie, priced as a producer at once (36 FPts/G, 72 GP). Todd's title odds don't need him, but a 19-year-old 1.01 is exactly what a tanking team keeps.

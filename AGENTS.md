@@ -25,6 +25,8 @@ Refer to teams by the owner's Name from the `team-info` Skill, never the fantasy
 
 Read `strategy/teams/<owner>/<Name>.team.md` and `<Name>.shapes.md` only. Never read, grep, or shell-print `*'s Team.md`, `My Team.md`, or `* Trade Shapes.md`.
 
+Write those only when the `eval-team` or `trade-shapes` Skill calls for it: a spawned subagent writes the whole file via Bash (`cat > … <<'EOF'`); never Edit or Write them.
+
 # Notes
 
 - Always load/follow the `instructions-and-docs-ff` Skill when writing to `.md` files

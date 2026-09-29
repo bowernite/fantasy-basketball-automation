@@ -60,7 +60,7 @@ Two files, same directory, written together on every write — any edit to one g
 | Human (Brett reads) | `strategy/teams/<owner>/<Name>'s Team.md` · ours `My Team.md` |
 | Agent | `strategy/teams/<owner>/<Name>.team.md` · ours `Ours.team.md` · Matt Hlina `Hlina.team.md` |
 
-Read the agent file only. Never read, grep, or shell-print the human file. Prior values you need (ages, notes) come from the agent file.
+Read the agent file only; prior values you need (ages, notes) come from it. Write the agent file first, then spawn a subagent to write the human file in full from it plus this run's outputs, `template.md` and `Eval Template.md` (`AGENTS.md` §Team files). Never read or edit the human file in place.
 
 `template.md` (this directory) owns the human file's section order. Follow it and `Eval Definitions` for every human file so the eval set reads across.
 

@@ -9,7 +9,7 @@ Human file Brett reads: `strategy/teams/<owner>/<Name> Trade Shapes.md`
 
 Agent file: `strategy/teams/<owner>/<Name>.shapes.md` — same directory. Read this one. Never read, grep, or shell-print `* Trade Shapes.md`.
 
-On every archive or refresh, write both. Rebuild deal bodies from `.shapes.md`.
+On every archive or refresh, write both. Rebuild deal bodies from `.shapes.md`. Write `.shapes.md` first, then spawn a subagent to write the human file in full from it per §Table format (`AGENTS.md` §Team files). Never read or edit the human file in place.
 
 **Always load the `trades` Skill** — deals to look for, minimums, metric preferences, competitor rules, what not to float.
 

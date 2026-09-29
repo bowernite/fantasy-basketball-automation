@@ -19,12 +19,13 @@ def report_future():
     t0 = time.time()
     start, template, flat = inputs()
     ledger, fetched = pick_ledger()
-    teams1 = bracket.team_levels()
+    teams1 = future.season_one(start)
     title1 = title.full_season(teams1)
     runs = future.simulate(start, teams1, ledger, template, PATHS, SEED, YEARS, T_ENG, T_IN)
     out = summary(runs, teams1, title1)
     _preamble(fetched, flat)
     _main_table(out)
+    _projection_basis(out)
     _picks_table(out)
     _delta(out)
     _save(out)
@@ -84,7 +85,7 @@ def summary(runs, teams1, title1):
     owners = players.owner_names()
     paths = [t.path for t in teams1]
     n = len(runs)
-    out = {"paths": PATHS, "seed": SEED, "years": [_label(t) for t in range(YEARS)],
+    out = {"paths": PATHS, "seed": SEED, "trials": [T_ENG, T_IN], "years": [_label(t) for t in range(YEARS)],
            "drafts": ["'%02d" % ((LIVE_SEASON + 1 + s) % 100) for s in range(YEARS - 1)], "teams": {}}
     ranks = []
     for pfs, _, _ in runs:
@@ -101,7 +102,7 @@ def summary(runs, teams1, title1):
             "slot1": [_mean([slot for f in flows for rnd, slot in f[s]["picks"] if rnd == 1])
                       for s in range(YEARS - 1)],
             **{k: [sum(f[s][k] for f in flows) / n for s in range(YEARS - 1)]
-               for k in ("rookies", "exits", "cuts")}}
+               for k in ("rookies", "exits", "cuts", "drafted_fp")}}
     return out
 
 
@@ -119,23 +120,24 @@ def _preamble(fetched, flat):
     p = prog.params()
     print("FUTURE  %d paths, seed %d; progression params fit %s; pick ledger fetched %s"
           % (PATHS, SEED, p["fit"]["date"], fetched))
-    print("Uncalibrated read. Season 1 is `title` (projections as-is); from season 2 every player")
-    print("  follows his own progression path (FP/G, GP, exit), `sim.py progression`'s model.")
-    print("Each offseason: exits leave; the draft (4 rounds, one order: top 4 by record pick")
-    print("  12-9, the rest worst first, worst 4 draw 1.01 at 50/25/15/10) slots a pick by its")
-    print("  ORIGINAL team's sampled finish and hands the rookie to its holder; '30+ picks own.")
-    print("  A rookie is a fresh path off the 2026 class's player at that ordinal (rostered")
-    print("  draftees by board BASE). Then cuts to 38 by BASE + 300 x formula Delta w on the")
-    print("  latest season (Score without its sim terms; BASE frozen at today's boards), and")
-    print("  pads with the year-1 FA filler.")
+    print("Uncalibrated read. Every player follows his own progression path (FP/G, GP, exit),")
+    print("  `sim.py progression`'s model. Season 1 is the projected rates as-is, but on the")
+    print("  model's GP (its forecast off last season), so all seven seasons share one GP")
+    print("  basis; `sim.py title` is season 1 on the projections' GP (line under the table).")
+    print("Each offseason: exits leave; the draft (4 rounds, one order: top 4 by regular-season")
+    print("  record pick 12-9, the rest worst first, worst 4 draw 1.01 at 50/25/15/10) slots a")
+    print("  pick by its ORIGINAL team's sampled finish and hands the rookie to its holder; '30+")
+    print("  picks own. A rookie is a fresh path off the 2026 class's player at that ordinal")
+    print("  (rostered draftees by board BASE). Then cuts to 38 by BASE + 300 x formula Delta w")
+    print("  on the latest season (Score without its sim terms; BASE frozen at today's boards),")
+    print("  and pads with the year-1 FA filler.")
     print("Known biases: no trades or FA pickups; BASE never ages; every class = the 2026 class")
-    print("  (strong top); role vets 29+ run high and top-5 picks over-project (progression")
-    print("  limits); schedule = 2026-27 every season. Held flat (no birthday): %s."
-          % (", ".join(flat) or "none"))
-    print("Season 1 GP is the sim's projection; from season 2 GP is the progression model's,")
-    print("  several games lower for a team's top players, so every PF steps down into season 2. Compare")
-    print("  teams within a season (rk, P), not PF levels across the step.")
-    print("PF = mean regular-season PF (k); rk = mean PF rank; P = P(title) %, sums to 100 per season.")
+    print("  (strong top), and by the last seasons rookies drafted here carry much of each top 12")
+    print("  (share below); role vets 29+ run high and top-5 picks over-project (progression")
+    print("  limits); bracket R1 wins don't move the draft cut; schedule = 2026-27 every season.")
+    print("  No birthday, so gone after season 1: %s." % (", ".join(flat) or "none"))
+    print("PF = mean regular-season PF (k); rk = mean PF rank; P = P(title) %, sums to 100 per")
+    print("  season. Seeds are fixed, so a re-run on the same inputs repeats to the digit.")
 
 
 def _main_table(out):
@@ -147,9 +149,18 @@ def _main_table(out):
                                      for y in range(YEARS)))
 
 
+def _projection_basis(out):
+    odds = title.full_season(bracket.team_levels())
+    owners = players.owner_names()
+    by = {owners.get(p.split("-")[1], p): o.title for p, o in odds.items()}
+    print("  `title` season 1 on the projections' GP, P %: "
+          + " · ".join("%s %.1f" % (o, 100 * by[o]) for o in _order(out)))
+
+
 def _picks_table(out):
-    print("\nPicks held R1.R2.R3.R4 @ mean 1st slot, then per offseason the mean rookies kept /")
-    print("  exits / cuts (the draft after season N feeds season N+1).")
+    print("\nPicks held R1.R2.R3.R4 @ mean 1st slot; under it, per offseason, the mean rookies kept /")
+    print("  exits / cuts, then the share of the next season's top-12 FP held by rookies drafted in")
+    print("  this roll (the draft after season N feeds season N+1).")
     print("  %-8s" % "team" + "".join("  %-17s" % d for d in out["drafts"]))
     for o in _order(out):
         t = out["teams"][o]
@@ -158,7 +169,8 @@ def _picks_table(out):
             slot = "@%4.1f" % t["slot1"][s] if t["slot1"][s] is not None else "     "
             cells.append("%s %s" % (".".join(str(c) for c in t["picks"][s]), slot))
         print("  %-8s" % o + "".join("  %-17s" % c for c in cells))
-        print("  %-8s" % "" + "".join("  %-17s" % ("%.1f / %.1f / %.1f" % (t["rookies"][s], t["exits"][s], t["cuts"][s]))
+        print("  %-8s" % "" + "".join("  %-17s" % ("%.1f/%.1f/%.1f %2.0f%%" % (t["rookies"][s], t["exits"][s], t["cuts"][s],
+                                                                          100 * t["drafted_fp"][s]))
                                       for s in range(YEARS - 1)))
 
 
@@ -168,8 +180,9 @@ def _delta(out):
             last = json.load(f)
     except (OSError, ValueError):
         return
-    if (last.get("paths"), last.get("seed"), last.get("years")) != (out["paths"], out["seed"], out["years"]):
-        print("\nΔ vs last run: skipped, the last run (%s) used other paths/seed/seasons" % last.get("saved"))
+    same = ("paths", "seed", "trials", "years")
+    if [last.get(k) for k in same] != [out[k] for k in same]:
+        print("\nΔ vs last run: skipped, the last run (%s) used other paths/seed/trials/seasons" % last.get("saved"))
         return
     moved = {o: t for o, t in out["teams"].items()
              if o in last["teams"] and any(abs(a - b) > 1e-9 for k in ("pf", "title")
