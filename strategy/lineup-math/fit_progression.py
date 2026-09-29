@@ -29,6 +29,9 @@ SHORT_SEASONS = {1999: 50, 2012: 66, 2020: 72, 2021: 72}
 ACTIVE = 20             # GP82 that counts as a season played
 EXIT_HALF_LIFE = 8      # seasons
 ROOKIE_HALF_LIFE = 10   # seasons
+OLD_AGE = (32, 35)      # exit blends from the main fit into OLD_EXIT across these ages
+OLD_EXIT = ["1", "a", "lL", "gp", "bpm"]
+OLD_LEVEL_CAP = 35.0    # FP/G; the old have too few players above it (or above their p90 BPM) to say more protects
 ERA_BREAK = 2016        # first season of the regime exit reads as current
 STAR_LL = float(np.log(38 / 30))
 EXIT_LEVEL_CAP = 45.0   # FP/G; above it exit has too few old players to bend the curve further
@@ -272,8 +275,21 @@ def vet_fit(P, cut, dterms, eterms, sterms):
                    var_weights=w).fit().params
     print("  vet cut %d: %d drift pairs, %d exit rows (%.1f%% exit)"
           % (cut, len(O), len(E), 100 * ex.mean()))
+    old = {}
+    if "lL" in eterms:
+        # few stars play past 36, so the main fit's level x age terms protect
+        # them far past its data; the old take over from a flatter fit on them
+        o = (E.age >= OLD_AGE[0]).values
+        vo = {k: x[o] for k, x in ve.items()}
+        vo["lL"] = np.minimum(vo["lL"], np.log(OLD_LEVEL_CAP / 30))
+        bpm_cap = float(np.quantile(vo["bpm"], 0.9))
+        vo["bpm"] = np.minimum(vo["bpm"], bpm_cap)
+        fo = sm.GLM(ex.values[o].astype(float), design(vo, OLD_EXIT), family=sm.families.Binomial()).fit()
+        old = {"exit_old": _model(OLD_EXIT, fo.params), "old_age": list(OLD_AGE), "old_level_cap": OLD_LEVEL_CAP,
+               "old_bpm_cap": bpm_cap}
+        print("  old exit, %d rows aged %d+: %s" % (o.sum(), OLD_AGE[0], np.round(fo.params, 3).tolist()))
     return {"drift": _model(dterms, drift), "scale": _model(sterms, sc),
-            "exit": _model(eterms, exit_), "exit_level_cap": EXIT_LEVEL_CAP, "resq": _quantiles(z / z.std()),
+            "exit": _model(eterms, exit_), "exit_level_cap": EXIT_LEVEL_CAP, **old, "resq": _quantiles(z / z.std()),
             "zsd": float(z.std()), **_star_pool(z[star]), **_young_pool(z[(O.age <= 24).values & ~star])}
 
 

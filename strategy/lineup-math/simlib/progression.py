@@ -121,6 +121,10 @@ class _Sampler:
         self.p, self.k, v = p, p["knobs"], p["vet"]
         self.drift, self.exit = _Model(v["drift"]), _Model(v["exit"])
         self.exit_cap = v.get("exit_level_cap", float("inf"))
+        self.exit_old = _Model(v["exit_old"]) if "exit_old" in v else None
+        self.old_age = v.get("old_age", (0, 1))
+        self.old_ll = math.log(v.get("old_level_cap", 1e9) / 30)
+        self.old_bpm = v.get("old_bpm_cap", float("inf"))
         self.scale, self.resq, self.zsd = _Model(v["scale"]), v["resq"], v["zsd"]
         self.star_ll = v.get("star_ll")
         self.resq_star, self.zsd_star = v.get("resq_star"), v.get("zsd_star")
@@ -168,7 +172,7 @@ class _Sampler:
                                self._bpm_on_path(st.age, math.exp(tau), dev), st.cy)
                 if not _lost_season(t, gps):
                     ve = self._vars(st.age, min(math.exp(tau), self.exit_cap), st.gpavg(), v["bpm"], st.cy)
-                    st.alive = rng.random() >= _logistic(self.exit(ve))
+                    st.alive = rng.random() >= _logistic(self._exit_logit(ve, st.age))
             if not st.alive:
                 rates.append(None)
                 gps.append(0.0)
@@ -243,6 +247,14 @@ class _Sampler:
 
     def _clip(self, lr):
         return min(max(math.exp(lr), MIN_RATE), math.exp(self.hi))
+
+    def _exit_logit(self, v, age):
+        lo, hi = self.old_age
+        w = min(max((age - lo) / (hi - lo), 0.0), 1.0) if self.exit_old else 0.0
+        if not w:
+            return self.exit(v)
+        vo = dict(v, lL=min(v["lL"], self.old_ll), bpm=min(v["bpm"], self.old_bpm))
+        return (1 - w) * self.exit(v) + w * self.exit_old(vo)
 
     def _bpm_on_path(self, age, level, dev):
         """BPM where the path stands: typical for its level and age, plus the

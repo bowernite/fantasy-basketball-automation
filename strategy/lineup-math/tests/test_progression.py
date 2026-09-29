@@ -56,6 +56,18 @@ class WhatMovesAPath(unittest.TestCase):
         self.assertLess(ys[1].rate_p50, 64.0)
         self.assertLess(ys[3].rate_p50, 64.0)
 
+    def test_a_young_superstar_is_less_likely_than_not_to_be_playing_at_forty(self):
+        # of 40 players at 45+ FP/G at 26-28 since 1980, 14 played 20+ games at 38 and 6 were 25+ at
+        # 40; the bounds leave room for being the best of them
+        ys = prog.project(vet(rate1=53.0, age1=23.0, bpm=9.0, cy1=4), years=18, n=2000)
+        self.assertLess(ys[15].p_active, 0.6)      # age 38
+        self.assertLess(ys[17].p_usable, 0.3)      # age 40
+
+    def test_the_best_player_at_thirty_two_is_more_likely_than_not_done_starting_by_forty(self):
+        # of 27 players at 45+ FP/G at 30-32, 4 were 25+ at 40
+        ys = prog.project(vet(rate1=64.0, age1=32.0, bpm=13.5, cy1=12), years=9, n=2000)
+        self.assertLess(ys[8].p_usable, 0.4)
+
     def test_a_board_that_ranks_him_below_his_inputs_pulls_him_down_from_year_two(self):
         base = prog.project(vet(), years=6, n=1500)
         doubted = prog.project(vet(bres=1.0), years=6, n=1500)
