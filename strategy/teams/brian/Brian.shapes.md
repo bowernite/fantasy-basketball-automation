@@ -1,53 +1,66 @@
 # out > in | Score ΔBASE Δw Δw(season) ΔP(title) Δage | status
 
-Counterparty: Brian (161018). Contending, 5th PF and 6% title (`Team Projections.md`), Jokic-led, 28 bodies (roster unchanged since 9/2). Holds only 3.08 in this draft; his '26 1st/2nd and '27 1st are gone.
+Counterparty: Brian (161018). Contending: 3rd PF (30,308), 13.1 W, 7.3% title (`Team Projections.md` year 1), Jokić-led. Full at 38, so any deal netting him bodies cuts on his side (the sim cuts Leaky Black). Holds '27 own 2nd, Jon's 3rd and own 4th, plus all his own '28–'29 picks.
 
-Pre-draft menu (9/28 ~4p): priced with Michael's Cade > Reaves+Sabonis+Siakam applied (`$TMPDIR/ff-C1`, 37 bodies); every row assumes that deal. Tiers against holding (Score 0). Our depth (Eason / Kuminga / Walker / Hunter / Suggs / Keegan Murray / Vassell) for his vets Randle + Nurkić; the pitch to him is younger at even BASE. Avoided assets in other threads: Cade, Middleton, Garland, Bane, Giddey, Sharpe, Mark Williams, Coby White, 2.09, '28 1st, '28 2nd. Kuminga also sits in the Joe / Josh / Chris drafts and Eason in Joe option 3, so the no-Kuminga rows lead. Config `$TMPDIR/ff-sim-brian-C1.json`. Jabari Smith and Camara rows (same roster) added 9/28 once Brett ruled the Hlina Duren deal done; config `$TMPDIR/ff-sim-hlina-pieces-C1.json`.
+Refresh 9/29: every row re-priced on the 9/29 rosters (F/C flex, full-Score cut rule). Tiers are against holding (Score 0). The pitch: our depth (Eason / Kuminga / Walker / Hunter / Suggs / Keegan Murray / Vassell / Camara / Jabari Smith) for his vets Randle (C/PF) and Nurkić (pure C). Both gain from the F/C flex. For him it's younger at about even BASE. Rows that assume Michael's Cade > Reaves+Sabonis+Siakam counter are gone. That counter is still undecided, and Cade > Jokić excludes it.
 
-Fox re-price 9/28/26: the three sent rows (Murray+Walker, Eason+Walker+Hunter, Suggs+Walker > Randle+Nurkić) priced on the Cade (Siakam) roster with Chris's Middleton+Chris '27 2nd+own '27 2nd > Fox also applied (`$TMPDIR/ff-CF`, 37 bodies). Other post-Cade rows are pre-Fox and read about +100 Score / +1% ΔP(title) high next to them.
-
-Fox deal executed 9/28 (Fleaflicker 485835). Middleton, Chris '27 2nd and own '27 2nd are Chris's now, so rows that send any of them can't be offered.
+- Dropped 9/29: the two rows that sent our own '27 2nd, which went to Chris in the Fox deal 9/28.
+- Executed 9/28: Matković > Brian '27 3rd (`Recent Trades.md`).
+- Added 9/29: split 1-for-1s (Eason / Murray / Camara > Randle, Hunter / Vassell > Nurkić, Suggs / Eason > Pritchard), '27 4th sweeteners, Jabari Smith+Walker > Randle+Nurkić, Zion and Jokić shapes.
+- Messages: on 8/26 Brian called Garland "a bum" and said he likes Murphy, so Giddey+Garland > Jokić is a long shot. The three Randle+Nurkić texts sent 9/28 had no reply as of 9/29.
 
 ## Above floor
 
-Eason+Kuminga > Randle+Nurkić | +1900 +400 +1.6 +0.7 +11% +6.7
-Camara+Walker > Randle+Nurkić | +1900 +600 +1.5 +0.4 +8% +6.2
-Vassell+Kuminga > Randle+Nurkić | +1800 +300 +1.7 +0.5 +10% +6.1
-Jabari Smith+Kuminga > Randle+Nurkić | +1600 +300 +1.3 +0.6 +11% +8.5
-Eason+Kuminga+Walker > Randle+Nurkić | +1500 0 +1.3 +0.7 +11% +7.1
-Camara+Kuminga > Randle+Nurkić | +1500 +400 +1.5 +0.4 +7% +5.8
-Eason+Walker+Hunter > Randle+Nurkić | +1500 +100 +1.3 +0.6 +10% +6.7 | Us proposed 9/28
-Eason+Kuminga > Pritchard+Nurkić | +1400 +100 +1.5 +0.7 +9% +5.0
-Murray+Walker > Randle+Nurkić | +1400 +200 +1.4 +0.6 +9% +6.3 | Us proposed 9/28
-Eason+Kuminga+own '27 2nd > Randle+Nurkić | +1300 -200 +1.6 +0.7 +11% +8.8
-Murray+Kuminga > Randle+Nurkić | +1300 -100 +1.4 +0.7 +10% +6.0
-Suggs+Walker > Randle+Nurkić | +1300 +100 +1.4 +0.5 +8% +7.0 | Us proposed 9/28
-Eason+Kuminga+Mitch '27 2nd > Randle+Nurkić | +1200 -300 +1.6 +0.7 +11% +8.8
-Suggs+Kuminga > Randle+Nurkić | +1200 -200 +1.5 +0.6 +10% +6.8
-Jabari Smith > Randle | +1200 +500 +0.5 +0.4 +6% +8.4
-Eason+Kuminga > Randle | +800 -100 +0.6 +0.4 +6% +6.6
-Suggs > Randle | +700 0 +0.7 +0.4 +5% +6.5
-Suggs+Eason > Randle+Nurkić | +600 -600 +1.1 +0.6 +10% +6.6
-Suggs+Kuminga+own '27 2nd > Randle+Nurkić | +600 -800 +1.5 +0.6 +10% +8.6
-Kuminga > Nurkić | +600 -200 +0.8 +0.3 +6% +8.1
+Cade > Jokić | +2400 +700 +1.5 +1.0 +12% +6.6
+Camara+Walker > Randle+Nurkić | +2100 +600 +1.5 +0.5 +11% +6.2
+Eason+Kuminga > Randle+Nurkić | +2100 +400 +1.6 +0.8 +13% +6.7
+Vassell+Kuminga > Randle+Nurkić | +2100 +300 +1.7 +0.7 +13% +6.1
+Jabari Smith+Walker > Randle+Nurkić | +2000 +500 +1.3 +0.7 +12% +8.6
+Camara+Kuminga > Randle+Nurkić | +1900 +400 +1.6 +0.6 +11% +5.8
+Eason+Walker+Hunter > Randle+Nurkić | +1900 +100 +1.4 +0.8 +13% +6.7 | Us proposed 9/28
+Jabari Smith+Kuminga > Randle+Nurkić | +1800 +300 +1.4 +0.7 +13% +8.5
+Murray+Walker > Randle+Nurkić | +1800 +200 +1.4 +0.8 +12% +6.3 | Us proposed 9/28
+Giddey+Garland > Jokić | +1700 +700 +0.5 +0.7 +7% +6.4
+Eason > Randle | +1700 +600 +0.8 +0.5 +9% +6.4
+Eason+Kuminga+Walker > Randle+Nurkić | +1700 0 +1.4 +0.8 +13% +7.1
+Eason+Kuminga > Pritchard+Nurkić | +1600 +100 +1.5 +0.8 +12% +5.0
+Suggs+Walker > Randle+Nurkić | +1600 +100 +1.5 +0.7 +11% +7.0 | Us proposed 9/28
+Murray+Kuminga > Randle+Nurkić | +1500 -100 +1.5 +0.8 +12% +6.0
+Eason+Kuminga+Mitch '27 2nd > Randle+Nurkić | +1400 -300 +1.6 +0.8 +13% +8.7
+Camara > Randle | +1400 +600 +0.8 +0.2 +7% +5.4
+Suggs+Kuminga > Randle+Nurkić | +1400 -200 +1.5 +0.7 +12% +6.7
+Jabari Smith > Randle | +1300 +500 +0.6 +0.4 +8% +8.4
+Eason > Pritchard | +1100 +300 +0.7 +0.5 +6% +3.3
+Murray > Randle | +1100 +100 +0.7 +0.5 +8% +5.7
+Eason+Kuminga > Randle | +1000 -100 +0.6 +0.5 +9% +6.5
+Suggs > Randle | +900 0 +0.7 +0.4 +7% +6.5
+Suggs+Eason > Randle+Nurkić | +800 -600 +1.1 +0.7 +12% +6.6
+Hunter > Nurkić | +800 0 +0.8 +0.4 +6% +3.3
+Bane > Zion | +800 +400 +0.2 +0.2 +3% -2.1
+Walker+own '27 4th > Nurkić | +700 0 +0.8 +0.3 +6% +10.1
+Kuminga > Nurkić | +700 -200 +0.8 +0.4 +7% +8.1
+Murray+Eason > Zion | +600 0 0.0 +0.4 +5% +0.4
+Jabari Smith+Kuminga > Randle | +600 -200 +0.3 +0.4 +7% +8.3
+Kuminga+own '27 4th > Nurkić | +600 -300 +0.8 +0.4 +7% +10.2
 
 ## Floor
 
-Suggs+Eason > Zion | +500 0 0.0 +0.4 +5% +0.9
-Jabari Smith+Kuminga > Randle | +500 -200 +0.2 +0.3 +6% +8.3
+Suggs+Eason > Zion | +500 0 0.0 +0.3 +5% +0.8
+Murray+Walker > Randle | +500 -300 +0.4 +0.4 +7% +6.2
+Kuminga+own '27 3rd > Nurkić | +500 -400 +0.8 +0.4 +7% +11.1
 Murray > Pritchard | +400 -200 +0.5 +0.4 +5% +2.6
-Murray+Walker > Randle | +400 -300 +0.3 +0.4 +5% +6.2
-Kuminga+own '27 3rd > Nurkić | +300 -500 +0.8 +0.3 +6% +11.0
-Kyrie > Randle | +300 -100 +0.4 +0.1 +3% -2.7
+Kyrie > Randle | +400 -100 +0.4 +0.2 +4% -2.7
+Vassell+Kuminga > Pritchard | +300 -500 +0.5 +0.3 +6% +2.9
+Suggs > Pritchard | +300 -300 +0.5 +0.3 +4% +3.4
 
 ## Below bar
 
-Vassell+Kuminga > Pritchard | +200 -500 +0.5 +0.2 +5% +2.9
 Walker+Hunter > Nurkić | +200 -500 +0.5 +0.3 +4% +7.2
+Suggs+Mitch '27 2nd > Randle | +200 -700 +0.7 +0.4 +7% +8.4
+Suggs+Kuminga > Randle | +200 -700 +0.5 +0.4 +7% +6.6
 Poeltl > Nurkić | +100 -500 +0.7 +0.3 +4% +1.1
-Suggs+Kuminga > Randle | 0 -700 +0.4 +0.3 +5% +6.6
-Suggs+Mitch '27 2nd > Randle | 0 -700 +0.7 +0.4 +5% +8.5
-Eason > Nurkić | 0 -600 +0.4 +0.3 +5% +6.7
+Eason > Nurkić | 0 -600 +0.4 +0.3 +6% +6.7
+Vassell > Nurkić | -100 -700 +0.5 +0.2 +5% +6.0
 
 ## Too lopsided
 
