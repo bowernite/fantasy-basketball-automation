@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "defaultMode": "bypassPermissions",
+    "deny": [
+      "Read(./strategy/teams/**/* Trade Shapes.md)",
+      "Read(./strategy/teams/**/*'s Team.md)",
+      "Read(./strategy/teams/my-team/My Team.md)"
+    ]
+  }
+}
