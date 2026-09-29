@@ -35,4 +35,12 @@ Sort the table by **BASE** descending unless a file states otherwise. **`σ`** f
 
 # Flags
 
-Carry on every row that triggers one. Pool codes from `sim.evidence_flags` / `sim.py players`: **`frag`** · **`miss`** · **`rotN`** · **`nopool`**. Table adds **`fa`** · **`noproj`**. Eval-only: **`board split`** (`BASE.md`) · **`missed season`** · **`Nyr role`** (rotation-season count per `Durability.md`). Multiple flags: middle dot separator (`fragile · 2yr role`).
+Carry on every row that triggers one. Sim codes only (`sim.evidence_flags` / `sim.py players`), no prose duplicates. Multiple flags: middle dot separator (`frag · rot2`).
+
+- **`frag`**: last season 25 games or fewer (`Durability.md`)
+- **`miss`**: missed a whole season
+- **`rotN`**: only N rotation seasons, N < 3 (`Durability.md`)
+- **`nopool`**: no pool history
+- **`fa`**: unsigned (table only)
+- **`noproj`**: no rate projection (table only)
+- **`board split`**: eval-only, defined in `BASE.md`

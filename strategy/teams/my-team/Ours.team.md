@@ -1,7 +1,7 @@
 # Brett (Bathroom club) · 38 bodies · contending · sim 2026-09-29
 Stamps: boards Dizzle 7/10/26 · Hashtag 9/24/26 · crowd 9/29/26 · proj 9/29/26 · roster 9/29/26 · AGE 9/29/26 · picks Dynatyze 9/29/26 + crowd 9/29/26
 Title: PF 1/12 (32172) · 16.2 W · P(title) 55.5%
-Notes: 38 of 38, no open slot: any net +body deal cuts our worst body by Score (Tyus Jones today; trades §Uneven bodies) · Emanuel Sharp noproj: rate 6.0 is the no-projection fallback, GP map-only · Sharpe GPp 0 override (out for season) · Mark Williams GPp 10 override: torn left labrum, surgery 9/10/26, 5+ months · Tyus Jones, Quinten Post off Dizzle; AGE Hashtag 9/12 · aging: Butler 37 · Kyrie 34 · Dizzle is the oldest board (7/10) · no board splits at D 456 · '27 2nd/3rds are crowd bands, flat across the band (width ceiling): Mitch 2nd 656 vs Dynatyze template 694 (831–573); 3rds 518 vs template 243 (3.10) / 206 (3.12) · every 4th is Dynatyze template, capped at the draft's 3.12 · '28–'29 slots open 1.01–1.12 until `future` lands; VALUE = mean over the range, bands '28 1st 2076–831 · 2nd 741–379 · 3rd 322–130 · 4th 130–38 · '29 1st 1281–583 · 2nd 518–264 · 3rd 219–68 · 4th 68–0 · Mitch '27 2nd is a 2.05–2.11 prior, not a mode
+Notes: 38 of 38, no open slot: any net +body deal cuts our worst body by Score (Tyus Jones today; trades §Uneven bodies) · Emanuel Sharp noproj: rate 6.0 is the no-projection fallback, GP map-only · Sharpe GPp 0 override (out for season) · Mark Williams GPp 10 override: torn left labrum, surgery 9/10/26, 5+ months · Tyus Jones, Quinten Post off Dizzle; AGE Hashtag 9/12 · aging: Butler 37 · Kyrie 34 · Dizzle is the oldest board (7/10) · no board splits at D 456 · '27 picks = Dynatyze rank by slot (1st adds the 50/50 crowd band Pick 9–14; 2nd/3rd/4th Dynatyze alone, no crowd ceilings; 4ths capped at 3.12 = 206): Mitch 2nd 694 (2.05–2.11 prior; 831–573) · 3rds 243 (3.10) / 206 (3.12) · '28–'29 slots open 1.01–1.12 until `future` lands; VALUE = mean over the range, bands '28 1st 2076–831 · 2nd 741–379 · 3rd 322–130 · 4th 130–38 · '29 1st 1281–583 · 2nd 518–264 · 3rd 219–68 · 4th 68–0 · Mitch '27 2nd is a 2.05–2.11 prior, not a mode
 
 ## Players
 player | AGE POS | BASE | FPts/G GP | Δw Δw'26–'27-ours ΔP(title) | flags
@@ -48,10 +48,10 @@ Tyus Jones | 30.3 PG/SG | 124 | 10 72 | +0.06 -0.05 -0.7%
 ## Picks
 pick | origin | rookie | VALUE
 ### Sept '27 — modelled off projected finish
-1st | own (1.12) | crowd Pick 9–14 · Dynatyze '27 1.12 (w 0.56) | 1158
-2nd | Mitch (2.05–2.11 prior) | crowd Pick 15–30 | 656
-3rd | Brian (3.10) | crowd Pick 31–44 | 518
-3rd | own (3.12) | crowd Pick 31–44 | 518
+1st | own (1.12) | crowd Pick 9–14 · Dynatyze '27 1.12 (w 0.56) | 1176
+2nd | Mitch (2.05–2.11 prior) | Dynatyze '27 2.05–2.11 (template) | 694
+3rd | Brian (3.10) | Dynatyze '27 3.10 (template) | 243
+3rd | own (3.12) | Dynatyze '27 3.12 (template) | 206
 4th | own (4.12) | Dynatyze '27 4.12 template | 93
 Gone: own 2nd → Chris · Chris 2nd → Chris (9/28, Fox trade)
 ### Sept '28 — modelled, open slot range 1.01–1.12

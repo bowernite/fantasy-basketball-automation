@@ -6,13 +6,15 @@ Load when a deal involves a pick from any draft but the next one. `SKILL.md` own
 
 # Procedure, any year
 
-1. **Year and slot** (`SKILL.md` §1, §2). `<YEAR>` = the draft held that September, `FetchLeagueDraftBoard?season=<YEAR>`, set by the **preceding** season's finish.
-2. **Market rows for `<YEAR>`**, each rank → `Eval Definitions §BASE` curve. Rank sourced, conversion modelled.
-   - **Hashtag crowd `/keeper`** pick band containing the ordinal, only when its pick rows price `<YEAR>`'s class (they roll to the next class once the NBA draft passes). Convergence notice → drop it (`SKILL.md` §4).
-   - **`dynatyze` pick board**, year × slot → implied dynasty rank. Weight each cell by its trade weight `w`; **`w = 0` = template, no market.** Near-year 1sts are usually anchored; later years and 2nds usually are not. Say which.
-   - **4th round: Dynatyze R4 cell alone**, even at `w = 0` (label it template; step 3 doesn't apply). No crowd band (`SKILL.md` §4). Cap at the same year's 3.12 (`SKILL.md` §4); rank past `D` = 0.
-   - **League comps**: `FetchTrades` history, same round and years-out, priced at today's BASE. Cross-check only — few per cell.
-3. **No market in the cell** (no crowd row, `w = 0`): take the nearest priced year's value for the same slot, move it by the per-year gap that market shows for that round, label it modelled.
+1. **Year and slot** (`SKILL.md` §1, §2). `<YEAR>` = the draft held that September, `FetchLeagueDraftBoard?season=<YEAR>`, set by the **preceding** season's finish. No `Team Projections` finish for that season → open range 1.01–1.12.
+2. **VALUE: run `pick_prices.py`** (this directory) and copy the cell, or the range row for a slot range; never compute a price by hand. Pass every range the eval uses (`pick_prices.py 1.05-1.11 1.03-1.09`). Re-cut stale snapshots first (`dynatyze`, `hashtag-basketball`). The rule it applies, identical for every year and round:
+   - **Dynatyze** pick board cell (year × slot, `strategy/board-snapshots/dynatyze/`) → implied rank → `Eval Definitions §BASE` curve.
+   - **`w` is a label, never a weight**: `w > 0` = market-anchored, `w = 0` = template. Say which.
+   - **Hashtag crowd `/keeper`** band containing the ordinal: averaged 50/50 in `V` with the Dynatyze value only when its pick rows name `<YEAR>`'s class, the band spans ≤ 12 picks, and the pick is not a 4th. Wider bands, other years and convergence-notice pulls: cross-check only.
+   - **Cap**: no pick above an earlier ordinal of the same draft (`SKILL.md` §4); rank past `D` = 0.
+   - **Slot range**: uniform mean of its slots' VALUEs.
+   - Never price a cell off another year's row or another round's gap.
+3. **League comps**: `FetchTrades` history, same round and years-out, priced at today's BASE. Cross-check only — few per cell.
 4. **Current-class slot value** (`SKILL.md` §4 lookup): cross-check only, never the VALUE. Future 1sts price below the same current slot, the gap widening per year out. A future row well above its current-class slot needs a named reason.
 5. **Class-strength dial — check the stamp.** Neutral is not a judgment of average. Boards move after the summer circuit, again once the college season resolves. **A stale neutral dial is missing information.**
 6. **Scouting cross-check, top slot only.** "This class's 1.01 grades ~Nth on last year's board" anchors the top. **Below it you are extrapolating — bear case, not estimate.**

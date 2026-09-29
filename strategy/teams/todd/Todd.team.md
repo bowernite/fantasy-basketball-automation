@@ -1,7 +1,7 @@
 # Todd (The Han Dybantsy) · 35 bodies · tanking · sim 2026-09-29
 Stamps: boards Dizzle 7/10/26 · Hashtag 9/24/26 · crowd 9/29/26 · proj 9/29/26 · roster 9/29/26 · AGE 9/29/26
 Title: PF 8/12 (27876) · 7.6 W · P(title) 0.2% · ours P(title) 55.5%
-Notes: SIT boundary: 8th PF sits on the 8/9 playoff bubble (reads fringe), but 0.2% title odds and his 9/27 texts (Gobert/Porter/Brunson likely available in-season) read tanking · targets for us by ΔP(title)-ours: Tatum 11.5% · Brunson 7.4% · Porter 6.4% · Boozer 6.0% (1.01 rookie, prices as a producer now) · Haliburton 4.5% · no 9/26+ trades; his 2026 picks are players now (1.01 Boozer, 2.04 Swain, 2.08 Karim Lopez, 3.01 Anderson, 3.03 Thornton) · 3 open roster spots, so he can take N-for-1 with no cut · Dizzle 2½ months stale; Simmons off Dizzle (depth 450 < D), BASE Hashtag alone · noproj (6.0-shrink rate): Thornton, Diawara, Amari Williams · Simmons in neither GP feed (map 53) · no board splits at D 456 · pick VALUE = mean over prior slots; bands: '27 1st 3062–1285, '28 1st 2076–831, '29 1st 1281–583, '28 2nd 760–461, '29 2nd 531–322 · '27 3rd 597 is a crowd band-width ceiling (crowd Pick 15-30/31-44 prices it level with the '27 2nd); Dynatyze template 327 sits well below · '27 2nd 656 crowd band is flat across 15–30 and below the Dynatyze template (787) · '28/'29 2nds modelled off the '27 crowd bands (2.01–2.02 sit in Pick 9-14) · Dynatyze class-strength dial neutral, stamped 6/12/26 (stale) · '28/'29 slot prior is the open 1.01–1.12 range until future lands
+Notes: SIT boundary: 8th PF sits on the 8/9 playoff bubble (reads fringe), but 0.2% title odds and his 9/27 texts (Gobert/Porter/Brunson likely available in-season) read tanking · targets for us by ΔP(title)-ours: Tatum 11.5% · Brunson 7.4% · Porter 6.4% · Boozer 6.0% (1.01 rookie, prices as a producer now) · Haliburton 4.5% · no 9/26+ trades; his 2026 picks are players now (1.01 Boozer, 2.04 Swain, 2.08 Karim Lopez, 3.01 Anderson, 3.03 Thornton) · 3 open roster spots, so he can take N-for-1 with no cut · Dizzle 2½ months stale; Simmons off Dizzle (depth 450 < D), BASE Hashtag alone · noproj (6.0-shrink rate): Thornton, Diawara, Amari Williams · Simmons in neither GP feed (map 53) · no board splits at D 456 · pick VALUE = mean over prior slots, off Dynatyze (the '27 crowd band averages 50/50 only on 1.01–2.02); bands: '27 1st 3070–1353 · 2nd 944–645 · 3rd 399–262, '28 1st 2076–831 · 2nd 741–379, '29 1st 1281–583 · 2nd 518–264 · Dynatyze class-strength dial neutral, stamped 6/12/26 (stale) · '28/'29 slot prior is the open 1.01–1.12 range until future lands
 
 ## Players
 player | AGE POS | BASE | FPts/G GP | Δw Δw'26–'27-ours Δw'26–'27-theirs ΔP(title)-ours | flags
@@ -45,20 +45,20 @@ Taurean Prince | 32.5 PF/SF | 41 | 13 49 | +0.07 -0.09 -0.06 -1.1%
 ## Picks
 pick | origin | rookie | VALUE
 ### Sept '27 — modelled off projected finish (Todd 8th PF → 1.03–1.09 prior)
-own 1st | own | Dynatyze '27 1.03–1.09 w 0.56 · crowd Pick 3-4/5-8/9-14 | 2206
-own 2nd | own | crowd Pick 15-30 (Dynatyze template w 0) | 656
-own 3rd | own | crowd Pick 15-30/31-44 ceiling (Dynatyze template w 0) | 597
-own 4th | own | Dynatyze '27 4.03–4.09 template (under the '27 3.12's 518, cap not binding) | 169
+own 1st | own | Dynatyze '27 1.03–1.09 (w 0.56) · crowd Pick 3-4/5-8/9-14 | 2215
+own 2nd | own | Dynatyze '27 2.03–2.09 template | 787
+own 3rd | own | Dynatyze '27 3.03–3.09 template | 327
+own 4th | own | Dynatyze '27 4.03–4.09 template, 4.01–4.03 capped at 3.12 | 168
 Gone: none
 ### Sept '28 — modelled, open prior 1.01–1.12 (no year-2 projection until future lands)
 own 1st | own | Dynatyze '28 1.01–1.12 w 0.48 | 1335
-own 2nd | own | crowd '27 Pick 9-14/15-30 shifted +41–42 ranks by the Dynatyze R2 year gap (modelled) | 512
+own 2nd | own | Dynatyze '28 2.01–2.12 template | 541
 own 3rd | own | Dynatyze '28 3.01–3.12 w 0.23 | 217
 own 4th | own | Dynatyze '28 4.01–4.12 template, 4.01–4.03 capped at 3.12 | 91
 Gone: none
 ### Sept '29 — modelled, open prior 1.01–1.12 (no year-3 projection until future lands)
-own 1st | own | Dynatyze '29 1.01–1.12 w 0 ('28 R1 shifted +41 ranks, modelled) | 877
-own 2nd | own | crowd '27 Pick 9-14/15-30 shifted +83–84 ranks by the Dynatyze R2 year gap (modelled) | 359
+own 1st | own | Dynatyze '29 1.01–1.12 template | 877
+own 2nd | own | Dynatyze '29 2.01–2.12 template | 380
 own 3rd | own | Dynatyze '29 3.01–3.12 w 0.14 | 138
 own 4th | own | Dynatyze '29 4.01–4.12 template, 4.01–4.03 capped at 3.12, 4.11–4.12 past D = 0 | 37
 Gone: none

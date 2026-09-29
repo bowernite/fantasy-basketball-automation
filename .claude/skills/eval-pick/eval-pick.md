@@ -170,5 +170,5 @@ player:
 Board details and staleness rules: `eval-player`. Pick-specific: `dizzle-dynasty`
 for the dynasty board's slot-prefixed rows (start here) and its `Top N–M` chart ·
 `hashtag-basketball` for the crowd pick bands **and** for both boards' ranks on the class
-itself (§5) · `dynatyze` for the future-1st rows only. Worked example with the numbers of
+itself (§5) · `dynatyze` for the future-pick board (`future-picks.md`). Worked example with the numbers of
 the day: `strategy/board-snapshots/Boards 2026-07-29.md`.
