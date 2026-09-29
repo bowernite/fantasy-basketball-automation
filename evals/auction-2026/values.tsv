@@ -63,7 +63,7 @@ player_id	name	POS	AGE	NBA	FPts/Gp	GPp	BASE	Δw	Δw '26–'27 ours	sheet_pts	Win
 2683	Spencer Jones	SF/PF	25.3	DEN	8.8	70	149	0.04	-0.05	900.25	10	35	40	31	0	rot0	-0.24	58	43	12
 1272	D'Angelo Russell	PG/SG	30.6	MEM	15.1	43	170	0.09	-0.13	460.75	31	8	46	24	0	fa	-0.23	75	55	31
 2851	Chris Cenac	PF/C	19.6	BOS	13.6	30	244	0.05	-0.11		10	0	70	21	0	'26 class	-0.17	147	106	85
-2894	Emanuel Sharp	PG/SG	22.5	SAC	0.0	56	274	0.00	-0.18		0	0	80	21		noproj · '26 class	-0.36	129	94	73
+2894	Emanuel Sharp	PG/SG	22.5	SAC	0.0	56	274	0.00	-0.18		0	0	80	21		'26 class	-0.36	129	94	73
 2501	Craig Porter	PG/SG	26.6	CLE	10.5	66	61	0.06	-0.05	1072	21	46	12	32		rot1	-0.18	-19	1	-31
 1844	Matisse Thybulle	SG/SF	29.6	LAL	16.7	56	23	0.15	-0.05	478.5	67	9	0	22	0		0.31	9	7	-15
 2478	Kris Murray	SF/PF	26.1	MEM	13.4	53	45	0.08	-0.11	873.75	31	34	6	27		rot1 · GPp<map	-0.07	-35	1	-26
