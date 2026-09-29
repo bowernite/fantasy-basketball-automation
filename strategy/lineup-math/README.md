@@ -48,7 +48,7 @@ name which one you mean.
 
 ```python
 sim.player_title(sim.basis(), ["Jalen Suggs"])
-sim.incoming_title(sim.basis(), sim.our_roster("their.json"))
+sim.incoming_title(sim.arrival_basis(), sim.our_roster("their.json"))
 after, before = sim.swap_odds(sim.swap(full, ["Jalen Suggs"], [sim.star(48, 70)]), full)
 after.title - before.title
 sim.deal_odds(after_us, after_them, "their.json")  # Δw and ΔP(title), both seats
@@ -64,7 +64,7 @@ you would publish. Fix the call — there is no flag to pass.
 |---|---|
 | `swap` | a name not on the file · a name on it **twice** · one name **sent twice** (a body leaves once, so the deal is a piece shorter than you typed) · **more bodies in than out** (the roster is capped — name the drops yourself) |
 | `breakeven` | a break-even outside its 20–90 search bracket. `OutOfBracket.mark` (`<20` / `>90`) is the answer; `breakeven_value` returns it instead of raising |
-| `incoming_wins` | **two arrivals of one name** (rows are keyed by name, so one would silently replace the other) · a roster with **nothing padded**, since the slot an arrival takes is a padded one · **a name already on that roster** (that body is already here — `player_wins`; a counterparty is `incoming_wins(basis(), our_roster("their.json"))`) |
+| `incoming_wins` | **two arrivals of one name** (rows are keyed by name, so one would silently replace the other) · a roster with **nothing padded**, since the slot an arrival takes is a padded one (`arrival_basis`) · **a name already on that roster** (that body is already here — `player_wins`; a counterparty is `incoming_wins(arrival_basis(), our_roster("their.json"))`) |
 | `incoming_title` | same as `incoming_wins`, plus a roster that is not the seated file (`path=` / `ROSTER`) |
 | `player_title` `roster_title` `swap_odds` | a roster that is not the seated file (`path=` / `ROSTER`). `basis(path)` does not move `ROSTER` |
 | `our_roster` (so `basis` too) | a roster file carrying **nobody** — it pads to 38, so an empty file is 38 bodies of filler, not an empty table |
@@ -81,7 +81,7 @@ says which:
 | `schedule` `wins` | light nights and coverage; the one PF→wins constant |
 | `board` `projections` `gp` | rank↔rate; the projected rate; expected games played |
 | `engine` `roster` | `season`/`run`; loading, projecting, padding, `swap` |
-| `auction` `value` | steering the September auction; replacement, `Δw`, break-evens |
+| `value` | replacement, `Δw`, break-evens, the slot an arrival takes |
 | `bracket` | the seed bands and the draw, the projected field a bracket week is played against, `P(title|seed)` |
 | `title` | the season end to end — head-to-head standings, seeding, the bracket played out, `ΔP(title)` |
 | `reports/` | one module per group of reports, plus the `REPORTS` registry |
@@ -110,9 +110,7 @@ holds a rotation spot at all.
 ./run fetch_data.py roster 160941        # -> rosters/roster-160941-2025-26.json
 ./run sim.py --roster roster-160941-2025-26.json players replacement  # Δw THEIRS / R only
 ./run fetch_data.py roster 161025        # OURS is the same command, same schema.
-                                         # Re-run after a trade executes. Assumed-
-                                         # through overlays (`Pending Trades.md`)
-                                         # are applied even when the wire lags.
+                                         # Re-run after a trade executes.
 ./run fetch_data.py roster               # all 12, ~20s. Cheap; do it before a
                                          # session rather than trusting the files.
 ```
@@ -137,23 +135,24 @@ for those same players:
 ./run sim_run.py --eval <team_id>
 ```
 
-That is `eval-columns`: `incoming_wins` / `incoming_title` on `basis()` (ours). JSON:
+That is `eval-columns`: `incoming_wins` / `incoming_title` on `arrival_basis()` (ours). JSON:
 `{ "kind": "eval-columns", "their_roster": 161014 }`. Never assign `sim.ROSTER` to their
 file, and never `incoming_*(basis(their.json), our_roster(their.json))` — that call refuses.
 
 Ad-hoc import, same calls:
 
 ```python
-sim.incoming_wins(sim.basis(), sim.our_roster("roster-160941-2025-26.json"))
-sim.incoming_title(sim.basis(), sim.our_roster("roster-160941-2025-26.json"))
+sim.incoming_wins(sim.arrival_basis(), sim.our_roster("roster-160941-2025-26.json"))
+sim.incoming_title(sim.arrival_basis(), sim.our_roster("roster-160941-2025-26.json"))
 ```
 
 Same counterfactual *shape* as `player_wins` (a replacement 68-GP body of his **own slot
 group**, in rather than out) and at the **same body count**: he takes a **padded** slot — the
 last one, since `pad` appends — so the room he joins is our real bodies re-padded one
-shallower, and nobody off a roster file loses his place. **At 38 real bodies — ours from
-Sept '26 — there is no pad and this refuses**: drop the body you would actually cut and pass
-the 37.
+shallower, and nobody off a roster file loses his place. **At 38 real bodies there is no pad
+and this refuses.** `arrival_basis(path)` cuts the body worth least over his group's `R` and
+re-pads; `eval-columns`, `player-effects` and `title-column` price on it. If the cut would be
+someone else, drop him yourself and pass `pad(the 37)`.
 
 Each column is measured against its own roster's `R`, so **neither substitutes for the other
 and their difference is not a number**: a gap between them is mostly the two rosters'
@@ -169,13 +168,7 @@ player names and our real weekly scores, so under another team's file they answe
 
 ⚠️ **Compare two teams only at a common body count.** `R` rises with the count, and value is
 `(rate − R) × GP`, so **a roster measured short has a low `R` and every player on it reads too
-valuable.** Measured **2026-08-03**, **forward group** throughout: ours **14.6 live at 28 →
-17.1 padded to 38**; Pharaoh's 26 bodies **9.6 live → 12.9 padded** (per group 9.3/9.6/8.1 →
-12.1/12.9/11.6 guard/forward/center). Those 4.2 rate points are **~0.3 wins on every player he
-owns** — ten times the gaps the σ column is there to police. `sim.basis()` pads to 38 for
-exactly this reason. **14.6 is the *live file*; `findings.md` §*Valuation formula*'s 28 row is
-a different 28 and reads 15.1.** Both figures need a fresh cut — re-run `./run fetch_data.py roster
-<id>` and re-measure before quoting either.
+valuable.** `sim.basis()` pads to 38 for exactly this reason.
 
 ⚠️ **`R` is a property of a roster's shape at a moment, not a constant.** It moves on a trade,
 on the rate basis and on the body count alike, and the two sides of one deal can move in
@@ -188,9 +181,8 @@ our roster; what they give up prices on theirs.**
 of the season's **last lineup period** (~end of March), so read as a roster it is months
 stale in both directions — an add after it is missing, a drop is still on it, silently.
 `./run fetch_data.py roster` therefore takes the bodies from `FetchLeagueRosters` and only
-`avg`/`tot`/`gp` from the season endpoint, then applies assumed-through overlays
-(`assumed_trades.py`; terms in `strategy/Pending Trades.md`). **Re-cut the files rather
-than trusting a count in a written eval.** Do not hand-patch around the overlay.
+`avg`/`tot`/`gp` from the season endpoint. **Re-cut the files rather than trusting a count in
+a written eval.**
 
 A body the season snapshot has no line for played for somebody else, so his line comes off
 `players-2025-26.json` — the same numbers to ~0.01 (`viewingActualPoints` against

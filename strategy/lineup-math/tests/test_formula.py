@@ -6,12 +6,12 @@ class FormulaWins(unittest.TestCase):
     def test_a_14_rate_body_is_worth_the_measured_light_night_pf(self):
         self.assertAlmostEqual(
             sim.formula_player_wins(sim.star(14.0, 60)),
-            sim.pf_wins(61))
+            sim.pf_wins(57))
 
     def test_a_48_rate_body_is_worth_the_measured_star_pf(self):
         self.assertAlmostEqual(
             sim.formula_player_wins(sim.star(48.0, 60)),
-            sim.pf_wins(1304))
+            sim.pf_wins(1278))
 
     def test_formula_wins_scale_with_gp(self):
         at_60 = sim.formula_player_wins(sim.star(14.0, 60))

@@ -41,8 +41,7 @@ Read this before quoting anything in `findings.md`.
   - the per-slot-group counterfactual behind every `Δw`, in `formula` as well as `players`;
   - the roster schema, duplicate names, a common body count on both sides of the mirror,
     and that a projected rate reaches the win figure without reaching the GP;
-  - light-night counts on the **scored** basis, and only the auction's seven bodies
-    steerable;
+  - light-night counts on the **scored** basis;
   - the flag vocabulary being `Eval Template.md`'s, and every section these files
     cite existing;
   - the bracket window taken off the period field size rather than the wire's flags, a
@@ -65,22 +64,15 @@ Read this before quoting anything in `findings.md`.
     against — including when its file arrives as an argument instead of loaded;
   - the CLI failing loudly on an unknown report, and every `sim.py <report>` a page or a
     skill cites naming a real one;
-  - every verdict sentence in `findings.md` §*Light-night coverage*'s report being **derived
-    from the numbers printed above it**, and moving when those move;
   - the published constants, so a re-scrape cannot move them silently: `PF_PER_WIN`, the
     fitted `project_gp` coefficients, the slot-fill shares, and how few players clear
     45/50/60 FPts/G.
-- **Padding to 38 appends that team's held Sept '26 picks** (`data/draft-2026.json`, a
-  one-off) as the Dizzle-prefix prospect at his `projected_rate` (GP 60 — the feed
-  has none), or the late-pick grade if the feed misses him, then the shared FA
-  ladder for whatever slots remain. A deeper live roster or fewer picks means
-  fewer leftover slots and a shorter, better FA fill. Changing a name, a rate, or
-  the draft file re-measures every table in `findings.md`.
+- **Padding to 38 appends the shared FA ladder** (`FA_FILL`, then flat `PAD` bodies) to
+  a short roster. Changing a grade re-measures every table in `findings.md`.
 - **GP is fitted** (`sim.py gp`) for every player on every roster. **Rates are projected**
   (`projections`), never posted and never hand-set, and never haircut on top
   (`Eval Definitions §Δw (season)`).
-- **No in-season waiver streaming**, understating an open roster spot before expansion closes
-  the pool. **Opponent distribution is fixed** at last year's and the league is rising
+- **No in-season waiver streaming**, understating an open roster spot. **Opponent distribution is fixed** at last year's and the league is rising
   (`../Team Projections.md`), so real win totals run below these.
 - **One NBA schedule for every synthetic body** (`SIM_TM`, currently LAC; multi-body rows
   spread over `SIM_TMS`, LAC/TOR/MEM). Which of the 30 schedules a body sits on is worth
@@ -88,8 +80,7 @@ Read this before quoting anything in `findings.md`.
   teams down a ladder charges a schedule handicap and reads it as body count.
   **Never mix teams.** ⚠️ **That binds *comparisons* — every row of one table on one
   schedule — not acquisitions.** Which real NBA schedule a body brings is a live choice, and
-  that same spread is what an acquisition tiebreak harvests (`findings.md` §*Light-night
-  coverage*). An unsigned player runs on `SIM_TM` too (`README.md` §*Pricing a
+  that same spread is what an acquisition tiebreak harvests. An unsigned player runs on `SIM_TM` too (`README.md` §*Pricing a
   counterparty*). ⚠️ **`SIM_TM` is unresolved:** LAC sits roughly half a schedule-sd below
   the 30-team mean, with DEN nearest its center — so every break-even and scenario row
   carries a mild unfavourable handicap. Re-pointing it re-measures all of them;
