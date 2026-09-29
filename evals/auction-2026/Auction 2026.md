@@ -151,11 +151,11 @@ Nominating opens with our $1 bid: if nobody bids, the row is ours. One nominee a
 
 1. **Endgame** row (§Bidding).
 2. **Mid:** the first unsold Mid row we still bid on, then the top-Score target we still bid on. Only once half the league's auction spots are filled, on our last spot, or when no Early row is left.
-3. **Early:** the Early list in order, then the priciest unsold pass row by live `Market$`. Skip any row under $5 live `Market$`, and unsigned (`fa`) or `noproj` rows.
+3. **Early:** the Early list in order, then the priciest unsold row we bid $0 on, by live `Market$`. Skip any row we bid on, any row under $5 live `Market$`, and unsigned (`fa`) or `noproj` rows.
 
 Lists:
 
-- **Early:** pass rows (`score` ≤ 0 or unscored) the room pays for, in `Sheet #` order since the room prices off the list. This drains rival $ and spots: Javonte Green, Simone Fontecchio, Terance Mann, Craig Porter, Clint Capela, John Konchar, Jarred Vanderbilt, Josh Okogie, Kris Murray, Kenrich Williams, Trendon Watford.
+- **Early:** rows we bid $0 on (pass rows and $0-cap targets) the room pays for, in `Sheet #` order since the room prices off the list. This drains rival $ and spots. Left with us at $1, a $0-cap target costs what a $1 body does: Brandon Williams, Harrison Barnes, Marvin Bagley, Dominick Barlow, Javonte Green, Luka Garza, Goga Bitadze, Jaxson Hayes, Simone Fontecchio, Terance Mann, Craig Porter, Pat Spencer, Quinten Post, Clint Capela, John Konchar, Patrick Williams, Al Horford, Jarred Vanderbilt, Josh Okogie, Kris Murray, Caleb Love, Kenrich Williams, Trendon Watford.
 - **Mid:** our targets deep on the Sheet list or off it, where the room's price trails our Score, once rivals have spent: Ryan Nembhard, Sergio De Larrea, Bruce Thornton, Jayden Quaintance, Koa Peat, Alex Karaban, Henri Veesaar.
 - Leave the top-list targets (Dru Smith, Scheierman) for rivals to nominate. The endgame rule catches any that are left.
 - Per-slot $ at the start: us $50 · Mitch $50 · Bonin, Jon, Todd $33 · Joe $25 · Chris, Brian, Henry, Josh $22 · Hlina $25 · Matthew $15. Mitch is the only rival who can match us per slot. Watch his $ left.
