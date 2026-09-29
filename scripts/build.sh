@@ -85,11 +85,11 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
-log_step "📋 Copying transpiled JavaScript to clipboard"
-# Copy the transpiled JavaScript to clipboard
-cat "./extension/dist/main.js" | $CLIPBOARD_CMD
-
-echo "✅ Successfully built JavaScript to ./extension/dist/main.js and copied to clipboard"
+if [ -z "${SKIP_CLIPBOARD:-}" ]; then
+  log_step "📋 Copying transpiled JavaScript to clipboard"
+  cat "./extension/dist/main.js" | $CLIPBOARD_CMD
+  echo "✅ Successfully built JavaScript to ./extension/dist/main.js and copied to clipboard"
+fi
 
 log_step "🔄 Copying extension background file"
 cp ./extension/background.js ./extension/dist/background.js

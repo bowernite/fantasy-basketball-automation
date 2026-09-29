@@ -78,6 +78,13 @@ def write():
 
 
 
+def input_paths():
+    """Every file `write` reads, plus the code that turns them into rates."""
+    code = [__file__, sleeper.__file__, overrides.__file__, sleeper.scoring.__file__]
+    return ([sleeper.SNAPSHOT, overrides.OVERRIDES, max(glob.glob(POOL))]
+            + sorted(glob.glob(ROSTERS)) + code)
+
+
 def last_season_pool():
     """Every player in the newest pool as {n, avg, gp} for its latest season
     (`players-2025-26.json` -> "2025"); 0/0 if he didn't play it."""

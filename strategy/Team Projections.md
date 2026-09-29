@@ -1,6 +1,6 @@
 # Team projections — where each team finishes, and where its picks land
 
-Evaluated **2026-09-29**, post-draft: rosters re-cut 9/29 (rookie draft, FA auction and every 9/26–9/28 trade on the wire), F/C flex, projections from the 9/29 refresh, Sharpe `gp=0` and Williams `gp=10` overrides. Keyed to who **produces** a pick, not who holds it. Slots written `1.01`–`1.12`; every round uses the same slot (`league-info` §Drafting).
+Evaluated **2026-09-29**, post-draft: rosters re-cut 9/29 (rookie draft, FA auction and every 9/26–9/28 trade on the wire), F/C flex, projections from the 9/29 refresh, Sharpe `gp=0` and Williams `gp=10` overrides, no-projection players priced ~6.0 FPts/G (last-season rate shrunk to 6.0), full-roster cuts by score. Keyed to who **produces** a pick, not who holds it. Slots written `1.01`–`1.12`; every round uses the same slot (`league-info` §Drafting).
 
 | Column | Source |
 | --- | --- |
@@ -28,8 +28,8 @@ Evaluated **2026-09-29**, post-draft: rosters re-cut 9/29 (rookie draft, FA auct
 
 Two coin flips on the slot map, both from wins diverging from PF:
 
-- **Michael / Brian (1.11 vs 1.10):** Brian projects **13.2 W** at #3 PF, ahead of Michael's **12.8** at #2. Draft order follows record, so Brian at 1.11 is at least as likely.
-- **Top-4 cut (Josh / Hlina):** Hlina sits 50 PF behind Josh (30,040 vs 30,090) at 11.7 W vs 11.8. Josh's 1.09 vs Hlina's lottery prior is a coin flip.
+- **Michael / Brian (1.11 vs 1.10):** Brian projects **13.1 W** at #3 PF, ahead of Michael's **12.8** at #2. Draft order follows record, so Brian at 1.11 is at least as likely.
+- **Top-4 cut (Josh / Hlina):** Hlina sits 71 PF behind Josh (30,029 vs 30,100) at 11.7 W vs 11.8. Josh's 1.09 vs Hlina's lottery prior is a coin flip.
 
 ## Year-1 sim
 
@@ -37,18 +37,18 @@ Measured 2026-09-29. PF from `sim.py horizon` ('26-27); wins from `sim.py title`
 
 | rank | team | PF | wins |
 | ---: | --- | ---: | ---: |
-| 1 | Brett (us) | **32,166** | **16.2** |
-| 2 | Michael | 30,703 | 12.8 |
-| 3 | Brian | 30,306 | 13.2 |
-| 4 | Josh | 30,090 | 11.8 |
-| 5 | Hlina | 30,040 | 11.7 |
-| 6 | Mitch | 29,882 | 10.9 |
-| 7 | Joe | 28,640 | 9.4 |
-| 8 | Todd | 27,866 | 7.6 |
-| 9 | Henry | 26,759 | 6.1 |
+| 1 | Brett (us) | **32,172** | **16.2** |
+| 2 | Michael | 30,717 | 12.8 |
+| 3 | Brian | 30,308 | 13.1 |
+| 4 | Josh | 30,100 | 11.8 |
+| 5 | Hlina | 30,029 | 11.7 |
+| 6 | Mitch | 29,876 | 10.9 |
+| 7 | Joe | 28,671 | 9.4 |
+| 8 | Todd | 27,876 | 7.6 |
+| 9 | Henry | 26,806 | 6.2 |
 | 10 | Chris | 26,327 | 5.6 |
-| 11 | Matthew | 26,096 | 5.1 |
-| 12 | Jon | 25,357 | 3.6 |
+| 11 | Matthew | 26,187 | 5.2 |
+| 12 | Jon | 25,384 | 3.6 |
 
 ## Title odds (this year)
 
@@ -57,12 +57,12 @@ Measured 2026-09-29. PF from `sim.py horizon` ('26-27); wins from `sim.py title`
 | Team | P(title) |
 | --- | ---: |
 | Brett (us) | **55.5%** |
-| Michael | 13.2% |
-| Josh | 9.3% |
-| Brian | 7.4% |
-| Mitch | 6.9% |
-| Hlina | 6.0% |
-| Joe | 1.4% |
+| Michael | 13.1% |
+| Josh | 9.4% |
+| Brian | 7.3% |
+| Mitch | 7.0% |
+| Hlina | 6.1% |
+| Joe | 1.5% |
 | Todd | 0.2% |
 | Henry | 0.0% |
 | Chris | 0.0% |

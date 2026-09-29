@@ -1,4 +1,7 @@
 """Offline guard for the extension's player-data file. No network -- fixtures only."""
+import builtins
+import contextlib
+import io
 import json
 import os
 import sys
@@ -73,6 +76,33 @@ class PlayerRates(unittest.TestCase):
             overrides.OVERRIDES = real
             overrides.index.cache_clear()
         self.assertEqual(rates["Zach Edey"], 12.0)
+
+
+class InputPaths(unittest.TestCase):
+    def test_every_file_write_reads_is_an_input(self):
+        opened = []
+        real_open, real_out = open, extension_data.OUT
+
+        def recording_open(path, mode="r", *args, **kwargs):
+            if "r" in mode:
+                opened.append(os.path.realpath(path))
+            return real_open(path, mode, *args, **kwargs)
+
+        fd, out = tempfile.mkstemp(suffix=".ts")
+        os.close(fd)
+        extension_data.OUT = out
+        overrides.index.cache_clear()
+        builtins.open = recording_open
+        try:
+            with contextlib.redirect_stdout(io.StringIO()):
+                extension_data.write()
+        finally:
+            builtins.open = real_open
+            extension_data.OUT = real_out
+            os.unlink(out)
+        inputs = {os.path.realpath(p) for p in extension_data.input_paths()}
+        self.assertTrue(opened)
+        self.assertEqual(set(opened) - inputs, set())
 
 
 class Render(unittest.TestCase):
