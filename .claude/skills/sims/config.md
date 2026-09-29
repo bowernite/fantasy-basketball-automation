@@ -55,7 +55,7 @@ Each pick goes in exactly one field; setting both for the same pick nets it to 0
 
 ## `player-effects`
 
-Isolated incoming value. Section gets `player_results` after it runs. `source: "their"` = their names incoming onto us (eval `ours` columns). `source: "us"` = our names incoming onto them. Unknown names refuse. A full 38-man side makes room by cutting its worst body by `Score`, whoever arrives (`sim.arrival_basis`, `trades` §Uneven bodies); `eval-columns` and `title-column` do the same on ours.
+Isolated incoming value. Section gets `player_results` after it runs. `source: "their"` = their names incoming onto us (eval `ours` columns). `source: "us"` = our names incoming onto them. Unknown names refuse. A free agent: a temp `rosters/roster-fa-tmp.json` (roster-file rows, rates off `data/players-<season>.json`) as `their_roster`; delete it after. A full 38-man side makes room by cutting its worst body by `Score`, whoever arrives (`sim.arrival_basis`, `trades` §Uneven bodies); `eval-columns` and `title-column` do the same on ours.
 
 ## `reports` / `title-column`
 

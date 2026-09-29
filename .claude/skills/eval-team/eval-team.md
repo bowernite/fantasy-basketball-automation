@@ -41,7 +41,8 @@ Calculate these columns for each player to construct the player table
 
 1. **BASE** - calculate for each player
 2. **Sim columns** — counterparty: `strategy/lineup-math/run sim_run.py --eval <team_id>`. Copy the TSV (`Δw`, `Δw (season) ours`, `Δw (season) theirs`, `ΔP(title) ours`, `W20`–`W23`). Do not import `sim` for these columns. Do not write scripts (`CLAUDE.md` §Scripts). Do not assign `ROSTER`. Ours (`my-team/`): `./run sim.py players weeks` plus `player_title` / `title-column` `include: ["ours"]`. `sim.py title` is roster `P(title)` for `# Title odds`, not the table column.
-3. Flags travel with every row. Multi-piece sides get one joint sim run each, never summed rows.
+3. **Score** — per row, from that row's columns: `Score.md` §Player Score.
+4. Flags travel with every row. Multi-piece sides get one joint sim run each, never summed rows.
 
 Column order and cell formats: `Eval Template.md`.
 
@@ -79,8 +80,8 @@ Title: PF {rank}/12 ({PF}) · {wins} W · P(title) {x%} · ours P(title) {y%}
 Notes: {team-specific reads only}
 
 ## Players
-player | AGE POS | BASE | FPts/G GP | Δw Δw'26–'27-ours Δw'26–'27-theirs ΔP(title)-ours | flags
-Shai Gilgeous-Alexander | 28.1 PG/SG | 9550 | 49 72 | +2.57 +2.01 +2.65 15.8%
+player | AGE POS | BASE | FPts/G GP | Δw Δw'26–'27-ours Δw'26–'27-theirs ΔP(title)-ours | Score | flags
+Shai Gilgeous-Alexander | 28.1 PG/SG | 9550 | 49 72 | +2.57 +2.01 +2.65 15.8% | 12088
 σ: {adjacent pairs the sim does not resolve, e.g. Williams/Hendricks 1.4σ}
 
 ## Picks
@@ -91,6 +92,7 @@ Gone: own 3rd → Josh
 ```
 
 - Ours: `Title:` drops the ours clause; the key drops `Δw…-theirs` and reads `ΔP(title)`.
+- `Score` sits after the win columns on every row; sort stays by BASE.
 - Players in the human file's order. FPts/G and GP are projections only. Omit a blank `| flags`; omit `σ:` when there are no ties.
 - `trade-screen` sims read each `## Players` row's name, AGE, BASE, FPts/G and GP by position: keep the first four columns as keyed, ` | ` separators, BASE a bare integer, AGE `–` when unknown.
 - Picks: one key line under `## Picks`; keep each year's header and `Gone:` line. A year with no picks: `none held`. Drop Ordinal and rank.

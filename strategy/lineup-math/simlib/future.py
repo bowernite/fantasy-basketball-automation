@@ -16,7 +16,7 @@ LOTTERY = (0.50, 0.25, 0.15, 0.10)   # worst first; only 1.01 is drawn
 
 def simulate(start, teams1, ledger, template, paths, seed, years, t_eng, t_in):
     """One run per path: `start` is {team path: [{row, pl, base}]} (pl None
-    holds the row flat), `teams1` year 1 as measured. Per path, ([{team:
+    plays season 1 only), `teams1` is `season_one(start)`. Per path, ([{team:
     PF}] by season, [{team: P(title)}] from season 2, [{team: flow}] by
     offseason)"""
     job = (start, teams1, ledger, template, seed, years, t_eng, t_in)

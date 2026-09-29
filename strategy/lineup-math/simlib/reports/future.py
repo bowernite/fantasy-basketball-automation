@@ -137,7 +137,8 @@ def _preamble(fetched, flat):
     print("  limits); bracket R1 wins don't move the draft cut; schedule = 2026-27 every season.")
     print("  No birthday, so gone after season 1: %s." % (", ".join(flat) or "none"))
     print("PF = mean regular-season PF (k); rk = mean PF rank; P = P(title) %, sums to 100 per")
-    print("  season. Seeds are fixed, so a re-run on the same inputs repeats to the digit.")
+    print("  season. Seeds are fixed, so a re-run on the same inputs repeats to the digit; another")
+    print("  seed moves P(title) about 0.4 points on average and up to ~3 for a favourite.")
 
 
 def _main_table(out):

@@ -10,7 +10,7 @@ What an eval **publishes** is `Eval Template.md`. When and how to apply this: `e
 
 # The three layers
 
-Every eval publishes three things, side by side, never folded into one number (trades alone add §Score):
+Every eval publishes three things, side by side, never folded into one number (§Score adds one, per trade and per player row):
 
 | Layer | What it answers | Where it comes from |
 |---|---|---|
@@ -92,7 +92,7 @@ Which report to run for whom, the two ΔP reads (`player_title` vs `incoming_tit
 
 ## Score
 
-Our-side trade composite in BASE units — fixed rates over `ΔBASE`, formula `Δw` (body-corrected), `Δw (season)` and `ΔP(title)`. Trades and auction buys (a 1-for-1 swap against the $1 body); never on eval player tables.
+Our-side trade composite in BASE units — fixed rates over `ΔBASE`, formula `Δw` (body-corrected), `Δw (season)` and `ΔP(title)`. Trades, auction buys (a 1-for-1 swap against the $1 body) and one `Score` per eval player row (`Score.md` §Player Score).
 
 Formula, rates, tie band and how to read it: `Score.md`.
 

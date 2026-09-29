@@ -17,3 +17,14 @@ Score = ΔBASE + 300·(Δw − 0.3·N) + 250·Δw(season) + 80·ΔP(title)
 - Within ~250 is a tie; wider on pick-heavy or uneven-body deals (`ΔBASE` is a band there, §BASE).
 - Minimums and Too lopsided (`trades` §General guidlines, `trade-shapes` §Sections) gate on the individual numbers first. Score never rescues a failed minimum.
 - Excludes `Δage`.
+
+## Player Score
+
+Every eval player row carries a `Score`: the formula on that row's own columns, N = 0 — the player against a replacement body (the auction's 1-for-1 swap for the $1 body).
+
+```
+Score = BASE + 300·Δw + 250·Δw(season) + 80·ΔP(title)
+```
+
+- Ours: `Δw (season)` and `ΔP(title)`. Counterparty: the `ours` columns — his Score on our roster.
+- Integer, may be negative. Ranks a roster's bottom bodies (cut order) and wire adds against them; a free agent is priced with `player-effects` (`sims` Skill) and the same formula, BASE from his board rows (0 off every board).
