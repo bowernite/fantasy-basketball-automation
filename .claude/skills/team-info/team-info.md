@@ -22,14 +22,14 @@ description: Maps every league team to its id, username, owner's real name and t
 | The Don | 161020 | `MitchBrault3` | Mitch | Mitch |
 | The Han Dybantsy | 161022 | `t27marino` | Todd | Todd |
 
-`161015` appears as the long form (the API's) and as **Jon** (`evals/teams/jon/`) — one
+`161015` appears as the long form (the API's) and as **Jon** (`strategy/teams/jon/`) — one
 team, join either. Bare **"SGA" is the player**, not the team.
 
 **Name** is how we refer to each team everywhere (AGENTS.md §Naming).
 
 `160941` breaks the `1610xx` pattern; don't infer ids.
 
-**`evals/teams/` is named by owner, not team** — ours is `my-team/`, Michael's is `bonin/`,
+**`strategy/teams/` is named by owner, not team** — ours is `my-team/`, Michael's is `bonin/`,
 the rest are the lowercased Name. External
 snapshots (`dizzle-dynasty`, `hashtag-basketball`, dated board pulls) live in
-`evals/board-snapshots/`.
+`strategy/board-snapshots/`.

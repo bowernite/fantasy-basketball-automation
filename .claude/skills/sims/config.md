@@ -1,10 +1,10 @@
 # Sim config schema
 
-JSON only (stdlib). **Run configs** go in `$TMPDIR/ff-sim-<tag>.json` — not in `evals/teams/`. **Agents:** edit JSON by hand; run `sim_run.py`; copy the big numbers from stdout / `results` into both shape files by hand (`trade-shapes`). Avoid your own scripts whenever possible; rely on your own logic. Archive via `trades` §Simming.
+JSON only (stdlib). **Run configs** go in `$TMPDIR/ff-sim-<tag>.json` — not in `strategy/teams/`. **Agents:** edit JSON by hand; run `sim_run.py`; copy the big numbers from stdout / `results` into both shape files by hand (`trade-shapes`). Avoid your own scripts whenever possible; rely on your own logic. Archive via `trades` §Simming.
 
 ## Team shape archive
 
-Read `evals/teams/<owner>/<Name>.shapes.md`. Also write `<Name> Trade Shapes.md`. Never read the HTML file. Line format, tiers, and sort: `trade-shapes` Skill. Tier/sort rules: `trades` §Simming.
+Read `strategy/teams/<owner>/<Name>.shapes.md`. Also write `<Name> Trade Shapes.md`. Never read the HTML file. Line format, tiers, and sort: `trade-shapes` Skill. Tier/sort rules: `trades` §Simming.
 
 ## Incremental runs
 
@@ -88,6 +88,6 @@ Ours (`my-team/`): `./run sim.py players weeks` plus `player_title` / `title-col
 
 ## Examples
 
-- Team archive: `evals/teams/josh/Josh.shapes.md` (and `Josh Trade Shapes.md`, write only)
+- Team archive: `strategy/teams/josh/Josh.shapes.md` (and `Josh Trade Shapes.md`, write only)
 - Run config: `$TMPDIR/ff-sim-josh-kawhi.json`
-- `evals/lineup-math/sims/examples/eval-columns.json`
+- `strategy/lineup-math/sims/examples/eval-columns.json`

@@ -3,7 +3,7 @@ name: hashtag-basketball
 description: Pull dynasty rankings, keeper values and draft-pick values off hashtagbasketball.com, with proof of which board you're actually reading.
 ---
 
-_Fetch live with the recipes below. `evals/board-snapshots/hashtag-basketball/` holds a CSV snapshot
+_Fetch live with the recipes below. `strategy/board-snapshots/hashtag-basketball/` holds a CSV snapshot
 of both boards plus a `manifest.csv` of stamps, counts and controls — fall back to it
 only if the site is unreachable, and say you're citing a snapshot. Rewrite that snapshot
 with `python3 .claude/skills/hashtag-basketball/refresh_snapshot.py` (from the repo root)
@@ -19,7 +19,7 @@ our actual rules.
 ## Fetch in a subagent
 
 Run the recipes — and any fallback read of the local snapshot in
-`evals/board-snapshots/hashtag-basketball/` — inside a dedicated `Agent` call
+`strategy/board-snapshots/hashtag-basketball/` — inside a dedicated `Agent` call
 (`general-purpose`), never inline. Tell it which recipe(s)/args to run and have it hand back
 the printed verification header (`BOARD`/`UPDATED`/`VERIFIED`) plus the table; raw HTML never
 enters the main context (`CLAUDE.md` §*Subagents*).
@@ -133,7 +133,7 @@ Report `BOARD` / `UPDATED` / `VERIFIED` verbatim whenever citing these numbers.
   invalidates its class-year pick rows** until it clears — the symptom is a band pricing
   far off the players inside it, in either direction. Prefer `dizzle-dynasty`'s chart
   while it shows. Check for the notice on every pull; a dated instance with numbers is
-  in `evals/board-snapshots/Boards 2026-07-29.md`.
+  in `strategy/board-snapshots/Boards 2026-07-29.md`.
 - Both expert views are one analyst, and the crowd board is the only actual
   market here. See "Caveats" in `eval-player`.
 - Ignore position columns for roster fit.

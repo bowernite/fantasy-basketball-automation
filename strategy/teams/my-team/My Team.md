@@ -50,7 +50,7 @@ Dizzle Points 7/10/2026 depth 450 · Hashtag Points 25 August 2026 depth 772 · 
 
 Chaney Johnson is off all three boards, hand-checked — BASE 0 is a statement of value, not a failed join. Also absent from both GP feeds, so his `GPp` is map-only (`Eval Definitions §Durability`).
 
-Shaedon Sharpe `GPp` = 0 via manual override (`evals/board-snapshots/projections/overrides-2026.json`, out for season).
+Shaedon Sharpe `GPp` = 0 via manual override (`strategy/board-snapshots/projections/overrides-2026.json`, out for season).
 
 Mark Williams `GPp` = 10 via manual override (same file). Torn left labrum, surgery 2026-09-10; Suns gave no timetable, beat reporting at least five months. Hashtag GP already 10; FanScout still 65. Override follows the feed that moved so the blend is not ~37. BASE 1350 unchanged (expert boards have not moved).
 

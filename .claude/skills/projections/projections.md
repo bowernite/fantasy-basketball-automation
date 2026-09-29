@@ -28,7 +28,7 @@ python3 .claude/skills/projections/test_fanscout_gp.py
 python3 .claude/skills/projections/test_overrides.py
 ```
 
-Rate snapshot: `evals/board-snapshots/projections/sleeper-2026.json`. GP snapshots: `hashtag-gp-2026.json`, `fanscout-gp-2026.json`. **Re-run rate + both GP snapshots before any eval.**
+Rate snapshot: `strategy/board-snapshots/projections/sleeper-2026.json`. GP snapshots: `hashtag-gp-2026.json`, `fanscout-gp-2026.json`. **Re-run rate + both GP snapshots before any eval.**
 
 ## Manual overrides
 
@@ -81,9 +81,9 @@ Sleeper's `gp` field is a per-game dummy (`1.0`) — not season GP.
 Hashtag: `fantasy-basketball-projections`, `DDSHOW=900`, `DDDURATION` = 2026-27 Rest of Season
 (not STREAM / short-term). Preseason ROS is a season projection; once games have been
 played, that column is games **remaining** and is not season GP.
-`hashtag_gp.py refresh` writes `evals/board-snapshots/projections/hashtag-gp-2026.json`.
+`hashtag_gp.py refresh` writes `strategy/board-snapshots/projections/hashtag-gp-2026.json`.
 
-FanScout: `fanscout_gp.py refresh` writes `evals/board-snapshots/projections/fanscout-gp-2026.json`
+FanScout: `fanscout_gp.py refresh` writes `strategy/board-snapshots/projections/fanscout-gp-2026.json`
 (names, GP, fetch time, incoming-rookie proof). Fetches `?players=1000` — the site defaults to
 the top 150 — and refuses under 400 rows. Parse refuses unless AJ Dybantsa,
 Darryn Peterson and Cameron Boozer are on the board — the site has served the previous

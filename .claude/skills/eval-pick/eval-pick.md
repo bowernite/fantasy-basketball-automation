@@ -4,8 +4,8 @@ description: Procedure for pricing rookie draft picks — slot resolution, chart
 ---
 
 Load: `league-info` (draft rules) · `get-league-info` (fetching, and the draft-label
-trap) · `evals/Definitions/Eval Definitions.md` §BASE (the curve — picks and players must land on the
-same one) · `eval-player` (boards) · `evals/teams/my-team/Ours.team.md`.
+trap) · `strategy/Definitions/Eval Definitions.md` §BASE (the curve — picks and players must land on the
+same one) · `eval-player` (boards) · `strategy/teams/my-team/Ours.team.md`.
 
 _Source set and blend below verified 2026-07 — re-check each board's own skill for
 staleness, and re-read `league-info` for the roster size in effect._
@@ -21,11 +21,11 @@ which in the output.
 ## 2. Resolve the slot
 
 - **Next draft:** read it. `FetchLeagueDraftBoard` gives real slots and marks acquired
-  picks. Then overlay `evals/Pending Trades.md` assumed-through pick moves — the board
+  picks. Then overlay `strategy/Pending Trades.md` assumed-through pick moves — the board
   will lag.
 - **Later drafts:** project the **originating** team's record rank (never the current
-  holder) from `evals/Team Projections.md`, with a range, then apply `league-info`'s
-  draft-order rule. Overlay `evals/Pending Trades.md` assumed-through pick moves. The
+  holder) from `strategy/Team Projections.md`, with a range, then apply `league-info`'s
+  draft-order rule. Overlay `strategy/Pending Trades.md` assumed-through pick moves. The
   order rule **splits by record band, not by round** — all three rounds share one
   order, so a projected top-4 finish resolves to an exact slot in every round, and a
   projected bottom-8 finish is a **prior only** in every round. Publish a range for the
@@ -169,4 +169,4 @@ Board details and staleness rules: `eval-player`. Pick-specific: `dizzle-dynasty
 for the dynasty board's slot-prefixed rows (start here) and its `Top N–M` chart ·
 `hashtag-basketball` for the crowd pick bands **and** for both boards' ranks on the class
 itself (§5) · `dynatyze` for the future-1st rows only. Worked example with the numbers of
-the day: `evals/board-snapshots/Boards 2026-07-29.md`.
+the day: `strategy/board-snapshots/Boards 2026-07-29.md`.

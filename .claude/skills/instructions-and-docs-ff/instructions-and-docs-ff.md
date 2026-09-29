@@ -17,4 +17,4 @@ When writing documentation, evals, instructions for agents, skills, etc.:
 
 # Sims
 
-Trade-shape sims: write JSON configs, run `evals/lineup-math/run sim_run.py`, copy the big numbers from stdout / JSON `results` into `<Name>.shapes.md` and `<Name> Trade Shapes.md` by hand (`trade-shapes`) — **same session**, before returning. Read `.shapes.md` only. Avoid writing your own scripts whenever possible; rely on your own logic. Canonical workflow in `sims` Skill §Agent workflow; archive rules in `trades` §Simming.
+Trade-shape sims: write JSON configs, run `strategy/lineup-math/run sim_run.py`, copy the big numbers from stdout / JSON `results` into `<Name>.shapes.md` and `<Name> Trade Shapes.md` by hand (`trade-shapes`) — **same session**, before returning. Read `.shapes.md` only. Avoid writing your own scripts whenever possible; rely on your own logic. Canonical workflow in `sims` Skill §Agent workflow; archive rules in `trades` §Simming.

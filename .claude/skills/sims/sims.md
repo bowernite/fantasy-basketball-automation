@@ -8,19 +8,19 @@ description: Run lineup-math sims from JSON config — trade screens, player eff
 Avoid writing your own scripts whenever possible; rely on your own logic instead. For pricing, use JSON + `sim_run.py` — not generators, tier scripts, or “read JSON and write `.md`” helpers.
 
 1. **Write** `$TMPDIR/ff-sim-<tag>.json` (`trade-screen` deal bodies; picks via `out_us_extra_base` — see [config.md](config.md)).
-2. **Run** `evals/lineup-math/run sim_run.py` on that file (or `--refresh`).
+2. **Run** `strategy/lineup-math/run sim_run.py` on that file (or `--refresh`).
 3. **Read** stdout table **and** `results` written back into the JSON.
-4. **Archive** the big numbers into both `evals/teams/<owner>/<Name>.shapes.md` and `<Name> Trade Shapes.md` by hand (`trade-shapes`) — **required** after trade-with / trade screening when new deals were priced (unless the user opts out). Read `.shapes.md` only. Tier and sort per `trades` §Simming.
+4. **Archive** the big numbers into both `strategy/teams/<owner>/<Name>.shapes.md` and `<Name> Trade Shapes.md` by hand (`trade-shapes`) — **required** after trade-with / trade screening when new deals were priced (unless the user opts out). Read `.shapes.md` only. Tier and sort per `trades` §Simming.
 
 Eval refresh: `./run sim_run.py --eval <team_id>`. Other reports: `./run sim.py --help`. Use `sim_run.py` / `sim.py` — not your own imports of `sim` or `simlib`.
 
 # Run
 
 ```bash
-evals/lineup-math/run sim_run.py "$TMPDIR/ff-sim-<tag>.json"
-evals/lineup-math/run sim_run.py --refresh "$TMPDIR/ff-sim-<tag>.json"
-evals/lineup-math/run sim_run.py --check <config.json>
-evals/lineup-math/run sim.py --help
+strategy/lineup-math/run sim_run.py "$TMPDIR/ff-sim-<tag>.json"
+strategy/lineup-math/run sim_run.py --refresh "$TMPDIR/ff-sim-<tag>.json"
+strategy/lineup-math/run sim_run.py --check <config.json>
+strategy/lineup-math/run sim.py --help
 ```
 
 Tmp path helper: `simlib.runner.sim_tmp_path("josh-kawhi")` → `$TMPDIR/ff-sim-josh-kawhi.json`.
@@ -34,8 +34,8 @@ Schema: [config.md](config.md).
 | What | Path |
 |---|---|
 | Run configs | `$TMPDIR/ff-sim-<tag>.json` — ephemeral; never commit |
-| Eval refresh, league-wide | `evals/lineup-math/sims/` |
-| Team shape archive | `evals/teams/<owner>/<Name>.shapes.md` (read this) and `<Name> Trade Shapes.md` (write only) — `trades` §Simming |
+| Eval refresh, league-wide | `strategy/lineup-math/sims/` |
+| Team shape archive | `strategy/teams/<owner>/<Name>.shapes.md` (read this) and `<Name> Trade Shapes.md` (write only) — `trades` §Simming |
 
 # Refresh
 

@@ -3,7 +3,7 @@ name: eval-team
 description: How to produce a team's eval files — human file plus agent .team.md. Which columns to pull, what to compute, and what the files may and may not contain.
 ---
 
-Your only job is to create the updated eval files for a team, in `evals/teams/` (§Output).
+Your only job is to create the updated eval files for a team, in `strategy/teams/` (§Output).
 
 `Eval Definitions` owns every formula, threshold and column meaning — cite it by section, never restate it. `template.md` (this directory) owns section order.
 
@@ -22,9 +22,9 @@ Your only job is to create the updated eval files for a team, in `evals/teams/` 
 
 Already on disk — nothing here needs fetching:
 
-- **Sim** — counterparty table: `evals/lineup-math/run sim_run.py --eval <team_id>` · `sims` Skill · `README.md` §*Pricing a counterparty*
-- **Rosters** — `evals/lineup-math/rosters/roster-<team_id>-<season>.json`, all 12. `evals/lineup-math/run fetch_data.py roster <team_id>` re-cuts one and applies assumed-through overlays (`Pending Trades.md`). Do not quote the wire over those files.
-- **Boards** — `evals/board-snapshots/`, latest dated pull.
+- **Sim** — counterparty table: `strategy/lineup-math/run sim_run.py --eval <team_id>` · `sims` Skill · `README.md` §*Pricing a counterparty*
+- **Rosters** — `strategy/lineup-math/rosters/roster-<team_id>-<season>.json`, all 12. `strategy/lineup-math/run fetch_data.py roster <team_id>` re-cuts one and applies assumed-through overlays (`Pending Trades.md`). Do not quote the wire over those files.
+- **Boards** — `strategy/board-snapshots/`, latest dated pull.
 
 # When to pull new data
 
@@ -35,12 +35,12 @@ Already on disk — nothing here needs fetching:
 
 # Applying it
 
-_See /evals/Definitions/Eval Definitions.md for definitions to these when needed_
+_See /strategy/Definitions/Eval Definitions.md for definitions to these when needed_
 
 Calculate these columns for each player to construct the player table
 
 1. **BASE** - calculate for each player
-2. **Sim columns** — counterparty: `evals/lineup-math/run sim_run.py --eval <team_id>`. Copy the TSV (`Δw`, `Δw (season) ours`, `Δw (season) theirs`, `ΔP(title) ours`, `W20`–`W23`). Do not import `sim` for these columns. Do not write scripts (`CLAUDE.md` §Scripts). Do not assign `ROSTER`. Ours (`my-team/`): `./run sim.py players weeks` plus `player_title` / `title-column` `include: ["ours"]`. `sim.py title` is roster `P(title)` for `# Title odds`, not the table column.
+2. **Sim columns** — counterparty: `strategy/lineup-math/run sim_run.py --eval <team_id>`. Copy the TSV (`Δw`, `Δw (season) ours`, `Δw (season) theirs`, `ΔP(title) ours`, `W20`–`W23`). Do not import `sim` for these columns. Do not write scripts (`CLAUDE.md` §Scripts). Do not assign `ROSTER`. Ours (`my-team/`): `./run sim.py players weeks` plus `player_title` / `title-column` `include: ["ours"]`. `sim.py title` is roster `P(title)` for `# Title odds`, not the table column.
 3. Flags travel with every row. Multi-piece sides get one joint sim run each, never summed rows.
 
 Column order and cell formats: `Eval Template.md`.
@@ -57,8 +57,8 @@ Two files, same directory, written together on every write — any edit to one g
 
 | File | Path |
 | --- | --- |
-| Human (Brett reads) | `evals/teams/<owner>/<Name>'s Team.md` · ours `My Team.md` |
-| Agent | `evals/teams/<owner>/<Name>.team.md` · ours `Ours.team.md` · Matt Hlina `Hlina.team.md` |
+| Human (Brett reads) | `strategy/teams/<owner>/<Name>'s Team.md` · ours `My Team.md` |
+| Agent | `strategy/teams/<owner>/<Name>.team.md` · ours `Ours.team.md` · Matt Hlina `Hlina.team.md` |
 
 Read the agent file only. Never read, grep, or shell-print the human file. Prior values you need (ages, notes) come from the agent file.
 

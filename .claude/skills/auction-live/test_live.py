@@ -38,7 +38,7 @@ def sheet(cells=None, ours=None):
 
 
 def setup():
-    """A temp `auction-2026` dir with the rookie board beside it, like `evals/`"""
+    """A temp `auction-2026` dir with the rookie board beside it, like `strategy/`"""
     d = pathlib.Path(tempfile.mkdtemp()) / 'auction-2026'
     d.mkdir()
     for f in ('values.tsv', 'Auction 2026.md'):

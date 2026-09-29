@@ -5,9 +5,9 @@ description: Maintain a team's trade shapes — human HTML file plus agent .shap
 
 # Where
 
-Human file Brett reads: `evals/teams/<owner>/<Name> Trade Shapes.md`
+Human file Brett reads: `strategy/teams/<owner>/<Name> Trade Shapes.md`
 
-Agent file: `evals/teams/<owner>/<Name>.shapes.md` — same directory. Read this one. Never read, grep, or shell-print `* Trade Shapes.md`.
+Agent file: `strategy/teams/<owner>/<Name>.shapes.md` — same directory. Read this one. Never read, grep, or shell-print `* Trade Shapes.md`.
 
 On every archive or refresh, write both. Rebuild deal bodies from `.shapes.md`.
 

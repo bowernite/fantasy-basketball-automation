@@ -1,10 +1,10 @@
 # BASE (eval-team's VALUE) per player: Dizzle Points and Hashtag Points blended
 # through the rank curve, Hashtag crowd printed beside them, off the committed
-# snapshots in evals/. Re-cut those first if they are stale
+# snapshots in strategy/. Re-cut those first if they are stale
 # (hashtag-basketball, dizzle-dynasty) -- this reads them, it does not fetch.
 #
 #   python3 .claude/skills/eval-player/base.py "Cade Cunningham" "Kyrie Irving"
-#   python3 .claude/skills/eval-player/base.py --roster evals/lineup-math/rosters/roster-161025-2025-26.json \
+#   python3 .claude/skills/eval-player/base.py --roster strategy/lineup-math/rosters/roster-161025-2025-26.json \
 #       --absent "Chaney Johnson"                 # every name in a fetch_data.py roster file
 #   ... "Jaylin Williams:OKC"                     # NAME:TEAM where a name is two players
 #   ... --roster-size 28                          # D = teams x roster_size, default announced 38
@@ -19,7 +19,7 @@
 import csv, glob, json, math, os, re, sys, unicodedata
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-EVALS = os.path.join(HERE, os.pardir, os.pardir, os.pardir, 'evals')
+EVALS = os.path.join(HERE, os.pardir, os.pardir, os.pardir, 'strategy')
 TEAMS, ROSTER_SIZE = 12, 38          # league-info: announced post-Sept '26 size
 
 MONTHS = ('january february march april may june july august september october november'

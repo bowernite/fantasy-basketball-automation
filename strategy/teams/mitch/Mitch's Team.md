@@ -44,7 +44,7 @@
 
 ## Picks
 
-Ownership sourced 2026-09-03 (`FetchTrades`, 26 completed, 0 pending; `FetchLeagueDraftBoard` for Sept '26). The league has traded into **2025–2029**; 2025 is complete. Sept '26 slots are read off the board; '27–'29 are modelled off `evals/Team Projections.md` (stamped 2026-09-02). Ranks sourced, conversions modelled. Crowd `/keeper` vote-convergence notice is live → Dizzle alone for pick VALUE (`eval-pick` §4).
+Ownership sourced 2026-09-03 (`FetchTrades`, 26 completed, 0 pending; `FetchLeagueDraftBoard` for Sept '26). The league has traded into **2025–2029**; 2025 is complete. Sept '26 slots are read off the board; '27–'29 are modelled off `strategy/Team Projections.md` (stamped 2026-09-02). Ranks sourced, conversions modelled. Crowd `/keeper` vote-convergence notice is live → Dizzle alone for pick VALUE (`eval-pick` §4).
 
 `≤` marks a value the current class's lookup can only bound, not price (`eval-pick` §*Future picks*).
 

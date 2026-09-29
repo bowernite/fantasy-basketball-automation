@@ -189,7 +189,7 @@ of the season's **last lineup period** (~end of March), so read as a roster it i
 stale in both directions — an add after it is missing, a drop is still on it, silently.
 `./run fetch_data.py roster` therefore takes the bodies from `FetchLeagueRosters` and only
 `avg`/`tot`/`gp` from the season endpoint, then applies assumed-through overlays
-(`assumed_trades.py`; terms in `evals/Pending Trades.md`). **Re-cut the files rather
+(`assumed_trades.py`; terms in `strategy/Pending Trades.md`). **Re-cut the files rather
 than trusting a count in a written eval.** Do not hand-patch around the overlay.
 
 A body the season snapshot has no line for played for somebody else, so his line comes off

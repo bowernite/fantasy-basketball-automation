@@ -4,7 +4,7 @@ description: Dizzle Dynasty rankings sheet — dynasty and rookie boards in both
 ---
 
 _Fetch live with the recipe below (`.claude/skills/dizzle-dynasty/sheet.py`).
-`evals/board-snapshots/dizzle-dynasty/` holds a dated CSV/xlsx snapshot — fall back to it only if the
+`strategy/board-snapshots/dizzle-dynasty/` holds a dated CSV/xlsx snapshot — fall back to it only if the
 sheet is unreachable, and say you're citing a snapshot. Source updates roughly monthly._
 
 # Dizzle Dynasty
@@ -18,7 +18,7 @@ All tabs are one analyst — the 9Cat and Points tabs are not two opinions. See
 ## Fetch in a subagent
 
 Run the recipe — and any fallback read of the local snapshot in
-`evals/board-snapshots/dizzle-dynasty/` — inside a dedicated `Agent` call
+`strategy/board-snapshots/dizzle-dynasty/` — inside a dedicated `Agent` call
 (`general-purpose`), never inline. Tell it which tab(s)/limit to pull and have it hand back
 `SOURCE`/`TAB`/`FORMAT`/`UPDATED` plus the table; the raw sheet export never enters the main
 context (`CLAUDE.md` §*Subagents*).

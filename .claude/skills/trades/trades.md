@@ -7,7 +7,7 @@ Instructions for evaluating / approaching teams for trades
 - Read both win columns against our `SIT` (`Eval Definitions §SIT`) — contending buys `Δw (season)`.
 - Compare deals by `Score` (`Eval Definitions §Score`), then read the individual numbers.
 - **Price the bodies** for the delta in body-count: break-even rate · backfill regime · our roster-depth floor.
-- Always load [Team Projections](/evals/Team%20Projections.md) to see rough idea of competitors / where teams are headed
+- Always load [Team Projections](/strategy/Team%20Projections.md) to see rough idea of competitors / where teams are headed
 
 # Messages
 
@@ -71,7 +71,7 @@ So, point is, we should be open to anything and everything, and same on their si
 
 # Pending trades
 
-Always read `/evals/Pending Trades.md`. Assumed-through deals **are** the roster, even if Fleaflicker still shows pending or has no record. Open deals in that file are the only ones still in play.
+Always read `/strategy/Pending Trades.md`. Assumed-through deals **are** the roster, even if Fleaflicker still shows pending or has no record. Open deals in that file are the only ones still in play.
 
 # Brainstorm
 
@@ -90,13 +90,13 @@ Unsimmed shapes aren't archived. At most, add one dated line to the `.shapes.md`
 
 Load `sims` Skill — **§Agent workflow** (JSON + `sim_run.py` for pricing). Avoid your own scripts whenever possible; tier and archive by hand with your own logic. Sim the §Brainstorm short list. If that eval predates the roster file or the projection snapshot, re-run `--eval <team_id>` (or `players` on us) before brainstorming.
 
-Archive both files (`trade-shapes`): read/rebuild from **`evals/teams/<owner>/<Name>.shapes.md`**; also write **`<Name> Trade Shapes.md`**. Never read the HTML file. Tiers: above floor / floor / below bar, then **`## Too lopsided`** (our **ΔBASE ≥ +1250**), then **`## Doesn't meet our minimums`** at the absolute bottom (fails any threshold in §General guidlines — archive fail table). Run configs go in **`$TMPDIR/ff-sim-<tag>.json`** only.
+Archive both files (`trade-shapes`): read/rebuild from **`strategy/teams/<owner>/<Name>.shapes.md`**; also write **`<Name> Trade Shapes.md`**. Never read the HTML file. Tiers: above floor / floor / below bar, then **`## Too lopsided`** (our **ΔBASE ≥ +1250**), then **`## Doesn't meet our minimums`** at the absolute bottom (fails any threshold in §General guidlines — archive fail table). Run configs go in **`$TMPDIR/ff-sim-<tag>.json`** only.
 
 Each row: **`Out | In`** (picks in **Out** only, in parentheses) + `Score` + our five big numbers + optional **Status** (rejected, interested, etc.). Tier and sort per `trade-shapes` §Tiering. Skip duplicate bodies already in the file; refresh numbers when re-pricing an existing shape. Display rounding: `trade-shapes` Skill.
 
 ```bash
-evals/lineup-math/run sim_run.py "$TMPDIR/ff-sim-<tag>.json"   # new deals only
-evals/lineup-math/run sim_run.py --refresh "$TMPDIR/ff-sim-<tag>.json"   # re-price everything
+strategy/lineup-math/run sim_run.py "$TMPDIR/ff-sim-<tag>.json"   # new deals only
+strategy/lineup-math/run sim_run.py --refresh "$TMPDIR/ff-sim-<tag>.json"   # re-price everything
 ```
 
 Write deal bodies to tmp JSON, run, read stdout / JSON `results`, copy `Score` and our five big numbers into the right tier in both shape files by hand (`trade-shapes`; minimums here in §General guidlines). Avoid scripts for tiering, sorting, or archiving — rely on your own logic.
@@ -147,7 +147,7 @@ Example (9/25): Cade+('27 1st)+(2.09) > SGA+Fears. Out (24.9×2040 + 19×700 + 2
 
 # Notes
 
-- `evals/` holds rosters, per-team valuations and the projections picks depend on. `team-info` maps owner username → real name.
+- `strategy/` holds rosters, per-team valuations and the projections picks depend on. `team-info` maps owner username → real name.
 - If getting back more players than giving up, **do not sim a cut** unless the post-trade roster would exceed 38 (§Uneven-body simming). At the table, only factor a cut when you're that close.
 - When reading a team-eval, it might state things about what they want or don't want. These are just guesses, before we have even spoken to them. Do not take them to be true necessarily.
 - When trying to find a deal shape with someone, should be phrased as something like "What do you think about x?". This will allow us to to sim it if they like the shape, without us committing to it.

@@ -44,7 +44,7 @@
 
 ## Picks
 
-Ownership sourced 2026-09-02 (`FetchTrades`, 26 completed, 0 pending; `FetchLeagueDraftBoard` for Sept '26). Holmes/Hunter + 3.09 / his '28 3rd is executed on the wire (`id=484294`). The league has traded into **2025–2028**; 2025 is complete. Sept '26 slots are read off the board; '27–'28 are modelled off `evals/Team Projections.md` (stamped 2026-09-02). Ranks sourced, conversions modelled. Crowd `/keeper` vote-convergence notice is live → Dizzle alone for pick VALUE (`eval-pick` §4).
+Ownership sourced 2026-09-02 (`FetchTrades`, 26 completed, 0 pending; `FetchLeagueDraftBoard` for Sept '26). Holmes/Hunter + 3.09 / his '28 3rd is executed on the wire (`id=484294`). The league has traded into **2025–2028**; 2025 is complete. Sept '26 slots are read off the board; '27–'28 are modelled off `strategy/Team Projections.md` (stamped 2026-09-02). Ranks sourced, conversions modelled. Crowd `/keeper` vote-convergence notice is live → Dizzle alone for pick VALUE (`eval-pick` §4).
 
 `≤` marks a value the current class's lookup can only bound, not price (`eval-pick` §*Future picks*).
 

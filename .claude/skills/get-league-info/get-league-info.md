@@ -54,9 +54,9 @@ Default = **live/pending** trades only; `filter=TRADES_COMPLETED` = history. No 
 veto window `FetchLeagueDraftBoard` still shows a traded pick as the sender's with
 `tradeId: None`, and rosters still show the old owner. Check here before quoting either.
 
-**Assumed-through** (`evals/Pending Trades.md`): treat as executed even when this
+**Assumed-through** (`strategy/Pending Trades.md`): treat as executed even when this
 endpoint still lists them pending, or has no record. Overlay before quoting
-ownership. `evals/lineup-math/run fetch_data.py roster` does the same to the files (`assumed_trades.py`).
+ownership. `strategy/lineup-math/run fetch_data.py roster` does the same to the files (`assumed_trades.py`).
 The wire does not win.
 
 Pending-only fields: `numVetoesRequired`, `expiryIso`, `proposedOn` / `approvedOn` /
@@ -181,7 +181,7 @@ the last completed draft and the next one exist; other seasons return `{}`.
   the *following* offseason's draft (`league-info`). Say which you mean in any output.
 - **Trap 2 — placeholder slots.** The site displays pick rows for future drafts with slots
   copied from the last finish. They look like data and are not. **Read a displayed future
-  slot as absent** and project it from `evals/Team Projections.md` instead
+  slot as absent** and project it from `strategy/Team Projections.md` instead
   (`eval-pick`). This endpoint is the safer read — it returns `{}` rather than a fake —
   but **`FetchTrades` does serve the fake**.
 

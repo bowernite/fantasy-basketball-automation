@@ -2,7 +2,7 @@
 
 Expands `Eval Definitions §Δw`.
 
-Single-season wins a typical team in this format gets from the player's projected rate and healthy GP. Mean 38th-body curve across all 12 rosters (`evals/lineup-math/league-curve.md`). Not our roster. Scoring weights are in `FPts/Gp`. The 9-slot cap is inside the curve. This roster's shape and the NBA calendar live in **`Δw (season)`** (`Delta w (season).md`).
+Single-season wins a typical team in this format gets from the player's projected rate and healthy GP. Mean 38th-body curve across all 12 rosters (`strategy/lineup-math/league-curve.md`). Not our roster. Scoring weights are in `FPts/Gp`. The 9-slot cap is inside the curve. This roster's shape and the NBA calendar live in **`Δw (season)`** (`Delta w (season).md`).
 
 `sim.formula_player_wins` interpolates the measured PF table at 60 GP, scales by `GP / 60`, converts via `K`. Floor is 0. A player's formula `Δw` does not change by roster.
 

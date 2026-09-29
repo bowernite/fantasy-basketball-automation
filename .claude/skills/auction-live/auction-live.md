@@ -2,7 +2,7 @@
 description: Run the live rookie draft and FA auction off the commissioner's Google Sheet. Polls it, keeps sales and picks in sync, reprices, rewrites the dashboard, and makes bid and nominate calls. Use when Brett starts the draft or auction, or asks about a player during it.
 ---
 
-Plan and spend rules: `evals/auction-2026/Auction 2026.md`. Reading Sheets: `google-sheets` Skill. The Sheet is `1-AZXzFGxJ7eRC2QdPNhYEZmUBsBdaF0DBrrjcx_fEgg`, gid 0, read only.
+Plan and spend rules: `strategy/auction-2026/Auction 2026.md`. Reading Sheets: `google-sheets` Skill. The Sheet is `1-AZXzFGxJ7eRC2QdPNhYEZmUBsBdaF0DBrrjcx_fEgg`, gid 0, read only.
 
 `L` = `python3 /Users/brett/src/personal/fantasy-basketball/.claude/skills/auction-live/live.py`
 
@@ -14,11 +14,11 @@ Plan and spend rules: `evals/auction-2026/Auction 2026.md`. Reading Sheets: `goo
    - `timeout_ms`: 1800000
    - description: `auction Sheet: picks and sales`
    - Re-arm the moment it expires. A restart only prints what changed against the tsv files.
-3. Tell Brett to open `evals/auction-2026/dashboard.md` or `dashboard.html` (every pool row, name filter; reloads only when a pick or sale lands, and flags a dead watcher from `beat.js`, which `watch` rewrites every read). Both are rewritten within ~3.5 s of every pick or sale, without waiting on you.
+3. Tell Brett to open `strategy/auction-2026/dashboard.md` or `dashboard.html` (every pool row, name filter; reloads only when a pick or sale lands, and flags a dead watcher from `beat.js`, which `watch` rewrites every read). Both are rewritten within ~3.5 s of every pick or sale, without waiting on you.
 
 ## Files
 
-All in `evals/auction-2026/`:
+All in `strategy/auction-2026/`:
 
 - `values.tsv`, `Auction 2026.md`, `aliases.tsv` and `../Rookie Draft 2026.md` are re-read on every change, so edits take effect at the next pick or sale.
   - `values.tsv`: `Market$`, `score`, `dPtitle`, `gap`, `BASE`. The card is every target (`Auction 2026.md` §Targets), by Score. Before the draft ends, rookies it will take show as `(in the draft)`.

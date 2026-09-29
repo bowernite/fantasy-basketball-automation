@@ -1,4 +1,4 @@
-"""Assumed-through trades. Terms: `evals/Pending Trades.md`.
+"""Assumed-through trades. Terms: `strategy/Pending Trades.md`.
 
 `fetch_data.py roster` applies these after the wire cut. Idempotent once
 Fleaflicker matches; drop a deal here once the wire shows it.
@@ -77,7 +77,7 @@ def apply_all(rosters):
             if owner != incoming[n]:
                 raise ValueError(
                     "%s is on %s, but MOVES has him coming from %s -- retype "
-                    "the deal against the live wire (`evals/Pending "
+                    "the deal against the live wire (`strategy/Pending "
                     "Trades.md`)." % (n, owner, incoming[n]))
             new.append(row)
             have.add(n)

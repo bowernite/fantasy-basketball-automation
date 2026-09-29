@@ -13,7 +13,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import sleeper
 
-SNAPSHOT = os.path.join(HERE, os.pardir, os.pardir, os.pardir, "evals",
+SNAPSHOT = os.path.join(HERE, os.pardir, os.pardir, os.pardir, "strategy",
                         "board-snapshots", "projections",
                         "fanscout-gp-2026.json")
 # `players` defaults to 150 on the site; ask for more than the board holds.

@@ -13,7 +13,7 @@ player; never a primary board, never past the free tier, **never in the BASE ble
 ## Fetch in a subagent
 
 Run the recipe — and any fallback read of the dated snapshot in
-`evals/board-snapshots/Boards 2026-07-29.md` — inside a dedicated `Agent` call
+`strategy/board-snapshots/Boards 2026-07-29.md` — inside a dedicated `Agent` call
 (`general-purpose`), never inline. Have it hand back `SOURCE`/`UPDATED`/`ROWS` plus the
 table; raw page content never enters the main context (`CLAUDE.md` §*Subagents*).
 
@@ -73,4 +73,4 @@ BASE, Hashtag's Keeper Value, or Dizzle's tiers.** Only the **rank** crosses boa
 incoming rookie class), not withheld ranks. Re-render before concluding a player is
 missing; absence never means "low value", nor "outside the free tier".
 
-Dated ranks, including the pick rows: `evals/board-snapshots/Boards 2026-07-29.md`.
+Dated ranks, including the pick rows: `strategy/board-snapshots/Boards 2026-07-29.md`.

@@ -1,6 +1,6 @@
 # Assumed through
 
-Treat as **executed** everywhere — roster files, evals, sims, pick ownership — even if Fleaflicker still shows pending, or has no record. `evals/lineup-math/run fetch_data.py roster` overlays them (`assumed_trades.py`). Wire does not win. Once the wire shows a deal, delete it here and in `assumed_trades.py`.
+Treat as **executed** everywhere — roster files, evals, sims, pick ownership — even if Fleaflicker still shows pending, or has no record. `strategy/lineup-math/run fetch_data.py roster` overlays them (`assumed_trades.py`). Wire does not win. Once the wire shows a deal, delete it here and in `assumed_trades.py`.
 
 ## Hlina — Duren ↔ Green, Camara, Smith
 

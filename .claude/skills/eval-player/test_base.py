@@ -16,7 +16,7 @@ SCRIPT = HERE / 'base.py'
 sys.path.insert(0, str(HERE))
 import base                                                          # noqa: E402
 
-EVALS = HERE.parents[2] / 'evals'
+EVALS = HERE.parents[2] / 'strategy'
 OURS = str(EVALS / 'lineup-math' / 'rosters' / 'roster-161025-2025-26.json')
 PUBLISHED = [
     "teams/my-team/My Team.md",
@@ -361,7 +361,7 @@ class Blend(unittest.TestCase):
         # The curve's two anchors (Eval Definitions §BASE): V is scaled to 9999 at the
         # top, and "rank a = sqrt(D) is worth half of rank 1". At D = 456 that half-value
         # rank is 21.35, so it falls between the 21st and 22nd player. Every figure in
-        # evals/ is on this shape, and a re-scaled or re-shaped curve stays plausible
+        # strategy/ is on this shape, and a re-scaled or re-shaped curve stays plausible
         # while turning every published comparison into a different number.
         rows = [(1, 'First', 'BOS'), (21, 'Above Root', 'BOS'), (22, 'Below Root', 'BOS')]
         with snapshots(rows, rows, rows):

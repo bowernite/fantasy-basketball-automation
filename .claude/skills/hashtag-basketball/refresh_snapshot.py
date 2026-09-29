@@ -1,4 +1,4 @@
-# Rewrites evals/board-snapshots/hashtag-basketball/*.csv from both live boards.
+# Rewrites strategy/board-snapshots/hashtag-basketball/*.csv from both live boards.
 #   python3 .claude/skills/hashtag-basketball/refresh_snapshot.py   # from the repo root
 #
 # Both boards are fetched and parsed before anything is written, so a tripped
@@ -7,7 +7,7 @@
 import csv, datetime, html, pathlib, re, urllib.parse, urllib.request
 UA = ('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 '
       '(KHTML, like Gecko) Chrome/120.0 Safari/537.36')
-OUT = pathlib.Path('evals/board-snapshots/hashtag-basketball')
+OUT = pathlib.Path('strategy/board-snapshots/hashtag-basketball')
 assert OUT.is_dir(), f'run from the repo root — {OUT} not found'
 CROWD = 'https://hashtagbasketball.com/keeper'
 EXPERT = 'https://hashtagbasketball.com/fantasy-basketball-dynasty-rankings'

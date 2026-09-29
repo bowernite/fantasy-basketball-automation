@@ -5,17 +5,17 @@ description: Procedure for valuing a player or a whole roster — what to fetch,
 
 **Load `eval-team`** for when to apply the BASE/`Δw (season)` layers; the blend, the curve,
 the columns, the list of places our format pulls off consensus, and the output format are
-`evals/Definitions/Eval Definitions.md`'s. This file owns the **procedure** and the **sources**. Our
-situation: `evals/teams/my-team/Ours.team.md`.
+`strategy/Definitions/Eval Definitions.md`'s. This file owns the **procedure** and the **sources**. Our
+situation: `strategy/teams/my-team/Ours.team.md`.
 
 # Procedure
 
-1. **Check `evals/` first.** Read the date stamp; re-derive anything stale rather than
+1. **Check `strategy/` first.** Read the date stamp; re-derive anything stale rather than
    quoting it.
 2. **League truth** (`get-league-info`): `FetchRoster?team_id=&season=` for a whole
    roster, `FetchPlayerProfile` for one player (owner, `detail.dob` — **never
    `detail.age`**, `Eval Definitions §Columns`). Derive `GP` and check it before trusting
-   any average. Ownership: overlay `evals/Pending Trades.md` assumed-through on top of
+   any average. Ownership: overlay `strategy/Pending Trades.md` assumed-through on top of
    the wire. The wire does not win.
 3. **Pull boards in this order**, recording each one's update stamp and depth: Dizzle
    Points → Hashtag expert Points → Hashtag crowd (`/keeper`) → Dynatyze (reference only).
@@ -23,11 +23,11 @@ situation: `evals/teams/my-team/Ours.team.md`.
    rank, and before recording any absence.
 5. **Blend into BASE** — run the recipe, never retype it. Copy stdout; do not write scripts (`CLAUDE.md` §Scripts). It carries `Eval Definitions
    §BASE`'s weights, curve, depth rule and renormalisation rule and prints per-board ranks
-   beside BASE, off the `evals/` snapshots (re-cut those first if stale).
+   beside BASE, off the `strategy/` snapshots (re-cut those first if stale).
 
    ```bash
    # from the repo root -- `--roster` resolves against cwd
-   python3 .claude/skills/eval-player/base.py --roster evals/lineup-math/rosters/roster-161025-2025-26.json
+   python3 .claude/skills/eval-player/base.py --roster strategy/lineup-math/rosters/roster-161025-2025-26.json
    python3 .claude/skills/eval-player/base.py "Kyrie Irving" "Jaylin Williams:OKC"
    python3 .claude/skills/eval-player/test_base.py    # offline guard, no network
    ```

@@ -62,7 +62,7 @@ authoritative for the **draft**, not the bracket. Do **not** infer bracket size 
 draft-order rule below either: that rule splits at the top **4 by record**, a different cut.
 
 Downstream, the playoff cut is **8 of 12**, so a bubble sits at **8/9** — `Mₜ`
-(`evals/Team Projections.md`) reads against that line and nothing else.
+(`strategy/Team Projections.md`) reads against that line and nothing else.
 
 # Roster size — a hard cap, and it is binding
 

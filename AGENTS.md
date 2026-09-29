@@ -23,7 +23,7 @@ Refer to teams by the owner's Name from the `team-info` Skill, never the fantasy
 
 # Team files
 
-Read `evals/teams/<owner>/<Name>.team.md` and `<Name>.shapes.md` only. Never read, grep, or shell-print `*'s Team.md`, `My Team.md`, or `* Trade Shapes.md`.
+Read `strategy/teams/<owner>/<Name>.team.md` and `<Name>.shapes.md` only. Never read, grep, or shell-print `*'s Team.md`, `My Team.md`, or `* Trade Shapes.md`.
 
 # Notes
 

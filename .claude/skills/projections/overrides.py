@@ -1,6 +1,6 @@
 """Season-scoped projection overrides — survive feed refresh.
 
-    evals/board-snapshots/projections/overrides-2026.json
+    strategy/board-snapshots/projections/overrides-2026.json
 
 `gp` and/or `rate` on a row replace the feed for that player until the file is
 edited. Refresh rewrites Sleeper / Hashtag / FanScout; it does not touch this file.
@@ -15,7 +15,7 @@ sys.path.insert(0, HERE)
 import sleeper
 
 SEASON = "2026"
-OVERRIDES = os.path.join(HERE, os.pardir, os.pardir, os.pardir, "evals",
+OVERRIDES = os.path.join(HERE, os.pardir, os.pardir, os.pardir, "strategy",
                           "board-snapshots", "projections",
                           "overrides-%s.json" % SEASON)
 

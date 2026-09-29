@@ -22,7 +22,7 @@ URL = ("https://api.sleeper.com/projections/nba/%s?season_type=regular"
        "&position[]=PG&position[]=SG&position[]=SF&position[]=PF&position[]=C"
        "&order_by=pts" % SEASON)
 
-SNAPSHOT = os.path.join(HERE, os.pardir, os.pardir, os.pardir, "evals",
+SNAPSHOT = os.path.join(HERE, os.pardir, os.pardir, os.pardir, "strategy",
                         "board-snapshots", "projections",
                         "sleeper-%s.json" % SEASON)
 

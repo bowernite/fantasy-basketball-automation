@@ -1,6 +1,6 @@
 # League curve
 
-How formula `Δw` is measured. Definition: `evals/Definitions/Delta w.md`. `K`: `findings.md` §*PF → wins*. This-roster value: `Delta w (season).md`.
+How formula `Δw` is measured. Definition: `strategy/Definitions/Delta w.md`. `K`: `findings.md` §*PF → wins*. This-roster value: `Delta w (season).md`.
 
 Reproduced 2026-09-03. Re-cut: `./run sim.py league-curve`. Shipped table: `simlib/league_curve.py`.
 
@@ -20,7 +20,7 @@ One NBA team is enough for the shape (light nights and packed nights). Clippers-
 
 ## Rejected
 
-- **`R = 15`, slope 1.0** — last-rostered, not format value. Overstates stars; zeros light-night bodies. Six-deal formula sum **+8.58** vs joint season **+2.51** (`evals/teams/my-team/Recent Trades.md`).
+- **`R = 15`, slope 1.0** — last-rostered, not format value. Overstates stars; zeros light-night bodies. Six-deal formula sum **+8.58** vs joint season **+2.51** (`strategy/teams/my-team/Recent Trades.md`).
 - **`R ≈ 20` / median team `REPL`** — 9-slot intercept, still slope 1.0. Makes Huff-class negative.
 - **`R ≈ 25` / our fitted `REPL`** — our crowding. Stale Hlina **+0.1** was this wearing an agnostic label.
 - **BASE scale** — multi-year market vs one season. No exchange rate (`Eval Definitions`).

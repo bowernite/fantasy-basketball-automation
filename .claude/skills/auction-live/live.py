@@ -25,7 +25,7 @@ import page  # noqa: E402
 
 SHEET_ID = '1-AZXzFGxJ7eRC2QdPNhYEZmUBsBdaF0DBrrjcx_fEgg'
 REPO = pathlib.Path(__file__).resolve().parents[3]
-DIR = REPO / 'evals' / 'auction-2026'
+DIR = REPO / 'strategy' / 'auction-2026'
 US = 'Brett'
 EVERY = 3  # seconds between Sheet reads
 OURS = "Δw '26–'27 ours"
