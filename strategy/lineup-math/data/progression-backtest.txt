@@ -331,6 +331,77 @@ G5 rookies (n=553 draftees; year 1 = rookie season)
 GATES G1 FAIL  G2 FAIL  G3 PASS  G4 PASS  G5 FAIL
 
 ========================================================================
+CUTOFF 2020  (fit on outcomes <= 2020; test origins 2021-2024, n=1705)
+knobs  full: smult 1.10 sd_floor 0.09 sigma_u 0.08 phi1 0.00 young_mult 1.50 young_mult_rookie 2.40 pick floor 6 · single: smult 1.00 floor 0.03
+
+G1 calibration (randomized PIT; overall 80% band 76-84, 50% 45-55, tails 7-13; buckets n>=100: 72-88, tails <=15; ECE <=.03 overall, <=.06 bucket)
+  year cell            n  season FP b80 b50 lo hi     survivor rate b80 b50 lo hi   eceA  eceU
+  2    all          1705   0.83  0.54  0.09  0.07     0.84  0.57  0.11  0.05    0.018 0.041  <- miss
+  2    age25-28      499   0.82  0.53  0.09  0.08     0.82  0.55  0.11  0.07    0.039 0.044
+  2    age29-31      247   0.84  0.53  0.10  0.06     0.84  0.59  0.09  0.06    0.056 0.042
+  2    age32+        228   0.85  0.61  0.07  0.07     0.85  0.57  0.13  0.02    0.071 0.057  <- miss
+  2    age<=24       731   0.83  0.52  0.09  0.07     0.86  0.57  0.11  0.04    0.025 0.048
+  2    lv20-27       365   0.82  0.51  0.11  0.07     0.85  0.58  0.09  0.06    0.021 0.062  <- miss
+  2    lv27-34       202   0.86  0.56  0.10  0.04     0.92  0.62  0.06  0.03    0.021 0.040  <- miss
+  2    lv34-42       138   0.86  0.57  0.08  0.07     0.89  0.61  0.04  0.07    0.020 0.050  <- miss
+  2    lv<20         942   0.83  0.54  0.08  0.08     0.80  0.53  0.15  0.05    0.037 0.038  <- miss
+  2    stageD        200   0.84  0.61  0.06  0.10     0.82  0.61  0.13  0.05    0.065 0.056  <- miss
+  2    stageS        191   0.79  0.45  0.11  0.10     0.80  0.48  0.14  0.06    0.040 0.028
+  2    stageV       1314   0.84  0.54  0.09  0.07     0.85  0.57  0.10  0.05    0.022 0.046
+  3    all          1293   0.85  0.54  0.08  0.07     0.87  0.58  0.09  0.04    0.028 0.047  <- miss
+  3    age25-28      375   0.83  0.54  0.08  0.08     0.83  0.58  0.09  0.08    0.065 0.061  <- miss
+  3    age29-31      190   0.85  0.56  0.09  0.06     0.88  0.48  0.12  0.00    0.052 0.068  <- miss
+  3    age32+        171   0.81  0.48  0.09  0.11     0.91  0.57  0.05  0.05    0.132 0.059  <- miss
+  3    age<=24       557   0.88  0.55  0.08  0.05     0.88  0.62  0.08  0.04    0.030 0.058  <- miss
+  3    lv20-27       269   0.90  0.52  0.05  0.05     0.86  0.56  0.10  0.03    0.062 0.059  <- miss
+  3    lv27-34       146   0.83  0.56  0.08  0.09     0.88  0.65  0.06  0.06    0.038 0.072  <- miss
+  3    lv34-42       104   0.82  0.48  0.10  0.09     0.94  0.59  0.01  0.05    0.055 0.109  <- miss
+  3    lv<20         728   0.85  0.55  0.08  0.07     0.85  0.58  0.11  0.04    0.038 0.047
+  3    stageD        150   0.91  0.63  0.05  0.04     0.85  0.55  0.12  0.03    0.057 0.081  <- miss
+  3    stageS        151   0.86  0.52  0.07  0.07     0.91  0.70  0.05  0.04    0.046 0.070  <- miss
+  3    stageV        992   0.84  0.53  0.09  0.07     0.87  0.57  0.08  0.05    0.033 0.043
+  4    all           863   0.84  0.52  0.10  0.06     0.90  0.64  0.06  0.04    0.023 0.030  <- miss
+  4    age25-28      243   0.84  0.53  0.10  0.06     0.89  0.62  0.05  0.06    0.066 0.040  <- miss
+  4    age29-31      130   0.83  0.55  0.11  0.06     0.89  0.60  0.11  0.00    0.043 0.071  <- miss
+  4    age32+        116   0.79  0.42  0.09  0.12     0.90  0.62  0.05  0.05    0.070 0.084  <- miss
+  4    age<=24       374   0.86  0.54  0.09  0.05     0.91  0.66  0.06  0.03    0.051 0.056  <- miss
+  4    lv20-27       172   0.84  0.49  0.08  0.08     0.85  0.60  0.09  0.05    0.040 0.033
+  4    lv<20         492   0.84  0.53  0.10  0.06     0.90  0.62  0.08  0.02    0.048 0.042  <- miss
+  4    stageS        110   0.82  0.54  0.09  0.09     0.91  0.63  0.05  0.05    0.107 0.084  <- miss
+  4    stageV        654   0.84  0.51  0.10  0.06     0.89  0.62  0.07  0.04    0.034 0.042  <- miss
+  5    all           444   0.82  0.52  0.10  0.08     0.89  0.59  0.06  0.06    0.066 0.037  <- miss
+  5    age25-28      128   0.85  0.48  0.08  0.07     0.86  0.57  0.06  0.08    0.116 0.071  <- miss
+  5    age<=24       187   0.84  0.58  0.10  0.06     0.91  0.66  0.04  0.04    0.053 0.083  <- miss
+  5    lv<20         251   0.83  0.52  0.10  0.07     0.87  0.63  0.09  0.04    0.050 0.030
+  5    stageV        339   0.83  0.52  0.10  0.07     0.89  0.57  0.05  0.05    0.076 0.064  <- miss
+  cells missed 29 of 38; the same model scored on draws from itself misses 24
+
+G2 skill (season-FP CRPS; vs persist >=5% at years 2-3; vs single: CI < 0 at year 2, >=5% at year 3)
+  year     full   single  persist   vs sgl  vs per
+  2         316      339      371    -6.9%  -14.9%   vs sgl 90% CI by player [-8.3%, -5.7%]
+  3         339      375      447    -9.6%  -24.1%   vs sgl 90% CI by player [-11.7%, -7.4%]
+  4         336      373      510    -9.7%  -34.1%
+  5         322      352      570    -8.7%  -43.6%
+  worst bucket vs single: lv20-27 year 2 (n=365) -0.9%
+
+G4 exit (Brier of P(active); gate: model beats an age-only table at years 2-6)
+  year 2  model 0.1294  age table 0.1628
+  year 3  model 0.1568  age table 0.2135
+  year 4  model 0.1750  age table 0.2375
+  year 5  model 0.1716  age table 0.2453
+
+G5 rookies (n=200 draftees; year 1 = rookie season)
+  year 2 CRPS stage 271 vs vet 282
+  year 3 CRPS stage 323 vs vet 337
+  year 4 CRPS stage 401 vs vet 415
+  top-5 picks below predicted median, years 3-5: 0.66 (n=29, 15 players; 90% CI by player 0.48-0.81)
+  career year 3 P(active) predicted 0.735 actual 0.787
+  career year 4 P(active) predicted 0.662 actual 0.727
+  career year 5 P(active) predicted 0.602 actual 0.642
+
+GATES G1 FAIL  G2 PASS  G4 PASS  G5 FAIL
+
+========================================================================
 TRANSPORT  repo pool origins 2021-23 (n=982), fit on outcomes <= 2022
 G6 transport (repo pool; year 1 = projection stand-in, so years 2-4 are scored)
   year 2 n=982  season FP  0.80  0.48  0.09  0.12   survivor rate  0.87  0.57  0.09  0.05    P(active) ECE 0.030, under 20 FP/G 0.049

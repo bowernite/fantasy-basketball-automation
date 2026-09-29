@@ -234,7 +234,8 @@ def backtest(full_path, single_path, test_path, train_path):
     ps = [json.load(open(x)) for x in (full_path, single_path)]
     test, train = json.load(open(test_path)), json.load(open(train_path))
     full, single = ps
-    years = 8
+    # a recent cutoff sees fewer years; gates needing more are skipped there
+    years = min(8, max(t for o in test for t, g in enumerate(o["gp"], 1) if g is not None))
     sims = {"full": simulate(full, test, years, TEST_N),
             "single": simulate(single, test, years, TEST_N),
             "persist": simulate(full, test, years, TEST_N, mode="persist")}
@@ -248,8 +249,8 @@ def backtest(full_path, single_path, test_path, train_path):
                 if b == "all" or sum(1 for r in rows["full"][t] if b in buckets(r["o"])) >= BUCKET_MIN)
     print("  cells missed %d of %d; the same model scored on draws from itself misses %d"
           % (misses, total, g1_null(full, test, years)))
-    verdict = [(name, ok), g2(rows), g3(test, sims["full"], full),
-               g4(rows["full"], train, test), g5(full, test)]
+    verdict = [(name, ok), g2(rows)] + ([g3(test, sims["full"], full)] if years >= 8 else []) + [
+        g4(rows["full"], train, test), g5(full, test)]
     print("\nGATES " + "  ".join("%s %s" % (name, "PASS" if ok else "FAIL") for name, ok in verdict))
 
 
@@ -333,7 +334,7 @@ def g2(rows):
     ok = True
     print("\nG2 skill (season-FP CRPS; vs persist >=5% at years 2-3; vs single: CI < 0 at year 2, >=5% at year 3)")
     print("  %-4s %8s %8s %8s  %7s %7s" % ("year", "full", "single", "persist", "vs sgl", "vs per"))
-    for t in range(2, 9):
+    for t in sorted(rows["full"]):
         m = {k: sum(r["crps"] for r in rows[k][t]) / len(rows[k][t]) for k in rows}
         vs, vp = m["full"] / m["single"] - 1, m["full"] / m["persist"] - 1
         ci = ""
@@ -423,7 +424,7 @@ def g4(rows, train, test):
                 c[0] += o["gp"][t] >= ACTIVE
                 c[1] += 1
     print("\nG4 exit (Brier of P(active); gate: model beats an age-only table at years 2-6)")
-    for t in range(2, 7):
+    for t in [t for t in range(2, 7) if t in rows]:
         bm = ba = 0.0
         for r in rows[t]:
             c = table.get((int(r["o"]["age1"]), t - 1), [0, 0])
