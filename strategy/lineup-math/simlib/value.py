@@ -5,7 +5,8 @@ from . import engine, shard
 from .data import DELTA_W_CAL
 from .engine import TRIALS
 from .gp import durable_gp
-from .roster import GROUPS, PAD_NAMES, refuse_already_rostered, slot_group, star, swap
+from .roster import (
+    GROUPS, PAD_NAMES, basis, pad, refuse_already_rostered, slot_group, star, swap)
 from .schedule import SIM_TM
 from .stats import block_stats, false_position, slope
 from .league_curve import league_pf
@@ -177,6 +178,18 @@ def incoming_wins(roster, players, blocks=None, trials=TRIALS, seed0=101, R=None
         w = [wins(next(rest), ref[g][i]) for i in range(len(seeds))]
         out[p["n"]] = block_stats(w)
     return out
+
+
+def arrival_basis(path=None):
+    """`basis(path)` with a padded slot free for `incoming_*`. A roster full of
+    real bodies cuts the one worth least over his group's replacement"""
+    full = basis(path)
+    if any(p["n"] in PAD_NAMES for p in full):
+        return full
+    R = group_replacement(full)
+    cut = min(range(len(full)), key=lambda i: (
+        (full[i]["avg"] - R[slot_group(full[i]["elig"])]) * full[i]["gp"]))
+    return pad(full[:cut] + full[cut + 1:], len(full))
 
 
 def formula_player_wins(p):

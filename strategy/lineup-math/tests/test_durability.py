@@ -3,7 +3,7 @@ from tests.harness import *
 
 class Durability(unittest.TestCase):
     def test_value_is_proportional_to_games_played(self):
-        full = sim.our_roster() + sim.EXPANSION
+        full = sim.our_roster() + sim.FA_FILL
         trials = 200
 
         def pf(gp):

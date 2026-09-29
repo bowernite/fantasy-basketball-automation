@@ -44,7 +44,7 @@ class OptimalLineup(unittest.TestCase):
 
 class CommonRandomNumbers(unittest.TestCase):
     def test_swapping_a_player_for_his_own_clone_changes_nothing(self):
-        full = sim.our_roster() + sim.EXPANSION
+        full = sim.our_roster() + sim.FA_FILL
         clone = dict(full[0])
         same = sim.swap(full, [clone["n"]], [clone])
         self.assertEqual(sim.run(same, trials=8)["pf"], sim.run(full, trials=8)["pf"])
@@ -130,8 +130,6 @@ class ShardedReports(unittest.TestCase):
         self.assertEqual(self.table("breakevens", 1),
                          self.table("breakevens", 4))
 
-    def test_the_schedules_table_is_the_same_table_sharded(self):
-        self.assertEqual(self.table("schedules", 1), self.table("schedules", 4))
 
     def test_a_report_run_from_the_shell_finishes_and_says_nothing_on_stderr(self):
         p = sim_process("formula")

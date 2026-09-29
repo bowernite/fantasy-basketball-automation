@@ -44,6 +44,6 @@ class ApplyTrade(unittest.TestCase):
             if p["n"] in ("Miles Bridges", "Aaron Gordon")
         ])
         self.assertEqual(len(full), 38)
-        self.assertEqual(len([p for p in full if not p["n"].startswith(("RK", "FA", "PAD"))]),
+        self.assertEqual(len([p for p in full if not p["n"].startswith(("FA", "PAD"))]),
                          n - 1 + 2)
 

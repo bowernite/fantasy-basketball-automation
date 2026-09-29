@@ -17,7 +17,7 @@ def _weeks(p):
 
 
 def print_eval_columns(their_path, names=None):
-    ours = sim.basis(OURS)
+    ours = sim.arrival_basis(OURS)
     bodies = sim.our_roster(their_path)
     if names:
         by = {p["n"]: p for p in bodies}

@@ -208,17 +208,17 @@ class ConfigRun(unittest.TestCase):
             "their_label": "Mitch",
             "deals": [{
                 "label": "probe",
-                "out_us": ["Jalen Suggs"],
-                "in_from_them": ["Deni Avdija", "Tre Jones"],
-                "out_them": ["Deni Avdija", "Tre Jones"],
-                "in_from_us": ["Jalen Suggs"],
+                "out_us": ["Jalen Suggs", "Keon Ellis"],
+                "in_from_them": ["Deni Avdija"],
+                "out_them": ["Deni Avdija"],
+                "in_from_us": ["Jalen Suggs", "Keon Ellis"],
             }],
         }
         with cheap_monte_carlo():
             out = enrich_config(cfg)
         got = out["deals"][0]["results"]
-        # one extra incoming body -> formula Δw docked 0.3
-        expect = (got["delta_base_us"] + 300 * (got["fdw_us"] - 0.3)
+        # one body fewer on our side -> formula Δw credited 0.3
+        expect = (got["delta_base_us"] + 300 * (got["fdw_us"] + 0.3)
                   + 250 * got["dw_us"] + 80 * got["dp_title_us"])
         self.assertEqual(got["score_us"], round(expect))
 

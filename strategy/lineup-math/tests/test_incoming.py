@@ -63,6 +63,24 @@ class IncomingWins(unittest.TestCase):
                               R=flat_R())
         self.assertIn("38", str(e.exception))
 
+    def test_a_full_roster_makes_room_for_an_arrival_by_cutting_its_worst_body(self):
+        rows = sim.our_roster(THEIR_ROSTER, projected=False)
+        rows += [p for p in sim.our_roster(projected=False)
+                 if p["n"] not in {q["n"] for q in rows}]
+        rows = rows[:37]
+        scrub = {"n": "SCRUB", "tm": "MIA", "avg": -10.0, "tot": -500.0,
+                 "gp": 50, "posLabel": "G", "elig": ["PG", "SG"]}
+        path = roster_file(*(rows[:5] + [scrub] + rows[5:]))
+        seat = sim.arrival_basis(path)
+        self.assertEqual(len(seat), 38)
+        self.assertEqual([p["n"] for p in seat[:37]], [p["n"] for p in rows])
+        self.assertIn(seat[37]["n"], roster_mod.PAD_NAMES)
+
+    def test_a_roster_with_a_padded_slot_makes_room_without_a_cut(self):
+        path = roster_file(*sim.our_roster(THEIR_ROSTER, projected=False)[:30])
+        self.assertEqual([p["n"] for p in sim.arrival_basis(path)],
+                         [p["n"] for p in sim.basis(path)])
+
     def test_every_player_on_a_counterparty_file_is_priced_at_once(self):
         theirs = sim.our_roster(THEIR_ROSTER)
         with cheap_monte_carlo(20):

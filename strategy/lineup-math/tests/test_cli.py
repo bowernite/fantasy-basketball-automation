@@ -46,10 +46,10 @@ class CLI(unittest.TestCase):
         full = roster_file(*[
             {"n": "Body %d" % i, "tm": "LAC", "avg": 20.0, "tot": 0.0, "gp": 60,
              "posLabel": "F", "elig": ["SF", "PF"]} for i in range(38)])
-        p = sim_process("--roster", full, "schedules", "positions")
+        p = sim_process("--roster", full, "title", "positions")
         self.assertNotEqual(p.returncode, 0)
         self.assertNotIn("Traceback", p.stderr)
-        self.assertIn("auction", p.stdout + p.stderr)
+        self.assertIn("not among the 12 roster files", p.stdout + p.stderr)
         self.assertIn("positions", p.stdout + p.stderr,
                       "the run died without saying what it never ran")
 
@@ -77,7 +77,7 @@ class CLI(unittest.TestCase):
             self.assertRegex(p.stdout, r"%s.*\(ours only\)" % name)
 
     def test_a_slow_report_names_itself_before_it_finishes(self):
-        p = subprocess.Popen([sys.executable, "sim.py", "schedules"],
+        p = subprocess.Popen([sys.executable, "sim.py", "league-curve"],
                              cwd=sim.HERE, stdout=subprocess.PIPE, text=True)
         first = []
         reader = threading.Thread(target=lambda: first.append(p.stdout.readline()))

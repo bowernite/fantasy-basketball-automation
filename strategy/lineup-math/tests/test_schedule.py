@@ -128,26 +128,3 @@ class Coverage(unittest.TestCase):
         spread = sim.coverage(["OKC", "LAC", "UTAH", "SA", "NY", "MIN", "BOS"])
         self.assertGreater(spread, 2 * sim.coverage(["LAC"] * 7))
         self.assertLessEqual(spread, len(sim.light_nights()))
-
-class CoveragePicks(unittest.TestCase):
-    def test_the_first_k_picks_are_always_the_best_k(self):
-        picks = sim.coverage_picks(7)
-        for k in range(1, 8):
-            with self.subTest(k=k):
-                self.assertEqual(sim.coverage_picks(k), picks[:k])
-
-    def test_coverage_saturates_after_about_three_picks(self):
-        cov = [sim.coverage(sim.coverage_picks(k)) for k in range(1, 8)]
-        self.assertEqual(cov, sorted(cov))
-        self.assertEqual(cov[-1], cov[-2], "the 7th pick still bought a night")
-        self.assertGreater(cov[2], 0.8 * cov[-1])
-
-    def test_the_worst_seven_all_pile_onto_the_emptiest_schedule(self):
-        worst = sim.coverage_picks(7, best=False)
-        self.assertEqual(len(set(worst)), 1)
-        self.assertEqual(sim.coverage(worst),
-                         min(light_nights_per_team().values()))
-
-    def test_only_the_teams_actually_on_offer_can_be_picked(self):
-        offer = ("BKN", "CHI", "POR", "ATL", "DET")
-        self.assertTrue(set(sim.coverage_picks(7, teams=offer)) <= set(offer))

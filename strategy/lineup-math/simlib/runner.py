@@ -15,7 +15,7 @@ _BASE_CACHE = {}
 _AGE_CACHE = {}
 
 PICK_AGE_WEIGHT = {1: 700, 2: 300, 3: 100}
-_LATER_PICK = re.compile(r"'(\d{2})(?: [A-Za-z]+)? ([123])(?:st|nd|rd)\b")
+_PICK = re.compile(r"'(\d{2})(?: [A-Za-z]+)? ([123])(?:st|nd|rd)\b")
 
 KINDS = ("reports", "trade-screen", "player-effects", "title-column",
          "eval-columns")
@@ -128,6 +128,11 @@ def validate_section(sec):
                 if key not in deal:
                     raise ValueError("deal %r needs %r"
                                      % (deal.get("label", deal), key))
+            picks = sorted(k for k in deal if k.endswith("_picks"))
+            if picks:
+                raise ValueError("deal %r: %s -- picks are BASE-only "
+                                 "(`*_extra_base`)"
+                                 % (deal.get("label", deal), ", ".join(picks)))
     elif kind == "player-effects":
         for key in ("their_roster", "groups"):
             if key not in sec:
@@ -185,22 +190,14 @@ def _simmed_date(when=None):
 
 
 def price_deal(deal, their, our_proj, their_proj, before=None):
-    in_us_picks = roster.resolve_picks(their, deal.get("in_from_them_picks"))
-    in_them_picks = roster.resolve_picks(roster.OURS, deal.get("in_from_us_picks"))
-    after_ours = sim.basis_after_trade(
-        roster.OURS, deal["out_us"], bodies(deal["in_from_them"], their_proj),
-        out_picks=deal.get("out_us_picks"), in_picks=in_us_picks)
-    after_theirs = sim.basis_after_trade(
-        their, deal["out_them"], bodies(deal["in_from_us"], our_proj),
-        out_picks=deal.get("out_them_picks"), in_picks=in_them_picks)
+    in_us = bodies(deal["in_from_them"], their_proj)
+    out_us = bodies(deal["out_us"], our_proj)
+    in_them = bodies(deal["in_from_us"], our_proj)
+    out_them = bodies(deal["out_them"], their_proj)
+    after_ours = sim.basis_after_trade(roster.OURS, deal["out_us"], in_us)
+    after_theirs = sim.basis_after_trade(their, deal["out_them"], in_them)
     after_us, before_us, after_them, before_them = sim.deal_odds(
         after_ours, after_theirs, their, before=before)
-    out_us_picks = roster.resolve_picks(roster.OURS, deal.get("out_us_picks"))
-    out_them_picks = roster.resolve_picks(their, deal.get("out_them_picks"))
-    in_us = bodies(deal["in_from_them"], their_proj) + roster.pick_bodies(in_us_picks)
-    out_us = bodies(deal["out_us"], our_proj) + roster.pick_bodies(out_us_picks)
-    in_them = bodies(deal["in_from_us"], our_proj) + roster.pick_bodies(in_them_picks)
-    out_them = bodies(deal["out_them"], their_proj) + roster.pick_bodies(out_them_picks)
     fdw_us = sim.deal_formula_wins(in_us, out_us)
     fdw_them = sim.deal_formula_wins(in_them, out_them)
     return (after_us.wins - before_us.wins, after_us.title - before_us.title,
@@ -319,14 +316,11 @@ def deal_delta_base(deal, their_roster):
         return None
 
 
-def _pick_ages(slots, label_side):
-    """(age, weight) per undrafted pick: Sept slots (e.g. "2.09") are this
-    year's; later picks come from the label side (e.g. "KC '27 2nd")."""
+def _pick_ages(label_side):
+    """(age, weight) per pick named on the label side (e.g. "KC '27 2nd")"""
     year = date.today().year
-    picks = [(year, int(s.split(".")[0])) for s in slots or []]
-    picks += [(2000 + int(yy), int(rnd))
-              for yy, rnd in _LATER_PICK.findall(label_side)]
-    return [(20 - (y - year), PICK_AGE_WEIGHT[rnd]) for y, rnd in picks]
+    return [(20 - (2000 + int(yy) - year), PICK_AGE_WEIGHT[int(rnd)])
+            for yy, rnd in _PICK.findall(label_side)]
 
 
 def _weighted_age(rows):
@@ -335,8 +329,8 @@ def _weighted_age(rows):
 
 
 def deal_delta_age(deal, their_roster):
-    """Our weighted-age change out -> in (`trades` skill, Age). Later
-    picks are read from the label (`out > in`, `.shapes.md` line format)."""
+    """Our weighted-age change out -> in (`trades` skill, Age). Picks are
+    read from the label (`out > in`, `.shapes.md` line format)."""
     their_path = eval_md_for(their_roster)
     our_path = eval_md_for(TEAM)
     if not their_path or not our_path:
@@ -348,8 +342,8 @@ def deal_delta_age(deal, their_roster):
         inc = [theirs[n] for n in deal["in_from_them"]]
     except KeyError:
         return None
-    out_age = _weighted_age(out + _pick_ages(deal.get("out_us_picks"), out_label))
-    in_age = _weighted_age(inc + _pick_ages(deal.get("in_from_them_picks"), in_label))
+    out_age = _weighted_age(out + _pick_ages(out_label))
+    in_age = _weighted_age(inc + _pick_ages(in_label))
     if out_age is None or in_age is None:
         return None
     return round(in_age - out_age, 2)
@@ -404,8 +398,8 @@ def _trade_screen_results(sec, deals=None):
 def _player_effects_results(sec):
     their = resolve_roster(sec["their_roster"])
     label = sec.get("their_label") or their
-    ours = sim.basis(roster.OURS)
-    theirs = sim.basis(their)
+    ours = sim.arrival_basis(roster.OURS)
+    theirs = sim.arrival_basis(their)
     our_proj = sim.our_roster(roster.OURS)
     their_proj = sim.our_roster(their)
     out_groups = []
@@ -545,7 +539,8 @@ def run_title_column(sec):
     if "their_incoming" in include and their:
         incoming = sim.our_roster(their)
         print("\nTHEIR_INCOMING incoming_title")
-        got = sim.incoming_title(full, incoming, path=roster.OURS)
+        got = sim.incoming_title(sim.arrival_basis(roster.OURS), incoming,
+                                 path=roster.OURS)
         for p in incoming:
             m, sd, _ = got[p["n"]]
             print("%s\t%+.4f\t%.4f" % (p["n"], m, sd))

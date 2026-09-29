@@ -7,7 +7,7 @@ class AbsenceBlocks(unittest.TestCase):
 
     def test_the_block_statistics_are_measured_on_the_roster_you_pass(self):
         small = sim.absence_blocks(sim.our_roster(), seeds=6)
-        big = sim.absence_blocks(sim.our_roster() + sim.EXPANSION, seeds=6)
+        big = sim.absence_blocks(sim.our_roster() + sim.FA_FILL, seeds=6)
         self.assertGreater(big["nights"], small["nights"] + 100)
         self.assertGreater(small["mean_block"], 7.0)
 
@@ -30,7 +30,7 @@ class SurpriseScratches(unittest.TestCase):
         self.assertGreaterEqual(wasted, 10)
 
     def test_a_small_surprise_rate_still_costs_something(self):
-        full = sim.our_roster() + sim.EXPANSION
+        full = sim.our_roster() + sim.FA_FILL
         base = sim.run(full, trials=40, bursty=True)["pf"]
         risky = sim.run(full, trials=40, bursty=True, surprise=0.10)["pf"]
         self.assertLess(risky, base - 20)

@@ -97,20 +97,6 @@ class RosterScopedReports(unittest.TestCase):
                      if set(q["elig"]) <= {"PG", "SG"})
         self.assertIn("%d pure PG/SG" % pure_g, out)
 
-    def test_the_light_night_premise_is_the_loaded_rosters_own(self):
-        flat = one_line(render("schedules", THEIR_ROSTER))
-        full = sim.basis(THEIR_ROSTER)
-        n_fa = len(sim.auction_slots(full))
-        moved_a, moved_b = (sim.steer(full, ["BKN"] * n_fa),
-                            sim.steer(full, ["CHI"] * n_fa))
-        kept = [p["tm"] for p, x, y in zip(full, moved_a, moved_b)
-                if p["tm"] == x["tm"] == y["tm"]]
-        self.assertIn("the other %d stay where they are on %d NBA teams, and %d "
-                      "of the %d light nights are already reached"
-                      % (len(kept),
-                         sum(1 for t in set(kept) if not sim.unsigned(t)),
-                         sim.coverage(kept), len(sim.light_nights())), flat)
-
     def test_the_group_r_note_agrees_with_the_table_it_explains(self):
         out = render("replacement", THEIR_ROSTER)
         R = {lab: float(re.search(r"^ +%s +([\d.]+)" % lab, out, re.M).group(1))

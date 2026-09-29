@@ -28,7 +28,7 @@ class OutputIsSelfDescribing(unittest.TestCase):
         def over_19(season_pf):
             return sim.DELTA_W_MATCHUPS * per_pf * (season_pf / sim.WEEKS)
 
-        for name in ("extras", "durability"):
+        for name in ("durability",):
             for pf, w in re.findall(r"([-+]\d+) PF = ([-+]\d+\.\d+) wins",
                                     render(name)):
                 with self.subTest(report=name, pf=pf):
