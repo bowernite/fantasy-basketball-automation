@@ -1,4 +1,4 @@
-# Auction live · room ? 0/5 · 19:19:13
+# Auction live · room ? 0/5 · 19:31:34
 
 **Us** $200 · 3 spots · max bid 198
 **Nominate** Brandon Williams (early)
@@ -9,35 +9,28 @@
 |---|---:|---:|---:|---:|
 | Baylor Scheierman | 296 | 70 | +139 | 155 |
 | Sergio De Larrea (in the draft) | | | | |
-| Bruce Thornton (in the draft) | | | | |
 | Jayden Quaintance (in the draft) | | | | |
 | Koa Peat (in the draft) | | | | |
 | Alex Karaban (in the draft) | | | | |
 | Henri Veesaar (in the draft) | | | | |
 | Ryan Nembhard | 213 | 56 | +107 | 78 |
 | Dru Smith | 204 | 52 | +104 | 74 |
-| Richie Saunders (in the draft) | | | | |
 | Goga Bitadze | 191 | 62 | +85 | 0 |
-| Ryan Conwell (in the draft) | | | | |
 | Isaiah Evans (in the draft) | | | | |
 | Dominick Barlow | 181 | 72 | +67 | 0 |
-| Baba Miller (in the draft) | | | | |
 | Marvin Bagley | 174 | 68 | +66 | 0 |
 | Meleek Thomas | 165 | 23 | +103 | 0 |
 | Brandon Williams | 164 | 72 | +54 | 0 |
 | Quinten Post | 153 | 62 | +56 | 0 |
 | Chris Cenac | 147 | 22 | +90 | 0 |
-| Emanuel Sharp (in the draft) | | | | |
 | Vít Krejčí | 118 | 46 | +46 | 0 |
 | Julian Strawther | 114 | 36 | +52 | 0 |
 | Zach Collins | 110 | 28 | +57 | 0 |
 | Patrick Williams | 102 | 47 | +32 | 0 |
 | Harrison Barnes | 90 | 57 | +13 | 0 |
 | Caleb Love | 90 | 40 | +30 | 0 |
-| Cameron Payne | 86 | 16 | +51 | 0 |
 | D'Angelo Russell | 75 | 25 | +33 | 0 |
 | Al Horford | 70 | 41 | +13 | 0 |
-| Killian Hayes | 60 | 15 | +32 | 0 |
 | Spencer Jones | 58 | 33 | +13 | 0 |
 | Jamir Watkins | 49 | 34 | +4 | 0 |
 | Nae'Qwan Tomlin | 48 | 35 | +2 | 0 |
@@ -47,11 +40,8 @@
 | Pat Spencer | 36 | 40 | -12 | 0 |
 | Kentavious Caldwell-Pope | 27 | 37 | -16 | 0 |
 | Luka Garza | 21 | 47 | -30 | 0 |
-| Vince Williams | 18 | 23 | -9 | 0 |
 | Liam McNeeley | 14 | 13 | -1 | 0 |
 | Matisse Thybulle | 9 | 23 | -16 | 0 |
-| Guerschon Yabusele | 5 | 25 | -20 | 0 |
-| Cole Anthony | 1 | 15 | -13 | 0 |
 
 ## Rivals: max bid · $ left · spots
 
