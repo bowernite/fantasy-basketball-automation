@@ -157,3 +157,21 @@ class GamesPlayed(unittest.TestCase):
         e = dict(entry("no birthday", 50), pl=None)
         q = future.player(e, prog.Sampler(prog.params()), "gp", 3)
         self.assertEqual(q["rates"], [35.0, None, None])
+
+    def test_a_projection_after_a_season_lost_to_injury_stands(self):
+        e = entry("back from injury", 70)
+        e["pl"]["gp_last"] = 12.0
+        self.assertEqual(future.player(e, prog.Sampler(prog.params()), "gp", 3)["gps"][0], 70)
+
+    def test_a_projection_below_the_models_forecast_is_known_absence_and_stands(self):
+        q = future.player(entry("out till January", 30), prog.Sampler(prog.params()), "gp", 3)
+        self.assertEqual(q["gps"][0], 30)
+
+    def test_a_drafted_rookie_plays_his_first_season_on_the_models_basis_too(self):
+        sampler = prog.Sampler(prog.params())
+        rookies_72 = [dict(r, gp1=72.0) for r in draft_class()]
+        after, _ = future.offseason(small_league(), 0, TEAMS, {}, rookies_72, "t", years=3)
+        first = next(p for p in after["T12"] if p["n"].startswith("'27 1."))
+        slot = int(first["n"][-2:])
+        tpl = rookies_72[slot - 1]
+        self.assertAlmostEqual(first["gps"][1], sampler.gp_expected(sampler.gp_ref, tpl["age1"] - 1, tpl["rate1"]))

@@ -4,7 +4,7 @@ ledger (`fetch_data.py picks`) and cuts to 38. No trades."""
 import datetime, json, os, statistics, tempfile, time
 from fetch_data import LIVE_SEASON, SEASON_TAG
 from .. import bracket, future, progression as prog, title
-from ..data import ROSTER_DIR, _load
+from ..data import DATA_DIR, ROSTER_DIR, _load
 from ..roster import our_roster
 from ..score import board_base
 from . import progression as players
@@ -13,6 +13,7 @@ PATHS, SEED, YEARS = 600, 1, 7
 T_ENG, T_IN = 10, 200          # inner trials per team-season; the paths carry the spread
 LAST = os.path.join(tempfile.gettempdir(), "ff-sim-future-last.json")
 LEDGER = "picks-%s.json" % SEASON_TAG
+DRIFT_PF, DRIFT_TITLE = 100, 0.005    # what a near-null roster swap moves teams outside it
 
 
 def report_future():
@@ -61,6 +62,11 @@ def inputs():
     template = [dict(e["pl"], bres=None, rate_mult=None, n=e["row"]["n"], tm=e["row"]["tm"],
                      elig=e["row"]["elig"], base=e["base"]) for e in rookies[:picks]]
     return start, template, [n for _, n in unplaced]
+
+
+def _ledger_behind_rosters():
+    ledger = os.path.getmtime(os.path.join(DATA_DIR, LEDGER))
+    return any(os.path.getmtime(os.path.join(ROSTER_DIR, p)) > ledger for p in _roster_paths())
 
 
 def _roster_paths():
@@ -118,12 +124,17 @@ def _order(out):
 
 def _preamble(fetched, flat):
     p = prog.params()
-    print("FUTURE  %d paths, seed %d; progression params fit %s; pick ledger fetched %s"
+    print("%d paths, seed %d; progression params fit %s; pick ledger fetched %s"
           % (PATHS, SEED, p["fit"]["date"], fetched))
+    if _ledger_behind_rosters():
+        print("  ⚠️ a roster file is newer than the pick ledger: after a trade that moved a pick,"
+              " `./run fetch_data.py picks`")
     print("Uncalibrated read. Every player follows his own progression path (FP/G, GP, exit),")
-    print("  `sim.py progression`'s model. Season 1 is the projected rates as-is, but on the")
-    print("  model's GP (its forecast off last season), so all seven seasons share one GP")
-    print("  basis; `sim.py title` is season 1 on the projections' GP (line under the table).")
+    print("  `sim.py progression`'s model. Season 1 is the projected rates as-is, with GP capped")
+    print("  at the model's forecast off last season (a rookie's off a norm season; a projection")
+    print("  after a season lost to injury stands), so all seven seasons share one GP basis.")
+    print("  `sim.py title` is season 1 on the projections' GP, the year-1 numbers of record")
+    print("  (line under the table).")
     print("Each offseason: exits leave; the draft (4 rounds, one order: top 4 by regular-season")
     print("  record pick 12-9, the rest worst first, worst 4 draw 1.01 at 50/25/15/10) slots a")
     print("  pick by its ORIGINAL team's sampled finish and hands the rookie to its holder; '30+")
@@ -191,14 +202,20 @@ def _delta(out):
     if not moved:
         print("\nΔ vs last run (%s): same as the last run" % last["saved"])
         return
-    print("\nΔ vs last run (%s): PF (k) and P(title) points, teams that moved" % last["saved"])
+    print("\nΔ vs last run (%s): PF (k) and P(title) points. A change reshuffles later draft orders,"
+          % last["saved"])
+    print("  so teams outside it drift too: cells under %.2fk PF and %.1f points are that drift, shown as ." 
+          % (DRIFT_PF / 1000, 100 * DRIFT_TITLE))
     print("  %-8s" % "team" + "".join("  %-12s" % y for y in out["years"]))
     for o in _order(out):
         if o in moved:
             t, b = out["teams"][o], last["teams"][o]
-            print("  %-8s" % o + "".join("  %+5.2f %+5.1f" % ((t["pf"][y] - b["pf"][y]) / 1000,
-                                                             100 * (t["title"][y] - b["title"][y]))
-                                         for y in range(YEARS)))
+            cells = []
+            for y in range(YEARS):
+                pf, p = t["pf"][y] - b["pf"][y], t["title"][y] - b["title"][y]
+                drift = abs(pf) < DRIFT_PF and abs(p) < DRIFT_TITLE
+                cells.append("  %-12s" % ("." if drift else "%+5.2f %+5.1f" % (pf / 1000, 100 * p)))
+            print("  %-8s" % o + "".join(cells))
 
 
 def _save(out):

@@ -56,7 +56,7 @@ def player(e, sampler, key, years):
     if e["pl"] is None:
         rates, gps = [row["avg"]] + [None] * (years - 1), [row["gp"]] + [0.0] * (years - 1)
     else:
-        gp1 = _gp1(e, sampler)
+        gp1 = _gp1(e["pl"], row["gp"], sampler)
         rates, gps = sampler.path(dict(e["pl"], gp1=gp1), years, random.Random("%s/%s" % (key, row["n"])))
         rates[0], gps[0] = row["avg"], gp1
     return {"n": row["n"], "tm": row["tm"], "elig": list(row["elig"]), "base": e["base"],
@@ -72,18 +72,21 @@ def _drafted_share(roster, s):
 def season_one(start):
     """Season 1's 12 teams, measured as `title` measures them but on `_gp1`"""
     sampler = prog.Sampler(prog.params())
-    return tuple(bracket.measure(pad([dict(e["row"], gp=int(round(_gp1(e, sampler)))) for e in es]), path)
+    return tuple(bracket.measure(pad([dict(e["row"], gp=int(round(_gp1(e["pl"], e["row"]["gp"], sampler)))) for e in es]), path)
                  for path, es in sorted(start.items()))
 
 
-def _gp1(e, sampler):
+def _gp1(pl, gp, sampler):
     """Season 1's GP on the model's basis, the one every later season is on:
-    its forecast off last season. A projection under 20 GP (injury) stands, as
-    does a draftee's"""
-    row, pl = e["row"], e["pl"]
-    if pl is None or pl["gp_last"] is None or row["gp"] < prog.ACTIVE:
-        return row["gp"]
-    return sampler.gp_expected(pl["gp_last"], pl["age1"] - 1, pl["rate1"])
+    the projection, capped at the model's forecast off last season (a
+    draftee's off a norm season). The projection stands after a season lost
+    to injury, since it knows the return and the model doesn't"""
+    if pl is None or gp < prog.ACTIVE:
+        return gp
+    if pl["gp_last"] is not None and pl["gp_last"] < prog.ACTIVE:
+        return gp
+    last = sampler.gp_ref if pl["gp_last"] is None else pl["gp_last"]
+    return min(gp, sampler.gp_expected(last, pl["age1"] - 1, pl["rate1"]))
 
 
 def _measure(roster, s, path, trials):
@@ -148,6 +151,7 @@ def _cut(roster, s):
 
 
 def _draftee(tpl, label, s, years, sampler, key):
-    rates, gps = sampler.path(dict(tpl, name=label), years - s - 1, random.Random("%s/%s" % (key, label)))
+    gp1 = _gp1(tpl, tpl["gp1"], sampler)
+    rates, gps = sampler.path(dict(tpl, name=label, gp1=gp1), years - s - 1, random.Random("%s/%s" % (key, label)))
     return {"n": label, "tm": tpl["tm"], "elig": list(tpl["elig"]), "base": tpl["base"],
             "rates": [None] * (s + 1) + rates, "gps": [0.0] * (s + 1) + gps}
