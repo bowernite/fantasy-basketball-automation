@@ -1,161 +1,73 @@
 # out > in | Score ΔBASE Δw Δw(season) ΔP(title) Δage | status
 
-Counterparty: Chris (King Christopher of Bavaria, 161014). Projected 10th, 0% P(title), cliff arc (LeBron/KD/Curry). Not a short-term competitor. Roster verified live 9/25; eval re-run on 9/24 projections.
+Counterparty: Chris (King Christopher of Bavaria, 161014). Year 1 (Team Projections 9/29): PF 10th (26,327), 5.6 W, 0% P(title), fringe/tanking boundary; not a short-term competitor. 37 bodies (one open spot). Every row simmed 9/29 on 9/29 rosters + projections (F/C flex, full-Score cuts; config `$TMPDIR/ff-sim-chris-4a.json`).
 
-Context: we're shopping Cade (Todd and Jon bidding). Chris on 9/21: won't deal win-now players to a tier-1 contender. Plan: win now, then 5–10 weeks in either go all in or sell every win-now player. On 9/2 he floated Fox for a pick. Values bodies/depth highly (Brett, 9/25): shapes that thin his roster are a hard sell.
+What he's said: 9/21 won't deal win-now players to a tier-1 contender (wants a tier-2 buyer). 9/25 passed on Cade+Walker+Kuminga > Fox+Daniels+Anunoby+Quickley+Bridges+Stewart: "Don't want to give up the depth". 9/28 we floated Chris '27 2nd+own '27 2nd > Daniels, '27 1st > Daniels, and the two 2nds > Fox; he took Fox and asked for a body back to stay even (offered Matković, Middleton or Ellis; refused Chaney). No answer on the Daniels options. He values bodies/depth and sells to us for picks despite the 9/21 line. Daniels (23.5) is the piece least likely to count as win-now in his head.
 
-9/25: passed on Cade+Walker+Kuminga > Fox+Daniels+Anunoby+Quickley+Bridges+Stewart: "Don't want to give up the depth. Even tho Cade is awesome". Body-even Cade shapes (sims 9/25) still cost him 1.6–3.1 season wins (rejected feeler: 3.3), since our fillers don't play for him. The ones that beat Todd cost him 2.5–3.1 and the best need Curry or Durant (+4.2–4.6 yrs weighted age for us). Treat Chris as out on Cade.
+Executed 9/28 (485835): Middleton+Chris '27 2nd+own '27 2nd > Fox. Dropped with it: every Cade row (all took Fox; Chris is out on Cade), and every row using Fox, Middleton, Matković, Chaney, '26 2.09 or either '27 2nd we sent.
 
-Benchmark (Todd live): Cade+Sharpe+Mark > Haliburton+Porter+NAW+Claxton | +2200 +900 +1.5 +1.1 +8% +2.6
+Pricing: our picks at 9/29 VALUE (`Ours.team.md`): '27 1st 1176, Mitch '27 2nd 694, '27 4th 93. We're at 38, so pick-for-player rows put Tyus Jones (the sim's cut) in Out. Sharpe rows with no other weighted piece print Δage `?` (Sharpe GP 0 → age weight 0). Out-side Bridges = Miles; In-side Bridges = Mikal. Sharpe and Mark were in Henry's Giannis offers (9/28); check that thread before floating them.
 
-Bars: Cade rows are tiered by Score against Todd's live offer (`trade-shapes` §Tiering): above floor = clearly above it, floor = within ~300 (tie widened for these body-uneven shapes), below bar = clearly below. Non-Cade rows are tiered by Score against their own floor (~+600 to +1000). Chris '28 1st priced at 2400 BASE, the low end of his ≤3270–2391 band, because Cade lifts his finish. Sims 9/25; every row re-priced 9/25 for Score.
-
-9/28 (post-Cade menu): new rows priced with Cade > Reaves+Sabonis+Siakam applied (`$TMPDIR/ff-C1` roster, 37 bodies) and picks at 9/28 VALUE ('27 1st 1150, Chris '27 2nd 775, Mitch '27 2nd 700, own '27 2nd 575). Those rows are the ones built only from '27 picks, Kuminga, Walker, Suggs, Murray, Eason, White, Bridges, Kyrie, VanVleet. Every other non-Cade row is 9/25 and pre-Cade. Cade, Middleton, Garland, Sharpe, Mark, Bane, Giddey, '28 1st, 2.09 and '28 2nd are committed in live threads (war room), so rows using them are parked. His 9/21 "won't deal win-now players to a tier 1 contender / want to deal to a tier 2 contender" was his answer to Brett asking about the Fox-for-a-pick idea. Daniels (23.9) is the piece least likely to count as win-now in his head. Jabari Smith, Camara and Green rows (same roster) added 9/28 once Brett ruled the Hlina Duren deal done. Not archived to `Chris Trade Shapes.md` (AGENTS.md bars agents from that file).
-
-Executed 9/28 (trade 485835): Middleton+Chris '27 2nd+own '27 2nd > Fox | +1700 +1000 +1.0 +0.5 +4% +7.7. Every row above priced before it; Fox, Middleton and both '27 2nds have moved.
-
-Sharpe/Mark sale 9/28/26 (`$TMPDIR/ff-CF`, 37 bodies, config `$TMPDIR/ff-sim-sharpe-mark-CF.json`): 11 rows priced where Out is only Sharpe and/or Mark (In: Daniels, Quickley, Bridges, Anunoby, LeBron, Durant). Sharpe+Mark > Daniels+Quickley pre-Cade row overwritten. Sharpe and Mark are also in Henry's sent Giannis offers 1–2.
+Bars: no live benchmark; tiered by Score. Above floor ≥ ~+1100, floor ~+600 to +1100, below bar < +600. LeBron/Durant/Curry rows carry Δage +10 to +23; Score prices that through BASE.
 
 ## Above floor
 
-Cade+Sharpe > Fox+Daniels+Curry+Anunoby+Quickley | +3100 +1100 +3.0 +1.4 +13% +5.0
-Cade+Walker+Kuminga+Melton+Simons+Hunter > Fox+Curry+Daniels+Anunoby+Quickley+Bridges | +3100 +900 +2.7 +1.2 +13% +4.5
-Cade+Walker+Kuminga+Melton+Simons+Hunter > Fox+Durant+Daniels+Anunoby+Quickley+Bridges | +2900 +700 +2.9 +1.2 +14% +4.6
-Cade+Bona+Kuminga > Fox+Daniels+Anunoby+Quickley+Bridges+Stewart | +2800 +1100 +3.2 +1.0 +11% +2.7
-Cade+Walker+Kuminga > Fox+Daniels+Anunoby+Quickley+Bridges+Stewart | +2600 +900 +3.0 +1.0 +11% +2.9 | Chris rejected 9/25
-Cade+Melton+Walker+Bona+Middleton > Fox+Curry+Daniels+Anunoby+Quickley | +2600 +900 +2.4 +1.0 +10% +4.2
-Cade+Bona > Fox+Daniels+Anunoby+Quickley+Bridges | +2500 +1000 +2.9 +0.9 +9% +2.9
-Cade+Melton+Walker+Bona+Middleton > Fox+Durant+Daniels+Anunoby+Quickley | +2500 +600 +2.5 +1.0 +11% +4.4
-Sharpe+Mark > Daniels+Bridges | +2100 +800 +0.9 +1.2 +10% +1.7
-Sharpe+Mark > Anunoby+Quickley | +2100 +1200 +0.6 +0.5 +7% +3.8
-Chris '27 2nd+own '27 2nd > Fox | +1900 +1200 +1.2 +0.5 +4% +10.1
-'26 2.09+KC '27 2nd > Fox | +1900 +1000 +1.1 +0.8 +6% +9.6
-Chris '27 2nd+Mitch '27 2nd > Fox | +1800 +1100 +1.2 +0.5 +4% +10.1
-Sharpe+Mark > Daniels+Quickley | +1800 +900 +1.1 +0.5 +7% +0.8
-Matković+Chris '27 2nd+own '27 2nd > Fox | +1700 +1000 +1.1 +0.5 +3% +10.1 | Chris proposed 9/28
-Sharpe+Mark > Quickley+Bridges | +1500 +700 +0.5 +0.4 +6% +4.2
-'27 1st+'26 2.09 > Daniels+Stewart | +1500 +300 +1.8 +1.0 +8% +5.0
-Sharpe+Mark+'26 2.09 > Daniels+Bridges | +1500 +200 +0.8 +1.2 +10% +5.1
-'27 1st+'26 2.09 > Fox | +1400 +500 +1.1 +0.8 +6% +9.8
-Kuminga+'26 2.09 > Daniels | +1400 +300 +1.0 +0.8 +7% +3.2
-'27 1st > Daniels | +1300 +500 +1.4 +0.5 +4% +4.9 | Us proposed 9/28
-'26 2.09+'27 2nd > Quickley | +1300 +400 +0.9 +0.5 +7% +8.1
-Sharpe+Mark > LeBron+Quickley | +1200 +100 +0.8 +0.6 +9% +10.5
-Chris '27 2nd+own '27 2nd > Daniels | +1100 +300 +1.4 +0.5 +4% +4.9 | Us proposed 9/28
-Mark > Anunoby | +1100 +700 +0.2 +0.3 +3% +4.8
-Kuminga+own '27 2nd > Daniels | +1100 +400 +1.1 +0.4 +4% +4.0
-'27 1st > Quickley | +1100 +400 +1.0 +0.3 +5% +8.6
-Chris '27 2nd > LeBron | +1100 +200 +1.2 +0.5 +6% +23.1
-'26 2.09+KC '27 2nd > Daniels | +1100 +100 +1.3 +0.8 +7% +4.4
+Sharpe+Mark > Anunoby+Quickley | +2300 +1200 +0.8 +0.6 +8% +3.4
+Sharpe+Mark > Daniels+Quickley | +1900 +900 +1.1 +0.7 +7% +0.5
+Sharpe+Mark > Daniels+Bridges | +1700 +800 +0.8 +0.6 +6% +1.4
+Sharpe+Mark > LeBron+Quickley | +1600 +100 +1.1 +0.9 +12% +10.5
+Sharpe+Mark > Quickley+Bridges | +1600 +700 +0.7 +0.5 +7% +3.8
+Kuminga+'27 1st > Durant | +1400 +300 +1.4 +0.6 +7% +18.6
+Mitch '27 2nd+'27 4th+Tyus Jones > Quickley | +1400 +700 +0.9 +0.3 +5% +8.3
+Vassell > Anunoby | +1300 +900 +0.4 +0.1 +4% +3.1
+Mitch '27 2nd+Tyus Jones > Bridges | +1200 +700 +0.7 +0.1 +4% +11.1
+Sharpe > Quickley | +1200 +500 +0.5 +0.3 +5% ?
+Mitch '27 2nd+Tyus Jones > LeBron | +1200 +100 +1.2 +0.5 +8% +22.7
+Mark > Anunoby | +1200 +700 +0.3 +0.3 +4% +4.4
+Sharpe+'27 4th > Quickley | +1100 +400 +0.5 +0.3 +5% +8.3
+'27 1st+Huff > Anunoby | +1100 +500 +0.7 +0.3 +4% +10.2
+Mark+Mitch '27 2nd > Durant | +1100 +100 +1.0 +0.7 +6% +17.6
 
 ## Floor
 
-Cade+Melton+Walker+Bona+Middleton+Chaney > Fox+Daniels+Anunoby+Quickley+Bridges+Stewart | +2400 +700 +2.3 +0.8 +9% +1.9
-Cade+Walker > Fox+Daniels+Anunoby+Quickley+Bridges | +2300 +800 +2.8 +1.0 +9% +3.0
-Cade+Middleton+Matković+Chaney+Huff > Fox+Daniels+Anunoby+Quickley+Bridges | +2300 +600 +2.6 +0.9 +10% +2.4
-Cade+Kuminga > Fox+Daniels+Anunoby+Quickley+Bridges | +2200 +600 +2.8 +1.0 +10% +2.9
-Cade+Butler+Melton+Walker+Middleton > Fox+Curry+Daniels+Anunoby+Quickley | +2100 +400 +1.9 +1.0 +11% +3.2
-Cade > Fox+Daniels+Curry+Anunoby | +2000 +600 +2.6 +1.1 +8% +5.5
-Cade+Sharpe+Kuminga > Fox+Daniels+Anunoby+Quickley+Bridges+Stewart | +2000 +300 +2.7 +1.1 +11% +2.7
-Cade+Middleton+Matković+Chaney+'26 2.09 > Fox+Daniels+Anunoby+Quickley+Bridges | +2000 +300 +2.6 +1.0 +9% +3.0
-Cade+Walker+Kuminga+Bona+Middleton+Matković > Fox+Daniels+Anunoby+Quickley+Bridges+Stewart | +2000 +300 +2.4 +0.8 +9% +2.4
-Cade > Fox+Daniels+Durant+Anunoby | +1900 +300 +2.8 +1.1 +9% +5.7
-Cade+Mark > Fox+Daniels+Anunoby+Quickley+'28 1st | +1900 +800 +1.5 +0.8 +7% +1.0
-Cade+Bona+'26 2.09 > Fox+Daniels+Anunoby+Quickley+Bridges | +1800 +400 +2.8 +0.9 +9% +3.5
-Sharpe > Quickley | +1000 +500 +0.4 +0.2 +4% ?
-Eason > Quickley | +1000 +500 +0.4 +0.2 +5% +2.3
-Chris '27 2nd+Mitch '27 2nd > Daniels | +1000 +200 +1.4 +0.5 +4% +4.9
-Sharpe+Mark > Daniels+Stewart | +1000 0 +0.5 +1.0 +8% -0.3
-Sharpe+'26 2.09 > Daniels | +1000 0 +0.7 +0.9 +7% +3.9
-Jabari Smith > Daniels | +900 +400 +0.5 +0.4 +3% +0.6
-Kuminga+Chris '27 2nd > Daniels | +900 +200 +1.1 +0.4 +4% +4.0
-Chris '27 2nd+own '27 2nd > Quickley | +900 +200 +1.0 +0.3 +5% +8.6
-Sharpe+Mark > Fox | +900 +200 -0.2 +0.8 +6% +4.4
-Sharpe > Bridges | +800 +500 +0.2 +0.2 +3% ?
-Kuminga+Chris '27 2nd > Quickley | +800 +100 +0.8 +0.2 +5% +7.7
-Camara > Daniels | +800 +500 +0.7 +0.2 0% -2.4
-Mark > Quickley | +700 +200 +0.3 +0.2 +4% +2.9
-Eason+'26 2.09 > Daniels | +700 -100 +0.7 +0.7 +6% +0.6
-Kuminga+Walker+'26 2.09 > Daniels | +700 -100 +0.7 +0.7 +5% +2.5
-'26 2.09 > Washington | +700 +300 +0.7 +0.3 +3% +8.4
-Sharpe+'26 2.09 > Quickley | +700 -100 +0.3 +0.5 +7% +7.6
-Sharpe > LeBron | +600 -100 +0.5 +0.4 +6% ?
-Suggs > Anunoby | +600 +300 +0.2 +0.2 +2% +4.3
-Murray > Daniels | +600 +100 +0.6 +0.4 +3% -2.1
-Mark+'26 2.09 > Anunoby | +600 0 +0.1 +0.6 +5% +8.2
+'27 1st+Tyus Jones > Daniels | +1000 +400 +1.1 +0.4 +3% +4.5
+'27 1st+Tyus Jones > Quickley | +1000 +300 +0.9 +0.3 +5% +8.3
+Eason > Daniels | +1000 +500 +0.6 +0.4 +3% -1.9
+Eason > Quickley | +1000 +500 +0.4 +0.2 +5% +1.9
+Mitch '27 2nd+Drummond > LeBron | +1000 0 +1.0 +0.6 +7% +20.0
+Poeltl > Quickley | +1000 +600 +0.6 +0.2 +3% -3.7
+Eason+'27 1st > Curry | +1000 +100 +0.9 +0.5 +6% +16.6
+Vassell > Quickley | +1000 +400 +0.5 +0.1 +5% +1.2
+Sharpe > Bridges | +900 +500 +0.3 +0.2 +3% ?
+Sharpe > LeBron | +900 -100 +0.8 +0.6 +8% ?
+Kuminga+Mitch '27 2nd > Daniels | +900 +300 +0.9 +0.4 +3% +3.6
+Queta > Bridges | +800 +700 +0.2 -0.1 +1% +2.9
+Mark > Quickley | +800 +200 +0.4 +0.3 +5% +2.5
+Sharpe+Mark > Durant | +700 -200 +0.5 +0.7 +6% +13.2
+Murray+Mitch '27 2nd > Durant | +700 -100 +0.8 +0.5 +5% +14.0
+Jabari Smith > Daniels | +700 +400 +0.3 +0.2 +2% +0.1
+Suggs > Anunoby | +600 +300 +0.2 +0.1 +3% +3.9
+Sharpe+Mark > Daniels+Stewart | +600 0 +0.6 +0.6 +4% -0.8
 
 ## Below bar
 
-Cade+Middleton+Matković+Chaney > Fox+Daniels+Anunoby+Curry | +1800 +200 +2.2 +1.0 +8% +5.1
-Cade+Sharpe > Fox+Daniels+Anunoby+Quickley+Bridges | +1800 +200 +2.5 +1.1 +10% +2.9
-Cade+Walker+'26 2.09 > Fox+Daniels+Anunoby+Quickley+Bridges | +1700 +200 +2.7 +1.0 +9% +3.6
-Cade+Middleton+Matković+Bona+Walker > Fox+Daniels+Anunoby+Quickley+Bridges | +1700 +300 +2.2 +0.7 +7% +2.5
-Cade+Middleton+Matković+Chaney > Fox+Daniels+Anunoby+Durant | +1600 0 +2.4 +1.1 +8% +5.2
-Cade+Melton+Simons+Walker+Kuminga > Fox+Curry+Daniels+Anunoby+Quickley | +1600 -100 +2.2 +1.0 +11% +4.5
-Cade+Eason > Fox+Daniels+Anunoby+Quickley+Bridges | +1600 +100 +2.5 +1.0 +10% +2.8
-Cade+Bona > Fox+Daniels+Anunoby+Quickley+Stewart | +1600 +200 +2.6 +0.8 +9% +2.2
-Cade+Kuminga > Fox+Daniels+Anunoby+Quickley+Washington | +1500 0 +2.7 +1.0 +10% +2.6
-Cade+Walker+Kuminga+Melton+Bona+Middleton > Fox+Daniels+Anunoby+Quickley+Bridges+Stewart | +1500 0 +2.0 +0.7 +9% +1.9
-Cade+Kuminga+'26 2.09 > Fox+Daniels+Anunoby+Quickley+Bridges | +1500 -100 +2.8 +1.0 +10% +3.5
-Cade+Melton+Simons+Walker+Kuminga > Fox+Durant+Daniels+Anunoby+Quickley | +1500 -300 +2.4 +1.0 +11% +4.7
-Cade+Mark > Fox+Daniels+Anunoby+Quickley+Bridges | +1400 -100 +2.4 +1.0 +10% +2.9
-Cade+Middleton+Matković+Chaney+Huff > Fox+Daniels+Anunoby+Quickley+Stewart | +1300 -200 +2.3 +0.8 +9% +1.7
-Cade+Bona > Fox+Anunoby+Quickley+Bridges+Washington | +1300 +300 +2.3 +0.6 +6% +4.1
-Cade+VanVleet+Melton+Walker+Bona > Fox+Curry+Daniels+Anunoby+Quickley | +1200 -400 +2.0 +1.0 +10% +3.5
-Cade+Melton+Walker+Bona+Middleton > Fox+Daniels+Anunoby+Quickley+Bridges | +1200 0 +1.8 +0.6 +7% +2.0
-Cade+Kuminga > Fox+Daniels+Anunoby+Quickley+Herbert Jones | +1100 -300 +2.4 +0.8 +9% +2.5
-Cade > Fox+Daniels+Anunoby+'28 1st | +1000 +600 +1.3 +0.5 +2% +0.6
-Cade+Walker+Kuminga+Melton+Bona+'26 2.09 > Fox+Daniels+Anunoby+Quickley+Bridges+Stewart | +1000 -400 +2.2 +0.8 +9% +2.8
-Cade > Fox+Daniels+Anunoby+Quickley | +1000 -300 +2.3 +0.8 +8% +2.4
-Cade+Middleton+Matković+Chaney+Huff+'27 1st > Fox+Daniels+Anunoby+Quickley+Bridges | +900 -900 +2.6 +0.9 +10% +3.9
-Cade+Melton+Simons+Walker+Kuminga+Bona > Fox+Daniels+Anunoby+Quickley+Bridges+Stewart | +900 -500 +1.9 +0.6 +8% +2.1
-Cade+Walker+Kuminga+Melton+Butler+Bona > Fox+Daniels+Anunoby+Quickley+Bridges+Stewart | +800 -500 +1.7 +0.7 +9% +1.2
-Cade+Melton+Simons+Walker+Middleton > Fox+Daniels+Anunoby+Quickley+Bridges | +800 -500 +1.6 +0.6 +8% +1.9
-Cade+Sharpe+Mark > Fox+Daniels+Anunoby+Quickley+'28 1st | +800 -300 +0.9 +0.9 +8% +1.0
-Cade+Walker+Kuminga+Melton+Simons+Hunter > Fox+Daniels+Anunoby+Quickley+Bridges+Stewart | +700 -700 +1.9 +0.7 +9% +2.1
-Cade+Melton+Kuminga+Walker+Bona > Fox+Daniels+Anunoby+Quickley+Bridges | +700 -500 +1.8 +0.7 +7% +2.4
-Cade+Middleton+Matković+Chaney > Fox+Daniels+Anunoby+Quickley | +700 -600 +1.9 +0.7 +7% +1.9
-Cade > Fox+Daniels+Anunoby+Bridges | +600 -300 +2.1 +0.7 +5% +2.9
-Cade > Fox+Daniels+Quickley+'28 1st | +600 +100 +1.3 +0.4 +3% +0.2
-Cade+Melton+Walker+Bona+Middleton > Fox+Daniels+Anunoby+Quickley+Washington | +600 -600 +1.7 +0.6 +7% +1.7
-Cade+Melton+Walker+Bona > Fox+Daniels+Anunoby+Curry | +500 -600 +1.6 +0.8 +5% +5.1
-Suggs > Daniels | +500 0 +0.6 +0.4 +3% -1.3
-White > Daniels | +500 +300 +0.2 +0.2 +1% -2.6
-Kuminga+Walker+Chris '27 2nd > Daniels | +500 -200 +0.8 +0.4 +3% +3.1
-Cade+Butler+Melton+Walker+Bona > Fox+Daniels+Anunoby+Quickley+Bridges | +500 -600 +1.4 +0.6 +7% +1.4
-Cade+Mark > Fox+Daniels+Anunoby+Stewart+'28 1st | +500 -100 +1.0 +0.6 +3% +0.6
-Sharpe+Mark > Durant | +400 -200 +0.2 +0.5 +4% +13.6
-Eason+Chris '27 2nd > Daniels | +400 -200 +0.8 +0.5 +4% +0.9
-Murray > Quickley | +400 0 +0.2 +0.1 +4% +1.6
-Cade > Fox+Daniels+Bridges+'28 1st | +400 +100 +1.1 +0.3 +1% +0.6
-Suggs > Quickley | +300 -100 +0.2 +0.1 +4% +2.4
-'26 2.09 > Stewart | +300 +100 +0.4 +0.2 +2% +5.7
-Mark > LeBron | +200 -400 +0.4 +0.4 +5% +17.4
-White > Quickley | +200 +200 -0.1 0.0 +1% +1.1
-Green > Daniels | +200 0 +0.4 +0.3 0% -0.7
-Suggs+Walker > Daniels | 0 -400 +0.3 +0.3 +3% -0.9
-Kyrie > Daniels | 0 -100 +0.3 +0.2 +1% -10.5
-Suggs+Eason > Fox | 0 -300 -0.2 +0.3 +2% +3.9
-Murray+Chris '27 2nd > Anunoby | 0 -300 +0.1 +0.2 +3% +5.6
-Cade > Daniels+Anunoby+Quickley+'28 1st | 0 -400 +1.1 +0.2 +3% 0.0
-VanVleet+Chris '27 2nd > Quickley | -100 -600 +0.4 +0.2 +5% +0.3
-Murray+Kuminga > Daniels | -100 -600 +0.3 +0.3 +3% -1.9
-Cade+Sharpe > Fox+Daniels+Anunoby+'28 1st | -100 -500 +0.6 +0.5 +2% +0.6
-White+Chris '27 2nd > Daniels | -300 -500 +0.2 +0.2 +1% -0.8
-Cade+Mark > Fox+Daniels+Anunoby+'28 1st | -500 -800 +0.5 +0.5 +2% +0.6
+Mark > LeBron | +500 -400 +0.6 +0.6 +7% +16.9
+Murray > Daniels | +400 +100 +0.4 +0.3 +2% -2.6
+Murray > Quickley | +400 0 +0.2 +0.1 +4% +1.2
+White > Daniels | +400 +300 0.0 +0.2 +1% -3.1
+Suggs > Quickley | +300 -100 +0.2 +0.1 +4% +2.0
+White > Quickley | +300 +200 -0.1 0.0 +2% +0.7
+Suggs > Daniels | +300 0 +0.4 +0.3 +1% -1.8
+Sharpe+Mark > Anunoby | +100 -400 -0.2 +0.3 +4% +4.4
+Suggs+Walker > Daniels | -200 -400 +0.1 +0.2 +1% -1.4
+Murray+Kuminga > Daniels | -300 -600 +0.1 +0.3 +1% -2.4
 
 ## Too lopsided
 
-'27 1st > Fox | +2100 +1400 +1.2 +0.5 +4% +10.1
-Camara > Fox | +1600 +1400 +0.5 +0.2 -1% +2.8
-Jabari Smith > Fox | +1700 +1300 +0.3 +0.3 +3% +5.8
-
 ## Doesn't meet our minimums
 
-Cade+Walker > Fox+Daniels | -4700 -4300 0.0 -0.1 -5% +1.6
-Cade+Walker+Kuminga > Fox+Daniels+Anunoby | -2600 -3000 +0.7 +0.3 +1% +2.4
-Bridges+Kuminga > Daniels | -400 -200 -0.1 +0.1 -4% -4.3
-Cade+Matković+Chaney > Fox+Curry+Durant | -100 -1100 +1.7 +0.7 +4% +10.9
-Kyrie+Kuminga > Fox | +100 0 -0.2 +0.1 0% -4.5
-Bridges > Quickley | +200 +400 -0.2 -0.1 -2% -0.9
-Sharpe+Mark > Anunoby | +200 -400 -0.4 +0.6 +6% +4.8
+Bridges+Kuminga > Daniels | -600 -200 -0.2 0.0 -5% -4.7
+Kyrie > Daniels | -200 -100 +0.1 +0.1 -1% -11.0
+Green > Daniels | -100 0 +0.2 +0.2 -2% -1.1
+Bridges > Quickley | +200 +400 -0.2 -0.1 -2% -1.2
+Camara > Daniels | +700 +500 +0.5 +0.2 0% -2.9

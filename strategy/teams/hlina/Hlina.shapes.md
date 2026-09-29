@@ -1,59 +1,47 @@
 # out > in | Score ΔBASE Δw Δw(season) ΔP(title) Δage | status
 
-Counterparty: Hlina (Matthew the Apostle, 161021). Contending, #2 this season (18.9% title) and projected #1 in '27-28, so our top competitor (`trades` §Competitors).
+Counterparty: Hlina (Matthew the Apostle, 161021). Contending: PF 5th (30,029), 11.7 W, 6.1% title (Team Projections year 1; years 2+ pending `future`). 71 PF behind Josh for the top-4 cut. 36 bodies, so he takes up to 2 extra bodies without a cut.
 
-Hlina 9/27 3:20p: asked "What's the price for Cade?". Nothing offered yet. 9/28 12:03p passed on both Cade shapes, then asked "Any interest in Laravia for 2.09?".
+History: 9/27 asked the price for Cade. 9/28 passed on every Cade shape floated (Maxey+Buzelis, plus Paolo+J. Williams and Maxey+Miller rows that sent a '27 2nd; both 2nds went to Chris in the Fox deal, so those rows are gone). 9/28 executed: our '26 2nd (used on Cenac) for LaRavia+Drummond (485845), and Duren for Green+Jabari Smith+Camara (485450).
 
-Floor: the expected Todd/Jon close, Score ≈ +2600 (Jon's offer +2400, Todd's favorite +2200). Cade rows tier against it. Maxey+Buzelis rows sit Above floor on a tie Score for Δage (−0.8 vs +2.4 to +3.0 on the Todd/Jon deals) and ΔP(title).
+Cade rows tier against the live Cade floor: Michael's counter Cade+Jones+Post > Reaves+Sabonis+Siakam, +3200 +700 +3.1 +1.2 +17% +5.3 (re-simmed 9/29). No Hlina Cade row that isn't Too lopsided comes within 1300 Score of it; only Paolo+Castle+Buzelis (+3300, ΔBASE +1600) clears it. Non-Cade rows tier against holding (Score 0).
 
-Competitor read: every Maxey+X or Paolo+X row costs Hlina 0.7 to 2.7 formula Δw and his ΔBASE is the mirror of ours (he's at 26 bodies, so a 2-for-1 thins him). Only the straight Cade > Maxey family helps him (+0.3 Δw), and it fails our minimums.
+Competitor read: Hlina is 6th in title odds, not a top competitor. Every Cade row taking two or more of his players costs him 2.8 to 5.5% title and 0.5 to 2.1 formula Δw. The Paolo rows are near-even for him on formula Δw (−0.1 to +0.2) and on board BASE.
 
-Priced 9/27/26 on the 9/2 rosters (checked against Fleaflicker 9/27, no changes) with Hlina's eval columns re-run 9/27. Incoming picks: Matthew '27 1st 2687 (band midpoint), Hlina '27 1st 1425.
-
-Fox deal executed 9/28 (Fleaflicker 485835). Middleton, Chris '27 2nd and own '27 2nd (bare '27 2nd) are Chris's now, so rows that send any of them can't be offered.
+Priced 9/29 on 9/29 rosters and projections, body-even on our side (our worst body, Jones then Post, rides along on net +body shapes). Incoming picks: Matthew '27 1st 2843, Hlina '27 1st 1697; our '27 4th 93 (`/tmp/ff-pick-prices.md`).
 
 ## Above floor
 
-Cade > Maxey+Buzelis | +2600 +1200 +1.2 +0.7 +12% -0.8 | Hlina rejected 9/28
-Cade+Chaney+Matkovic > Maxey+Buzelis | +2500 +1100 +1.0 +0.7 +10% -0.8
-
-2.09 counters (9/28) tier against holding the pick (Score 0). Formula Δw for Hlina: Jaquez −1.0, LaRavia+Drummond −0.9, Bey −0.7.
-
-'26 2.09+'28 2nd > Jaquez | +800 0 +1.0 +0.6 +6% +6.5 | Hlina rejected 9/28
-'26 2.09 > LaRavia+Drummond | +700 -100 +0.9 +0.5 +7% +9.3 | Hlina agreed 9/28
-'26 2.09 > Bey | +700 -100 +0.7 +0.4 +6% +7.4
+Garland+Eason > Paolo | +600 -100 -0.1 +0.3 +6% -2.4
+Garland+Vassell > Paolo | +500 -100 0.0 +0.2 +6% -2.6
+Garland+Eason+'27 4th > Paolo | +500 -200 -0.1 +0.3 +6% -2.2
 
 ## Floor
 
-Pick rows (9/27) are not re-simmed. They take the no-pick row's numbers, subtract the pick's BASE from Score and ΔBASE, and recompute Δage per `trades` §Age. Score* (Cade Sweepstakes) is about +2900 on both.
-
-Cade+'27 2nd > Paolo+Jalen Williams | +2500 +1100 +1.3 +0.8 +12% +0.4 | Hlina rejected 9/28
-Cade+Chris '27 2nd > Maxey+Miller | +2200 +900 +1.2 +0.6 +10% +0.8 | Hlina rejected 9/28
-
-LaRavia rows (9/28) tier against holding the pick, not the Cade floor. Most of the ΔP(title) is Hlina's loss (−5%), since he's at 26 bodies. 2.09 is free since Jon backed out of the Cade deal 9/28 1:59p. Re-simmed 9/28 afternoon (LaRavia confirmed on Hlina's live roster): 2.09 > LaRavia unchanged, Hlina formula Δw −0.4.
-
-'28 2nd > LaRavia | +200 -200 +0.5 +0.3 +4% +6.8
-own '27 2nd > LaRavia | +100 -300 +0.5 +0.3 +4% +5.8
-'26 2.09 > LaRavia | +100 -300 +0.4 +0.3 +4% +4.8 | Hlina proposed 9/28
+Giddey > Paolo | +300 +100 +0.1 +0.1 +2% -0.1
+Garland+Murray > Paolo | -100 -500 -0.2 +0.2 +4% -2.6
 
 ## Below bar
 
-Cade > Maxey+Coward | +1400 +500 +1.0 +0.5 +7% -0.2
-Cade > Paolo+Castle | +1000 -200 +1.1 +0.7 +10% -1.9
-Cade > Maxey+Jaquez | +700 +100 +0.8 +0.3 +5% +0.8
+Cade+Jones > Maxey+Buzelis | +1900 +1100 +0.8 +0.3 +6% -0.6 | Hlina rejected 9/28
+Cade+Jones > Maxey+Coward | +1100 +400 +0.8 +0.2 +5% -0.3
+Cade+Jones > Paolo+Castle | +600 -400 +1.0 +0.4 +7% -1.9
+Cade+Jones > Maxey+Jaquez | +300 -100 +0.5 0.0 +2% +0.8
 
 ## Too lopsided
 
-Cade > Maxey+Castle | +3600 +2300 +1.1 +0.7 +11% -0.8
-Cade+Chaney > Maxey+Castle | +3600 +2300 +1.1 +0.7 +11% -0.8
-Cade > Maxey+Edgecombe | +2700 +2100 +0.7 +0.2 +6% -1.0
-Cade > Paolo+Castle+Buzelis | +4400 +2000 +2.7 +1.5 +19% -2.3
-Cade > Maxey+Miller | +3100 +1800 +1.2 +0.6 +10% 0.0
-Cade > Maxey+Matthew '27 1st | +1400 +1700 -0.3 -0.3 -2% -1.1
-Cade > Paolo+Jalen Williams | +3000 +1600 +1.3 +0.8 +12% -0.4
-Cade > Paolo+Buzelis+Matthew '27 1st | +2700 +1400 +1.2 +0.6 +10% -2.7
+Cade+Jones > Maxey+Castle | +3100 +2100 +1.0 +0.4 +7% -0.8
+Cade+Jones > Maxey+Edgecombe | +2800 +1900 +0.9 +0.3 +6% -1.0
+Cade > Maxey+Matthew '27 1st | +1700 +1900 -0.3 -0.2 0% -1.1
+Cade+Jones > Maxey+Miller | +2600 +1700 +1.0 +0.4 +7% +0.1
+Cade+Jones+Post > Paolo+Castle+Buzelis | +3300 +1600 +2.1 +0.8 +11% -2.2
+Cade+Jones > Paolo+Jalen Williams | +2500 +1500 +1.0 +0.4 +8% -0.4
+Cade+Jones > Paolo+Buzelis+Matthew '27 1st | +2200 +1400 +0.8 +0.2 +6% -2.7
 
 ## Doesn't meet our minimums
 
-Cade > Maxey | -1300 -1000 -0.3 -0.3 -2% +0.9
-Cade > Maxey+Hlina '27 1st | +100 +400 -0.3 -0.3 -2% -1.1
+Giddey+Garland > Maxey | -1900 -900 -1.3 -0.6 -6% +0.7
+Cade > Maxey | -1100 -1000 -0.3 -0.2 0% +0.9
+Giddey+Bane > Maxey | -400 +300 -1.1 -0.5 -4% +0.2
+Cade > Maxey+Hlina '27 1st | +600 +700 -0.3 -0.2 0% -1.1
+Fox+Garland > Maxey | +1100 +1000 -0.6 -0.1 +2% -1.8
