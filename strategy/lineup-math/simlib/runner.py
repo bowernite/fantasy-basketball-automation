@@ -15,7 +15,7 @@ from simlib.score import SCORE_BODY_FDW, SCORE_DP_TITLE, SCORE_DW, SCORE_FDW
 _TEAM_MD_CACHE = {}
 
 PICK_AGE_WEIGHT = {1: 700, 2: 300, 3: 100, 4: 50}
-_PICK = re.compile(r"'(\d{2})(?: [A-Za-z]+)? ([1-4])(?:st|nd|rd|th)\b")
+_PICK = re.compile(r"'(\d{2})(?: [A-Za-z]+)? (?:([1-4])(?:st|nd|rd|th)|([1-4])\.\d{2})\b")
 
 KINDS = ("reports", "trade-screen", "player-effects", "title-column",
          "eval-columns")
@@ -206,8 +206,8 @@ def price_deal(deal, their, our_proj, their_proj, before=None):
             fdw_us, fdw_them)
 
 
-class TeamMdGap(LookupError):
-    """A deal names a team or player the `<Name>.team.md` evals can't price"""
+class EvalGap(LookupError):
+    """A deal names a team, player or pick its ΔBASE / Δage inputs can't price"""
 
 
 def _team_md_players(path):
@@ -225,16 +225,22 @@ def _team_md_players(path):
             parts = [p.strip() for p in line.split(" | ")]
             if not in_players or len(parts) < 4 or parts[0] == "player":
                 continue
-            try:
-                age = float(parts[1].split()[0])
-            except ValueError:
-                age = None
-            fpts, gp = (int(x) for x in parts[3].split()[:2])
-            out[parts[0]] = {"player": parts[0], "source": os.path.basename(path),
-                             "age": age, "base": int(parts[2]),
-                             "fpts": fpts, "gp": gp}
+            out[parts[0]] = _team_md_row(parts, os.path.basename(path))
     _TEAM_MD_CACHE[path] = out
     return out
+
+
+def _team_md_row(parts, source):
+    """One `## Players` row; `unreadable` when a numeric cell doesn't parse"""
+    row = {"player": parts[0], "source": source}
+    try:
+        age_cell = parts[1].split()[0]
+        row["age"] = None if age_cell == "–" else float(age_cell)
+        row["base"] = int(parts[2])
+        row["fpts"], row["gp"] = (int(x) for x in parts[3].split()[:2])
+    except (ValueError, IndexError):
+        row["unreadable"] = True
+    return row
 
 
 def _team_id(their_roster):
@@ -260,17 +266,23 @@ def _team_md_path(team_ref):
     matches = ([f for f in os.listdir(folder) if f.endswith(".team.md")]
                if os.path.isdir(folder) else [])
     if len(matches) != 1:
-        raise TeamMdGap("no single <Name>.team.md in teams/%s" % slug)
+        raise EvalGap("no single <Name>.team.md in teams/%s" % slug)
     return os.path.join(folder, matches[0])
 
 
 def _team_md_rows(names, team_ref):
     path = _team_md_path(team_ref)
     table = _team_md_players(path)
+    source = os.path.basename(path)
     missing = [n for n in names if n not in table]
+    unreadable = [n for n in names if table.get(n, {}).get("unreadable")]
+    gaps = []
     if missing:
-        raise TeamMdGap("%s not in %s" % (", ".join(missing),
-                                          os.path.basename(path)))
+        gaps.append("%s not in %s" % (", ".join(missing), source))
+    if unreadable:
+        gaps.append("%s unreadable in %s" % (", ".join(unreadable), source))
+    if gaps:
+        raise EvalGap("; ".join(gaps))
     return [table[n] for n in names]
 
 
@@ -281,14 +293,30 @@ def _deal_team_md_rows(deal, their_roster):
                        (deal["in_from_them"], their_roster)):
         try:
             sides.append(_team_md_rows(names, ref))
-        except TeamMdGap as e:
+        except EvalGap as e:
             gaps.append(str(e))
     if gaps:
-        raise TeamMdGap("; ".join(gaps))
+        raise EvalGap("; ".join(gaps))
     return sides
 
 
+def _label_sides(deal):
+    label = deal.get("label") or ""
+    out_side, split, in_side = label.partition(" > ")
+    if not split and _PICK.search(label):
+        raise EvalGap("picks in label %r without ` > ` to place them" % label)
+    return out_side, in_side
+
+
 def deal_delta_base(deal, their_roster):
+    out_label, in_label = _label_sides(deal)
+    unpriced = ["%s in label but no %s" % (m.group(0), field)
+                for side, field in ((out_label, "out_us_extra_base"),
+                                    (in_label, "in_from_us_extra_base"))
+                if not deal.get(field)
+                for m in _PICK.finditer(side)]
+    if unpriced:
+        raise EvalGap("; ".join(unpriced))
     out, inc = _deal_team_md_rows(deal, their_roster)
     return (sum(r["base"] for r in inc)
             + int(deal.get("in_from_us_extra_base") or 0)
@@ -297,10 +325,11 @@ def deal_delta_base(deal, their_roster):
 
 
 def _pick_ages(label_side):
-    """(age, weight) per pick named on the label side (e.g. "KC '27 2nd")"""
+    """(age, weight) per pick named on the label side (e.g. "Chris '27 2nd")"""
     year = date.today().year
-    return [(20 - (2000 + int(yy) - year), PICK_AGE_WEIGHT[int(rnd)])
-            for yy, rnd in _PICK.findall(label_side)]
+    return [(20 - (2000 + int(m.group(1)) - year),
+             PICK_AGE_WEIGHT[int(m.group(2) or m.group(3))])
+            for m in _PICK.finditer(label_side)]
 
 
 def _age_weight(row):
@@ -319,9 +348,9 @@ def deal_delta_age(deal, their_roster):
     out, inc = _deal_team_md_rows(deal, their_roster)
     no_age = [r for r in out + inc if r["age"] is None and _age_weight(r)]
     if no_age:
-        raise TeamMdGap("; ".join("%s has no AGE in %s" % (r["player"], r["source"])
+        raise EvalGap("; ".join("%s has no AGE in %s" % (r["player"], r["source"])
                                   for r in no_age))
-    out_label, _, in_label = (deal.get("label") or "").partition(" > ")
+    out_label, in_label = _label_sides(deal)
     out_age = _weighted_age([(r["age"] or 0.0, _age_weight(r)) for r in out]
                             + _pick_ages(out_label))
     in_age = _weighted_age([(r["age"] or 0.0, _age_weight(r)) for r in inc]
@@ -392,7 +421,7 @@ def _trade_screen_results(sec, deals=None):
 def _unless_gap(gaps, price, deal, their_roster):
     try:
         return price(deal, their_roster)
-    except TeamMdGap as e:
+    except EvalGap as e:
         gaps.append(str(e))
         return None
 

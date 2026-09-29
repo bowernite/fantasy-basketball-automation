@@ -89,7 +89,7 @@ One shape per line:
 
 Run sims first (`sims` Skill). From stdout / JSON `results`:
 
-1. Map `score_us` → **Score** (nearest 100) · `delta_base_us` → **ΔBASE** (nearest 100) · `fdw_us` → **Δw** (nearest tenth) · `dw_us` → **Δw (season)** (nearest tenth) · `dp_title_us` → **ΔP(title)** (nearest whole, `%` suffix) · `dage_us` → **Δage** (nearest tenth).
+1. Map `score_us` → **Score** (nearest 100) · `delta_base_us` → **ΔBASE** (nearest 100) · `fdw_us` → **Δw** (nearest tenth) · `dw_us` → **Δw (season)** (nearest tenth) · `dp_title_us` → **ΔP(title)** (nearest whole, `%` suffix) · `dage_us` → **Δage** (nearest tenth). A deal with `eval_gap` (stdout `! <label>:` line): don't archive it; fix the eval or config, then `--refresh`.
 2. Add or update the row in both files; apply §Sections (tier, re-home lopsided / minimums, human bold, sort). Agent line per §Agent file.
 3. Delete or overwrite the tmp JSON when done.
 

@@ -445,6 +445,7 @@ def bbref_players(mirror_dir, pool):
 USAGE = """usage: ./run fetch_data.py [pool]
        ./run fetch_data.py roster [team id ...]
        ./run fetch_data.py teams
+       ./run fetch_data.py picks
        ./run fetch_data.py bbref
 
 Rebuilds the data files sim.py reads, into rosters/ and data/.
@@ -453,6 +454,8 @@ Rebuilds the data files sim.py reads, into rosters/ and data/.
   pool            + players  (~20 min, resumable)
   roster [ids]    roster + teams files, all 12 if no ids
   teams           teams file alone: id -> team name labels
+  picks           picks-<season>.json: who holds every future pick the
+                  API lists, keyed by original owner. Re-run after a trade
   bbref           pinned BBRef mirror -> data/bbref/ (gitignored), and
                   bbref-<season>.json: BPM, debut, NBA pick per pool player"""
 
@@ -470,6 +473,22 @@ def write(name, build, **dump):
     print("wrote", path)
 
 
+def pick_ledger(team_ids):
+    """Every future pick once: a traded pick is listed by both teams, and an
+    untraded one carries no `originalOwner`"""
+    held = {}
+    for t in team_ids:
+        d = get("https://www.fleaflicker.com/api/FetchTeamPicks?sport=NBA"
+                "&league_id=%d&team_id=%s" % (LEAGUE, t))
+        for p in d.get("picks", []):
+            owner = (p.get("originalOwner") or p["ownedBy"])["id"]
+            held[(p["season"], p["slot"]["round"], str(owner))] = str(p["ownedBy"]["id"])
+        time.sleep(1.1)
+    return {"fetched": datetime.datetime.now().strftime("%Y-%m-%d %H:%M"),
+            "picks": [{"season": y, "round": r, "owner": o, "holder": h}
+                      for (y, r, o), h in sorted(held.items())]}
+
+
 def team_names(league):
     """`{team_id: name}`, all 12, for labelling every table `sim.py` prints."""
     return {str(t["team"]["id"]): t["team"]["name"] for t in league["rosters"]}
@@ -484,6 +503,10 @@ if __name__ == "__main__":
     if args[:1] == ["teams"] and len(args) == 1:
         write("teams-%s.json" % SEASON_TAG,
               lambda: team_names(league_rosters()), indent=0, sort_keys=True)
+        sys.exit(0)
+    if args == ["picks"]:
+        write("picks-%s.json" % SEASON_TAG,
+              lambda: pick_ledger(sorted(team_names(league_rosters()))), indent=0)
         sys.exit(0)
     if args == ["bbref"]:
         pool = load_pool()

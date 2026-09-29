@@ -10,6 +10,7 @@ from .tables import report_players
 from .title import report_title
 from .horizon import report_horizon
 from .progression import report_progression
+from .future import report_future
 
 
 REPORTS = {
@@ -22,7 +23,7 @@ REPORTS = {
     "market": report_market, "gp": report_gp,
     "playoffs": report_playoffs,
     "weeks": report_weeks,     "title": report_title, "horizon": report_horizon,
-    "progression": report_progression,
+    "progression": report_progression, "future": report_future,
 }
 
 BLURB = {
@@ -47,14 +48,17 @@ BLURB = {
     "progression": "every rostered player's FP/G, GP and exit odds by season "
                    "over 20 years, and his weighted 20-year value (WRV). Review-only; "
                    "limits in its preamble",
+    "future": "every team's PF, rank and P(title), seasons 1-7: rosters rolled "
+              "forward on progression paths with exits, drafts off the pick "
+              "ledger and cuts to 38",
 }
 
-# Ignore `--roster`: market reads the board and the pool, progression every roster file
-ROSTER_FREE = {"market", "progression"}
+# Ignore `--roster`: market reads the board and the pool, progression and future every roster file
+ROSTER_FREE = {"market", "progression", "future"}
 
 # rounded up from an 18-core box; `engine.run` shards trials across cores, so a
 # smaller box runs slower than this
-SLOW = {"breakevens": "~4s", "league-curve": "~15s"}
+SLOW = {"breakevens": "~4s", "league-curve": "~15s", "future": "~1 min"}
 
 # Named by constant, not by player (`deals.FILLER`, `durability.SUBJECT`,
 # `calibration`'s standings PF) -- built on OUR names/scores, so `--roster`

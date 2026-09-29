@@ -99,8 +99,8 @@ def _levels(teams):
             [field_mean(w) for w in range(len(BRACKET))])
 
 
-def _champ_from_draws(seat, period_z, bracket_z, teams, seats, reg_lvl,
-                      brk_lvl, pinned):
+def _regular(teams, seats, reg_lvl, seat, period_z):
+    """(wins, PF) per team over one drawn regular season"""
     n = len(teams)
     w, p = [0] * n, [0.0] * n
     for i, games in enumerate(seats):
@@ -110,6 +110,19 @@ def _champ_from_draws(seat, period_z, bracket_z, teams, seats, reg_lvl,
         for a, h in games:
             x, y = seat[a], seat[h]
             w[x if sc[x] > sc[y] else y] += 1
+    return w, p
+
+
+def sampled_standings(teams, seed):
+    """Team paths in one drawn regular season's final order, best record first"""
+    seat, period_z, _ = _trial_draws(random.Random(seed), len(teams))
+    w, p = _regular(teams, _seats(teams), _levels(teams)[0], seat, period_z)
+    return [teams[k].path for k in standings(w, p)]
+
+
+def _champ_from_draws(seat, period_z, bracket_z, teams, seats, reg_lvl,
+                      brk_lvl, pinned):
+    w, p = _regular(teams, seats, reg_lvl, seat, period_z)
     order = list(pinned) if pinned is not None else standings(w, p)
     return _play(order[:len(BRACKET_TEAMS)],
                  [_scores(brk_lvl[r], [t.mus[r] for t in teams], bracket_z[r])
@@ -126,14 +139,7 @@ def _trial_draws(rng, n):
 def _accumulate_trial(tally, teams, seats, reg_lvl, brk_lvl, pinned, seat,
                       period_z, bracket_z):
     n = len(teams)
-    w, p = [0] * n, [0.0] * n
-    for i, games in enumerate(seats):
-        sc = _scores(reg_lvl[i], [t.regs[i] for t in teams], period_z[i])
-        for k, x in enumerate(sc):
-            p[k] += x
-        for a, h in games:
-            x, y = seat[a], seat[h]
-            w[x if sc[x] > sc[y] else y] += 1
+    w, p = _regular(teams, seats, reg_lvl, seat, period_z)
     order = list(pinned) if pinned is not None else standings(w, p)
     at = [0] * n
     wins, pf, seeds, crowns, spread = tally

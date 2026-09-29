@@ -26,7 +26,7 @@ class FetchDataCLI(unittest.TestCase):
     def test_help_names_every_thing_it_can_be_asked_for(self):
         p = self.fetch("--help")
         self.assertEqual(p.returncode, 0, p.stdout + p.stderr)
-        for word in ("pool", "roster", "teams", "bbref"):
+        for word in ("pool", "roster", "teams", "bbref", "picks"):
             self.assertIn(word, p.stdout)
 
 class DataFileWrites(unittest.TestCase):
@@ -118,3 +118,31 @@ class FetchDataWritesWhatSimReads(unittest.TestCase):
             self.dir, "data", "teams-%s.json" % fetch_data.SEASON_TAG))])
         self.assertTrue(os.path.exists(wrote[0]))
         self.assertEqual(self.rosters(), [], "`teams` re-cut a roster")
+
+    def test_picks_lands_one_holder_per_pick_however_many_lists_carry_it(self):
+        def team(t):
+            return {"id": t, "name": "Team %d" % t}
+        a, b = self.ids[:2]
+        picks = {str(t): [] for t in self.ids}
+        picks[str(a)] = [
+            {"ownedBy": team(a), "slot": {"round": 1, "slot": 5, "overall": 5}, "season": 2027},
+            {"ownedBy": team(b), "originalOwner": team(a), "slot": {"round": 2, "slot": 5, "overall": 17},
+             "traded": True, "lost": True, "season": 2027}]
+        picks[str(b)] = [
+            {"ownedBy": team(b), "originalOwner": team(a), "slot": {"round": 2, "slot": 5, "overall": 17},
+             "traded": True, "season": 2027}]
+        feed = os.path.join(self.dir, "feed.json")
+        with open(feed) as f:
+            data = json.load(f)
+        data["picks"] = {t: {"picks": listed} for t, listed in picks.items()}
+        with open(feed, "w") as f:
+            json.dump(data, f)
+        p = self.fetch("picks")
+        self.assertEqual(p.returncode, 0, p.stdout + p.stderr)
+        ledger = json.loads(read_text(os.path.join(
+            self.dir, "data", "picks-%s.json" % fetch_data.SEASON_TAG)))
+        self.assertEqual(ledger["picks"], [
+            {"season": 2027, "round": 1, "owner": str(a), "holder": str(a)},
+            {"season": 2027, "round": 2, "owner": str(a), "holder": str(b)}])
+        self.assertTrue(ledger["fetched"])
+        self.assertEqual(self.rosters(), [], "`picks` re-cut a roster")

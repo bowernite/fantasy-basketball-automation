@@ -15,7 +15,7 @@ def league_payload(*teams):
 
 STUB_FLEAFLICKER = '''"""`fetch_data.py` against a canned Fleaflicker: the same
 __main__, the same files, no network. `feed.json` beside this file supplies the
-two endpoints the roster flow calls."""
+endpoints the roster and picks flows call."""
 import io, json, runpy, sys, time, urllib.request
 
 FEED = json.load(open("feed.json"))
@@ -24,6 +24,8 @@ FEED = json.load(open("feed.json"))
 def urlopen(url, timeout=None):
     if "FetchLeagueRosters" in url:
         payload = FEED["league"]
+    elif "FetchTeamPicks" in url:
+        payload = FEED["picks"][url.split("team_id=")[1].split("&")[0]]
     elif "FetchRoster" in url:
         payload = FEED["snapshots"][url.split("team_id=")[1].split("&")[0]]
     else:

@@ -94,6 +94,69 @@ class DealDeltaBase(unittest.TestCase):
         self.assertIn("%s not in Mitch.team.md" % theirs["n"], res["eval_gap"])
         self.assertIn("%s not in Mitch.team.md" % theirs["n"], out.getvalue())
 
+    def test_a_malformed_row_only_blanks_deals_that_name_that_player(self):
+        root = fake_teams_root()
+        write_team_md(root, "my-team", "Ours.team.md",
+                      ["Jalen Suggs | 25.2 PG/SG | 1200 | 30 60 | +0.50",
+                       "Tyus Jones | 29.0 PG | 1,24 | 12 50 | +0.01"])
+        write_team_md(root, "mitch", "Mitch.team.md",
+                      ["Deni Avdija | 25.7 SF | 2000 | 35 70 | +0.90",
+                       "Blank Age |  | 50 | 10 40 | +0.01"])
+        with mock.patch.object(runner, "HERE", os.path.join(root, "lineup-math")):
+            clean = deal_delta_base({"out_us": ["Jalen Suggs"],
+                                     "in_from_them": ["Deni Avdija"]}, 161020)
+            with self.assertRaises(runner.EvalGap) as ctx:
+                deal_delta_base({"out_us": ["Tyus Jones"],
+                                 "in_from_them": ["Blank Age"]}, 161020)
+        self.assertEqual(clean, 800)
+        self.assertIn("Tyus Jones unreadable in Ours.team.md", str(ctx.exception))
+        self.assertIn("Blank Age unreadable in Mitch.team.md", str(ctx.exception))
+
+    def test_a_pick_in_the_label_without_its_base_field_is_a_gap_not_a_silent_zero(self):
+        root = fake_teams_root()
+        write_team_md(root, "my-team", "Ours.team.md",
+                      ["Jalen Suggs | 25.2 PG/SG | 1200 | 30 60 | +0.50"])
+        write_team_md(root, "mitch", "Mitch.team.md",
+                      ["Deni Avdija | 25.7 SF | 2000 | 35 70 | +0.90"])
+        deal = {"label": "Suggs+'27 1st > Avdija+Mitch '28 2nd",
+                "out_us": ["Jalen Suggs"], "in_from_them": ["Deni Avdija"]}
+        with mock.patch.object(runner, "HERE", os.path.join(root, "lineup-math")):
+            with self.assertRaises(runner.EvalGap) as ctx:
+                deal_delta_base(deal, 161020)
+            priced = deal_delta_base(dict(deal, out_us_extra_base=1176,
+                                          in_from_us_extra_base=541), 161020)
+        self.assertIn("'27 1st", str(ctx.exception))
+        self.assertIn("'28 2nd", str(ctx.exception))
+        self.assertEqual(priced, 800 - 1176 + 541)
+
+    def test_a_pick_named_by_slot_counts_like_one_named_by_round(self):
+        root = fake_teams_root()
+        write_team_md(root, "my-team", "Ours.team.md",
+                      ["Rookie | 20.0 PG | 100 | 10 50 | +0.01"])
+        write_team_md(root, "mitch", "Mitch.team.md",
+                      ["Vet | 30.0 PG/SG | 900 | 30 70 | +0.50"])
+        deal = {"label": "Rookie+'27 2.09 > Vet",
+                "out_us": ["Rookie"], "in_from_them": ["Vet"]}
+        with mock.patch.object(runner, "HERE", os.path.join(root, "lineup-math")):
+            with self.assertRaises(runner.EvalGap) as ctx:
+                deal_delta_base(deal, 161020)
+            age = deal_delta_age(deal, 161020)
+        self.assertIn("'27 2.09", str(ctx.exception))
+        self.assertAlmostEqual(age, 30.0 - 19)
+
+    def test_picks_in_a_label_without_a_side_split_are_a_gap(self):
+        root = fake_teams_root()
+        write_team_md(root, "my-team", "Ours.team.md",
+                      ["Jalen Suggs | 25.2 PG/SG | 1200 | 30 60 | +0.50"])
+        write_team_md(root, "mitch", "Mitch.team.md",
+                      ["Deni Avdija | 25.7 SF | 2000 | 35 70 | +0.90"])
+        deal = {"label": "Suggs and '27 1st for Avdija", "out_us_extra_base": 1176,
+                "out_us": ["Jalen Suggs"], "in_from_them": ["Deni Avdija"]}
+        with mock.patch.object(runner, "HERE", os.path.join(root, "lineup-math")):
+            with self.assertRaises(runner.EvalGap) as ctx:
+                deal_delta_age(deal, 161020)
+        self.assertIn(" > ", str(ctx.exception))
+
     def test_an_unknown_counterparty_is_refused_rather_than_priced_off_another_team(self):
         with self.assertRaises(ValueError) as ctx:
             deal_delta_base({
