@@ -40,7 +40,7 @@ Single-section configs `{ "kind": "..." }` still work for one-off runs in `lineu
 
 ## `trade-screen`
 
-Joint `Δw (season)` and `ΔP(title)`, one row per deal. Each deal gets `results` after it runs: `score_us` (`Eval Definitions §Score`; `null` without `delta_base_us`), `delta_base_us`, `fdw_us` (formula `Δw`), `dw_us` (`Δw (season)`), `dp_title_us`, `dage_us` (`Δage`, `trades` §Age; `null` when a name has no eval row), and their-side `fdw_them` / `dw_them` / `dp_title_them`, plus `simmed` (e.g. `8/20/26`). The section gets `meta.simmed` when any deal in it is priced; the file gets top-level `meta.simmed` on write-back.
+Joint `Δw (season)` and `ΔP(title)`, one row per deal. Each deal gets `results` after it runs: `score_us` (`Eval Definitions §Score`; `null` without `delta_base_us`), `delta_base_us`, `fdw_us` (formula `Δw`), `dw_us` (`Δw (season)`), `dp_title_us`, `dage_us` (`Δage`, `trades` §Age; `null` when a name has no eval row), `cut_us` / `cut_them` (bodies the sim cut to keep that side at 38, `trades` §Uneven bodies), and their-side `fdw_them` / `dw_them` / `dp_title_them`, plus `simmed` (e.g. `8/20/26`). The section gets `meta.simmed` when any deal in it is priced; the file gets top-level `meta.simmed` on write-back.
 
 **Picks** — player arrays only; add BASE via integer fields (price with `eval-pick` Skill):
 
@@ -55,7 +55,7 @@ Each pick goes in exactly one field; setting both for the same pick nets it to 0
 
 ## `player-effects`
 
-Isolated incoming value. Section gets `player_results` after it runs. `source: "their"` = their names incoming onto us (eval `ours` columns). `source: "us"` = our names incoming onto them. Unknown names refuse. A full 38-man side makes room by cutting its lowest-value body (`sim.arrival_basis`); `eval-columns` and `title-column` do the same on ours.
+Isolated incoming value. Section gets `player_results` after it runs. `source: "their"` = their names incoming onto us (eval `ours` columns). `source: "us"` = our names incoming onto them. Unknown names refuse. A full 38-man side makes room by cutting its worst body (`sim.arrival_basis`, `trades` §Uneven bodies); `eval-columns` and `title-column` do the same on ours.
 
 ## `reports` / `title-column`
 

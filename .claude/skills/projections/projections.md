@@ -1,6 +1,6 @@
 ---
 name: projections
-description: Projected per-game stats scored under our rules — the rate both `Δw` and `Δw (season)` run on. Fetch, score and refresh the projection snapshot.
+description: Projected per-game stats scored under our rules — the rate both `Δw` and `Δw (season)` run on. Fetch, score and refresh the projection snapshot, and push it to the browser extension.
 ---
 
 # Projections
@@ -26,9 +26,14 @@ python3 .claude/skills/projections/test_sleeper.py
 python3 .claude/skills/projections/test_hashtag_gp.py
 python3 .claude/skills/projections/test_fanscout_gp.py
 python3 .claude/skills/projections/test_overrides.py
+python3 .claude/skills/projections/test_extension_data.py
 ```
 
 Rate snapshot: `strategy/board-snapshots/projections/sleeper-2026.json`. GP snapshots: `hashtag-gp-2026.json`, `fanscout-gp-2026.json`. **Re-run rate + both GP snapshots before any eval.**
+
+## Browser extension
+
+The Safari extension's `src/data/player-data.ts` is generated from the rate snapshot + overrides + rosters (`extension_data.py`); never hand-edit it. After any rate refresh, `rate` override edit, or roster re-cut, run `bun run safari:dev` from the repo root (regenerates, rebuilds, reinstalls; Safari picks it up without a restart). Live check: a player's projection pill on our Fleaflicker team page matches the file.
 
 ## Manual overrides
 

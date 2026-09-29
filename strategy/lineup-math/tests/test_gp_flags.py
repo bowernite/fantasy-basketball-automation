@@ -24,8 +24,9 @@ class NoPoolHistory(unittest.TestCase):
                             "elig": ["SF", "PF"]})
         self.assertIsNone(sim.projected_rate("Unknown Rookie"))
         p, = sim.our_roster(path)
+        self.assertGreater(p["avg"], 0)
         self.assertEqual(p["gp"], round(sim.project_gp("Unknown Rookie",
-                                                       gp=0, rate=0.0)))
+                                                       gp=0, rate=p["avg"])))
 
 class RateEvidence(unittest.TestCase):
     def test_it_reports_the_games_the_gp_projection_rests_on(self):

@@ -222,6 +222,55 @@ class ConfigRun(unittest.TestCase):
                   + 250 * got["dw_us"] + 80 * got["dp_title_us"])
         self.assertEqual(got["score_us"], round(expect))
 
+    def test_trade_screen_prices_a_deal_that_overfills_our_roster_as_if_it_named_our_worst_body(self):
+        named = {
+            "out_us": ["Jalen Suggs"],
+            "in_from_them": ["Jordan Clarkson", "Taurean Prince"],
+            "out_them": ["Jordan Clarkson", "Taurean Prince"],
+            "in_from_us": ["Jalen Suggs"],
+        }
+        self.assertEqual(len(sim.our_roster()), sim.MAX_WIRE, "needs our roster full")
+        cfg = {"kind": "trade-screen", "their_roster": 161022,
+               "their_label": "Todd", "deals": [dict(named, label="overfill")]}
+        with cheap_monte_carlo():
+            auto = enrich_config(cfg)["deals"][0]["results"]
+        self.assertNotIn("error", auto)
+        cut, = auto["cut_us"]
+        self.assertEqual(auto["cut_them"], [])
+        cfg["deals"] = [dict(named, label="named", out_us=["Jalen Suggs", cut])]
+        with cheap_monte_carlo():
+            by_hand = enrich_config(cfg)["deals"][0]["results"]
+        for col in ("fdw_us", "dw_us", "dp_title_us"):
+            self.assertEqual(auto[col], by_hand[col], col)
+        cut_base = sim.board_base([p for p in sim.our_roster() if p["n"] == cut])[cut]
+        self.assertEqual(auto["delta_base_us"],
+                         deal_delta_base(named, 161022) - cut_base)
+        self.assertEqual(auto["score_us"], round(
+            auto["delta_base_us"] + 300 * auto["fdw_us"] + 250 * auto["dw_us"]
+            + 80 * auto["dp_title_us"]))
+
+    def test_trade_screen_cuts_their_worst_body_when_a_deal_overfills_their_roster(self):
+        named = {
+            "out_us": ["Jalen Suggs", "Keon Ellis"],
+            "in_from_them": ["Deni Avdija"],
+            "out_them": ["Deni Avdija"],
+            "in_from_us": ["Jalen Suggs", "Keon Ellis"],
+        }
+        self.assertEqual(len(sim.our_roster("roster-161020-2025-26.json")),
+                         sim.MAX_WIRE, "needs their roster full")
+        cfg = {"kind": "trade-screen", "their_roster": 161020,
+               "their_label": "Mitch", "deals": [dict(named, label="overfill")]}
+        with cheap_monte_carlo():
+            auto = enrich_config(cfg)["deals"][0]["results"]
+        self.assertNotIn("error", auto)
+        cut, = auto["cut_them"]
+        self.assertEqual(auto["cut_us"], [])
+        cfg["deals"] = [dict(named, label="named", out_them=["Deni Avdija", cut])]
+        with cheap_monte_carlo():
+            by_hand = enrich_config(cfg)["deals"][0]["results"]
+        for col in ("fdw_them", "dw_them", "dp_title_them", "dw_us"):
+            self.assertEqual(auto[col], by_hand[col], col)
+
     def test_trade_screen_title_note_is_both_rosters(self):
         cfg = {
             "kind": "trade-screen",

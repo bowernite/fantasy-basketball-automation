@@ -110,9 +110,13 @@ Skip for opening information-gathering messages.
 - A 1-for-1 still gets a run when any piece is near the top of our `ΔP(title)` column
 - Batch the short list in one config (`trade-screen` + `player-effects`). A partner who likes a shape gets a few nearby variants in that same run
 
-# Uneven-body simming
+# Uneven bodies
 
-Apply the trade to each side's roster file, then pad to 38 for pricing. **Do not name filler cuts** just to even body count. Name cuts in `out_us` / `out_them` **only when the post-trade roster would exceed 38**. Net +bodies below 38 needs no cut on either side.
+Our roster is full at 38 with no filler, so every extra incoming body costs us a real player.
+
+- **Build shapes body-even on our side:** when a shape nets us bodies, add our worst players (lowest `BASE` + `Δw`) to **Out**. It costs us what a cut would, and they get something for it.
+- **The sim cuts the rest.** Any side a deal takes over 38 drops its worst bodies (lowest board BASE + 300 × `Δw`). `trade-screen` names them in `cut_us` / `cut_them` and charges ours in `ΔBASE`, `Δw` and `Score`. A `cut_us` means the shape isn't body-even yet: move him into **Out** and re-run. Never pick a cut by hand.
+- A counterparty at 38 cuts for each extra body we send (`cut_them`).
 
 # Shapes
 
@@ -144,7 +148,6 @@ Example: Cade+('27 1st) > SGA+Fears. Out (24.9×2040 + 19×700) / 2740 = 23.4; I
 # Notes
 
 - `strategy/` holds rosters, per-team valuations and the projections picks depend on. `team-info` maps owner username → real name.
-- If getting back more players than giving up, **do not sim a cut** unless the post-trade roster would exceed 38 (§Uneven-body simming). At the table, only factor a cut when you're that close.
 - When reading a team-eval, it might state things about what they want or don't want. These are just guesses, before we have even spoken to them. Do not take them to be true necessarily.
 - When trying to find a deal shape with someone, should be phrased as something like "What do you think about x?". This will allow us to to sim it if they like the shape, without us committing to it.
   - So if we're spitballing / gathering information, never say it works on our end.

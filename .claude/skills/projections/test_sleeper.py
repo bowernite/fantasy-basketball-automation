@@ -50,13 +50,16 @@ def test_a_projection_is_scored_as_a_season_average_not_as_one_nights_line():
     assert giddey > 41.0, "%.2f -- Giddey's double-doubles went unpaid" % giddey
 
 
-def test_an_unprojected_player_is_reported_rather_than_left_stale():
-    roster = [{"n": "Josh Giddey", "avg": 42.2},
-              {"n": "Chaney Johnson", "avg": 19.1}]
+def test_an_unprojected_player_is_reported_and_priced_toward_a_fringe_body():
+    roster = [{"n": "Josh Giddey", "avg": 42.2, "gp": 70},
+              {"n": "Chaney Johnson", "avg": 19.1, "gp": 18},
+              {"n": "Emanuel Sharp", "avg": 0.0, "gp": 0}]
     rated, missing = sleeper.apply(roster, sleeper.index(ROWS))
-    assert missing == ["Chaney Johnson"]
-    assert rated[0]["avg"] != 42.2          # Giddey re-rated off the projection
-    assert rated[1]["avg"] == 19.1          # untouched, and named in `missing`
+    giddey, johnson, sharp = [p["avg"] for p in rated]
+    assert missing == ["Chaney Johnson", "Emanuel Sharp"]
+    assert giddey != 42.2                   # re-rated off the projection
+    assert sleeper.NO_PROJECTION_RATE < johnson < 19.1
+    assert sharp == sleeper.NO_PROJECTION_RATE
 
 
 def test_a_row_with_no_stat_line_never_becomes_a_projection():

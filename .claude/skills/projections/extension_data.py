@@ -22,11 +22,11 @@ OUT = os.path.join(REPO, "src", "data", "player-data.ts")
 def player_rates(roster_players, feed_rows):
     """League spelling -> FPts/G for every rostered player, plus every unrostered
     feed player under the feed's spelling, and the rostered names with no
-    projection. Same precedence as the sim: override, then feed, then last
-    season's rate."""
+    projection. Same precedence as the sim: override, then feed, then
+    `sleeper.unprojected_rate`."""
     idx = sleeper.index(feed_rows)
     rostered_keys = {sleeper.norm(p["n"]) for p in roster_players}
-    unrostered = [{"n": row["name"], "avg": None} for row in feed_rows
+    unrostered = [{"n": row["name"]} for row in feed_rows
                   if sleeper.norm(row["name"]) not in rostered_keys]
     rates, missing = {}, []
     for player in roster_players + unrostered:
@@ -35,7 +35,7 @@ def player_rates(roster_players, feed_rows):
             projected = sleeper.lookup(player["n"], idx)
         if projected is None:
             missing.append(player["n"])
-            projected = player["avg"]
+            projected = sleeper.unprojected_rate(player["avg"], player["gp"])
         rates[player["n"]] = round(projected, 1)
     return rates, missing
 
@@ -64,7 +64,8 @@ def write():
         f.write(render(rates, sleeper.stamp(snap["updated"])))
     print("wrote %d players -> %s" % (len(rates), os.path.relpath(OUT)))
     if missing:
-        print("no projection (last season's rate stands): %s" % ", ".join(sorted(set(missing))))
+        print("no projection (last season shrunk toward %.1f): %s"
+              % (sleeper.NO_PROJECTION_RATE, ", ".join(sorted(set(missing)))))
 
 
 if __name__ == "__main__":

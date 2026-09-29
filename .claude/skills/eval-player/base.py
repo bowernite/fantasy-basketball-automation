@@ -204,30 +204,45 @@ def parse(argv):
     return who, absent, size
 
 
-def main(argv):
-    boards = [(n, w, load(p, rc, nc, tc)) for n, w, p, rc, nc, tc in BOARDS]
-    depth = {n: max(r for hits in b.values() for r, _ in hits) for n, _, b in boards}
-    names, absent, size = parse(argv)
-    D = TEAMS * size
-    A, V = curve(D)
-    collide = {k for _, _, b in boards for k, hits in b.items() if len(hits) > 1}
+def load_boards():
+    """-> [(board, weight, {key: [(rank, team)]})], {board: depth}"""
+    loaded = [(n, w, load(p, rc, nc, tc)) for n, w, p, rc, nc, tc in BOARDS]
+    return loaded, {n: max(r for hits in b.values() for r, _ in hits) for n, _, b in loaded}
 
-    out, blind = [], []
+
+def price(names, size=ROSTER_SIZE):
+    """-> [(label, key, ranks, BASE)] per (label, name, team). A player off all three
+    boards prices 0 here; `main` refuses that rather than print it."""
+    loaded, depth = load_boards()
+    D = TEAMS * size
+    _, V = curve(D)
+    collide = {k for _, _, b in loaded for k, hits in b.items() if len(hits) > 1}
+    out = []
     for label, who, team in names:
         k = key(who)
         if k in collide and not team:
             refuse('AMBIGUOUS — %r is two different players, so pass NAME:TEAM: %s'
                    % (who, '; '.join(f'{n} {hitlist(b[k])}'
-                                     for n, _, b in boards if k in b)))
-        ranks = [pick(b.get(k) or [], team, k in collide) for _, _, b in boards]
-        if not any(r is not None for r in ranks) and k not in absent:
-            blind.append(f'{label} ({team or "no team given"})')
+                                     for n, _, b in loaded if k in b)))
+        ranks = [pick(b.get(k) or [], team, k in collide) for _, _, b in loaded]
         num = tot = 0.0
-        for (n, w, _), r in zip(boards, ranks):
+        for (n, w, _), r in zip(loaded, ranks):
             if r is None and depth[n] < D:
                 continue                 # absence and below-depth indistinguishable
             num, tot = num + w * (V(r) if r is not None else 0.0), tot + w
         out.append((label, k, ranks, round(num / tot) if tot else 0))
+    return out
+
+
+def main(argv):
+    boards, depth = load_boards()
+    names, absent, size = parse(argv)
+    D = TEAMS * size
+    A, _ = curve(D)
+    out = price(names, size)
+    blind = [f'{label} ({team or "no team given"})'
+             for (label, _, team), (_, k, ranks, _) in zip(names, out)
+             if not any(r is not None for r in ranks) and k not in absent]
 
     # A hand-check on a name nobody here has confirms nothing, so it is a typo, and the
     # player it was meant for is back to being an unexplained 0.

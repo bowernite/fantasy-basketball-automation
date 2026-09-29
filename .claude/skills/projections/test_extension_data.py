@@ -15,8 +15,8 @@ import sleeper
 ROWS = json.load(open(os.path.join(HERE, "fixtures", "sleeper-rows.json")))
 
 
-def rostered(name, avg=20.0):
-    return {"n": name, "avg": avg}
+def rostered(name, avg=20.0, gp=60):
+    return {"n": name, "avg": avg, "gp": gp}
 
 
 class PlayerRates(unittest.TestCase):
@@ -32,12 +32,19 @@ class PlayerRates(unittest.TestCase):
         self.assertEqual(rates["Giannis Antetokounmpo"], round(expected, 1))
         self.assertEqual(len(rates), len(ROWS))
 
-    def test_a_player_with_no_projection_keeps_last_seasons_rate_like_the_sim(self):
-        rates, missing = extension_data.player_rates([rostered("Emanuel Sharp", avg=0.0),
-                                             rostered("Richie Saunders", avg=17.34)], ROWS)
-        self.assertEqual(rates["Emanuel Sharp"], 0.0)
-        self.assertEqual(rates["Richie Saunders"], 17.3)
-        self.assertEqual(missing, ["Emanuel Sharp", "Richie Saunders"])
+    def test_a_player_with_no_projection_and_no_games_prices_as_a_fringe_body(self):
+        rates, missing = extension_data.player_rates([rostered("Emanuel Sharp", avg=0.0, gp=0)], ROWS)
+        self.assertEqual(rates["Emanuel Sharp"], sleeper.NO_PROJECTION_RATE)
+        self.assertGreater(rates["Emanuel Sharp"], 0)
+        self.assertEqual(missing, ["Emanuel Sharp"])
+
+    def test_an_unprojected_rate_trusts_last_season_in_proportion_to_games(self):
+        rates, _ = extension_data.player_rates([rostered("Short Sample", avg=17.3, gp=5),
+                                                rostered("Full Season", avg=17.3, gp=70)], ROWS)
+        self.assertLess(rates["Short Sample"], 12)
+        self.assertGreater(rates["Short Sample"], sleeper.NO_PROJECTION_RATE)
+        self.assertGreater(rates["Full Season"], 15)
+        self.assertLess(rates["Full Season"], 17.3)
 
     def test_a_rate_override_beats_the_feed(self):
         fd, path = tempfile.mkstemp(suffix=".json")

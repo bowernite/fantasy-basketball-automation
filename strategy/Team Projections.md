@@ -6,7 +6,7 @@ Evaluated **2026-09-29**, post-draft: rosters re-cut 9/29 (rookie draft, FA auct
 | --- | --- |
 | **'26-27** | `sim.py horizon` '26-27 block (`sim.team_levels()` projected season PF rank) — all 12 roster files, padded to 38, same engine. Re-run before treating as live. **PF order is the finish prior** (draft uses record rank; H2H can move a team ± a few). |
 | **P(title)** | `sim.py title` — same 12 files, seed simulated, twelve sum to 1. This year only. Re-run before treating as live. |
-| **'27-28 +** | Pending — `sim.py future` (see [Years 2+](#years-2)). |
+| **'27-28 +** | Pending the `future` projection work (see [Years 2+](#years-2)). |
 | **Sept slots** | Top-4 finish → `13 − rank` exact. Bottom-8 → lottery **prior** band only (`league-info`). |
 
 ## Master table — projected finish → pick slot
@@ -71,7 +71,7 @@ Measured 2026-09-29. PF from `sim.py horizon` ('26-27); wins from `sim.py title`
 
 ## Years 2+
 
-**Pending.** To be filled from `sim.py future` (forward-projected rosters, 4 rookies per team per year from '27) once that subcommand lands — run it per its own instructions. Until then there is no current multi-year read: the 9/28 judgment arcs predate the draft, the auction and the 9/28 trades, and were dropped rather than carried stale. Do not substitute `sim.py horizon`'s '27-28 / '28-29 blocks — same bodies, no picks, no trades.
+**Pending the `future` projection work** (forward-projected rosters, 4 rookies per team per year from '27). Until it lands there is no current multi-year read: the 9/28 judgment arcs predate the draft, the auction and the 9/28 trades, and were dropped rather than carried stale. Do not substitute `sim.py horizon`'s '27-28 / '28-29 blocks — same bodies, no picks, no trades.
 
 # Notes
 

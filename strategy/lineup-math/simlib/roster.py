@@ -6,7 +6,7 @@ from .board import pool_seasons
 from .data import _load, roster_path
 from .gp import project_gp
 from .lineups import SLOTS
-from .projections import projected_rate
+from .projections import projected_rate, unprojected_rate
 from .schedule import SIM_TM
 
 
@@ -70,10 +70,11 @@ def our_roster(path=None, projected=True):
             # overwritten below with the projected rate
             in_pool = bool(pool_seasons(p["n"]))
             rate = projected_rate(p["n"])
-            gp_rate = None if in_pool else (q["avg"] or rate or 0.0)
+            if rate is None:
+                rate = unprojected_rate(p["avg"], p["gp"])
+            gp_rate = None if in_pool else (q["avg"] or rate)
             q["gp"] = round(project_gp(p["n"], gp=p["gp"], rate=gp_rate))
-            if rate is not None:
-                q["avg"] = rate
+            q["avg"] = rate
         if not q["elig"]:      # pre-`roster_rows` files left a 0-GP row with none
             q["elig"] = ["PG", "SG"]
         out.append(q)

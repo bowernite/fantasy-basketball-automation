@@ -59,6 +59,12 @@ else
   exit 1
 fi
 
+log_step "📊 Regenerating player projections from the projections snapshot"
+if ! python3 ./.claude/skills/projections/extension_data.py; then
+  echo "❌ Could not regenerate src/data/player-data.ts"
+  exit 1
+fi
+
 log_step "📁 Creating dist directory"
 # Create dist directory if it doesn't exist
 mkdir -p ./extension/dist

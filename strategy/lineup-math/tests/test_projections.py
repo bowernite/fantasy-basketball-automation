@@ -17,9 +17,16 @@ class UnprojectedRates(unittest.TestCase):
         row, = [l for l in render("players").splitlines() if "Josh Giddey" in l]
         self.assertNotIn("noproj", row)
 
-    def test_an_unprojected_rate_is_last_seasons_average_untouched(self):
+    def test_an_unprojected_short_sample_is_pulled_toward_a_fringe_body(self):
+        fringe = skill_module("projections", "sleeper").NO_PROJECTION_RATE
         p, = sim.our_roster(roster_file(self.UNPROJECTED))
-        self.assertEqual(p["avg"], self.UNPROJECTED["avg"])
+        self.assertGreater(p["avg"], fringe)
+        self.assertLess(p["avg"], self.UNPROJECTED["avg"])
+
+    def test_an_unprojected_player_with_no_games_prices_as_a_fringe_body(self):
+        rookie = dict(self.UNPROJECTED, avg=0.0, tot=0.0, gp=0)
+        p, = sim.our_roster(roster_file(rookie))
+        self.assertEqual(p["avg"], skill_module("projections", "sleeper").NO_PROJECTION_RATE)
 
 class ProjectionSnapshot(unittest.TestCase):
     def test_the_rate_on_a_roster_row_is_the_committed_snapshots_line_scored(self):
@@ -63,7 +70,9 @@ class UnusableSnapshot(unittest.TestCase):
         raw = {p["n"]: p["avg"] for p in sim.our_roster(projected=False)}
 
         self.assertNotEqual(priced["Josh Giddey"], raw["Josh Giddey"])
-        self.assertEqual(priced["Desmond Bane"], raw["Desmond Bane"])
+        fringe = skill_module("projections", "sleeper").NO_PROJECTION_RATE
+        self.assertGreater(priced["Desmond Bane"], fringe)
+        self.assertLess(priced["Desmond Bane"], raw["Desmond Bane"])
 
 class ProjectedRateReachesTheWinFigure(unittest.TestCase):
     def test_projecting_a_starter_up_pays_wins_without_buying_him_games(self):

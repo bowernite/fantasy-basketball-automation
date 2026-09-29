@@ -93,18 +93,30 @@ def lookup(name, idx):
     return idx.get(norm(name))
 
 
+NO_PROJECTION_RATE = 6.0   # a fringe body's FPts/G, what an unprojected player is presumed to be
+NO_PROJECTION_GAMES = 10   # last-season games that weigh as much as that presumption
+
+
+def unprojected_rate(last_avg, last_gp):
+    """FPts/G for a player the feed carries no stat line for: last season's
+    rate shrunk toward a fringe body's by games played, so a player with no
+    games lands on the fringe rate instead of 0."""
+    return ((last_gp * last_avg + NO_PROJECTION_GAMES * NO_PROJECTION_RATE)
+            / (last_gp + NO_PROJECTION_GAMES))
+
+
 def apply(roster, idx):
-    """Re-rate a roster, and hand back the names with no projection. Those keep
-    last season's rate, so the caller has to publish the list -- a silent
-    fallback is a stale rate wearing a fresh label."""
+    """Re-rate a roster, and hand back the names with no projection. Those get
+    `unprojected_rate`, so the caller has to publish the list -- a silent
+    fallback is a guess wearing a projection's label."""
     out, missing = [], []
     for player in roster:
         rated = dict(player)
         projected = lookup(player["n"], idx)
         if projected is None:
             missing.append(player["n"])
-        else:
-            rated["avg"] = round(projected, 6)
+            projected = unprojected_rate(player["avg"], player["gp"])
+        rated["avg"] = round(projected, 6)
         out.append(rated)
     return out, missing
 
@@ -140,12 +152,13 @@ def _roster(path):
     for old, new in zip(roster, rated):
         name = old["n"][:26]
         if old["n"] in missing:
-            print("%-26s %7.1f %7s  --  no projection" % (name, old["avg"], "-"))
+            print("%-26s %7.1f %7.1f  --  no projection" % (name, old["avg"], new["avg"]))
         else:
             print("%-26s %7.1f %7.1f %+7.1f"
                   % (name, old["avg"], new["avg"], new["avg"] - old["avg"]))
     if missing:
-        print("\nno projection (last season's rate stands): %s" % ", ".join(missing))
+        print("\nno projection (last season shrunk toward %.1f): %s"
+              % (NO_PROJECTION_RATE, ", ".join(missing)))
 
 
 if __name__ == "__main__":

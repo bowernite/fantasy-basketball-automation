@@ -72,7 +72,7 @@ Multi-part: top-level `"sections": [ {...}, {...} ]`. Tag sections with `"label"
 
 `their_roster` / `roster`: team id or roster filename. Id → `team-info`.
 
-Uneven body-count deals: `trades` §Uneven-body simming — cuts only when the post-trade roster exceeds 38.
+Uneven body-count deals: `trades` §Uneven bodies.
 
 # Output
 

@@ -31,6 +31,13 @@ def projected_rate(name):
     return mod.lookup(name, idx)
 
 
+def unprojected_rate(last_avg, last_gp):
+    """The rate a player gets when `projected_rate` is None"""
+    _ensure_skill()
+    import sleeper
+    return sleeper.unprojected_rate(last_avg, last_gp)
+
+
 def projected_gp(name):
     _ensure_skill()
     import overrides

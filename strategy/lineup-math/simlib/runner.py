@@ -10,6 +10,7 @@ from fetch_data import SEASON_TAG, TEAM, season_dw_tag
 from simlib import roster
 from simlib.data import HERE
 from simlib.reports import OURS_ONLY, REPORTS
+from simlib.score import SCORE_BODY_FDW, SCORE_DP_TITLE, SCORE_DW, SCORE_FDW
 
 _BASE_CACHE = {}
 _AGE_CACHE = {}
@@ -166,14 +167,6 @@ def bodies(names, roster_rows):
 
 TITLE_NOTE = "both rosters change in the 12-team field"
 
-# Composite score, BASE units (`Eval Definitions §Score`). Formula Δw sums
-# pieces, so it reads ~0.3 high per extra incoming body; docked here.
-SCORE_FDW = 300
-SCORE_DW = 250
-SCORE_DP_TITLE = 80
-SCORE_BODY_FDW = 0.3
-
-
 def deal_score(res, net_bodies):
     """Our composite from the published (rounded) numbers; None without BASE."""
     if res["delta_base_us"] is None:
@@ -182,6 +175,15 @@ def deal_score(res, net_bodies):
                  + SCORE_FDW * (res["fdw_us"] - SCORE_BODY_FDW * net_bodies)
                  + SCORE_DW * res["dw_us"]
                  + SCORE_DP_TITLE * res["dp_title_us"])
+
+
+def overfill_cuts(rows, out_names, in_names):
+    """Names `cut_worst` drops so the side stays at the wire cap after the trade"""
+    over = len(rows) - len(out_names) + len(in_names) - roster.MAX_WIRE
+    if over <= 0:
+        return []
+    staying = [p for p in rows if p["n"] not in out_names]
+    return [p["n"] for p in sim.cut_worst(staying, over)]
 
 
 def _simmed_date(when=None):
@@ -370,10 +372,18 @@ def _trade_screen_results(sec, deals=None):
         name = deal.get("label") or "deal"
         row = {"label": name}
         try:
+            cut_us = overfill_cuts(our_proj, deal["out_us"], deal["in_from_them"])
+            cut_them = overfill_cuts(their_proj, deal["out_them"],
+                                     deal["in_from_us"])
+            priced = dict(deal, out_us=deal["out_us"] + cut_us,
+                          out_them=deal["out_them"] + cut_them)
             dw_us, dt_us, dw_them, dt_them, fdw_us, fdw_them = price_deal(
-                deal, their, our_proj, their_proj, before)
+                priced, their, our_proj, their_proj, before)
+            delta_base = deal_delta_base(deal, sec["their_roster"])
+            if delta_base is not None and cut_us:
+                delta_base -= sum(sim.board_base(bodies(cut_us, our_proj)).values())
             row["results"] = {
-                "delta_base_us": deal_delta_base(deal, sec["their_roster"]),
+                "delta_base_us": delta_base,
                 "fdw_us": round(fdw_us, 2),
                 "dw_us": round(dw_us, 2),
                 "dp_title_us": round(dt_us * 100, 1),
@@ -382,10 +392,12 @@ def _trade_screen_results(sec, deals=None):
                 "dw_them": round(dw_them, 2),
                 "dp_title_them": round(dt_them * 100, 1),
                 "dp_title_note": TITLE_NOTE,
+                "cut_us": cut_us,
+                "cut_them": cut_them,
                 "simmed": _simmed_date(),
             }
             row["results"]["score_us"] = deal_score(
-                row["results"], len(deal["in_from_them"]) - len(deal["out_us"]))
+                row["results"], len(deal["in_from_them"]) - len(priced["out_us"]))
         except (KeyError, ValueError) as e:
             row["results"] = {
                 "error": str(e),
@@ -422,8 +434,8 @@ def _print_trade_screen(rows, label):
     print("=== JOINT DEALS (%s) ===" % label)
     stag = season_dw_tag()
     hdr = ("label\tScore us\tΔBASE us\tΔw us\tΔw %s us\tΔP(title) us\tΔage us\t"
-           "Δw %s\tΔw %s %s\tΔP(title) %s"
-           % (stag, stag, stag, label, label))
+           "Δw %s\tΔw %s %s\tΔP(title) %s\tcut us\tcut %s"
+           % (stag, stag, stag, label, label, label))
     print(hdr)
     for row in rows:
         name = row["label"]
@@ -437,10 +449,12 @@ def _print_trade_screen(rows, label):
         score_s = "%+d" % score if score is not None else "–"
         age = res.get("dage_us")
         age_s = "%+.1f" % age if age is not None else "–"
-        print("%s\t%s\t%s\t%+.2f\t%+.2f\t%+.1f%%\t%s\t%+.2f\t%+.2f\t%+.1f%%" % (
+        print("%s\t%s\t%s\t%+.2f\t%+.2f\t%+.1f%%\t%s\t%+.2f\t%+.2f\t%+.1f%%\t%s\t%s" % (
             name, score_s, base_s,
             res["fdw_us"], res["dw_us"], res["dp_title_us"], age_s,
-            res["fdw_them"], res["dw_them"], res["dp_title_them"]))
+            res["fdw_them"], res["dw_them"], res["dp_title_them"],
+            "+".join(res.get("cut_us") or ["–"]),
+            "+".join(res.get("cut_them") or ["–"])))
 
 
 def _merge_trade_screen(sec, rows, label):
