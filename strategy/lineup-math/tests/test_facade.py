@@ -64,5 +64,5 @@ class PlayerBlocksIsOneConstant(unittest.TestCase):
         value.PLAYER_BLOCKS = 2
         R = flat_R()
         body = sim.star(40.0, 68, ("C",), n="INCOMING")
-        w = sim.incoming_wins(sim.basis(), [body], trials=2, R=R)
+        w = sim.incoming_wins(sim.arrival_basis(), [body], trials=2, R=R)
         self.assertEqual(len(w["INCOMING"][2]), 2)

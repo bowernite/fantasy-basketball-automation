@@ -9,7 +9,7 @@ from ..wins import PF_PER_WIN, wins
 # held fixed so the only variable down a ladder is body count -- not a bucket
 # or a recommendation (those live in `strategy/teams/my-team/Ours.team.md`); shared
 # by both reports below so they price the same trade
-FILLER = ["Jalen Suggs", "Coby White", "Myles Turner", "Jakob Poeltl",
+FILLER = ["Jalen Suggs", "Coby White", "Mark Williams", "Jakob Poeltl",
           "Naz Reid"]
 
 # shared by both reports below, same reason as FILLER; NOT the `bottom-up`
@@ -46,7 +46,7 @@ def report_scenarios():
         # ladder is how many bodies you pay
         ("Jokic 1-for-1  (Suggs)", FILLER[:1], [star(**JOKIC)]),
         ("Jokic 2-for-1  (+Coby White)", FILLER[:2], [star(**JOKIC)]),
-        ("Jokic 3-for-1  (+Turner)", FILLER[:3], [star(**JOKIC)]),
+        ("Jokic 3-for-1  (+Williams)", FILLER[:3], [star(**JOKIC)]),
         ("Jokic 4-for-1  (+Poeltl)", FILLER[:4], [star(**JOKIC)]),
         ("Jokic 5-for-1  (+Naz Reid)", FILLER[:5], [star(**JOKIC)]),
         ("1-for-1  Suggs -> 50", FILLER[:1], [star(50)]),

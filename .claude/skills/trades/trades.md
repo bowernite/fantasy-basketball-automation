@@ -18,7 +18,7 @@ Do not load `voice` or `write-message` until the user explicitly asks for one.
 Every trade table and every deal comparison must include `Score` (`Eval Definitions §Score`) and all five (our side):
 
 - `ΔBASE`
-- `Δw` — formula, ~600 PF/win (`Eval Definitions §Δw`)
+- `Δw` — formula, league curve (`Eval Definitions §Δw`)
 - `Δw (season)` — sim-measured for the fantasy season being priced (e.g. `Δw '26–'27`)
 - `ΔP(title)`
 - `Δage` — our weighted-age change out → in, in years, nearest tenth, signed (`+3.2`, `-1.2`); method §Age. Older is worse. A rough vector read alongside the other four, not a minimum

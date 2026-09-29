@@ -43,7 +43,7 @@ class TitleProbability(unittest.TestCase):
     def test_incoming_title_takes_the_same_one(self):
         body = sim.star(40.0, 68, ("C",), n="INCOMING")
         with cheap_monte_carlo(20):
-            got, = bracket.incoming_title(sim.basis(), [body], blocks=2).values()
+            got, = bracket.incoming_title(sim.arrival_basis(), [body], blocks=2).values()
         for band in sim.BANDS:
             with self.subTest(band=band.label):
                 mean, sd, blocks = got[band.label]
@@ -136,7 +136,7 @@ class UnconditionalTitle(unittest.TestCase):
         body = sim.star(40.0, 68, ("C",), n="INCOMING")
         with cheap_monte_carlo(8, seasons=200):
             mean, sd, blocks = sim.incoming_title(
-                sim.basis(), [body], blocks=2).popitem()[1]
+                sim.arrival_basis(), [body], blocks=2).popitem()[1]
         self.assertGreater(mean, 0.0)
         self.assertEqual(len(blocks), 2)
         self.assertGreater(sd, 0.0)
@@ -260,18 +260,18 @@ class ParallelTitle(unittest.TestCase):
     def test_paired_delta_matches_sequential_workers(self):
         body = sim.star(40.0, 68, ("C",), n="INCOMING")
         with cheap_monte_carlo(8, seasons=120):
-            seq, = sim.incoming_title(sim.basis(), [body], blocks=2,
+            seq, = sim.incoming_title(sim.arrival_basis(), [body], blocks=2,
                                       workers=1).values()
             shard.retire()
-            par, = sim.incoming_title(sim.basis(), [body], blocks=2).values()
+            par, = sim.incoming_title(sim.arrival_basis(), [body], blocks=2).values()
         self.assertEqual(seq, par)
 
     @unittest.skipIf((os.cpu_count() or 1) < 2, "one core shards into one chunk")
     def test_incoming_title_survives_measure_then_shard(self):
         shard.retire()
-        row, = sim.our_roster("roster-161018-2025-26.json")[:1]
+        row = max(sim.our_roster("roster-161018-2025-26.json"), key=season_value)
         with cheap_monte_carlo(8, seasons=120):
-            mean, _, _ = sim.incoming_title(sim.basis(), [row],
+            mean, _, _ = sim.incoming_title(sim.arrival_basis(), [row],
                                             blocks=1).popitem()[1]
         self.assertGreater(mean, 0.0)
 
@@ -301,9 +301,9 @@ class ParallelTitle(unittest.TestCase):
         bodies = [sim.star(30.0 + i, 68, ("C",), n="IN%d" % i)
                  for i in range(6)]
         with cheap_monte_carlo(8, seasons=120):
-            seq = sim.incoming_title(sim.basis(), bodies, blocks=2, workers=1)
+            seq = sim.incoming_title(sim.arrival_basis(), bodies, blocks=2, workers=1)
             shard.retire()
-            par = sim.incoming_title(sim.basis(), bodies, blocks=2)
+            par = sim.incoming_title(sim.arrival_basis(), bodies, blocks=2)
         self.assertEqual(seq, par)
 
 

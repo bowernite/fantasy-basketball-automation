@@ -16,7 +16,7 @@ class IncomingWins(unittest.TestCase):
         self.assertAlmostEqual(gained[0], lost[0], delta=0.15)
 
     def test_an_arrival_is_priced_at_the_same_38_bodies_a_departure_is(self):
-        full = sim.basis()
+        full = sim.arrival_basis()
         row = max(sim.our_roster(THEIR_ROSTER), key=season_value)
         with cheap_monte_carlo(4):
             R = sim.group_replacement(full)
@@ -25,9 +25,8 @@ class IncomingWins(unittest.TestCase):
         self.assertEqual({len(names) for names in seen}, {len(full)})
 
     def test_the_roster_an_arrival_joins_is_the_one_the_recipe_re_pads(self):
-        full = sim.basis()
-        recipe = [p["n"] for p in sim.pad(sim.our_roster(), len(full) - 1,
-                                          path=sim.ROSTER)]
+        full = sim.arrival_basis()
+        recipe = [p["n"] for p in full[:-1]]
         R = {"guard": 18.0, "forward": 17.0, "center": 20.0}
         with recorded_rosters() as seen:
             sim.incoming_wins(full, [sim.star(40.0, 68, ("SF", "PF"), n="IN")],
@@ -39,8 +38,7 @@ class IncomingWins(unittest.TestCase):
                              recipe)
 
     def test_a_real_body_keeps_his_slot_however_cheap_he_scores(self):
-        full = sim.basis()
-        roster = [dict(p) for p in full[:-1]]
+        roster = sim.pad(sim.our_roster()[:36], 37)
         roster.insert(3, sim.star(1.0, 82, ("PG", "SG"), n="SCRUB"))
         with recorded_rosters() as seen:
             sim.incoming_wins(roster, [sim.star(40.0, 68, ("SF", "PF"), n="IN")],
@@ -84,7 +82,7 @@ class IncomingWins(unittest.TestCase):
     def test_every_player_on_a_counterparty_file_is_priced_at_once(self):
         theirs = sim.our_roster(THEIR_ROSTER)
         with cheap_monte_carlo(20):
-            w = sim.incoming_wins(sim.basis(), theirs, blocks=1)
+            w = sim.incoming_wins(sim.arrival_basis(), theirs, blocks=1)
         self.assertEqual(sorted(w), sorted(p["n"] for p in theirs))
         best = max(theirs, key=season_value)
         self.assertGreater(w[best["n"]][0], 0.3, best["n"])
@@ -111,7 +109,7 @@ class IncomingWins(unittest.TestCase):
         both = [sim.star(45.0, 70, ("C",), n="Jaylin Williams"),
                 sim.star(12.0, 40, ("PG", "SG"), n="Jaylin Williams")]
         with self.assertRaises(ValueError) as e:
-            sim.incoming_wins(sim.basis(), both, blocks=1, trials=2)
+            sim.incoming_wins(sim.arrival_basis(), both, blocks=1, trials=2)
         self.assertIn("Jaylin Williams", str(e.exception))
 
 class Thin(unittest.TestCase):

@@ -31,7 +31,7 @@ class ParallelPlayerWins(unittest.TestCase):
 
 class ParallelIncomingWins(unittest.TestCase):
     def test_a_sharded_batch_matches_the_sequential_one(self):
-        full = sim.basis()
+        full = sim.arrival_basis()
         players = sim.our_roster(THEIR_ROSTER)
         R = flat_R()
         seq = sim.incoming_wins(full, players, blocks=1, trials=10, R=R,
@@ -42,7 +42,7 @@ class ParallelIncomingWins(unittest.TestCase):
 
     def test_a_short_call_never_leaves_this_process(self):
         shard.retire()
-        full = sim.basis()
+        full = sim.arrival_basis()
         players = sim.our_roster(THEIR_ROSTER)[:1]
         before = {c.pid for c in multiprocessing.active_children()}
         sim.incoming_wins(full, players, blocks=1, trials=10, R=flat_R())

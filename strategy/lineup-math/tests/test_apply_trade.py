@@ -39,11 +39,10 @@ class ApplyTrade(unittest.TestCase):
     def test_basis_after_trade_repads(self):
         path = "roster-161025-2025-26.json"
         n = len(our_roster(path))
-        full = basis_after_trade(path, ["Kawhi Leonard"], [
-            p for p in our_roster("roster-161024-2025-26.json")
-            if p["n"] in ("Miles Bridges", "Aaron Gordon")
-        ])
+        kawhi = [p for p in our_roster("roster-161024-2025-26.json")
+                 if p["n"] == "Kawhi Leonard"]
+        full = basis_after_trade(path, ["Jalen Suggs", "Coby White"], kawhi)
         self.assertEqual(len(full), 38)
         self.assertEqual(len([p for p in full if not p["n"].startswith(("FA", "PAD"))]),
-                         n - 1 + 2)
+                         n - 2 + 1)
 

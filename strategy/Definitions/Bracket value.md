@@ -2,7 +2,7 @@
 
 Expands `Eval Definitions §ΔP(title)` and §*Counterparty title reads*.
 
-**`ΔP(title)`** is the change in probability of winning the title from a player being on the roster — 19 regular periods, standings (record then points-for), then the bracket with its byes (`league-info` §*Matchup periods*). Seed is simulated, not held. Same replacement-body counterfactual as **`Δw (season)`**: our P(title) with the player minus with a 68-GP body at the slot group's rate R (`sim.py replacement`, ~24.8–26.3 FPts/G). Re-run it, never quote a remembered figure. **Eval files:** `100 ×` the sim figure, **one decimal, `%` suffix** (e.g. **9.8%**); the sim report keeps two decimals without `%`.
+**`ΔP(title)`** is the change in probability of winning the title from a player being on the roster — 19 regular periods, standings (record then points-for), then the bracket with its byes (`league-info` §*Matchup periods*). Seed is simulated, not held. Same replacement-body counterfactual as **`Δw (season)`**: our P(title) with the player minus with a 68-GP body at the slot group's rate R (`sim.py replacement`). Re-run it, never quote a remembered figure. **Eval files:** `100 ×` the sim figure, **one decimal, `%` suffix** (e.g. **9.8%**); the sim report keeps two decimals without `%`.
 
 **Two ΔP reads, like `Δw (season)`** (`Eval Definitions §Columns`):
 

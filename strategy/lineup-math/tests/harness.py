@@ -31,7 +31,7 @@ from simlib.reports import deals, durability
 
 THEIR_ROSTER = "roster-161020-2025-26.json"
 ROOKIE_ROSTER = "roster-160941-2025-26.json"
-THREE_OUT = ["Jalen Suggs", "Coby White", "Myles Turner"]
+THREE_OUT = ["Jalen Suggs", "Coby White", "Mark Williams"]
 SNAPSHOT = os.path.join(sim.HERE, os.pardir, "board-snapshots", "projections",
                         "sleeper-2026.json")
 
