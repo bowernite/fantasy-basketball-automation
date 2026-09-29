@@ -17,7 +17,7 @@ Rules (Sheet, 2026-09-24):
 - Bodies: 35 on the Sheet, 37 with the Duren deal (+2), + 3 buys = 40. Two go to get back to 38: cut, or sent to Hlina in the Duren deal, at the same cost. No cuts before the Duren deal lands.
   - A buy under Matković's 134, or a $1 body, goes instead of him.
 - **Cuts** (Score, §Ours): Chaney −98, then Matković 134. Drummond (278) is next up and stays.
-- **Target: the plan (§Bidding)**, the most summed Score our open spots hold. At the open that is Scheierman, Nembhard and Dru Smith: $179 for Score 713. The $21 left over is expected: they are the pool's top three Scores, unless an undrafted rookie such as De Larrea (291) joins it.
+- **Target: the plan (§Bidding)**, the most summed Score our open spots hold. At the open that is Scheierman, Nembhard and Dru Smith: $178 for Score 713. The $22 left over is expected: they are the pool's top three Scores, unless an undrafted rookie such as De Larrea (291) joins it.
 - **P(title)**, all from one sim run: 56.5% before the auction (37 bodies + 1 FA-grade pad), 57.0% with the plan and 56.5% with four $1 bodies. Swapping in Barlow for Nembhard reads 57.6%: Score takes Nembhard for his BASE (324 vs 174).
 
 ## Trades that add bodies (9/28)
@@ -37,7 +37,7 @@ Rules (Sheet, 2026-09-24):
 
 ## Cheat card
 
-`ΔP` = `dPtitle`. `Score`, `Market$`, `Score$` and `Gap` are `values.tsv` columns (`Pricing.md`). `Gap` = `Score$` − `Market$`: > 0 means the room underprices the row against our Score. `Cap` = opening cap from the live tool on the blank Sheet (`Max$`, §Bidding). `Sheet #` = position on the Sheet's FA list.
+`ΔP` = `dPtitle`. `Score`, `Market$`, `Score$` and `Gap` are `values.tsv` columns (`Pricing.md`). `Gap` = `Score$` − `Market$`: > 0 means the room underprices the row against our Score. `Cap` = opening cap from the live tool on the live Sheet (`Max$`, §Bidding). `Sheet #` = position on the Sheet's FA list.
 
 Rows: every target, plus the top 50 of the pool by `Market$` (leaving out the 36 rookies the draft takes). **Pass** rows don't beat the $1 body (Justin Edwards, `ref`), are `fa` or `noproj`, or are unscored: never bid, but the room pays for them, so nominate them early. `Cap` `†` = the cap if that rookie alone goes undrafted; the tool sets the live cap once the draft lands.
 
@@ -51,16 +51,16 @@ Rows: every target, plus the top 50 of the pool by `Market$` (leaving out the 36
 | ***Jay Huff*** | IND | 29.0 | 372 | +0.33 | 389 | – | – | – | – | – |
 | ***Adem Bona*** | PHI | 23.4 | 257 | +0.93 | 330 | – | – | – | – | – |
 | ***Keon Ellis*** | BKN | 26.7 | 278 | +1.02 | 314 | – | – | – | – | – |
-| Baylor Scheierman | BOS | 26.0 | 268 | +0.52 | 296 | 66 | 197 | +131 | 154 | 16 |
-| Sergio De Larrea | DAL | 20.8 | 412 | −0.33 | 291 | 33 | 197 | +164 | 107† | – |
+| Baylor Scheierman | BOS | 26.0 | 268 | +0.52 | 296 | 66 | 197 | +131 | 155 | 16 |
+| Sergio De Larrea | DAL | 20.8 | 412 | −0.33 | 291 | 33 | 197 | +164 | 129† | – |
 | ***Andre Drummond*** | NYK | 33.1 | 225 | +0.53 | 278 | – | – | – | – | – |
 | Bruce Thornton | HOU | 23.0 | 414 | −0.32 | 272 | 32 | 196 | +164 | – | – |
-| Jayden Quaintance | SAS | 19.2 | 390 | −0.33 | 261 | 30 | 188 | +158 | 106† | – |
-| Koa Peat | PHX | 19.7 | 351 | −0.12 | 241 | 27 | 174 | +147 | 77† | – |
-| Alex Karaban | SAC | 23.9 | 338 | −0.23 | 235 | 32 | 170 | +138 | 77† | – |
-| Henri Veesaar | ATL | 22.5 | 321 | −0.14 | 223 | 27 | 161 | +134 | 77† | – |
-| Ryan Nembhard | CHA | 23.5 | 324 | −0.30 | 213 | 53 | 154 | +101 | 77 | 21 |
-| Dru Smith | MIA | 28.7 | 231 | +0.31 | 204 | 49 | 147 | +98 | 73 | 7 |
+| Jayden Quaintance | SAS | 19.2 | 390 | −0.33 | 261 | 30 | 188 | +158 | 78† | – |
+| Koa Peat | PHX | 19.7 | 351 | −0.12 | 241 | 27 | 174 | +147 | 78† | – |
+| Alex Karaban | SAC | 23.9 | 338 | −0.23 | 235 | 32 | 170 | +138 | 78† | – |
+| Henri Veesaar | ATL | 22.5 | 321 | −0.14 | 223 | 27 | 161 | +134 | 78† | – |
+| Ryan Nembhard | CHA | 23.5 | 324 | −0.30 | 213 | 53 | 154 | +101 | 78 | 21 |
+| Dru Smith | MIA | 28.7 | 231 | +0.31 | 204 | 49 | 147 | +98 | 74 | 7 |
 | Richie Saunders | MEM | 25.0 | 349 | −0.41 | 200 | 27 | 144 | +117 | – | – |
 | Goga Bitadze | ORL | 27.2 | 227 | +0.12 | 191 | 58 | 138 | +80 | 0 | 8 |
 | Ryan Conwell | MIA | 22.3 | 331 | −0.36 | 186 | 26 | 134 | +108 | – | – |
@@ -134,12 +134,12 @@ Our bottom 9 on the `dPtitle` basis, 9/28, post-485845: roster after the three c
 - **Hard max** = $ left − (spots left − 1).
 - **Plan** = the unsold targets with the most summed Score that fill our spots left at live `Market$` × room heat (heat only when above 1), with $1 bodies in the rest. The Score counted is the roster after the cuts (§Plan), so a $1 body keeps Matković's 134. Re-plans after every sale.
 - **Cap** on a target = the most we can pay for it and still match the plan without it: its Score + the best plan for our other spots on the $ left after paying ≥ the best plan without it. Never over hard max.
-- At the open: Scheierman $155 · Nembhard $78 · Dru Smith $73 · the rest $0.
+- At the open: Scheierman $155 · Nembhard $78 · Dru Smith $74 · the rest $0.
 - Don't stretch a cap to beat a rich rival by $1–2. A rival who overpays for one target can't contest the next.
 - **Last spot:** the cap goes to hard max on every target that outscores our lowest keeper and the best one our $ buys at live `Market$` × heat, and $0 on the rest.
 - **Endgame:** once our cap on an unsold target beats every rival's `Max Bid`, nothing can outbid us. Nominate the best such row and win it.
 - Never bid on a pass row, and never to push a rival's price. A stuck buy costs one of our spots.
-- Waste check: finishing with more than ~$10 unspent means the caps were too tight.
+- Leftover $ after the plan's buys is expected: the plan is the pool's top Scores, and a cold room sells them under our caps. The caps were too tight only if a target went to a rival just over our cap and we still finished with $ left.
 
 ## Nominating
 
@@ -154,7 +154,7 @@ Lists:
 - **Early:** rows we bid $0 on (pass rows and $0-cap targets) the room pays for, in `Sheet #` order since the room prices off the list. This drains rival $ and spots. Left with us at $1, a $0-cap target costs what a $1 body does: Brandon Williams, Harrison Barnes, Marvin Bagley, Dominick Barlow, Javonte Green, Luka Garza, Goga Bitadze, Jaxson Hayes, Simone Fontecchio, Terance Mann, Craig Porter, Pat Spencer, Quinten Post, Clint Capela, John Konchar, Patrick Williams, Al Horford, Jarred Vanderbilt, Josh Okogie, Kris Murray, Caleb Love, Kenrich Williams, Trendon Watford.
 - **Mid:** our targets deep on the Sheet list or off it, where the room's price trails our Score, once rivals have spent: Ryan Nembhard, Sergio De Larrea, Jayden Quaintance, Koa Peat, Alex Karaban, Henri Veesaar.
 - Leave the top-list targets (Dru Smith, Scheierman) for rivals to nominate. The endgame rule catches any that are left.
-- Per-slot $ at the start: us $50 · Mitch $50 · Bonin, Jon, Todd $33 · Joe $25 · Chris, Brian, Henry, Josh $22 · Hlina $25 · Matthew $15. Mitch is the only rival who can match us per slot. Watch his $ left.
+- Per-slot $ at the start: us $67 · Mitch $50 · Bonin, Jon, Todd $33 · Joe $25 · Chris, Brian, Henry, Josh, Hlina $22 · Matthew $15. No rival matches us per slot. Mitch comes closest: watch his $ left.
 
 # Live
 
@@ -166,4 +166,4 @@ Runbook: `auction-live` Skill (`.claude/skills/auction-live/auction-live.md`).
 - **Live multiplier** k = ($ left league-wide − spots left league-wide) ÷ Σ(`Market$` − 1) over the top (spots left) unsold rows. Live `Market$` = 1 + (`Market$` − 1) × k. Live gap = `gap` × k.
 - **Room heat** = Σ(price − 1) ÷ Σ(live `Market$` just before the sale − 1) over the last 8 rival sales expected at ≥ $5. Leave out the forced fill (league spots left ≤ 2 × teams still open). Hot ≥ 1.15, cold ≤ 0.87. Above 1, it prices the rest of the plan (§Bidding).
 - **Name match:** NFKD-ascii, lowercase, fold `’` to `'`, drop `Jr.`/`Sr.`/`II`/`III`. The Sheet writes Nae’Qwan Tomlin, D’Angelo Russell and Jae’Sean Tate with curly apostrophes. A typo the commissioner never fixes goes in `aliases.tsv` (`sheet  name`).
-- **Open spots at start:** Matthew 13 · Hlina 8 · Chris, Brian, Henry, Josh 9 each · Joe 8 · Bonin, Jon, Todd 6 each · Mitch 4 · us 4.
+- **Open spots at start:** Matthew 13 · Chris, Brian, Henry, Josh, Hlina 9 each · Joe 8 · Bonin, Jon, Todd 6 each · Mitch 4 · us 3.
