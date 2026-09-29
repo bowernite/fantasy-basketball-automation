@@ -61,30 +61,24 @@ class IncomingWins(unittest.TestCase):
                               R=flat_R())
         self.assertIn("38", str(e.exception))
 
-    def test_a_full_roster_makes_room_for_an_arrival_by_cutting_its_worst_body(self):
+    def test_a_full_roster_ranks_its_worst_body_first_among_the_cuts(self):
         rows = sim.our_roster(THEIR_ROSTER, projected=False)
         rows += [p for p in sim.our_roster(projected=False)
                  if p["n"] not in {q["n"] for q in rows}]
         rows = rows[:37]
         scrub = {"n": "SCRUB", "tm": "MIA", "avg": -10.0, "tot": -500.0,
                  "gp": 50, "posLabel": "G", "elig": ["PG", "SG"]}
-        path = roster_file(*(rows[:5] + [scrub] + rows[5:]))
-        seat = sim.arrival_basis(path)
-        self.assertEqual(len(seat), 38)
-        self.assertEqual([p["n"] for p in seat[:37]], [p["n"] for p in rows])
-        self.assertIn(seat[37]["n"], roster_mod.PAD_NAMES)
+        self.assertEqual([p["n"] for p in sim.cut_worst(rows[:5] + [scrub] + rows[5:], 1)],
+                         ["SCRUB"])
 
-    def test_a_full_roster_keeps_a_body_the_market_values_over_a_higher_rate_one_it_does_not(self):
+    def test_a_full_roster_ranks_a_body_the_market_values_above_a_higher_rate_one_it_does_not(self):
         rookie = rostered("Emanuel Sharp", projected=False)
         self.assertIsNone(sim.projected_rate(rookie["n"]), "pick a no-projection rookie")
         bodies = [dict(sim.star(15.0 + i, 70, ("PG", "SG"), tm="BOS",
                                 n="Body %d" % i), tot=0.0, posLabel="G")
                   for i in range(37)]
-        seat = sim.arrival_basis(roster_file(rookie, *bodies))
-        names = [p["n"] for p in seat]
-        self.assertIn("Emanuel Sharp", names)
-        self.assertNotIn("Body 0", names)
-        self.assertEqual(len(seat), 38)
+        self.assertEqual([p["n"] for p in sim.cut_worst([rookie] + bodies, 1)],
+                         ["Body 0"])
 
     def test_a_roster_with_a_padded_slot_makes_room_without_a_cut(self):
         path = roster_file(*sim.our_roster(THEIR_ROSTER, projected=False)[:30])

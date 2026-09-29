@@ -150,10 +150,15 @@ Same counterfactual *shape* as `player_wins` (a replacement 68-GP body of his **
 group**, in rather than out) and at the **same body count**: he takes a **padded** slot — the
 last one, since `pad` appends — so the room he joins is our real bodies re-padded one
 shallower, and nobody off a roster file loses his place. **At 38 real bodies there is no pad
-and this refuses.** `arrival_basis(path)` cuts the roster's worst body (`cut_worst`: lowest board
-BASE + 300 × formula `Δw`, Score's rate) and re-pads; `eval-columns`, `player-effects` and
-`title-column` price on it. `trade-screen` cuts the same way on whichever side a deal takes over
-38 and names them in `cut_us` / `cut_them`.
+and this refuses.** `arrival_basis(path)` cuts the roster's worst body by full `Score` and re-pads;
+`eval-columns`, `player-effects` and `title-column` price on it. `simlib/cuts.py`: shortlist
+the bottom `over` + 4 by board BASE + 300 × formula `Δw` (`cut_worst`'s order, plus any within
+250 of the `over`-th, max 12), sim each cut on that roster's seat, keep the one whose seat
+`Score` (−BASE + 300·`Δw` + 250·`Δw (season)` + 80·`ΔP(title)`) is highest; every combination
+up to 120, greedy past that. The cut ignores who arrives, is cached per process, and refuses a
+full roster that isn't one of the 12 league seats. `trade-screen` cuts the same way on whichever
+side a deal takes over 38, pricing each candidate as part of the deal, and names them in
+`cut_us` / `cut_them`.
 
 Each column is measured against its own roster's `R`, so **neither substitutes for the other
 and their difference is not a number**: a gap between them is mostly the two rosters'

@@ -1,4 +1,4 @@
-"""Score's fixed rates (`Eval Definitions §Score`) and the board BASE a cut ranks on."""
+"""Score's fixed rates (`Eval Definitions §Score`) and the board BASE a sim cut is charged at."""
 import functools, importlib.util, os
 from .data import HERE
 

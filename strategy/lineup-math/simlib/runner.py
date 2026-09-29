@@ -7,7 +7,7 @@ from datetime import date
 
 import sim
 from fetch_data import SEASON_TAG, TEAM, season_dw_tag
-from simlib import roster
+from simlib import cuts, roster
 from simlib.data import HERE
 from simlib.reports import OURS_ONLY, REPORTS
 from simlib.score import SCORE_BODY_FDW, SCORE_DP_TITLE, SCORE_DW, SCORE_FDW
@@ -177,13 +177,44 @@ def deal_score(res, net_bodies):
                  + SCORE_DP_TITLE * res["dp_title_us"])
 
 
-def overfill_cuts(rows, out_names, in_names):
-    """Names `cut_worst` drops so the side stays at the wire cap after the trade"""
+def deal_cuts(deal, their, our_proj, their_proj, before):
+    """(cut_us, cut_them, pricing): the bodies each side drops to stay at the wire cap, each the cut its own seat scores best (`cuts.best_cut`). Ours is chosen first, with their partial-worst held"""
+    pricings = {}
+
+    def pricing(cut_us, cut_them):
+        key = (tuple(cut_us), tuple(cut_them))
+        if key not in pricings:
+            pricings[key] = price_deal(
+                dict(deal, out_us=deal["out_us"] + cut_us,
+                     out_them=deal["out_them"] + cut_them),
+                their, our_proj, their_proj, before)
+        return pricings[key]
+
+    def our_score(cut):
+        dw, dt, _, _, fdw, _ = pricing(_names(cut), cut_them)
+        return cuts.seat_score(cut, fdw, dw, dt)
+
+    def their_score(cut):
+        _, _, dw, dt, _, fdw = pricing(cut_us, _names(cut))
+        return cuts.seat_score(cut, fdw, dw, dt)
+
+    staying_us, over_us = _overfill(our_proj, deal["out_us"], deal["in_from_them"])
+    staying_them, over_them = _overfill(their_proj, deal["out_them"],
+                                        deal["in_from_us"])
+    cut_them = _names(sim.cut_worst(staying_them, over_them))
+    cut_us = _names(cuts.best_cut(staying_us, over_us, our_score)) if over_us else []
+    if over_them:
+        cut_them = _names(cuts.best_cut(staying_them, over_them, their_score))
+    return cut_us, cut_them, pricing(cut_us, cut_them)
+
+
+def _overfill(rows, out_names, in_names):
     over = len(rows) - len(out_names) + len(in_names) - roster.MAX_WIRE
-    if over <= 0:
-        return []
-    staying = [p for p in rows if p["n"] not in out_names]
-    return [p["n"] for p in sim.cut_worst(staying, over)]
+    return [p for p in rows if p["n"] not in out_names], max(0, over)
+
+
+def _names(rows):
+    return [p["n"] for p in rows]
 
 
 def _simmed_date(when=None):
@@ -372,13 +403,9 @@ def _trade_screen_results(sec, deals=None):
         name = deal.get("label") or "deal"
         row = {"label": name}
         try:
-            cut_us = overfill_cuts(our_proj, deal["out_us"], deal["in_from_them"])
-            cut_them = overfill_cuts(their_proj, deal["out_them"],
-                                     deal["in_from_us"])
-            priced = dict(deal, out_us=deal["out_us"] + cut_us,
-                          out_them=deal["out_them"] + cut_them)
-            dw_us, dt_us, dw_them, dt_them, fdw_us, fdw_them = price_deal(
-                priced, their, our_proj, their_proj, before)
+            cut_us, cut_them, pricing = deal_cuts(deal, their, our_proj,
+                                                   their_proj, before)
+            dw_us, dt_us, dw_them, dt_them, fdw_us, fdw_them = pricing
             delta_base = deal_delta_base(deal, sec["their_roster"])
             if delta_base is not None and cut_us:
                 delta_base -= sum(sim.board_base(bodies(cut_us, our_proj)).values())
@@ -397,7 +424,8 @@ def _trade_screen_results(sec, deals=None):
                 "simmed": _simmed_date(),
             }
             row["results"]["score_us"] = deal_score(
-                row["results"], len(deal["in_from_them"]) - len(priced["out_us"]))
+                row["results"],
+                len(deal["in_from_them"]) - len(deal["out_us"]) - len(cut_us))
         except (KeyError, ValueError) as e:
             row["results"] = {
                 "error": str(e),

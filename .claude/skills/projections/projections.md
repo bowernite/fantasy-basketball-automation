@@ -27,13 +27,24 @@ python3 .claude/skills/projections/test_hashtag_gp.py
 python3 .claude/skills/projections/test_fanscout_gp.py
 python3 .claude/skills/projections/test_overrides.py
 python3 .claude/skills/projections/test_extension_data.py
+python3 .claude/skills/projections/test_extension_watch.py
 ```
 
 Rate snapshot: `strategy/board-snapshots/projections/sleeper-2026.json`. GP snapshots: `hashtag-gp-2026.json`, `fanscout-gp-2026.json`. **Re-run rate + both GP snapshots before any eval.**
 
 ## Browser extension
 
-The Safari extension's `src/data/player-data.ts` is generated from the rate snapshot + overrides + rosters + last season's player pool (`extension_data.py`); never hand-edit it. It covers every rostered, pool and feed player; anyone else reads `NO_PROJECTION_RATE` with a ⚠️. After any rate refresh, `rate` override edit, or roster re-cut, run `bun run safari:dev` from the repo root (regenerates, rebuilds, reinstalls; Safari picks it up without a restart). Live check: a player's projection pill on our Fleaflicker team page matches the file.
+The Safari extension's `src/data/player-data.ts` is generated from the rate snapshot + overrides + rosters + last season's player pool (`extension_data.py`); never hand-edit it. It covers every rostered, pool and feed player; anyone else reads `NO_PROJECTION_RATE` with a ⚠️. Live check: a player's projection pill on our Fleaflicker team page matches the file.
+
+A launchd agent (`extension_watch.py`) rebuilds and reinstalls it on its own: when the content of any file `extension_data.input_paths()` lists changes (snapshot, overrides, rosters, pool, the rate code) and then sits unchanged for 15 s, it runs `bun run safari:dev` and posts a notification, success or failure (click opens the log). Don't run `safari:dev` after a refresh / override edit / re-cut yourself; reload the Fleaflicker page after the "Extension updated" notification. A failed build isn't retried until an input changes again (or the agent restarts).
+
+| | |
+| --- | --- |
+| Install / reinstall | `python3 .claude/skills/projections/extension_watch.py install` |
+| Stop + remove | `python3 .claude/skills/projections/extension_watch.py uninstall` |
+| Force a rebuild now | `bun run safari:dev` (concurrent runs queue on a lock) |
+| Log | `~/Library/Logs/ff-extension-watch.log` |
+| Running? | `launchctl print gui/$(id -u)/dev.abramczyk.ff-extension-watch` |
 
 ## Manual overrides
 

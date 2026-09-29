@@ -11,6 +11,7 @@ from simlib.runner import (
     _simmed_date, check_config, deal_delta_age, deal_delta_base, enrich_config,
     parse_config, resolve_roster, run_config, sim_tmp_path, team_sims_path,
     team_sim_path, team_trade_shapes_path)
+from simlib import cuts
 from tests.harness import cheap_monte_carlo
 
 EXAMPLES = os.path.join(sim.HERE, "sims", "examples")
@@ -270,6 +271,51 @@ class ConfigRun(unittest.TestCase):
             by_hand = enrich_config(cfg)["deals"][0]["results"]
         for col in ("fdw_them", "dw_them", "dp_title_them", "dw_us"):
             self.assertEqual(auto[col], by_hand[col], col)
+
+    def test_trade_screen_cuts_the_body_whose_named_cut_scores_best_for_us(self):
+        named = {
+            "out_us": ["Jalen Suggs"],
+            "in_from_them": ["Jordan Clarkson", "Taurean Prince"],
+            "out_them": ["Jordan Clarkson", "Taurean Prince"],
+            "in_from_us": ["Jalen Suggs"],
+        }
+        ours = sim.our_roster()
+        staying = [p for p in ours if p["n"] != "Jalen Suggs"]
+        candidates = [p["n"] for p in cuts.shortlist(staying, 1)]
+        base = sim.board_base(ours)
+        cfg = {"kind": "trade-screen", "their_roster": 161022,
+               "their_label": "Todd",
+               "deals": [dict(named, label="auto")]
+               + [dict(named, label=n, out_us=["Jalen Suggs", n])
+                  for n in candidates]}
+        with cheap_monte_carlo():
+            rows = {d["label"]: d["results"] for d in enrich_config(cfg)["deals"]}
+        score = {n: -base[n] + 300 * rows[n]["fdw_us"] + 250 * rows[n]["dw_us"]
+                 + 80 * rows[n]["dp_title_us"] for n in candidates}
+        self.assertEqual(rows["auto"]["cut_us"], [max(score, key=score.get)])
+
+    def test_trade_screen_cuts_the_body_whose_named_cut_scores_best_for_them(self):
+        named = {
+            "out_us": ["Jalen Suggs", "Keon Ellis"],
+            "in_from_them": ["Deni Avdija"],
+            "out_them": ["Deni Avdija"],
+            "in_from_us": ["Jalen Suggs", "Keon Ellis"],
+        }
+        theirs = sim.our_roster("roster-161020-2025-26.json")
+        staying = [p for p in theirs if p["n"] != "Deni Avdija"]
+        candidates = [p["n"] for p in cuts.shortlist(staying, 1)]
+        base = sim.board_base(theirs)
+        cfg = {"kind": "trade-screen", "their_roster": 161020,
+               "their_label": "Mitch",
+               "deals": [dict(named, label="auto")]
+               + [dict(named, label=n, out_them=["Deni Avdija", n])
+                  for n in candidates]}
+        with cheap_monte_carlo():
+            rows = {d["label"]: d["results"] for d in enrich_config(cfg)["deals"]}
+        score = {n: -base[n] + 300 * rows[n]["fdw_them"]
+                 + 250 * rows[n]["dw_them"] + 80 * rows[n]["dp_title_them"]
+                 for n in candidates}
+        self.assertEqual(rows["auto"]["cut_them"], [max(score, key=score.get)])
 
     def test_trade_screen_title_note_is_both_rosters(self):
         cfg = {

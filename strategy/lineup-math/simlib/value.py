@@ -6,7 +6,7 @@ from .data import DELTA_W_CAL
 from .engine import TRIALS
 from .gp import durable_gp
 from .roster import (
-    GROUPS, PAD_NAMES, basis, pad, refuse_already_rostered, slot_group, star, swap)
+    GROUPS, PAD_NAMES, refuse_already_rostered, slot_group, star, swap)
 from .schedule import SIM_TM
 from .score import SCORE_FDW, board_base
 from .stats import block_stats, false_position, slope
@@ -181,22 +181,19 @@ def incoming_wins(roster, players, blocks=None, trials=TRIALS, seed0=101, R=None
     return out
 
 
-def arrival_basis(path=None):
-    """`basis(path)` with a padded slot free for `incoming_*`. A roster full of
-    real bodies cuts its worst (`cut_worst`)"""
-    full = basis(path)
-    if any(p["n"] in PAD_NAMES for p in full):
-        return full
-    cut, = cut_worst(full, 1)
-    return pad([p for p in full if p is not cut], len(full))
-
-
 def cut_worst(rows, n):
-    """The `n` real bodies lowest on board BASE + formula Δw at Score's rate"""
+    """The `n` real bodies lowest on the partial (board BASE + formula Δw at Score's rate) -- the order a cut shortlists in, not the cut itself (`cuts.best_cut`)"""
+    partial = partial_cut_scores(rows)
+    real = [p for p in rows if p["n"] in partial]
+    return sorted(real, key=lambda p: partial[p["n"]])[:n]
+
+
+def partial_cut_scores(rows):
+    """{name: board BASE + formula Δw at Score's rate} for the real bodies"""
     real = [p for p in rows if p["n"] not in PAD_NAMES]
     base = board_base(real)
-    return sorted(real, key=lambda p: base[p["n"]]
-                  + SCORE_FDW * formula_player_wins(p))[:n]
+    return {p["n"]: base[p["n"]] + SCORE_FDW * formula_player_wins(p)
+            for p in real}
 
 
 def formula_player_wins(p):
