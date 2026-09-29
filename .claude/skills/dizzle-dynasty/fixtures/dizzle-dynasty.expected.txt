@@ -1,0 +1,101 @@
+$ sheet.py 
+visible  July 2026 Dynasty Ranks, 9Cat
+visible  July 2026 Dynasty Ranks, Points
+visible  July 2026 Rookie Ranks, 9Cat
+visible  July 2026 Rookie Ranks, Points
+visible  Pick Values
+hidden   March 2026, 9Cat
+hidden   January 2026, Points
+hidden   2025 9Cat Rookie Ranks 1.0
+
+$ sheet.py Dynasty Ranks, Points 20
+SOURCE   Dizzle Dynasty (1EmReTa5KUcFFMCy8Fq-NpQG3WU0pMY7XNW54G3EPbEM)
+TAB      July 2026 Dynasty Ranks, Points  [visible]
+FORMAT   POINTS   UPDATED 7/10/2026   ROWS 19
+#	Player	Position	Team	DOB	Age	Prev. Rank	 +/- Change	Notes/Outlook (Updated 7/10/2026)
+1	Victor Wembanyama	PF/C	SAS	2004-01-04	22.57	1	0	It's only Year 3 of Wemby and he's already reached the Finals and was an MVP finalist. Unreal talent and the obvious 1.01 for a long time to come.
+2	Shai Gilgeous-Alexander	PG/SG	OKC	1998-07-12	28.05	3	1	More of the same from SGA as the two-time MVP. We know what to expect out of an elite performer and a unanimous top 2-3 dynasty pick in all formats.
+3	Luka Doncic	PG/SG	LAL	1999-02-28	27.42	2	-1	Luka has continued to dominate in the fantasy department. He's beginning to enter his prime with LeBron out the door.
+4	Nikola Jokic	C	DEN	1995-02-19	31.44	4	0	Jokic is still dominating at a high level. He's 31 now but his game will age like fine wine. Averaging anything close to a triple double is par for the course at this point.
+5	Cooper Flagg	SF/PF	DAL	2006-12-21	19.61	5	0	Flagg has looked as advertised despite some normal rookie struggles and he'll keep getting better quickly. Expect him to remain a consensus top 5-10 player.
+6	Cade Cunningham	PG/SG	DET	2001-09-25	24.84	6	0	Cade Cunningham was awesome this past year and stayed firmly in the mix in the MVP race. Arguably the best guard in the East.
+	TIER BREAK							
+7	Jayson Tatum	SF/PF	BOS	1998-03-03	28.41	10	3	Tatum should be back to 100% coming into this season. Expect massive numbers with Jaylen Brown gone.
+8	Anthony Edwards	SG/SF	MIN	2001-08-05	24.98	9	1	Ant gets himself a co-star with LaMelo Ball to run things with. Expect more of the same moving forward. 
+9	Jalen Johnson	SF/PF	ATL	2001-12-18	24.61	8	-1	Jalen Johnson came into his own this year as a fantasy performer. He remains the main man for Atlanta.
+10	Tyrese Maxey	PG/SG	PHI	2000-11-04	25.73	7	-3	Maxey has been stepping up as an elite fantasy player, but with the addition of Jaylen Brown and pending Joel Embiid's health, this will eat into his touches a bit.
+11	1.01 / Cameron Boozer	PF/C	MEM	2007-07-18	19.03	14	3	Don't overthink this one. Boozer is a blue chip talent and a clear top 10-15 dynasty asset from Day 1.
+12	Scottie Barnes	SF/PF	TOR	2001-08-01	24.99	15	3	Scottie Barnes has been fantastic for Toronto this year and continues posting a steady, well-rounded fantasy game. Him and Kawhi should mesh real well.
+13	Tyrese Haliburton	PG/SG	IND	2000-02-29	26.41	13	0	I'm fully expecting to push Haliburton back into the top 10 this next season, just as I have with Tatum. We'll see when he's healthy. We know the ceiling when he's rolling.
+	TIER BREAK							
+14	Alperen Sengun	C	HOU	2002-07-25	24.01	11	-3	Sengun was pretty disappointing in the playoffs. Lots of upside here, especially in the fantasy department. His value feels a bit fluid moving forward.
+15	1.02 / AJ Dybantsa	SG/SF	WAS	2007-01-29	19.5	16	1	For some, Dybantsa will be their 1.01. He's a real star talent, but there are questions needing answered in the fantasy department.
+16	Giannis Antetokounmpo	PF/C	MIL -> MIA	1994-12-06	31.65	12	-4	Very little change here for Giannis as he heads over to the 305. He remains the clearcut best player for Miami and will continue delivering elite numbers.
+17	1.03 / Darryn Peterson	PG/SG	UTA	2007-01-17	19.53	20	3	Peterson goes where we expected in Utah, where he will commend a clear starting role from Day 1. Will the playmaking return to his HS levels?
+
+$ sheet.py Pick Values 60
+SOURCE   Dizzle Dynasty (1EmReTa5KUcFFMCy8Fq-NpQG3WU0pMY7XNW54G3EPbEM)
+TAB      Pick Values  [visible]
+FORMAT   n/a   UPDATED see tab name   ROWS 60
+Pick	Estimated Value	Who I Might Take (9Cat)	Who I Might Take (Points)
+1.01	Top 10-15	Cameron Boozer	Cameron Boozer
+1.02	Top 15-25	Darryn Peterson	AJ Dybantsa
+1.03	Top 15-25	AJ Dybantsa	Darryn Peterson
+1.04	Top 25-35	Caleb Wilson	Caleb Wilson
+1.05	Top 50-70	Keaton Wagler	Darius Acuff Jr.
+1.06	Top 50-70	Mikel Brown Jr.	Keaton Wagler
+1.07	Top 50-70	Darius Acuff Jr.	Mikel Brown Jr.
+1.08	Top 75-90	Kingston Flemings	Kingston Flemings
+1.09	Top 80-100	Morez Johnson Jr.	Brayden Burries
+1.10	Top 100-125	Aday Mara	Yaxel Lendeborg
+1.11	Top 100-125	Brayden Burries	Aday Mara
+1.12	Top 100-125	Yaxel Lendeborg	Morez Johnson Jr.
+1.13	Top 120-150	Ebuka Okorie	Ebuka Okorie
+1.14	Top 120-150	Dailyn Swain	Hannes Steinbach
+1.15	Top 120-150	Hannes Steinbach	Bennett Stirtz
+1.16	Top 140-180	Bennett Stirtz	Dailyn Swain
+1.17	Top 150-180	Christian Anderson Jr.	Cameron Carr
+1.18	Top 150-180	Cameron Carr	Christian Anderson Jr.
+1.19	Top 170-200	Allen Graves	LaBaron Philon
+1.20	Top 170-200	LaBaron Philon	Nate Ament
+1.21	Top 170-200	Nate Ament	Karim Lopez
+1.22	Top 170-200	Karim Lopez	Tarris Reed Jr.
+1.23	Top 170-200	Sergio De Larrea	Allen Graves
+1.24	Top 170-200	Jayden Quaintance	Bruce Thornton
+1.25	Top 200-230	Tarris Reed Jr.	Sergio De Larrea
+1.26	Top 200-230	Koa Peat	Zuby Ejiofor
+1.27	Top 200-230	Bruce Thornton	Koa Peat
+1.28	Top 200-230	Chris Cenac Jr.	Meleek Thomas
+1.29	Top 200-230	Zuby Ejiofor	Chris Cenac Jr.
+1.30	Top 200-230	Baba Miller	Jayden Quaintance
+2.01	Top 250-300	Joshua Jefferson	Joshua Jefferson
+2.02	Top 250-300	Meleek Thomas	Isaiah Evans
+2.03	Top 250-300	Richie Saunders	Richie Saunders
+2.04	Top 250-300	Alex Karaban	Alex Karaban
+2.05	Top 250-300	Henri Veesaar	Ryan Conwell
+2.06	Top 250-300	Ryan Conwell	Henri Veesaar
+2.07	Top 250-300	Isaiah Evans	Baba Miller
+2.08	Top 250-300	Emanuel Sharp	Ja'Kobi Gillespie
+2.09	Top 250-300	Ugonna Onyenso	Emanuel Sharp
+2.10	Top 250-300	Braden Smith	Braden Smith
+2.11	Top 300-350	Izaiyah Nelson	Nick Martinelli
+2.12	Top 300-350	Ja'Kobi Gillespie	Jaden Bradley
+2.13	Top 300-350	Dillon Mitchell	Trevon Brazile
+2.14	Top 300-350	Trevon Brazile	Ugonna Onyenso
+2.15	Top 300-350	Jaden Bradley	Dillon Mitchell
+2.16	Top 300-350	Nick Martinelli	Izaiyah Nelson
+2.17	Top 300-350	Maliq Brown	Felix Okpara
+2.18	Top 300-350	Otega Oweh	Tyler Bilodeau
+2.19	Top 300-350	Bryce Hopkins	Jack Kayil
+2.20	Top 300-350	Aaron Nkrumah	Otega Oweh
+2.21	Top 350-450	Jack Kayil	Maliq Brown
+2.22	Top 350-450	Lajae Jones	Bryce Hopkins
+2.23	Top 350-450	Felix Okpara	Aaron Nkrumah
+2.24	Top 350-450	Tyler Bilodeau	Tyler Nickel
+2.25	Top 350-450	Tyler Nickel	Tobi Lawal
+2.26	Top 350-450	Tobi Lawal	Lajae Jones
+2.27	Top 350-450	Rafael Castro	Quadir Copeland
+2.28	Top 350-450	Vsevolod Ishchenko	Rafael Castro
+2.29	Top 350-450	Quadir Copeland	Trey Kaufman-Renn
+2.30	Top 350-450	Duke Miles	Jaron Pierre Jr.
+

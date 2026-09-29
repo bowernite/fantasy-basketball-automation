@@ -1,0 +1,93 @@
+# Sim config schema
+
+JSON only (stdlib). **Run configs** go in `$TMPDIR/ff-sim-<tag>.json` — not in `evals/teams/`. **Agents:** edit JSON by hand; run `sim_run.py`; copy the big numbers from stdout / `results` into both shape files by hand (`trade-shapes`). Avoid your own scripts whenever possible; rely on your own logic. Archive via `trades` §Simming.
+
+## Team shape archive
+
+Read `evals/teams/<owner>/<Name>.shapes.md`. Also write `<Name> Trade Shapes.md`. Never read the HTML file. Line format, tiers, and sort: `trade-shapes` Skill. Tier/sort rules: `trades` §Simming.
+
+## Incremental runs
+
+On `./run sim_run.py <file>`:
+
+- **`trade-screen`** — skip deals that already have `results`; price only new deals.
+- **`player-effects`** — skip sections that already have `player_results`.
+- **`--refresh`** — re-run all trade sections/deals.
+- **`"refresh": true`** on one section — re-run just that section (flag cleared on write).
+
+After a run, copy the big numbers into both shape files (`trade-shapes`). Tmp JSON is disposable.
+
+`reports` / `title-column` always run when present (eval configs in `lineup-math/sims/`).
+
+## Shape
+
+```json
+{
+  "sections": [
+    {
+      "label": "kawhi",
+      "kind": "trade-screen",
+      "their_roster": 161024,
+      "their_label": "Josh",
+      "deals": [{ "label": "...", "out_us": [], "in_from_them": [], "out_them": [], "in_from_us": [] }]
+    }
+  ],
+  "meta": { "simmed": "8/30/26", "dp_title_note": "both rosters change in the 12-team field" }
+}
+```
+
+Single-section configs `{ "kind": "..." }` still work for one-off runs in `lineup-math/sims/`.
+
+## `trade-screen`
+
+Joint `Δw (season)` and `ΔP(title)`, one row per deal. Each deal gets `results` after it runs: `score_us` (`Eval Definitions §Score`; `null` without `delta_base_us`), `delta_base_us`, `fdw_us` (formula `Δw`), `dw_us` (`Δw (season)`), `dp_title_us`, `dage_us` (`Δage`, `trades` §Age; `null` when a name has no eval row), and their-side `fdw_them` / `dw_them` / `dp_title_them`, plus `simmed` (e.g. `8/20/26`). The section gets `meta.simmed` when any deal in it is priced; the file gets top-level `meta.simmed` on write-back.
+
+**Picks** — player arrays only; add BASE via integer fields (price with `eval-pick` Skill):
+
+| Field | When |
+|---|---|
+| `out_us_extra_base` | Our picks to them (sum if multiple) |
+| `in_from_us_extra_base` | Their picks to us (sum if multiple) — despite the name, **not** a mirror of `out_us_extra_base` |
+
+Each pick goes in exactly one field; setting both for the same pick nets it to 0. Player arrays still need full mirrors (`out_us`, `in_from_them`, `out_them`, `in_from_us`). Show picks in the `.md` **Out** column in parentheses; the JSON carries the BASE integer separately. `dage_us` reads Sept '26 picks from the `*_picks` fields and later picks from the deal `label`, which must be the `.shapes.md` line's `out > in` (e.g. `Cade+KC '27 2nd+2.09 > SGA`).
+
+**Pick bodies** — every win column also moves each pick's mock rookie body between the two sides: the joint `Δw (season)` / `ΔP(title)` on the padded rosters, and formula `Δw` as a piece in the per-piece sum. Name Sept '26 picks by slot, `"<round>.<slot padded to 2>"` e.g. `"2.09"`. Each pick move needs both ends set, like the player arrays:
+
+| Field | Removes/adds |
+|---|---|
+| `out_us_picks` | Our pick leaves our pad (going to them) |
+| `in_from_us_picks` | Same pick arrives on their pad |
+| `out_them_picks` | Their pick leaves their pad (going to us) |
+| `in_from_them_picks` | Same pick arrives on our pad |
+
+E.g. our `2.09` to them, their `1.11` to us: `out_us_picks`/`in_from_us_picks` = `["2.09"]`, `out_them_picks`/`in_from_them_picks` = `["1.11"]`. Required for every Sept '26 pick that moves; later picks are BASE-only and skip these. An unknown slot, or one the sender doesn't hold, refuses. Does not touch `*_extra_base`, which still carries BASE separately.
+
+**Stdout → archive:** `score_us` → **Score** · `delta_base_us` → **ΔBASE** · `fdw_us` → **Δw** · `dw_us` → **Δw (season)** · `dp_title_us` → **ΔP(title)** · `dage_us` → **Δage**. Round per `trade-shapes` Skill.
+
+## `player-effects`
+
+Isolated incoming value. Section gets `player_results` after it runs. `source: "their"` = their names incoming onto us (eval `ours` columns). `source: "us"` = our names incoming onto them. Unknown names refuse.
+
+## `reports` / `title-column`
+
+Eval refresh only — stdout, no write-back. See `./run sim.py --help`.
+
+## `eval-columns`
+
+Counterparty eval player table. `their_roster` is a team id. No `roster` key — incoming is always on us. Optional `names` subsets the roster.
+
+```json
+{"kind": "eval-columns", "their_roster": 161014}
+```
+
+```
+./run sim_run.py --eval 161014
+```
+
+Ours (`my-team/`): `./run sim.py players weeks` plus `player_title` / `title-column` `include: ["ours"]`, not this kind. `sim.py title` is roster `P(title)` only.
+
+## Examples
+
+- Team archive: `evals/teams/josh/Josh.shapes.md` (and `Josh Trade Shapes.md`, write only)
+- Run config: `$TMPDIR/ff-sim-josh-kawhi.json`
+- `evals/lineup-math/sims/examples/eval-columns.json`

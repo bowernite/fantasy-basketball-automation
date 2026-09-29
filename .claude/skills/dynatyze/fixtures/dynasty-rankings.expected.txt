@@ -1,0 +1,31 @@
+SOURCE   Dynatyze (https://dynatyze.com/basketball/dynasty-rankings)
+TITLE    NBA Dynasty Rankings 2026-27 — Player Values | Dynatyze
+UPDATED  2026-07-30   Top 68 ranked
+ROWS     26  (free tier cap — not a full board)
+#	PLAYER	POS	TEAM	DYNVAL
+1	Victor Wembanyama	C	SAS	9,999
+2	Shai Gilgeous-Alexander	G	OKC	9,906
+3	Luka Dončić	G	LAL	9,804
+4	Nikola Jokić	C	DEN	9,736
+5	Cooper Flagg	F	DAL	9,569
+6	Cade Cunningham	G	DET	9,558
+7	Anthony Edwards	G	MIN	9,382
+8	Tyrese Maxey	G	PHI	9,382
+9	Jayson Tatum	F	BOS	9,242
+10	Jalen Johnson	F	ATL	9,189
+11	Tyrese Haliburton	G	IND	9,063
+13	Scottie Barnes	F	TOR	8,958
+14	Alperen Sengun	C	HOU	8,845
+16	Chet Holmgren	C	OKC	8,774
+17	Giannis Antetokounmpo	F	MIA	8,544
+18	Evan Mobley	C	CLE	8,514
+19	Jalen Williams	G	OKC	8,490
+20	Amen Thompson	G	HOU	8,484
+22	Dylan Harper	G	SAS	8,189
+23	Donovan Mitchell	G	CLE	8,129
+24	Franz Wagner	F	ORL	7,999
+25	Austin Reaves	G	LAL	7,999
+26	Deni Avdija	F	POR	7,816
+28	LaMelo Ball	G	MIN	7,702
+41	2027 Early 1st	PICK	DRAFT	7,012
+72	2027 Mid 1st	PICK	DRAFT	5,250

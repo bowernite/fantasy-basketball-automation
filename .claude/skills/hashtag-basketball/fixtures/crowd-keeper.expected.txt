@@ -1,0 +1,45 @@
+BOARD    crowd keeper (/keeper)
+TITLE    Crowdsourced Fantasy Basketball Dynasty Rankings | Hashtag Basketball
+UPDATED  30 July 2026   votes=198,571
+ROWS     30   picks=8
+#	PLAYER	TEAM	POS	AGE	KVALUE
+1	Victor Wembanyama	SA	PF,C	22.6	2498
+2	Cooper Flagg	DAL	PG,SG,SF	19.6	2384
+3	Nikola Jokic	DEN	C	31.4	2338
+4	Shai Gilgeous-Alexander	OKC	PG	28.0	2292
+5	Cade Cunningham	DET	PG,SG	24.8	2247
+6	Luka Doncic	LAL	PG,SG	27.4	2209
+7	Anthony Edwards	MIN	PG,SG	25.0	2147
+8	Jalen Johnson	ATL	SF,PF	24.6	2114
+9	Tyrese Maxey	PHI	PG	25.7	2112
+10	2026 Draft (Pick 1)	DRA	-	-	2105
+11	Jayson Tatum	BOS	SF,PF	28.4	2056
+12	Scottie Barnes	TOR	SG,SF,PF,C	25.0	2041
+13	Dylan Harper	SA	PG,SG	20.4	1996
+14	Amen Thompson	HOU	PG,SG,SF	23.5	1951
+15	LaMelo Ball	MIN	PG,SG	24.9	1928
+16	Tyrese Haliburton	IND	PG,SG	26.4	1904
+17	2026 Draft (Pick 2)	DRA	-	-	1896
+18	Evan Mobley	CLE	PF,C	25.1	1894
+19	Alperen Sengün	HOU	PF,C	24.0	1894
+20	Giannis Antetokounmpo	MIA	PF,C	31.6	1851
+21	Deni Avdija	POR	SG,SF,PF	25.6	1839
+22	Trey Murphy III	NO	SG,SF,PF	26.1	1836
+23	Stephon Castle	SA	PG,SG	21.7	1828
+24	Alexandre Sarr	WAS	C	21.3	1817
+41	2026 Draft (Pick 3-4)	DRA	-	-	1675
+59	2026 Draft (Pick 5-8)	DRA	-	-	1502
+108	2026 Draft (Pick 9-14)	DRA	-	-	1314
+145	2026 Draft (Pick 15-30)	DRA	-	-	1175
+175	2026 Draft (Pick 31-44)	DRA	-	-	1123
+273	2026 Draft (Pick 45-60)	DRA	-	-	1091
+
+DRAFT PICKS
+10	2026 Draft (Pick 1)	2105
+17	2026 Draft (Pick 2)	1896
+41	2026 Draft (Pick 3-4)	1675
+59	2026 Draft (Pick 5-8)	1502
+108	2026 Draft (Pick 9-14)	1314
+145	2026 Draft (Pick 15-30)	1175
+175	2026 Draft (Pick 31-44)	1123
+273	2026 Draft (Pick 45-60)	1091

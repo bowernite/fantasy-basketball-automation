@@ -185,3 +185,8 @@ extension/.amo-upload-uuid
 
 __pycache__/
 *.pyc
+
+.archive/
+
+# Track project skills (global ignore covers .claude/*)
+!.claude/skills/

@@ -1,0 +1,12 @@
+BOARD    expert dynasty (https://hashtagbasketball.com/fantasy-basketball-dynasty-rankings)
+TITLE    Fantasy Basketball Dynasty Rankings | Hashtag Basketball
+UPDATED  02 July 2026 by Joseph Mamone
+VERIFIED DDSTAT=800  DDTYPE=POINT  DDFORECAST=5  DDPOS=All  DDPOSFROM=1  DDTSUM=All  cards=8
+RANKCOL  rank below is the POINT board ONLY
+#	PLAYER	POS	TEAM	AGE	KEEPER#	KVALUE	PTS/REB/AST/STL/BLK/TO
+1	Victor Wembanyama	PF/C	SA	22.6yo	#1	2498	25.0/11.5/3.1/1.0/3.1/2.4
+2	Shai Gilgeous-Alexander	PG	OKC	28.0yo	#4	2292	31.1/4.3/6.6/1.4/0.8/2.2
+3	Luka Doncic	PG/SG	LAL	27.4yo	#6	2209	33.5/7.7/8.3/1.6/0.5/4.0
+4	Nikola Jokic	C	DEN	31.4yo	#3	2338	27.7/12.9/10.7/1.4/0.8/3.7
+5	Giannis Antetokounmpo	PF/C	MIA	31.6yo	#20	1851	27.6/9.8/5.4/0.9/0.7/3.2
+6	Cade Cunningham	PG/SG	DET	24.8yo	#5	2247	23.9/5.5/9.9/1.4/0.8/3.7
