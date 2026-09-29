@@ -108,6 +108,14 @@ class ConfigValidate(unittest.TestCase):
             check_config({"kind": "eval-columns", "their_roster": 161025})
         self.assertIn("counterparty", str(ctx.exception))
 
+    def test_a_deal_moving_a_pick_body_is_refused(self):
+        deal = {"label": "probe", "out_us": [], "in_from_them": [],
+                "out_them": [], "in_from_us": [], "out_us_picks": ["2.09"]}
+        with self.assertRaises(ValueError) as ctx:
+            check_config({"kind": "trade-screen", "their_roster": 161020,
+                          "deals": [deal]})
+        self.assertIn("out_us_picks", str(ctx.exception))
+
     def test_example_configs_validate(self):
         for name in os.listdir(EXAMPLES):
             if not name.endswith(".json"):
@@ -250,98 +258,6 @@ class ConfigRun(unittest.TestCase):
         self.assertEqual(out["deals"][0]["results"]["simmed"], _simmed_date())
         self.assertEqual(out["meta"]["simmed"], _simmed_date())
 
-    def test_trade_screen_picks_move_by_slot(self):
-        deal = {
-            "label": "probe",
-            "out_us": [],
-            "in_from_them": [],
-            "out_them": [],
-            "in_from_us": [],
-            "out_us_picks": ["2.09"],
-            "in_from_them_picks": ["1.03"],
-        }
-        cfg = {
-            "kind": "trade-screen",
-            "their_roster": 161020,
-            "their_label": "Mitch",
-            "deals": [deal],
-        }
-        their = "roster-161020-2025-26.json"
-        with cheap_monte_carlo():
-            after_ours = sim.basis_after_trade(
-                None, [], [], out_picks=["2.09"],
-                in_picks=sim.resolve_picks(their, ["1.03"]))
-            after_theirs = sim.basis_after_trade(their, [], [])
-            after_us, before_us, after_them, before_them = sim.deal_odds(
-                after_ours, after_theirs, their)
-            out = enrich_config(cfg)
-        got = out["deals"][0]["results"]
-        self.assertNotIn("error", got)
-        self.assertEqual(got["dw_us"], round(after_us.wins - before_us.wins, 2))
-        self.assertEqual(got["dw_them"],
-                         round(after_them.wins - before_them.wins, 2))
-
-    def test_trade_screen_formula_delta_w_counts_the_mock_rookie_of_a_moved_pick(self):
-        cfg = {
-            "kind": "trade-screen",
-            "their_roster": 161020,
-            "their_label": "Mitch",
-            "deals": [{
-                "label": "probe",
-                "out_us": [],
-                "in_from_them": [],
-                "out_them": [],
-                "in_from_us": [],
-                "out_them_picks": ["1.03"],
-                "in_from_them_picks": ["1.03"],
-            }],
-        }
-        with cheap_monte_carlo():
-            out = enrich_config(cfg)
-        got = out["deals"][0]["results"]
-        self.assertGreater(got["fdw_us"], 0)
-        self.assertEqual(got["fdw_them"], -got["fdw_us"])
-
-    def test_trade_screen_formula_delta_w_charges_us_for_our_outgoing_pick(self):
-        cfg = {
-            "kind": "trade-screen",
-            "their_roster": 161020,
-            "their_label": "Mitch",
-            "deals": [{
-                "label": "probe",
-                "out_us": [],
-                "in_from_them": [],
-                "out_them": [],
-                "in_from_us": [],
-                "out_us_picks": ["2.09"],
-                "in_from_us_picks": ["2.09"],
-            }],
-        }
-        with cheap_monte_carlo():
-            out = enrich_config(cfg)
-        got = out["deals"][0]["results"]
-        self.assertLess(got["fdw_us"], 0)
-        self.assertEqual(got["fdw_them"], -got["fdw_us"])
-
-    def test_trade_screen_pick_not_held_by_sender_refuses(self):
-        deal = {
-            "label": "probe",
-            "out_us": [],
-            "in_from_them": [],
-            "out_them": [],
-            "in_from_us": [],
-            "out_us_picks": ["1.03"],
-        }
-        cfg = {
-            "kind": "trade-screen",
-            "their_roster": 161020,
-            "their_label": "Mitch",
-            "deals": [deal],
-        }
-        with cheap_monte_carlo():
-            out = enrich_config(cfg)
-        self.assertIn("error", out["deals"][0]["results"])
-
     def test_trade_screen_age_change_reads_later_picks_from_the_label(self):
         cfg = {
             "kind": "trade-screen",
@@ -365,19 +281,17 @@ class ConfigRun(unittest.TestCase):
             "their_roster": 161020,
             "their_label": "Mitch",
             "deals": [{
-                "label": "2.09+'28 1st > '27 2nd",
+                "label": "'27 2nd+'28 1st > '27 1st",
                 "out_us": [],
                 "in_from_them": [],
                 "out_them": [],
                 "in_from_us": [],
-                "out_us_picks": ["2.09"],
-                "in_from_us_picks": ["2.09"],
             }],
         }
         with cheap_monte_carlo():
             out = enrich_config(cfg)
-        # out (20 x 300 + 18 x 700) / 1000 = 18.6; in 19
-        self.assertAlmostEqual(out["deals"][0]["results"]["dage_us"], 0.4)
+        # out (19 x 300 + 18 x 700) / 1000 = 18.3; in 19
+        self.assertAlmostEqual(out["deals"][0]["results"]["dage_us"], 0.7)
 
     def test_trade_screen_age_change_reads_a_later_pick_named_by_owner(self):
         cfg = {

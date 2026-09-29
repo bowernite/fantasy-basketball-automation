@@ -8,8 +8,7 @@
 `roster-<team_id>-<season>.json`  schema `sim.py` prices: `{n, tm, avg, tot,
     gp, posLabel, elig}`. Membership from `FetchLeagueRosters`, rates from
     `FetchRoster?season=` (see `merged_rows` -- the season endpoint's
-    membership goes stale after March). `assumed_trades.apply_all` then
-    overlays deals we treat as done even if the wire still shows them pending.
+    membership goes stale after March).
 
 `teams-<season>.json`  `{team_id: team name}`, written by the same `roster` run.
 
@@ -35,8 +34,6 @@ import os
 import time
 import urllib.request
 import zoneinfo
-
-import assumed_trades
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ET = zoneinfo.ZoneInfo("America/New_York")
@@ -342,8 +339,7 @@ Rebuilds the data files sim.py reads, into rosters/ and data/.
 
   (no argument)   nba-schedule + league  (~30 requests)
   pool            + players  (~20 min, resumable)
-  roster [ids]    roster + teams files, all 12 if no ids. Applies
-                  assumed-through overlays (`assumed_trades`)
+  roster [ids]    roster + teams files, all 12 if no ids
   teams           teams file alone: id -> team name labels"""
 
 
@@ -396,23 +392,11 @@ if __name__ == "__main__":
                      % (LEAGUE, ", ".join(unknown),
                         ", ".join("%s (%s)" % (i, n)
                                   for i, n in sorted(names.items()))))
-        asked = [int(t) for t in ids]
-        fetch_ids = assumed_trades.expand_ids(asked)
-        extra = [i for i in fetch_ids if i not in asked]
-        if extra:
-            print("  assumed overlay: also re-cutting %s"
-                  % ", ".join("%s (%s)" % (i, names[str(i)]) for i in extra))
-        built = {}
-        for t in fetch_ids:
-            built[t] = team_roster(t, league, pool)
-            time.sleep(1.1)                          # sustained requests 403
-        nchg = assumed_trades.apply_all(built)
-        if nchg:
-            print("  assumed overlay: moved bodies on %d roster(s)" % nchg)
-        for t in fetch_ids:
+        for t in ids:
             # key order is the schema
             write("roster-%s-%s.json" % (t, SEASON_TAG),
-                  lambda t=t: built[t])
+                  lambda t=t: team_roster(int(t), league, pool))
+            time.sleep(1.1)                          # sustained requests 403
         sys.exit(0)
     # unrecognised args refuse rather than falling through to a re-scrape
     unknown = [a for a in args if a != "pool"]

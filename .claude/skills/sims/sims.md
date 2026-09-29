@@ -39,7 +39,7 @@ Schema: [config.md](config.md).
 
 # Refresh
 
-Normal run skips anything already priced in the **JSON**. Re-run when inputs changed (roster, projections, pending-trade overlay) or you edited deal bodies in place.
+Normal run skips anything already priced in the **JSON**. Re-run when inputs changed (roster, projections) or you edited deal bodies in place.
 
 | Flag | Effect |
 |---|---|

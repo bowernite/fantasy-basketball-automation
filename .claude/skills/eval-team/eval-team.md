@@ -23,7 +23,7 @@ Your only job is to create the updated eval files for a team, in `strategy/teams
 Already on disk — nothing here needs fetching:
 
 - **Sim** — counterparty table: `strategy/lineup-math/run sim_run.py --eval <team_id>` · `sims` Skill · `README.md` §*Pricing a counterparty*
-- **Rosters** — `strategy/lineup-math/rosters/roster-<team_id>-<season>.json`, all 12. `strategy/lineup-math/run fetch_data.py roster <team_id>` re-cuts one and applies assumed-through overlays (`Pending Trades.md`). Do not quote the wire over those files.
+- **Rosters** — `strategy/lineup-math/rosters/roster-<team_id>-<season>.json`, all 12. `strategy/lineup-math/run fetch_data.py roster <team_id>` re-cuts one. Do not quote the wire over those files.
 - **Boards** — `strategy/board-snapshots/`, latest dated pull.
 
 # When to pull new data
@@ -85,13 +85,12 @@ Shai Gilgeous-Alexander | 28.1 PG/SG | 9550 | 49 72 | +2.57 +2.01 +2.65 15.8%
 
 ## Picks
 pick | origin | rookie | VALUE
-### Sept '26 — {human header text}
-1.02 | own | AJ Dybantsa | 5959
-own 1st | own (1.01–1.07 prior) | Cameron Boozer → Mikel Brown Jr. | ≤6757–2391
-Gone: own 3.02 → Josh
+### Sept '27 — {human header text}
+own 1st | own (1.01–1.07 prior) | {rookie} → {rookie} | ≤6757–2391
+Gone: own 3rd → Josh
 ```
 
 - Ours: `Title:` drops the ours clause; the key drops `Δw…-theirs` and reads `ΔP(title)`.
 - Players in the human file's order. FPts/G and GP are projections only. Omit a blank `| flags`; omit `σ:` when there are no ties.
 - Picks: one key line under `## Picks`; keep each year's header and `Gone:` line. A year with no picks: `none held`. Drop Ordinal and rank.
-- `Notes:` targets, role bets, feed misses, pending-trade overlays, pick caveats that change a VALUE read — anything a trade call would use. No definitions, formulas, methodology, `REPL`, or counterfactual text.
+- `Notes:` targets, role bets, feed misses, pick caveats that change a VALUE read — anything a trade call would use. No definitions, formulas, methodology, `REPL`, or counterfactual text.

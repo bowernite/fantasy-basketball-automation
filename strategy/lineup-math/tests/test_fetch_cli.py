@@ -57,8 +57,6 @@ class FetchDataWritesWhatSimReads(unittest.TestCase):
         self.dir = tempfile.mkdtemp()
         self.addCleanup(shutil.rmtree, self.dir, True)
         shutil.copy(fetch_data.__file__, self.dir)
-        shutil.copy(os.path.join(os.path.dirname(fetch_data.__file__),
-                                 "assumed_trades.py"), self.dir)
         with open(os.path.join(self.dir, "stub_fleaflicker.py"), "w") as f:
             f.write(STUB_FLEAFLICKER)
         self.ids = [161001 + i for i in range(12)]

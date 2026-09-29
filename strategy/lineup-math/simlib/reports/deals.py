@@ -77,7 +77,7 @@ def report_scenarios():
     print("incoming on %s (multi-body rows spread over %s)."
           % (SIM_TM, "/".join(SIM_TMS)))
     print("backfill: outgoing bodies 2..N refunded at %.0f FPts / %d GP, the "
-          "post-auction\nopen-FA grade; `breakevens` reports the bracket to a "
+          "open-FA\ngrade; `breakevens` reports the bracket to a "
           "%s refund." % (DEAD["avg"], DEAD["gp"], grade(GENEROUS)))
     # `n=` passed since `star`'s default name burns a counter value otherwise
     dflt = star(0, n="-")
@@ -122,7 +122,7 @@ def report_breakevens():
 
     # measured off the roster in hand, not typed -- `our_roster` re-projects
     # on every feed
-    print("\nBACKFILL GRADE. bracket: %s post-auction open FA, %s generous; our "
+    print("\nBACKFILL GRADE. bracket: %s open FA, %s generous; our "
           "worst KEPT body rates %.1f."
           % (grade(DEAD), grade(GENEROUS), min(p["avg"] for p in ours)))
     print("    %-16s %s" % ("refund grade", "  ".join(

@@ -1,13 +1,8 @@
-Add the given trade to the `Pending Trades` file. Should be assumed it goes through
+---
+description: Use when the user says a trade was agreed or went through, or asks to execute one.
+---
 
-Update rows in both eval files of each relevant team (`eval-team` §Output), only if those files exist (i.e. swap players)
-
-Update `Team Projections` file as warranted (i.e. this year's season sim, future team outlook, etc)
-
-Run `eval-team` Skill fresh for each affected team to account for new trade shape
-
-# Pre Sept '26 expansion
-
-I know there is also some sim logic for padding for having the roster filled out to 38, because it'll be at 38 by the time the season starts. Make sure that that's all up to date for the relevant teams, if necessary
-
-Also, if it's a deal uneven on bodies, assume the deal will be executed on expansion/draft day. Mention this in Pending Trades file
+1. Confirm it executed on the wire (`get-league-info` §`FetchTrades`). Not yet → change nothing; tell the user it's still pending.
+2. Re-cut each side's roster: `strategy/lineup-math/run fetch_data.py roster <team_id>` (`team-info` for ids).
+3. Run `eval-team` fresh for each side that has eval files.
+4. Update `strategy/Team Projections.md` as warranted (this season's sim, future outlook).

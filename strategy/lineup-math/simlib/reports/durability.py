@@ -1,6 +1,6 @@
 from .. import engine
 from ..engine import TRIALS, absence_blocks
-from ..roster import EXPANSION, basis, star
+from ..roster import basis, star
 from ..value import replacement, value_key
 from ..wins import pf_wins
 
@@ -80,7 +80,7 @@ def report_durability():
           % (100 * max(worst), "FLAT" if worst[-1] <= worst[0] else "RISING"))
 
     print("\ndead-slot cost, marginal last bodies:")
-    for p in EXPANSION[-4:]:
+    for p in sorted(full, key=value_key(full, R))[:4]:
         d = engine.run([q for q in full if q["n"] != p["n"]])["pf"] - base["pf"]
         print("  drop %s (%.0f FPts/%d GP): %+5.0f PF = %+.3f wins"
               % (p["n"], p["avg"], p["gp"], d, pf_wins(d)))

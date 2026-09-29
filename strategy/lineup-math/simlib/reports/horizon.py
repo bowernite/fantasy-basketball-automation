@@ -33,7 +33,7 @@ def _aged_roster(path, years):
             q["avg"] = max(6.0, q["avg"] + _rate_delta(age) * years)
             q["gp"] = round(project_gp(p["n"], gp=q["gp"], rate=q["avg"]))
         out.append(q)
-    return roster_mod.pad(out, path=path)
+    return roster_mod.pad(out)
 
 
 def _sept_slot(rank):

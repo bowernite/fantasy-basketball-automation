@@ -20,7 +20,7 @@ import csv, glob, json, math, os, re, sys, unicodedata
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 EVALS = os.path.join(HERE, os.pardir, os.pardir, os.pardir, 'strategy')
-TEAMS, ROSTER_SIZE = 12, 38          # league-info: announced post-Sept '26 size
+TEAMS, ROSTER_SIZE = 12, 38          # league-info
 
 MONTHS = ('january february march april may june july august september october november'
           ' december').split()

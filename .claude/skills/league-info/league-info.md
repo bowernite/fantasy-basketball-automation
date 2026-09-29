@@ -12,8 +12,8 @@ Facts only. Valuation: `eval-team`. Fetching: `get-league-info`.
 # Lineups
 
 9 starters (`FetchLeagueRules.rosterPositions`): **PG · SG · G(PG|SG) · SF · PF ·
-F(SF|PF) · C · ANY ×2**. So 3 guard-only, 3 forward-only, 1 center-only, 2 shared.
-**F does not include C.**
+F/C(SF|PF|C) · C · ANY ×2**. So 3 guard-only, 2 forward-only, 1 center-only, 1 frontcourt
+(F/C), 2 shared. **F/C includes C.**
 
 Read `proPlayer.positionEligibility` per player — never assume.
 
@@ -69,15 +69,12 @@ Downstream, the playoff cut is **8 of 12**, so a bubble sits at **8/9** — `M�
 `FetchLeagueRules` fields: `maxRosterSize` · `maxActive` · `numStarters` · `numBench` ·
 `rosterPositions[]`. Re-read them before relying on any figure below.
 
-| | '25-26 (verified) | '26-27, from Sept '26 (announced) |
+| Starters · Bench · IR | `maxRosterSize` | `maxActive` |
 |---|---|---|
-| Starters · Bench · IR | 9 · 15 · 4 | 9 · 29 · 0 |
-| `maxRosterSize` | **28** | **38** |
-| `maxActive` | 24 | 38 |
+| 9 · 29 · 0 | **38** | 38 |
 
-`maxRosterSize` counts IR. `rosterPositions[]` still carries a `TAXI` entry, but with
-**no `start` key** — zero slots, so taxi does not exist here; only `IR` (`start: 4`)
-does. Absent `start` = 0 slots, not "unlimited".
+`maxRosterSize` counts IR. `IR` and `TAXI` entries sit in `rosterPositions[]` with **no
+`start` key** — zero slots, so neither exists here. Absent `start` = 0 slots, not "unlimited".
 
 **Legality is `count_after ≤ maxRosterSize`, per side** — not body-neutrality. A side that
 would finish over attaches `playersReleased` to the trade. **Body-uneven shapes are routine
@@ -85,17 +82,10 @@ here, and three-team trades exist.** Count both sides live (`FetchLeagueRosters`
 `rosters[].players[]`) before pricing a deal, not after. `trades` owns the check and the
 price of the drops.
 
-**`maxActive` binds separately.** Teams at 28 run 24 active + 4 full IR slots, so a
-body-neutral IR-for-healthy swap still adds an active body — **ask before pricing one**. IR
-occupancy does not track current injury flags: healthy players sit parked there. Dated —
-expires with IR in Sept '26.
-
-The 10 new slots fill in one September: **the rookie draft, then the FA auction**. At
-12 × 38 = 456 essentially every NBA-rostered player is owned, so the FA pool empties
-and **a shipped-out body stops being replaceable**. Consequences: `trades` (timing),
+At 12 × 38 = 456 essentially every NBA-rostered player is owned, so the FA pool is empty
+and **a shipped-out body is not replaceable**. Consequences: `trades` (body pricing),
 `eval-pick` (pick value), `Eval Definitions §Where our format pulls off consensus`
-(backfill regime, and 5 for steering auction bodies on light-night coverage — a free tiebreak
-worth about the decision floor, whose whole case is avoiding the stacked shape).
+(backfill regime).
 
 **The FA event every offseason is a live auction right after the rookie draft**, run on a
 Google Sheet with its own use-it-or-lose-it budget — not the Fleaflicker $100 FAAB, never
@@ -107,7 +97,7 @@ FA-event format.
 
 **FA adds lock at some point in the offseason and reopen at the rookie draft + FA event.
 Trades stay open throughout — and so do releases.** A drop with no add appears on the wire
-inside both lock windows, and a pending trade is releasing a player during this one.
+inside both lock windows (e.g. a trade's `playersReleased`).
 
 **The lock start is not a known rule — do not assume one.** It is not end-of-season:
 the transaction log shows adds well into the following June. Locked as of late July '26.

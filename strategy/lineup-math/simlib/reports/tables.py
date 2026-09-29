@@ -1,4 +1,4 @@
-from .. import engine, roster, value
+from .. import roster, value
 from ..engine import TRIALS
 from ..gp import evidence_flags
 from ..projections import projected_rate
@@ -6,16 +6,6 @@ from ..roster import basis, our_roster
 from ..schedule import unsigned
 from ..stats import se_mean
 from ..value import group_replacement
-from ..wins import pf_wins
-
-
-def report_extras():
-    full = basis()
-    base = engine.run(full)
-    d = base["pf"] - engine.run(our_roster())["pf"]
-    print("\nSept '26 expansion: %d -> %d bodies (`pad`: held picks, then FA)"
-          % (len(our_roster()), len(full)))
-    print("  %+5.0f PF = %+.2f wins" % (d, pf_wins(d)))
 
 
 def report_players():

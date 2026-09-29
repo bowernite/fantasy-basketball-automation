@@ -1,7 +1,8 @@
 """The 9 starting slots, and the exact max-weight matching that fills them."""
 # rosterPositions per league-info
 SLOTS = [("PG", {"PG"}), ("SG", {"SG"}), ("G", {"PG", "SG"}),
-         ("SF", {"SF"}), ("PF", {"PF"}), ("F", {"SF", "PF"}), ("C", {"C"}),
+         ("SF", {"SF"}), ("PF", {"PF"}), ("F/C", {"SF", "PF", "C"}),
+         ("C", {"C"}),
          ("ANY", {"PG", "SG", "SF", "PF", "C"}),
          ("ANY", {"PG", "SG", "SF", "PF", "C"})]
 

@@ -2,24 +2,15 @@ import unittest
 from tests.harness import *
 
 class Pad(unittest.TestCase):
-    def test_pad_does_not_invent_rookies_beyond_held_picks(self):
-        ours = sim.our_roster()
-        added = [p["n"] for p in sim.basis()[len(ours):]]
-        with open(os.path.join(sim.DATA_DIR, "draft-2026.json")) as f:
-            picks = json.load(f)["161025"]
-        self.assertEqual(len(picks), 1)
-        self.assertEqual(added[0], "RK0")
-        self.assertTrue(all(n.startswith("FA") for n in added[1:]), added)
-        self.assertEqual(len(added), 38 - len(ours))
-
-    def test_a_team_with_more_picks_gets_more_rookie_pad_bodies(self):
-        with open(os.path.join(sim.DATA_DIR, "draft-2026.json")) as f:
-            board = json.load(f)
-        us = sum(1 for p in sim.basis() if p["n"].startswith("RK"))
-        them = sum(1 for p in sim.basis(ROOKIE_ROSTER) if p["n"].startswith("RK"))
-        self.assertEqual(us, len(board["161025"]))
-        self.assertEqual(them, len(board["160941"]))
-        self.assertGreater(them, us)
+    def test_a_short_roster_pads_with_free_agent_grades_only(self):
+        short = sim.our_roster(THEIR_ROSTER, projected=False)[:20]
+        path = os.path.join(tempfile.mkdtemp(), os.path.basename(THEIR_ROSTER))
+        with open(path, "w") as f:
+            json.dump(short, f)
+        added = [p["n"] for p in sim.basis(path)[20:]]
+        self.assertEqual(len(added), 18)
+        self.assertEqual(added[:len(sim.FA_FILL)], [p["n"] for p in sim.FA_FILL])
+        self.assertTrue(all(n.startswith("PAD") for n in added[len(sim.FA_FILL):]), added)
 
     def test_the_real_bodies_survive_padding_in_their_own_order(self):
         their = sim.our_roster(THEIR_ROSTER)
@@ -45,58 +36,6 @@ class Pad(unittest.TestCase):
         their = sim.our_roster(THEIR_ROSTER)
         self.assertEqual(sim.run(sim.pad(their, len(their)), trials=8)["pf"],
                          sim.run(their, trials=8)["pf"])
-
-    def test_a_held_pick_sits_at_its_projected_rate(self):
-        rk = next(p for p in sim.basis() if p["n"] == "RK0")
-        self.assertAlmostEqual(rk["avg"], sim.projected_rate("Karim Lopez"))
-        self.assertEqual(rk["gp"], 60)
-
-    def test_a_better_pick_sits_above_a_worse_one(self):
-        ours = next(p for p in sim.basis() if p["n"] == "RK0")
-        todd = next(p for p in sim.basis("roster-161022-2025-26.json")
-                    if p["n"] == "RK0")
-        self.assertAlmostEqual(todd["avg"], sim.projected_rate("Cameron Boozer"))
-        self.assertGreater(todd["avg"], ours["avg"] + 15)
-
-    def test_a_held_pick_brings_its_own_team_and_eligibility(self):
-        rk = next(p for p in sim.basis() if p["n"] == "RK0")
-        self.assertEqual(rk["tm"], "MEM")
-        self.assertEqual(rk["elig"], ["SF", "PF"])
-
-    def test_a_pick_the_feed_misses_stays_a_late_pick_body(self):
-        with open(os.path.join(sim.DATA_DIR, "draft-2026.json")) as f:
-            picks = json.load(f)["161020"]
-        self.assertEqual(picks[-1]["name"], "Ryan Conwell")
-        self.assertIsNone(sim.projected_rate("Ryan Conwell"))
-        rk = next(p for p in sim.basis(THEIR_ROSTER)
-                  if p["n"] == "RK%d" % (len(picks) - 1))
-        self.assertEqual(rk["avg"], 10.0)
-        self.assertEqual(rk["gp"], 60)
-
-class PickTrade(unittest.TestCase):
-    def test_a_traded_pick_stops_padding_the_senders_roster(self):
-        before = sum(1 for p in sim.basis() if p["n"].startswith("RK"))
-        after = sim.basis_after_trade(sim.ROSTER, [], [], out_picks=["2.09"])
-        self.assertEqual(sum(1 for p in after if p["n"].startswith("RK")),
-                         before - 1)
-        self.assertEqual(len(after), 38)
-
-    def test_a_traded_pick_pads_the_receivers_roster_at_its_own_grade(self):
-        josh = "roster-161024-2025-26.json"
-        in_pick = sim.resolve_picks(sim.ROSTER, ["2.09"])
-        after = sim.basis_after_trade(josh, [], [], in_picks=in_pick)
-        rk = next(p for p in after if p["n"].startswith("RK") and p["tm"] == "MEM")
-        self.assertAlmostEqual(rk["avg"], sim.projected_rate("Karim Lopez"))
-        self.assertEqual(rk["tm"], "MEM")
-        self.assertEqual(rk["elig"], ["SF", "PF"])
-
-    def test_an_unknown_slot_refuses(self):
-        with self.assertRaises(KeyError):
-            sim.basis_after_trade(sim.ROSTER, [], [], out_picks=["9.09"])
-
-    def test_a_pick_the_sender_does_not_hold_refuses(self):
-        with self.assertRaises(KeyError):
-            sim.basis_after_trade(sim.ROSTER, [], [], out_picks=["1.11"])
 
 class Backfill(unittest.TestCase):
     def test_a_richer_backfill_grade_lowers_the_breakeven(self):
@@ -196,7 +135,7 @@ class SlotGroups(unittest.TestCase):
         self.assertEqual(sim.slot_group(["SG", "SF"]), "forward")
 
     def test_a_group_counts_every_slot_it_can_fill(self):
-        self.assertEqual(sim.group_slots(("C",)), 3)
+        self.assertEqual(sim.group_slots(("C",)), 4)
         self.assertEqual(sim.group_slots(("PG", "SG")), 5)
         self.assertEqual(sim.group_slots(("SF", "PF")), 5)
 

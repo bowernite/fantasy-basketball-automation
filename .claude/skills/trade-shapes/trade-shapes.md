@@ -49,7 +49,7 @@ Columns: `Out | In | Score | ΔBASE | Δw | Δw (season) | ΔP(title) | Δage`. 
 
 **Round on archive:** `Score` and `ΔBASE` nearest 100 · win columns nearest tenth · `ΔP(title)` nearest whole with **`%` suffix** (e.g. `+5%`, `-2%`, `0%`) · `Δage` nearest tenth, signed (e.g. `+3.2`, `-1.2`, `0.0`).
 
-**Picks** — win columns are bodies. A pick that drafts before the priced season (Sept '26 slots) is its mock rookie's projection in every win column; later picks are 0 there. Never convert BASE → `Δw`. No `*` on any cell.
+**Picks** — win columns are bodies; picks are 0 there. Never convert BASE → `Δw`. No `*` on any cell.
 
 **Out** = our side; **In** = theirs. Each cell is one HTML bullet list — one asset per `<li>`:
 
@@ -63,7 +63,7 @@ Use that exact `<ul>` wrapper even for a single asset.
 
 **Players** — `**Name**` inside each `<li>`. **Name** = last name or eval nickname, **bold**. No age or projection metadata. Out-side players from our eval; In-side from theirs.
 
-**Picks** — **Out** only, as their own `<li>`. Square brackets, bold: `**['27 1st]**`, `**['26 2.09]**` (slot notation per `eval-pick`). Not parentheses, not `+`-joined to a player.
+**Picks** — **Out** only, as their own `<li>`. Square brackets, bold: `**['27 1st]**`, `**['27 2.09]**` (slot notation per `eval-pick`). Not parentheses, not `+`-joined to a player.
 
 **Rebuild for sim** — deal `label` = the agent line's `out > in` (`Δage` reads later picks from it); strip list markup and bold; player arrays = bare names only. Picks → JSON pick BASE fields (`sims` [config.md](../sims/config.md)); pick label in JSON is `'27 1st` without brackets.
 
@@ -101,7 +101,7 @@ Run sims first (`sims` Skill). From stdout / JSON `results`:
 
 # Refresh
 
-When roster, projections, or pending-trade overlay changed — rebuild tmp JSON from `.shapes.md` rows + eval rosters (edit JSON directly), run `sim_run.py --refresh` (`sims` Skill), update every row in both files from fresh `results`; apply §Sections.
+When roster or projections changed — rebuild tmp JSON from `.shapes.md` rows + eval rosters (edit JSON directly), run `sim_run.py --refresh` (`sims` Skill), update every row in both files from fresh `results`; apply §Sections.
 
 Do not re-quote stale table rows without a fresh run when inputs moved.
 

@@ -6,8 +6,7 @@ from .league_curve import report_league_curve
 from .market import report_gp, report_market
 from .nights import report_nights
 from .playoffs import report_playoffs, report_weeks
-from .schedules import report_schedules
-from .tables import report_extras, report_players
+from .tables import report_players
 from .title import report_title
 from .horizon import report_horizon
 
@@ -18,9 +17,9 @@ REPORTS = {
     "replacement": report_replacement, "positions": report_positions,
     "formula": report_formula, "league-curve": report_league_curve,
     "durability": report_durability,
-    "extras": report_extras, "players": report_players,
+    "players": report_players,
     "market": report_market, "gp": report_gp,
-    "schedules": report_schedules, "playoffs": report_playoffs,
+    "playoffs": report_playoffs,
     "weeks": report_weeks,     "title": report_title, "horizon": report_horizon,
 }
 
@@ -34,11 +33,9 @@ BLURB = {
     "formula": "does the league curve predict what the sim measures",
     "league-curve": "re-cut the 12-roster 38th-body table formula Δw interpolates",
     "durability": "what our format pays for GP, against a board's elasticity",
-    "extras": "the Sept '26 expansion and the projection's own PF delta",
     "players": "per-player Delta w, vs a replacement 68-GP body of his slot group",
     "market": "board rank <-> FPts/G, and how much of a GP season carries forward",
     "gp": "expected GP: what predicts it, and what does not",
-    "schedules": "what steering the Sept '26 auction on the NBA calendar buys",
     "playoffs": "W20-W23 and seed-conditional P(title|seed) per player "
                 "(not the eval Delta P(title) column)",
     "weeks": "W20-W23 per player, closed form -- no bracket Monte Carlo",
@@ -53,7 +50,7 @@ ROSTER_FREE = {"market"}
 
 # rounded up from an 18-core box; `engine.run` shards trials across cores, so a
 # smaller box runs slower than this
-SLOW = {"breakevens": "~4s", "schedules": "~8s", "league-curve": "~15s"}
+SLOW = {"breakevens": "~4s", "league-curve": "~15s"}
 
 # Named by constant, not by player (`deals.FILLER`, `durability.SUBJECT`,
 # `calibration`'s standings PF) -- built on OUR names/scores, so `--roster`

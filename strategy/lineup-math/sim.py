@@ -87,10 +87,8 @@ from simlib.gp import (
 from simlib.projections import (
     projected_rate, projected_gp, _projections, _feed_gp_index)
 from simlib.roster import (
-    DEAD, EXPANSION, GROUPS, MAX_WIRE, PAD_POS, apply_trade, basis, basis_after_trade,
-    group_slots, our_roster, pad, pick_slot, pure_bodies, resolve_picks, slot_group,
-    star, swap)
-from simlib.auction import AUCTION_N, auction_slots, coverage_picks, steer
+    DEAD, FA_FILL, GROUPS, MAX_WIRE, PAD_POS, apply_trade, basis, basis_after_trade,
+    group_slots, our_roster, pad, pure_bodies, slot_group, star, swap)
 from simlib.value import (
     OutOfBracket, breakeven, breakeven_cell, breakeven_fmt, breakeven_value,
     deal_formula_wins, formula_player_wins, league_pf,
@@ -272,7 +270,7 @@ if __name__ == "__main__":
             raise
         except (ValueError, KeyError, OSError, RuntimeError) as e:
             # each of these is authored prose for this moment (missing board
-            # snapshot, unknown name, empty auction) -- only here; the import
+            # snapshot, unknown name) -- only here; the import
             # path still raises
             sys.exit("\n%s could not be produced on %s:\n  %s%s"
                      % (name, roster.label(), e,

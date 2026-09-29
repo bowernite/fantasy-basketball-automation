@@ -13,7 +13,7 @@ Expands `Eval Definitions §ΔP(title)` and §*Counterparty title reads*.
 
 ⚠️ **`W20`–`W23` and `ΔP(title)` both carry availability, so never add them.** Summing counts the same GP haircut twice on top of mixing currencies.
 
-⚠️ **`ΔP(title)` is a delta, so negatives are real — never floor at 0.** Negative = below replacement (cut/upgrade candidate); flooring breaks sign agreement with `Δw (season)` and biases `Score`. Noise is ~±0.1–0.15 pts across blocks plus ~±0.15 from base runs: **|ΔP| < ~0.3 pts is a tie with zero.** Assumes a replacement body is obtainable; with the FA pool ~empty after the Sept '26 expansion, bench rows' level (not order) may shift — unverified.
+⚠️ **`ΔP(title)` is a delta, so negatives are real — never floor at 0.** Negative = below replacement (cut/upgrade candidate); flooring breaks sign agreement with `Δw (season)` and biases `Score`. Noise is ~±0.1–0.15 pts across blocks plus ~±0.15 from base runs: **|ΔP| < ~0.3 pts is a tie with zero.** Assumes a replacement body is obtainable; with the FA pool ~empty (`league-info`), bench rows' level (not order) may shift — unverified.
 
 ⚠️ **`P(title)` and `ΔP(title)` are different numbers.** `P(title)` is the whole roster's odds; `ΔP(title)` is one player's contribution. Name which you are printing.
 

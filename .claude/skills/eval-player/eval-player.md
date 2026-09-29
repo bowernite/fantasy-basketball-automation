@@ -15,8 +15,7 @@ situation: `strategy/teams/my-team/Ours.team.md`.
 2. **League truth** (`get-league-info`): `FetchRoster?team_id=&season=` for a whole
    roster, `FetchPlayerProfile` for one player (owner, `detail.dob` — **never
    `detail.age`**, `Eval Definitions §Columns`). Derive `GP` and check it before trusting
-   any average. Ownership: overlay `strategy/Pending Trades.md` assumed-through on top of
-   the wire. The wire does not win.
+   any average.
 3. **Pull boards in this order**, recording each one's update stamp and depth: Dizzle
    Points → Hashtag expert Points → Hashtag crowd (`/keeper`) → Dynatyze (reference only).
 4. **Join league names to board rows** — see *Joining names* below before recording any

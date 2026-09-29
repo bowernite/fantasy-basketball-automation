@@ -10,13 +10,8 @@ from .projections import projected_rate
 from .schedule import SIM_TM
 
 
-# Sept '26 one-off. Held picks (draft-2026.json) sit at the Dizzle-prefix
-# prospect's projected rate, then leftover slots take these FA grades in
-# order — fewer leftover slots means fewer, better auction bodies. Same FA
-# ladder for every team.
-PICK = {"avg": 10.0, "gp": 60}  # feed miss, and the GP every named pick sits at
-PICK_TMS = ("SAC", "UTA", "POR")
-EXPANSION = [
+# Short-roster filler, in order, so every roster prices at the same body count
+FA_FILL = [
     {"n": "FA0", "tm": "MIN", "avg": 14.0, "gp": 55, "elig": ["PG", "SG"]},
     {"n": "FA1", "tm": "OKC", "avg": 13.0, "gp": 55, "elig": ["C"]},
     {"n": "FA2", "tm": "BOS", "avg": 12.0, "gp": 55, "elig": ["SF", "PF"]},
@@ -25,7 +20,6 @@ EXPANSION = [
     {"n": "FA5", "tm": "SAS", "avg": 9.0, "gp": 55, "elig": ["C"]},
     {"n": "FA6", "tm": "NYK", "avg": 8.0, "gp": 55, "elig": ["PG", "SG"]},
 ]
-DRAFT = "draft-2026.json"
 
 
 DEAD = {"tm": "MIA", "avg": 6.0, "gp": 40, "elig": ["PG", "SG"]}  # backfill grade for a shipped-out body
@@ -36,7 +30,7 @@ PAD_POS = (["PG", "SG"], ["SF", "PF"], ["C"])  # slot groups for padding without
 
 OURS = "roster-%d-%s.json" % (TEAM, SEASON_TAG)  # never moved; `--roster` sets ROSTER
 ROSTER = OURS
-MAX_WIRE = 38  # wire cap today and post Sept '26 expansion
+MAX_WIRE = 38  # wire cap
 
 
 def refuse_already_rostered(roster, players, fn):
@@ -133,18 +127,9 @@ def apply_trade(roster, out_names, adds, max_bodies=MAX_WIRE):
     return out
 
 
-def basis_after_trade(path, out_names, adds, out_picks=None, in_picks=None):
-    """Wire roster after the trade, then padded to 38 for pricing.
-    `out_picks` (slot names, e.g. "2.09") are `path`'s own picks that left
-    in this trade -- refuses a slot `path` does not hold. `in_picks`
-    (resolved pick rows, from `resolve_picks` on the counterparty) are picks
-    that arrived, and pad with their own rate/elig/tm instead of an FA."""
-    src = path or ROSTER
-    exclude = set(out_picks or [])
-    if exclude:
-        resolve_picks(src, sorted(exclude))  # refuses an unheld slot
-    return pad(apply_trade(our_roster(src), out_names, adds), path=src,
-               exclude_picks=exclude, extra_picks=in_picks)
+def basis_after_trade(path, out_names, adds):
+    """Wire roster after the trade, then padded to 38 for pricing"""
+    return pad(apply_trade(our_roster(path or ROSTER), out_names, adds))
 
 
 def swap(roster, out_names, adds, dead=None):
@@ -179,86 +164,23 @@ def swap(roster, out_names, adds, dead=None):
     return out
 
 
-def _team_id(path):
-    parts = os.path.basename(path).split("-")
-    if len(parts) > 1 and parts[1].isdigit():
-        return int(parts[1])
-    return None
-
-
-def held_picks(path):
-    tid = _team_id(path)
-    if tid is None:
-        return []
-    board = _load(DRAFT)
-    key = str(tid)
-    if key not in board:
-        raise KeyError("%s has no row in %s -- the Sept '26 board is a "
-                       "one-off file, not a live fetch" % (key, DRAFT))
-    return board[key]
-
-
-def pick_slot(pick):
-    return "%d.%02d" % (pick["round"], pick["slot"])
-
-
-def resolve_picks(path, slots):
-    """Held picks of `path`, named by slot (e.g. "2.09"). Refuses a slot
-    `path` does not hold."""
-    if not slots:
-        return []
-    by_slot = {pick_slot(p): p for p in held_picks(path)}
-    missing = [s for s in slots if s not in by_slot]
-    if missing:
-        raise KeyError("%s: not a pick %s holds -- check data/draft-2026.json"
-                       % (", ".join(missing), path or ROSTER))
-    return [by_slot[s] for s in slots]
-
-
-def _pick_body(i, pick=None):
-    pick = pick or {}
-    body = dict(PICK, n="RK%d" % i,
-                tm=pick.get("tm") or PICK_TMS[i % len(PICK_TMS)],
-                elig=list(pick.get("elig") or PAD_POS[i % len(PAD_POS)]))
-    rate = projected_rate(pick["name"]) if pick.get("name") else None
-    if rate is not None:
-        body["avg"] = rate
-    return body
-
-
-def pick_bodies(picks):
-    return [_pick_body(i, p) for i, p in enumerate(picks)]
-
-
-def pad(roster, n=38, path=None, exclude_picks=None, extra_picks=None):
-    """Appends, so real bodies keep their order (and rng draws). `path`
-    missing means no held picks — FA fill only. `basis` always passes one.
-    `exclude_picks` (slot names) drops picks of `path` that moved away in a
-    trade; `extra_picks` (resolved pick rows) are a counterparty's picks
-    that moved onto this roster instead."""
+def pad(roster, n=38):
+    """Appends, so real bodies keep their order (and rng draws)"""
     out = list(roster)
-    need = max(0, n - len(out))
-    held = held_picks(path) if path else []
-    if exclude_picks:
-        held = [p for p in held if pick_slot(p) not in exclude_picks]
-    picks = list(extra_picks or []) + held
-    n_picks = min(need, len(picks))
-    for i in range(n_picks):
-        out.append(_pick_body(i, picks[i]))
-    for i in range(need - n_picks):
-        if i < len(EXPANSION):
-            out.append(dict(EXPANSION[i], elig=list(EXPANSION[i]["elig"])))
+    for i in range(max(0, n - len(out))):
+        if i < len(FA_FILL):
+            out.append(dict(FA_FILL[i], elig=list(FA_FILL[i]["elig"])))
         else:
             out.append({"n": "PAD%d" % i,
-                        "tm": EXPANSION[i % len(EXPANSION)]["tm"],
-                        "avg": EXPANSION[-1]["avg"], "gp": EXPANSION[-1]["gp"],
+                        "tm": FA_FILL[i % len(FA_FILL)]["tm"],
+                        "avg": FA_FILL[-1]["avg"], "gp": FA_FILL[-1]["gp"],
                         "elig": list(PAD_POS[i % len(PAD_POS)])})
     return out
 
 
 class _PadNames:
     def __contains__(self, n):
-        return isinstance(n, str) and n.startswith(("RK", "FA", "PAD"))
+        return isinstance(n, str) and n.startswith(("FA", "PAD"))
 
     def __and__(self, other):
         return {n for n in other if n in self}
@@ -275,9 +197,6 @@ def refuse_foreign_seat(roster, who, fn):
     here = {p["n"] for p in roster if p["n"] not in PAD_NAMES}
     if here and len(here & seated) * 2 < len(here):
         raise ValueError("%s: this roster is not %s -- pass path=" % (fn, who))
-
-
-AUCTION_NAMES = frozenset(p["n"] for p in EXPANSION)
 
 
 GROUPS = {"guard": ("PG", "SG"), "forward": ("SF", "PF"), "center": ("C",)}
@@ -302,5 +221,4 @@ def group_slots(elig):
 
 
 def basis(path=None):
-    src = path or ROSTER
-    return pad(our_roster(path), path=src)
+    return pad(our_roster(path))

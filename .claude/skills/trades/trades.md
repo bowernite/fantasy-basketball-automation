@@ -23,7 +23,7 @@ Every trade table and every deal comparison must include `Score` (`Eval Definiti
 - `ΔP(title)`
 - `Δage` — our weighted-age change out → in, in years, nearest tenth, signed (`+3.2`, `-1.2`); method §Age. Older is worse. A rough vector read alongside the other four, not a minimum
 
-Picks: never convert BASE into `Δw`. Sept '26 picks count in the win columns as their mock rookie's projection (set the `*_picks` fields, `sims` [config.md](../sims/config.md)); later picks are `ΔBASE` and `Δage` only.
+Picks: never convert BASE into `Δw`. Picks are `ΔBASE` and `Δage` only.
 
 `trade-screen` JSON: `delta_base_us` · `fdw_us` · `dw_us` · `dp_title_us` · `dage_us` (plus their-side `fdw_them` / `dw_them`). Re-run with `--refresh` if stale.
 
@@ -69,10 +69,6 @@ Less so for better / star players
 
 So, point is, we should be open to anything and everything, and same on their side. We have no idea what they value and undervalue, and what inefficiences there are
 
-# Pending trades
-
-Always read `/strategy/Pending Trades.md`. Assumed-through deals **are** the roster, even if Fleaflicker still shows pending or has no record. Open deals in that file are the only ones still in play.
-
 # Brainstorm
 
 Most of the work happens here, before any sim. Price shapes by eye off the eval files; sims only confirm the short list (§Simming).
@@ -103,7 +99,7 @@ Write deal bodies to tmp JSON, run, read stdout / JSON `results`, copy `Score` a
 
 **Archive is part of the workflow** — after pricing new deals in a trade session (`trade-with`, negotiation, screening), update the counterparty's `.shapes.md` and `Trade Shapes.md` in the same session. Skip only when the user opts out or the run was throwaway info-gathering with no new bodies priced.
 
-**When to refresh** — roster fetch, projection/GP snapshot, or pending-trade overlay changed and old joint prices may be stale:
+**When to refresh** — roster fetch or projection/GP snapshot changed and old joint prices may be stale:
 
 - **`--refresh`** — re-run all trade sections in the file
 - **`"refresh": true`** on one section — re-run just that block (cleared on write)
@@ -140,10 +136,10 @@ Whenever presenting deals (to the user or in reports) — packages, variants, or
 Method for `Δage` (§The big numbers; `sim_run.py` reports it as `dage_us`). Each side's age is a weighted mean:
 
 - **Player:** age = `AGE`; weight = max(0, `FPts/G` − 18) × `GP` (`<Name>.team.md` columns)
-- **Undrafted pick:** age = 20 − (draft year − current year), e.g. in 2026 a '26 pick is 20, '27 is 19, '28 is 18; weight by our round: 1st **700** · 2nd **300** · 3rd **100**
+- **Undrafted pick:** age = 20 − (draft year − current year), e.g. in 2026 a '27 pick is 19, '28 is 18; weight by our round: 1st **700** · 2nd **300** · 3rd **100**
 - **Drafted pick:** the player's row
 
-Example (9/25): Cade+('27 1st)+(2.09) > SGA+Fears. Out (24.9×2040 + 19×700 + 20×300) / 3040 = 23.1; In (28.1×2232 + 19.9×666) / 2898 = 26.2 → **+3.2**
+Example: Cade+('27 1st) > SGA+Fears. Out (24.9×2040 + 19×700) / 2740 = 23.4; In (28.1×2232 + 19.9×666) / 2898 = 26.2 → **+2.8**
 
 # Notes
 

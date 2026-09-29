@@ -33,8 +33,14 @@ class OptimalLineup(unittest.TestCase):
         centers = [(float(40 - i), {"C"}, i) for i in range(12)]
         total, filled, who = sim.lineup(centers)
         self.assertEqual(filled, sim.group_slots(("C",)))
-        self.assertEqual(sorted(who), [0, 1, 2])
-        self.assertEqual(total, 40 + 39 + 38)
+        self.assertEqual(sorted(who), [0, 1, 2, 3])
+        self.assertEqual(total, 40 + 39 + 38 + 37)
+
+    def test_a_center_can_start_in_the_flex_but_a_guard_cannot(self):
+        _, filled, _ = sim.lineup([(30.0, {"C"}, i) for i in range(4)])
+        self.assertEqual(filled, 4)
+        _, filled, _ = sim.lineup([(30.0, {"PG"}, i) for i in range(5)])
+        self.assertEqual(filled, 4)
 
 class CommonRandomNumbers(unittest.TestCase):
     def test_swapping_a_player_for_his_own_clone_changes_nothing(self):

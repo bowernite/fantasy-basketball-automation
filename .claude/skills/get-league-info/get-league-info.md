@@ -54,11 +54,6 @@ Default = **live/pending** trades only; `filter=TRADES_COMPLETED` = history. No 
 veto window `FetchLeagueDraftBoard` still shows a traded pick as the sender's with
 `tradeId: None`, and rosters still show the old owner. Check here before quoting either.
 
-**Assumed-through** (`strategy/Pending Trades.md`): treat as executed even when this
-endpoint still lists them pending, or has no record. Overlay before quoting
-ownership. `strategy/lineup-math/run fetch_data.py roster` does the same to the files (`assumed_trades.py`).
-The wire does not win.
-
 Pending-only fields: `numVetoesRequired`, `expiryIso`, `proposedOn` / `approvedOn` /
 `tentativeExecutionTime`, `chatChannel`, `description`.
 
@@ -106,8 +101,7 @@ absent on most bench rows; `viewingActualPointsAverage` does **not** exist here 
 it yields 0.00 for everyone, silently.
 
 `groups[]`: `START` · unlabelled bench · `INJURED`. Only **filled** IR slots are rendered, so
-group length is not the slot count, and an IR occupant often has **no `injury` field** —
-healthy players sit parked there (`league-info` on `maxActive`).
+group length is not the slot count.
 
 `FetchLeagueStandings`: teams are under `divisions[].teams[]` (one division). Record rank
 is `recordOverall.rank`; points for is `pointsFor.value` — **sort it yourself, there is no
