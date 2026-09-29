@@ -15,7 +15,9 @@ Ranks are sourced. BASE and VALUE are modelled (`Eval Definitions §Sourced vs m
 
 ## Our picks
 
-Only **2.09**, which is ordinal **21** and chart label `1.21` (`eval-pick` §3). Our 1.09 belongs to The Don and our 3.09 to Mongol Khans (Henry).
+**None.** 2.09 is now Hlina's (trade 485845, executes draft day), and he makes the pick. Our 1.09 belongs to Mitch and our 3.09 to Henry. The 2.09 notes below are kept for reference only.
+
+2.09 is ordinal **21** and chart label `1.21` (`eval-pick` §3).
 
 VALUE is **645**, from Dizzle's `1.21 / Karim Lopez` prefix at rank 185. That is Dizzle alone, because the crowd board has no 2026 pick rows left. Dizzle's `Pick Values` band for 1.19–1.24 is `Top 170-200`.
 
