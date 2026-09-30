@@ -6,6 +6,7 @@ import openingNightRoster from "../lineup/fixtures/fetch-roster-week1-signed-in.
 import fantasyStatsPage from "../lineup/fixtures/teampage-logged-in-fantasy-stats.html?raw";
 import seasonStatsPage from "../lineup/fixtures/teampage-logged-in.html?raw";
 import signedOutPage from "../lineup/fixtures/teampage.html?raw";
+import espnInjuries from "./fixtures/espn-injuries-2026-09-30.json";
 import worker from "./index";
 
 const LOGGED_OUT_PAGE = `<html><body><a class="btn" href="/nba/login">Log In</a></body></html>`;
@@ -13,6 +14,8 @@ const LOGGED_IN_PAGE = `<html><body><a href="/logout">Sign Out</a><select name="
 // Captured from a real accepted save; its `_gAlert` decodes to "Lineup set successfully."
 const ACCEPTED_SAVE_LOCATION =
   "https://www.fleaflicker.com/nba/leagues/30579/teams/161025?_fm=eJxjYGBc8IX3_mFGAAzsA0Y&week=1&_gAlert=eJxjYGBc8IX3_uE1bxlYyxUYGMFQwiczL7W0QKE4tUShuDQ5ObW4OK00J6dSDwBMBA7h";
+// Adem Bona is the only player tagged injured with a game in the opening-night roster
+const ESPN_AGREES_WITH_FLEAFLICKER = { injuries: [{ injuries: [{ status: "Out", date: "2026-09-17T20:15Z", athlete: { displayName: "Adem Bona" } }] }] };
 
 // `primary` lives for the whole file; clear its session, dedupe and backoff state (run rows stay)
 afterEach(async () => {
@@ -946,6 +949,87 @@ describe("scheduled checks", () => {
   });
 });
 
+describe("injury cross-check with ESPN", () => {
+  it("files a Trello card when Fleaflicker has a player out who ESPN lists as day-to-day", async () => {
+    const { alerts, cards } = stubFleaflicker(fakeFleaflickerSeason, { espnInjuries: () => Response.json(espnInjuries) });
+
+    await triggerRun();
+
+    expect(alerts).toEqual([]);
+    expect(cards).toMatchInlineSnapshot(`
+      [
+        {
+          "authorization": "OAuth oauth_consumer_key="test-trello-key", oauth_token="test-trello-token"",
+          "desc": "- Fleaflicker has Adem Bona OUT, ESPN Day-To-Day (return 2026-10-01): he may be benched wrongly
+
+      https://www.fleaflicker.com/nba/leagues/30579/teams/161025",
+          "list": "test-trello-list",
+          "name": "Fleaflicker and ESPN disagree on injuries",
+        },
+      ]
+    `);
+  });
+
+  it("pushes an urgent alert when ESPN has a starter out shortly before his tip while Fleaflicker has him healthy", async () => {
+    vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-20T17:30:00Z") });
+    const cadeOut = { status: "Out", date: "2026-10-20T17:00Z", shortComment: "Cunningham (hamstring) won't play Tuesday.", athlete: { displayName: "Cade Cunningham" } };
+    const { alerts, cards } = stubFleaflicker(fakeFleaflickerSeason, {
+      espnInjuries: () => Response.json({ injuries: [...ESPN_AGREES_WITH_FLEAFLICKER.injuries, { injuries: [cadeOut] }] }),
+    });
+
+    await triggerRun();
+
+    expect(alerts.map(({ title, message, priority }) => ({ title, message, priority }))).toMatchInlineSnapshot(`
+      [
+        {
+          "message": "- ESPN has Cade Cunningham Out as of 2026-10-20T17:00Z: "Cunningham (hamstring) won't play Tuesday.", Fleaflicker healthy: he may start while out",
+          "priority": "1",
+          "title": "Fleaflicker and ESPN disagree on injuries",
+        },
+      ]
+    `);
+    expect(cards.map(({ name }) => name)).toEqual(["Fleaflicker and ESPN disagree on injuries"]);
+  });
+
+  it("matches ESPN names that differ in accents, punctuation or suffix", async () => {
+    const bonaOut = { status: "Out", date: "2026-09-17T20:15Z", athlete: { displayName: "Adém Bona Jr." } };
+    const { cards } = stubFleaflicker(fakeFleaflickerSeason, { espnInjuries: () => Response.json({ injuries: [{ injuries: [bonaOut] }] }) });
+
+    await triggerRun();
+
+    expect(cards).toEqual([]);
+  });
+
+  it("records both feeds' view of each injured player with a game that day", async () => {
+    stubFleaflicker(fakeFleaflickerSeason, { espnInjuries: () => Response.json(espnInjuries) });
+
+    const record = await (await triggerRun()).json<RunRecord>();
+
+    expect(record.days[0].injuries).toMatchInlineSnapshot(`
+      [
+        {
+          "espnComment": "Bona (foot) will be re-evaluated at the start of training camp, Derek Bodner of AllPHLY.com reports.",
+          "espnDate": "2026-09-17T20:15Z",
+          "espnReturnDate": "2026-10-01",
+          "espnStatus": "Day-To-Day",
+          "ffStatus": "OUT",
+          "player": "Adem Bona",
+        },
+      ]
+    `);
+  });
+
+  it("only warns when ESPN blocks the request, leaving the run ok", async () => {
+    const { alerts, cards } = stubFleaflicker(fakeFleaflickerSeason, { espnInjuries: () => new Response("Access Denied", { status: 403 }) });
+
+    const record = await (await triggerRun()).json<RunRecord>();
+
+    expect(record.days[0].decision?.ok).toBe(true);
+    expect(alerts).toEqual([]);
+    expect(cards.map(({ name, desc }) => ({ name, desc: desc.split("\n")[0] }))).toEqual([{ name: "Lineup run (manual) has warnings", desc: "- ESPN injuries unavailable (HTTP 403)" }]);
+  });
+});
+
 type RunRecord = {
   trigger: "manual" | "alarm" | "cron";
   login?: { status: number; gotSessionCookie: boolean };
@@ -955,6 +1039,7 @@ type RunRecord = {
     decision?: { ok: boolean; formAction?: string; errors?: string[] };
     save?: { posted: boolean; problems: string[] };
     untaggedOutNews?: { player: string; status: string; postedAt: string }[];
+    injuries?: Record<string, string>[];
     error?: string;
   }[];
   error?: string;
@@ -1036,7 +1121,7 @@ function fakeFleaflickerSeason(request: Request) {
   return fakeFleaflicker(request, page);
 }
 
-function stubFleaflicker(respond: (request: Request) => Response | Promise<Response>, { pushoverStatus = () => 200, trelloStatus = () => 200, trelloCardArchived = () => false, rosterApiUp = (_url: URL) => true, deadManUp = true } = {}) {
+function stubFleaflicker(respond: (request: Request) => Response | Promise<Response>, { pushoverStatus = () => 200, trelloStatus = () => 200, trelloCardArchived = () => false, rosterApiUp = (_url: URL) => true, deadManUp = true, espnInjuries = () => Response.json(ESPN_AGREES_WITH_FLEAFLICKER) } = {}) {
   const deadManPings: string[] = [];
   const alerts: Record<string, string>[] = [];
   const cards: { list: string; name: string; desc: string; authorization: string | null }[] = [];
@@ -1069,6 +1154,7 @@ function stubFleaflicker(respond: (request: Request) => Response | Promise<Respo
     }
     const cardLookup = pathname.match(/^\/1\/cards\/([^/]+)$/);
     if (hostname === "api.trello.com" && cardLookup) return Response.json({ id: cardLookup[1], closed: trelloCardArchived() });
+    if (hostname === "site.api.espn.com") return espnInjuries();
     if (hostname === "hc-ping.com") {
       if (!deadManUp) throw new TypeError("hc-ping.com unreachable");
       deadManPings.push(pathname);

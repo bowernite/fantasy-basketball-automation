@@ -1,0 +1,154 @@
+{
+  "injuries": [
+    {
+      "id": "6",
+      "displayName": "Dallas Mavericks",
+      "injuries": [
+        {
+          "id": "532767",
+          "shortComment": "Mavericks president Masai Ujiri offered an encouraging update on Irving's recovery Friday, saying the veteran guard is \"right there\" as he works toward returning to game action, Mike Curtis of The Dallas Morning News reports.",
+          "status": "Day-To-Day",
+          "date": "2026-09-25T15:38Z",
+          "athlete": {
+            "displayName": "Kyrie Irving",
+            "team": {
+              "abbreviation": "DAL"
+            }
+          },
+          "details": {
+            "fantasyStatus": {
+              "description": "GTD",
+              "abbreviation": "GTD"
+            },
+            "returnDate": "2026-10-09"
+          }
+        }
+      ]
+    },
+    {
+      "id": "9",
+      "displayName": "Golden State Warriors",
+      "injuries": [
+        {
+          "id": "532850",
+          "shortComment": "Butler has been cleared to participate in light on-court activities, Evan Webeck of the California Post reports.",
+          "status": "Out",
+          "date": "2026-09-28T15:08Z",
+          "athlete": {
+            "displayName": "Jimmy Butler III",
+            "team": {
+              "abbreviation": "GS"
+            }
+          },
+          "details": {
+            "fantasyStatus": {
+              "description": "OUT",
+              "abbreviation": "OUT"
+            },
+            "returnDate": "2026-12-01"
+          }
+        }
+      ]
+    },
+    {
+      "id": "29",
+      "displayName": "Memphis Grizzlies",
+      "injuries": [
+        {
+          "id": "532860",
+          "shortComment": "General manager Zach Kleiman said Monday that Edey (ankle/elbow) has been cleared for on-court activity and is on pace to suit up for Memphis' regular-season opener against the Jazz on Wednesday, Oct. 21, Chris Herrington of The Daily Memphian reports.",
+          "status": "Day-To-Day",
+          "date": "2026-09-28T16:12Z",
+          "athlete": {
+            "displayName": "Zach Edey",
+            "team": {
+              "abbreviation": "MEM"
+            }
+          },
+          "details": {
+            "fantasyStatus": {
+              "description": "GTD",
+              "abbreviation": "GTD"
+            },
+            "returnDate": "2026-10-05"
+          }
+        }
+      ]
+    },
+    {
+      "id": "20",
+      "displayName": "Philadelphia 76ers",
+      "injuries": [
+        {
+          "id": "532619",
+          "shortComment": "Bona (foot) will be re-evaluated at the start of training camp, Derek Bodner of AllPHLY.com reports.",
+          "status": "Day-To-Day",
+          "date": "2026-09-17T20:15Z",
+          "athlete": {
+            "displayName": "Adem Bona",
+            "team": {
+              "abbreviation": "PHI"
+            }
+          },
+          "details": {
+            "fantasyStatus": {
+              "description": "GTD",
+              "abbreviation": "GTD"
+            },
+            "returnDate": "2026-10-01"
+          }
+        }
+      ]
+    },
+    {
+      "id": "21",
+      "displayName": "Phoenix Suns",
+      "injuries": [
+        {
+          "id": "532554",
+          "shortComment": "Williams underwent surgery Thursday to repair a torn labrum in his left shoulder and will miss an extended period of time, Shams Charania of ESPN reports.",
+          "status": "Out",
+          "date": "2026-09-11T16:03Z",
+          "athlete": {
+            "displayName": "Mark Williams",
+            "team": {
+              "abbreviation": "PHX"
+            }
+          },
+          "details": {
+            "fantasyStatus": {
+              "description": "OUT",
+              "abbreviation": "OUT"
+            },
+            "returnDate": "2027-02-03"
+          }
+        }
+      ]
+    },
+    {
+      "id": "22",
+      "displayName": "Portland Trail Blazers",
+      "injuries": [
+        {
+          "id": "532395",
+          "shortComment": "Sharpe suffered a torn meniscus in his knee and is expected to miss six months, per Shams Charania of ESPN.",
+          "status": "Out",
+          "date": "2026-08-24T20:23Z",
+          "athlete": {
+            "displayName": "Shaedon Sharpe",
+            "team": {
+              "abbreviation": "POR"
+            }
+          },
+          "details": {
+            "fantasyStatus": {
+              "description": "OUT",
+              "abbreviation": "OUT"
+            },
+            "returnDate": "2027-03-02"
+          }
+        }
+      ]
+    }
+  ]
+}

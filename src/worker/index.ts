@@ -1,6 +1,7 @@
 import { DurableObject } from "cloudflare:workers";
 import { type ApiRoster, decideLineup, type LineupDecision } from "./decide-lineup";
 import { fetchWithTimeout } from "./fetch-with-timeout";
+import { compareInjuryFeeds, fetchEspnInjuries, type InjuryComparison, type InjuryDisagreement, type InjuryRoster } from "./injury-cross-check";
 import { type DayTip, type LedgerEntry, parseGameTips, planTick, TIP_CUTOFF_MS, type TipTable } from "./lineup-schedule";
 import { type SaveResult, saveLineup } from "./save-lineup";
 import { findUntaggedOutNews, type UntaggedOutNews } from "./untagged-news";
@@ -17,6 +18,7 @@ const SAVES_ENABLED_KEY = "savesEnabled";
 const FAILED_LOGIN_KEY = "failedLogin";
 const FAILURE_ALERTS_KEY = "failureAlerts";
 const FAILED_SAVE_KEY = "failedSave";
+const INJURY_ALERTS_KEY = "injuryAlerts";
 // Repeated failed logins and saves risk a captcha or lockout, so they back off except shortly before a tip
 const LOGIN_RETRY_AFTER_MS = 30 * 60 * 1000;
 const SAVE_RETRY_AFTER_MS = 30 * 60 * 1000;
@@ -27,6 +29,7 @@ const LEDGER_RUNS = 100;
 const KEPT_RUNS = 1000;
 const REPEAT_ALERT_AFTER_MS = 3 * 60 * 60 * 1000;
 const FORGET_ALERT_AFTER_MS = 24 * 60 * 60 * 1000;
+const REPEAT_INJURY_ALERT_AFTER_MS = 24 * 60 * 60 * 1000;
 const WAKE_INTERVAL_MS = 5 * 60 * 1000;
 
 export class LineupRunner extends DurableObject<Env> {
@@ -99,7 +102,7 @@ export class LineupRunner extends DurableObject<Env> {
     const problems = listProblems(record);
     if (problems.length > 0) record.alert = await this.alertFailure(`Lineup run (${trigger}) failed`, problems).catch((error) => ({ error: String(error) }));
     else await this.ctx.storage.delete(ALERT_CHANNELS.map((channel) => `${FAILURE_ALERTS_KEY}:${channel}`));
-    const warnings = record.days.flatMap(({ decision, warnings = [] }) => [...warnings, ...(decision?.ok ? decision.warnings : [])]);
+    const warnings = [...(record.warnings ?? []), ...record.days.flatMap(({ decision, warnings = [] }) => [...warnings, ...(decision?.ok ? decision.warnings : [])])];
     if (warnings.length > 0) record.warningAlert = await this.alertWarnings(trigger, warnings).catch((error) => ({ error: String(error) }));
     this.ctx.storage.sql.exec("INSERT INTO runs (record) VALUES (?)", JSON.stringify(record));
     this.ctx.storage.sql.exec("DELETE FROM runs WHERE id <= (SELECT MAX(id) FROM runs) - ?", KEPT_RUNS);
@@ -117,6 +120,13 @@ export class LineupRunner extends DurableObject<Env> {
   private async alertWarnings(trigger: RunRecord["trigger"], warnings: string[]) {
     const alert: Alert = { title: `Lineup run (${trigger}) has warnings`, body: warnings.map((warning) => `- ${warning}`).join("\n"), priority: 0 };
     return this.notify(alert, { key: "warningAlerts", fingerprint: warnings.join("\n"), repeatAfterMs: REPEAT_ALERT_AFTER_MS }, ["trello"]);
+  }
+
+  private async alertInjuryDisagreements(disagreements: InjuryDisagreement[]) {
+    const urgent = disagreements.some((disagreement) => disagreement.urgent);
+    const body = disagreements.map(({ message }) => `- ${message}`).join("\n");
+    const alert: Alert = { title: "Fleaflicker and ESPN disagree on injuries", body, priority: urgent ? 1 : 0 };
+    return this.notify(alert, { key: INJURY_ALERTS_KEY, fingerprint: body, repeatAfterMs: REPEAT_INJURY_ALERT_AFTER_MS }, urgent ? ALERT_CHANNELS : ["trello"]);
   }
 
   private async alertMissedTip({ at, players }: DayTip) {
@@ -187,11 +197,31 @@ export class LineupRunner extends DurableObject<Env> {
 
   private async checkDays(record: RunRecord, days?: number[]) {
     days ??= [findCurrentDay((await this.fetchRoster()).eligibleLineupPeriods, Date.now())];
+    const checkedRosters = new Map<DayCheck, InjuryRoster>();
     for (const day of days) {
       const dayCheck: DayCheck = { day };
       record.days.push(dayCheck);
-      await this.checkDay(record, dayCheck).catch((error) => (dayCheck.error = String(error)));
+      const roster = await this.checkDay(record, dayCheck).catch((error) => void (dayCheck.error = String(error)));
+      if (roster) checkedRosters.set(dayCheck, roster);
     }
+    // After every save, so a slow or failing ESPN never delays one
+    if (checkedRosters.size > 0) await this.crossCheckInjuries(record, checkedRosters);
+  }
+
+  private async crossCheckInjuries(record: RunRecord, checkedRosters: Map<DayCheck, InjuryRoster>) {
+    const espn = await fetchEspnInjuries();
+    if ("error" in espn) {
+      record.warnings = [espn.error];
+      return;
+    }
+    const disagreements = new Map<string, InjuryDisagreement>();
+    for (const [dayCheck, roster] of checkedRosters) {
+      const starters = new Set(dayCheck.decision?.ok ? dayCheck.decision.starters.map(({ player }) => player) : []);
+      const comparison = compareInjuryFeeds(roster, espn.injuries, starters);
+      if (comparison.comparisons.length > 0) dayCheck.injuries = comparison.comparisons;
+      for (const disagreement of comparison.disagreements) disagreements.set(disagreement.message, disagreement);
+    }
+    if (disagreements.size > 0) record.injuryAlert = await this.alertInjuryDisagreements([...disagreements.values()]);
   }
 
   private async checkDay(record: RunRecord, dayCheck: DayCheck) {
@@ -218,6 +248,7 @@ export class LineupRunner extends DurableObject<Env> {
     }
     dayCheck.decision = await decideLineup(html, roster);
     if (dayCheck.decision.ok && (await this.ctx.storage.get<boolean>(SAVES_ENABLED_KEY))) dayCheck.save = await this.saveUnlessBackingOff(day, dayCheck.decision);
+    return roster;
   }
 
   private async saveUnlessBackingOff(day: number, decision: Extract<LineupDecision, { ok: true }>): Promise<DayCheck["save"]> {
@@ -356,9 +387,11 @@ type RunRecord = {
   startedAt: string;
   login?: LoginOutcome;
   days: DayCheck[];
+  warnings?: string[];
   error?: string;
   alert?: AlertSends;
   warningAlert?: AlertSends;
+  injuryAlert?: AlertSends;
 };
 
 type AlertChannel = (typeof ALERT_CHANNELS)[number];
@@ -373,7 +406,7 @@ type AlertSend = { status: number; response?: string } | { error: string };
 
 type AlertOutcome = AlertSend & { accepted: boolean; cardId?: string };
 
-type DayCheck = { day: number; lineupPage?: { status: number; loggedIn: boolean }; warnings?: string[]; untaggedOutNews?: UntaggedOutNews[]; decision?: LineupDecision; save?: SaveResult & { backedOff?: true; skippedNearTip?: string }; error?: string };
+type DayCheck = { day: number; lineupPage?: { status: number; loggedIn: boolean }; warnings?: string[]; untaggedOutNews?: UntaggedOutNews[]; injuries?: InjuryComparison[]; decision?: LineupDecision; save?: SaveResult & { backedOff?: true; skippedNearTip?: string }; error?: string };
 
 type LineupPeriod = { ordinal: number; low: { startEpochMilli: string } };
 
