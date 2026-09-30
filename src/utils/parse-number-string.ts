@@ -1,7 +1,7 @@
 /**
- * Parses a string as a number, handling commas.
+ * Parses a string as a number, handling commas and trailing text such as a trend arrow ("15.5↓")
  */
 export function parseNumberString(numberString: string | null | undefined) {
   if (!numberString) return null;
-  return Number(numberString.replace(/,/g, ""));
+  return parseFloat(numberString.replace(/,/g, ""));
 }

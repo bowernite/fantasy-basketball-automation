@@ -9,6 +9,8 @@ export default defineConfig({
           RUN_TOKEN: "test-run-token",
           FF_EMAIL: "owner@example.com",
           FF_PASSWORD: "test-password",
+          NTFY_TOPIC: "test-alerts",
+          HEALTHCHECK_URL: "https://hc-ping.com/test-check",
         }, },
     }),
   ],

@@ -1,7 +1,11 @@
 import { PLAYER_STATUS_SELECTOR } from "./page-querying";
 import { getTooltipContent } from "./tooltip";
 import { getTooltipContentFromPageData } from "./page-data";
+import { easternTimeToDate, parseYearFromSuffix } from "../utils/date-utils";
 import type { PlayerStatus, TimeAgo } from "../types";
+
+// As shown on news items, in US Eastern, e.g. "Mon 9/28/26 9:37 AM"
+const NEWS_TIMESTAMP = /(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun) (\d{1,2})\/(\d{1,2})\/(\d{2}) (\d{1,2}):(\d{2}) ([AP])M/;
 
 export function getPlayerStatusFromRow(
   row: HTMLTableRowElement
@@ -45,9 +49,9 @@ export function parsePlayerNews(
 ):
   | { injuryStatus: PlayerStatus; timeAgo: TimeAgo | undefined }
   | undefined {
-  const injuryStatusMatch = news.match(
-    // 'fouled' is to handle 'fouled out'
-    /\b(?<!fouled\s+)(questionable|doubtful|probable|available|out)\b/i
+  const injuryStatusMatch = news.replace(NEWS_TIMESTAMP, " ").match(
+    // "fouled out" / "sat out" describe a past game or practice, not a status
+    /\b(?<!(?:fouled|sat|sits|sitting)\s+)(questionable|doubtful|probable|available|out)\b/i
   );
   const rawStatus = injuryStatusMatch?.[1]?.toLowerCase();
   const injuryStatus: PlayerStatus | undefined =
@@ -76,13 +80,16 @@ export function parsePlayerNews(
     };
   } else {
     timeAgoString ??= news;
+    const postedAt = parseNewsTimestamp(timeAgoString);
     const timeAgoMatch = timeAgoString?.match(
       /(\d+)\s+(days?|hours?|minutes?)\s+ago/i
     );
-    timeAgo = timeAgoMatch
+    timeAgo = postedAt
+      ? getTimeSince(postedAt)
+      : timeAgoMatch
       ? {
           value: parseInt(timeAgoMatch[1], 10),
-          unit: timeAgoMatch[2].toLowerCase() as "days" | "hours" | "minutes",
+          unit: timeAgoMatch[2].toLowerCase().replace(/s?$/, "s") as TimeAgo["unit"],
         }
       : undefined;
   }
@@ -98,7 +105,7 @@ async function getRefinedPlayerStatusFromRow(
   | { injuryStatus: PlayerStatus; timeAgo: TimeAgo | undefined }
   | undefined
 > {
-  const newsTrigger = row.querySelector(".fa-file-text");
+  const newsTrigger = row.querySelector(".fa-file-text, .fa-file-text-o");
 
   if (!newsTrigger) {
     return undefined;
@@ -150,3 +157,19 @@ export async function getPlayerStatusInfo(
   };
 }
 
+function parseNewsTimestamp(text: string) {
+  const match = text.match(NEWS_TIMESTAMP);
+  if (!match) return undefined;
+  const [, month, day, yearSuffix, hour, minute, amPm] = match;
+  const hour24 = (Number(hour) % 12) + (amPm === "P" ? 12 : 0);
+  const year = parseYearFromSuffix(Number(yearSuffix), new Date().getFullYear());
+  return easternTimeToDate(year, Number(month), Number(day), hour24, Number(minute));
+}
+
+function getTimeSince(date: Date): TimeAgo {
+  const minutes = Math.max(0, Math.floor((Date.now() - date.getTime()) / (60 * 1000)));
+  if (minutes < 60) return { value: minutes, unit: "minutes" };
+  const hours = Math.floor(minutes / 60);
+  if (hours < 72) return { value: hours, unit: "hours" };
+  return { value: Math.floor(hours / 24), unit: "days" };
+}

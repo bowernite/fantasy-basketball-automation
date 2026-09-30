@@ -1,10 +1,16 @@
 import { getNumDaysInFuture } from "../utils/date-utils";
 import type { Player, TimeAgo } from "../types";
 
+const FRESH_NEWS_MAX_DAYS = 1.5;
+
 export function adjustPredictedScoreForInjury(score: number, player: Player) {
   const { playerStatus, refinedPlayerStatus } = player;
-  const status = refinedPlayerStatus?.injuryStatus ?? playerStatus;
-  const timeAgo = refinedPlayerStatus?.timeAgo;
+  // The page's own OUT tag is current; only news fresh enough to postdate it overrides it
+  const newsTimeAgo = refinedPlayerStatus?.timeAgo;
+  const newsIsFresh = newsTimeAgo != null && getTimeAgoInDays(newsTimeAgo) <= FRESH_NEWS_MAX_DAYS;
+  const stillTaggedOut = playerStatus === "OUT" && !newsIsFresh;
+  const status = stillTaggedOut ? "OUT" : refinedPlayerStatus?.injuryStatus ?? playerStatus;
+  const timeAgo = stillTaggedOut ? undefined : newsTimeAgo;
   const numberOfDaysInFuture = getNumDaysInFuture();
 
   const timeAgoInDays = timeAgo ? getTimeAgoInDays(timeAgo) : null;

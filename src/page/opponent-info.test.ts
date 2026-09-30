@@ -14,8 +14,7 @@ test("reads the fantasy points the opponent allows and its rank", () => {
   });
 });
 
-// Suspected bug: a tied rank ("t-12th", a real Fleaflicker format) drops the whole matchup
-test.failing("reads a tied rank", () => {
+test("reads a tied rank", () => {
   const tooltip =
     "Vs opposing Cs per game:Pts: 24.67 (6th)Reb: 20.67 (t-15th)Ast: 7 (19th)Default FPts: 43.78 (t-12th)";
 

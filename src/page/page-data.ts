@@ -1,11 +1,11 @@
 export type TooltipData = Map<string, string>;
-const tooltipDataByDocument = new WeakMap<Document, TooltipData>();
+const tooltipDataByPageDataScript = new WeakMap<Element, TooltipData>();
 
 export function getTooltipPageData(): TooltipData {
-  const cachedTooltipData = tooltipDataByDocument.get(document);
+  const scriptEl = document.getElementById("page-data");
+  const cachedTooltipData = scriptEl && tooltipDataByPageDataScript.get(scriptEl);
   if (cachedTooltipData) return cachedTooltipData;
 
-  const scriptEl = document.getElementById("page-data");
   if (!scriptEl || !scriptEl.textContent) {
     console.warn("Could not find #page-data script element");
     return new Map();
@@ -35,7 +35,7 @@ export function getTooltipPageData(): TooltipData {
         }
       }
     }
-    tooltipDataByDocument.set(document, tooltipData);
+    tooltipDataByPageDataScript.set(scriptEl, tooltipData);
     return tooltipData;
   } catch (e) {
     console.error("Failed to parse page-data JSON", e);

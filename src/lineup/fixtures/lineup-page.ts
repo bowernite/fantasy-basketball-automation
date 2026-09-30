@@ -1,41 +1,28 @@
-// Loads the real Fleaflicker lineup page (Tue 10/20/2026, opening night) into the happy-dom globals.
-// Two real captures are combined: `teampage.html` (logged out, the "fantasy stats" view the app requires)
-// supplies the page, and `teampage-logged-in.html` (logged in, but saved on the "season stats" view)
-// supplies each player's real slot `<select>` and cog menu, moved into the matching row. Swap to a single
-// file once a logged-in "fantasy stats" capture exists
+// Loads the real Fleaflicker lineup page (Tue 10/20/2026, opening night) into the happy-dom globals: the
+// team's owner's view (`teampage-logged-in-fantasy-stats.html`), or the same page saved logged out
+// (`teampage.html`), which every other visitor sees
 
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
-const PAGE_HTML = readFileSync(join(import.meta.dir, "teampage.html"), "utf8");
-const LOGGED_IN_PAGE_HTML = readFileSync(join(import.meta.dir, "teampage-logged-in.html"), "utf8");
+const LOGGED_IN_PAGE_HTML = readFileSync(join(import.meta.dir, "teampage-logged-in-fantasy-stats.html"), "utf8");
+const LOGGED_OUT_PAGE_HTML = readFileSync(join(import.meta.dir, "teampage.html"), "utf8");
 
 export const PAGE_URL = "https://www.fleaflicker.com/nba/leagues/30579/teams/161025";
 
 export type LineupPageOptions = {
   // Rewrites an option's visible text, e.g. to simulate Fleaflicker renaming a slot
   optionText?: (slot: string) => string;
-  // false: the fantasy stats page as saved logged out (e.g. an expired session): no slot selects
+  // false: the page as saved logged out (e.g. an expired session): no slot selects
   loggedIn?: boolean;
 };
 
 export function loadLineupPage({ optionText = (slot) => slot, loggedIn = true }: LineupPageOptions = {}) {
-  const [head, body] = headAndBody(PAGE_HTML);
+  const [head, body] = headAndBody(loggedIn ? LOGGED_IN_PAGE_HTML : LOGGED_OUT_PAGE_HTML);
   document.head.innerHTML = head;
   document.body.innerHTML = body;
-  if (!loggedIn) return;
 
-  const loggedInPage = document.createElement("div");
-  loggedInPage.innerHTML = headAndBody(LOGGED_IN_PAGE_HTML)[1];
-  const loggedInRows = new Map(playerRows(loggedInPage).map((row) => [playerHref(row), row]));
-
-  for (const row of playerRows()) {
-    const loggedInRow = loggedInRows.get(playerHref(row))!;
-    const [cogCell, selectCell] = Array.from(loggedInRow.cells).slice(-2);
-    row.cells[row.cells.length - 2].replaceWith(cogCell);
-    row.cells[row.cells.length - 1].replaceWith(selectCell);
-
-    const select = selectCell.querySelector("select")!;
+  for (const select of document.querySelectorAll("select")) {
     for (const option of select.options) option.text = optionText(option.text);
     // happy-dom 20.14 misreads the parsed `selected` option (value/selectedIndex); re-select it explicitly
     select.value = select.querySelector<HTMLOptionElement>("option[selected]")!.value;
@@ -45,10 +32,6 @@ export function loadLineupPage({ optionText = (slot) => slot, loggedIn = true }:
 function headAndBody(html: string) {
   const [, head, body] = html.match(/<head>([\s\S]*)<\/head>\s*<body[^>]*>([\s\S]*)<\/body>/)!;
   return [head, body];
-}
-
-function playerHref(row: HTMLTableRowElement) {
-  return row.querySelector(".player-text")!.getAttribute("href");
 }
 
 export function playerRows(root: ParentNode = document) {
@@ -123,4 +106,10 @@ export function givePlayerNews(name: string, newsHtml: string) {
   playerRow(name).querySelector(".player-icons")!.innerHTML =
     '<i class="fa fa-file-text-o right-icon tt-content text-blue"></i>' +
     `<div class="tooltip fade top in"><div class="tooltip-arrow"></div><div class="tooltip-inner">${newsHtml}</div></div>`;
+}
+
+// Relabels the stat view picker (e.g. "season stats"), as when the page is on another stat view
+export function showStatView(view: string) {
+  const picker = Array.from(document.querySelectorAll("a.dropdown-toggle")).find((a) => a.textContent!.trim() === "fantasy stats")!;
+  picker.firstChild!.textContent = `${view} `;
 }

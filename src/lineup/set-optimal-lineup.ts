@@ -1,9 +1,10 @@
 import type { Player } from "../types";
-import { setPlayerPosition } from "./lineup-dom-actions";
+import { setAllPlayersToBench, setPlayerPosition } from "./lineup-dom-actions";
 import { stylePlayerAsStarted } from "../page/page-manipulation";
 import {
   buildDefaultSlots,
   computeOptimalAssignments,
+  type Slot,
   type SlotLabel,
 } from "../optimizer/lineup-optimizer";
 import { getPlayerPredictedScore } from "../prioritization/score-weighting";
@@ -85,8 +86,18 @@ function findOptionValueForLabel(
 }
 
 export function setOptimalLineup(players: Player[]) {
+  const lineup = planOptimalLineup(players);
+  setAllPlayersToBench(players);
+  for (const { player, slotValue } of lineup) {
+    setPlayerPosition(player, slotValue);
+    stylePlayerAsStarted(player);
+  }
+}
+
+// Reads everything it needs (scores, slots) before the page is touched, so a failure leaves the lineup as it was
+function planOptimalLineup(players: Player[]) {
   console.log("🟣 players:", players);
-  const slots = buildDefaultSlots();
+  const slots = withoutLockedStartersSlots(buildDefaultSlots(), players);
   const candidates = buildCandidates(players);
   console.table(candidates);
   const { assignments } = computeOptimalAssignments(
@@ -98,19 +109,28 @@ export function setOptimalLineup(players: Player[]) {
     slots
   );
 
-  const startedIndexes = new Set<number>();
-  for (const a of assignments) {
+  return assignments.flatMap((a) => {
     const candidate = candidates.find((c) => c.id === a.candidateId);
-    if (!candidate) continue;
+    if (!candidate) return [];
     const player = players[candidate.playerIndex];
-    const value = findOptionValueForLabel(player, a.slotLabel);
-    if (!value) continue;
-    setPlayerPosition(player, value);
-    stylePlayerAsStarted(player);
-    startedIndexes.add(candidate.playerIndex);
-  }
+    const slotValue = findOptionValueForLabel(player, a.slotLabel);
+    if (!slotValue) {
+      throw new Error(
+        `Can't fill the ${a.slotLabel} slot: ${player.playerName}'s dropdown has no "${a.slotLabel}" option, so the page's slots don't match the league's`
+      );
+    }
+    return [{ player, slotValue }];
+  });
+}
 
-  return {
-    numStarted: startedIndexes.size,
-  };
+// A locked player's row has no dropdown, just his slot's label in the last cell
+function withoutLockedStartersSlots(slots: Slot[], players: Player[]) {
+  const openSlots = [...slots];
+  for (const player of players) {
+    if (player.setPositionDropdown) continue;
+    const lockedSlot = normalizeOptionTextToSlotLabel(player.row.lastElementChild?.textContent ?? "");
+    const lockedSlotIndex = openSlots.findIndex((slot) => slot.label === lockedSlot);
+    if (lockedSlotIndex !== -1) openSlots.splice(lockedSlotIndex, 1);
+  }
+  return openSlots;
 }

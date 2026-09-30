@@ -1,7 +1,7 @@
 import { getStatTypeDropdown } from "./page/page-querying";
 
 export function verifyPage() {
-  return verifyOnFantasyStatsPage();
+  verifyOnFantasyStatsPage();
 }
 
 export function verifyOnFantasyStatsPage() {
@@ -10,7 +10,6 @@ export function verifyOnFantasyStatsPage() {
   const isOnFantasyStatsPage =
     dropdown?.textContent?.toLowerCase().trim() === "fantasy stats";
   if (!isOnFantasyStatsPage) {
-    alert("Not on the fantasy stats page; aborting");
+    throw new Error("Not on the fantasy stats page; aborting");
   }
-  return isOnFantasyStatsPage;
 }

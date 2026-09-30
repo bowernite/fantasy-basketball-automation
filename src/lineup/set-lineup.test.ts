@@ -9,6 +9,7 @@ import {
   PAGE_URL,
   playerRow,
   playerRows,
+  showStatView,
   slotOf,
   startedLineup,
 } from "./fixtures/lineup-page";
@@ -107,8 +108,7 @@ test("does not start players who are OUT when 9 healthy players have a game", as
   expect(Object.keys(startedLineup())).toHaveLength(9);
 });
 
-// Suspected bug: the locked starter's slot is still handed out, so two players start at PG (10 starters)
-test.failing("fills the other 8 slots around a locked starter, and leaves a locked bench player benched", async () => {
+test("fills the other 8 slots around a locked starter, and leaves a locked bench player benched", async () => {
   loadLineupPage();
   givePlayerGame("Josh Giddey", "LAL");
   givePlayerGame("Darius Garland", "@MIA");
@@ -127,8 +127,7 @@ test.failing("fills the other 8 slots around a locked starter, and leaves a lock
   ]);
 });
 
-// Suspected bug (same cause as above): all 9 locked starters stay and 9 bench players start too (18 starters)
-test.failing("once every starter's game has tipped, changes nothing", async () => {
+test("once every starter's game has tipped, changes nothing", async () => {
   loadLineupPage();
   const lockedLineup = startedLineup();
   for (const name of Object.keys(lockedLineup)) lockPlayer(name);
@@ -177,9 +176,7 @@ test("a day-to-day star still starts over a much weaker healthy player", async (
   expect(slotOf("Tyus Jones")).toBe("Bench");
 });
 
-// Suspected bug: news is looked up under a `fa-file-text` icon, but the saved pages' (logged in and
-// out) news icons are `fa-file-text-o`, so news never reaches the lineup
-test.failing("benches a day-to-day player whose latest news rules him out tonight", async () => {
+test("benches a day-to-day player whose latest news rules him out tonight", async () => {
   loadLineupPage();
   giveInjuryTag("Cade Cunningham", "DTD");
   givePlayerNews(
@@ -232,8 +229,7 @@ test("a player with no projection and unreadable stats is still scored, and star
   expect(Object.keys(startedLineup())).toHaveLength(9);
 });
 
-// Suspected bug: F/C goes unfilled (8 starters) and nothing is reported
-test.failing("when the page's slot options don't match the league's slots, fills every slot or rejects", async () => {
+test("when the page's slot options don't match the league's slots, fills every slot or rejects", async () => {
   // e.g. Fleaflicker relabels the F/C option
   loadLineupPage({ optionText: (slot) => (slot === "F/C" ? "FC" : slot) });
   givePlayerGame("Josh Giddey", "LAL");
@@ -247,7 +243,7 @@ test.failing("when the page's slot options don't match the league's slots, fills
 
 test("off the fantasy stats view, says so and leaves the lineup untouched", async () => {
   loadLineupPage();
-  document.querySelector<HTMLAnchorElement>("a.dropdown-toggle")!.firstChild!.textContent = "season stats ";
+  showStatView("season stats");
   givePlayerGame("Josh Giddey", "LAL");
   givePlayerGame("Miles Bridges", "LAL");
   givePlayerGame("Jakob Poeltl", "CHI");
@@ -257,22 +253,20 @@ test("off the fantasy stats view, says so and leaves the lineup untouched", asyn
 
   expect([...alerts, rejection].filter(Boolean)).toMatchInlineSnapshot(`
     [
-      "Not on the fantasy stats page; aborting",
+      "Error: Not on the fantasy stats page; aborting",
     ]
   `);
   expect(startedLineup()).toEqual(lineupBefore);
 });
 
-// Suspected bug: only alerts and resolves, so a headless run sees success
-test.failing("off the fantasy stats view, rejects", async () => {
+test("off the fantasy stats view, rejects", async () => {
   loadLineupPage();
-  document.querySelector<HTMLAnchorElement>("a.dropdown-toggle")!.firstChild!.textContent = "season stats ";
+  showStatView("season stats");
 
   expect(await setLineupAndGetRejection()).toMatch(/fantasy stats/i);
 });
 
-// Suspected bug: with no slot selects (logged out / session expired) it resolves having done nothing, silently
-test.failing("when logged out, rejects", async () => {
+test("when logged out, rejects", async () => {
   loadLineupPage({ loggedIn: false });
   givePlayerGame("Josh Giddey", "LAL");
 
@@ -288,8 +282,7 @@ test("when the viewed day can't be read off the page, rejects", async () => {
   expect(await setLineupAndGetRejection()).toMatch(/date/);
 });
 
-// Suspected bug: everyone has already been benched when it fails, so the page is left with no starters
-test.failing("when the viewed day can't be read off the page, leaves the lineup as it was", async () => {
+test("when the viewed day can't be read off the page, leaves the lineup as it was", async () => {
   loadLineupPage();
   for (const button of document.querySelectorAll("a.btn[data-toggle='dropdown']")) {
     if (button.textContent!.includes("10/20")) button.remove();

@@ -38,8 +38,7 @@ test("a player who fouled out isn't read as ruled out", () => {
   expect(parsePlayerNews(news, undefined)?.injuryStatus).toBeUndefined();
 });
 
-// Suspected bug: the first status word wins, so an earlier "sat out" overrides the current "probable"
-test.failing("an earlier 'sat out' doesn't override the news' current status", () => {
+test("an earlier 'sat out' doesn't override the news' current status", () => {
   const news = newsTooltipText(
     "Suggs Misses Practice",
     "Mon 10/19/26 5:12 PM",
@@ -49,8 +48,8 @@ test.failing("an earlier 'sat out' doesn't override the news' current status", (
   expect(parsePlayerNews(news, undefined)?.injuryStatus).toBe("P");
 });
 
-// Suspected bug: a status word ending the headline is glued to the timestamp ("ProbableMon"), so it's missed
-test.failing("reads a status that only appears at the end of the headline", () => {
+// The tooltip text glues the headline to the timestamp ("ProbableMon 10/19/26")
+test("reads a status that only appears at the end of the headline", () => {
   const news = newsTooltipText(
     "Jalen Suggs Probable",
     "Mon 10/19/26 5:12 PM",
@@ -60,9 +59,7 @@ test.failing("reads a status that only appears at the end of the headline", () =
   expect(parsePlayerNews(news, undefined)?.injuryStatus).toBe("P");
 });
 
-// Suspected bug: the page's timestamp format is never parsed, so the news age is always unknown and
-// every freshness-based injury adjustment is skipped
-test.failing("reads the news age from the page's timestamp", () => {
+test("reads the news age from the page's timestamp", () => {
   setSystemTime(new Date("2026-09-30T19:37:00Z")); // Wed 9/30 3:37p ET
   const news = newsTooltipText(
     "Jalen Suggs Questionable",
@@ -76,9 +73,7 @@ test.failing("reads the news age from the page's timestamp", () => {
   expect(age).toBeLessThan(72);
 });
 
-// Suspected bug: "1 hour ago" comes back with unit "hour" (not "hours"), which the injury
-// adjustment doesn't recognize, so an OUT player reported an hour ago isn't zeroed for today
-test.failing("reads a singular news age ('1 hour ago') the same as a plural one", () => {
+test("reads a singular news age ('1 hour ago') the same as a plural one", () => {
   const result = parsePlayerNews("Jalen Suggs (ankle) has been ruled out Tuesday.", "1 hour ago");
 
   expect(result?.timeAgo).toEqual({ value: 1, unit: "hours" });

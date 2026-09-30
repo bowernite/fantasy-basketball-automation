@@ -25,7 +25,7 @@ export function parseOpponentInfo(
   const position = positionMatch?.[1];
 
   const defaultFptsMatch = content.match(
-    /Default FPts: (\d+\.?\d*) \((\d+)(?:st|nd|rd|th)\)/
+    /Default FPts: (\d+\.?\d*) \((?:t-)?(\d+)(?:st|nd|rd|th)\)/
   );
   const avgPointsAllowed = parseFloat(defaultFptsMatch?.[1] ?? "0");
   const defenseRank = parseInt(defaultFptsMatch?.[2] ?? "0", 10);

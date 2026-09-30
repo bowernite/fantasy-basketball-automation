@@ -1,12 +1,12 @@
 import { GlobalRegistrator } from "@happy-dom/global-registrator";
 import { afterAll, beforeAll, beforeEach, expect, setSystemTime, spyOn, test } from "bun:test";
-import { readFileSync } from "node:fs";
 import {
   givePlayerGame,
   givePlayerNews,
   loadLineupPage,
   PAGE_URL,
   playerRow,
+  showStatView,
   startedLineup,
 } from "./src/lineup/fixtures/lineup-page";
 
@@ -62,14 +62,6 @@ function recordNavigations() {
   return hrefs;
 }
 
-// The real page a logged-in owner sees (same day), with Fleaflicker's own lineup form and Save Lineup button
-function loadLoggedInLineupPage() {
-  const html = readFileSync(`${import.meta.dir}/src/lineup/fixtures/teampage-logged-in.html`, "utf8");
-  const [, head, body] = html.match(/<head>([\s\S]*)<\/head>\s*<body[^>]*>([\s\S]*)<\/body>/)!;
-  document.head.innerHTML = head;
-  document.body.innerHTML = body;
-}
-
 // Captures what Fleaflicker would receive when its lineup form is submitted, without leaving the page
 function recordLineupSubmissions() {
   const form = document.querySelector<HTMLFormElement>("form[method='post']")!;
@@ -121,29 +113,15 @@ test("on another owner's team page, shows the scores but no lineup buttons", asy
   expect(button("Save Lineup") != null).toBe(false);
 });
 
-// Uses the filled news icon the app reads; the real pages only show the outlined one (pinned below)
-test("injury news that upgrades an OUT player shows the new status and scores him", async () => {
+test("injury news that upgrades an OUT player shows the new status, the news' age, and scores him", async () => {
   loadLineupPage();
   givePlayerNews("Adem Bona", BONA_PROBABLE_NEWS);
-  playerRow("Adem Bona").querySelector(".fa-file-text-o")!.classList.replace("fa-file-text-o", "fa-file-text");
 
   await runContentScript();
 
-  expect(playerRow("Adem Bona").querySelector(".injury")!.textContent).toMatchInlineSnapshot(`"✨P"`);
+  expect(playerRow("Adem Bona").querySelector(".injury")!.textContent).toMatchInlineSnapshot(`"✨P (2h)"`);
   expect(isShown(scoreBadge("Adem Bona"))).toBe(true);
   expect(parseFloat(scoreBadge("Adem Bona").textContent!)).toBeGreaterThan(0);
-});
-
-// Suspected bug: every news icon on both real saved pages is `fa-file-text-o` (incl. news posted hours
-// before the save), but only `fa-file-text` icons are read, so news never refines a player's status
-test.failing("injury news behind Fleaflicker's news icon updates the status", async () => {
-  loadLineupPage();
-  givePlayerNews("Adem Bona", BONA_PROBABLE_NEWS);
-
-  await runContentScript();
-
-  expect(playerRow("Adem Bona").querySelector(".injury")!.textContent).toBe("✨P");
-  expect(isShown(scoreBadge("Adem Bona"))).toBe(true);
 });
 
 test("clicking Set Lineup starts 9 legal starters, one per league slot", async () => {
@@ -161,8 +139,19 @@ test("clicking Set Lineup starts 9 legal starters, one per league slot", async (
   expect(Object.values(startedLineup()).sort()).toEqual(["ANY", "ANY", "C", "F/C", "G", "PF", "PG", "SF", "SG"]);
 });
 
+test("clicking Set Lineup off the fantasy stats view tells the user", async () => {
+  loadLineupPage();
+  showStatView("season stats");
+  await runContentScript();
+
+  button("Set Lineup")!.click();
+  for (let waited = 0; alerts.length === 0 && waited < 3000; waited += 10) await Bun.sleep(10);
+
+  expect(alerts).toEqual([expect.stringContaining("Not on the fantasy stats page")]);
+});
+
 test("the Save Lineup button and its shortcut submit Fleaflicker's lineup form with the chosen slots", async () => {
-  loadLoggedInLineupPage();
+  loadLineupPage();
   const submissions = recordLineupSubmissions();
   await runContentScript();
   const nazReidSlot = playerRow("Naz Reid").querySelector("select")!;

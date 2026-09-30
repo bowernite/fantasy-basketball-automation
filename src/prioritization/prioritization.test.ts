@@ -152,15 +152,24 @@ test("a player ruled OUT today is discounted but not zeroed for a game days out"
   expect(out).toBeLessThan(healthy);
 });
 
-// Suspected bug: once the OUT news item is ~4+ days old, the player scores as fully
-// healthy for today's game, so a long-term injured player can be started over healthy ones.
-test.failing("a player still listed OUT today scores far below a healthy one, even if the injury news is old", () => {
+test("a player still listed OUT today scores far below a healthy one, even if the injury news is old", () => {
   setup();
 
   const healthy = score(makePlayer());
   const outForAWeek = score(withInjury("OUT", { value: 7, unit: "days" }));
 
   expect(outForAWeek).toBeLessThan(healthy / 2);
+});
+
+test("a player still tagged OUT isn't cleared by old news of a lesser status, but is by fresh news", () => {
+  setup();
+  const taggedOutWithNews = (injuryStatus: PlayerStatus, timeAgo: TimeAgo) =>
+    makePlayer({ playerStatus: "OUT", refinedPlayerStatus: { injuryStatus, timeAgo } });
+
+  const healthy = score(makePlayer());
+
+  expect(score(taggedOutWithNews("P", { value: 5, unit: "days" }))).toBe(0);
+  expect(score(taggedOutWithNews("P", { value: 2, unit: "hours" }))).toBeGreaterThan(healthy / 2);
 });
 
 test("players with a game today rank ahead of those without, then by predicted score", () => {

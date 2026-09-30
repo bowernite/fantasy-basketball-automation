@@ -26,6 +26,24 @@ export function getLeagueToday(now: Date = new Date()) {
   return new Date(getPart("year"), getPart("month") - 1, getPart("day"));
 }
 
+/** A US Eastern wall-clock time (month 1-based) as the instant it names */
+export function easternTimeToDate(year: number, month: number, day: number, hour: number, minute: number) {
+  const wallClockAsUtc = Date.UTC(year, month - 1, day, hour, minute);
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone: "America/New_York",
+    hourCycle: "h23",
+    year: "numeric",
+    month: "numeric",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+  }).formatToParts(wallClockAsUtc);
+  const getPart = (type: Intl.DateTimeFormatPartTypes) => Number(parts.find((part) => part.type === type)?.value);
+  const easternWallClockAtThatInstant = Date.UTC(getPart("year"), getPart("month") - 1, getPart("day"), getPart("hour"), getPart("minute"));
+  const easternOffsetMs = easternWallClockAtThatInstant - wallClockAsUtc;
+  return new Date(wallClockAsUtc - easternOffsetMs);
+}
+
 /**
  * Parses a date string like "1/2" or "12/30/25" into its components.
  * Returns null if the string doesn't match the expected format.

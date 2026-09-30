@@ -11,9 +11,8 @@ beforeAll(() =>
 );
 afterAll(() => GlobalRegistrator.unregister());
 
-// Suspected bug: on the saved page, Shaedon Sharpe's recent average shows "15.5↓" (an
-// under-performing arrow) and is read as NaN, so his most heavily weighted stat is dropped
-test.failing("a recent average shown with a trend arrow is read as its number", async () => {
+// On the saved page, Shaedon Sharpe's recent average shows "15.5↓" (an under-performing arrow)
+test("a recent average shown with a trend arrow is read as its number", async () => {
   loadLineupPage();
 
   const players = await getPlayers();

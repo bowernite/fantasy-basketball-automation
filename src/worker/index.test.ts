@@ -8,7 +8,10 @@ import worker from "./index";
 const LOGGED_OUT_PAGE = `<html><body><a class="btn" href="/nba/login">Log In</a></body></html>`;
 const LOGGED_IN_PAGE = `<html><body><a href="/logout">Sign Out</a><select name="status123"></select></body></html>`;
 
-afterEach(() => vi.restoreAllMocks());
+afterEach(() => {
+  vi.restoreAllMocks();
+  vi.useRealTimers();
+});
 
 describe("lineup runner", () => {
   it("checks the lineup page and stores a run record when triggered", async () => {
@@ -110,6 +113,77 @@ describe("lineup runner", () => {
     expect(records.slice(0, 2)).toEqual([second, first]);
   });
 
+  it("records a run that throws", async () => {
+    stubFleaflicker(() => {
+      throw new TypeError("Network connection lost");
+    });
+
+    const record = await (await triggerRun()).json<RunRecord>();
+
+    expect(record).toMatchObject({ trigger: "manual", error: "TypeError: Network connection lost" });
+    const [latest] = await listRuns();
+    expect(latest).toEqual(record);
+  });
+
+  it("alerts the owner when a run can't decide the lineup", async () => {
+    const { alerts } = stubFleaflicker(async (request) =>
+      request.method === "POST" ? new Response("Service unavailable", { status: 503 }) : new Response(LOGGED_OUT_PAGE),
+    );
+
+    await triggerRun();
+
+    expect(alerts).toHaveLength(1);
+    expect(alerts[0]).toMatchInlineSnapshot(`
+      {
+        "click": "https://www.fleaflicker.com/nba/leagues/30579/teams/161025",
+        "message": "Lineup run (manual) failed:
+      - Fleaflicker login failed (HTTP 503, no session cookie)
+      - No lineup form on the page; the session may be logged out",
+        "title": "Lineup runner",
+        "topic": "/test-alerts",
+      }
+    `);
+  });
+
+  it("alerts once while the same failure repeats", async () => {
+    const { alerts } = stubFleaflicker(() => {
+      throw new TypeError("DNS lookup failed");
+    });
+
+    await triggerRun();
+    await triggerRun();
+
+    expect(alerts).toHaveLength(1);
+  });
+
+  it("alerts again when the same failure is still happening hours later", async () => {
+    const { alerts } = stubFleaflicker(() => {
+      throw new TypeError("Connection reset");
+    });
+    vi.useFakeTimers({ toFake: ["Date"] });
+
+    await triggerRun();
+    vi.setSystemTime(Date.now() + 3 * 60 * 60 * 1000);
+    await triggerRun();
+
+    expect(alerts).toHaveLength(2);
+  });
+
+  it("checks in with the dead-man monitor after each run", async () => {
+    const { deadManPings } = stubFleaflicker((request) => {
+      const fantasyStatsView = new URL(request.url).searchParams.get("statType") === "0";
+      return fakeFleaflicker(request, fantasyStatsView ? fantasyStatsPage : seasonStatsPage);
+    });
+    await triggerRun();
+
+    stubFleaflicker(() => {
+      throw new TypeError("Network unreachable");
+    });
+    await triggerRun();
+
+    expect(deadManPings).toEqual(["/test-check", "/test-check/fail"]);
+  });
+
   it("refuses to run without the run token", async () => {
     stubFleaflicker(() => new Response(LOGGED_OUT_PAGE));
     const recordsBefore = await listRuns();
@@ -129,6 +203,7 @@ type RunRecord = {
   login?: { status: number; gotSessionCookie: boolean };
   lineupPage: { status: number; loggedIn: boolean };
   decision?: { ok: boolean; formAction?: string; errors?: string[] };
+  error?: string;
 };
 
 async function listRuns() {
@@ -161,10 +236,23 @@ async function fakeFleaflicker(request: Request, loggedInPage = LOGGED_IN_PAGE) 
 }
 
 function stubFleaflicker(respond: (request: Request) => Response | Promise<Response>) {
+  const deadManPings: string[] = [];
+  const alerts: { topic: string; title: string | null; click: string | null; message: string }[] = [];
   const realFetch = globalThis.fetch;
   vi.spyOn(globalThis, "fetch").mockImplementation(async (input, init) => {
     const request = new Request(input, init);
-    if (new URL(request.url).hostname === "www.fleaflicker.com") return respond(request);
+    const { hostname, pathname } = new URL(request.url);
+    if (hostname === "www.fleaflicker.com") return respond(request);
+    if (hostname === "ntfy.sh") {
+      const { headers } = request;
+      alerts.push({ topic: pathname, title: headers.get("Title"), click: headers.get("Click"), message: await request.text() });
+      return new Response("{}");
+    }
+    if (hostname === "hc-ping.com") {
+      deadManPings.push(pathname);
+      return new Response("OK");
+    }
     return realFetch(input, init);
   });
+  return { alerts, deadManPings };
 }
