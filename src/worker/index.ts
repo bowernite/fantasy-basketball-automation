@@ -14,9 +14,12 @@ const TIP_TABLES_KEY = "tipTables";
 const LINEUP_PERIODS_KEY = "lineupPeriods";
 const SAVES_ENABLED_KEY = "savesEnabled";
 const FAILED_LOGIN_KEY = "failedLogin";
-// Repeated failed logins risk a captcha or lockout, so they back off except shortly before a tip
+const FAILURE_ALERTS_KEY = "failureAlerts";
+const FAILED_SAVE_KEY = "failedSave";
+// Repeated failed logins and saves risk a captcha or lockout, so they back off except shortly before a tip
 const LOGIN_RETRY_AFTER_MS = 30 * 60 * 1000;
-const LOGIN_RETRY_TIP_WINDOW_MS = 45 * 60 * 1000;
+const SAVE_RETRY_AFTER_MS = 30 * 60 * 1000;
+const RETRY_TIP_WINDOW_MS = 45 * 60 * 1000;
 // About two days of runs: enough to cover yesterday's late tips and today's targets
 const LEDGER_RUNS = 100;
 const KEPT_RUNS = 1000;
@@ -39,6 +42,9 @@ export class LineupRunner extends DurableObject<Env> {
     let healthy = false;
     try {
       healthy = await this.planAndRun(trigger);
+    } catch (error) {
+      console.error(JSON.stringify({ event: "tickFailed", trigger, error: String(error) }));
+      await this.alertFailure(`Lineup tick (${trigger}) failed`, [String(error)]);
     } finally {
       this.busy = false;
       if (this.env.HEALTHCHECK_URL) {
@@ -85,7 +91,8 @@ export class LineupRunner extends DurableObject<Env> {
       record.error = String(error);
     }
     const problems = listProblems(record);
-    if (problems.length > 0) record.alert = await this.alertFailure(trigger, problems).catch((error) => ({ error: String(error) }));
+    if (problems.length > 0) record.alert = await this.alertFailure(`Lineup run (${trigger}) failed`, problems).catch((error) => ({ error: String(error) }));
+    else await this.ctx.storage.delete(ALERT_CHANNELS.map((channel) => `${FAILURE_ALERTS_KEY}:${channel}`));
     const warnings = record.days.flatMap(({ decision }) => (decision?.ok ? decision.warnings : []));
     if (warnings.length > 0) record.warningAlert = await this.alertWarnings(trigger, warnings).catch((error) => ({ error: String(error) }));
     this.ctx.storage.sql.exec("INSERT INTO runs (record) VALUES (?)", JSON.stringify(record));
@@ -93,9 +100,9 @@ export class LineupRunner extends DurableObject<Env> {
     return record;
   }
 
-  private async alertFailure(trigger: RunRecord["trigger"], problems: string[]) {
-    const alert: Alert = { title: `Lineup run (${trigger}) failed`, body: problems.map((problem) => `- ${problem}`).join("\n"), priority: 1 };
-    return this.notify(alert, { key: "failureAlerts", fingerprint: problems.join("\n"), repeatAfterMs: REPEAT_ALERT_AFTER_MS });
+  private async alertFailure(title: string, problems: string[]) {
+    const alert: Alert = { title, body: problems.map((problem) => `- ${problem}`).join("\n"), priority: 1 };
+    return this.notify(alert, { key: FAILURE_ALERTS_KEY, fingerprint: problems.join("\n"), repeatAfterMs: REPEAT_ALERT_AFTER_MS });
   }
 
   private async alertWarnings(trigger: RunRecord["trigger"], warnings: string[]) {
@@ -169,18 +176,37 @@ export class LineupRunner extends DurableObject<Env> {
   private async checkDays(record: RunRecord, days?: number[]) {
     days ??= [findCurrentDay((await this.fetchRoster()).eligibleLineupPeriods, Date.now())];
     for (const day of days) {
-      let lineupPage = await this.fetchLineupPage(day);
-      if (!lineupPage.loggedIn && !record.login) {
-        record.login = await this.logInUnlessBackingOff();
-        if (record.login.gotSessionCookie) lineupPage = await this.fetchLineupPage(day);
-      }
-      const { html, ...pageSummary } = lineupPage;
-      const dayCheck: DayCheck = { day, lineupPage: pageSummary };
+      const dayCheck: DayCheck = { day };
       record.days.push(dayCheck);
-      dayCheck.decision = await decideLineup(html, await this.fetchRoster(day));
-      if (dayCheck.decision.ok && (await this.ctx.storage.get<boolean>(SAVES_ENABLED_KEY))) dayCheck.save = await saveLineup(dayCheck.decision, await this.sessionHeaders());
-      if (pageSummary.loggedIn) await this.storeTipTable({ day, fetchedAt: record.startedAt, tips: parseGameTips(html) });
+      await this.checkDay(record, dayCheck).catch((error) => (dayCheck.error = String(error)));
     }
+  }
+
+  private async checkDay(record: RunRecord, dayCheck: DayCheck) {
+    const { day } = dayCheck;
+    let lineupPage = await this.fetchLineupPage(day);
+    if (!lineupPage.loggedIn && !record.login) {
+      const loginAttempt = await this.logInUnlessBackingOff(day);
+      record.login = loginAttempt.login;
+      lineupPage = loginAttempt.lineupPage ?? lineupPage;
+    }
+    const { html, ...pageSummary } = lineupPage;
+    dayCheck.lineupPage = pageSummary;
+    if (pageSummary.status === 200) await this.storeTipTable({ day, fetchedAt: record.startedAt, tips: parseGameTips(html) });
+    dayCheck.decision = await decideLineup(html, await this.fetchRoster(day));
+    if (dayCheck.decision.ok && (await this.ctx.storage.get<boolean>(SAVES_ENABLED_KEY))) dayCheck.save = await this.saveUnlessBackingOff(day, dayCheck.decision);
+  }
+
+  private async saveUnlessBackingOff(day: number, decision: Extract<LineupDecision, { ok: true }>): Promise<DayCheck["save"]> {
+    const failedSaveKey = `${FAILED_SAVE_KEY}:${day}`;
+    const failedSave = await this.ctx.storage.get<{ at: number; body: string; save: SaveResult }>(failedSaveKey);
+    const tipTables = (await this.ctx.storage.get<TipTable[]>(TIP_TABLES_KEY)) ?? [];
+    const sameSaveFailedRecently = failedSave?.body === decision.body && Date.now() - failedSave.at < SAVE_RETRY_AFTER_MS;
+    if (sameSaveFailedRecently && !hasTipWithin(tipTables, RETRY_TIP_WINDOW_MS)) return { ...failedSave.save, posted: false, backedOff: true };
+    const save = await saveLineup(decision, await this.sessionHeaders());
+    if (save.problems.length > 0) await this.ctx.storage.put(failedSaveKey, { at: Date.now(), body: decision.body, save });
+    else await this.ctx.storage.delete(failedSaveKey);
+    return save;
   }
 
   private async storeTipTable(tipTable: TipTable) {
@@ -192,7 +218,8 @@ export class LineupRunner extends DurableObject<Env> {
   private ledger(): LedgerEntry[] {
     return this.recentRuns(LEDGER_RUNS).flatMap((record) => {
       const runOk = listProblems({ ...record, days: [] }).length === 0;
-      return record.days.map((dayCheck) => ({ startedAt: record.startedAt, ok: runOk && listDayProblems(dayCheck).length === 0, days: [dayCheck.day] }));
+      // Records from before multi-day runs have no `days`
+      return (record.days ?? []).map((dayCheck) => ({ startedAt: record.startedAt, ok: runOk && listDayProblems(dayCheck).length === 0, days: [dayCheck.day] }));
     });
   }
 
@@ -236,15 +263,18 @@ export class LineupRunner extends DurableObject<Env> {
     return { status: response.status, loggedIn, html };
   }
 
-  private async logInUnlessBackingOff(): Promise<LoginOutcome> {
-    const failedLogin = await this.ctx.storage.get<{ at: number; outcome: LoginOutcome }>(FAILED_LOGIN_KEY);
+  private async logInUnlessBackingOff(day: number) {
+    const failedLogin = await this.ctx.storage.get<{ at: number; login: LoginOutcome }>(FAILED_LOGIN_KEY);
     const tipTables = (await this.ctx.storage.get<TipTable[]>(TIP_TABLES_KEY)) ?? [];
-    const backingOff = failedLogin && Date.now() - failedLogin.at < LOGIN_RETRY_AFTER_MS && !hasTipWithin(tipTables, LOGIN_RETRY_TIP_WINDOW_MS);
-    if (backingOff) return { ...failedLogin.outcome, backedOff: true };
-    const outcome = await this.logIn();
-    if (outcome.gotSessionCookie) await this.ctx.storage.delete(FAILED_LOGIN_KEY);
-    else await this.ctx.storage.put(FAILED_LOGIN_KEY, { at: Date.now(), outcome });
-    return outcome;
+    const backingOff = failedLogin && Date.now() - failedLogin.at < LOGIN_RETRY_AFTER_MS && !hasTipWithin(tipTables, RETRY_TIP_WINDOW_MS);
+    if (backingOff) return { login: { ...failedLogin.login, backedOff: true } };
+    const response = await this.logIn();
+    const lineupPage = response.gotSessionCookie ? await this.fetchLineupPage(day) : undefined;
+    const stillSignedOut = lineupPage?.status === 200 && !lineupPage.loggedIn;
+    const login: LoginOutcome = { ...response, ...(stillSignedOut && { stillSignedOut }) };
+    if (!loginFailed(login)) await this.ctx.storage.delete(FAILED_LOGIN_KEY);
+    else await this.ctx.storage.put(FAILED_LOGIN_KEY, { at: Date.now(), login });
+    return { login, lineupPage };
   }
 
   // A failed login re-renders the form with the submitted email and password, so its body is never read
@@ -297,7 +327,7 @@ type RunRecord = {
 
 type AlertSends = Partial<Record<(typeof ALERT_CHANNELS)[number], AlertSend>>;
 
-type LoginOutcome = { status: number; gotSessionCookie: boolean; backedOff?: true };
+type LoginOutcome = { status: number; gotSessionCookie: boolean; stillSignedOut?: true; backedOff?: true };
 
 type Alert = { title: string; body: string; priority: 0 | 1 | 2 };
 
@@ -305,7 +335,7 @@ type AlertSend = { status: number; response?: string } | { error: string };
 
 type AlertOutcome = AlertSend & { accepted: boolean; cardId?: string };
 
-type DayCheck = { day: number; lineupPage: { status: number; loggedIn: boolean }; decision?: LineupDecision; save?: SaveResult };
+type DayCheck = { day: number; lineupPage?: { status: number; loggedIn: boolean }; decision?: LineupDecision; save?: SaveResult & { backedOff?: true }; error?: string };
 
 type LineupPeriod = { ordinal: number; low: { startEpochMilli: string } };
 
@@ -316,15 +346,20 @@ function findCurrentDay(periods: LineupPeriod[], nowMs: number) {
 }
 
 function listProblems({ login, days, error }: RunRecord) {
-  const loginProblems = login && !login.gotSessionCookie ? [`Fleaflicker login failed (HTTP ${login.status}, no session cookie)`] : [];
+  const loginProblems = login && loginFailed(login) ? [`Fleaflicker login failed (HTTP ${login.status}, ${login.gotSessionCookie ? "still signed out" : "no session cookie"})`] : [];
   return [...loginProblems, ...days.flatMap(listDayProblems), ...(error ? [error] : [])];
 }
 
-function listDayProblems({ lineupPage, decision, save }: DayCheck) {
+function loginFailed({ gotSessionCookie, stillSignedOut }: LoginOutcome) {
+  return !gotSessionCookie || stillSignedOut === true;
+}
+
+function listDayProblems({ lineupPage, decision, save, error }: DayCheck) {
   const problems: string[] = [];
-  if (lineupPage.status !== 200) problems.push(`Lineup page returned HTTP ${lineupPage.status}`);
+  if (lineupPage && lineupPage.status !== 200) problems.push(`Lineup page returned HTTP ${lineupPage.status}`);
   if (decision && !decision.ok) problems.push(...decision.errors);
   problems.push(...(save?.problems ?? []));
+  if (error) problems.push(error);
   return problems;
 }
 

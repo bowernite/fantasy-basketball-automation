@@ -5,6 +5,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import openingNightRoster from "../lineup/fixtures/fetch-roster-week1-signed-in.json";
 import fantasyStatsPage from "../lineup/fixtures/teampage-logged-in-fantasy-stats.html?raw";
 import seasonStatsPage from "../lineup/fixtures/teampage-logged-in.html?raw";
+import signedOutPage from "../lineup/fixtures/teampage.html?raw";
 import worker from "./index";
 
 const LOGGED_OUT_PAGE = `<html><body><a class="btn" href="/nba/login">Log In</a></body></html>`;
@@ -150,7 +151,7 @@ describe("lineup runner", () => {
 
     const record = await (await triggerRun()).json<RunRecord>();
 
-    expect(record).toMatchObject({ trigger: "manual", error: "TypeError: Network connection lost" });
+    expect(record).toMatchObject({ trigger: "manual", days: [{ error: "TypeError: Network connection lost" }] });
     const [latest] = await listRuns();
     expect(latest).toEqual(record);
   });
@@ -231,6 +232,22 @@ describe("lineup runner", () => {
     for (failure of ["DNS lookup failed", "Connection refused", "DNS lookup failed", "Connection refused"]) await triggerRun();
 
     expect(alerts.map(({ message }) => message)).toEqual(["- TypeError: DNS lookup failed", "- TypeError: Connection refused"]);
+  });
+
+  it("alerts again when a failure comes back after a successful run", async () => {
+    let fleaflickerDown = true;
+    const { alerts } = stubFleaflicker((request) => {
+      if (fleaflickerDown) throw new TypeError("Connection dropped");
+      return fakeFleaflicker(request, fantasyStatsPage);
+    });
+
+    await triggerRun();
+    fleaflickerDown = false;
+    await triggerRun();
+    fleaflickerDown = true;
+    await triggerRun();
+
+    expect(alerts.map(({ message }) => message)).toEqual(["- TypeError: Connection dropped", "- TypeError: Connection dropped"]);
   });
 
   it("alerts again when the same failure is still happening hours later", async () => {
@@ -329,7 +346,7 @@ describe("lineup runner", () => {
 
     expect(response.status).toBe(200);
     const [latest] = await listRuns();
-    expect(latest).toMatchObject({ error: "TypeError: Socket closed", alert: { pushover: { error: "TypeError: Pushover unreachable" } } });
+    expect(latest).toMatchObject({ days: [{ error: "TypeError: Socket closed" }], alert: { pushover: { error: "TypeError: Pushover unreachable" } } });
   });
 
   it("starts the schedule on a manual run when nothing is scheduled", async () => {
@@ -458,7 +475,7 @@ describe("scheduled checks", () => {
     await runner.tick("cron");
 
     const runs = await runner.recentRuns();
-    expect(runs.map(({ error }) => error)).toEqual([undefined, "Error: Request to www.fleaflicker.com timed out after 20 s"]);
+    expect(runs.map(({ days }) => days[0].error)).toEqual([undefined, "Error: Request to www.fleaflicker.com timed out after 20 s"]);
   });
 
   it("records and alerts a failed run when Fleaflicker's API goes down mid-day", async () => {
@@ -473,7 +490,7 @@ describe("scheduled checks", () => {
     await runner.tick("cron");
 
     const [latest] = await runner.recentRuns();
-    expect(latest).toMatchObject({ startedAt: "2026-10-20T18:21:00.000Z", error: "Error: Roster API returned HTTP 503" });
+    expect(latest).toMatchObject({ startedAt: "2026-10-20T18:21:00.000Z", days: [{ error: "Error: Roster API returned HTTP 503" }] });
     expect(alerts.at(-1)?.message).toContain("Roster API returned HTTP 503");
   });
   it("sends one emergency alert when a tip passes with no successful run in the 45 min before it", async () => {
@@ -581,6 +598,25 @@ describe("scheduled checks", () => {
     `);
   });
 
+  it("treats a login that leaves the page signed out as failed", async () => {
+    vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-20T15:10:00Z") });
+    const loginAttempts: string[] = [];
+    const { alerts } = stubFleaflicker(async (request) => {
+      if (request.method !== "POST") return new Response(LOGGED_OUT_PAGE);
+      loginAttempts.push(new Date().toISOString());
+      return fakeFleaflicker(request);
+    });
+    const runner = freshRunner();
+
+    for (const at of ["15:10", "15:15"]) {
+      vi.setSystemTime(new Date(`2026-10-20T${at}:00Z`));
+      await runner.tick("cron");
+    }
+
+    expect(loginAttempts).toEqual(["2026-10-20T15:10:00.000Z"]);
+    expect(alerts[0].message.split("\n")[0]).toMatchInlineSnapshot(`"- Fleaflicker login failed (HTTP 303, still signed out)"`);
+  });
+
   it("keeps trying a failed login on every tick within 45 min of a tip", async () => {
     vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-20T18:06:00Z") });
     let passwordChanged = false;
@@ -588,7 +624,7 @@ describe("scheduled checks", () => {
     stubFleaflicker(async (request) => {
       if (!passwordChanged) return fakeFleaflickerSeason(request);
       if (request.method === "POST") loginAttempts.push(new Date().toISOString());
-      return request.method === "POST" ? new Response("<form>Your password is incorrect</form>") : new Response(LOGGED_OUT_PAGE);
+      return request.method === "POST" ? new Response("<form>Your password is incorrect</form>") : new Response(signedOutPage);
     });
     const runner = freshRunner();
     await runner.tick("cron");
@@ -600,6 +636,54 @@ describe("scheduled checks", () => {
     }
 
     expect(loginAttempts).toEqual(["2026-10-20T18:21:00.000Z", "2026-10-20T18:26:00.000Z"]);
+  });
+
+  it("keeps trying a failed login near a tip it only saw on the signed-out page", async () => {
+    vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-20T18:21:00Z") });
+    const loginAttempts: string[] = [];
+    stubFleaflicker(async (request) => {
+      if (request.method !== "POST") return new Response(signedOutPage);
+      loginAttempts.push(new Date().toISOString());
+      return new Response("<form>Your password is incorrect</form>");
+    });
+    const runner = freshRunner();
+
+    await runner.tick("cron");
+    vi.setSystemTime(new Date("2026-10-20T18:26:00Z"));
+    await runner.tick("cron");
+
+    expect(loginAttempts).toEqual(["2026-10-20T18:21:00.000Z", "2026-10-20T18:26:00.000Z"]);
+  });
+
+  it("waits 30 min before sending a save that didn't land again", async () => {
+    vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-20T15:10:00Z") });
+    const { lineupSaves } = stubLineupSaves({ applySaves: false });
+    const runner = freshRunner();
+    await runner.setSaves(true);
+
+    const savesPerTick = [];
+    for (const at of ["15:10", "15:15", "15:45"]) {
+      vi.setSystemTime(new Date(`2026-10-20T${at}:00Z`));
+      const savesBefore = lineupSaves.length;
+      await runner.tick("cron");
+      savesPerTick.push(lineupSaves.length - savesBefore);
+    }
+
+    expect(savesPerTick).toEqual([2, 0, 2]);
+  });
+
+  it("sends a save that didn't land again on every tick within 45 min of a tip", async () => {
+    vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-20T18:21:00Z") });
+    const { lineupSaves } = stubLineupSaves({ applySaves: false });
+    const runner = freshRunner();
+    await runner.setSaves(true);
+    await runner.tick("cron");
+
+    const savesBefore = lineupSaves.length;
+    vi.setSystemTime(new Date("2026-10-20T18:26:00Z"));
+    await runner.tick("cron");
+
+    expect(lineupSaves.length - savesBefore).toBeGreaterThan(0);
   });
 
   it("sends a general alert when the page lacks matchups, without treating the run as failed", async () => {
@@ -621,12 +705,48 @@ describe("scheduled checks", () => {
     expect(alerts[0].message.split("\n")[0]).toMatchInlineSnapshot(`"- Falling back to DOM scrape for Cade Cunningham opponent info"`);
   });
 
+  it("keeps ticking over run records from before runs checked more than one day", async () => {
+    vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-20T15:10:00Z") });
+    stubFleaflicker(fakeFleaflickerSeason);
+    const runner = freshRunner();
+    const singleDayRecord = { trigger: "manual", startedAt: "2026-09-30T20:00:00.000Z", lineupPage: { status: 200, loggedIn: true }, decision: { ok: true } };
+    await runInDurableObject(runner, (_, state) => state.storage.sql.exec("INSERT INTO runs (record) VALUES (?)", JSON.stringify(singleDayRecord)));
+
+    await runner.tick("cron");
+
+    const [latest] = await runner.recentRuns();
+    expect(latest).toMatchObject({ trigger: "cron", days: [{ day: 1 }, { day: 2 }] });
+  });
+
+  it("alerts the owner when a tick can't even plan", async () => {
+    vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-20T15:10:00Z") });
+    const { alerts } = stubFleaflicker(fakeFleaflickerSeason, { rosterApiUp: () => false });
+    const runner = freshRunner();
+
+    await runner.tick("cron");
+
+    expect(alerts.map(({ title, message }) => ({ title, message }))).toEqual([{ title: "Lineup tick (cron) failed", message: "- Error: Roster API returned HTTP 503" }]);
+  });
+
   it("finishes the tick when the dead-man monitor is unreachable", async () => {
     vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-20T15:10:00Z") });
     stubFleaflicker(fakeFleaflickerSeason, { deadManUp: false });
     const runner = freshRunner();
 
     await expect(runner.tick("cron")).resolves.toBeUndefined();
+  });
+
+  it("sends no emergency alert for today's tip when only tomorrow's roster fails to load", async () => {
+    vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-20T18:06:00Z") });
+    const { alerts } = stubFleaflicker(fakeFleaflickerSeason, { rosterApiUp: (url) => url.searchParams.get("scoring_period") !== "2" });
+    const runner = freshRunner();
+
+    for (const at of ["18:06", "18:21", "18:46", "18:51", "18:56", "19:01"]) {
+      vi.setSystemTime(new Date(`2026-10-20T${at}:00Z`));
+      await runner.tick("cron");
+    }
+
+    expect(alerts.map(({ title, priority }) => ({ title, priority }))).toEqual([{ title: "Lineup run (cron) failed", priority: "1" }]);
   });
 
   it("checks in with the dead-man monitor on every tick, not on manual runs", async () => {
@@ -655,9 +775,10 @@ type RunRecord = {
   login?: { status: number; gotSessionCookie: boolean };
   days: {
     day: number;
-    lineupPage: { status: number; loggedIn: boolean };
+    lineupPage?: { status: number; loggedIn: boolean };
     decision?: { ok: boolean; formAction?: string; errors?: string[] };
     save?: { posted: boolean; problems: string[] };
+    error?: string;
   }[];
   error?: string;
   alert?: Record<"pushover" | "trello", { status: number; response?: string } | { error: string }>;
@@ -738,7 +859,7 @@ function fakeFleaflickerSeason(request: Request) {
   return fakeFleaflicker(request, page);
 }
 
-function stubFleaflicker(respond: (request: Request) => Response | Promise<Response>, { pushoverStatus = () => 200, trelloStatus = () => 200, trelloCardArchived = () => false, rosterApiUp = () => true, deadManUp = true } = {}) {
+function stubFleaflicker(respond: (request: Request) => Response | Promise<Response>, { pushoverStatus = () => 200, trelloStatus = () => 200, trelloCardArchived = () => false, rosterApiUp = (_url: URL) => true, deadManUp = true } = {}) {
   const deadManPings: string[] = [];
   const alerts: Record<string, string>[] = [];
   const cards: { list: string; name: string; desc: string; authorization: string | null }[] = [];
@@ -748,7 +869,7 @@ function stubFleaflicker(respond: (request: Request) => Response | Promise<Respo
     const request = new Request(input, init);
     const { hostname, pathname } = new URL(request.url);
     if (hostname === "www.fleaflicker.com" && pathname === "/api/FetchRoster") {
-      return rosterApiUp() ? Response.json(openingNightRoster) : new Response("Service unavailable", { status: 503 });
+      return rosterApiUp(new URL(request.url)) ? Response.json(openingNightRoster) : new Response("Service unavailable", { status: 503 });
     }
     if (hostname === "www.fleaflicker.com") return respond(request);
     if (hostname === "api.pushover.net") {
