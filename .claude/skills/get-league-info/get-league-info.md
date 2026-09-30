@@ -43,7 +43,7 @@ Unauthenticated. `https://www.fleaflicker.com/api/<Endpoint>?sport=NBA&league_id
 
 - Default = **live/pending** trades only; `filter=TRADES_COMPLETED` = history. No other `filter` value and **no `team_id`** (both 400)
 - `resultTotal` is wrong (e.g. 1300 vs 21 actual): page `result_offset` (10/page) until a page comes back short
-- **An approved trade is invisible to every other endpoint until it executes.** During the veto window `FetchLeagueDraftBoard` still shows a traded pick as the sender's with `tradeId: None`, and rosters still show the old owner. Check here before quoting either
+- **An approved trade is invisible to every other endpoint until it executes.** During the 24-hour review window `FetchLeagueDraftBoard` still shows a traded pick as the sender's with `tradeId: None`, and rosters still show the old owner. Check here before quoting either
 - Pending-only fields: `numVetoesRequired`, `expiryIso`, `proposedOn` / `approvedOn` / `tentativeExecutionTime`, `chatChannel`, `description`
 - `teams[]` has **2 or 3 entries** (three-team deals exist), each with `playersObtained[]`, `picksObtained[]`, `playersReleased[]` — releases are how a side over `maxRosterSize` fits the deal (`league-info`)
 - `picksObtained[].{season, slot, ownedBy, originalOwner, traded, lost}` is a pick's trade history; for who holds it now read `FetchTeamPicks` (`FetchLeagueDraftBoard` returns `{}` for every season but the last completed draft and the next one)
@@ -71,7 +71,7 @@ Unauthenticated. `https://www.fleaflicker.com/api/<Endpoint>?sport=NBA&league_id
 - `season=` on `FetchLeagueRosters` is **not ignored**: it swaps the live rosters for the same end-of-March snapshot `FetchRoster?season=` gives (verified 2026-08-08). **Omit it** for current ownership
 - `FetchRoster?season=` returns the roster **as of that season's last lineup period**, omitting every later add (verified: 26 bodies vs 28 live). Count bodies from `FetchLeagueRosters` only. Omitting `season` gives the live roster with no rates
 - On `FetchRoster` rows the rate is **`seasonAverage`** (absent = no games played). `viewingActualPoints` is the *viewed lineup period* only (one day by default) and absent on most bench rows; `viewingActualPointsAverage` does **not** exist here and silently yields 0.00 for everyone
-- `groups[]`: `START` · unlabelled bench · `INJURED`. Only **filled** IR slots render, so group length ≠ slot count
+- `groups[]`: `START` · unlabelled bench
 
 ## `FetchPlayerProfile`
 
@@ -105,6 +105,7 @@ Unauthenticated. `https://www.fleaflicker.com/api/<Endpoint>?sport=NBA&league_id
 - Roster limits at top level: `maxRosterSize`, `maxActive`, `numStarters`, `numBench`, `rosterPositions[]` (`league-info` reads them)
 - Scoring at `groups[].scoringRules[]` as `points.value` / `pointsPer.value` with `forEvery` — divide to get the per-unit weight. Absent category = not scored
 - **`FGM` is used for both field goals *made* and field goals *missed*** (different category ids)
+- `waiverType`, `defaultWaiverBudget`, `maxKeepers` come on `FetchLeagueStandings`' `league` object; the transaction limit, trade deadline and tiebreakers only on the rules page (`league-info`)
 
 ## Draft boards and two traps
 

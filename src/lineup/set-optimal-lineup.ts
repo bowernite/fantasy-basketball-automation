@@ -20,7 +20,7 @@ function normalizeOptionTextToSlotLabel(text: string): SlotLabel | null {
   if (t === "PG" || t === "SG" || t === "SF" || t === "PF" || t === "C") {
     return t as SlotLabel;
   }
-  if (t === "G" || t === "F") return t as SlotLabel;
+  if (t === "G" || t === "F/C") return t as SlotLabel;
   if (t === "ANY" || t === "UTIL") return "ANY";
   return null;
 }

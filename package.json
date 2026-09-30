@@ -2,6 +2,7 @@
   "name": "fantasy-basketball",
   "module": "main.ts",
   "devDependencies": {
+    "@happy-dom/global-registrator": "^20.14.5",
     "@types/bun": "latest",
     "web-ext": "^9.1.0"
   },

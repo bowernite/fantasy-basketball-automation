@@ -1,4 +1,4 @@
-export type SlotLabel = "PG" | "SG" | "SF" | "PF" | "C" | "G" | "F" | "ANY";
+export type SlotLabel = "PG" | "SG" | "SF" | "PF" | "C" | "G" | "F/C" | "ANY";
 
 export type Slot = {
   id: string;
@@ -30,7 +30,7 @@ export function buildDefaultSlots(): Slot[] {
     { id: "PF", label: "PF" },
     { id: "C", label: "C" },
     { id: "G", label: "G" },
-    { id: "F", label: "F" },
+    { id: "F/C", label: "F/C" },
     { id: "ANY#1", label: "ANY" },
     { id: "ANY#2", label: "ANY" },
   ];
@@ -54,9 +54,10 @@ function buildEligibilityMatrix(
         (slot.label === "G" &&
           (candidate.eligibleSlotLabels.includes("PG") ||
             candidate.eligibleSlotLabels.includes("SG"))) ||
-        (slot.label === "F" &&
+        (slot.label === "F/C" &&
           (candidate.eligibleSlotLabels.includes("SF") ||
-            candidate.eligibleSlotLabels.includes("PF")));
+            candidate.eligibleSlotLabels.includes("PF") ||
+            candidate.eligibleSlotLabels.includes("C")));
       matrix[i][s] = Boolean(canFill);
     }
   }

@@ -1,11 +1,11 @@
 ---
-description: Use when reasoning from league rules — lineups, playoff bracket and seeding, roster cap, draft order, offseason transaction lock, scoring
+description: Use when reasoning from league rules — lineups, playoff bracket and seeding, roster cap, waivers and trade deadline, draft order, offseason transaction lock, scoring
 ---
 
-Verified facts only. Valuation: `eval-team`. Fetching: `get-league-info`.
+Verified facts only. Valuation: `eval-team`. Fetching: `get-league-info`. Settings the API lacks (waivers, transaction limit, trade deadline, tiebreakers, lineup lock) are on the rules page `https://www.fleaflicker.com/nba/leagues/30579/rules` (renders logged out).
 
 - Full dynasty (keep all players), 12 teams, **points** format (never categories)
-- **Daily lineups** inside a 7-day matchup: 15–20 different players score per week
+- **Daily lineups** inside a 7-day matchup, each player locking at his game's start: 15–20 different players score per week
 
 # Lineups
 
@@ -23,7 +23,7 @@ Read `proPlayer.positionEligibility` per player.
 
 **Draw sides are fixed**: two halves, each climbed worst seed first — **8-5-4-1** and **7-6-3-2**. So the 5/8 winner meets 4 then 1, the 6/7 winner meets 3 then 2, and seeds 1 and 3 (or 2 and 4) cannot meet before the final.
 
-⚠️ **Fleaflicker can't label R1, but the bracket is real.** Its bracket tool tops out at the 6-team/3-round shape it generated for periods 21–23, so the owner creates R1 as **two ordinary matchups inside period 20** carrying **no `isPlayoffs` and no `isConsolation` key**. Anything classifying "no flag" as regular season silently scores a playoff round, and Fleaflicker's own standings do exactly that: `pointsFor` is contaminated for those four teams (ours reads 27,228.75 including R1; the clean 19-period figure is 25,573).
+⚠️ **Fleaflicker can't label R1, but the bracket is real.** Its bracket tool tops out at the 6-team/3-round shape it generated for periods 21–23 (the rules page's "Playoffs: 6 Teams … 2 byes" is that setting, not the real bracket), so the owner creates R1 as **two ordinary matchups inside period 20** carrying **no `isPlayoffs` and no `isConsolation` key**. Anything classifying "no flag" as regular season silently scores a playoff round, and Fleaflicker's own standings do exactly that: `pointsFor` is contaminated for those four teams (ours reads 27,228.75 including R1; the clean 19-period figure is 25,573).
 
 Periods 20–23 are the played bracket and reconstruct it: period 21 pairs **3v7**, not 3v6, because seed 7 won the 6v7 game in period 20. Periods 21–23 alone yield a plausible 6-team/3-round bracket that never happened. Take the round count and window from this section, never from period `kinds`.
 
@@ -35,11 +35,9 @@ Periods 20–23 are the played bracket and reconstruct it: period 21 pairs **3v7
 
 Re-read the `FetchLeagueRules` roster fields before relying on any figure below.
 
-| Starters · Bench · IR | `maxRosterSize` | `maxActive` |
-|---|---|---|
-| 9 · 29 · 0 | **38** | 38 |
+**`maxRosterSize` 38** = 9 starters + 29 bench, all active. **No IR, no taxi**: `rosterPositions[]` still lists both, with no `start` key = 0 slots.
 
-`maxRosterSize` counts IR. `IR` and `TAXI` entries sit in `rosterPositions[]` with **no `start` key** — zero slots, so neither exists here. Absent `start` = 0 slots, not "unlimited".
+**Roster minimums are enforced** (rules page): at least 1 each of PG, SG, SF, PF, C (`rosterPositions[].min`). Expect a trade or cut that leaves a side without one to be rejected.
 
 **Legality is `count_after ≤ maxRosterSize`, per side** — not body-neutrality. A side that would finish over attaches `playersReleased` to the trade. **Body-uneven shapes are routine here, and three-team trades exist.** Count both sides live (`FetchLeagueRosters` → `rosters[].players[]`) before pricing a deal. `trades` owns the check and the price of the drops.
 
@@ -47,11 +45,18 @@ At 12 × 38 = 456 essentially every NBA-rostered player is owned, so the FA pool
 
 **The FA event every offseason is a live auction right after the rookie draft**, run on a Google Sheet with its own use-it-or-lose-it budget — not the Fleaflicker $100 FAAB, never blind bids. Only the current draft class is in the rookie draft; undrafted rookies and every older player are auction FAs. Fleaflicker transaction history is not a record of past FA-event format.
 
+# In-season transactions (rules page)
+
+- **Transaction limit: 1 per week** ("Transaction Limits: Week: 1"). Which moves count is unverified; assume each add or claim uses the week's one
+- **Waivers: blind-bid FAAB**, $100 budget, $0 bids allowed. A dropped player sits on waivers 24 h; every free agent goes to waivers once his game starts. Claims process daily, locking at 4:00a CT; first-come-first-served after 7:00a CT
+- **Trades: 24-hour review, no vetoes**
+- **Trade deadline '26-27: Sat 2/6/27, 5:00a CT** (period 16). Re-read the rules page each season
+
 # Offseason transaction lock
 
 **FA adds lock at some point in the offseason and reopen at the rookie draft + FA event. Trades and releases stay open throughout.** A drop with no add appears on the wire inside both lock windows (e.g. a trade's `playersReleased`).
 
-The lock start is unknown — ask rather than assume. It is not end-of-season: the transaction log shows adds well into the following June. Seen locked in late July '26. The API can't show the lock (`get-league-info` §Offseason).
+The lock start is unconfirmed — ask rather than assume. It is not end-of-season: the transaction log shows adds well into the following June. Seen locked in late July '26. The rules page sets "Lock Free Agents Before Draft: Yes" and the Fleaflicker season rolls over 6/25, which fits both observations but isn't confirmed as the start. The API can't show the lock (`get-league-info` §Offseason).
 
 # Drafting
 
@@ -79,7 +84,8 @@ So `slot = 13 − record rank` holds for the top 4 and is only a **prior** for t
 | FG missed | −0.25 |
 | 3PT missed | −0.25 (a missed three costs −0.50 total) |
 | Double-double · Triple-double | +2 · +5 |
-| Fouls · missed FTs | **not scored** |
+| Technical · flagrant fouls | −2 each |
+| Personal fouls · missed FTs | **not scored** |
 
 **DD and TD are cumulative** — a triple-double pays **+7**. Double-digit categories are Pts/Reb/Ast/Stl/Blk at **≥ 10**; shooting counters never count.
 

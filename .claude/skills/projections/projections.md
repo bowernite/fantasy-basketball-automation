@@ -52,7 +52,7 @@ A launchd agent (`extension_watch.py`) rebuilds and reinstalls it: when the cont
 
 ## Scoring
 
-`scoring.py` is the executable copy of `league-info` §Scoring, verified exact against Fleaflicker's `pointsActual` on 4352/4352 played-game rows.
+`scoring.py` is the executable copy of `league-info` §Scoring, verified exact against Fleaflicker's `pointsActual` on 4352/4352 played-game rows. It omits technical and flagrant fouls (−2 each, rare).
 
 | | |
 | --- | --- |

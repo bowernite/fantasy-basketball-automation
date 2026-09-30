@@ -26,7 +26,7 @@ Done when every candidate has a Score or a one-line skip reason.
 
 ## 3. Report
 
-Table: candidate · Score · vs our lowest-Score bodies. A pickup = Score above our worst body's; name who gets cut. Bare list otherwise. During the offseason FA lock (`league-info` §Offseason transaction lock), say adds may be locked; the API can't show it.
+Table: candidate · Score · vs our lowest-Score bodies. A pickup = Score above our worst body's; name who gets cut. Bare list otherwise. In season, a pickup is a blind-bid claim and uses the week's one transaction (`league-info` §In-season transactions). During the offseason FA lock (`league-info` §Offseason transaction lock), say adds may be locked; the API can't show it.
 
 ## 4. Stamp, then offer a refresh
 
