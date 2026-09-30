@@ -1,5 +1,5 @@
 #!/bin/bash
-# Deploys the lineup-runner Worker: tests, refuses within 90 min of a tip (a deploy kills in-flight runs and resets cron), then checks the alarm is armed.
+# Deploys the lineup-runner Worker: tests, refuses within 90 min of a tip (a deploy kills in-flight runs), then checks the alarm is armed.
 # Usage: scripts/deploy-runner.sh [--force]
 # Needs LINEUP_RUNNER_URL and LINEUP_RUNNER_TOKEN (repo .env).
 set -euo pipefail
@@ -21,7 +21,9 @@ if [ "${1:-}" != "--force" ]; then
   fi
 fi
 
-bunx wrangler deploy
+# Unlike `wrangler deploy`, a version deploy leaves the cron trigger alone (re-setting it pauses cron ~30-45 min); cron changes need `wrangler triggers deploy`
+version=$(bunx wrangler versions upload | tee /dev/stderr | sed -n 's/^Worker Version ID: //p')
+bunx wrangler versions deploy "$version@100%" -y
 
 # The previous version can keep serving for ~30 s after a deploy
 sleep 40
