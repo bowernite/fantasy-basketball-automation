@@ -21,16 +21,18 @@ Sort the table by **BASE** descending unless a file states otherwise. **`σ`** f
 
 # Cell formats
 
+Every modelled number (BASE, projections, win columns, `ΔP(title)`, Score, W20–W23, VALUE) and last-season FPts/G rounds per the `rounding` Skill; last-season GP, ranks and AGE don't.
+
 | Col | Format |
 | --- | --- |
-| **BASE** | integer, bold: **8082** |
+| **BASE** | bold: **8000** |
 | FPts/G proj (last) | projection, then actual in parens: `48 (47)` · no sample → `34 (–)` |
-| GP proj (last) | projection, then actual in parens: `68 (65)` |
-| **Δw** | signed, two decimals, bold: **+1.85** |
+| GP proj (last) | projection, then actual in parens: `70 (65)` |
+| **Δw** | signed, bold: **+1.9** · **+0.44** |
 | **Δw 'YY–'YY …** | same |
-| **ΔP(title)** / **ΔP(title) ours** | one decimal, `%` suffix: **16.4%** · may be negative |
-| **Score** | integer, bold, may be negative: **412** |
-| W20–W23 | integer expected PF · no projection → `–` |
+| **ΔP(title)** / **ΔP(title) ours** | `%` suffix: **16%** · **1.1%** · may be negative |
+| **Score** | bold, may be negative: **400** |
+| W20–W23 | expected PF · no projection → `–` |
 | Boards | Dizzle • Hashtag (crowd): `51 • 62 (68)` · absent → `–` · Dizzle off its rookie chart (`base.py` `CHART` line) → `~342` |
 | AGE | one decimal · unknown → `–` |
 | POS | eligibility slash-separated: `PG/SG` |

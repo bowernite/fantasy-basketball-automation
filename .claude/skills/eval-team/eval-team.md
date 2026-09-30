@@ -71,7 +71,7 @@ Flag **sourced vs modelled** · any discount chosen · board staleness.
 
 # Agent file
 
-Same facts as the human file, trimmed. No markdown tables, bold, or italics. Values as the human file rounds them; strip `,` from numbers.
+Same facts as the human file, trimmed. No markdown tables, bold, or italics. Values unrounded (sims read them): BASE, FPts/G, GP, Score integers · win columns two decimals · `ΔP(title)` one decimal; strip `,` from numbers.
 
 ```
 # {Owner} ({Team name}) · {N} bodies · {SIT} · sim {YYYY-MM-DD}

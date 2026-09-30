@@ -6,7 +6,7 @@
 
 | Player                              |  AGE | POS     |    Boards    | **BASE** | FPts/G proj (last) | GP proj (last) | **Δw** | **Δw 'YY–'YY ours** | **Δw 'YY–'YY theirs** | **ΔP(title)** | **Score** | W20 | W21 | W22 | W23 | flag |
 | ----------------------------------- | ---: | ------- | :----------: | -------: | :----------------: | :------------: | -------: | ----------: | ------------: | --: | -------: | --: | --: | --: | --: | ---- |
-| {every rostered body, no shortlist} | 25.8 | PG/SG   |  10 • 8 (9)  | **7294** |      45 (46)       |     64 (70)    | **+2.10** |   **+1.72** |     **+2.25** | 11.9% | **9306** | 175 | 105 | 105 | 105 |      |
+| {every rostered body, no shortlist} | 25.8 | PG/SG   |  10 • 8 (9)  | **7500** |      45 (46)       |     60 (70)    | **+2.1** |   **+1.7** |     **+2.3** | 12% | **9500** | 180 | 110 | 110 | 110 |      |
 
 `Boards` = Dizzle Points • Hashtag Points (Hashtag crowd in parens — printed, not blended) (`Eval Definitions §BASE`). `FPts/G proj (last)` and `GP proj (last)` = projection, then last season's actual in parens. Cell formats, rounding and flag names: `Eval Template.md`.
 
