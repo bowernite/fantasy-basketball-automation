@@ -780,6 +780,40 @@ describe("scheduled checks", () => {
     expect(lineupSaves.length - savesBefore).toBeGreaterThan(0);
   });
 
+  it("doesn't send a save within 3 min of one of the day's tips, while players may lock mid-request", async () => {
+    vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-20T18:58:00Z") });
+    const { lineupSaves } = stubLineupSaves();
+    const runner = freshRunner();
+    await runner.setSaves(true);
+
+    const record = await runner.run();
+
+    expect(lineupSaves).toEqual([]);
+    expect(record.days[0].save).toEqual({ posted: false, problems: [], skippedNearTip: "2026-10-20T19:00:00.000Z" });
+  });
+
+  it("notes untagged players whose fresh news says they're out, which the lineup decision ignores", async () => {
+    vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-09-29T20:00:00Z") });
+    const page = fantasyStatsPage.replace("Josh Giddey Enters Camp with No Restrictions", "Josh Giddey Out Tuesday");
+    stubFleaflicker((request) => fakeFleaflicker(request, page));
+
+    const record = await freshRunner().run();
+
+    expect(record.days[0].untaggedOutNews).toEqual([{ player: "Josh Giddey", status: "OUT", postedAt: "2026-09-29T13:56:15Z" }]);
+  });
+
+  it("leaves out news over 36 h old and players who already have an injury tag", async () => {
+    vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-01T03:00:00Z") });
+    const page = fantasyStatsPage
+      .replace("Josh Giddey Enters Camp with No Restrictions", "Josh Giddey Out Tuesday")
+      .replace("Zach Edey Cleared for Full-Speed Activity", "Zach Edey Out Wednesday");
+    stubFleaflicker((request) => fakeFleaflicker(request, page));
+
+    const record = await freshRunner().run();
+
+    expect(record.days[0].untaggedOutNews).toBeUndefined();
+  });
+
   it("files a Trello card, not a push, when the page lacks matchups, without treating the run as failed", async () => {
     vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-20T15:10:00Z") });
     const { alerts, cards } = stubFleaflicker(async (request) => {
@@ -920,6 +954,7 @@ type RunRecord = {
     lineupPage?: { status: number; loggedIn: boolean };
     decision?: { ok: boolean; formAction?: string; errors?: string[] };
     save?: { posted: boolean; problems: string[] };
+    untaggedOutNews?: { player: string; status: string; postedAt: string }[];
     error?: string;
   }[];
   error?: string;

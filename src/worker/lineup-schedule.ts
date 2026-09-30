@@ -9,7 +9,7 @@ export type TickPlan = { runDays: number[]; tipTableStale: boolean; missedTips: 
 const MINUTE_MS = 60 * 1000;
 const TIP_TARGET_LEADS_MS = [40 * MINUTE_MS, 15 * MINUTE_MS];
 // Setting a lineup while a player locks mid-request has unknown server behavior
-const TIP_CUTOFF_MS = 3 * MINUTE_MS;
+export const TIP_CUTOFF_MS = 3 * MINUTE_MS;
 const HOUR_MS = 60 * MINUTE_MS;
 const MISSED_WINDOW_MS = 45 * MINUTE_MS;
 // Late enough for the T-15 run and its retries, early enough for the owner to fix the lineup by hand

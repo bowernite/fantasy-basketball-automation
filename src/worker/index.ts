@@ -1,8 +1,9 @@
 import { DurableObject } from "cloudflare:workers";
 import { type ApiRoster, decideLineup, type LineupDecision } from "./decide-lineup";
 import { fetchWithTimeout } from "./fetch-with-timeout";
-import { type DayTip, type LedgerEntry, parseGameTips, planTick, type TipTable } from "./lineup-schedule";
+import { type DayTip, type LedgerEntry, parseGameTips, planTick, TIP_CUTOFF_MS, type TipTable } from "./lineup-schedule";
 import { type SaveResult, saveLineup } from "./save-lineup";
+import { findUntaggedOutNews, type UntaggedOutNews } from "./untagged-news";
 
 const FLEAFLICKER_LOGIN_URL = "https://www.fleaflicker.com/nba/login";
 const PUSHOVER_URL = "https://api.pushover.net/1/messages.json";
@@ -207,6 +208,8 @@ export class LineupRunner extends DurableObject<Env> {
     if (pageSummary.status === 200) {
       const tips = parseGameTips(html);
       await this.storeTipTable({ day, fetchedAt: record.startedAt, tips });
+      const untaggedOutNews = findUntaggedOutNews(html);
+      if (untaggedOutNews.length > 0) dayCheck.untaggedOutNews = untaggedOutNews;
       const players = roster.groups.flatMap(({ slots }) => slots.map(({ leaguePlayer }) => leaguePlayer?.requestedGames ?? []));
       const playersWithGamesAhead = players.filter((games) => games.some(({ game }) => Number(game.startTimeEpochMilli) > Date.now())).length;
       if (tips.length === 0 && playersWithGamesAhead > 0) {
@@ -221,6 +224,8 @@ export class LineupRunner extends DurableObject<Env> {
     const failedSaveKey = `${FAILED_SAVE_KEY}:${day}`;
     const failedSave = await this.ctx.storage.get<{ at: number; body: string; save: SaveResult }>(failedSaveKey);
     const tipTables = (await this.ctx.storage.get<TipTable[]>(TIP_TABLES_KEY)) ?? [];
+    const tipAboutToStart = tipTables.find((table) => table.day === day)?.tips.find(({ at }) => isWithin(at, TIP_CUTOFF_MS));
+    if (tipAboutToStart) return { posted: false, problems: [], skippedNearTip: tipAboutToStart.at };
     const sameSaveFailedRecently = failedSave?.body === decision.body && Date.now() - failedSave.at < SAVE_RETRY_AFTER_MS;
     if (sameSaveFailedRecently && !hasTipWithin(tipTables, RETRY_TIP_WINDOW_MS)) return { ...failedSave.save, posted: false, backedOff: true };
     const save = await saveLineup(decision, await this.sessionHeaders());
@@ -368,7 +373,7 @@ type AlertSend = { status: number; response?: string } | { error: string };
 
 type AlertOutcome = AlertSend & { accepted: boolean; cardId?: string };
 
-type DayCheck = { day: number; lineupPage?: { status: number; loggedIn: boolean }; warnings?: string[]; decision?: LineupDecision; save?: SaveResult & { backedOff?: true }; error?: string };
+type DayCheck = { day: number; lineupPage?: { status: number; loggedIn: boolean }; warnings?: string[]; untaggedOutNews?: UntaggedOutNews[]; decision?: LineupDecision; save?: SaveResult & { backedOff?: true; skippedNearTip?: string }; error?: string };
 
 type LineupPeriod = { ordinal: number; low: { startEpochMilli: string } };
 
@@ -397,12 +402,12 @@ function listDayProblems({ lineupPage, decision, save, error }: DayCheck) {
 }
 
 function hasTipWithin(tipTables: TipTable[], windowMs: number) {
-  return tipTables.some(({ tips }) =>
-    tips.some(({ at }) => {
-      const untilTipMs = Date.parse(at) - Date.now();
-      return untilTipMs >= 0 && untilTipMs <= windowMs;
-    }),
-  );
+  return tipTables.some(({ tips }) => tips.some(({ at }) => isWithin(at, windowMs)));
+}
+
+function isWithin(at: string, windowMs: number) {
+  const untilMs = Date.parse(at) - Date.now();
+  return untilMs >= 0 && untilMs <= windowMs;
 }
 
 async function summarizeAlertResponse(response: Response, accepted: boolean) {
