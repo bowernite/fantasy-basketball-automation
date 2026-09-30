@@ -4,12 +4,12 @@
   "main": "src/worker/index.ts",
   "compatibility_date": "2026-09-01",
   "observability": { "enabled": true },
+  "triggers": { "crons": ["0 * * * *"] },
   "vars": {
     "LINEUP_URL": "https://www.fleaflicker.com/nba/leagues/30579/teams/161025"
   },
   "durable_objects": {
     "bindings": [{ "name": "RUNNER", "class_name": "LineupRunner" }]
   },
-  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["LineupRunner"] }],
-  "r2_buckets": [{ "binding": "RUN_LOG", "bucket_name": "lineup-runs" }]
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["LineupRunner"] }]
 }

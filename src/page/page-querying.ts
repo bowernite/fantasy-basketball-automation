@@ -1,5 +1,5 @@
 import type { Player } from "../types";
-import { parseDateFromText } from "../utils/date-utils";
+import { getLeagueToday, parseDateFromText } from "../utils/date-utils";
 
 export const PLAYER_STATUS_SELECTOR = ".injury";
 
@@ -67,7 +67,7 @@ export function getPageDate() {
   }
   const dateText = buttonsWithDates[0].textContent?.toLowerCase().trim() ?? "";
   if (dateText === "today") {
-    return new Date(new Date().setHours(0, 0, 0, 0));
+    return getLeagueToday();
   }
   
   const date = parseDateFromText(dateText);

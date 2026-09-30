@@ -1,6 +1,9 @@
 import { env, exports } from "cloudflare:workers";
-import { runDurableObjectAlarm } from "cloudflare:test";
+import { createExecutionContext, createScheduledController, runDurableObjectAlarm, waitOnExecutionContext } from "cloudflare:test";
 import { afterEach, describe, expect, it, vi } from "vitest";
+import fantasyStatsPage from "../lineup/fixtures/teampage-logged-in-fantasy-stats.html?raw";
+import seasonStatsPage from "../lineup/fixtures/teampage-logged-in.html?raw";
+import worker from "./index";
 
 const LOGGED_OUT_PAGE = `<html><body><a class="btn" href="/nba/login">Log In</a></body></html>`;
 const LOGGED_IN_PAGE = `<html><body><a href="/logout">Sign Out</a><select name="status123"></select></body></html>`;
@@ -20,8 +23,7 @@ describe("lineup runner", () => {
     const record = await response.json<RunRecord>();
     expect(record.lineupPage).toEqual({ status: 200, loggedIn: false });
 
-    const stored = await env.RUN_LOG.get(record.key);
-    expect(await stored?.json()).toEqual(record);
+    expect(await listRuns()).toEqual([record]);
   });
 
   it("logs in to Fleaflicker when the lineup page shows logged out", async () => {
@@ -67,16 +69,50 @@ describe("lineup runner", () => {
     expect(await response.json()).toEqual({ scheduledAt: at });
 
     expect(await runDurableObjectAlarm(env.RUNNER.getByName("primary"))).toBe(true);
-    const { objects } = await env.RUN_LOG.list();
-    const records = await Promise.all(objects.map(async ({ key }) => (await env.RUN_LOG.get(key))!.json<RunRecord>()));
-    expect(records.filter((record) => record.trigger === "alarm")).toEqual([
+    expect((await listRuns()).filter((record) => record.trigger === "alarm")).toEqual([
       expect.objectContaining({ lineupPage: { status: 200, loggedIn: true } }),
     ]);
   });
 
+  it("decides today's lineup on the fantasy stats view without saving it", async () => {
+    const lineupSaves: Request[] = [];
+    stubFleaflicker((request) => {
+      if (request.method === "POST" && new URL(request.url).pathname !== "/nba/login") lineupSaves.push(request);
+      const fantasyStatsView = new URL(request.url).searchParams.get("statType") === "0";
+      return fakeFleaflicker(request, fantasyStatsView ? fantasyStatsPage : seasonStatsPage);
+    });
+
+    const record = await (await triggerRun()).json<RunRecord>();
+
+    expect(record.lineupPage).toEqual({ status: 200, loggedIn: true });
+    expect(record.decision).toMatchObject({ ok: true, formAction: "/nba/leagues/30579/teams/161025" });
+    expect(lineupSaves).toEqual([]);
+  });
+
+  it("runs on the cron schedule", async () => {
+    stubFleaflicker(fakeFleaflicker);
+    const ctx = createExecutionContext();
+
+    await worker.scheduled(createScheduledController({ cron: "0 * * * *" }), env, ctx);
+    await waitOnExecutionContext(ctx);
+
+    const [latest] = await listRuns();
+    expect(latest).toMatchObject({ trigger: "cron", lineupPage: { status: 200, loggedIn: true } });
+  });
+
+  it("lists recent run records, newest first", async () => {
+    stubFleaflicker(fakeFleaflicker);
+    const first = await (await triggerRun()).json<RunRecord>();
+    const second = await (await triggerRun()).json<RunRecord>();
+
+    const records = await listRuns();
+
+    expect(records.slice(0, 2)).toEqual([second, first]);
+  });
+
   it("refuses to run without the run token", async () => {
     stubFleaflicker(() => new Response(LOGGED_OUT_PAGE));
-    const recordsBefore = (await env.RUN_LOG.list()).objects.length;
+    const recordsBefore = await listRuns();
 
     const response = await exports.default.fetch("https://runner.test/run", {
       method: "POST",
@@ -84,16 +120,23 @@ describe("lineup runner", () => {
     });
 
     expect(response.status).toBe(401);
-    expect((await env.RUN_LOG.list()).objects).toHaveLength(recordsBefore);
+    expect(await listRuns()).toEqual(recordsBefore);
   });
 });
 
 type RunRecord = {
-  key: string;
-  trigger: "manual" | "alarm";
+  trigger: "manual" | "alarm" | "cron";
   login?: { status: number; gotSessionCookie: boolean };
   lineupPage: { status: number; loggedIn: boolean };
+  decision?: { ok: boolean; formAction?: string; errors?: string[] };
 };
+
+async function listRuns() {
+  const response = await exports.default.fetch("https://runner.test/runs", {
+    headers: { Authorization: "Bearer test-run-token" },
+  });
+  return response.json<RunRecord[]>();
+}
 
 function triggerRun() {
   return exports.default.fetch("https://runner.test/run", {
@@ -102,7 +145,7 @@ function triggerRun() {
   });
 }
 
-async function fakeFleaflicker(request: Request) {
+async function fakeFleaflicker(request: Request, loggedInPage = LOGGED_IN_PAGE) {
   const { pathname } = new URL(request.url);
   if (request.method === "POST" && pathname === "/nba/login") {
     const form = await request.formData();
@@ -114,7 +157,7 @@ async function fakeFleaflicker(request: Request) {
     });
   }
   const hasSession = request.headers.get("Cookie")?.includes("cookieId=session-1");
-  return new Response(hasSession ? LOGGED_IN_PAGE : LOGGED_OUT_PAGE);
+  return new Response(hasSession ? loggedInPage : LOGGED_OUT_PAGE);
 }
 
 function stubFleaflicker(respond: (request: Request) => Response | Promise<Response>) {

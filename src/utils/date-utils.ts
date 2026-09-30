@@ -1,11 +1,29 @@
 import { getPageDate } from "../page/page-querying";
 
+const LEAGUE_TIME_ZONE = "America/Chicago";
+
 export function getNumDaysInFuture() {
   const pageDate = getPageDate();
-  const today = new Date(new Date().setHours(0, 0, 0, 0));
+  const today = getLeagueToday();
   const diffInMs = pageDate.getTime() - today.getTime();
-  const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+  // Rounded, since a day across a DST change is 23h or 25h long
+  const diffInDays = Math.round(diffInMs / (1000 * 60 * 60 * 24));
   return diffInDays;
+}
+
+/**
+ * Today's date in the league's time zone, as a machine-local midnight (like dates parsed from the page).
+ * The machine's own date can differ, e.g. a UTC server in the league's evening
+ */
+export function getLeagueToday(now: Date = new Date()) {
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone: LEAGUE_TIME_ZONE,
+    year: "numeric",
+    month: "numeric",
+    day: "numeric",
+  }).formatToParts(now);
+  const getPart = (type: Intl.DateTimeFormatPartTypes) => Number(parts.find((part) => part.type === type)?.value);
+  return new Date(getPart("year"), getPart("month") - 1, getPart("day"));
 }
 
 /**

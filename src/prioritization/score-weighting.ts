@@ -5,6 +5,7 @@ import {
 } from "../data/player-data";
 import type { Player } from "../types";
 import { adjustPredictedScoreForInjury } from "./injury-adjustments";
+import { getLeagueToday } from "../utils/date-utils";
 
 export type ScoreWeightingDebugInfo = ReturnType<
   typeof getPlayerPredictedScore
@@ -37,7 +38,7 @@ export function getPlayerPredictedScore(player: Player) {
   ] as const;
 }
 
-function isOffseason(date: Date = new Date()) {
+function isOffseason(date: Date = getLeagueToday()) {
   const month = date.getMonth();
   const day = date.getDate();
   return month > 3 && (month < 9 || (month === 9 && day <= 20));

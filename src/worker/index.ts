@@ -1,23 +1,34 @@
 import { DurableObject } from "cloudflare:workers";
+import { decideLineup, type LineupDecision } from "./decide-lineup";
 
 const FLEAFLICKER_LOGIN_URL = "https://www.fleaflicker.com/nba/login";
 const SESSION_COOKIE_KEY = "fleaflickerSessionCookie";
 
 export class LineupRunner extends DurableObject<Env> {
+  constructor(ctx: DurableObjectState, env: Env) {
+    super(ctx, env);
+    ctx.storage.sql.exec("CREATE TABLE IF NOT EXISTS runs (id INTEGER PRIMARY KEY AUTOINCREMENT, record TEXT NOT NULL)");
+  }
+
   async run(trigger: RunRecord["trigger"] = "manual"): Promise<RunRecord> {
     const startedAt = new Date().toISOString();
-    const record: RunRecord = {
-      key: `runs/${startedAt}.json`,
-      trigger,
-      startedAt,
-      lineupPage: await this.checkLineupPage(),
-    };
-    if (!record.lineupPage.loggedIn) {
-      record.login = await this.logIn();
-      record.lineupPage = await this.checkLineupPage();
+    let lineupPage = await this.fetchLineupPage();
+    let login: RunRecord["login"];
+    if (!lineupPage.loggedIn) {
+      login = await this.logIn();
+      lineupPage = await this.fetchLineupPage();
     }
-    await this.env.RUN_LOG.put(record.key, JSON.stringify(record));
+    const { html, ...pageSummary } = lineupPage;
+    const record: RunRecord = { trigger, startedAt, login, lineupPage: pageSummary, decision: await decideLineup(html) };
+    this.ctx.storage.sql.exec("INSERT INTO runs (record) VALUES (?)", JSON.stringify(record));
     return record;
+  }
+
+  recentRuns(limit = 20): RunRecord[] {
+    return this.ctx.storage.sql
+      .exec<{ record: string }>("SELECT record FROM runs ORDER BY id DESC LIMIT ?", limit)
+      .toArray()
+      .map((row) => JSON.parse(row.record));
   }
 
   async schedule(at: Date) {
@@ -28,12 +39,13 @@ export class LineupRunner extends DurableObject<Env> {
     await this.run("alarm");
   }
 
-  private async checkLineupPage() {
+  private async fetchLineupPage() {
     const sessionCookie = await this.ctx.storage.get<string>(SESSION_COOKIE_KEY);
-    const response = await fetch(this.env.LINEUP_URL, { headers: sessionCookie ? { Cookie: sessionCookie } : {} });
+    const fantasyStatsView = `${this.env.LINEUP_URL}?statType=0`;
+    const response = await fetch(fantasyStatsView, { headers: sessionCookie ? { Cookie: sessionCookie } : {} });
     const html = await response.text();
-    const loggedIn = html.includes('href="/logout"') && html.includes('<select name="status');
-    return { status: response.status, loggedIn };
+    const loggedIn = html.includes('href="/logout"');
+    return { status: response.status, loggedIn, html };
   }
 
   // A failed login re-renders the form with the submitted email and password, so its body is never read
@@ -58,6 +70,7 @@ export default {
     const { pathname } = new URL(request.url);
     const runner = env.RUNNER.getByName("primary");
     if (request.method === "POST" && pathname === "/run") return Response.json(await runner.run());
+    if (request.method === "GET" && pathname === "/runs") return Response.json(await runner.recentRuns());
     if (request.method === "POST" && pathname === "/schedule") {
       const { at } = await request.json<{ at: string }>();
       await runner.schedule(new Date(at));
@@ -65,14 +78,18 @@ export default {
     }
     return new Response("Not found", { status: 404 });
   },
+
+  async scheduled(_controller, env, ctx) {
+    ctx.waitUntil(env.RUNNER.getByName("primary").run("cron"));
+  },
 } satisfies ExportedHandler<Env>;
 
 type RunRecord = {
-  key: string;
-  trigger: "manual" | "alarm";
+  trigger: "manual" | "alarm" | "cron";
   startedAt: string;
   login?: { status: number; gotSessionCookie: boolean };
   lineupPage: { status: number; loggedIn: boolean };
+  decision: LineupDecision;
 };
 
 function hasRunToken(request: Request, runToken: string) {

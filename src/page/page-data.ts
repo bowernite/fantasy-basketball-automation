@@ -1,8 +1,9 @@
 export type TooltipData = Map<string, string>;
-let _tooltipData: TooltipData | undefined;
+const tooltipDataByDocument = new WeakMap<Document, TooltipData>();
 
 export function getTooltipPageData(): TooltipData {
-  if (_tooltipData) return _tooltipData;
+  const cachedTooltipData = tooltipDataByDocument.get(document);
+  if (cachedTooltipData) return cachedTooltipData;
 
   const scriptEl = document.getElementById("page-data");
   if (!scriptEl || !scriptEl.textContent) {
@@ -20,7 +21,7 @@ export function getTooltipPageData(): TooltipData {
 
   try {
     const pageData = JSON.parse(match[1]);
-    _tooltipData = new Map();
+    const tooltipData: TooltipData = new Map();
 
     if (Array.isArray(pageData.tooltips)) {
       for (const tooltip of pageData.tooltips) {
@@ -29,12 +30,13 @@ export function getTooltipPageData(): TooltipData {
           typeof tooltip.contents === "string"
         ) {
           for (const id of tooltip.ids) {
-            _tooltipData.set(id, tooltip.contents);
+            tooltipData.set(id, tooltip.contents);
           }
         }
       }
     }
-    return _tooltipData;
+    tooltipDataByDocument.set(document, tooltipData);
+    return tooltipData;
   } catch (e) {
     console.error("Failed to parse page-data JSON", e);
     return new Map();
