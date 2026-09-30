@@ -13,6 +13,10 @@ Check in this order; stop once the failing run and its cause are found.
 3. **Live**: `bunx wrangler tail lineup-runner --format json > /tmp/<file>` in the background, then trigger or wait for a run
 4. **Deploys**: `bunx wrangler deployments list` (which version was live when a run failed)
 
+`GET $LINEUP_RUNNER_URL/status` (same auth) shows the next alarm and upcoming tips. Ticks with nothing due write no run record; the alarm re-arms at least every 5 min.
+
+Deploy only with `scripts/deploy-runner.sh`: it refuses within 90 min of a tip and keeps the cron trigger (plain `wrangler deploy` pauses cron ~30–45 min).
+
 `POST $LINEUP_RUNNER_URL/run` (same auth) runs the lineup now: only when the user asks.
 
 ## Where output lands
