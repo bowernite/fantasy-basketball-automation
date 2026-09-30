@@ -31,7 +31,7 @@ V(r) = 9999 × (a+1)/(D−1) × (D−r)/(a+r)     for r < D, else 0
 
 - **A band spanning zero is a BASE tie.** Publish the band; never quote the point value or its sign.
 - Width tracks the body-count gap — a 1-for-1 barely moves, a 5-for-1 spans thousands.
-- Stack it with any pick-slot range already carried (`eval-pick` §*Future picks*): min/max over both at once, one band.
+- Stack it with any pick-slot range already carried (`eval-pick/future-picks.md`): min/max over both at once, one band.
 - **Never charge a roster slot in BASE to offset body count** — the correction lands an order of magnitude under the band, and `Δw` prices body count already (`Format edges.md`).
 
 # Depth and absence

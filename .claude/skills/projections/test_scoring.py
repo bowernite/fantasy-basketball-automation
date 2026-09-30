@@ -60,7 +60,7 @@ def test_the_double_double_bonus_comes_off_the_line_not_off_the_feeds_own_counts
     of the top 150 scorers carry none, and missing is indistinguishable from
     zero. Edey is one of them, and a 12.8/10.5 line doubles up most nights, so
     reading the feed there would pay him nothing for the biggest bonus on his
-    row (`projections` §What the scoring does).
+    row (`projections` §Scoring).
     """
     rows = {r["name"]: r for r in SLEEPER_ROWS}
 

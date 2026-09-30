@@ -1,7 +1,7 @@
 """Our league's scoring, applied to a raw stat line.
 
 `league-info` §Scoring owns the rules; this is the executable copy. `SKILL.md`
-§What the scoring does owns why there are two entry points.
+§Scoring owns why there are two entry points.
 """
 import math
 
@@ -69,7 +69,7 @@ def line_from_sleeper(stats):
     """A Sleeper/RotoWire projection row -> the stat line our scoring reads.
 
     The feed's own `dd`/`td` are unusable and deliberately go unread; that trap
-    and the OReb one are `SKILL.md` §What the scoring does."""
+    and the OReb one are `SKILL.md` §Scoring."""
     reb = stats.get("reb", 0.0)
     return {"Pts": stats.get("pts", 0.0),
             "Reb": reb,

@@ -1,13 +1,6 @@
-Copy text message to send to clipboard
+Copy the text message(s) the user will send to the clipboard.
 
 # Trade proposals
 
-- Copy each to clipboard separately (starting from last one / bottom). Do all in the same turn
-
-## Format
-
-Example
-
-```
-Duren+Suggs for Buzelis+Edgecombe?
-```
+- One clipboard copy per proposal, starting from the last one (bottom), all in the same turn
+- Format: `Duren+Suggs for Buzelis+Edgecombe?`

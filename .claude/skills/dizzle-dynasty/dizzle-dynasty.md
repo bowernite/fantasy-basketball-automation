@@ -1,113 +1,59 @@
 ---
-name: dizzle-dynasty
-description: Dizzle Dynasty rankings sheet — dynasty and rookie boards in both 9Cat and Points, plus a rookie pick-value chart.
+description: Dizzle Dynasty — use when pulling the Dizzle Dynasty rankings sheet (dynasty or rookie boards, 9Cat or Points) or its rookie pick-value chart
 ---
 
-_Fetch live with the recipe below (`.claude/skills/dizzle-dynasty/sheet.py`).
-`strategy/board-snapshots/dizzle-dynasty/` holds a dated CSV/xlsx snapshot — fall back to it only if the
-sheet is unreachable, and say you're citing a snapshot. Source updates roughly monthly._
+Best-fit external board for this league, so start here: it has a **real Points-format dynasty ranking** and a **pick-value chart**. All tabs are one analyst; the 9Cat and Points tabs are not two opinions (`eval-player` §Caveats). Source updates roughly monthly.
 
-# Dizzle Dynasty
+## Fetch
 
-Best-fit external board for this league: it has a **real Points-format
-dynasty ranking** and a **pick-value chart**. Start here.
-
-All tabs are one analyst — the 9Cat and Points tabs are not two opinions. See
-"Caveats" in `eval-player`.
-
-## Fetch in a subagent
-
-Run the recipe — and any fallback read of the local snapshot in
-`strategy/board-snapshots/dizzle-dynasty/` — inside a dedicated `Agent` call
-(`general-purpose`), never inline. Tell it which tab(s)/limit to pull and have it hand back
-`SOURCE`/`TAB`/`FORMAT`/`UPDATED` plus the table; the raw sheet export never enters the main
-context (`CLAUDE.md` §*Subagents*).
-
-Public Google Sheet, no auth:
-`1EmReTa5KUcFFMCy8Fq-NpQG3WU0pMY7XNW54G3EPbEM`
-
-## Tabs
-
-Tab titles are `<Month> <Year> <board>` — **the month moves, so list tabs first and
-never hardcode one.** Match on the board part only.
-
-| Tab suffix | Use |
-|---|---|
-| `Dynasty Ranks, Points` | **our format** — main board, ~450 ranked players |
-| `Dynasty Ranks, 9Cat` | cross-check only |
-| `Rookie Ranks, Points` | **our format** — incoming class + college stats |
-| `Rookie Ranks, 9Cat` | cross-check only |
-| `Pick Values` | 1.01–2.30, `Top N-M` player equivalence + who to take per format |
-
-**Any hidden tab is a stale archive** — an earlier month's board kept in place. The
-recipe asserts `visible`; never enumerate which months are hidden, it changes.
-
-**The dynasty board carries the incoming rookie class inline against players, and each
-such row is prefixed with the author's own rookie-draft slot** — `1.09 / Brayden
-Burries` in the `Player` cell, at that row's real board rank. This is the primary
-pick-pricing source: an exact rank per slot, on the same board the players are priced
-on (`eval-pick` §4). Match on the prefix, never on the name.
-
-- Coverage runs from `1.01` down to roughly the chart's early round 2 — can stop short of
-  our 48 slots (chart `2.18`), so **check the slot you want has a row** rather than assuming.
-- The prefix is the author's slot assignment and **drifts from `Pick Values`' own
-  `Who I Might Take` column at a few slots.** They are two columns, not one; prefer the
-  prefix and don't reconcile them by name.
-- The rookie tabs carry the class too, with college stats, but read their `#` per
-  `eval-pick` — it is not a board rank.
-
-## Never use gviz
-
-`gviz/tq?sheet=<name>` **silently falls back to the first tab on an unknown or
-misspelled name** — no error, HTTP 200. The first tab is 9Cat, so you get 9Cat
-while believing you have Points. Verified: `sheet=BOGUS` returns the 9Cat board.
-`htmlview` exposes no gids. The recipe uses the xlsx export instead.
-
-## Recipe — run the file, never retype it
+1. Run the recipe (or the snapshot fallback) in a `general-purpose` subagent (`AGENTS.md` §Subagents). Tell it which tab(s)/limit to pull; it hands back `SOURCE`/`TAB`/`FORMAT`/`UPDATED` plus the table, never the raw export.
+2. List tabs first when unsure. The tab argument is a substring match on the board part of the title (§Tabs) and asserts it hit exactly one tab.
+3. Done when the pull printed its header with no tripped `assert`. Report `SOURCE` / `TAB` / `FORMAT` / `UPDATED` verbatim when citing these numbers.
 
 ```bash
 uv run .claude/skills/dizzle-dynasty/sheet.py                                # list tabs
 uv run .claude/skills/dizzle-dynasty/sheet.py "Dynasty Ranks, Points" 40     # one tab
+uv run .claude/skills/dizzle-dynasty/test_sheet.py                           # offline parse guard, no network
 ```
 
-Match on the board part of the title only, per **Tabs** above. The tab argument is a
-substring match and asserts it hit exactly one tab, so list first when unsure.
+**Run `sheet.py` as-is; never transcribe, reimplement or "fix" it**, and keep its xlsx export (never gviz: `gviz/tq?sheet=<name>` silently falls back to the first tab, 9Cat, on an unknown or misspelled name at HTTP 200; `htmlview` exposes no gids). `uv` resolves `openpyxl` from the script's metadata block; no venv needed. A tripped `assert` means discard the pull, not caveat it.
 
-**Do not transcribe, reimplement or "fix" what is in that file** — in particular do not
-swap the xlsx export for gviz. `uv` resolves `openpyxl` from the script's own metadata
-block; no venv needed. A tripped `assert` means discard the pull, not caveat it.
+Public Google Sheet, no auth: `1EmReTa5KUcFFMCy8Fq-NpQG3WU0pMY7XNW54G3EPbEM`
 
-```bash
-uv run .claude/skills/dizzle-dynasty/test_sheet.py    # offline parse guard, no network
-```
+**Snapshot:** `strategy/board-snapshots/dizzle-dynasty/` holds a dated CSV/xlsx snapshot. Cite it only if the sheet is unreachable, and say so.
 
-Report `SOURCE` / `TAB` / `FORMAT` / `UPDATED` verbatim when citing these numbers.
+## Tabs
 
-## Reading it
+Tab titles are `<Month> <Year> <board>`; **the month moves, so match on the board part only.**
 
-- Rows reading `TIER BREAK` with a blank rank are tier delimiters, not players.
-- `Notes/Outlook` carries the author's reasoning and its own update date — the
-  highest-signal column for trade framing; quote it rather than paraphrasing a
-  rank.
-- `Prev. Rank` / `+/- Change` show momentum, i.e. where perception is moving.
-- Pick Values prices picks as **"the player ranked Top N-M"**, not as an
-  abstract score — so it needs no *rescaling* (unlike Hashtag's Keeper Value). It
-  yields a **rank**, which then goes through `Eval Definitions §BASE`'s curve like any other
-  rank. Bands are wide and flatten consecutive slots, so it is the **fallback and
-  cross-check** to the dynasty board's slot prefix, not the primary read
-  (`eval-pick` §4).
-- **Pick Values prices the incoming class only** — the bands track where *this*
-  class thins, so it is never a future year's price, only a labelled cross-check
-  (`eval-pick`).
-- Our rookie draft takes any player from the class in any order, so slot N ≈ the
-  Nth name in `Rookie Ranks, Points`, and the `Who I Might Take (Points)` column
-  is the direct answer.
-- **`Draft Pick` on the rookie tabs is the real NBA slot, not ours** — its row 1 can
-  read `1.03`. Never answer "who goes at one of our slots" from it; use the class
-  ordinal or the dynasty board's slot prefix.
-- `Pick Values` charts the NBA's 60 slots (1.01–1.30, 2.01–2.30) and the dynasty
-  board's slot prefixes use the same labels. Ours is 12×4, so look up by **overall
-  ordinal** (`eval-pick`), never by our round label.
-- Pick labels are floats in the sheet, so a naive read gives `1.1` for 1.10 and
-  `2.30000000000004` for 2.30. The recipe and the snapshot both correct this.
-- Still 9Cat-derived at root and generic-Points at best (`eval-player` §*Caveats*).
+| Tab suffix | Use |
+|---|---|
+| `Dynasty Ranks, Points` | **our format**: main board, ~450 ranked players |
+| `Dynasty Ranks, 9Cat` | cross-check only |
+| `Rookie Ranks, Points` | **our format**: incoming class + college stats |
+| `Rookie Ranks, 9Cat` | cross-check only |
+| `Pick Values` | 1.01–2.30, `Top N-M` player equivalence + who to take per format |
+
+**Any hidden tab is a stale archive** (an earlier month's board); the recipe asserts `visible`.
+
+## Pricing picks
+
+**Primary: the dynasty board's slot prefix.** The board carries the incoming class inline, each row prefixed with the author's rookie-draft slot (`1.09 / Brayden Burries` in the `Player` cell) at that row's real board rank: an exact rank per slot on the same board the players are priced on (`eval-pick` §4). Match on the prefix, never the name.
+
+- Coverage runs from `1.01` to roughly the chart's early round 2 and can stop short of our 48 slots (chart `2.18`), so **check the slot you want has a row**.
+- The prefix **drifts from `Pick Values`' `Who I Might Take` column at a few slots.** Prefer the prefix; don't reconcile them by name.
+
+**Fallback and cross-check: `Pick Values`.** It prices picks as **"the player ranked Top N-M"**, so it yields a **rank** (no rescaling, unlike Hashtag's Keeper Value) that goes through `Eval Definitions §BASE`'s curve like any rank. Bands are wide and flatten consecutive slots (`eval-pick` §4).
+
+- **It prices the incoming class only**; the bands track where *this* class thins, so it is never a future year's price, only a labelled cross-check (`eval-pick`).
+- It charts the NBA's 60 slots (1.01–1.30, 2.01–2.30), as do the slot prefixes. Ours is 12×4, so look up by **overall ordinal** (`eval-pick`), never by our round label.
+- Pick labels are floats in the sheet (`1.1` for 1.10, `2.30000000000004` for 2.30); the recipe and the snapshot both correct this.
+
+**Rookie tabs:** our rookie draft takes any player from the class in any order, so slot N ≈ the Nth name in `Rookie Ranks, Points`, and its `Who I Might Take (Points)` column is the direct answer. Read their `#` per `eval-pick`; it is not a board rank. **`Draft Pick` there is the real NBA slot, not ours** (row 1 can read `1.03`); answer "who goes at one of our slots" from the class ordinal or the dynasty board's slot prefix.
+
+## Reading rows
+
+- `TIER BREAK` rows with a blank rank are tier delimiters, not players.
+- `Notes/Outlook` carries the author's reasoning and its own update date: the highest-signal column for trade framing. Quote it rather than paraphrasing a rank.
+- `Prev. Rank` / `+/- Change` show where perception is moving.
+- Still 9Cat-derived at root and generic-Points at best (`eval-player` §Caveats).

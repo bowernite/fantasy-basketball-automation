@@ -1,57 +1,64 @@
 ---
-name: trade-shapes
-description: Maintain a team's trade shapes — human HTML file plus agent .shapes.md. Tier, sort, Too lopsided, Doesn't meet our minimums, Status. Pair with sims Skill to price rows.
+description: Use when archiving, refreshing or re-tiering a team's trade shapes (`.shapes.md` / `Trade Shapes.md`)
 ---
 
-# Where
+Always load/follow `trades` Skill.
 
-Human file Brett reads: `strategy/teams/<owner>/<Name> Trade Shapes.md`
+# Files
 
-Agent file: `strategy/teams/<owner>/<Name>.shapes.md` — same directory. Read this one. Never read, grep, or shell-print `* Trade Shapes.md`.
+- Agent file: `strategy/teams/<owner>/<Name>.shapes.md` (§Agent file). Read and rebuild deal bodies from this one
+- Human file: `<Name> Trade Shapes.md`, same directory (§Table format). Written in full from the agent file by a spawned subagent (`AGENTS.md` §Team files)
 
-On every archive or refresh, write both. Rebuild deal bodies from `.shapes.md`. Write `.shapes.md` first, then spawn a subagent to write the human file in full from it per §Table format (`AGENTS.md` §Team files). Never read or edit the human file in place.
+Every archive or refresh writes both, agent file first.
 
-**Always load the `trades` Skill** — deals to look for, minimums, metric preferences, competitor rules, what not to float.
+# Workflow
+
+1. **Sim** per `sims` Skill. New shapes: append the short list's deal bodies to tmp JSON (`trades` §Brainstorm). Refresh (roster or projections changed): rebuild tmp JSON from every `.shapes.md` row + eval rosters and run `--refresh`. Done when every deal has `results`.
+2. **Gaps:** a deal with `eval_gap` (stdout `! <label>:` line) isn't archived; fix the eval or config, then `--refresh`.
+3. **Map** `results` → columns: `score_us` Score · `delta_base_us` ΔBASE · `fdw_us` Δw · `dw_us` Δw (season) · `dp_title_us` ΔP(title) · `dage_us` Δage, rounded per §Table format.
+4. **Agent file:** add or update each row (on refresh, every row); place per §Sections, sort per §Tiering and sort.
+5. **Human file:** spawn the subagent to write it in full from the agent file.
+6. Delete or overwrite the tmp JSON.
+
+When inputs moved, quote rows only after a fresh run.
 
 # Sections
 
 Five sections, **top to bottom**: `## Above floor` → `## Floor` → `## Below bar` → `## Too lopsided` → `## Doesn't meet our minimums`.
 
-| Section                   | When                                                                                         |
-| ------------------------- | -------------------------------------------------------------------------------------------- |
-| Above floor               | Clearly better than floor — we'd actively pursue                                             |
-| Floor                     | We'd take it if that's all we could get                                                      |
-| Below bar                 | Not worth pursuing, but still meets `trades` §General guidlines minimums                     |
-| Too lopsided              | **Our ΔBASE ≥ +1250** — keep for reference; do not float                                     |
-| Doesn't meet our minimums | Fails at least one minimum in `trades` §General guidlines — keep for reference; do not float |
+| Section | When |
+|---|---|
+| Above floor | Clearly better than floor; we'd actively pursue |
+| Floor | We'd take it if that's all we could get |
+| Below bar | Not worth pursuing, but meets `trades` §General guidlines minimums |
+| Too lopsided | Too lopsided per `trades` §General guidlines; reference only, never floated |
+| Doesn't meet our minimums | Fails an archive-fail threshold in `trades` §General guidlines; reference only, never floated |
 
 **Placement order** (each row lives in exactly one section):
 
-1. Sim → assign tier (above floor / floor / below bar) per `§Tiering`.
-2. If **our ΔBASE ≥ +1250** → `## Too lopsided`.
-3. Else if **fails any minimum** (`trades` §General guidlines) → `## Doesn't meet our minimums`.
-4. Else → keep the tier from step 1.
+1. Assign a tier (above floor / floor / below bar) per §Tiering and sort.
+2. Too lopsided → `## Too lopsided`.
+3. Else fails any minimum → `## Doesn't meet our minimums`.
+4. Else keep the tier from step 1.
+
+Executed deals stay out of shape rows.
 
 # Tiering and sort
 
-`Score` (`Eval Definitions §Score`) is the baseline — a starting order, not a verdict. Still read every number individually.
+`Score` (`Eval Definitions §Score`) is the baseline: a starting order, not a verdict. Still read every number individually.
 
-- **Sort** each actionable tier (above floor / floor / below bar) by `Score`, highest first; order ties (~250) by judgment on the individual numbers. Re-sort after every refresh or tier move.
-- **Tier** by `Score` against the floor — the best live alternative for the same assets (e.g. a benchmark offer), else what we'd settle for: clearly above → Above floor, near → Floor, clearly below → Below bar. No floor yet → tier by judgment, `Score` as a guide. Override a row's `Score` tier only for something the score misses (roster context, `Δage`, competitor rules).
-
-**Too lopsided** — sort by **ΔBASE** descending (most lopsided first). Same columns and bolding rules.
-
-**Doesn't meet our minimums** — sort by `Score`, lowest first. Same columns and bolding rules; do not bold failed minimums.
+- **Tier** by `Score` against the floor: the best live alternative for the same assets (e.g. a benchmark offer), else what we'd settle for. Clearly above → Above floor, near → Floor, clearly below → Below bar. No floor yet → tier by judgment, `Score` as a guide. Override a row's `Score` tier only for something the score misses (roster context, `Δage`, competitor rules)
+- **Sort** each actionable tier by `Score`, highest first; order ties (~250) by judgment on the individual numbers. Re-sort after every refresh or tier move
+- **Too lopsided:** sort by ΔBASE, highest first
+- **Doesn't meet our minimums:** sort by `Score`, lowest first; don't bold failed minimums
 
 # Table format
 
-Columns: `Out | In | Score | ΔBASE | Δw | Δw (season) | ΔP(title) | Δage`. Optional **`Status`** after the numbers when a shape has been floated or answered — **negotiation status only** (not general notes): `Us proposed`, `{owner} proposed`, `Us rejected`, or `{owner} rejected`, plus date (e.g. `Hlina **rejected** 9/2`). Bold the status verb. Latest status only — do not stack history; once rejected or superseded, drop an earlier proposed. Leave blank when unset. No commentary, context, or negotiation color in **Status** — put that in the file intro or counterparty notes.
+Human file: one markdown table per section. Columns: `Out | In | Score | ΔBASE | Δw | Δw (season) | ΔP(title) | Δage`, then optional **Status**.
 
-**Round on archive:** `Score` and `ΔBASE` nearest 100 · win columns nearest tenth · `ΔP(title)` nearest whole with **`%` suffix** (e.g. `+5%`, `-2%`, `0%`) · `Δage` nearest tenth, signed (e.g. `+3.2`, `-1.2`, `0.0`).
+**Round:** `Score` and `ΔBASE` nearest 100 · win columns nearest tenth · `ΔP(title)` nearest whole with `%` suffix (`+5%`, `-2%`, `0%`) · `Δage` nearest tenth, signed (`+3.2`, `-1.2`, `0.0`). Picks are 0 in win columns. No `*` on any cell.
 
-**Picks** — win columns are bodies; picks are 0 there. Never convert BASE → `Δw`. No `*` on any cell.
-
-**Out** = our side; **In** = theirs. Each cell is one HTML bullet list — one asset per `<li>`:
+**Out** = our side; **In** = theirs. Each cell is one HTML bullet list, one asset per `<li>`, this exact wrapper even for a single asset:
 
 ```html
 <ul style="list-style-type:disc;margin:0;padding-left:1.25em">
@@ -59,52 +66,26 @@ Columns: `Out | In | Score | ΔBASE | Δw | Δw (season) | ΔP(title) | Δage`. 
 </ul>
 ```
 
-Use that exact `<ul>` wrapper even for a single asset.
+- **Players:** `**Name**` (last name or eval nickname) inside each `<li>`, no age or projection metadata. Out-side names from our eval; In-side from theirs
+- **Picks:** on the side that sends them, as their own `<li>`, bold in square brackets: `**['27 1st]**`, `**[Chris '27 2.09]**` (ours bare, others original owner first per `AGENTS.md` §Naming; slot notation per `eval-pick`). Never parentheses or `+`-joined to a player
+- **Bold:** Score, ΔBASE, Δw, Δw (season), ΔP(title) when positive, with `+` prefix on positive win numbers; Δage when negative; non-beneficial numbers plain. `ΔP(title)` keeps its `%` inside bold/strike (`**+10%**`, `~~**+6%**~~`, `-2%`, `0%`)
+- **Status:** negotiation status only, latest only: `Us proposed`, `{owner} proposed`, `Us rejected` or `{owner} rejected` + date, verb bold (e.g. `Hlina **rejected** 9/2`). A rejection or superseding status replaces an earlier proposed. Blank when unset. Commentary and negotiation color go in the file intro or counterparty notes
+- **Rejected rows:** strike through every other cell (`~~…~~`), including each `<li>` body (`<li>~~**Kessler**~~</li>`); Status stays plain (verb still bold)
 
-**Players** — `**Name**` inside each `<li>`. **Name** = last name or eval nickname, **bold**. No age or projection metadata. Out-side players from our eval; In-side from theirs.
-
-**Picks** — on the side that sends them (ours in **Out**, theirs in **In**), as their own `<li>`. Square brackets, bold: `**['27 1st]**`, `**[Chris '27 2.09]**` (ours bare, others original owner first per `AGENTS.md` §Naming; slot notation per `eval-pick`). Not parentheses, not `+`-joined to a player.
-
-**Rebuild for sim** — deal `label` = the agent line's `out > in` (`Δage` reads later picks from it); strip list markup and bold; player arrays = bare names only. Picks → JSON pick BASE fields (`sims` [config.md](../sims/config.md)); pick label in JSON is `Chris '27 1st` without brackets.
-
-**Bold** asset names and picks in **Out** / **In**. Bold **Score**, **ΔBASE**, **Δw**, **Δw (season)**, **ΔP(title)** when positive, **Δage** when negative; prefix `+` on positive win numbers. **`ΔP(title)` always carries `%`** — inside bold/strike when those apply (e.g. `**+10%**`, `~~**+6%**~~`, `-2%`, `0%`). In **Status**, bold the status verb (`**proposed**`, `**rejected**`, etc.). Leave non-beneficial numbers plain. When **Status** is a rejection, strike through every other cell (`~~…~~`) including each `<li>` body (`<li>~~**Kessler**~~</li>`); leave **Status** plain (verb still bold).
-
-Do not float executed deals as fake shape rows.
+**Rebuild for sim:** deal `label` = the agent line's `out > in` (`Δage` reads later picks from it); player arrays = bare names only; picks → JSON pick BASE fields (`sims` [config.md](../sims/config.md)), labeled like `Chris '27 1st`.
 
 # Agent file
 
-Same sections, prose, and row order as the human file. No HTML, no markdown table, no bold.
+Same sections, prose and row order as the human file; no HTML, markdown table or bold.
 
 First line: `# out > in | Score ΔBASE Δw Δw(season) ΔP(title) Δage | status`
 
-One shape per line:
+One shape per line, e.g. `Cade+'27 1st > Brunson | +2200 +700 +1.9 +0.8 +9% +1.4 | Us proposed 9/10`
 
-`Cade+'27 1st > Brunson | +2200 +700 +1.9 +0.8 +9% +1.4 | Us proposed 9/10`
-
-- Players: bare name. Picks: `'27 1st`, `Chris '27 2nd` (no brackets). Join assets with `+`.
-- Six numbers, space-separated, already rounded. `?` for a number not yet priced. Keep `+` and `%`. Omit status when blank. Strip bold and strike; status text carries a rejection.
-- Keep section headers (`## Above floor`, …) and any prose under them. Strip `**` from prose.
-
-# Archive workflow
-
-Run sims first (`sims` Skill). From stdout / JSON `results`:
-
-1. Map `score_us` → **Score** (nearest 100) · `delta_base_us` → **ΔBASE** (nearest 100) · `fdw_us` → **Δw** (nearest tenth) · `dw_us` → **Δw (season)** (nearest tenth) · `dp_title_us` → **ΔP(title)** (nearest whole, `%` suffix) · `dage_us` → **Δage** (nearest tenth). A deal with `eval_gap` (stdout `! <label>:` line): don't archive it; fix the eval or config, then `--refresh`.
-2. Add or update the row in both files; apply §Sections (tier, re-home lopsided / minimums, human bold, sort). Agent line per §Agent file.
-3. Delete or overwrite the tmp JSON when done.
-
-# Adding new shapes
-
-1. Append the short list's deal bodies to tmp JSON (`trades` §Brainstorm, `sims` Skill).
-2. Run `sim_run.py`.
-3. Archive per §Archive workflow.
-
-# Refresh
-
-When roster or projections changed — rebuild tmp JSON from `.shapes.md` rows + eval rosters (edit JSON directly), run `sim_run.py --refresh` (`sims` Skill), update every row in both files from fresh `results`; apply §Sections.
-
-Do not re-quote stale table rows without a fresh run when inputs moved.
+- Players: bare name. Picks: `'27 1st`, `Chris '27 2nd` (no brackets). Join assets with `+`
+- Six numbers, space-separated, already rounded, keeping `+` and `%`; `?` for a number not yet priced. Omit a blank status. No bold or strike; the status text carries a rejection
+- Keep section headers (`## Above floor`, …) and any prose under them, `**` stripped
 
 # Notes
 
-- **Never** index on other trade shapes files / use as reference on how to do this. Just follow instructions given / this skill faithfully.
+- Take format from this skill only, not from other teams' shapes files

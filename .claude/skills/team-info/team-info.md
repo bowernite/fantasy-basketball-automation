@@ -1,11 +1,8 @@
 ---
-name: team-info
-description: Maps every league team to its id, username, owner's real name and the Name we call it by. Use whenever a team, owner or `team_id` is named.
+description: Use whenever a league team, owner, username or `team_id` comes up, or to find a team's `strategy/teams/` dir
 ---
 
-# Teams
-
-`team_id` verified against `FetchLeagueStandings` (`get-league-info`).
+`team_id` verified against `FetchLeagueStandings`. **Name** is the one to use (AGENTS.md §Naming).
 
 | Team | `team_id` | Username | Owner | Name |
 |---|---|---|---|---|
@@ -22,14 +19,6 @@ description: Maps every league team to its id, username, owner's real name and t
 | The Don | 161020 | `MitchBrault3` | Mitch | Mitch |
 | The Han Dybantsy | 161022 | `t27marino` | Todd | Todd |
 
-`161015` appears as the long form (the API's) and as **Jon** (`strategy/teams/jon/`) — one
-team, join either. Bare **"SGA" is the player**, not the team.
-
-**Name** is how we refer to each team everywhere (AGENTS.md §Naming).
-
-`160941` breaks the `1610xx` pattern; don't infer ids.
-
-**`strategy/teams/` is named by owner, not team** — ours is `my-team/`, Michael's is `bonin/`,
-the rest are the lowercased Name. External
-snapshots (`dizzle-dynasty`, `hashtag-basketball`, dated board pulls) live in
-`strategy/board-snapshots/`.
+- `161015` appears as the long form (the API's) and as **Jon** (`strategy/teams/jon/`) — one team, join either. Bare **"SGA" is the player**, not the team
+- Take ids from this table; `160941` breaks the `1610xx` pattern
+- **`strategy/teams/` is named by owner, not team**: ours is `my-team/`, Michael's is `bonin/`, the rest are the lowercased Name. External board snapshots (`dizzle-dynasty`, `hashtag-basketball`, dated board pulls) live in `strategy/board-snapshots/`

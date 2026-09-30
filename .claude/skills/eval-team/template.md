@@ -19,11 +19,11 @@
 | Pick | Origin | Ordinal | Board row | rank | **VALUE** |
 | ---- | ------ | ------: | --------- | ---: | --------: |
 
-{Do not offer any commentary for picks. Just the tables.}
+{Tables only, no pick commentary.}
 
 # Details
 
-**Counterfactual:** {one line — what the `Δw (season)` columns swap him against, and the per-group `R` each was fitted at. Formula **`Δw`** — cite `Eval Definitions §Δw`. `Δw (season) ours` is the only cross-team-comparable column; `Δw (season) theirs` is fitted against _their_ `R` and the two differ by several rate points between teams, so the theirs−ours gap is not a number and no target may be ranked on `Δw (season) theirs`.}
+**Counterfactual:** {one line: what the `Δw (season)` columns swap him against, and the per-group `R` each was fitted at. Formula **`Δw`**: cite `Eval Definitions §Δw`. Rank targets on `Δw (season) ours` only (`Delta w (season).md`).}
 
 # Title odds
 

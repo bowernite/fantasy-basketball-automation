@@ -1,8 +1,8 @@
 ---
-description: Read public (link-view) Google Sheets fast and poll them for changes — endpoints, quirks, cadence, where the poller runs. Use whenever an agent or tool reads a Google Sheet.
+description: Google Sheets — use whenever an agent or tool reads a public (link-view) Google Sheet or polls one for changes
 ---
 
-Read only. Never write to a Sheet you don't own.
+Read only: never write to a Sheet you don't own.
 
 ## Helper
 
@@ -22,7 +22,7 @@ Tests: `python3 .claude/skills/google-sheets/test_sheets.py`
 | gviz | `/gviz/tq?tqx=out:csv&gid=<gid>&range=<A1>&headers=0` | ~150 ms | one-off cell or name lookups (`&tq=select A where A contains 'X'`) |
 | xlsx | `/export?format=xlsx` | slower | formulas, strikethrough and tab names (`openpyxl` via `uv run`, see `dizzle-dynasty`) |
 
-A range doesn't make the export faster. The server renders the whole sheet either way.
+A range doesn't make the export faster; the server renders the whole sheet either way.
 
 ## Quirks
 
@@ -38,6 +38,6 @@ A range doesn't make the export faster. The server renders the whole sheet eithe
 
 - Poll with export every 2–5 s. 1 s works too; no throttling was seen at 1 read per 2–4 s over 5 min.
 - Set `key` to the region a real change touches, so edits elsewhere don't fire.
-- Run the poller as a `Monitor` in the main session. Stdout prints only on change, one line per event. Timings go to stderr. Don't use a subagent (a model turn per poll, and it can't push) or `loop` (1-minute floor).
+- Run the poller as a `Monitor` in the main session: stdout prints only on change, one line per event; timings go to stderr. A subagent costs a model turn per poll and can't push; `loop` has a 1-minute floor.
 - Monitors expire after 30 min, so re-arm on expiry. The poller must be restart-safe: keep state in files and diff against them on start.
-- If the Sheet can't be reached: File > Download > CSV, then point `--src` at the file.
+- If the Sheet can't be reached: File > Download > CSV, then point the poller's `src` at the file.

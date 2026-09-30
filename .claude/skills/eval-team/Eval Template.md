@@ -12,10 +12,10 @@ Cell formats and column order for every human team eval file (`eval-team` §Outp
 
 | … | GP proj (last) | **Δw** | **Δw 'YY–'YY ours** | **Δw 'YY–'YY theirs** | **ΔP(title) ours** | **Score** | W20 | W21 | W22 | W23 | flag |
 
-- **`Δw`** = formula wins (`Eval Definitions §Δw`) — league curve, ~600 PF per win. One column on every table. Never sum formula `Δw` across pieces on one roster for trade calls — packages need joint sim for `Δw (season)`; formula on a multi-piece deal is a per-piece net sum on trade tables only.
+- **`Δw`** = formula wins (`Eval Definitions §Δw`): league curve, ~600 PF per win. One column on every table. Summing across pieces: `Delta w.md`.
 - **`Δw 'YY–'YY …`** = **`Δw (season)`** (`Eval Definitions §Δw (season)`). Tag from `fetch_data.season_dw_tag()`. **`Δw (season) ours`** is the only cross-team-comparable win column.
 - **`Score`** = `Score.md` §Player Score, from the row's own columns (counterparty: the `ours` columns).
-- Publish **both** win columns on every player row. They are different currencies — never convert, net or rank a trade on one against the other (`Eval Definitions §Δw`, `§Δw (season)`).
+- Publish **both** win columns on every player row, each read in its own currency (`Eval Definitions §Δw`, `§Δw (season)`).
 
 Sort the table by **BASE** descending unless a file states otherwise. **`σ`** footnotes name ties in the sim's **`Δw (season)`** ordering (counterparty: **theirs** column), not necessarily the BASE sort (`Eval Definitions §σ`).
 

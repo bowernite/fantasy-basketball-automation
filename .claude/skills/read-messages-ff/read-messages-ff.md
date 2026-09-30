@@ -1,15 +1,13 @@
 ---
-description: Read local iMessage history with a league mate — use when a trade negotiation happened over text and you need what was actually said.
+description: Use when you need what a league mate actually said over text, e.g. a trade negotiation
 ---
 
-Follow `read-messages` Skill.
+Always load/follow `read-messages` Skill.
 
-- Cross-reference the owner via `team-info` before reasoning about a deal
-- Going back: start with the last 10. While the oldest printed is still about fantasy basketball, page back 10 more
+- Start with the last 10. While the oldest printed is still about fantasy basketball, page back 10 more
+- Map the contact to an owner (`team-info` Skill for team names) before reasoning about a deal
 
 # Contact names
-
-See `team-info` Skill to map a team name to an owner.
 
 - Micheal or Bonin -> `Michael Bonin`
 - Josh -> `Josh Damro`

@@ -1,77 +1,66 @@
 ---
-name: eval-team
-description: How to produce a team's eval files — human file plus agent .team.md. Which columns to pull, what to compute, and what the files may and may not contain.
+description: Use when creating or updating a team's eval files (`<Name>.team.md` and its human file)
 ---
 
-Your only job is to create the updated eval files for a team, in `strategy/teams/` (§Output).
+Goal: the updated eval files for one team in `strategy/teams/` (§Output). The files answer: who is on this team, what each player is worth, roster shape, what to target.
 
-`Eval Definitions` owns every formula, threshold and column meaning — cite it by section, never restate it. `template.md` (this directory) owns section order.
+`Eval Definitions` owns every formula, threshold and column meaning: cite it by section. `template.md` (this directory) owns the human file's section order; `Eval Template.md` owns column order and cell formats.
 
 # Launch first
 
-**Spawn these before reading anything else, in parallel** (`CLAUDE.md` §Subagents). Read `Eval Definitions.md` and `template.md` while they run.
+**Spawn these in parallel before reading anything else** (`AGENTS.md` §Subagents). Read `Eval Definitions.md` and `template.md` while they run.
 
 | Subagent | Hands back |
 | --- | --- |
 | **boards** | each blended board's rank per player, its depth, and its stamp |
-| **picks** | pick ownership per `eval-pick` |
+| **picks** | pick ownership and VALUE per `eval-pick`, every draft year the league has traded into |
 
 `team-info` maps owner → `team_id`.
 
 # Inputs
 
-Already on disk — nothing here needs fetching:
+Already on disk, nothing to fetch:
 
-- **Sim** — counterparty table: `strategy/lineup-math/run sim_run.py --eval <team_id>` · `sims` Skill · `README.md` §*Pricing a counterparty*
-- **Rosters** — `strategy/lineup-math/rosters/roster-<team_id>-<season>.json`, all 12. `strategy/lineup-math/run fetch_data.py roster <team_id>` re-cuts one. Do not quote the wire over those files.
-- **Boards** — `strategy/board-snapshots/`, latest dated pull.
+- **Sim**: counterparty table `strategy/lineup-math/run sim_run.py --eval <team_id>` · `sims` Skill · `strategy/lineup-math/README.md` §*Pricing a counterparty*
+- **Rosters**: `strategy/lineup-math/rosters/roster-<team_id>-<season>.json`, all 12. `strategy/lineup-math/run fetch_data.py roster <team_id>` re-cuts one. Quote these files, not the wire.
+- **Boards**: `strategy/board-snapshots/`, latest dated pull.
 
 # When to pull new data
 
 - Boards: only if asked.
 - Sims: `sims` Skill reports when writing the eval, and whenever the eval predates the roster file or the projection snapshot. Anything else only if asked.
 - Roster: only if asked. **If the roster fetch is over 3 months old, stop and ask before re-fetching.**
-- Player ages: Use DOB if we have it anywhere (e.g. a draft board file). Otherwise, fallback to calculating it fresh, but only if the last time we sourced (for the particular player / team) is more than 2 months ago
+- Player ages: use DOB if we have it anywhere (e.g. a draft board file). Otherwise re-derive it, only if it was last sourced (for that player / team) more than 2 months ago.
 
-# Applying it
+# Player table
 
-_See /strategy/Definitions/Eval Definitions.md for definitions to these when needed_
+Per player:
 
-Calculate these columns for each player to construct the player table
-
-1. **BASE** - calculate for each player
-2. **Sim columns** — counterparty: `strategy/lineup-math/run sim_run.py --eval <team_id>`. Copy the TSV (`Δw`, `Δw (season) ours`, `Δw (season) theirs`, `ΔP(title) ours`, `W20`–`W23`). Do not import `sim` for these columns. Do not write scripts (`CLAUDE.md` §Scripts). Do not assign `ROSTER`. Ours (`my-team/`): `./run sim.py players weeks` plus `player_title` / `title-column` `include: ["ours"]`. `sim.py title` is roster `P(title)` for `# Title odds`, not the table column.
-3. **Score** — per row, from that row's columns: `Score.md` §Player Score.
+1. **BASE** (`eval-player`).
+2. **Sim columns**: counterparty: `strategy/lineup-math/run sim_run.py --eval <team_id>`; copy the TSV (`Δw`, `Δw (season) ours`, `Δw (season) theirs`, `ΔP(title) ours`, `W20`–`W23`), without importing `sim` or assigning `ROSTER`. Ours (`my-team/`): `./run sim.py players weeks` plus `player_title` / `title-column` `include: ["ours"]` (`eval-player` step 7).
+3. **Score**: per row, from that row's columns: `Score.md` §Player Score.
 4. Flags travel with every row. Multi-piece sides get one joint sim run each, never summed rows.
 
-Column order and cell formats: `Eval Template.md`.
-
-# Picks
-
-Make tables for picks (see template file)
-
-Every draft year the league has traded into, not just the next one
+Done when every rostered body has a full row.
 
 # Output
 
-Two files, same directory, written together on every write — any edit to one goes in the other:
+Two files, same directory, written together on every write; any edit to one goes in the other:
 
 | File | Path |
 | --- | --- |
-| Human (Brett reads) | `strategy/teams/<owner>/<Name>'s Team.md` · ours `My Team.md` |
+| Human (the user reads) | `strategy/teams/<owner>/<Name>'s Team.md` · ours `My Team.md` |
 | Agent | `strategy/teams/<owner>/<Name>.team.md` · ours `Ours.team.md` · Matt Hlina `Hlina.team.md` |
 
-Read the agent file only; prior values you need (ages, notes) come from it. Write the agent file first, then spawn a subagent to write the human file in full from it plus this run's outputs, `template.md` and `Eval Template.md` (`AGENTS.md` §Team files). Never read or edit the human file in place.
-
-`template.md` (this directory) owns the human file's section order. Follow it and `Eval Definitions` for every human file so the eval set reads across.
-
-The files answer: who is on this team, what each player is worth, roster shape, what to target.
+Prior values you need (ages, notes) come from the agent file. Write the agent file first, then spawn a subagent to write the human file in full from it plus this run's outputs, `template.md` and `Eval Template.md` (`AGENTS.md` §Team files).
 
 Flag **sourced vs modelled** · any discount chosen · board staleness.
 
+Done when both files are written in this run and carry the same facts.
+
 # Agent file
 
-Same facts as the human file, trimmed. No markdown tables, bold, or italics. Values unrounded (sims read them): BASE, FPts/G, GP, Score integers · win columns two decimals · `ΔP(title)` one decimal; strip `,` from numbers.
+Same facts as the human file, trimmed. Plain text: no markdown tables, bold, or italics. Values unrounded (sims read them): BASE, FPts/G, GP, Score integers · win columns two decimals · `ΔP(title)` one decimal; strip `,` from numbers.
 
 ```
 # {Owner} ({Team name}) · {N} bodies · {SIT} · sim {YYYY-MM-DD}
@@ -96,4 +85,4 @@ Gone: own 3rd → Josh
 - Players in the human file's order. FPts/G and GP are projections only. Omit a blank `| flags`; omit `σ:` when there are no ties.
 - `trade-screen` sims read each `## Players` row's name, AGE, BASE, FPts/G and GP by position: keep the first four columns as keyed, ` | ` separators, BASE a bare integer, AGE `–` when unknown.
 - Picks: one key line under `## Picks`; keep each year's header and `Gone:` line. A year with no picks: `none held`. Drop Ordinal and rank.
-- `Notes:` targets, role bets, feed misses, pick caveats that change a VALUE read — anything a trade call would use. No definitions, formulas, methodology, `REPL`, or counterfactual text.
+- `Notes:` holds targets, role bets, feed misses, pick caveats that change a VALUE read: anything a trade call would use. Definitions, formulas, methodology, `REPL` and counterfactual text stay out.

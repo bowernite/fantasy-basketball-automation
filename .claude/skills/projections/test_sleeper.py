@@ -37,7 +37,7 @@ def test_a_projection_is_scored_as_a_season_average_not_as_one_nights_line():
     which is a per-game threshold: charged off the averages it pays a
     10.5-rebound center +2 every night and an 8.8-assist guard nothing at all.
     That is worth enough to reorder the column it feeds (`projections`
-    §What the scoring does).
+    §Scoring).
     """
     rated, _ = sleeper.apply([{"n": "Zach Edey"}, {"n": "Michael Porter"},
                               {"n": "Josh Giddey"}], sleeper.index(ROWS))
