@@ -108,16 +108,20 @@ describe("saving a decided lineup", () => {
   it("still checks the reloaded page when the save's response can't be read", async () => {
     const decision = await decideOpeningNight();
     fakeFleaflicker({
-      onSave: (fleaflicker, body) => {
-        acceptSave(fleaflicker, body);
-        return new Response(null, { status: 303, headers: { Location: "https://www.fleaflicker.com/nba/leagues/30579/teams/161025?week=1&_gAlert=not-a-real-alert" } });
-      },
-      onReload: () => new Response(openingNightPage),
+      onSave: () => new Response(null, { status: 303, headers: { Location: "https://www.fleaflicker.com/nba/leagues/30579/teams/161025?week=1&_gAlert=not-a-real-alert" } }),
     });
 
     const result = await saveLineup(decision, SESSION);
 
-    expect(result.problems).toMatchInlineSnapshot();
+    expect(result.problems).toMatchInlineSnapshot(`
+      [
+        "Couldn't read Fleaflicker's save response: TypeError: Decompression failed.",
+        "After saving, Fleaflicker shows Naz Reid in C, not Bench",
+        "After saving, Fleaflicker shows John Collins in F/C, not C",
+        "After saving, Fleaflicker shows Neemias Queta in ANY, not F/C",
+        "After saving, Fleaflicker shows Josh Giddey in Bench, not ANY",
+      ]
+    `);
   });
 
   it("reports an unverified save when the reloaded page is signed out", async () => {
@@ -175,6 +179,22 @@ describe("saving a decided lineup", () => {
     expect(result.problems).toMatchInlineSnapshot(`
       [
         "Couldn't verify Naz Reid's slot: the reloaded page has no dropdown for them (locked or dropped?)",
+      ]
+    `);
+  });
+
+  it("reports an unverified save when the reloaded page can't be read", async () => {
+    const decision = await decideOpeningNight();
+    const brokenBody = new ReadableStream({
+      start: (controller) => controller.error(new TypeError("Body stream broke")),
+    });
+    fakeFleaflicker({ onReload: () => new Response(brokenBody) });
+
+    const result = await saveLineup(decision, SESSION);
+
+    expect(result.problems).toMatchInlineSnapshot(`
+      [
+        "Couldn't verify the save: TypeError: Body stream broke",
       ]
     `);
   });

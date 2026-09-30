@@ -12,6 +12,8 @@ const TIP_TARGET_LEADS_MS = [40 * MINUTE_MS, 15 * MINUTE_MS];
 const TIP_CUTOFF_MS = 3 * MINUTE_MS;
 const HOUR_MS = 60 * MINUTE_MS;
 const MISSED_WINDOW_MS = 45 * MINUTE_MS;
+// Late enough for the T-15 run and its retries, early enough for the owner to fix the lineup by hand
+const MISSED_ALERT_LEAD_MS = 10 * MINUTE_MS;
 const TIP_TABLE_MAX_AGE_MS = 2 * HOUR_MS;
 // League time (America/Chicago) is a whole-hour UTC offset in both CST and CDT, so :05 UTC is :05 local
 const HOURLY_OFFSET_MS = 5 * MINUTE_MS;
@@ -19,7 +21,7 @@ const HOURLY_OFFSET_MS = 5 * MINUTE_MS;
 /**
  * What a tick should do, given Fleaflicker day `day` for `now`, stored tip tables and past runs
  * - `runDays`: days one run should set now (empty = nothing due)
- * - `missedTips`: passed tips with no successful run in the 45 min before them; reported on every tick after the tip, so dedupe by `at`
+ * - `missedTips`: tips 10 min out or passed with no successful run since 45 min before them; reported on every later tick, so dedupe by `at`
  * - `nextTarget`: earliest target after `now`
  */
 export function planTick(now: Date, day: number, tipTables: TipTable[], ledger: LedgerEntry[]): TickPlan {
@@ -42,9 +44,9 @@ export function planTick(now: Date, day: number, tipTables: TipTable[], ledger: 
   }
   const missedTips = tips.filter((tip) => {
     const tipMs = Date.parse(tip.at);
-    return nowMs >= tipMs && !hasSuccessBetween(ledger, tipMs - MISSED_WINDOW_MS, tipMs, [tip.day]);
+    return nowMs >= tipMs - MISSED_ALERT_LEAD_MS && !hasSuccessBetween(ledger, tipMs - MISSED_WINDOW_MS, tipMs, [tip.day]);
   });
-  const futureTipTargetsMs = tips.flatMap((tip) => TIP_TARGET_LEADS_MS.map((lead) => Date.parse(tip.at) - lead)).filter((targetMs) => targetMs > nowMs);
+  const futureTipTargetsMs = tips.flatMap((tip) => [...TIP_TARGET_LEADS_MS, MISSED_ALERT_LEAD_MS].map((lead) => Date.parse(tip.at) - lead)).filter((targetMs) => targetMs > nowMs);
   const nextTarget = new Date(Math.min(latestHourlyTargetMs(nowMs) + HOUR_MS, ...futureTipTargetsMs));
   return { runDays: [...runDays].sort((a, b) => a - b), tipTableStale, missedTips, nextTarget };
 }
@@ -66,8 +68,10 @@ function latestHourlyTargetMs(nowMs: number) {
 }
 
 function hasSuccessBetween(ledger: LedgerEntry[], fromMs: number, toMs: number, days: number[]) {
-  return ledger.some((entry) => {
-    const startedMs = Date.parse(entry.startedAt);
-    return entry.ok && startedMs >= fromMs && startedMs < toMs && days.every((day) => entry.days.includes(day));
-  });
+  return days.every((day) =>
+    ledger.some((entry) => {
+      const startedMs = Date.parse(entry.startedAt);
+      return entry.ok && startedMs >= fromMs && startedMs < toMs && entry.days.includes(day);
+    }),
+  );
 }

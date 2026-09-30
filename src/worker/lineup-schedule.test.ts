@@ -117,6 +117,17 @@ describe("planTick", () => {
     ]);
   });
 
+  it("reports a tip 10 min out with no successful run since 45 min before it", () => {
+    const tipTables = [{ day: 3, fetchedAt: "2026-10-22T12:05:00Z", tips: [{ at: "2026-10-22T13:00:00Z", players: ["Cade Cunningham"] }] }];
+    const ledger = [
+      { startedAt: "2026-10-22T12:14:00Z", ok: true, days: [3] },
+      { startedAt: "2026-10-22T12:45:00Z", ok: false, days: [3] },
+    ];
+
+    expect(planTick(new Date("2026-10-22T12:49:00Z"), 3, tipTables, ledger).missedTips).toEqual([]);
+    expect(planTick(new Date("2026-10-22T12:50:00Z"), 3, tipTables, ledger).missedTips).toEqual([{ at: "2026-10-22T13:00:00Z", day: 3, players: ["Cade Cunningham"] }]);
+  });
+
   it("reports no missed tip when a run succeeded in the window", () => {
     const tipTables = [{ day: 3, fetchedAt: "2026-10-22T12:05:00Z", tips: [{ at: "2026-10-22T13:00:00Z", players: ["Cade Cunningham"] }] }];
     const ledger = [{ startedAt: "2026-10-22T12:16:00Z", ok: true, days: [3] }];
@@ -134,11 +145,12 @@ describe("planTick", () => {
     expect(planTick(new Date("2026-10-22T12:10:00Z"), 3, tipTables, ledger).missedTips).toEqual([]);
   });
 
-  it("points the next alarm at the next tip target or hourly run, whichever is sooner", () => {
+  it("points the next alarm at the next tip target, missed-tip check or hourly run, whichever is sooner", () => {
     const tipTables = [{ day: 3, fetchedAt: "2026-10-22T12:05:00Z", tips: [{ at: "2026-10-22T13:00:00Z", players: ["Cade Cunningham"] }] }];
 
     expect(planTick(new Date("2026-10-22T12:20:00Z"), 3, tipTables, []).nextTarget).toEqual(new Date("2026-10-22T12:45:00Z"));
-    expect(planTick(new Date("2026-10-22T12:45:00Z"), 3, tipTables, []).nextTarget).toEqual(new Date("2026-10-22T13:05:00Z"));
+    expect(planTick(new Date("2026-10-22T12:45:00Z"), 3, tipTables, []).nextTarget).toEqual(new Date("2026-10-22T12:50:00Z"));
+    expect(planTick(new Date("2026-10-22T12:50:00Z"), 3, tipTables, []).nextTarget).toEqual(new Date("2026-10-22T13:05:00Z"));
     expect(planTick(new Date("2026-10-22T11:30:00Z"), 3, tipTables, []).nextTarget).toEqual(new Date("2026-10-22T12:05:00Z"));
   });
 });

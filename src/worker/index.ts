@@ -1,5 +1,6 @@
 import { DurableObject } from "cloudflare:workers";
 import { type ApiRoster, decideLineup, type LineupDecision } from "./decide-lineup";
+import { fetchWithTimeout } from "./fetch-with-timeout";
 import { type DayTip, type LedgerEntry, parseGameTips, planTick, type TipTable } from "./lineup-schedule";
 
 const FLEAFLICKER_LOGIN_URL = "https://www.fleaflicker.com/nba/login";
@@ -30,7 +31,7 @@ export class LineupRunner extends DurableObject<Env> {
       healthy = await this.planAndRun(trigger);
     } finally {
       this.tickInFlight = false;
-      if (this.env.HEALTHCHECK_URL) await fetch(healthy ? this.env.HEALTHCHECK_URL : `${this.env.HEALTHCHECK_URL}/fail`, { method: "POST" });
+      if (this.env.HEALTHCHECK_URL) await fetchWithTimeout(healthy ? this.env.HEALTHCHECK_URL : `${this.env.HEALTHCHECK_URL}/fail`, { method: "POST" });
     }
   }
 
@@ -41,10 +42,11 @@ export class LineupRunner extends DurableObject<Env> {
       const tipTables = (await this.ctx.storage.get<TipTable[]>(TIP_TABLES_KEY)) ?? [];
       return planTick(now, findCurrentDay(eligibleLineupPeriods, now.getTime()), tipTables, this.ledger());
     };
-    const { runDays, missedTips } = await planNow();
+    const { runDays } = await planNow();
     const record = runDays.length > 0 ? await this.run(trigger, runDays) : undefined;
+    const { missedTips, nextTarget } = await planNow();
     for (const missedTip of missedTips) await this.alertMissedTip(missedTip);
-    await this.ctx.storage.setAlarm((await planNow()).nextTarget);
+    await this.ctx.storage.setAlarm(nextTarget);
     return !record || listProblems(record).length === 0;
   }
 
@@ -70,7 +72,7 @@ export class LineupRunner extends DurableObject<Env> {
     const tipTime = new Date(at).toLocaleTimeString("en-US", { timeZone: "America/Chicago", hour: "numeric", minute: "2-digit" });
     const alert: Alert = {
       title: `Lineup not checked before the ${tipTime} CT tip`,
-      body: `No successful run in the 45 min before the tip. Check the lineup for today's later games.\nPlayers: ${players.join(", ")}`,
+      body: `No successful run since 45 min before the tip. Check the lineup now.\nPlayers: ${players.join(", ")}`,
       priority: 2,
     };
     const sends = await this.notify(alert, { key: `missedTip:${at}`, fingerprint: at, repeatAfterMs: Infinity });
@@ -96,7 +98,7 @@ export class LineupRunner extends DurableObject<Env> {
     if (!this.env.PUSHOVER_TOKEN || !this.env.PUSHOVER_USER) return { accepted: false, error: "PUSHOVER_TOKEN or PUSHOVER_USER not set" };
     // Emergency priority re-alerts every `retry` seconds until acknowledged or `expire` passes
     const emergency = priority === 2 ? { retry: "60", expire: "1800" } : {};
-    const response = await fetch(PUSHOVER_URL, {
+    const response = await fetchWithTimeout(PUSHOVER_URL, {
       method: "POST",
       body: new URLSearchParams({ token: this.env.PUSHOVER_TOKEN, user: this.env.PUSHOVER_USER, title, message: body, url: this.env.LINEUP_URL, priority: String(priority), ...emergency }),
     });
@@ -109,10 +111,10 @@ export class LineupRunner extends DurableObject<Env> {
     const authorization = `OAuth oauth_consumer_key="${this.env.TRELLO_API_KEY}", oauth_token="${this.env.TRELLO_TOKEN}"`;
     if (sameFailureCardId && (await this.isTrelloCardOpen(sameFailureCardId, authorization))) {
       const commentUrl = `${TRELLO_CARDS_URL}/${sameFailureCardId}/actions/comments?${new URLSearchParams({ text: `Still failing:\n${body}` })}`;
-      const response = await fetch(commentUrl, { method: "POST", headers: { Authorization: authorization } });
+      const response = await fetchWithTimeout(commentUrl, { method: "POST", headers: { Authorization: authorization } });
       return { ...(await summarizeAlertResponse(response, response.ok)), cardId: sameFailureCardId };
     }
-    const response = await fetch(TRELLO_CARDS_URL, {
+    const response = await fetchWithTimeout(TRELLO_CARDS_URL, {
       method: "POST",
       headers: { Authorization: authorization, "Content-Type": "application/json" },
       body: JSON.stringify({ idList: this.env.TRELLO_LIST, name: title, desc: `${body}\n\n${this.env.LINEUP_URL}` }),
@@ -122,7 +124,7 @@ export class LineupRunner extends DurableObject<Env> {
   }
 
   private async isTrelloCardOpen(cardId: string, authorization: string) {
-    const response = await fetch(`${TRELLO_CARDS_URL}/${cardId}?fields=closed`, { headers: { Authorization: authorization } });
+    const response = await fetchWithTimeout(`${TRELLO_CARDS_URL}/${cardId}?fields=closed`, { headers: { Authorization: authorization } });
     return response.ok && !(await response.json<{ closed: boolean }>()).closed;
   }
 
@@ -149,18 +151,17 @@ export class LineupRunner extends DurableObject<Env> {
   }
 
   private ledger(): LedgerEntry[] {
-    return this.recentRuns(LEDGER_RUNS).map((record) => ({
-      startedAt: record.startedAt,
-      ok: listProblems(record).length === 0,
-      days: (record.days ?? []).map(({ day }) => day),
-    }));
+    return this.recentRuns(LEDGER_RUNS).flatMap((record) => {
+      const runOk = listProblems({ ...record, days: [] }).length === 0;
+      return record.days.map((dayCheck) => ({ startedAt: record.startedAt, ok: runOk && listDayProblems(dayCheck).length === 0, days: [dayCheck.day] }));
+    });
   }
 
   private async fetchRoster(day?: number) {
     const [, leagueId, teamId] = this.env.LINEUP_URL.match(/leagues\/(\d+)\/teams\/(\d+)/)!;
     const url = new URL("https://www.fleaflicker.com/api/FetchRoster");
     url.search = new URLSearchParams({ sport: "NBA", league_id: leagueId, team_id: teamId, ...(day ? { scoring_period: String(day) } : {}) }).toString();
-    const response = await fetch(url, { headers: await this.sessionHeaders() });
+    const response = await fetchWithTimeout(url, { headers: await this.sessionHeaders() });
     if (!response.ok) throw new Error(`Roster API returned HTTP ${response.status}`);
     const roster = await response.json<ApiRoster & { eligibleLineupPeriods: LineupPeriod[] }>();
     await this.ctx.storage.put(LINEUP_PERIODS_KEY, roster.eligibleLineupPeriods);
@@ -185,7 +186,7 @@ export class LineupRunner extends DurableObject<Env> {
 
   private async fetchLineupPage(day: number) {
     const fantasyStatsView = `${this.env.LINEUP_URL}?statType=0&week=${day}`;
-    const response = await fetch(fantasyStatsView, { headers: await this.sessionHeaders() });
+    const response = await fetchWithTimeout(fantasyStatsView, { headers: await this.sessionHeaders() });
     const html = await response.text();
     const loggedIn = html.includes('href="/logout"');
     return { status: response.status, loggedIn, html };
@@ -193,7 +194,7 @@ export class LineupRunner extends DurableObject<Env> {
 
   // A failed login re-renders the form with the submitted email and password, so its body is never read
   private async logIn() {
-    const response = await fetch(FLEAFLICKER_LOGIN_URL, {
+    const response = await fetchWithTimeout(FLEAFLICKER_LOGIN_URL, {
       method: "POST",
       body: new URLSearchParams({ email: this.env.FF_EMAIL, password: this.env.FF_PASSWORD, keepMe: "true" }),
       redirect: "manual",
@@ -247,14 +248,15 @@ function findCurrentDay(periods: LineupPeriod[], nowMs: number) {
   return (started.at(-1) ?? periods[0]).ordinal;
 }
 
-function listProblems({ login, days = [], error }: RunRecord) {
+function listProblems({ login, days, error }: RunRecord) {
+  const loginProblems = login && !login.gotSessionCookie ? [`Fleaflicker login failed (HTTP ${login.status}, no session cookie)`] : [];
+  return [...loginProblems, ...days.flatMap(listDayProblems), ...(error ? [error] : [])];
+}
+
+function listDayProblems({ lineupPage, decision }: DayCheck) {
   const problems: string[] = [];
-  if (login && !login.gotSessionCookie) problems.push(`Fleaflicker login failed (HTTP ${login.status}, no session cookie)`);
-  for (const { lineupPage, decision } of days) {
-    if (lineupPage.status !== 200) problems.push(`Lineup page returned HTTP ${lineupPage.status}`);
-    if (decision && !decision.ok) problems.push(...decision.errors);
-  }
-  if (error) problems.push(error);
+  if (lineupPage.status !== 200) problems.push(`Lineup page returned HTTP ${lineupPage.status}`);
+  if (decision && !decision.ok) problems.push(...decision.errors);
   return problems;
 }
 

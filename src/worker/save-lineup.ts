@@ -15,12 +15,13 @@ export async function saveLineup(decision: Extract<LineupDecision, { ok: true }>
     headers: { ...sessionHeaders, "Content-Type": "application/x-www-form-urlencoded", Origin: FLEAFLICKER_ORIGIN, Referer: lineupUrl },
     body: decision.body,
     redirect: "manual",
-  }).then(checkSaveResponse, (error) => [`Lineup save request failed: ${error}`]);
+  })
+    .then(checkSaveResponse, (error) => [`Lineup save request failed: ${error}`])
+    .catch((error) => [`Couldn't read Fleaflicker's save response: ${error}`]);
   const postedFields = new URLSearchParams(decision.body);
-  const verifyProblems = await fetch(`${lineupUrl}?statType=0&week=${postedFields.get("week")}`, { headers: sessionHeaders }).then(
-    (reload) => verifyReload(reload, postedFields),
-    (error) => [`Couldn't verify the save: ${error}`],
-  );
+  const verifyProblems = await fetch(`${lineupUrl}?statType=0&week=${postedFields.get("week")}`, { headers: sessionHeaders })
+    .then((reload) => verifyReload(reload, postedFields))
+    .catch((error) => [`Couldn't verify the save: ${error}`]);
   problems.push(...verifyProblems);
   return { posted: true, problems };
 }

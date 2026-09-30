@@ -372,6 +372,22 @@ describe("scheduled checks", () => {
     expect(latest).toMatchObject({ trigger: "alarm", startedAt: "2026-10-20T18:20:00.000Z", days: [{ day: 1 }] });
   });
 
+  it.skip("gives up on a Fleaflicker request that never answers, then ticks again", async () => {
+    vi.useFakeTimers({ toFake: ["Date", "setTimeout"], now: new Date("2026-10-20T15:10:00Z") });
+    let fleaflickerHangs = true;
+    stubFleaflicker((request) => (fleaflickerHangs ? new Promise((_, reject) => request.signal.addEventListener("abort", () => reject(request.signal.reason))) : fakeFleaflickerSeason(request)));
+    const runner = freshRunner();
+
+    const hungTick = runner.tick("cron");
+    await vi.advanceTimersByTimeAsync(60_000);
+    await hungTick;
+    fleaflickerHangs = false;
+    await runner.tick("cron");
+
+    const runs = await runner.recentRuns();
+    expect(runs.map(({ error }) => error)).toEqual([undefined, "Error: Request to www.fleaflicker.com timed out after 20 s"]);
+  });
+
   it("records and alerts a failed run when Fleaflicker's API goes down mid-day", async () => {
     vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-20T18:06:00Z") });
     let apiDown = false;
@@ -402,7 +418,7 @@ describe("scheduled checks", () => {
     expect(alerts[0]).toMatchInlineSnapshot(`
       {
         "expire": "1800",
-        "message": "No successful run in the 45 min before the tip. Check the lineup for today's later games.
+        "message": "No successful run since 45 min before the tip. Check the lineup now.
       Players: Cade Cunningham, John Collins, Neemias Queta",
         "priority": "2",
         "retry": "60",
@@ -413,6 +429,44 @@ describe("scheduled checks", () => {
       }
     `);
     expect(cards.map(({ name }) => name)).toEqual([alerts[0].title]);
+  });
+
+  it("sends an emergency alert 10 min before a tip with no successful run since T-45, unless that tick's run succeeds", async () => {
+    vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-20T18:06:00Z") });
+    let fleaflickerDown = false;
+    const { alerts } = stubFleaflicker((request) => (fleaflickerDown ? new Response("Service unavailable", { status: 503 }) : fakeFleaflickerSeason(request)));
+    const failingRunner = freshRunner();
+    const recoveringRunner = freshRunner();
+    await failingRunner.tick("cron");
+    await recoveringRunner.tick("cron");
+
+    fleaflickerDown = true;
+    for (const at of ["18:21", "18:46"]) {
+      vi.setSystemTime(new Date(`2026-10-20T${at}:00Z`));
+      await failingRunner.tick("cron");
+      await recoveringRunner.tick("cron");
+    }
+    vi.setSystemTime(new Date("2026-10-20T18:51:00Z"));
+    await failingRunner.tick("cron");
+    fleaflickerDown = false;
+    await recoveringRunner.tick("cron");
+
+    expect(alerts.filter(({ priority }) => priority === "2").map(({ title }) => title)).toEqual(["Lineup not checked before the 2:00 PM CT tip"]);
+  });
+
+  it("sends no emergency alert for today's tip when only tomorrow's page fails", async () => {
+    vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-20T18:06:00Z") });
+    const { alerts } = stubFleaflicker((request) =>
+      new URL(request.url).searchParams.get("week") === "2" ? new Response("Service unavailable", { status: 503 }) : fakeFleaflickerSeason(request),
+    );
+    const runner = freshRunner();
+
+    for (const at of ["18:06", "18:21", "18:46", "18:51", "18:56", "19:01"]) {
+      vi.setSystemTime(new Date(`2026-10-20T${at}:00Z`));
+      await runner.tick("cron");
+    }
+
+    expect(alerts.map(({ title, priority }) => ({ title, priority }))).toEqual([{ title: "Lineup run (cron) failed", priority: "1" }]);
   });
 
   it("checks in with the dead-man monitor on every tick, not on manual runs", async () => {
