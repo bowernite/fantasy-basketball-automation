@@ -1,9 +1,14 @@
 import { GlobalRegistrator } from "@happy-dom/global-registrator";
 import { afterAll, beforeAll, expect, test } from "bun:test";
-import { loadLineupPage } from "../lineup/fixtures/lineup-page";
+import { loadLineupPage, PAGE_URL } from "../lineup/fixtures/lineup-page";
 import { getPlayers } from "./get-players";
 
-beforeAll(() => GlobalRegistrator.register());
+beforeAll(() =>
+  GlobalRegistrator.register({
+    url: PAGE_URL,
+    settings: { disableJavaScriptFileLoading: true, disableCSSFileLoading: true, handleDisabledFileLoadingAsSuccess: true },
+  }),
+);
 afterAll(() => GlobalRegistrator.unregister());
 
 // Suspected bug: on the saved page, Shaedon Sharpe's recent average shows "15.5↓" (an

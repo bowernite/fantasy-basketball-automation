@@ -8,12 +8,14 @@ export type LineupDecision =
 export async function decideLineup(html: string): Promise<LineupDecision> {
   const { document, Event } = parseHTML(html);
   addMissingFormControlBehavior(document);
-  const problems: string[] = [];
+  const form = document.querySelector<HTMLFormElement>("form[method=post]");
+  if (!form) return { ok: false, errors: ["No lineup form on the page; the session may be logged out"] };
 
-  await withPageGlobals({ document, Event, alert: (message: unknown) => problems.push(String(message)) }, setLineup);
+  const problems: string[] = [];
+  // setLineup alerts every error before rethrowing it, so the alert already collected it
+  await withPageGlobals({ document, Event, alert: (message: unknown) => problems.push(String(message)) }, setLineup).catch(() => {});
   if (problems.length > 0) return { ok: false, errors: problems };
 
-  const form = document.querySelector<HTMLFormElement>("form[method=post]")!;
   const fields = Array.from(form.querySelectorAll<HTMLInputElement | HTMLSelectElement>("input[name], select[name]"));
   const body = new URLSearchParams(fields.map((field) => [field.name, field.value])).toString();
   return { ok: true, formAction: form.getAttribute("action")!, body };

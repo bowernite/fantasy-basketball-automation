@@ -12,6 +12,11 @@ export function getPlayersTable() {
   return tables[0];
 }
 
+// Only the team's owner gets slot selects, and only for players whose games haven't locked
+export function hasEditableLineup() {
+  return getPlayersTable().querySelector("select") != null;
+}
+
 export function getStatTypeDropdown() {
   // 1: average/total. 2: season, fantasy, daily, last 5, etc. 3: previous year. 4: year selector
   const dropdownTriggers = document.querySelectorAll<HTMLAnchorElement>(

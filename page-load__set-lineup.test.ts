@@ -117,8 +117,8 @@ test("on another owner's team page, shows the scores but no lineup buttons", asy
   expect(alerts).toEqual([]);
   expect(isShown(scoreBadge("Cade Cunningham"))).toBe(true);
   expect(parseFloat(scoreBadge("Cade Cunningham").textContent!)).toBeGreaterThan(0);
-  expect(button("Set Lineup")).toBeUndefined();
-  expect(button("Save Lineup")).toBeUndefined();
+  expect(button("Set Lineup") != null).toBe(false);
+  expect(button("Save Lineup") != null).toBe(false);
 });
 
 // Uses the filled news icon the app reads; the real pages only show the outlined one (pinned below)

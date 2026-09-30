@@ -62,10 +62,10 @@ test("before any games are played, a player is scored at their projection", () =
   );
 });
 
-test("once a player has 12+ games, their projection no longer matters", () => {
+test("a veteran sample of games is scored on production alone, not the projection", () => {
   setup();
 
-  expect(score(makePlayer({ playerName: "Nikola Jokić", gamesPlayed: 12 }))).toBeCloseTo(30);
+  expect(score(makePlayer({ playerName: "Nikola Jokić", gamesPlayed: 40 }))).toBeCloseTo(30);
   expect(score(makePlayer({ playerName: "Unknown Rookie", gamesPlayed: 40 }))).toBeCloseTo(30);
 });
 

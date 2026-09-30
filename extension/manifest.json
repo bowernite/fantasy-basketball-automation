@@ -26,7 +26,7 @@
   "content_scripts": [
     {
       "matches": [
-        "https://www.fleaflicker.com/nba/leagues/30579/teams/161025*"
+        "https://www.fleaflicker.com/nba/leagues/30579/teams/*"
       ],
       "js": [
         "dist/page-load__set-lineup.js"

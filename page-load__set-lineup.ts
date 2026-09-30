@@ -6,6 +6,7 @@ import {
   randomPageStylings,
   refinePlayerStatus,
 } from "./src/page/page-manipulation";
+import { hasEditableLineup } from "./src/page/page-querying";
 import { prioritizePlayers } from "./src/prioritization/prioritization";
 import {
   goToNextDay,
@@ -21,10 +22,12 @@ pageLoad();
 randomPageStylings();
 
 async function pageLoad() {
-  addSaveLineupButton();
-  addSetLineupButton();
-
   try {
+    if (hasEditableLineup()) {
+      addSaveLineupButton();
+      addSetLineupButton();
+    }
+
     const players = await getPlayers();
     prioritizePlayers(players).forEach(
       ({ player, predictedScore, weightedScore, debugInfo }) => {

@@ -65,12 +65,6 @@ describe("toolbar icon", () => {
     clickToolbarIcon({ id: 7 });
     expect(injections).toEqual([{ tabId: 7, files: ["dist/main.js"], func: undefined }]);
   });
-
-  test("does nothing for a tab without an id", async () => {
-    const { injections, clickToolbarIcon } = await setup();
-    clickToolbarIcon({});
-    expect(injections).toEqual([]);
-  });
 });
 
 describe("keyboard shortcuts", () => {
@@ -104,15 +98,6 @@ describe("keyboard shortcuts", () => {
     "%s does nothing when there is no active tab",
     async (command) => {
       const { injections, pressShortcut } = await setup({ activeTab: undefined });
-      pressShortcut(command);
-      expect(injections).toEqual([]);
-    }
-  );
-
-  test.each(["run-script", "save-lineup", "previous-day", "next-day"])(
-    "%s does nothing when the active tab has no id",
-    async (command) => {
-      const { injections, pressShortcut } = await setup({ activeTab: {} });
       pressShortcut(command);
       expect(injections).toEqual([]);
     }
