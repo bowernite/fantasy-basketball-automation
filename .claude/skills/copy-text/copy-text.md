@@ -1,3 +1,7 @@
+---
+disable-model-invocation: true
+---
+
 Copy the text message(s) the user will send to the clipboard.
 
 # Trade proposals

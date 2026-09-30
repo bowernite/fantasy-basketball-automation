@@ -30,9 +30,9 @@ Five sections, **top to bottom**: `## Above floor` → `## Floor` → `## Below 
 |---|---|
 | Above floor | Clearly better than floor; we'd actively pursue |
 | Floor | We'd take it if that's all we could get |
-| Below bar | Not worth pursuing, but meets `trades` §General guidlines minimums |
-| Too lopsided | Too lopsided per `trades` §General guidlines; reference only, never floated |
-| Doesn't meet our minimums | Fails an archive-fail threshold in `trades` §General guidlines; reference only, never floated |
+| Below bar | Not worth pursuing, but meets `trades` §General guidelines minimums |
+| Too lopsided | Too lopsided per `trades` §General guidelines; reference only, never floated |
+| Doesn't meet our minimums | Fails an archive-fail threshold in `trades` §General guidelines; reference only, never floated |
 
 **Placement order** (each row lives in exactly one section):
 

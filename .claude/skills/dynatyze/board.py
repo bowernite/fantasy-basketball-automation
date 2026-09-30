@@ -2,8 +2,8 @@
 #   python3 .claude/skills/dynatyze/board.py
 #
 # The row pattern captures PICK/DRAFT rows too — same `/basketball/players/`
-# href as players. Ranks are non-contiguous and rows < top rank: that is the
-# site withholding ranks, not a parse failure. DO NOT "fix" it.
+# href as players. Ranks are non-contiguous and rows < top rank: the gaps
+# hydrate client-side (dynatyze.md), not a parse failure. DO NOT "fix" it.
 # Guard, offline: python3 .claude/skills/dynatyze/test_parse.py
 import re, html, urllib.request
 UA = ('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 '

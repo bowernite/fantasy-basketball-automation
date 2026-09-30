@@ -51,7 +51,7 @@ At 12 × 38 = 456 essentially every NBA-rostered player is owned, so the FA pool
 
 **FA adds lock at some point in the offseason and reopen at the rookie draft + FA event. Trades and releases stay open throughout.** A drop with no add appears on the wire inside both lock windows (e.g. a trade's `playersReleased`).
 
-The lock start is unknown — ask rather than assume. It is not end-of-season: the transaction log shows adds well into the following June. Locked as of late July '26. The API can't show the lock (`get-league-info` §Offseason).
+The lock start is unknown — ask rather than assume. It is not end-of-season: the transaction log shows adds well into the following June. Seen locked in late July '26. The API can't show the lock (`get-league-info` §Offseason).
 
 # Drafting
 

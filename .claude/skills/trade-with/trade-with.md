@@ -1,3 +1,7 @@
+---
+disable-model-invocation: true
+---
+
 The user names an owner.
 
 1. Load their `<Name>.team.md` (`eval-team` §Output). Stale → tell the user and stop

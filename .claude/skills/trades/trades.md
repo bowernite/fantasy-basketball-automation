@@ -15,7 +15,7 @@ Most of the work happens here, before any sim. Price shapes by eye off the eval 
 2. **Our read, per piece** (`<Name>.team.md`, `Ours.team.md`): BASE or pick VALUE · FPts/G · GP · AGE · `Δw` · `Δw 'YY–'YY ours` · `ΔP(title) ours`. ΔBASE and `Δw` add across pieces. Summed `Δw 'YY–'YY ours` and `ΔP(title) ours` can miss badly either way (high when stacking incoming pieces, far low on star-for-star swaps): use them to rank pieces, and cut on them only on a wide miss.
 3. **Their read, per piece:** what they can see, i.e. BASE (they read boards), FPts/G and AGE, weighted by their `SIT` (`Eval Definitions §SIT`), plus anything they've said (`.shapes.md` intro, messages). Never `Δw 'YY–'YY theirs` (`Eval Definitions §Δw (season)`).
 4. **Enumerate wide:** combine pieces across their whole roster and all our sweeteners, not just neighbors of shapes already in `.shapes.md`. Use `.shapes.md` only for status and for numbers on shapes already priced, which can make the short list without a re-sim. An edge: tilt toward W22/W23 (maybe W21) games, i.e. take players with more games scheduled in this season's playoff weeks and send out low-GP ones; other owners may not look that far ahead or think they're contending yet.
-5. **Cut by eye** any shape that fails a minimum or is Too lopsided (§General guidlines), can't beat the benchmark, or that the owner would plainly refuse on their read.
+5. **Cut by eye** any shape that fails a minimum or is Too lopsided (§General guidelines), can't beat the benchmark, or that the owner would plainly refuse on their read.
 6. **Short list** (~5–15 shapes) → §Simming. Mid-negotiation or with a lukewarm owner, lead with small tweaks to the shape they already know (§Negotiation).
 
 Unsimmed shapes aren't archived. At most, add one dated line to the `.shapes.md` intro naming avenues ruled out and why.
@@ -50,7 +50,7 @@ Every trade table and deal comparison includes `Score` (`Eval Definitions §Scor
 
 Compare deals by `Score` first, then read each number. Read both win columns against our `SIT` (`Eval Definitions §SIT`): contending buys `Δw (season)`. Picks are `ΔBASE` and `Δage` only; never convert BASE into `Δw`.
 
-# General guidlines
+# General guidelines
 
 These apply in the current contending window. Minimums say nothing about the target/maximum.
 
@@ -72,7 +72,7 @@ These apply in the current contending window. Minimums say nothing about the tar
 
 # Uneven bodies
 
-Price the bodies for the delta in body count: break-even rate · backfill regime · our roster-depth floor. Our roster is full at 38 with no filler, so every extra incoming body costs us a real player.
+Body count is a structural price set by joint sim (`strategy/Definitions/Format edges.md` §2). Our roster is full at 38 with no filler, so every extra incoming body costs us a real player.
 
 - **Build shapes body-even on our side:** when a shape nets us bodies, add our worst players (the sim's `cut_us`) to **Out**. It costs us what a cut would, and they get something for it.
 - **The sim cuts the rest.** Any side a deal takes over 38 drops the bodies whose cut leaves that side's `Score` highest, sim terms included (`Score.md`). `trade-screen` names them in `cut_us` / `cut_them` and charges ours in `ΔBASE`, `Δw` and `Score`. A `cut_us` means the shape isn't body-even yet: move him into **Out** and re-run (Score can move by his board-vs-eval BASE gap, `Score.md`). Cuts come from the sim only, never by hand.
