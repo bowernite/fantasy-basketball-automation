@@ -131,4 +131,4 @@ Structure: `rows[].cells[].slot.{round,slot,overall}` · `rows[].cells[].team` i
 ## Offseason
 
 - The incoming rookie class sits in the **free-agent pool** before the rookie draft runs (`isRookie: true`, zero prior-season stats). Confirm league rules before treating them as addable
-- **The FA-add lock is invisible to the API** (window: `league-info` §Offseason transaction lock). `FetchLeagueTransactions` still lists offseason adds and drops, `FetchPlayerListing?filter.free_agent_only=true` still reports the whole pool, and `transactionStatus.locked` is an empty `{}` on **every** player. There is no wire-live check — ask the user
+- **The FA-add lock is invisible to the API** (window: `league-info` §Offseason transaction lock). `FetchLeagueTransactions` still lists offseason adds and drops, `FetchPlayerListing?filter.free_agent_only=true` still reports the whole pool, and `transactionStatus.locked` is an empty `{}` on **every** player. There is no wire-live check; use the window `league-info` states

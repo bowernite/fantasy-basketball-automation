@@ -30,12 +30,11 @@ const SLOTS_BY_POSITION: Record<string, string[]> = {
 };
 
 export type LineupPageOptions = {
-  benchText?: string;
   // Rewrites an option's visible text, e.g. to simulate Fleaflicker renaming a slot
   optionText?: (slot: string) => string;
 };
 
-export function loadLineupPage({ benchText = "BN", optionText = (slot) => slot }: LineupPageOptions = {}) {
+export function loadLineupPage({ optionText = (slot) => slot }: LineupPageOptions = {}) {
   const [, head, body] = PAGE_HTML.match(/<head>([\s\S]*)<\/head>\s*<body[^>]*>([\s\S]*)<\/body>/)!;
   document.head.innerHTML = head;
   document.body.innerHTML = body;
@@ -49,10 +48,10 @@ export function loadLineupPage({ benchText = "BN", optionText = (slot) => slot }
     const select = document.createElement("select");
     select.name = `status${row.querySelector(".player-text")!.id}`;
     select.className = "form-control input-sm";
-    select.add(new Option(benchText, "0"));
+    select.add(option("BN", "0"));
     for (const [slot, value] of SLOT_VALUES) {
       if (eligibleSlots.has(slot)) {
-        select.add(new Option(optionText(slot), String(value)));
+        select.add(option(optionText(slot), String(value)));
       }
     }
     select.value = SLOT_VALUES.find(([slot]) => slot === currentSlot)?.[1].toString() ?? "0";
@@ -60,6 +59,13 @@ export function loadLineupPage({ benchText = "BN", optionText = (slot) => slot }
     row.cells[row.cells.length - 2].replaceChildren();
     statusCell.replaceChildren(select);
   }
+}
+
+function option(text: string, value: string) {
+  const el = document.createElement("option");
+  el.text = text;
+  el.value = value;
+  return el;
 }
 
 export function playerRows() {
@@ -77,7 +83,7 @@ export function lockPlayer(name: string) {
   const row = playerRow(name);
   const statusCell = row.cells[row.cells.length - 1];
   const select = statusCell.querySelector("select")!;
-  const slot = select.selectedOptions[0].text;
+  const slot = selectedText(select);
   row.cells[row.cells.length - 2].innerHTML =
     '<span class="btn btn-default btn-xs disabled btn-block">Locked</span>';
   statusCell.innerHTML = `<span class="label label-success label-block"><span class="position">${slot}</span></span>`;
@@ -97,7 +103,12 @@ export function slotOf(name: string) {
 function slotIn(row: HTMLTableRowElement) {
   const select = row.querySelector("select");
   if (!select) return `${row.cells[row.cells.length - 1].textContent!.trim()} (locked)`;
-  return select.selectedOptions[0]?.text ?? "(no option selected)";
+  return selectedText(select);
+}
+
+// happy-dom's `selectedOptions` goes stale after `select.value = …`; `selectedIndex` doesn't
+function selectedText(select: HTMLSelectElement) {
+  return select.options[select.selectedIndex]?.text ?? "(no option selected)";
 }
 
 // Player name → slot, for every player not on the bench

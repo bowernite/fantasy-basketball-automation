@@ -19,7 +19,7 @@ Read `proPlayer.positionEligibility` per player.
 
 ⚠️ **The scored regular season is 19 periods. Period 20 is bracket R1** (verified against the wire, '25-26). There is no short makeup period: 4 teams finished with 20 games and 8 with 19 because the four are **seeds 5–8 playing R1**. Any 20-period regular-season basis is wrong.
 
-**Bracket: 8 of 12 teams (bubble at 8/9), 4 rounds, periods 20–23** (03-02 · 03-09 · 03-16 · 03-23 in '25-26). R1 seeds 5–8, paired **5v8 and 6v7** → R2 winners meet seeds 3–4 → R3 those winners meet seeds 1–2 → R4 final (period 23, `isChampionshipGame`; the other game is the two R3 losers, `isThirdPlaceGame`). Seeds 1–2 are **double-byed**: 2 wins to the title, 3 from seeds 3–4, 4 from 5–8. Seeded off the **19-period** standings.
+**Bracket: 8 of 12 teams, 4 rounds, periods 20–23**, bubble at 8/9; same format in '26-27 (period 20 starts 03-01-27; '25-26 rounds started 03-02 · 03-09 · 03-16 · 03-23). R1 seeds 5–8, paired **5v8 and 6v7** → R2 winners meet seeds 3–4 → R3 those winners meet seeds 1–2 → R4 final (period 23, `isChampionshipGame`; the other game is the two R3 losers, `isThirdPlaceGame`). Seeds 1–2 are **double-byed**: 2 wins to the title, 3 from seeds 3–4, 4 from 5–8. Seeded off the **19-period** standings.
 
 **Draw sides are fixed**: two halves, each climbed worst seed first — **8-5-4-1** and **7-6-3-2**. So the 5/8 winner meets 4 then 1, the 6/7 winner meets 3 then 2, and seeds 1 and 3 (or 2 and 4) cannot meet before the final.
 
@@ -47,16 +47,16 @@ At 12 × 38 = 456 essentially every NBA-rostered player is owned, so the FA pool
 
 # In-season transactions (rules page)
 
-- **Transaction limit: 1 per week** ("Transaction Limits: Week: 1"). Which moves count is unverified; assume each add or claim uses the week's one
+- **Transaction limit: 1 per week** ("Transaction Limits: Week: 1"; may rise to 2). Free-agent adds and waiver claims count; an add plus its paired drop is one move
 - **Waivers: blind-bid FAAB**, $100 budget, $0 bids allowed. A dropped player sits on waivers 24 h; every free agent goes to waivers once his game starts. Claims process daily, locking at 4:00a CT; first-come-first-served after 7:00a CT
 - **Trades: 24-hour review, no vetoes**
 - **Trade deadline '26-27: Sat 2/6/27, 5:00a CT** (period 16). Re-read the rules page each season
 
 # Offseason transaction lock
 
-**FA adds lock at some point in the offseason and reopen at the rookie draft + FA event. Trades and releases stay open throughout.** A drop with no add appears on the wire inside both lock windows (e.g. a trade's `playersReleased`).
+**FA adds lock from the Fleaflicker season rollover (6/25) and reopen at the rookie draft + FA event. Trades and releases stay open throughout.** A drop with no add appears on the wire inside both lock windows (e.g. a trade's `playersReleased`).
 
-The lock start is unconfirmed — ask rather than assume. It is not end-of-season: the transaction log shows adds well into the following June. Seen locked in late July '26. The rules page sets "Lock Free Agents Before Draft: Yes" and the Fleaflicker season rolls over 6/25, which fits both observations but isn't confirmed as the start. The API can't show the lock (`get-league-info` §Offseason).
+The 6/25 start is a working assumption (the user's call): the rules page sets "Lock Free Agents Before Draft: Yes", the log shows adds well into June, and adds were locked in late July '26. The API can't show the lock (`get-league-info` §Offseason).
 
 # Drafting
 
