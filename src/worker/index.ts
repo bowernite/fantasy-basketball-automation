@@ -1,9 +1,16 @@
 import { DurableObject } from "cloudflare:workers";
 import { type ApiRoster, decideLineup, type LineupDecision } from "./decide-lineup";
+import { type LedgerEntry, parseGameTips, planTick, type TipTable } from "./lineup-schedule";
 
 const FLEAFLICKER_LOGIN_URL = "https://www.fleaflicker.com/nba/login";
+const PUSHOVER_URL = "https://api.pushover.net/1/messages.json";
+const TRELLO_CARDS_URL = "https://api.trello.com/1/cards";
+const ALERT_CHANNELS = ["pushover", "trello"] as const;
 const SESSION_COOKIE_KEY = "fleaflickerSessionCookie";
-const LAST_ALERT_KEY = "lastAlert";
+const TIP_TABLES_KEY = "tipTables";
+const LINEUP_PERIODS_KEY = "lineupPeriods";
+// About two days of runs: enough to cover yesterday's late tips and today's targets
+const LEDGER_RUNS = 100;
 const REPEAT_ALERT_AFTER_MS = 3 * 60 * 60 * 1000;
 
 export class LineupRunner extends DurableObject<Env> {
@@ -12,56 +19,121 @@ export class LineupRunner extends DurableObject<Env> {
     ctx.storage.sql.exec("CREATE TABLE IF NOT EXISTS runs (id INTEGER PRIMARY KEY AUTOINCREMENT, record TEXT NOT NULL)");
   }
 
-  async run(trigger: RunRecord["trigger"] = "manual"): Promise<RunRecord> {
-    const record: RunRecord = { trigger, startedAt: new Date().toISOString() };
+  // Cron can deliver a tick twice, and a tick, alarm and manual run can interleave while one awaits Fleaflicker
+  private tickInFlight = false;
+
+  async tick(trigger: "cron" | "alarm") {
+    if (this.tickInFlight) return;
+    this.tickInFlight = true;
+    let healthy = false;
     try {
-      await this.checkLineup(record);
+      healthy = await this.planAndRun(trigger);
+    } finally {
+      this.tickInFlight = false;
+      if (this.env.HEALTHCHECK_URL) await fetch(healthy ? this.env.HEALTHCHECK_URL : `${this.env.HEALTHCHECK_URL}/fail`, { method: "POST" });
+    }
+  }
+
+  private async planAndRun(trigger: "cron" | "alarm") {
+    const eligibleLineupPeriods = (await this.ctx.storage.get<LineupPeriod[]>(LINEUP_PERIODS_KEY)) ?? (await this.fetchRoster()).eligibleLineupPeriods;
+    const planNow = async () => {
+      const now = new Date();
+      const tipTables = (await this.ctx.storage.get<TipTable[]>(TIP_TABLES_KEY)) ?? [];
+      return planTick(now, findCurrentDay(eligibleLineupPeriods, now.getTime()), tipTables, this.ledger());
+    };
+    const { runDays } = await planNow();
+    const record = runDays.length > 0 ? await this.run(trigger, runDays) : undefined;
+    await this.ctx.storage.setAlarm((await planNow()).nextTarget);
+    return !record || listProblems(record).length === 0;
+  }
+
+  async run(trigger: RunRecord["trigger"] = "manual", days?: number[]): Promise<RunRecord> {
+    const record: RunRecord = { trigger, startedAt: new Date().toISOString(), days: [] };
+    try {
+      await this.checkDays(record, days);
     } catch (error) {
       record.error = String(error);
     }
     const problems = listProblems(record);
     if (problems.length > 0) record.alert = await this.alertFailure(trigger, problems).catch((error) => ({ error: String(error) }));
     this.ctx.storage.sql.exec("INSERT INTO runs (record) VALUES (?)", JSON.stringify(record));
-    if (this.env.HEALTHCHECK_URL) await fetch(problems.length > 0 ? `${this.env.HEALTHCHECK_URL}/fail` : this.env.HEALTHCHECK_URL, { method: "POST" });
     return record;
   }
 
   private async alertFailure(trigger: RunRecord["trigger"], problems: string[]) {
+    const alert = { title: `Lineup run (${trigger}) failed`, body: problems.map((problem) => `- ${problem}`).join("\n") };
     const fingerprint = problems.join("\n");
-    const lastAlert = await this.ctx.storage.get<{ fingerprint: string; at: number }>(LAST_ALERT_KEY);
-    const alreadyAlerted = lastAlert?.fingerprint === fingerprint && Date.now() - lastAlert.at < REPEAT_ALERT_AFTER_MS;
-    if (alreadyAlerted) return undefined;
-    const response = await fetch(`https://ntfy.sh/${this.env.NTFY_TOPIC}`, {
-      method: "POST",
-      headers: { Title: "Lineup runner", Click: this.env.LINEUP_URL },
-      body: `Lineup run (${trigger}) failed:\n${problems.map((problem) => `- ${problem}`).join("\n")}`,
-    });
-    if (!response.ok) return { status: response.status, response: (await response.text()).slice(0, 200) };
-    await this.ctx.storage.put(LAST_ALERT_KEY, { fingerprint, at: Date.now() });
-    return { status: response.status };
-  }
-
-  private async checkLineup(record: RunRecord) {
-    const { eligibleLineupPeriods } = await this.fetchRoster();
-    const day = findCurrentDay(eligibleLineupPeriods, Date.now());
-    record.day = day;
-    let lineupPage = await this.fetchLineupPage(day);
-    if (!lineupPage.loggedIn) {
-      record.login = await this.logIn();
-      lineupPage = await this.fetchLineupPage(day);
+    const sends: RunRecord["alert"] = {};
+    for (const channel of ALERT_CHANNELS) {
+      const lastAlertKey = `lastAlert:${channel}`;
+      const lastAlert = await this.ctx.storage.get<{ fingerprint: string; at: number }>(lastAlertKey);
+      const alreadyAlerted = lastAlert?.fingerprint === fingerprint && Date.now() - lastAlert.at < REPEAT_ALERT_AFTER_MS;
+      if (alreadyAlerted) continue;
+      const send = channel === "pushover" ? this.sendPushover(alert) : this.createTrelloCard(alert);
+      const { accepted, ...sendRecord } = await send.catch((error) => ({ accepted: false, error: String(error) }));
+      sends[channel] = sendRecord;
+      if (accepted) await this.ctx.storage.put(lastAlertKey, { fingerprint, at: Date.now() });
     }
-    const { html, ...pageSummary } = lineupPage;
-    record.lineupPage = pageSummary;
-    record.decision = await decideLineup(html, await this.fetchRoster(day));
+    return sends;
   }
 
-  private async fetchRoster(day?: number): Promise<ApiRoster & { eligibleLineupPeriods: LineupPeriod[] }> {
+  private async sendPushover({ title, body }: Alert) {
+    const response = await fetch(PUSHOVER_URL, {
+      method: "POST",
+      body: new URLSearchParams({ token: this.env.PUSHOVER_TOKEN, user: this.env.PUSHOVER_USER, title, message: body, url: this.env.LINEUP_URL, priority: "1" }),
+    });
+    const accepted = response.ok && (await response.clone().json<{ status: number }>()).status === 1;
+    return summarizeAlertResponse(response, accepted);
+  }
+
+  private async createTrelloCard({ title, body }: Alert) {
+    const response = await fetch(TRELLO_CARDS_URL, {
+      method: "POST",
+      headers: { Authorization: `OAuth oauth_consumer_key="${this.env.TRELLO_API_KEY}", oauth_token="${this.env.TRELLO_TOKEN}"`, "Content-Type": "application/json" },
+      body: JSON.stringify({ idList: this.env.TRELLO_LIST, name: title, desc: `${body}\n\n${this.env.LINEUP_URL}` }),
+    });
+    return summarizeAlertResponse(response, response.ok);
+  }
+
+  private async checkDays(record: RunRecord, days?: number[]) {
+    days ??= [findCurrentDay((await this.fetchRoster()).eligibleLineupPeriods, Date.now())];
+    for (const day of days) {
+      let lineupPage = await this.fetchLineupPage(day);
+      if (!lineupPage.loggedIn && !record.login) {
+        record.login = await this.logIn();
+        lineupPage = await this.fetchLineupPage(day);
+      }
+      const { html, ...pageSummary } = lineupPage;
+      const dayCheck: DayCheck = { day, lineupPage: pageSummary };
+      record.days.push(dayCheck);
+      dayCheck.decision = await decideLineup(html, await this.fetchRoster(day));
+      if (pageSummary.loggedIn) await this.storeTipTable({ day, fetchedAt: record.startedAt, tips: parseGameTips(html) });
+    }
+  }
+
+  private async storeTipTable(tipTable: TipTable) {
+    const tipTables = (await this.ctx.storage.get<TipTable[]>(TIP_TABLES_KEY)) ?? [];
+    const otherRecentDays = tipTables.filter((table) => table.day !== tipTable.day && table.day >= tipTable.day - 1);
+    await this.ctx.storage.put(TIP_TABLES_KEY, [...otherRecentDays, tipTable]);
+  }
+
+  private ledger(): LedgerEntry[] {
+    return this.recentRuns(LEDGER_RUNS).map((record) => ({
+      startedAt: record.startedAt,
+      ok: listProblems(record).length === 0,
+      days: (record.days ?? []).map(({ day }) => day),
+    }));
+  }
+
+  private async fetchRoster(day?: number) {
     const [, leagueId, teamId] = this.env.LINEUP_URL.match(/leagues\/(\d+)\/teams\/(\d+)/)!;
     const url = new URL("https://www.fleaflicker.com/api/FetchRoster");
     url.search = new URLSearchParams({ sport: "NBA", league_id: leagueId, team_id: teamId, ...(day ? { scoring_period: String(day) } : {}) }).toString();
     const response = await fetch(url, { headers: await this.sessionHeaders() });
     if (!response.ok) throw new Error(`Roster API returned HTTP ${response.status}`);
-    return response.json();
+    const roster = await response.json<ApiRoster & { eligibleLineupPeriods: LineupPeriod[] }>();
+    await this.ctx.storage.put(LINEUP_PERIODS_KEY, roster.eligibleLineupPeriods);
+    return roster;
   }
 
   private async sessionHeaders(): Promise<Record<string, string>> {
@@ -76,12 +148,8 @@ export class LineupRunner extends DurableObject<Env> {
       .map((row) => JSON.parse(row.record));
   }
 
-  async schedule(at: Date) {
-    await this.ctx.storage.setAlarm(at);
-  }
-
   async alarm() {
-    await this.run("alarm");
+    await this.tick("alarm");
   }
 
   private async fetchLineupPage(day: number) {
@@ -115,29 +183,28 @@ export default {
     const runner = env.RUNNER.getByName("primary");
     if (request.method === "POST" && pathname === "/run") return Response.json(await runner.run());
     if (request.method === "GET" && pathname === "/runs") return Response.json(await runner.recentRuns());
-    if (request.method === "POST" && pathname === "/schedule") {
-      const { at } = await request.json<{ at: string }>();
-      await runner.schedule(new Date(at));
-      return Response.json({ scheduledAt: at });
-    }
     return new Response("Not found", { status: 404 });
   },
 
-  async scheduled(_controller, env, ctx) {
-    ctx.waitUntil(env.RUNNER.getByName("primary").run("cron"));
+  async scheduled(_controller, env) {
+    await env.RUNNER.getByName("primary").tick("cron");
   },
 } satisfies ExportedHandler<Env>;
 
 type RunRecord = {
   trigger: "manual" | "alarm" | "cron";
   startedAt: string;
-  day?: number;
   login?: { status: number; gotSessionCookie: boolean };
-  lineupPage?: { status: number; loggedIn: boolean };
-  decision?: LineupDecision;
+  days: DayCheck[];
   error?: string;
-  alert?: { status: number; response?: string } | { error: string };
+  alert?: Partial<Record<(typeof ALERT_CHANNELS)[number], AlertSend>>;
 };
+
+type Alert = { title: string; body: string };
+
+type AlertSend = { status: number; response?: string } | { error: string };
+
+type DayCheck = { day: number; lineupPage: { status: number; loggedIn: boolean }; decision?: LineupDecision };
 
 type LineupPeriod = { ordinal: number; low: { startEpochMilli: string } };
 
@@ -147,13 +214,19 @@ function findCurrentDay(periods: LineupPeriod[], nowMs: number) {
   return (started.at(-1) ?? periods[0]).ordinal;
 }
 
-function listProblems({ login, lineupPage, decision, error }: RunRecord) {
+function listProblems({ login, days = [], error }: RunRecord) {
   const problems: string[] = [];
   if (login && !login.gotSessionCookie) problems.push(`Fleaflicker login failed (HTTP ${login.status}, no session cookie)`);
-  if (lineupPage && lineupPage.status !== 200) problems.push(`Lineup page returned HTTP ${lineupPage.status}`);
-  if (decision && !decision.ok) problems.push(...decision.errors);
+  for (const { lineupPage, decision } of days) {
+    if (lineupPage.status !== 200) problems.push(`Lineup page returned HTTP ${lineupPage.status}`);
+    if (decision && !decision.ok) problems.push(...decision.errors);
+  }
   if (error) problems.push(error);
   return problems;
+}
+
+async function summarizeAlertResponse(response: Response, accepted: boolean) {
+  return accepted ? { accepted, status: response.status } : { accepted, status: response.status, response: (await response.text()).slice(0, 200) };
 }
 
 function hasRunToken(request: Request, runToken: string) {

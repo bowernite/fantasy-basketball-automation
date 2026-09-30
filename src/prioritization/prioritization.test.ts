@@ -184,6 +184,16 @@ test("a day-to-day tag is lifted by fresh news clearing the player, but not by o
   expect(score(taggedDayToDayWithClearingNews({ value: 5, unit: "days" }))).toBe(dayToDay);
 });
 
+test("a questionable or doubtful tag still discounts the player when the injury news is old", () => {
+  setup();
+
+  const questionable = score(makePlayer({ playerStatus: "Q" }));
+  const doubtful = score(makePlayer({ playerStatus: "D" }));
+
+  expect(score(withInjury("Q", { value: 3, unit: "days" }))).toBe(questionable);
+  expect(score(withInjury("D", { value: 5, unit: "days" }))).toBe(doubtful);
+});
+
 test("players with a game today rank ahead of those without, then by predicted score", () => {
   setup();
 

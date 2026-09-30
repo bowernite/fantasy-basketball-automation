@@ -60,6 +60,16 @@ test("an earlier 'sat out' doesn't override the news' current status", () => {
   expect(parsePlayerNews(news, undefined)?.injuryStatus).toBe("P");
 });
 
+test("a player sitting out an upcoming game is read as out", () => {
+  const news = newsTooltipText(
+    "Suggs Sitting Out Wednesday",
+    "Tue 10/20/26 5:12 PM",
+    "Jalen Suggs is sitting out Wednesday's game against Boston for rest."
+  );
+
+  expect(parsePlayerNews(news, undefined)?.injuryStatus).toBe("OUT");
+});
+
 // The tooltip text glues the headline to the timestamp ("ProbableMon 10/19/26")
 test("reads a status that only appears at the end of the headline", () => {
   const news = newsTooltipText(

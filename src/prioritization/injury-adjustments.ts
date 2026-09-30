@@ -5,14 +5,14 @@ const FRESH_NEWS_MAX_DAYS = 1.5;
 
 export function adjustPredictedScoreForInjury(score: number, player: Player) {
   const { playerStatus, refinedPlayerStatus } = player;
-  // The page's own tag is current; only news fresh enough to postdate it can clear the player or lift an OUT tag.
+  // The page's own tag is current; only news fresh enough to postdate it counts.
   // An out-for-season tag is the exception: it outlasts the injury (e.g. into the next season), so any news clearing the player postdates it
   const newsTimeAgo = refinedPlayerStatus?.timeAgo;
   const newsIsFresh = newsTimeAgo != null && getTimeAgoInDays(newsTimeAgo) <= FRESH_NEWS_MAX_DAYS;
-  const newsWouldLiftTag = playerStatus === "OUT" || (refinedPlayerStatus?.injuryStatus === "(active)" && playerStatus !== "OFS");
-  const tagStands = newsWouldLiftTag && !newsIsFresh;
-  const status = tagStands ? playerStatus : refinedPlayerStatus?.injuryStatus ?? playerStatus;
-  const timeAgo = tagStands ? undefined : newsTimeAgo;
+  const newsClearsSeasonTag = playerStatus === "OFS" && refinedPlayerStatus?.injuryStatus === "(active)";
+  const newsCounts = newsIsFresh || newsClearsSeasonTag;
+  const status = newsCounts ? refinedPlayerStatus?.injuryStatus ?? playerStatus : playerStatus;
+  const timeAgo = newsCounts ? newsTimeAgo : undefined;
   const numberOfDaysInFuture = getNumDaysInFuture();
 
   const timeAgoInDays = timeAgo ? getTimeAgoInDays(timeAgo) : null;

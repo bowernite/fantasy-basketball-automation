@@ -4,7 +4,7 @@
   "main": "src/worker/index.ts",
   "compatibility_date": "2026-09-01",
   "observability": { "enabled": true },
-  "triggers": { "crons": ["0 * * * *"] },
+  "triggers": { "crons": ["*/5 * * * *"] },
   "vars": {
     "LINEUP_URL": "https://www.fleaflicker.com/nba/leagues/30579/teams/161025"
   },
