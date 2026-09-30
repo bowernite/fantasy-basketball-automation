@@ -1,6 +1,6 @@
 import { DurableObject } from "cloudflare:workers";
 import { type ApiRoster, decideLineup, type LineupDecision } from "./decide-lineup";
-import { type LedgerEntry, parseGameTips, planTick, type TipTable } from "./lineup-schedule";
+import { type DayTip, type LedgerEntry, parseGameTips, planTick, type TipTable } from "./lineup-schedule";
 
 const FLEAFLICKER_LOGIN_URL = "https://www.fleaflicker.com/nba/login";
 const PUSHOVER_URL = "https://api.pushover.net/1/messages.json";
@@ -41,8 +41,9 @@ export class LineupRunner extends DurableObject<Env> {
       const tipTables = (await this.ctx.storage.get<TipTable[]>(TIP_TABLES_KEY)) ?? [];
       return planTick(now, findCurrentDay(eligibleLineupPeriods, now.getTime()), tipTables, this.ledger());
     };
-    const { runDays } = await planNow();
+    const { runDays, missedTips } = await planNow();
     const record = runDays.length > 0 ? await this.run(trigger, runDays) : undefined;
+    for (const missedTip of missedTips) await this.alertMissedTip(missedTip);
     await this.ctx.storage.setAlarm((await planNow()).nextTarget);
     return !record || listProblems(record).length === 0;
   }
@@ -61,38 +62,68 @@ export class LineupRunner extends DurableObject<Env> {
   }
 
   private async alertFailure(trigger: RunRecord["trigger"], problems: string[]) {
-    const alert = { title: `Lineup run (${trigger}) failed`, body: problems.map((problem) => `- ${problem}`).join("\n") };
-    const fingerprint = problems.join("\n");
+    const alert: Alert = { title: `Lineup run (${trigger}) failed`, body: problems.map((problem) => `- ${problem}`).join("\n"), priority: 1 };
+    return this.notify(alert, { key: "lastAlert", fingerprint: problems.join("\n"), repeatAfterMs: REPEAT_ALERT_AFTER_MS });
+  }
+
+  private async alertMissedTip({ at, players }: DayTip) {
+    const tipTime = new Date(at).toLocaleTimeString("en-US", { timeZone: "America/Chicago", hour: "numeric", minute: "2-digit" });
+    const alert: Alert = {
+      title: `Lineup not checked before the ${tipTime} CT tip`,
+      body: `No successful run in the 45 min before the tip. Check the lineup for today's later games.\nPlayers: ${players.join(", ")}`,
+      priority: 2,
+    };
+    const sends = await this.notify(alert, { key: `missedTip:${at}`, fingerprint: at, repeatAfterMs: Infinity });
+    console.log(JSON.stringify({ event: "missedTipAlert", at, sends }));
+  }
+
+  private async notify(alert: Alert, dedupe: { key: string; fingerprint: string; repeatAfterMs: number }) {
     const sends: RunRecord["alert"] = {};
     for (const channel of ALERT_CHANNELS) {
-      const lastAlertKey = `lastAlert:${channel}`;
-      const lastAlert = await this.ctx.storage.get<{ fingerprint: string; at: number }>(lastAlertKey);
-      const alreadyAlerted = lastAlert?.fingerprint === fingerprint && Date.now() - lastAlert.at < REPEAT_ALERT_AFTER_MS;
-      if (alreadyAlerted) continue;
-      const send = channel === "pushover" ? this.sendPushover(alert) : this.createTrelloCard(alert);
-      const { accepted, ...sendRecord } = await send.catch((error) => ({ accepted: false, error: String(error) }));
+      const lastAlertKey = `${dedupe.key}:${channel}`;
+      const lastAlert = await this.ctx.storage.get<{ fingerprint: string; at: number; cardId?: string }>(lastAlertKey);
+      const sameFailure = lastAlert?.fingerprint === dedupe.fingerprint;
+      if (sameFailure && Date.now() - lastAlert.at < dedupe.repeatAfterMs) continue;
+      const send = channel === "pushover" ? this.sendPushover(alert) : this.postToTrello(alert, sameFailure ? lastAlert.cardId : undefined);
+      const { accepted, cardId, ...sendRecord } = await send.catch((error): AlertOutcome => ({ accepted: false, error: String(error) }));
       sends[channel] = sendRecord;
-      if (accepted) await this.ctx.storage.put(lastAlertKey, { fingerprint, at: Date.now() });
+      if (accepted) await this.ctx.storage.put(lastAlertKey, { fingerprint: dedupe.fingerprint, at: Date.now(), cardId });
     }
     return sends;
   }
 
-  private async sendPushover({ title, body }: Alert) {
+  private async sendPushover({ title, body, priority }: Alert): Promise<AlertOutcome> {
+    if (!this.env.PUSHOVER_TOKEN || !this.env.PUSHOVER_USER) return { accepted: false, error: "PUSHOVER_TOKEN or PUSHOVER_USER not set" };
+    // Emergency priority re-alerts every `retry` seconds until acknowledged or `expire` passes
+    const emergency = priority === 2 ? { retry: "60", expire: "1800" } : {};
     const response = await fetch(PUSHOVER_URL, {
       method: "POST",
-      body: new URLSearchParams({ token: this.env.PUSHOVER_TOKEN, user: this.env.PUSHOVER_USER, title, message: body, url: this.env.LINEUP_URL, priority: "1" }),
+      body: new URLSearchParams({ token: this.env.PUSHOVER_TOKEN, user: this.env.PUSHOVER_USER, title, message: body, url: this.env.LINEUP_URL, priority: String(priority), ...emergency }),
     });
     const accepted = response.ok && (await response.clone().json<{ status: number }>()).status === 1;
     return summarizeAlertResponse(response, accepted);
   }
 
-  private async createTrelloCard({ title, body }: Alert) {
+  private async postToTrello({ title, body }: Alert, sameFailureCardId?: string): Promise<AlertOutcome> {
+    if (!this.env.TRELLO_API_KEY || !this.env.TRELLO_TOKEN || !this.env.TRELLO_LIST) return { accepted: false, error: "TRELLO_API_KEY, TRELLO_TOKEN or TRELLO_LIST not set" };
+    const authorization = `OAuth oauth_consumer_key="${this.env.TRELLO_API_KEY}", oauth_token="${this.env.TRELLO_TOKEN}"`;
+    if (sameFailureCardId && (await this.isTrelloCardOpen(sameFailureCardId, authorization))) {
+      const commentUrl = `${TRELLO_CARDS_URL}/${sameFailureCardId}/actions/comments?${new URLSearchParams({ text: `Still failing:\n${body}` })}`;
+      const response = await fetch(commentUrl, { method: "POST", headers: { Authorization: authorization } });
+      return { ...(await summarizeAlertResponse(response, response.ok)), cardId: sameFailureCardId };
+    }
     const response = await fetch(TRELLO_CARDS_URL, {
       method: "POST",
-      headers: { Authorization: `OAuth oauth_consumer_key="${this.env.TRELLO_API_KEY}", oauth_token="${this.env.TRELLO_TOKEN}"`, "Content-Type": "application/json" },
+      headers: { Authorization: authorization, "Content-Type": "application/json" },
       body: JSON.stringify({ idList: this.env.TRELLO_LIST, name: title, desc: `${body}\n\n${this.env.LINEUP_URL}` }),
     });
-    return summarizeAlertResponse(response, response.ok);
+    const cardId = response.ok ? (await response.clone().json<{ id: string }>()).id : undefined;
+    return { ...(await summarizeAlertResponse(response, response.ok)), cardId };
+  }
+
+  private async isTrelloCardOpen(cardId: string, authorization: string) {
+    const response = await fetch(`${TRELLO_CARDS_URL}/${cardId}?fields=closed`, { headers: { Authorization: authorization } });
+    return response.ok && !(await response.json<{ closed: boolean }>()).closed;
   }
 
   private async checkDays(record: RunRecord, days?: number[]) {
@@ -200,9 +231,11 @@ type RunRecord = {
   alert?: Partial<Record<(typeof ALERT_CHANNELS)[number], AlertSend>>;
 };
 
-type Alert = { title: string; body: string };
+type Alert = { title: string; body: string; priority: 1 | 2 };
 
 type AlertSend = { status: number; response?: string } | { error: string };
+
+type AlertOutcome = AlertSend & { accepted: boolean; cardId?: string };
 
 type DayCheck = { day: number; lineupPage: { status: number; loggedIn: boolean }; decision?: LineupDecision };
 

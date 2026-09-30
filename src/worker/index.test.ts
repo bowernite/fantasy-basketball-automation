@@ -202,6 +202,39 @@ describe("lineup runner", () => {
     expect(alerts).toHaveLength(2);
   });
 
+  it("comments on the open Trello card when the same failure is still happening hours later", async () => {
+    const { cards, cardComments } = stubFleaflicker(() => {
+      throw new TypeError("Connection timed out");
+    });
+    vi.useFakeTimers({ toFake: ["Date"] });
+
+    await triggerRun();
+    vi.setSystemTime(Date.now() + 3 * 60 * 60 * 1000);
+    await triggerRun();
+
+    expect(cards).toHaveLength(1);
+    expect(cardComments).toEqual([{ card: "card-1", text: "Still failing:\n- TypeError: Connection timed out" }]);
+  });
+
+  it("files a new Trello card for a repeat failure once the old card is archived", async () => {
+    let cardArchived = false;
+    const { cards, cardComments } = stubFleaflicker(
+      () => {
+        throw new TypeError("Connection aborted");
+      },
+      { trelloCardArchived: () => cardArchived },
+    );
+    vi.useFakeTimers({ toFake: ["Date"] });
+
+    await triggerRun();
+    cardArchived = true;
+    vi.setSystemTime(Date.now() + 3 * 60 * 60 * 1000);
+    await triggerRun();
+
+    expect(cards).toHaveLength(2);
+    expect(cardComments).toEqual([]);
+  });
+
   it("tries the alert again on the next run when Pushover rejects it", async () => {
     const pushoverStatuses = [429, 200];
     const { alerts } = stubFleaflicker(
@@ -354,6 +387,34 @@ describe("scheduled checks", () => {
     expect(latest).toMatchObject({ startedAt: "2026-10-20T18:21:00.000Z", error: "Error: Roster API returned HTTP 503" });
     expect(alerts.at(-1)?.message).toContain("Roster API returned HTTP 503");
   });
+  it("sends one emergency alert when a tip passes with no successful run in the 45 min before it", async () => {
+    vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-20T18:06:00Z") });
+    const { alerts, cards } = stubFleaflicker(fakeFleaflickerSeason);
+    const runner = freshRunner();
+    await runner.tick("cron");
+
+    vi.setSystemTime(new Date("2026-10-20T19:01:00Z"));
+    await runner.tick("cron");
+    vi.setSystemTime(new Date("2026-10-20T19:06:00Z"));
+    await runner.tick("cron");
+
+    expect(alerts).toHaveLength(1);
+    expect(alerts[0]).toMatchInlineSnapshot(`
+      {
+        "expire": "1800",
+        "message": "No successful run in the 45 min before the tip. Check the lineup for today's later games.
+      Players: Cade Cunningham, John Collins, Neemias Queta",
+        "priority": "2",
+        "retry": "60",
+        "title": "Lineup not checked before the 2:00 PM CT tip",
+        "token": "test-pushover-token",
+        "url": "https://www.fleaflicker.com/nba/leagues/30579/teams/161025",
+        "user": "test-pushover-user",
+      }
+    `);
+    expect(cards.map(({ name }) => name)).toEqual([alerts[0].title]);
+  });
+
   it("checks in with the dead-man monitor on every tick, not on manual runs", async () => {
     vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-20T15:10:00Z") });
     let fleaflickerDown = false;
@@ -423,10 +484,11 @@ function fakeFleaflickerSeason(request: Request) {
   return fakeFleaflicker(request, page);
 }
 
-function stubFleaflicker(respond: (request: Request) => Response | Promise<Response>, { pushoverStatus = () => 200, trelloStatus = () => 200, rosterApiUp = () => true } = {}) {
+function stubFleaflicker(respond: (request: Request) => Response | Promise<Response>, { pushoverStatus = () => 200, trelloStatus = () => 200, trelloCardArchived = () => false, rosterApiUp = () => true } = {}) {
   const deadManPings: string[] = [];
   const alerts: Record<string, string>[] = [];
   const cards: { list: string; name: string; desc: string; authorization: string | null }[] = [];
+  const cardComments: { card: string; text: string }[] = [];
   const realFetch = globalThis.fetch;
   vi.spyOn(globalThis, "fetch").mockImplementation(async (input, init) => {
     const request = new Request(input, init);
@@ -446,11 +508,18 @@ function stubFleaflicker(respond: (request: Request) => Response | Promise<Respo
       const status = trelloStatus();
       return status === 200 ? Response.json({ id: `card-${cards.length}` }) : new Response("invalid token", { status });
     }
+    const cardComment = pathname.match(/^\/1\/cards\/([^/]+)\/actions\/comments$/);
+    if (hostname === "api.trello.com" && cardComment) {
+      cardComments.push({ card: cardComment[1], text: new URL(request.url).searchParams.get("text")! });
+      return Response.json({});
+    }
+    const cardLookup = pathname.match(/^\/1\/cards\/([^/]+)$/);
+    if (hostname === "api.trello.com" && cardLookup) return Response.json({ id: cardLookup[1], closed: trelloCardArchived() });
     if (hostname === "hc-ping.com") {
       deadManPings.push(pathname);
       return new Response("OK");
     }
     return realFetch(input, init);
   });
-  return { alerts, cards, deadManPings };
+  return { alerts, cards, cardComments, deadManPings };
 }
