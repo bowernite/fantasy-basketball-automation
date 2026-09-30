@@ -25,7 +25,7 @@ Every modelled number (BASE, projections, win columns, `ΔP(title)`, Score, W20�
 
 | Col | Format |
 | --- | --- |
-| **BASE** | bold: **8000** |
+| **BASE** | bold: **8,000** |
 | FPts/G proj (last) | projection, then actual in parens: `48 (47)` · no sample → `34 (–)` |
 | GP proj (last) | projection, then actual in parens: `70 (65)` |
 | **Δw** | signed, bold: **+1.9** · **+0.44** |
