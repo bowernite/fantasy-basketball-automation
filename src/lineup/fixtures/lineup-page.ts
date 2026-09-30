@@ -1,75 +1,58 @@
-// Loads the saved real Fleaflicker lineup page (`teampage.html`, Tue 10/20/2026, opening night)
-// into the happy-dom globals, then adds what the logged-in owner sees: a slot `<select>` per player
-// (option values per the lineup form: PG 1, SG 2, G 3, SF 4, PF 8, C 16, F/C 28, ANY 31, BN 0).
-// The saved page is logged out, so the select markup is reconstructed, not copied
+// Loads the real Fleaflicker lineup page (Tue 10/20/2026, opening night) into the happy-dom globals.
+// Two real captures are combined: `teampage.html` (logged out, the "fantasy stats" view the app requires)
+// supplies the page, and `teampage-logged-in.html` (logged in, but saved on the "season stats" view)
+// supplies each player's real slot `<select>` and cog menu, moved into the matching row. Swap to a single
+// file once a logged-in "fantasy stats" capture exists
 
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
 const PAGE_HTML = readFileSync(join(import.meta.dir, "teampage.html"), "utf8");
+const LOGGED_IN_PAGE_HTML = readFileSync(join(import.meta.dir, "teampage-logged-in.html"), "utf8");
 
 export const PAGE_URL = "https://www.fleaflicker.com/nba/leagues/30579/teams/161025";
-
-const SLOT_VALUES: [slot: string, value: number][] = [
-  ["PG", 1],
-  ["SG", 2],
-  ["G", 3],
-  ["SF", 4],
-  ["PF", 8],
-  ["F/C", 28],
-  ["C", 16],
-  ["ANY", 31],
-];
-
-const SLOTS_BY_POSITION: Record<string, string[]> = {
-  "Point Guard": ["PG", "G", "ANY"],
-  "Shooting Guard": ["SG", "G", "ANY"],
-  "Small Forward": ["SF", "F/C", "ANY"],
-  "Power Forward": ["PF", "F/C", "ANY"],
-  Center: ["C", "F/C", "ANY"],
-};
 
 export type LineupPageOptions = {
   // Rewrites an option's visible text, e.g. to simulate Fleaflicker renaming a slot
   optionText?: (slot: string) => string;
+  // false: the fantasy stats page as saved logged out (e.g. an expired session): no slot selects
+  loggedIn?: boolean;
 };
 
-export function loadLineupPage({ optionText = (slot) => slot }: LineupPageOptions = {}) {
-  const [, head, body] = PAGE_HTML.match(/<head>([\s\S]*)<\/head>\s*<body[^>]*>([\s\S]*)<\/body>/)!;
+export function loadLineupPage({ optionText = (slot) => slot, loggedIn = true }: LineupPageOptions = {}) {
+  const [head, body] = headAndBody(PAGE_HTML);
   document.head.innerHTML = head;
   document.body.innerHTML = body;
+  if (!loggedIn) return;
+
+  const loggedInPage = document.createElement("div");
+  loggedInPage.innerHTML = headAndBody(LOGGED_IN_PAGE_HTML)[1];
+  const loggedInRows = new Map(playerRows(loggedInPage).map((row) => [playerHref(row), row]));
 
   for (const row of playerRows()) {
-    const eligibility = row.querySelector(".player-info .position")!.getAttribute("title")!.split("/");
-    const eligibleSlots = new Set(eligibility.flatMap((position) => SLOTS_BY_POSITION[position]));
-    const statusCell = row.cells[row.cells.length - 1];
-    const currentSlot = statusCell.textContent!.trim();
+    const loggedInRow = loggedInRows.get(playerHref(row))!;
+    const [cogCell, selectCell] = Array.from(loggedInRow.cells).slice(-2);
+    row.cells[row.cells.length - 2].replaceWith(cogCell);
+    row.cells[row.cells.length - 1].replaceWith(selectCell);
 
-    const select = document.createElement("select");
-    select.name = `status${row.querySelector(".player-text")!.id}`;
-    select.className = "form-control input-sm";
-    select.add(option("BN", "0"));
-    for (const [slot, value] of SLOT_VALUES) {
-      if (eligibleSlots.has(slot)) {
-        select.add(option(optionText(slot), String(value)));
-      }
-    }
-    select.value = SLOT_VALUES.find(([slot]) => slot === currentSlot)?.[1].toString() ?? "0";
-
-    row.cells[row.cells.length - 2].replaceChildren();
-    statusCell.replaceChildren(select);
+    const select = selectCell.querySelector("select")!;
+    for (const option of select.options) option.text = optionText(option.text);
+    // happy-dom 20.14 misreads the parsed `selected` option (value/selectedIndex); re-select it explicitly
+    select.value = select.querySelector<HTMLOptionElement>("option[selected]")!.value;
   }
 }
 
-function option(text: string, value: string) {
-  const el = document.createElement("option");
-  el.text = text;
-  el.value = value;
-  return el;
+function headAndBody(html: string) {
+  const [, head, body] = html.match(/<head>([\s\S]*)<\/head>\s*<body[^>]*>([\s\S]*)<\/body>/)!;
+  return [head, body];
 }
 
-export function playerRows() {
-  return Array.from(document.querySelectorAll("tr")).filter((row) => row.querySelector(".player-text"));
+function playerHref(row: HTMLTableRowElement) {
+  return row.querySelector(".player-text")!.getAttribute("href");
+}
+
+export function playerRows(root: ParentNode = document) {
+  return Array.from(root.querySelectorAll("tr")).filter((row) => row.querySelector(".player-text"));
 }
 
 export function playerRow(name: string) {
@@ -78,15 +61,18 @@ export function playerRow(name: string) {
   return row;
 }
 
-// A player whose game has started: Fleaflicker shows "Locked" and no slot select
+// A player whose game has started: no slot select, just "Locked" and the slot's label, as the logged-out
+// page shows every row (guess: a logged-in locked row hasn't been captured)
 export function lockPlayer(name: string) {
   const row = playerRow(name);
   const statusCell = row.cells[row.cells.length - 1];
-  const select = statusCell.querySelector("select")!;
-  const slot = selectedText(select);
+  const slot = selectedText(statusCell.querySelector("select")!);
   row.cells[row.cells.length - 2].innerHTML =
     '<span class="btn btn-default btn-xs disabled btn-block">Locked</span>';
-  statusCell.innerHTML = `<span class="label label-success label-block"><span class="position">${slot}</span></span>`;
+  statusCell.innerHTML =
+    slot === "Bench"
+      ? '<span class="label label-danger label-block"><span class="text-muted">BN</span></span>'
+      : `<span class="label label-success label-block"><span class="position">${slot}</span></span>`;
 }
 
 // Gives a player a game on the viewed day (the fixture's bench players' teams are idle on opening night)
@@ -119,6 +105,22 @@ export function startedLineup() {
         const name = row.querySelector(".player-text")!.textContent!;
         return [name, slotIn(row)] as const;
       })
-      .filter(([, slot]) => !slot.startsWith("BN")),
+      .filter(([, slot]) => slot !== "Bench" && slot !== "BN (locked)"),
   );
+}
+
+// An injury tag next to the player's name, as on the saved page (e.g. `OUT`, `DTD`)
+export function giveInjuryTag(name: string, status: string) {
+  playerRow(name)
+    .querySelector(".player-name")!
+    .insertAdjacentHTML("afterbegin", `<span class="injury text-red tt-content">${status}</span>`);
+}
+
+// A news icon as on the saved page, with its news shown in a Bootstrap tooltip (as on hover). Guess:
+// the real page ships news in `#page-data`, but the app caches that once per page load, so a test
+// can't add to it
+export function givePlayerNews(name: string, newsHtml: string) {
+  playerRow(name).querySelector(".player-icons")!.innerHTML =
+    '<i class="fa fa-file-text-o right-icon tt-content text-blue"></i>' +
+    `<div class="tooltip fade top in"><div class="tooltip-arrow"></div><div class="tooltip-inner">${newsHtml}</div></div>`;
 }

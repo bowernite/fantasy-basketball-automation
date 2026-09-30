@@ -194,3 +194,7 @@ __pycache__/
 
 # BBRef mirror pull (fetch_data.py bbref)
 strategy/lineup-math/data/bbref/
+
+# Cloudflare Worker generated types (`bunx wrangler types src/worker/worker-configuration.d.ts`)
+src/worker/worker-configuration.d.ts
+.wrangler/

@@ -1,6 +1,17 @@
 import { GlobalRegistrator } from "@happy-dom/global-registrator";
 import { afterAll, afterEach, beforeAll, beforeEach, expect, setSystemTime, spyOn, test } from "bun:test";
-import { givePlayerGame, loadLineupPage, lockPlayer, PAGE_URL, slotOf, startedLineup } from "./fixtures/lineup-page";
+import {
+  giveInjuryTag,
+  givePlayerGame,
+  givePlayerNews,
+  loadLineupPage,
+  lockPlayer,
+  PAGE_URL,
+  playerRow,
+  playerRows,
+  slotOf,
+  startedLineup,
+} from "./fixtures/lineup-page";
 
 beforeAll(() =>
   GlobalRegistrator.register({
@@ -19,26 +30,28 @@ beforeEach(() => {
   // Morning of the fixture's day, before any tip
   setSystemTime(new Date("2026-10-20T14:00:00Z"));
   alerts = [];
-  for (const method of ["log", "table", "clear", "warn"] as const) spyOn(console, method).mockImplementation(() => {});
+  for (const method of ["log", "table", "clear", "warn", "error"] as const) {
+    spyOn(console, method).mockImplementation(() => {});
+  }
   spyOn(window, "alert").mockImplementation((message) => void alerts.push(String(message)));
 });
 afterEach(() => setSystemTime());
 
-// Problems reach the user as an alert or a rejection (a headless runner would only see the latter)
-async function setLineupAndCollectProblems() {
+// A rejection is the only failure signal a headless run sees; `alerts` is what a person at the page sees
+async function setLineupAndGetRejection() {
   const { setLineup } = await import("./set-lineup");
-  const errors: string[] = [];
-  await setLineup().catch((error) => errors.push(String(error)));
-  return [...alerts, ...errors];
+  return setLineup().then(
+    () => undefined,
+    (error) => String(error),
+  );
 }
 
 test("on the real opening-night page, starts all 8 players who have a game and fills the 9th slot", async () => {
   loadLineupPage();
   for (const select of document.querySelectorAll("select")) select.value = "0";
 
-  const problems = await setLineupAndCollectProblems();
-
-  expect(problems).toEqual([]);
+  expect(await setLineupAndGetRejection()).toBeUndefined();
+  expect(alerts).toEqual([]);
   expect(startedLineup()).toMatchInlineSnapshot(`
     {
       "Adem Bona": "PF",
@@ -62,9 +75,8 @@ test("on a busy night, replaces the current lineup with 9 legal starters, one pe
   givePlayerGame("Aaron Gordon", "@MIA");
   givePlayerGame("Jakob Poeltl", "CHI");
 
-  const problems = await setLineupAndCollectProblems();
-
-  expect(problems).toEqual([]);
+  expect(await setLineupAndGetRejection()).toBeUndefined();
+  expect(alerts).toEqual([]);
   expect(Object.values(startedLineup()).sort()).toEqual(["ANY", "ANY", "C", "F/C", "G", "PF", "PG", "SF", "SG"]);
   expect(startedLineup()).toMatchInlineSnapshot(`
     {
@@ -88,11 +100,10 @@ test("does not start players who are OUT when 9 healthy players have a game", as
   givePlayerGame("Jakob Poeltl", "LAL");
   givePlayerGame("Jarace Walker", "LAL");
 
-  const problems = await setLineupAndCollectProblems();
-
-  expect(problems).toEqual([]);
-  expect(slotOf("Adem Bona")).toBe("BN");
-  expect(slotOf("Mark Williams")).toBe("BN");
+  expect(await setLineupAndGetRejection()).toBeUndefined();
+  expect(alerts).toEqual([]);
+  expect(slotOf("Adem Bona")).toBe("Bench");
+  expect(slotOf("Mark Williams")).toBe("Bench");
   expect(Object.keys(startedLineup())).toHaveLength(9);
 });
 
@@ -107,9 +118,8 @@ test.failing("fills the other 8 slots around a locked starter, and leaves a lock
   lockPlayer("Cade Cunningham");
   lockPlayer("Josh Giddey");
 
-  const problems = await setLineupAndCollectProblems();
-
-  expect(problems).toEqual([]);
+  expect(await setLineupAndGetRejection()).toBeUndefined();
+  expect(alerts).toEqual([]);
   expect(slotOf("Cade Cunningham")).toBe("PG (locked)");
   expect(slotOf("Josh Giddey")).toBe("BN (locked)");
   expect(Object.values(startedLineup()).sort()).toEqual([
@@ -117,24 +127,125 @@ test.failing("fills the other 8 slots around a locked starter, and leaves a lock
   ]);
 });
 
+// Suspected bug (same cause as above): all 9 locked starters stay and 9 bench players start too (18 starters)
+test.failing("once every starter's game has tipped, changes nothing", async () => {
+  loadLineupPage();
+  const lockedLineup = startedLineup();
+  for (const name of Object.keys(lockedLineup)) lockPlayer(name);
+
+  expect(await setLineupAndGetRejection()).toBeUndefined();
+  expect(startedLineup()).toEqual(
+    Object.fromEntries(Object.entries(lockedLineup).map(([name, slot]) => [name, `${slot} (locked)`])),
+  );
+});
+
+test("a day-to-day starter sits tonight when 9 healthy players have a game", async () => {
+  loadLineupPage();
+  giveInjuryTag("Cade Cunningham", "DTD");
+  for (const name of ["Josh Giddey", "Darius Garland", "Desmond Bane", "Coby White", "Miles Bridges", "Jabari Smith", "Naz Reid"]) {
+    givePlayerGame(name, "LAL");
+  }
+
+  expect(await setLineupAndGetRejection()).toBeUndefined();
+  expect(slotOf("Cade Cunningham")).toBe("Bench");
+  expect(Object.keys(startedLineup())).toHaveLength(9);
+});
+
+test("viewing a day several days out, a day-to-day tag alone doesn't keep a player out of the lineup", async () => {
+  // Viewing Tue 10/20 (the page's day) from Thu 10/15
+  setSystemTime(new Date("2026-10-15T14:00:00Z"));
+  loadLineupPage();
+  giveInjuryTag("Cade Cunningham", "DTD");
+  for (const name of ["Josh Giddey", "Darius Garland", "Desmond Bane", "Coby White", "Miles Bridges", "Jabari Smith", "Naz Reid"]) {
+    givePlayerGame(name, "LAL");
+  }
+
+  expect(await setLineupAndGetRejection()).toBeUndefined();
+  expect(slotOf("Cade Cunningham")).not.toBe("Bench");
+  expect(Object.keys(startedLineup())).toHaveLength(9);
+});
+
+test("a day-to-day star still starts over a much weaker healthy player", async () => {
+  loadLineupPage();
+  giveInjuryTag("Cade Cunningham", "DTD");
+  givePlayerGame("Tyus Jones", "LAL");
+  givePlayerGame("Jalen Green", "LAL");
+  givePlayerGame("Keon Ellis", "LAL");
+
+  expect(await setLineupAndGetRejection()).toBeUndefined();
+  expect(slotOf("Cade Cunningham")).not.toBe("Bench");
+  expect(slotOf("Tyus Jones")).toBe("Bench");
+});
+
+// Suspected bug: news is looked up under a `fa-file-text` icon, but the saved pages' (logged in and
+// out) news icons are `fa-file-text-o`, so news never reaches the lineup
+test.failing("benches a day-to-day player whose latest news rules him out tonight", async () => {
+  loadLineupPage();
+  giveInjuryTag("Cade Cunningham", "DTD");
+  givePlayerNews(
+    "Cade Cunningham",
+    '<h5>Cade Cunningham Ruled Out Tuesday</h5><em><relative-time datetime="2026-10-20T13:05:00Z">Tue 10/20/26 9:05 AM</relative-time></em>' +
+      "<p>Pistons guard Cade Cunningham (hamstring) has been ruled out for Tuesday's game against Boston.</p>",
+  );
+  givePlayerGame("Tyus Jones", "LAL");
+  givePlayerGame("Jalen Green", "LAL");
+  givePlayerGame("Keon Ellis", "LAL");
+
+  expect(await setLineupAndGetRejection()).toBeUndefined();
+  expect(slotOf("Cade Cunningham")).toBe("Bench");
+  expect(slotOf("Tyus Jones")).not.toBe("Bench");
+});
+
+test("with fewer players than slots, starts everyone and leaves the rest of the slots empty", async () => {
+  loadLineupPage();
+  const roster = ["Cade Cunningham", "Anfernee Simons", "Devin Vassell", "Adem Bona", "Naz Reid", "Josh Giddey", "Jalen Suggs"];
+  for (const row of playerRows()) {
+    if (!roster.includes(row.querySelector(".player-text")!.textContent!)) row.remove();
+  }
+
+  expect(await setLineupAndGetRejection()).toBeUndefined();
+  expect(alerts).toEqual([]);
+  expect(Object.keys(startedLineup()).sort()).toEqual([...roster].sort());
+});
+
+test("with no center-eligible player on the roster, leaves C empty and fills the other 8 slots", async () => {
+  loadLineupPage();
+  for (const row of playerRows()) {
+    if (row.querySelector(".position")!.getAttribute("title")!.includes("Center")) row.remove();
+  }
+
+  expect(await setLineupAndGetRejection()).toBeUndefined();
+  expect(alerts).toEqual([]);
+  expect(Object.values(startedLineup()).sort()).toEqual(["ANY", "ANY", "F/C", "G", "PF", "PG", "SF", "SG"]);
+});
+
+test("a player with no projection and unreadable stats is still scored, and starts over players without a game", async () => {
+  loadLineupPage();
+  const row = playerRow("Josh Giddey");
+  row.querySelector(".player-text")!.textContent = "Unknown Rookie";
+  for (const stat of row.querySelectorAll(".fp")) stat.textContent = "—";
+  givePlayerGame("Unknown Rookie", "LAL");
+
+  expect(await setLineupAndGetRejection()).toBeUndefined();
+  expect(alerts).toEqual([]);
+  expect(slotOf("Unknown Rookie")).not.toBe("Bench");
+  expect(Object.keys(startedLineup())).toHaveLength(9);
+});
+
 // Suspected bug: F/C goes unfilled (8 starters) and nothing is reported
-test.failing("when the page's slot options don't match the league's slots, never leaves a slot silently empty", async () => {
+test.failing("when the page's slot options don't match the league's slots, fills every slot or rejects", async () => {
   // e.g. Fleaflicker relabels the F/C option
   loadLineupPage({ optionText: (slot) => (slot === "F/C" ? "FC" : slot) });
   givePlayerGame("Josh Giddey", "LAL");
   givePlayerGame("Miles Bridges", "LAL");
   givePlayerGame("Jakob Poeltl", "CHI");
 
-  const problems = await setLineupAndCollectProblems();
+  const rejection = await setLineupAndGetRejection();
 
-  const allNineStarted = Object.keys(startedLineup()).length === 9;
-  expect({ allNineStarted, problemReported: problems.length > 0 }).not.toEqual({
-    allNineStarted: false,
-    problemReported: false,
-  });
+  if (rejection === undefined) expect(Object.keys(startedLineup())).toHaveLength(9);
 });
 
-test("off the fantasy stats view, reports it and leaves the lineup untouched", async () => {
+test("off the fantasy stats view, says so and leaves the lineup untouched", async () => {
   loadLineupPage();
   document.querySelector<HTMLAnchorElement>("a.dropdown-toggle")!.firstChild!.textContent = "season stats ";
   givePlayerGame("Josh Giddey", "LAL");
@@ -142,12 +253,50 @@ test("off the fantasy stats view, reports it and leaves the lineup untouched", a
   givePlayerGame("Jakob Poeltl", "CHI");
   const lineupBefore = startedLineup();
 
-  const problems = await setLineupAndCollectProblems();
+  const rejection = await setLineupAndGetRejection();
 
-  expect(problems).toMatchInlineSnapshot(`
+  expect([...alerts, rejection].filter(Boolean)).toMatchInlineSnapshot(`
     [
       "Not on the fantasy stats page; aborting",
     ]
   `);
+  expect(startedLineup()).toEqual(lineupBefore);
+});
+
+// Suspected bug: only alerts and resolves, so a headless run sees success
+test.failing("off the fantasy stats view, rejects", async () => {
+  loadLineupPage();
+  document.querySelector<HTMLAnchorElement>("a.dropdown-toggle")!.firstChild!.textContent = "season stats ";
+
+  expect(await setLineupAndGetRejection()).toMatch(/fantasy stats/i);
+});
+
+// Suspected bug: with no slot selects (logged out / session expired) it resolves having done nothing, silently
+test.failing("when logged out, rejects", async () => {
+  loadLineupPage({ loggedIn: false });
+  givePlayerGame("Josh Giddey", "LAL");
+
+  expect(await setLineupAndGetRejection()).toBeDefined();
+});
+
+test("when the viewed day can't be read off the page, rejects", async () => {
+  loadLineupPage();
+  for (const button of document.querySelectorAll("a.btn[data-toggle='dropdown']")) {
+    if (button.textContent!.includes("10/20")) button.remove();
+  }
+
+  expect(await setLineupAndGetRejection()).toMatch(/date/);
+});
+
+// Suspected bug: everyone has already been benched when it fails, so the page is left with no starters
+test.failing("when the viewed day can't be read off the page, leaves the lineup as it was", async () => {
+  loadLineupPage();
+  for (const button of document.querySelectorAll("a.btn[data-toggle='dropdown']")) {
+    if (button.textContent!.includes("10/20")) button.remove();
+  }
+  const lineupBefore = startedLineup();
+
+  await setLineupAndGetRejection();
+
   expect(startedLineup()).toEqual(lineupBefore);
 });

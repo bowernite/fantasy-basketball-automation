@@ -1,0 +1,17 @@
+import { GlobalRegistrator } from "@happy-dom/global-registrator";
+import { afterAll, beforeAll, expect, test } from "bun:test";
+import { loadLineupPage } from "../lineup/fixtures/lineup-page";
+import { getPlayers } from "./get-players";
+
+beforeAll(() => GlobalRegistrator.register());
+afterAll(() => GlobalRegistrator.unregister());
+
+// Suspected bug: on the saved page, Shaedon Sharpe's recent average shows "15.5↓" (an
+// under-performing arrow) and is read as NaN, so his most heavily weighted stat is dropped
+test.failing("a recent average shown with a trend arrow is read as its number", async () => {
+  loadLineupPage();
+
+  const players = await getPlayers();
+
+  expect(players.find((p) => p.playerName === "Shaedon Sharpe")?.last5Avg).toBe(15.5);
+});

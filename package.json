@@ -2,9 +2,12 @@
   "name": "fantasy-basketball",
   "module": "main.ts",
   "devDependencies": {
+    "@cloudflare/vitest-plugin": "^1.3.4",
     "@happy-dom/global-registrator": "^20.14.5",
     "@types/bun": "latest",
-    "web-ext": "^9.1.0"
+    "vitest": "^4.1.0",
+    "web-ext": "^9.1.0",
+    "wrangler": "4"
   },
   "peerDependencies": {
     "typescript": "^5.5.4"
@@ -22,5 +25,8 @@
     "sign": "web-ext sign --source-dir ./extension --artifacts-dir ./extension/signed --channel unlisted --api-key=$AMO_JWT_ISSUER --api-secret=$AMO_JWT_SECRET",
     "start:debug": "playwright test main.ts --debug"
   },
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "linkedom": "^0.18.13"
+  }
 }
