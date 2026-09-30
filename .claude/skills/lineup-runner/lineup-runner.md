@@ -19,6 +19,8 @@ Check in this order; stop once the failing run and its cause are found.
 
 Deploy only with `scripts/deploy-runner.sh`: it refuses within 90 min of a tip and keeps the cron trigger (plain `wrangler deploy` pauses cron ~30–45 min).
 
+A GitHub Actions watchdog pushes Worker alerts and "silent / alarm stuck / unreachable" to the user's ntfy topic (`how-it-works.md` §The watchdog, `operations.md` §Watchdog).
+
 `POST $LINEUP_RUNNER_URL/run` (same auth) runs the lineup now: only when the user asks.
 
 A bad save in progress: `PUT $LINEUP_RUNNER_URL/saves` with `{"enabled": false}` stops saving at once, no deploy.

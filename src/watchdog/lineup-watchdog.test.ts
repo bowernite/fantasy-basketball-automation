@@ -40,6 +40,16 @@ test("skips a Worker alert it already forwarded", async () => {
   expect(ntfy.published).toEqual([]);
 });
 
+test("ignores Worker alerts older than 6 hours, which ntfy may have dropped from its cache", async () => {
+  const ntfy = fakeServices({
+    alerts: [{ id: 3, at: "2026-10-20T11:30:00.000Z", title: "Lineup check failed", body: "Page had no lineup form", priority: 1, push: true }],
+  });
+
+  await runLineupWatchdog({ runnerUrl: RUNNER_URL, runToken: RUN_TOKEN, ntfyTopic: NTFY_TOPIC, now: NOW });
+
+  expect(ntfy.published).toEqual([]);
+});
+
 test.each([
   { priority: 2, push: true, ntfyPriority: 5 },
   { priority: 1, push: true, ntfyPriority: 4 },

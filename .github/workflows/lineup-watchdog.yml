@@ -3,6 +3,9 @@ name: Lineup watchdog
 # Pulls the lineup-runner Worker's /runs, /status and /alerts and pushes problems to ntfy (src/watchdog/lineup-watchdog.ts)
 # Logs are public: the script prints counts only, and URL, token and topic come from secrets
 on:
+  # GitHub starts schedules late, often 5-20 min, and more so on the hour
+  schedule:
+    - cron: "7,22,37,52 * * * *"
   workflow_dispatch:
     inputs:
       test:

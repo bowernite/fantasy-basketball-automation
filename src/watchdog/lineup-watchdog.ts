@@ -2,6 +2,8 @@ const SILENT_AFTER_MS = 75 * 60_000;
 const REPEAT_AFTER_MS = 3 * 60 * 60_000;
 const ALARM_GRACE_MS = 15 * 60_000;
 const FETCH_TIMEOUT_MS = 20_000;
+/** Well inside ntfy.sh's 12 h message cache, which is how already-forwarded alerts are recognized */
+const FORWARD_WINDOW_MS = 6 * 60 * 60_000;
 
 interface WorkerAlert {
   id: number;
@@ -34,8 +36,9 @@ export async function runLineupWatchdog({ runnerUrl, runToken, ntfyTopic, now = 
   try {
     const { runs, status, alerts } = await readRunner(runnerUrl, runToken);
     const newestRunAt = Date.parse(runs[0]?.startedAt ?? "");
-    const minutesSinceRun = Math.round((now.getTime() - newestRunAt) / 60_000);
-    if (!(now.getTime() - newestRunAt <= SILENT_AFTER_MS)) {
+    const ranRecently = now.getTime() - newestRunAt <= SILENT_AFTER_MS;
+    if (!ranRecently) {
+      const minutesSinceRun = Math.round((now.getTime() - newestRunAt) / 60_000);
       raise("Lineup runner silent", `No lineup run recorded in ${minutesSinceRun} min. Check the Worker (lineup-runner Skill)`);
     }
     if (status.alarm === null) raise("Lineup runner alarm stuck", "The Worker has no alarm set, and cron didn't re-arm it");
@@ -43,6 +46,7 @@ export async function runLineupWatchdog({ runnerUrl, runToken, ntfyTopic, now = 
       raise("Lineup runner alarm stuck", `The Worker's 5-min alarm was due at ${formatCentralTime(status.alarm)} and hasn't fired, and cron didn't re-arm it`);
     }
     for (const alert of alerts) {
+      if (now.getTime() - Date.parse(alert.at) > FORWARD_WINDOW_MS) continue;
       const alreadyForwarded = sent.some((message) => message.title === alert.title && message.time * 1000 >= Date.parse(alert.at));
       if (!alreadyForwarded) notifications.push({ title: alert.title, message: alert.body, priority: ntfyPriority(alert) });
     }

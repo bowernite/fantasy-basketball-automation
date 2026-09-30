@@ -1,13 +1,14 @@
 # Lineup runner: open items
 
-As of 2026-09-30: deployed and running every 5 min, saves **off**, alerts reach Trello only. One live save from the Worker (with restore) passed.
+As of 2026-09-30: deployed and running every 5 min, saves **off**. Alerts reach Trello, and the GitHub watchdog pushes them to ntfy (`how-it-works.md` §The watchdog). One live save from the Worker (with restore) passed.
 
 ## Needs the user
 
-1. **Pushover**: install it on the phone and sign up, then sign in at pushover.net in the agent browser. An agent then sets the secrets (`operations.md` §Secrets) and sends a test alert for the user to confirm. Until then nothing reaches the phone
+1. **Pushover**: install it on the phone and sign up, then sign in at pushover.net in the agent browser. An agent then sets the secrets (`operations.md` §Secrets) and sends a test alert for the user to confirm. Until then the phone gets only the watchdog's ntfy pushes, 5–35 min late
 2. **healthchecks.io check** for the dead-man (`operations.md` §Secrets)
 3. **Approve automated saves.** Gate: 1 and 2 live and a test alert confirmed on the phone
 4. **Manual edits vs hourly runs**: once saves are on, a manual lineup edit is overwritten within ~1 h. The user said to flag this for later; decide before relying on manual edits in season
+5. **Confirm the watchdog's test push** ("Lineup watchdog test", 9/30 6:53p CT) arrived on the phone
 
 ## Game-day tasks
 

@@ -30,8 +30,17 @@ Set with `bunx wrangler secret put <NAME>` from stdin, never in the repo or comm
 
 Pushover and healthchecks are unset until the user signs up (`open-items.md`); until then a channel with no secret records `{error: "… not set"}` and Trello still goes out. After setting either, send one test alert and have the user confirm it arrived. `NTFY_TOPIC` is unused: `bunx wrangler secret delete NTFY_TOPIC`.
 
+## Watchdog
+
+- The workflow's logs are public: the script prints counts only, and the Worker URL, token and ntfy topic are GitHub secrets `LINEUP_RUNNER_URL`, `LINEUP_RUNNER_TOKEN`, `NTFY_TOPIC` (`gh secret set <NAME>` from stdin, no trailing newline). Rotating `RUN_TOKEN` means updating `LINEUP_RUNNER_TOKEN` too, or the watchdog alerts "unreachable"
+- Runs: `gh run list --workflow lineup-watchdog.yml`. A failed run means it pushed something (or couldn't): read the topic, not the log
+- Test push: `gh workflow run lineup-watchdog.yml -f test=true` sends one "Lineup watchdog test"
+- Forced-failure tests and other deliberate failures land in `/alerts`, so the watchdog forwards them to the user's phone within ~30 min. Warn the user first, or point `NTFY_TOPIC` at a throwaway topic for the test and back after 6 h
+- Local run: `LINEUP_RUNNER_URL=… LINEUP_RUNNER_TOKEN=… NTFY_TOPIC=<throwaway> bun src/watchdog/lineup-watchdog.ts`. Read a topic with `curl -s "https://ntfy.sh/<topic>/json?poll=1&since=1h"`
+
 ## Tests
 
+- Watchdog: `CI=1 bun test src/watchdog`
 - `CI=1 bunx vitest run --silent=true src/worker` (`CI=1` stops empty inline snapshots from self-writing; bare `--silent` eats the next argument). Put the file path before `-u`, or `-u` applies to every file
 - `bun test` over the whole repo can hang: pass it directories (`src/page src/prioritization src/lineup src/utils src/optimizer`)
 - Fixtures: `src/lineup/fixtures/teampage-logged-in-fantasy-stats.html` (opening night, day 1) and `fetch-roster-week1-signed-in.json`; `src/worker/fixtures/` for ESPN. Scan any new capture for emails, cookies and tokens before adding it
