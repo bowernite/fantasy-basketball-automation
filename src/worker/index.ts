@@ -2,17 +2,27 @@ import { DurableObject } from "cloudflare:workers";
 import { type ApiRoster, decideLineup, type LineupDecision } from "./decide-lineup";
 import { fetchWithTimeout } from "./fetch-with-timeout";
 import { type DayTip, type LedgerEntry, parseGameTips, planTick, type TipTable } from "./lineup-schedule";
+import { type SaveResult, saveLineup } from "./save-lineup";
 
 const FLEAFLICKER_LOGIN_URL = "https://www.fleaflicker.com/nba/login";
 const PUSHOVER_URL = "https://api.pushover.net/1/messages.json";
+const PUSHOVER_MAX_MESSAGE_LENGTH = 1024;
 const TRELLO_CARDS_URL = "https://api.trello.com/1/cards";
 const ALERT_CHANNELS = ["pushover", "trello"] as const;
 const SESSION_COOKIE_KEY = "fleaflickerSessionCookie";
 const TIP_TABLES_KEY = "tipTables";
 const LINEUP_PERIODS_KEY = "lineupPeriods";
+const SAVES_ENABLED_KEY = "savesEnabled";
+const FAILED_LOGIN_KEY = "failedLogin";
+// Repeated failed logins risk a captcha or lockout, so they back off except shortly before a tip
+const LOGIN_RETRY_AFTER_MS = 30 * 60 * 1000;
+const LOGIN_RETRY_TIP_WINDOW_MS = 45 * 60 * 1000;
 // About two days of runs: enough to cover yesterday's late tips and today's targets
 const LEDGER_RUNS = 100;
+const KEPT_RUNS = 1000;
 const REPEAT_ALERT_AFTER_MS = 3 * 60 * 60 * 1000;
+const FORGET_ALERT_AFTER_MS = 24 * 60 * 60 * 1000;
+const SCHEDULE_START_DELAY_MS = 5 * 60 * 1000;
 
 export class LineupRunner extends DurableObject<Env> {
   constructor(ctx: DurableObjectState, env: Env) {
@@ -21,17 +31,21 @@ export class LineupRunner extends DurableObject<Env> {
   }
 
   // Cron can deliver a tick twice, and a tick, alarm and manual run can interleave while one awaits Fleaflicker
-  private tickInFlight = false;
+  private busy = false;
 
   async tick(trigger: "cron" | "alarm") {
-    if (this.tickInFlight) return;
-    this.tickInFlight = true;
+    if (this.busy) return;
+    this.busy = true;
     let healthy = false;
     try {
       healthy = await this.planAndRun(trigger);
     } finally {
-      this.tickInFlight = false;
-      if (this.env.HEALTHCHECK_URL) await fetchWithTimeout(healthy ? this.env.HEALTHCHECK_URL : `${this.env.HEALTHCHECK_URL}/fail`, { method: "POST" });
+      this.busy = false;
+      if (this.env.HEALTHCHECK_URL) {
+        await fetchWithTimeout(healthy ? this.env.HEALTHCHECK_URL : `${this.env.HEALTHCHECK_URL}/fail`, { method: "POST" }).catch((error) =>
+          console.error(JSON.stringify({ event: "deadManPingFailed", error: String(error) })),
+        );
+      }
     }
   }
 
@@ -50,6 +64,19 @@ export class LineupRunner extends DurableObject<Env> {
     return !record || listProblems(record).length === 0;
   }
 
+  // Only ticks re-arm the alarm, so a manual run starts the schedule when cron never has
+  async runManually() {
+    if (this.busy) return undefined;
+    this.busy = true;
+    try {
+      const record = await this.run("manual");
+      if (!(await this.ctx.storage.getAlarm())) await this.ctx.storage.setAlarm(Date.now() + SCHEDULE_START_DELAY_MS);
+      return record;
+    } finally {
+      this.busy = false;
+    }
+  }
+
   async run(trigger: RunRecord["trigger"] = "manual", days?: number[]): Promise<RunRecord> {
     const record: RunRecord = { trigger, startedAt: new Date().toISOString(), days: [] };
     try {
@@ -59,13 +86,21 @@ export class LineupRunner extends DurableObject<Env> {
     }
     const problems = listProblems(record);
     if (problems.length > 0) record.alert = await this.alertFailure(trigger, problems).catch((error) => ({ error: String(error) }));
+    const warnings = record.days.flatMap(({ decision }) => (decision?.ok ? decision.warnings : []));
+    if (warnings.length > 0) record.warningAlert = await this.alertWarnings(trigger, warnings).catch((error) => ({ error: String(error) }));
     this.ctx.storage.sql.exec("INSERT INTO runs (record) VALUES (?)", JSON.stringify(record));
+    this.ctx.storage.sql.exec("DELETE FROM runs WHERE id <= (SELECT MAX(id) FROM runs) - ?", KEPT_RUNS);
     return record;
   }
 
   private async alertFailure(trigger: RunRecord["trigger"], problems: string[]) {
     const alert: Alert = { title: `Lineup run (${trigger}) failed`, body: problems.map((problem) => `- ${problem}`).join("\n"), priority: 1 };
-    return this.notify(alert, { key: "lastAlert", fingerprint: problems.join("\n"), repeatAfterMs: REPEAT_ALERT_AFTER_MS });
+    return this.notify(alert, { key: "failureAlerts", fingerprint: problems.join("\n"), repeatAfterMs: REPEAT_ALERT_AFTER_MS });
+  }
+
+  private async alertWarnings(trigger: RunRecord["trigger"], warnings: string[]) {
+    const alert: Alert = { title: `Lineup run (${trigger}) has warnings`, body: warnings.map((warning) => `- ${warning}`).join("\n"), priority: 0 };
+    return this.notify(alert, { key: "warningAlerts", fingerprint: warnings.join("\n"), repeatAfterMs: REPEAT_ALERT_AFTER_MS });
   }
 
   private async alertMissedTip({ at, players }: DayTip) {
@@ -75,21 +110,23 @@ export class LineupRunner extends DurableObject<Env> {
       body: `No successful run since 45 min before the tip. Check the lineup now.\nPlayers: ${players.join(", ")}`,
       priority: 2,
     };
-    const sends = await this.notify(alert, { key: `missedTip:${at}`, fingerprint: at, repeatAfterMs: Infinity });
+    const sends = await this.notify(alert, { key: `missedTipAlerts:${at}`, fingerprint: at, repeatAfterMs: Infinity });
     console.log(JSON.stringify({ event: "missedTipAlert", at, sends }));
   }
 
   private async notify(alert: Alert, dedupe: { key: string; fingerprint: string; repeatAfterMs: number }) {
-    const sends: RunRecord["alert"] = {};
+    const sends: AlertSends = {};
     for (const channel of ALERT_CHANNELS) {
-      const lastAlertKey = `${dedupe.key}:${channel}`;
-      const lastAlert = await this.ctx.storage.get<{ fingerprint: string; at: number; cardId?: string }>(lastAlertKey);
-      const sameFailure = lastAlert?.fingerprint === dedupe.fingerprint;
-      if (sameFailure && Date.now() - lastAlert.at < dedupe.repeatAfterMs) continue;
-      const send = channel === "pushover" ? this.sendPushover(alert) : this.postToTrello(alert, sameFailure ? lastAlert.cardId : undefined);
+      const sentAlertsKey = `${dedupe.key}:${channel}`;
+      const sentAlerts = (await this.ctx.storage.get<Record<string, { at: number; cardId?: string }>>(sentAlertsKey)) ?? {};
+      const lastAlert = sentAlerts[dedupe.fingerprint];
+      if (lastAlert && Date.now() - lastAlert.at < dedupe.repeatAfterMs) continue;
+      const send = channel === "pushover" ? this.sendPushover(alert) : this.postToTrello(alert, lastAlert?.cardId);
       const { accepted, cardId, ...sendRecord } = await send.catch((error): AlertOutcome => ({ accepted: false, error: String(error) }));
       sends[channel] = sendRecord;
-      if (accepted) await this.ctx.storage.put(lastAlertKey, { fingerprint: dedupe.fingerprint, at: Date.now(), cardId });
+      if (!accepted) continue;
+      const recentAlerts = Object.entries(sentAlerts).filter(([, { at }]) => Date.now() - at < FORGET_ALERT_AFTER_MS);
+      await this.ctx.storage.put(sentAlertsKey, { ...Object.fromEntries(recentAlerts), [dedupe.fingerprint]: { at: Date.now(), cardId } });
     }
     return sends;
   }
@@ -98,9 +135,10 @@ export class LineupRunner extends DurableObject<Env> {
     if (!this.env.PUSHOVER_TOKEN || !this.env.PUSHOVER_USER) return { accepted: false, error: "PUSHOVER_TOKEN or PUSHOVER_USER not set" };
     // Emergency priority re-alerts every `retry` seconds until acknowledged or `expire` passes
     const emergency = priority === 2 ? { retry: "60", expire: "1800" } : {};
+    const message = body.length > PUSHOVER_MAX_MESSAGE_LENGTH ? `${body.slice(0, PUSHOVER_MAX_MESSAGE_LENGTH - 1)}…` : body;
     const response = await fetchWithTimeout(PUSHOVER_URL, {
       method: "POST",
-      body: new URLSearchParams({ token: this.env.PUSHOVER_TOKEN, user: this.env.PUSHOVER_USER, title, message: body, url: this.env.LINEUP_URL, priority: String(priority), ...emergency }),
+      body: new URLSearchParams({ token: this.env.PUSHOVER_TOKEN, user: this.env.PUSHOVER_USER, title, message, url: this.env.LINEUP_URL, priority: String(priority), ...emergency }),
     });
     const accepted = response.ok && (await response.clone().json<{ status: number }>()).status === 1;
     return summarizeAlertResponse(response, accepted);
@@ -133,13 +171,14 @@ export class LineupRunner extends DurableObject<Env> {
     for (const day of days) {
       let lineupPage = await this.fetchLineupPage(day);
       if (!lineupPage.loggedIn && !record.login) {
-        record.login = await this.logIn();
-        lineupPage = await this.fetchLineupPage(day);
+        record.login = await this.logInUnlessBackingOff();
+        if (record.login.gotSessionCookie) lineupPage = await this.fetchLineupPage(day);
       }
       const { html, ...pageSummary } = lineupPage;
       const dayCheck: DayCheck = { day, lineupPage: pageSummary };
       record.days.push(dayCheck);
       dayCheck.decision = await decideLineup(html, await this.fetchRoster(day));
+      if (dayCheck.decision.ok && (await this.ctx.storage.get<boolean>(SAVES_ENABLED_KEY))) dayCheck.save = await saveLineup(dayCheck.decision, await this.sessionHeaders());
       if (pageSummary.loggedIn) await this.storeTipTable({ day, fetchedAt: record.startedAt, tips: parseGameTips(html) });
     }
   }
@@ -173,6 +212,11 @@ export class LineupRunner extends DurableObject<Env> {
     return sessionCookie ? { Cookie: sessionCookie } : {};
   }
 
+  async setSaves(enabled: boolean) {
+    await this.ctx.storage.put(SAVES_ENABLED_KEY, enabled);
+    return { enabled };
+  }
+
   recentRuns(limit = 20): RunRecord[] {
     return this.ctx.storage.sql
       .exec<{ record: string }>("SELECT record FROM runs ORDER BY id DESC LIMIT ?", limit)
@@ -190,6 +234,17 @@ export class LineupRunner extends DurableObject<Env> {
     const html = await response.text();
     const loggedIn = html.includes('href="/logout"');
     return { status: response.status, loggedIn, html };
+  }
+
+  private async logInUnlessBackingOff(): Promise<LoginOutcome> {
+    const failedLogin = await this.ctx.storage.get<{ at: number; outcome: LoginOutcome }>(FAILED_LOGIN_KEY);
+    const tipTables = (await this.ctx.storage.get<TipTable[]>(TIP_TABLES_KEY)) ?? [];
+    const backingOff = failedLogin && Date.now() - failedLogin.at < LOGIN_RETRY_AFTER_MS && !hasTipWithin(tipTables, LOGIN_RETRY_TIP_WINDOW_MS);
+    if (backingOff) return { ...failedLogin.outcome, backedOff: true };
+    const outcome = await this.logIn();
+    if (outcome.gotSessionCookie) await this.ctx.storage.delete(FAILED_LOGIN_KEY);
+    else await this.ctx.storage.put(FAILED_LOGIN_KEY, { at: Date.now(), outcome });
+    return outcome;
   }
 
   // A failed login re-renders the form with the submitted email and password, so its body is never read
@@ -213,8 +268,15 @@ export default {
     if (!hasRunToken(request, env.RUN_TOKEN)) return new Response("Unauthorized", { status: 401 });
     const { pathname } = new URL(request.url);
     const runner = env.RUNNER.getByName("primary");
-    if (request.method === "POST" && pathname === "/run") return Response.json(await runner.run());
+    if (request.method === "POST" && pathname === "/run") {
+      const record = await runner.runManually();
+      return record ? Response.json(record) : new Response("A run is already in progress", { status: 409 });
+    }
     if (request.method === "GET" && pathname === "/runs") return Response.json(await runner.recentRuns());
+    if (request.method === "PUT" && pathname === "/saves") {
+      const { enabled } = await request.json<{ enabled?: unknown }>();
+      return Response.json(await runner.setSaves(enabled === true));
+    }
     return new Response("Not found", { status: 404 });
   },
 
@@ -226,19 +288,24 @@ export default {
 type RunRecord = {
   trigger: "manual" | "alarm" | "cron";
   startedAt: string;
-  login?: { status: number; gotSessionCookie: boolean };
+  login?: LoginOutcome;
   days: DayCheck[];
   error?: string;
-  alert?: Partial<Record<(typeof ALERT_CHANNELS)[number], AlertSend>>;
+  alert?: AlertSends;
+  warningAlert?: AlertSends;
 };
 
-type Alert = { title: string; body: string; priority: 1 | 2 };
+type AlertSends = Partial<Record<(typeof ALERT_CHANNELS)[number], AlertSend>>;
+
+type LoginOutcome = { status: number; gotSessionCookie: boolean; backedOff?: true };
+
+type Alert = { title: string; body: string; priority: 0 | 1 | 2 };
 
 type AlertSend = { status: number; response?: string } | { error: string };
 
 type AlertOutcome = AlertSend & { accepted: boolean; cardId?: string };
 
-type DayCheck = { day: number; lineupPage: { status: number; loggedIn: boolean }; decision?: LineupDecision };
+type DayCheck = { day: number; lineupPage: { status: number; loggedIn: boolean }; decision?: LineupDecision; save?: SaveResult };
 
 type LineupPeriod = { ordinal: number; low: { startEpochMilli: string } };
 
@@ -253,18 +320,29 @@ function listProblems({ login, days, error }: RunRecord) {
   return [...loginProblems, ...days.flatMap(listDayProblems), ...(error ? [error] : [])];
 }
 
-function listDayProblems({ lineupPage, decision }: DayCheck) {
+function listDayProblems({ lineupPage, decision, save }: DayCheck) {
   const problems: string[] = [];
   if (lineupPage.status !== 200) problems.push(`Lineup page returned HTTP ${lineupPage.status}`);
   if (decision && !decision.ok) problems.push(...decision.errors);
+  problems.push(...(save?.problems ?? []));
   return problems;
+}
+
+function hasTipWithin(tipTables: TipTable[], windowMs: number) {
+  return tipTables.some(({ tips }) =>
+    tips.some(({ at }) => {
+      const untilTipMs = Date.parse(at) - Date.now();
+      return untilTipMs >= 0 && untilTipMs <= windowMs;
+    }),
+  );
 }
 
 async function summarizeAlertResponse(response: Response, accepted: boolean) {
   return accepted ? { accepted, status: response.status } : { accepted, status: response.status, response: (await response.text()).slice(0, 200) };
 }
 
-function hasRunToken(request: Request, runToken: string) {
+function hasRunToken(request: Request, runToken: string | undefined) {
+  if (!runToken) return false;
   const given = new TextEncoder().encode(request.headers.get("Authorization") ?? "");
   const expected = new TextEncoder().encode(`Bearer ${runToken}`);
   return given.byteLength === expected.byteLength && crypto.subtle.timingSafeEqual(given, expected);

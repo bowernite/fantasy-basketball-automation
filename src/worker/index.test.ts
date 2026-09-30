@@ -1,5 +1,6 @@
 import { env, exports } from "cloudflare:workers";
 import { createExecutionContext, createScheduledController, runDurableObjectAlarm, runInDurableObject, waitOnExecutionContext } from "cloudflare:test";
+import { parseHTML } from "linkedom";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import openingNightRoster from "../lineup/fixtures/fetch-roster-week1-signed-in.json";
 import fantasyStatsPage from "../lineup/fixtures/teampage-logged-in-fantasy-stats.html?raw";
@@ -8,10 +9,18 @@ import worker from "./index";
 
 const LOGGED_OUT_PAGE = `<html><body><a class="btn" href="/nba/login">Log In</a></body></html>`;
 const LOGGED_IN_PAGE = `<html><body><a href="/logout">Sign Out</a><select name="status123"></select></body></html>`;
+// Captured from a real accepted save; its `_gAlert` decodes to "Lineup set successfully."
+const ACCEPTED_SAVE_LOCATION =
+  "https://www.fleaflicker.com/nba/leagues/30579/teams/161025?_fm=eJxjYGBc8IX3_mFGAAzsA0Y&week=1&_gAlert=eJxjYGBc8IX3_uE1bxlYyxUYGMFQwiczL7W0QKE4tUShuDQ5ObW4OK00J6dSDwBMBA7h";
 
-afterEach(() => {
+// `primary` lives for the whole file; clear its session, dedupe and backoff state (run rows stay)
+afterEach(async () => {
   vi.restoreAllMocks();
   vi.useRealTimers();
+  await runInDurableObject(env.RUNNER.getByName("primary"), async (_, state) => {
+    await state.storage.delete([...(await state.storage.list()).keys()]);
+    await state.storage.deleteAlarm();
+  });
 });
 
 describe("lineup runner", () => {
@@ -74,6 +83,30 @@ describe("lineup runner", () => {
     expect(record.days[0].lineupPage).toEqual({ status: 200, loggedIn: true });
     expect(record.days[0].decision).toMatchObject({ ok: true, formAction: "/nba/leagues/30579/teams/161025" });
     expect(lineupSaves).toEqual([]);
+  });
+
+  it("saves the decided lineup once saves are turned on", async () => {
+    const { lineupSaves } = stubLineupSaves();
+
+    expect(await (await setSaves(true)).json()).toEqual({ enabled: true });
+    const record = await (await triggerRun()).json<RunRecord>();
+
+    expect(lineupSaves).toHaveLength(1);
+    expect(record.days[0].save).toEqual({ posted: true, problems: [] });
+  });
+
+  it("alerts the owner when the reloaded page doesn't show the saved lineup", async () => {
+    const { alerts } = stubLineupSaves({ applySaves: false });
+
+    await setSaves(true);
+    await triggerRun();
+
+    expect(alerts.at(-1)?.message).toMatchInlineSnapshot(`
+      "- After saving, Fleaflicker shows Naz Reid in C, not Bench
+      - After saving, Fleaflicker shows John Collins in F/C, not C
+      - After saving, Fleaflicker shows Neemias Queta in ANY, not F/C
+      - After saving, Fleaflicker shows Josh Giddey in Bench, not ANY"
+    `);
   });
 
   it("sets the league's current day, which runs until 6a ET the next morning", async () => {
@@ -189,6 +222,17 @@ describe("lineup runner", () => {
     expect(alerts).toHaveLength(1);
   });
 
+  it("alerts once per failure while two failures take turns", async () => {
+    let failure = "";
+    const { alerts } = stubFleaflicker(() => {
+      throw new TypeError(failure);
+    });
+
+    for (failure of ["DNS lookup failed", "Connection refused", "DNS lookup failed", "Connection refused"]) await triggerRun();
+
+    expect(alerts.map(({ message }) => message)).toEqual(["- TypeError: DNS lookup failed", "- TypeError: Connection refused"]);
+  });
+
   it("alerts again when the same failure is still happening hours later", async () => {
     const { alerts } = stubFleaflicker(() => {
       throw new TypeError("Connection reset");
@@ -288,6 +332,33 @@ describe("lineup runner", () => {
     expect(latest).toMatchObject({ error: "TypeError: Socket closed", alert: { pushover: { error: "TypeError: Pushover unreachable" } } });
   });
 
+  it("starts the schedule on a manual run when nothing is scheduled", async () => {
+    stubFleaflicker(fakeFleaflicker);
+    const runner = env.RUNNER.getByName("primary");
+    await runInDurableObject(runner, (_, state) => state.storage.deleteAlarm());
+
+    await triggerRun();
+
+    expect(await runDurableObjectAlarm(runner)).toBe(true);
+    const [latest] = await listRuns();
+    expect(latest).toMatchObject({ trigger: "alarm" });
+  });
+
+  it("turns away a manual run while a scheduled one is in progress", async () => {
+    stubFleaflicker(async (request) => {
+      await new Promise((resolve) => setTimeout(resolve, 10));
+      return fakeFleaflicker(request);
+    });
+    const [latestBefore] = await listRuns();
+
+    const [, response] = await Promise.all([env.RUNNER.getByName("primary").tick("cron"), triggerRun()]);
+
+    expect(response.status).toBe(409);
+    const [latest, previous] = await listRuns();
+    expect(latest.trigger).toBe("cron");
+    expect(previous).toEqual(latestBefore);
+  });
+
   it("refuses to run without the run token", async () => {
     stubFleaflicker(() => new Response(LOGGED_OUT_PAGE));
     const recordsBefore = await listRuns();
@@ -372,14 +443,16 @@ describe("scheduled checks", () => {
     expect(latest).toMatchObject({ trigger: "alarm", startedAt: "2026-10-20T18:20:00.000Z", days: [{ day: 1 }] });
   });
 
-  it.skip("gives up on a Fleaflicker request that never answers, then ticks again", async () => {
+  it("gives up on a Fleaflicker request that never answers, then ticks again", async () => {
     vi.useFakeTimers({ toFake: ["Date", "setTimeout"], now: new Date("2026-10-20T15:10:00Z") });
     let fleaflickerHangs = true;
     stubFleaflicker((request) => (fleaflickerHangs ? new Promise((_, reject) => request.signal.addEventListener("abort", () => reject(request.signal.reason))) : fakeFleaflickerSeason(request)));
     const runner = freshRunner();
 
-    const hungTick = runner.tick("cron");
-    await vi.advanceTimersByTimeAsync(60_000);
+    let hungTickDone = false;
+    const hungTick = runner.tick("cron").finally(() => (hungTickDone = true));
+    // The Durable Object shares this isolate; its timers only fire when the clock is advanced from its own I/O context
+    for (let second = 0; second < 60 && !hungTickDone; second++) await runInDurableObject(runner, () => vi.advanceTimersByTimeAsync(1000));
     await hungTick;
     fleaflickerHangs = false;
     await runner.tick("cron");
@@ -469,6 +542,93 @@ describe("scheduled checks", () => {
     expect(alerts.map(({ title, priority }) => ({ title, priority }))).toEqual([{ title: "Lineup run (cron) failed", priority: "1" }]);
   });
 
+  it("waits 30 min before trying a failed login again", async () => {
+    vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-20T15:10:00Z") });
+    const loginAttempts: string[] = [];
+    stubFleaflicker(async (request) => {
+      if (request.method === "POST") loginAttempts.push(new Date().toISOString());
+      return request.method === "POST" ? new Response("<form>Your password is incorrect</form>") : new Response(LOGGED_OUT_PAGE);
+    });
+    const runner = freshRunner();
+
+    for (const at of ["15:10", "15:15", "15:35", "15:40"]) {
+      vi.setSystemTime(new Date(`2026-10-20T${at}:00Z`));
+      await runner.tick("cron");
+    }
+
+    expect(loginAttempts).toEqual(["2026-10-20T15:10:00.000Z", "2026-10-20T15:40:00.000Z"]);
+    expect((await runner.recentRuns()).map(({ login }) => login)).toMatchInlineSnapshot(`
+      [
+        {
+          "gotSessionCookie": false,
+          "status": 200,
+        },
+        {
+          "backedOff": true,
+          "gotSessionCookie": false,
+          "status": 200,
+        },
+        {
+          "backedOff": true,
+          "gotSessionCookie": false,
+          "status": 200,
+        },
+        {
+          "gotSessionCookie": false,
+          "status": 200,
+        },
+      ]
+    `);
+  });
+
+  it("keeps trying a failed login on every tick within 45 min of a tip", async () => {
+    vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-20T18:06:00Z") });
+    let passwordChanged = false;
+    const loginAttempts: string[] = [];
+    stubFleaflicker(async (request) => {
+      if (!passwordChanged) return fakeFleaflickerSeason(request);
+      if (request.method === "POST") loginAttempts.push(new Date().toISOString());
+      return request.method === "POST" ? new Response("<form>Your password is incorrect</form>") : new Response(LOGGED_OUT_PAGE);
+    });
+    const runner = freshRunner();
+    await runner.tick("cron");
+
+    passwordChanged = true;
+    for (const at of ["18:21", "18:26"]) {
+      vi.setSystemTime(new Date(`2026-10-20T${at}:00Z`));
+      await runner.tick("cron");
+    }
+
+    expect(loginAttempts).toEqual(["2026-10-20T18:21:00.000Z", "2026-10-20T18:26:00.000Z"]);
+  });
+
+  it("sends a general alert when the page lacks matchups, without treating the run as failed", async () => {
+    vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-20T15:10:00Z") });
+    const { alerts } = stubFleaflicker(async (request) => {
+      const response = await fakeFleaflickerSeason(request);
+      return new Response((await response.text()).replace('"tooltips":[', '"tooltips":[],"renamedTooltips":['), response);
+    });
+    const runner = freshRunner();
+
+    await runner.tick("cron");
+    vi.setSystemTime(new Date("2026-10-20T15:15:00Z"));
+    await runner.tick("cron");
+
+    const runs = await runner.recentRuns();
+    expect(runs).toHaveLength(1);
+    expect(runs[0].warningAlert).toEqual({ pushover: { status: 200 }, trello: { status: 200 } });
+    expect(alerts.map(({ title, priority }) => ({ title, priority }))).toEqual([{ title: "Lineup run (cron) has warnings", priority: "0" }]);
+    expect(alerts[0].message.split("\n")[0]).toMatchInlineSnapshot(`"- Falling back to DOM scrape for Cade Cunningham opponent info"`);
+  });
+
+  it("finishes the tick when the dead-man monitor is unreachable", async () => {
+    vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-20T15:10:00Z") });
+    stubFleaflicker(fakeFleaflickerSeason, { deadManUp: false });
+    const runner = freshRunner();
+
+    await expect(runner.tick("cron")).resolves.toBeUndefined();
+  });
+
   it("checks in with the dead-man monitor on every tick, not on manual runs", async () => {
     vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-20T15:10:00Z") });
     let fleaflickerDown = false;
@@ -493,9 +653,15 @@ describe("scheduled checks", () => {
 type RunRecord = {
   trigger: "manual" | "alarm" | "cron";
   login?: { status: number; gotSessionCookie: boolean };
-  days: { day: number; lineupPage: { status: number; loggedIn: boolean }; decision?: { ok: boolean; formAction?: string; errors?: string[] } }[];
+  days: {
+    day: number;
+    lineupPage: { status: number; loggedIn: boolean };
+    decision?: { ok: boolean; formAction?: string; errors?: string[] };
+    save?: { posted: boolean; problems: string[] };
+  }[];
   error?: string;
   alert?: Record<"pushover" | "trello", { status: number; response?: string } | { error: string }>;
+  warningAlert?: Record<"pushover" | "trello", { status: number; response?: string } | { error: string }>;
 };
 
 function freshRunner() {
@@ -514,6 +680,40 @@ function triggerRun() {
     method: "POST",
     headers: { Authorization: "Bearer test-run-token" },
   });
+}
+
+function setSaves(enabled: boolean) {
+  return exports.default.fetch("https://runner.test/saves", {
+    method: "PUT",
+    headers: { Authorization: "Bearer test-run-token" },
+    body: JSON.stringify({ enabled }),
+  });
+}
+
+// Opening night's page, which saves posted lineups onto itself like Fleaflicker does for a signed-in owner
+function stubLineupSaves({ applySaves = true } = {}) {
+  const lineupSaves: string[] = [];
+  let page = fantasyStatsPage;
+  const fakes = stubFleaflicker(async (request) => {
+    const { pathname, searchParams } = new URL(request.url);
+    if (request.method === "POST" && pathname !== "/nba/login") {
+      const body = await request.text();
+      lineupSaves.push(body);
+      if (applySaves) page = withSlots(page, body);
+      return new Response(null, { status: 303, headers: { Location: ACCEPTED_SAVE_LOCATION } });
+    }
+    return fakeFleaflicker(request, searchParams.get("statType") === "0" ? page : seasonStatsPage);
+  });
+  return { ...fakes, lineupSaves };
+}
+
+function withSlots(html: string, body: string) {
+  const { document } = parseHTML(html);
+  for (const [name, value] of new URLSearchParams(body)) {
+    if (!name.startsWith("status")) continue;
+    for (const option of document.querySelectorAll(`select[name="${name}"] option`)) option.toggleAttribute("selected", option.getAttribute("value") === value);
+  }
+  return document.toString();
 }
 
 async function fakeFleaflicker(request: Request, loggedInPage = LOGGED_IN_PAGE) {
@@ -538,7 +738,7 @@ function fakeFleaflickerSeason(request: Request) {
   return fakeFleaflicker(request, page);
 }
 
-function stubFleaflicker(respond: (request: Request) => Response | Promise<Response>, { pushoverStatus = () => 200, trelloStatus = () => 200, trelloCardArchived = () => false, rosterApiUp = () => true } = {}) {
+function stubFleaflicker(respond: (request: Request) => Response | Promise<Response>, { pushoverStatus = () => 200, trelloStatus = () => 200, trelloCardArchived = () => false, rosterApiUp = () => true, deadManUp = true } = {}) {
   const deadManPings: string[] = [];
   const alerts: Record<string, string>[] = [];
   const cards: { list: string; name: string; desc: string; authorization: string | null }[] = [];
@@ -552,7 +752,9 @@ function stubFleaflicker(respond: (request: Request) => Response | Promise<Respo
     }
     if (hostname === "www.fleaflicker.com") return respond(request);
     if (hostname === "api.pushover.net") {
-      alerts.push(Object.fromEntries(new URLSearchParams(await request.text())));
+      const alert = Object.fromEntries(new URLSearchParams(await request.text()));
+      alerts.push(alert);
+      if (alert.message.length > 1024) return Response.json({ message: "cannot be longer than 1024 characters", status: 0 }, { status: 400 });
       const status = pushoverStatus();
       return status === 200 ? Response.json({ status: 1, request: "r1" }) : Response.json({ status: 0, errors: ["application is over its message limit"] }, { status });
     }
@@ -570,6 +772,7 @@ function stubFleaflicker(respond: (request: Request) => Response | Promise<Respo
     const cardLookup = pathname.match(/^\/1\/cards\/([^/]+)$/);
     if (hostname === "api.trello.com" && cardLookup) return Response.json({ id: cardLookup[1], closed: trelloCardArchived() });
     if (hostname === "hc-ping.com") {
+      if (!deadManUp) throw new TypeError("hc-ping.com unreachable");
       deadManPings.push(pathname);
       return new Response("OK");
     }

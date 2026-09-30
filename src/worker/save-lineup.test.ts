@@ -12,6 +12,7 @@ const ACCEPTED_SAVE_LOCATION =
 
 afterEach(() => {
   vi.restoreAllMocks();
+  vi.useRealTimers();
 });
 
 describe("saving a decided lineup", () => {
@@ -215,6 +216,28 @@ describe("saving a decided lineup", () => {
       ]
     `);
   });
+
+  it("gives up on a save that never answers and still checks the reloaded page", async () => {
+    vi.useFakeTimers({ toFake: ["setTimeout"] });
+    const decision = await decideOpeningNight();
+    fakeFleaflicker({
+      onSave: (_fleaflicker, _body, request) => new Promise((_, reject) => request.signal.addEventListener("abort", () => reject(request.signal.reason))),
+    });
+
+    const save = saveLineup(decision, SESSION);
+    await vi.advanceTimersByTimeAsync(60_000);
+    const result = await save;
+
+    expect(result.problems).toMatchInlineSnapshot(`
+      [
+        "Lineup save request failed: Error: Request to www.fleaflicker.com timed out after 20 s",
+        "After saving, Fleaflicker shows Naz Reid in C, not Bench",
+        "After saving, Fleaflicker shows John Collins in F/C, not C",
+        "After saving, Fleaflicker shows Neemias Queta in ANY, not F/C",
+        "After saving, Fleaflicker shows Josh Giddey in Bench, not ANY",
+      ]
+    `);
+  });
 });
 
 async function decideOpeningNight() {
@@ -227,7 +250,7 @@ async function decideOpeningNight() {
 function fakeFleaflicker({
   onSave = acceptSave,
   onReload = (fleaflicker) => new Response(fleaflicker.page),
-}: { onSave?: (fleaflicker: FakeFleaflicker, body: string) => Response; onReload?: (fleaflicker: FakeFleaflicker) => Response } = {}) {
+}: { onSave?: (fleaflicker: FakeFleaflicker, body: string, request: Request) => Response | Promise<Response>; onReload?: (fleaflicker: FakeFleaflicker) => Response } = {}) {
   const fleaflicker: FakeFleaflicker = { page: openingNightPage, posts: [] };
   vi.spyOn(globalThis, "fetch").mockImplementation(async (input, init) => {
     const request = new Request(input, init);
@@ -235,7 +258,7 @@ function fakeFleaflicker({
     if (request.method === "GET") return onReload(fleaflicker);
     const body = await request.text();
     fleaflicker.posts.push(body);
-    return onSave(fleaflicker, body);
+    return onSave(fleaflicker, body, request);
   });
   return fleaflicker;
 }

@@ -1,5 +1,6 @@
 import { parseHTML } from "linkedom";
 import type { LineupDecision } from "./decide-lineup";
+import { fetchWithTimeout } from "./fetch-with-timeout";
 
 const FLEAFLICKER_ORIGIN = "https://www.fleaflicker.com";
 const SAVED_MESSAGE = "Lineup set successfully.";
@@ -10,7 +11,7 @@ export async function saveLineup(decision: Extract<LineupDecision, { ok: true }>
   if (decision.changes.length === 0) return { posted: false, problems: [] };
   const lineupUrl = `${FLEAFLICKER_ORIGIN}${decision.formAction}`;
   // The save can land even when its response is lost, so the reload below runs either way
-  const problems = await fetch(lineupUrl, {
+  const problems = await fetchWithTimeout(lineupUrl, {
     method: "POST",
     headers: { ...sessionHeaders, "Content-Type": "application/x-www-form-urlencoded", Origin: FLEAFLICKER_ORIGIN, Referer: lineupUrl },
     body: decision.body,
@@ -19,7 +20,7 @@ export async function saveLineup(decision: Extract<LineupDecision, { ok: true }>
     .then(checkSaveResponse, (error) => [`Lineup save request failed: ${error}`])
     .catch((error) => [`Couldn't read Fleaflicker's save response: ${error}`]);
   const postedFields = new URLSearchParams(decision.body);
-  const verifyProblems = await fetch(`${lineupUrl}?statType=0&week=${postedFields.get("week")}`, { headers: sessionHeaders })
+  const verifyProblems = await fetchWithTimeout(`${lineupUrl}?statType=0&week=${postedFields.get("week")}`, { headers: sessionHeaders })
     .then((reload) => verifyReload(reload, postedFields))
     .catch((error) => [`Couldn't verify the save: ${error}`]);
   problems.push(...verifyProblems);
