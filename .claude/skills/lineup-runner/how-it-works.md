@@ -17,7 +17,7 @@ The goal: the user's lineup is set optimally and reliably for every game, with n
 3. `decideLineup()`: runs the extension's `setLineup()` on the page, parsed with linkedom plus a small form-control shim, then serializes the whole form and checks invariants. It fails closed on an error banner, no form, page vs API disagreement, an empty or over-filled slot, or a select with no slot chosen
 4. When saves are on and something changed: `saveLineup()` POSTs the whole form, then reloads the page and diffs every posted slot. No POST within 3 min of a tip
 5. After every day is saved: the ESPN injury cross-check (alert only)
-6. Record to DO SQLite (`GET /runs`), alert on problems or warnings
+6. Record to DO SQLite (`GET /runs`), alert on problems or warnings. A day with problems, or the day's first check with locked rows, also keeps its page and roster (`GET /captures`), since in-game markup is gone by the next day
 
 ## Decisions and why
 
@@ -28,7 +28,7 @@ The goal: the user's lineup is set optimally and reliably for every game, with n
 - **Verify by reload, never by the save response**: a rejected save re-renders the form with the rejected values
 - **ESPN is a cross-check, not a scoring input**: it only has Out / Day-To-Day and is UA-gated. Its value is catching Fleaflicker's stale OUT/OFS tags, which score ×0. Revisit an OUT-only override after opening-week data (`open-items.md`)
 - **Questionable players keep the ×0.5 expected-value model** (`src/prioritization/injury-adjustments.ts`). Timing is the fix: T-40/T-15 runs see most Q players resolved
-- **Alerts**: urgent → Pushover (priority 1 when a tip is ≤3 h away, 2 for a missed tip) and Trello; general → a Trello card in the user's To-Do Inbox, comment on the open card on repeats. ntfy can't be reached from Workers (shared egress IPs hit its per-IP quota; 522s). Trello cards made with the user's own token never notify him, so Trello is never the only urgent channel. A healthchecks.io ping each tick is the dead-man for "the Worker stopped"
+- **Alerts**: urgent → Pushover (priority 1 when a tip is ≤3 h away, 2 for a missed tip) and Trello; general → a Trello card in the user's To-Do Inbox, comment on the open card on repeats. ntfy can't be reached from Workers (shared egress IPs hit its per-IP quota; 522s). Trello cards made with the user's own token never notify him, so Trello is never the only urgent channel. A healthchecks.io ping each tick is the dead-man for "the Worker stopped". Every alert is also logged on the channels' dedupe schedule, delivered or not, and served on `GET /alerts`, so an outside watchdog (e.g. a GitHub Actions job pushing to ntfy) can pull and forward it with no credentials in the Worker
 - **Failed logins and failed saves back off 30 min** except within 45 min of a tip, to avoid a captcha or lockout
 - **No runtime self-healing**: a failure alerts, and a human merges any fix. Code that rewrites itself while writing the user's lineup is the wrong risk on a public repo
 - **Saves are a runtime switch** (`PUT /saves`, DO storage, default off), so turning them off needs no deploy

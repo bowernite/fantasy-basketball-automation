@@ -1,0 +1,33 @@
+name: Lineup watchdog
+
+# Pulls the lineup-runner Worker's /runs, /status and /alerts and pushes problems to ntfy (src/watchdog/lineup-watchdog.ts)
+# Logs are public: the script prints counts only, and URL, token and topic come from secrets
+on:
+  workflow_dispatch:
+    inputs:
+      test:
+        description: Send one test push instead of checking the Worker
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency: lineup-watchdog
+
+jobs:
+  watchdog:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          sparse-checkout: src/watchdog
+          persist-credentials: false
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+      - name: Check the Worker and push problems
+        env:
+          LINEUP_RUNNER_URL: ${{ secrets.LINEUP_RUNNER_URL }}
+          LINEUP_RUNNER_TOKEN: ${{ secrets.LINEUP_RUNNER_TOKEN }}
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+        run: bun src/watchdog/lineup-watchdog.ts ${{ inputs.test && '--test' || '' }}

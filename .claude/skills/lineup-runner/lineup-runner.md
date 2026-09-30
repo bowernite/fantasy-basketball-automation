@@ -15,6 +15,8 @@ Check in this order; stop once the failing run and its cause are found.
 
 `GET $LINEUP_RUNNER_URL/status` (same auth) shows the next alarm and upcoming tips. Ticks with nothing due write no run record; the alarm re-arms at least every 5 min.
 
+`GET /captures` (same auth) has the lineup page HTML and `FetchRoster` JSON behind each day check with problems, plus each day's first check with locked rows (newest 10, ~300 KB each): write it to `/tmp` and debug parsing from the real page. `GET /alerts` lists every alert sent (last 50), including missed-tip alerts, which never appear in run records.
+
 Deploy only with `scripts/deploy-runner.sh`: it refuses within 90 min of a tip and keeps the cron trigger (plain `wrangler deploy` pauses cron ~30–45 min).
 
 `POST $LINEUP_RUNNER_URL/run` (same auth) runs the lineup now: only when the user asks.

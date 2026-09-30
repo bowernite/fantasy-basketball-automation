@@ -2,6 +2,10 @@
 - [x] Formula Δw cutoff R stays 15, not ~25 — gap vs sim is our fitted REPL (~25) vs league last-rostered, not a wrong constant (`Eval Definitions §Δw`)
 - [ ] At some point Update repo (average projections from a few more sites, once those sites have released. e.g. ESPN)
 
+# Lineup runner
+
+- [ ] Sign-ups, saves approval and game-day tasks (10/20 opening-night capture) for the cloud lineup runner: `.claude/skills/lineup-runner/open-items.md`
+
 # Future-year projections
 
 Per-player progression model: `strategy/lineup-math/simlib/progression.py` (sampler), `fit_progression.py` (fit + backtest, how-to in its docstring), `sim.py progression` (report). Gates G1–G6 are defined in `simlib/progression_eval.py`; latest results in `data/progression-backtest.txt`. Today it's a review-only read for years 2–7; its limits print in the report preamble (`LIMITS`).

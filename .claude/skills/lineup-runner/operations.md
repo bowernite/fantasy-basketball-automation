@@ -13,7 +13,7 @@ Auth on every route: `-H "Authorization: Bearer $LINEUP_RUNNER_TOKEN"` against `
 
 - `scripts/deploy-runner.sh` deploys the working tree. When other sessions have uncommitted `src/` edits, deploy from a clean worktree of the commit you mean to ship
 - Cron schedule changes need `bunx wrangler triggers deploy`; a new cron can take ~30 min to start firing
-- Forced-failure alert test: deploy with `--var LINEUP_URL:<a nonexistent team URL>`, `POST /run`, redeploy normally, then delete the Trello card it made
+- Forced-failure alert test: `bunx wrangler versions upload --var LINEUP_URL:<a nonexistent team URL>`, then `bunx wrangler versions deploy <id>@100% -y` (keeps cron). `POST /run` then fails before any day (no capture); the next scheduled run fails per day and stores captures. Redeploy the previous version the same way, then delete the Trello card it made
 
 ## Secrets
 

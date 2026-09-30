@@ -1096,6 +1096,126 @@ describe("injury cross-check with ESPN", () => {
   });
 });
 
+describe("alert log for outside watchdogs", () => {
+  it("lists a sent failure alert", async () => {
+    vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-20T17:00:00Z") });
+    stubFleaflicker(() => {
+      throw new TypeError("Connection reset");
+    });
+
+    await triggerRun();
+
+    const [latest] = await listAlerts();
+    expect(latest).toEqual({
+      id: expect.any(Number),
+      at: "2026-10-20T17:00:00.000Z",
+      title: "Lineup run (manual) failed",
+      body: "- TypeError: Connection reset",
+      priority: 0,
+      push: true,
+    });
+  });
+
+  it("lists a repeating failure once, even while Pushover keeps rejecting it", async () => {
+    stubFleaflicker(
+      () => {
+        throw new TypeError("Pushover down, Fleaflicker too");
+      },
+      { pushoverStatus: () => 500 },
+    );
+    const [latestBefore] = await listAlerts();
+
+    await triggerRun();
+    await triggerRun();
+
+    const alerts = await listAlerts();
+    expect(alerts.filter(({ id }) => id > (latestBefore?.id ?? 0)).map(({ body }) => body)).toEqual(["- TypeError: Pushover down, Fleaflicker too"]);
+  });
+
+  it("lists a failure again when it comes back after a successful run", async () => {
+    let fleaflickerDown = true;
+    stubFleaflicker((request) => {
+      if (fleaflickerDown) throw new TypeError("Connection flapping");
+      return fakeFleaflicker(request, fantasyStatsPage);
+    });
+    const [latestBefore] = await listAlerts();
+
+    await triggerRun();
+    fleaflickerDown = false;
+    await triggerRun();
+    fleaflickerDown = true;
+    await triggerRun();
+
+    const alerts = await listAlerts();
+    expect(alerts.filter(({ id }) => id > (latestBefore?.id ?? 0)).map(({ body }) => body)).toEqual(["- TypeError: Connection flapping", "- TypeError: Connection flapping"]);
+  });
+
+  it("marks a Trello-only warning as not meant for the phone", async () => {
+    stubFleaflicker(fakeFleaflickerSeason, { espnInjuries: () => new Response("Forbidden", { status: 403 }) });
+
+    await triggerRun();
+
+    const [latest] = await listAlerts();
+    expect(latest).toMatchObject({ title: "Lineup run (manual) has warnings", priority: 0, push: false });
+  });
+});
+
+describe("captures of unexpected pages", () => {
+  it("keeps the page and roster from a day it couldn't decide", async () => {
+    vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-20T17:00:00Z") });
+    stubFleaflicker(fakeFleaflicker);
+
+    await triggerRun();
+
+    const [latest] = await listCaptures();
+    expect(latest).toEqual({
+      id: expect.any(Number),
+      at: "2026-10-20T17:00:00.000Z",
+      day: 1,
+      reason: "problems",
+      problems: ["No lineup form on the page; the session may be logged out"],
+      html: LOGGED_IN_PAGE,
+      roster: openingNightRoster,
+    });
+  });
+
+  it("keeps the page from a day whose check throws before the roster loads", async () => {
+    stubFleaflicker((request) => fakeFleaflicker(request, fantasyStatsPage), { rosterApiUp: (url) => !url.searchParams.has("scoring_period") });
+
+    await triggerRun();
+
+    const [latest] = await listCaptures();
+    expect(latest).toMatchObject({ problems: ["Error: Roster API returned HTTP 503"], html: fantasyStatsPage });
+    expect(latest).not.toHaveProperty("roster");
+  });
+
+  it("keeps the page and roster from the first check of a day with locked rows", async () => {
+    const pageWithCadeLockedAtPG = fantasyStatsPage.replace(
+      /<select class="form-control" name="status2147">.*?<\/select>/,
+      '<span class="label label-success label-block"><span class="position">PG</span></span>',
+    );
+    stubFleaflicker((request) => fakeFleaflicker(request, pageWithCadeLockedAtPG));
+    const [latestBefore] = await listCaptures();
+
+    const first = await (await triggerRun()).json<RunRecord>();
+    await triggerRun();
+
+    expect(first.days[0].decision).toMatchObject({ ok: true });
+    const captures = (await listCaptures()).filter(({ id }) => id > (latestBefore?.id ?? 0));
+    expect(captures.map(({ at, reason, problems, html }) => ({ at, reason, problems, html }))).toEqual([{ at: first.startedAt, reason: "first locked rows", problems: [], html: pageWithCadeLockedAtPG }]);
+  });
+
+  it("keeps only the newest 10 captures", async () => {
+    let run = 0;
+    stubFleaflicker((request) => fakeFleaflicker(request, `${LOGGED_IN_PAGE}<!-- run ${run} -->`));
+
+    for (run = 1; run <= 11; run++) await triggerRun();
+
+    const captures = await listCaptures();
+    expect(captures.map(({ html }) => html?.match(/run (\d+)/)?.[1])).toEqual(["11", "10", "9", "8", "7", "6", "5", "4", "3", "2"]);
+  });
+});
+
 type RunRecord = {
   trigger: "manual" | "alarm" | "cron";
   login?: { status: number; gotSessionCookie: boolean };
@@ -1122,6 +1242,16 @@ async function listRuns() {
     headers: { Authorization: "Bearer test-run-token" },
   });
   return response.json<RunRecord[]>();
+}
+
+async function listAlerts() {
+  const response = await exports.default.fetch("https://runner.test/alerts", { headers: { Authorization: "Bearer test-run-token" } });
+  return response.json<{ id: number; at: string; title: string; body: string; priority: number; push: boolean }[]>();
+}
+
+async function listCaptures() {
+  const response = await exports.default.fetch("https://runner.test/captures", { headers: { Authorization: "Bearer test-run-token" } });
+  return response.json<{ id: number; at: string; day: number; reason: string; problems: string[]; html?: string; roster?: unknown }[]>();
 }
 
 function triggerRun() {

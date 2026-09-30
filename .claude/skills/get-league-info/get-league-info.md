@@ -24,6 +24,8 @@ Never call `FetchTradeBlock` under any circumstance; trade-related data comes fr
 
 Unauthenticated. `https://www.fleaflicker.com/api/<Endpoint>?sport=NBA&league_id=30579`
 
+Signed-in fields, HTTP login and lineup saves (form or `/api/SetLineup`): `lineup-runner` Skill's [fleaflicker.md](../lineup-runner/fleaflicker.md).
+
 | Endpoint | Extra params | Returns |
 |---|---|---|
 | `FetchLeagueStandings` | `season` | records, PF/PA, team id→name map |

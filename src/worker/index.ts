@@ -19,6 +19,7 @@ const FAILED_LOGIN_KEY = "failedLogin";
 const FAILURE_ALERTS_KEY = "failureAlerts";
 const FAILED_SAVE_KEY = "failedSave";
 const INJURY_ALERTS_KEY = "injuryAlerts";
+const LOCKED_ROWS_CAPTURED_DAY_KEY = "lockedRowsCapturedDay";
 // Repeated failed logins and saves risk a captcha or lockout, so they back off except shortly before a tip
 const LOGIN_RETRY_AFTER_MS = 30 * 60 * 1000;
 const SAVE_RETRY_AFTER_MS = 30 * 60 * 1000;
@@ -32,11 +33,15 @@ const FORGET_ALERT_AFTER_MS = 24 * 60 * 60 * 1000;
 const REPEAT_INJURY_ALERT_AFTER_MS = 24 * 60 * 60 * 1000;
 const SAVES_OFF_WARNING_WINDOW_MS = 24 * 60 * 60 * 1000;
 const WAKE_INTERVAL_MS = 5 * 60 * 1000;
+const LISTED_ALERTS = 50;
+const KEPT_CAPTURES = 10;
 
 export class LineupRunner extends DurableObject<Env> {
   constructor(ctx: DurableObjectState, env: Env) {
     super(ctx, env);
     ctx.storage.sql.exec("CREATE TABLE IF NOT EXISTS runs (id INTEGER PRIMARY KEY AUTOINCREMENT, record TEXT NOT NULL)");
+    ctx.storage.sql.exec("CREATE TABLE IF NOT EXISTS alerts (id INTEGER PRIMARY KEY AUTOINCREMENT, alert TEXT NOT NULL)");
+    ctx.storage.sql.exec("CREATE TABLE IF NOT EXISTS captures (id INTEGER PRIMARY KEY AUTOINCREMENT, capture TEXT NOT NULL)");
   }
 
   // Cron can deliver a tick twice, and a tick, alarm and manual run can interleave while one awaits Fleaflicker
@@ -105,7 +110,7 @@ export class LineupRunner extends DurableObject<Env> {
     }
     const problems = listProblems(record);
     if (problems.length > 0) record.alert = await this.alertFailure(`Lineup run (${trigger}) failed`, problems).catch((error) => ({ error: String(error) }));
-    else await this.ctx.storage.delete(ALERT_CHANNELS.map((channel) => `${FAILURE_ALERTS_KEY}:${channel}`));
+    else await this.ctx.storage.delete([...ALERT_CHANNELS, "log"].map((channel) => `${FAILURE_ALERTS_KEY}:${channel}`));
     const warnings = [...(record.warnings ?? []), ...record.days.flatMap(({ decision, warnings = [] }) => [...warnings, ...(decision?.ok ? decision.warnings : [])])];
     if (warnings.length > 0) record.warningAlert = await this.alertWarnings(trigger, warnings).catch((error) => ({ error: String(error) }));
     this.ctx.storage.sql.exec("INSERT INTO runs (record) VALUES (?)", JSON.stringify(record));
@@ -159,10 +164,8 @@ export class LineupRunner extends DurableObject<Env> {
   private async notify(alert: Alert, dedupe: { key: string; fingerprint: string; repeatAfterMs: number }, channels: readonly AlertChannel[] = ALERT_CHANNELS) {
     const sends: AlertSends = {};
     for (const channel of channels) {
-      const sentAlertsKey = `${dedupe.key}:${channel}`;
-      const sentAlerts = (await this.ctx.storage.get<Record<string, { at: number; cardId?: string }>>(sentAlertsKey)) ?? {};
-      const lastAlert = sentAlerts[dedupe.fingerprint];
-      if (lastAlert && Date.now() - lastAlert.at < dedupe.repeatAfterMs) continue;
+      const { due, lastAlert } = await this.checkAlertDue(`${dedupe.key}:${channel}`, dedupe);
+      if (!due) continue;
       const send = channel === "pushover" ? this.sendPushover(alert) : this.postToTrello(alert, lastAlert?.cardId);
       const { accepted, cardId, ...sendRecord } = await send.catch((error): AlertOutcome => ({ accepted: false, error: String(error) }));
       sends[channel] = sendRecord;
@@ -170,10 +173,26 @@ export class LineupRunner extends DurableObject<Env> {
         this.alertUndelivered = true;
         continue;
       }
-      const recentAlerts = Object.entries(sentAlerts).filter(([, { at }]) => Date.now() - at < FORGET_ALERT_AFTER_MS);
-      await this.ctx.storage.put(sentAlertsKey, { ...Object.fromEntries(recentAlerts), [dedupe.fingerprint]: { at: Date.now(), cardId } });
+      await this.rememberAlert(`${dedupe.key}:${channel}`, dedupe.fingerprint, cardId);
+    }
+    // Logged on the channels' schedule but whether or not they accepted it, so a watchdog can still deliver it
+    if ((await this.checkAlertDue(`${dedupe.key}:log`, dedupe)).due) {
+      this.ctx.storage.sql.exec("INSERT INTO alerts (alert) VALUES (?)", JSON.stringify({ at: new Date().toISOString(), ...alert, push: channels.includes("pushover") }));
+      this.ctx.storage.sql.exec("DELETE FROM alerts WHERE id <= (SELECT MAX(id) FROM alerts) - ?", LISTED_ALERTS);
+      await this.rememberAlert(`${dedupe.key}:log`, dedupe.fingerprint);
     }
     return sends;
+  }
+
+  private async checkAlertDue(sentAlertsKey: string, { fingerprint, repeatAfterMs }: { fingerprint: string; repeatAfterMs: number }) {
+    const lastAlert = (await this.ctx.storage.get<SentAlerts>(sentAlertsKey))?.[fingerprint];
+    return { due: !lastAlert || Date.now() - lastAlert.at >= repeatAfterMs, lastAlert };
+  }
+
+  private async rememberAlert(sentAlertsKey: string, fingerprint: string, cardId?: string) {
+    const sentAlerts = (await this.ctx.storage.get<SentAlerts>(sentAlertsKey)) ?? {};
+    const recentAlerts = Object.entries(sentAlerts).filter(([, { at }]) => Date.now() - at < FORGET_ALERT_AFTER_MS);
+    await this.ctx.storage.put(sentAlertsKey, { ...Object.fromEntries(recentAlerts), [fingerprint]: { at: Date.now(), cardId } });
   }
 
   private async sendPushover({ title, body, priority }: Alert): Promise<AlertOutcome> {
@@ -217,11 +236,13 @@ export class LineupRunner extends DurableObject<Env> {
     for (const day of days) {
       const dayCheck: DayCheck = { day };
       record.days.push(dayCheck);
-      const roster = await this.checkDay(record, dayCheck).catch((error) => {
+      const fetched: FetchedDay = {};
+      const roster = await this.checkDay(record, dayCheck, fetched).catch((error) => {
         dayCheck.error = String(error);
         return undefined;
       });
       if (roster) checkedRosters.set(dayCheck, roster);
+      await this.captureUnexpectedDay(record, dayCheck, fetched).catch((error) => console.error(JSON.stringify({ event: "captureFailed", day, error: String(error) })));
     }
     // After every save, so a slow or failing ESPN never delays one or fails the run
     if (checkedRosters.size === 0) return;
@@ -245,7 +266,26 @@ export class LineupRunner extends DurableObject<Env> {
     if (injuryAlerts.length > 0) record.injuryAlerts = injuryAlerts;
   }
 
-  private async checkDay(record: RunRecord, dayCheck: DayCheck) {
+  // Evidence to fix parsing from the real page later: in-game markup, for one, is gone by the next day
+  private async captureUnexpectedDay(record: RunRecord, dayCheck: DayCheck, fetched: FetchedDay) {
+    const problems = listDayProblems(dayCheck);
+    const hasLockedRows = dayCheck.decision?.ok && dayCheck.decision.starters.some(({ locked }) => locked);
+    const firstLockedRows = hasLockedRows && (await this.ctx.storage.get<number>(LOCKED_ROWS_CAPTURED_DAY_KEY)) !== dayCheck.day;
+    if (problems.length === 0 && !firstLockedRows) return;
+    if (firstLockedRows) await this.ctx.storage.put(LOCKED_ROWS_CAPTURED_DAY_KEY, dayCheck.day);
+    const capture = { at: record.startedAt, day: dayCheck.day, reason: problems.length > 0 ? "problems" : "first locked rows", problems, ...fetched };
+    this.ctx.storage.sql.exec("INSERT INTO captures (capture) VALUES (?)", JSON.stringify(capture));
+    this.ctx.storage.sql.exec("DELETE FROM captures WHERE id <= (SELECT MAX(id) FROM captures) - ?", KEPT_CAPTURES);
+  }
+
+  recentCaptures() {
+    return this.ctx.storage.sql
+      .exec<{ id: number; capture: string }>("SELECT id, capture FROM captures ORDER BY id DESC")
+      .toArray()
+      .map(({ id, capture }) => ({ id, ...JSON.parse(capture) }));
+  }
+
+  private async checkDay(record: RunRecord, dayCheck: DayCheck, fetched: FetchedDay) {
     const { day } = dayCheck;
     let lineupPage = await this.fetchLineupPage(day);
     if (!lineupPage.loggedIn && !record.login) {
@@ -255,7 +295,9 @@ export class LineupRunner extends DurableObject<Env> {
     }
     const { html, ...pageSummary } = lineupPage;
     dayCheck.lineupPage = pageSummary;
+    fetched.html = html;
     const roster = await this.fetchRoster(day);
+    fetched.roster = roster;
     if (pageSummary.status === 200) {
       const tips = parseGameTips(html);
       await this.storeTipTable({ day, fetchedAt: record.startedAt, tips });
@@ -331,6 +373,13 @@ export class LineupRunner extends DurableObject<Env> {
     return { enabled };
   }
 
+  recentAlerts() {
+    return this.ctx.storage.sql
+      .exec<{ id: number; alert: string }>("SELECT id, alert FROM alerts ORDER BY id DESC LIMIT ?", LISTED_ALERTS)
+      .toArray()
+      .map(({ id, alert }) => ({ id, ...JSON.parse(alert) }));
+  }
+
   recentRuns(limit = 20): RunRecord[] {
     return this.ctx.storage.sql
       .exec<{ record: string }>("SELECT record FROM runs ORDER BY id DESC LIMIT ?", limit)
@@ -390,6 +439,8 @@ export default {
       return record ? Response.json(record) : new Response("A run is already in progress", { status: 409 });
     }
     if (request.method === "GET" && pathname === "/runs") return Response.json(await runner.recentRuns());
+    if (request.method === "GET" && pathname === "/captures") return Response.json(await runner.recentCaptures());
+    if (request.method === "GET" && pathname === "/alerts") return Response.json(await runner.recentAlerts());
     if (request.method === "GET" && pathname === "/status") return Response.json(await runner.status());
     if (request.method === "PUT" && pathname === "/saves") {
       const { enabled } = await request.json<{ enabled?: unknown }>();
@@ -417,6 +468,8 @@ type RunRecord = {
 
 type AlertChannel = (typeof ALERT_CHANNELS)[number];
 
+type SentAlerts = Record<string, { at: number; cardId?: string }>;
+
 type AlertSends = Partial<Record<AlertChannel, AlertSend>>;
 
 type LoginOutcome = { status: number; gotSessionCookie: boolean; stillSignedOut?: true; backedOff?: true };
@@ -428,6 +481,8 @@ type AlertSend = { status: number; response?: string } | { error: string };
 type AlertOutcome = AlertSend & { accepted: boolean; cardId?: string };
 
 type DayCheck = { day: number; lineupPage?: { status: number; loggedIn: boolean }; warnings?: string[]; untaggedOutNews?: UntaggedOutNews[]; injuries?: InjuryComparison[]; decision?: LineupDecision; save?: SaveResult & { backedOff?: true; skippedNearTip?: string }; error?: string };
+
+type FetchedDay = { html?: string; roster?: unknown };
 
 type LineupPeriod = { ordinal: number; low: { startEpochMilli: string } };
 
