@@ -1,17 +1,23 @@
 import { getNumDaysInFuture } from "../utils/date-utils";
-import type { Player, TimeAgo } from "../types";
+import type { Player, PlayerStatus, TimeAgo } from "../types";
 
 const FRESH_NEWS_MAX_DAYS = 1.5;
+const SAME_DAY_NEWS_MAX_DAYS = 0.7;
+const INJURY_SEVERITY: Record<PlayerStatus, number> = { "(active)": 0, P: 1, DTD: 2, Q: 2, D: 3, OUT: 4, OFS: 5 };
 
 export function adjustPredictedScoreForInjury(score: number, player: Player) {
   const { playerStatus, refinedPlayerStatus } = player;
-  // The page's own tag is current; only news fresh enough to postdate it counts.
+  // The page's own tag is current. News overrides it only when fresh enough to postdate it: a day and a half to worsen it, the same day to lift it (older news is likely about an earlier game)
   // An out-for-season tag is the exception: it outlasts the injury (e.g. into the next season), so any news clearing the player postdates it
+  const newsStatus = refinedPlayerStatus?.injuryStatus;
   const newsTimeAgo = refinedPlayerStatus?.timeAgo;
-  const newsIsFresh = newsTimeAgo != null && getTimeAgoInDays(newsTimeAgo) <= FRESH_NEWS_MAX_DAYS;
-  const newsClearsSeasonTag = playerStatus === "OFS" && refinedPlayerStatus?.injuryStatus === "(active)";
-  const newsCounts = newsIsFresh || newsClearsSeasonTag;
-  const status = newsCounts ? refinedPlayerStatus?.injuryStatus ?? playerStatus : playerStatus;
+  const newsAgeInDays = newsTimeAgo != null ? getTimeAgoInDays(newsTimeAgo) : Infinity;
+  const newsSeverityChange = newsStatus != null ? INJURY_SEVERITY[newsStatus] - INJURY_SEVERITY[playerStatus] : 0;
+  const newsWorsensTag = newsSeverityChange > 0 && newsAgeInDays <= FRESH_NEWS_MAX_DAYS;
+  const newsLiftsTag = newsSeverityChange < 0 && newsAgeInDays <= SAME_DAY_NEWS_MAX_DAYS;
+  const newsClearsSeasonTag = playerStatus === "OFS" && newsStatus === "(active)";
+  const newsCounts = newsWorsensTag || newsLiftsTag || newsClearsSeasonTag;
+  const status = newsCounts ? newsStatus ?? playerStatus : playerStatus;
   const timeAgo = newsCounts ? newsTimeAgo : undefined;
   const numberOfDaysInFuture = getNumDaysInFuture();
 

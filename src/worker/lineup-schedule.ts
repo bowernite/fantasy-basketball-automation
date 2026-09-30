@@ -19,18 +19,18 @@ const TIP_TABLE_MAX_AGE_MS = 2 * HOUR_MS;
 const HOURLY_OFFSET_MS = 5 * MINUTE_MS;
 
 /**
- * What a tick should do, given Fleaflicker day `day` for `now`, stored tip tables and past runs
+ * What a tick should do, given Fleaflicker day `day` for `now`, stored tip tables, past runs and the season's last day
  * - `runDays`: days one run should set now (empty = nothing due)
  * - `missedTips`: tips 10 min out or passed with no successful run since 45 min before them; reported on every later tick, so dedupe by `at`
  * - `nextTarget`: earliest target after `now`
  */
-export function planTick(now: Date, day: number, tipTables: TipTable[], ledger: LedgerEntry[]): TickPlan {
+export function planTick(now: Date, day: number, tipTables: TipTable[], ledger: LedgerEntry[], lastDay = Infinity): TickPlan {
   const nowMs = now.getTime();
   const runDays = new Set<number>();
   const todaysTipTable = tipTables.find((table) => table.day === day);
   const tipTableStale = !todaysTipTable || nowMs - Date.parse(todaysTipTable.fetchedAt) > TIP_TABLE_MAX_AGE_MS;
   if (tipTableStale) runDays.add(day);
-  const hourlyDays = [day, day + 1];
+  const hourlyDays = [day, day + 1].filter((hourlyDay) => hourlyDay <= lastDay);
   if (!hasSuccessBetween(ledger, latestHourlyTargetMs(nowMs), Infinity, hourlyDays)) hourlyDays.forEach((hourlyDay) => runDays.add(hourlyDay));
   const tips = tipTables.filter((table) => table.day >= day).flatMap((table) => table.tips.map((tip) => ({ ...tip, day: table.day })));
   for (const tip of tips) {

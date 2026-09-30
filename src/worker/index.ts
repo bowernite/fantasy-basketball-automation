@@ -20,12 +20,13 @@ const FAILED_SAVE_KEY = "failedSave";
 const LOGIN_RETRY_AFTER_MS = 30 * 60 * 1000;
 const SAVE_RETRY_AFTER_MS = 30 * 60 * 1000;
 const RETRY_TIP_WINDOW_MS = 45 * 60 * 1000;
+const URGENT_TIP_WINDOW_MS = 3 * 60 * 60 * 1000;
 // About two days of runs: enough to cover yesterday's late tips and today's targets
 const LEDGER_RUNS = 100;
 const KEPT_RUNS = 1000;
 const REPEAT_ALERT_AFTER_MS = 3 * 60 * 60 * 1000;
 const FORGET_ALERT_AFTER_MS = 24 * 60 * 60 * 1000;
-const SCHEDULE_START_DELAY_MS = 5 * 60 * 1000;
+const WAKE_INTERVAL_MS = 5 * 60 * 1000;
 
 export class LineupRunner extends DurableObject<Env> {
   constructor(ctx: DurableObjectState, env: Env) {
@@ -35,20 +36,25 @@ export class LineupRunner extends DurableObject<Env> {
 
   // Cron can deliver a tick twice, and a tick, alarm and manual run can interleave while one awaits Fleaflicker
   private busy = false;
+  private alertUndelivered = false;
 
   async tick(trigger: "cron" | "alarm") {
     if (this.busy) return;
     this.busy = true;
+    this.alertUndelivered = false;
     let healthy = false;
+    let nextTargetMs = Infinity;
     try {
-      healthy = await this.planAndRun(trigger);
+      ({ healthy, nextTargetMs } = await this.planAndRun(trigger));
     } catch (error) {
       console.error(JSON.stringify({ event: "tickFailed", trigger, error: String(error) }));
       await this.alertFailure(`Lineup tick (${trigger}) failed`, [String(error)]);
     } finally {
       this.busy = false;
+      // Waking at least every 5 min retries failed runs and keeps the schedule going when cron doesn't fire
+      await this.ctx.storage.setAlarm(Math.min(nextTargetMs, Date.now() + WAKE_INTERVAL_MS));
       if (this.env.HEALTHCHECK_URL) {
-        await fetchWithTimeout(healthy ? this.env.HEALTHCHECK_URL : `${this.env.HEALTHCHECK_URL}/fail`, { method: "POST" }).catch((error) =>
+        await fetchWithTimeout(healthy && !this.alertUndelivered ? this.env.HEALTHCHECK_URL : `${this.env.HEALTHCHECK_URL}/fail`, { method: "POST" }).catch((error) =>
           console.error(JSON.stringify({ event: "deadManPingFailed", error: String(error) })),
         );
       }
@@ -60,14 +66,13 @@ export class LineupRunner extends DurableObject<Env> {
     const planNow = async () => {
       const now = new Date();
       const tipTables = (await this.ctx.storage.get<TipTable[]>(TIP_TABLES_KEY)) ?? [];
-      return planTick(now, findCurrentDay(eligibleLineupPeriods, now.getTime()), tipTables, this.ledger());
+      return planTick(now, findCurrentDay(eligibleLineupPeriods, now.getTime()), tipTables, this.ledger(), eligibleLineupPeriods.at(-1)?.ordinal);
     };
     const { runDays } = await planNow();
     const record = runDays.length > 0 ? await this.run(trigger, runDays) : undefined;
     const { missedTips, nextTarget } = await planNow();
     for (const missedTip of missedTips) await this.alertMissedTip(missedTip);
-    await this.ctx.storage.setAlarm(nextTarget);
-    return !record || listProblems(record).length === 0;
+    return { healthy: !record || listProblems(record).length === 0, nextTargetMs: nextTarget.getTime() };
   }
 
   // Only ticks re-arm the alarm, so a manual run starts the schedule when cron never has
@@ -76,7 +81,7 @@ export class LineupRunner extends DurableObject<Env> {
     this.busy = true;
     try {
       const record = await this.run("manual");
-      if (!(await this.ctx.storage.getAlarm())) await this.ctx.storage.setAlarm(Date.now() + SCHEDULE_START_DELAY_MS);
+      if (!(await this.ctx.storage.getAlarm())) await this.ctx.storage.setAlarm(Date.now() + WAKE_INTERVAL_MS);
       return record;
     } finally {
       this.busy = false;
@@ -93,7 +98,7 @@ export class LineupRunner extends DurableObject<Env> {
     const problems = listProblems(record);
     if (problems.length > 0) record.alert = await this.alertFailure(`Lineup run (${trigger}) failed`, problems).catch((error) => ({ error: String(error) }));
     else await this.ctx.storage.delete(ALERT_CHANNELS.map((channel) => `${FAILURE_ALERTS_KEY}:${channel}`));
-    const warnings = record.days.flatMap(({ decision }) => (decision?.ok ? decision.warnings : []));
+    const warnings = record.days.flatMap(({ decision, warnings = [] }) => [...warnings, ...(decision?.ok ? decision.warnings : [])]);
     if (warnings.length > 0) record.warningAlert = await this.alertWarnings(trigger, warnings).catch((error) => ({ error: String(error) }));
     this.ctx.storage.sql.exec("INSERT INTO runs (record) VALUES (?)", JSON.stringify(record));
     this.ctx.storage.sql.exec("DELETE FROM runs WHERE id <= (SELECT MAX(id) FROM runs) - ?", KEPT_RUNS);
@@ -101,13 +106,16 @@ export class LineupRunner extends DurableObject<Env> {
   }
 
   private async alertFailure(title: string, problems: string[]) {
-    const alert: Alert = { title, body: problems.map((problem) => `- ${problem}`).join("\n"), priority: 1 };
+    const tipTables = (await this.ctx.storage.get<TipTable[]>(TIP_TABLES_KEY)) ?? [];
+    // Priority 1 bypasses the phone's quiet hours, so it's kept for failures that can still cost a game
+    const priority = hasTipWithin(tipTables, URGENT_TIP_WINDOW_MS) ? 1 : 0;
+    const alert: Alert = { title, body: problems.map((problem) => `- ${problem}`).join("\n"), priority };
     return this.notify(alert, { key: FAILURE_ALERTS_KEY, fingerprint: problems.join("\n"), repeatAfterMs: REPEAT_ALERT_AFTER_MS });
   }
 
   private async alertWarnings(trigger: RunRecord["trigger"], warnings: string[]) {
     const alert: Alert = { title: `Lineup run (${trigger}) has warnings`, body: warnings.map((warning) => `- ${warning}`).join("\n"), priority: 0 };
-    return this.notify(alert, { key: "warningAlerts", fingerprint: warnings.join("\n"), repeatAfterMs: REPEAT_ALERT_AFTER_MS });
+    return this.notify(alert, { key: "warningAlerts", fingerprint: warnings.join("\n"), repeatAfterMs: REPEAT_ALERT_AFTER_MS }, ["trello"]);
   }
 
   private async alertMissedTip({ at, players }: DayTip) {
@@ -121,9 +129,9 @@ export class LineupRunner extends DurableObject<Env> {
     console.log(JSON.stringify({ event: "missedTipAlert", at, sends }));
   }
 
-  private async notify(alert: Alert, dedupe: { key: string; fingerprint: string; repeatAfterMs: number }) {
+  private async notify(alert: Alert, dedupe: { key: string; fingerprint: string; repeatAfterMs: number }, channels: readonly AlertChannel[] = ALERT_CHANNELS) {
     const sends: AlertSends = {};
-    for (const channel of ALERT_CHANNELS) {
+    for (const channel of channels) {
       const sentAlertsKey = `${dedupe.key}:${channel}`;
       const sentAlerts = (await this.ctx.storage.get<Record<string, { at: number; cardId?: string }>>(sentAlertsKey)) ?? {};
       const lastAlert = sentAlerts[dedupe.fingerprint];
@@ -131,7 +139,10 @@ export class LineupRunner extends DurableObject<Env> {
       const send = channel === "pushover" ? this.sendPushover(alert) : this.postToTrello(alert, lastAlert?.cardId);
       const { accepted, cardId, ...sendRecord } = await send.catch((error): AlertOutcome => ({ accepted: false, error: String(error) }));
       sends[channel] = sendRecord;
-      if (!accepted) continue;
+      if (!accepted) {
+        this.alertUndelivered = true;
+        continue;
+      }
       const recentAlerts = Object.entries(sentAlerts).filter(([, { at }]) => Date.now() - at < FORGET_ALERT_AFTER_MS);
       await this.ctx.storage.put(sentAlertsKey, { ...Object.fromEntries(recentAlerts), [dedupe.fingerprint]: { at: Date.now(), cardId } });
     }
@@ -192,8 +203,17 @@ export class LineupRunner extends DurableObject<Env> {
     }
     const { html, ...pageSummary } = lineupPage;
     dayCheck.lineupPage = pageSummary;
-    if (pageSummary.status === 200) await this.storeTipTable({ day, fetchedAt: record.startedAt, tips: parseGameTips(html) });
-    dayCheck.decision = await decideLineup(html, await this.fetchRoster(day));
+    const roster = await this.fetchRoster(day);
+    if (pageSummary.status === 200) {
+      const tips = parseGameTips(html);
+      await this.storeTipTable({ day, fetchedAt: record.startedAt, tips });
+      const players = roster.groups.flatMap(({ slots }) => slots.map(({ leaguePlayer }) => leaguePlayer?.requestedGames ?? []));
+      const playersWithGamesAhead = players.filter((games) => games.some(({ game }) => Number(game.startTimeEpochMilli) > Date.now())).length;
+      if (tips.length === 0 && playersWithGamesAhead > 0) {
+        dayCheck.warnings = [`No tip times on the day ${day} page though ${playersWithGamesAhead} players have games ahead, so no pre-tip runs or missed-tip alerts that day`];
+      }
+    }
+    dayCheck.decision = await decideLineup(html, roster);
     if (dayCheck.decision.ok && (await this.ctx.storage.get<boolean>(SAVES_ENABLED_KEY))) dayCheck.save = await this.saveUnlessBackingOff(day, dayCheck.decision);
   }
 
@@ -229,7 +249,7 @@ export class LineupRunner extends DurableObject<Env> {
     url.search = new URLSearchParams({ sport: "NBA", league_id: leagueId, team_id: teamId, ...(day ? { scoring_period: String(day) } : {}) }).toString();
     const response = await fetchWithTimeout(url, { headers: await this.sessionHeaders() });
     if (!response.ok) throw new Error(`Roster API returned HTTP ${response.status}`);
-    const roster = await response.json<ApiRoster & { eligibleLineupPeriods: LineupPeriod[] }>();
+    const roster = await response.json<ApiRoster & { eligibleLineupPeriods: LineupPeriod[]; groups: { slots: { leaguePlayer?: { requestedGames?: { game: { startTimeEpochMilli: string } }[] } }[] }[] }>();
     await this.ctx.storage.put(LINEUP_PERIODS_KEY, roster.eligibleLineupPeriods);
     return roster;
   }
@@ -237,6 +257,16 @@ export class LineupRunner extends DurableObject<Env> {
   private async sessionHeaders(): Promise<Record<string, string>> {
     const sessionCookie = await this.ctx.storage.get<string>(SESSION_COOKIE_KEY);
     return sessionCookie ? { Cookie: sessionCookie } : {};
+  }
+
+  async status() {
+    const alarm = await this.ctx.storage.getAlarm();
+    const tipTables = (await this.ctx.storage.get<TipTable[]>(TIP_TABLES_KEY)) ?? [];
+    const upcomingTips = tipTables
+      .flatMap(({ day, tips }) => tips.map(({ at }) => ({ day, at })))
+      .filter(({ at }) => Date.parse(at) > Date.now())
+      .sort((a, b) => a.at.localeCompare(b.at));
+    return { alarm: alarm ? new Date(alarm).toISOString() : null, savesEnabled: (await this.ctx.storage.get<boolean>(SAVES_ENABLED_KEY)) === true, upcomingTips };
   }
 
   async setSaves(enabled: boolean) {
@@ -303,6 +333,7 @@ export default {
       return record ? Response.json(record) : new Response("A run is already in progress", { status: 409 });
     }
     if (request.method === "GET" && pathname === "/runs") return Response.json(await runner.recentRuns());
+    if (request.method === "GET" && pathname === "/status") return Response.json(await runner.status());
     if (request.method === "PUT" && pathname === "/saves") {
       const { enabled } = await request.json<{ enabled?: unknown }>();
       return Response.json(await runner.setSaves(enabled === true));
@@ -325,7 +356,9 @@ type RunRecord = {
   warningAlert?: AlertSends;
 };
 
-type AlertSends = Partial<Record<(typeof ALERT_CHANNELS)[number], AlertSend>>;
+type AlertChannel = (typeof ALERT_CHANNELS)[number];
+
+type AlertSends = Partial<Record<AlertChannel, AlertSend>>;
 
 type LoginOutcome = { status: number; gotSessionCookie: boolean; stillSignedOut?: true; backedOff?: true };
 
@@ -335,7 +368,7 @@ type AlertSend = { status: number; response?: string } | { error: string };
 
 type AlertOutcome = AlertSend & { accepted: boolean; cardId?: string };
 
-type DayCheck = { day: number; lineupPage?: { status: number; loggedIn: boolean }; decision?: LineupDecision; save?: SaveResult & { backedOff?: true }; error?: string };
+type DayCheck = { day: number; lineupPage?: { status: number; loggedIn: boolean }; warnings?: string[]; decision?: LineupDecision; save?: SaveResult & { backedOff?: true }; error?: string };
 
 type LineupPeriod = { ordinal: number; low: { startEpochMilli: string } };
 

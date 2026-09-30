@@ -43,10 +43,14 @@ export async function decideLineup(html: string, apiRoster?: ApiRoster): Promise
     alert: (message: unknown) => problems.push(String(message)),
     console: withWarningsCollected(withoutDebugOutput(console), warnings),
   };
-  await withPageGlobals(pageGlobals, setLineup).catch((error) => {
-    const message = error instanceof Error ? error.message : String(error);
-    if (!problems.includes(message)) problems.push(message);
-  });
+  // Once every player is locked there's nothing to set, and the page may not have a Save Lineup button for the extension to find
+  const everyPlayerLocked = selects.length === 0;
+  if (!everyPlayerLocked) {
+    await withPageGlobals(pageGlobals, setLineup).catch((error) => {
+      const message = error instanceof Error ? error.message : String(error);
+      if (!problems.includes(message)) problems.push(message);
+    });
+  }
   if (problems.length > 0) return { ok: false, errors: problems };
 
   const startingSlots = getStartingSlots(document);

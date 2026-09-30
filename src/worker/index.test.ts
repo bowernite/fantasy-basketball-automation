@@ -168,7 +168,7 @@ describe("lineup runner", () => {
       {
         "message": "- Fleaflicker login failed (HTTP 503, no session cookie)
       - No lineup form on the page; the session may be logged out",
-        "priority": "1",
+        "priority": "0",
         "title": "Lineup run (manual) failed",
         "token": "test-pushover-token",
         "url": "https://www.fleaflicker.com/nba/leagues/30579/teams/161025",
@@ -376,6 +376,43 @@ describe("lineup runner", () => {
     expect(previous).toEqual(latestBefore);
   });
 
+  it("shows the next wake-up and upcoming tips, so a deploy can avoid them", async () => {
+    vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-20T19:30:00Z") });
+    stubFleaflicker(fakeFleaflickerSeason);
+    await env.RUNNER.getByName("primary").tick("cron");
+
+    const response = await exports.default.fetch("https://runner.test/status", { headers: { Authorization: "Bearer test-run-token" } });
+
+    expect(await response.json()).toMatchInlineSnapshot(`
+      {
+        "alarm": "2026-10-20T19:35:00.000Z",
+        "savesEnabled": false,
+        "upcomingTips": [
+          {
+            "at": "2026-10-20T23:00:00.000Z",
+            "day": 1,
+          },
+          {
+            "at": "2026-10-21T01:30:00.000Z",
+            "day": 1,
+          },
+          {
+            "at": "2026-10-21T19:00:00.000Z",
+            "day": 2,
+          },
+          {
+            "at": "2026-10-21T23:00:00.000Z",
+            "day": 2,
+          },
+          {
+            "at": "2026-10-22T01:30:00.000Z",
+            "day": 2,
+          },
+        ],
+      }
+    `);
+  });
+
   it("refuses to run without the run token", async () => {
     stubFleaflicker(() => new Response(LOGGED_OUT_PAGE));
     const recordsBefore = await listRuns();
@@ -401,6 +438,17 @@ describe("scheduled checks", () => {
     expect(await runner.recentRuns()).toMatchObject([
       { trigger: "cron", days: [{ day: 1, decision: { ok: true } }, { day: 2, decision: { ok: true } }] },
     ]);
+  });
+
+  it("checks only the season's last day once it's over", async () => {
+    vi.useFakeTimers({ toFake: ["Date"], now: new Date("2027-04-15T15:10:00Z") });
+    stubFleaflicker(fakeFleaflickerSeason);
+    const runner = freshRunner();
+
+    await runner.tick("cron");
+
+    const [latest] = await runner.recentRuns();
+    expect(latest.days.map(({ day }) => day)).toEqual([160]);
   });
 
   it("does nothing on the next tick when today and tomorrow are already set", async () => {
@@ -452,12 +500,46 @@ describe("scheduled checks", () => {
     const runner = freshRunner();
     await runner.tick("cron");
 
-    expect(await runInDurableObject(runner, (_, state) => state.storage.getAlarm())).toBe(Date.parse("2026-10-20T18:20:00Z"));
-    vi.setSystemTime(new Date("2026-10-20T18:20:00Z"));
-    expect(await runDurableObjectAlarm(runner)).toBe(true);
+    const alarms = [];
+    for (let wake = 0; wake < 3; wake++) {
+      const alarm = await runInDurableObject(runner, (_, state) => state.storage.getAlarm());
+      alarms.push(new Date(alarm!).toISOString());
+      vi.setSystemTime(alarm!);
+      await runDurableObjectAlarm(runner);
+    }
 
+    expect(alarms).toEqual(["2026-10-20T18:11:00.000Z", "2026-10-20T18:16:00.000Z", "2026-10-20T18:20:00.000Z"]);
     const [latest] = await runner.recentRuns();
     expect(latest).toMatchObject({ trigger: "alarm", startedAt: "2026-10-20T18:20:00.000Z", days: [{ day: 1 }] });
+  });
+
+  it("wakes itself every 5 min, so a failed run is retried without cron", async () => {
+    vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-20T15:10:00Z") });
+    let fleaflickerDown = true;
+    stubFleaflicker((request) => {
+      if (fleaflickerDown) throw new TypeError("Network connection lost");
+      return fakeFleaflickerSeason(request);
+    });
+    const runner = freshRunner();
+    await runner.tick("cron");
+
+    expect(await runInDurableObject(runner, (_, state) => state.storage.getAlarm())).toBe(Date.parse("2026-10-20T15:15:00Z"));
+    fleaflickerDown = false;
+    vi.setSystemTime(new Date("2026-10-20T15:15:00Z"));
+    await runDurableObjectAlarm(runner);
+
+    const [latest] = await runner.recentRuns();
+    expect(latest).toMatchObject({ trigger: "alarm", days: [{ day: 1, decision: { ok: true } }, { day: 2, decision: { ok: true } }] });
+  });
+
+  it("keeps waking itself after a tick that can't plan", async () => {
+    vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-20T15:10:00Z") });
+    stubFleaflicker(fakeFleaflickerSeason, { rosterApiUp: () => false });
+    const runner = freshRunner();
+
+    await runner.tick("cron");
+
+    expect(await runInDurableObject(runner, (_, state) => state.storage.getAlarm())).toBe(Date.parse("2026-10-20T15:15:00Z"));
   });
 
   it("gives up on a Fleaflicker request that never answers, then ticks again", async () => {
@@ -557,6 +639,18 @@ describe("scheduled checks", () => {
     }
 
     expect(alerts.map(({ title, priority }) => ({ title, priority }))).toEqual([{ title: "Lineup run (cron) failed", priority: "1" }]);
+  });
+
+  it("sends a failure alert without priority when the next tip is more than 3 h away", async () => {
+    vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-20T15:10:00Z") });
+    const { alerts } = stubFleaflicker((request) =>
+      new URL(request.url).searchParams.get("week") === "2" ? new Response("Service unavailable", { status: 503 }) : fakeFleaflickerSeason(request),
+    );
+    const runner = freshRunner();
+
+    await runner.tick("cron");
+
+    expect(alerts.map(({ title, priority }) => ({ title, priority }))).toEqual([{ title: "Lineup run (cron) failed", priority: "0" }]);
   });
 
   it("waits 30 min before trying a failed login again", async () => {
@@ -686,9 +780,9 @@ describe("scheduled checks", () => {
     expect(lineupSaves.length - savesBefore).toBeGreaterThan(0);
   });
 
-  it("sends a general alert when the page lacks matchups, without treating the run as failed", async () => {
+  it("files a Trello card, not a push, when the page lacks matchups, without treating the run as failed", async () => {
     vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-20T15:10:00Z") });
-    const { alerts } = stubFleaflicker(async (request) => {
+    const { alerts, cards } = stubFleaflicker(async (request) => {
       const response = await fakeFleaflickerSeason(request);
       return new Response((await response.text()).replace('"tooltips":[', '"tooltips":[],"renamedTooltips":['), response);
     });
@@ -700,9 +794,57 @@ describe("scheduled checks", () => {
 
     const runs = await runner.recentRuns();
     expect(runs).toHaveLength(1);
-    expect(runs[0].warningAlert).toEqual({ pushover: { status: 200 }, trello: { status: 200 } });
-    expect(alerts.map(({ title, priority }) => ({ title, priority }))).toEqual([{ title: "Lineup run (cron) has warnings", priority: "0" }]);
-    expect(alerts[0].message.split("\n")[0]).toMatchInlineSnapshot(`"- Falling back to DOM scrape for Cade Cunningham opponent info"`);
+    expect(runs[0].warningAlert).toEqual({ trello: { status: 200 } });
+    expect(alerts).toEqual([]);
+    expect(cards.map(({ name }) => name)).toEqual(["Lineup run (cron) has warnings"]);
+    expect(cards[0].desc.split("\n")[0]).toMatchInlineSnapshot(`"- Falling back to DOM scrape for Cade Cunningham opponent info"`);
+  });
+
+  it("files a Trello card when the page shows no tip times though players have games", async () => {
+    vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-20T15:10:00Z") });
+    const { cards } = stubFleaflicker(async (request) => {
+      const response = await fakeFleaflickerSeason(request);
+      return new Response((await response.text()).replaceAll("<local-time", "<span"), response);
+    });
+    const runner = freshRunner();
+
+    await runner.tick("cron");
+
+    expect(cards.map(({ desc }) => desc.split("\n\n")[0])).toMatchInlineSnapshot(`
+      [
+        "- No tip times on the day 1 page though 8 players have games ahead, so no pre-tip runs or missed-tip alerts that day
+      - No tip times on the day 2 page though 8 players have games ahead, so no pre-tip runs or missed-tip alerts that day",
+      ]
+    `);
+  });
+
+  it("expects no tip times on the page once every game has started", async () => {
+    vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-21T03:00:00Z") });
+    const { cards } = stubFleaflicker(async (request) => {
+      const response = await fakeFleaflickerSeason(request);
+      return new Response((await response.text()).replaceAll("<local-time", "<span"), response);
+    });
+    const runner = freshRunner();
+
+    await runner.tick("cron");
+
+    expect(cards.filter(({ desc }) => desc.includes("No tip times"))).toEqual([]);
+  });
+
+  it("reports the tick as failing to the dead-man monitor when an alert can't be delivered", async () => {
+    vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-20T15:10:00Z") });
+    const { deadManPings } = stubFleaflicker(
+      async (request) => {
+        const response = await fakeFleaflickerSeason(request);
+        return new Response((await response.text()).replace('"tooltips":[', '"tooltips":[],"renamedTooltips":['), response);
+      },
+      { trelloStatus: () => 401 },
+    );
+    const runner = freshRunner();
+
+    await runner.tick("cron");
+
+    expect(deadManPings).toEqual(["/test-check/fail"]);
   });
 
   it("keeps ticking over run records from before runs checked more than one day", async () => {

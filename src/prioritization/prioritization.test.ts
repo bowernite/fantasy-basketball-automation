@@ -161,7 +161,7 @@ test("a player still listed OUT today scores far below a healthy one, even if th
   expect(outForAWeek).toBeLessThan(healthy / 2);
 });
 
-test("a player still tagged OUT isn't cleared by old news of a lesser status, but is by fresh news", () => {
+test("a player still tagged OUT is lifted by same-day news of a lesser status, but not by older news", () => {
   setup();
   const taggedOutWithNews = (injuryStatus: PlayerStatus, timeAgo: TimeAgo) =>
     makePlayer({ playerStatus: "OUT", refinedPlayerStatus: { injuryStatus, timeAgo } });
@@ -169,7 +169,16 @@ test("a player still tagged OUT isn't cleared by old news of a lesser status, bu
   const healthy = score(makePlayer());
 
   expect(score(taggedOutWithNews("P", { value: 5, unit: "days" }))).toBe(0);
+  expect(score(taggedOutWithNews("P", { value: 30, unit: "hours" }))).toBe(0);
+  expect(score(taggedOutWithNews("Q", { value: 20, unit: "hours" }))).toBe(0);
   expect(score(taggedOutWithNews("P", { value: 2, unit: "hours" }))).toBeGreaterThan(healthy / 2);
+});
+
+test("a player tagged OUT for today's game scores nothing, however old the news that he's out", () => {
+  setup();
+
+  expect(score(withInjury("OUT", { value: 20, unit: "hours" }))).toBe(0);
+  expect(score(withInjury("OUT", { value: 30, unit: "hours" }))).toBe(0);
 });
 
 test("a day-to-day tag is lifted by fresh news clearing the player, but not by old news", () => {

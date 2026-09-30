@@ -174,15 +174,17 @@ describe("decideLineup", () => {
     `);
   });
 
-  it("has nothing to change once every player is locked", async () => {
-    const pageWithEveryoneLocked = fantasyStatsPage.replace(/<select class="form-control" name="status\d+">.*?<\/select>/g, (select) => {
-      const slot = select.match(/<option value="\d+" selected="selected">([^<]+)<\/option>/)![1]!;
-      return slot === "Bench"
-        ? '<span class="label label-danger label-block"><span class="text-muted">BN</span></span>'
-        : `<span class="label label-success label-block"><span class="position">${slot}</span></span>`;
-    });
+  it("has nothing to change once every player is locked, even if the page then drops the Save Lineup button", async () => {
+    const pageWithEveryoneLockedAndNoSaveButton = fantasyStatsPage
+      .replace(/<select class="form-control" name="status\d+">.*?<\/select>/g, (select) => {
+        const slot = select.match(/<option value="\d+" selected="selected">([^<]+)<\/option>/)![1]!;
+        return slot === "Bench"
+          ? '<span class="label label-danger label-block"><span class="text-muted">BN</span></span>'
+          : `<span class="label label-success label-block"><span class="position">${slot}</span></span>`;
+      })
+      .replace(/<div class="form-actions">.*?<\/div>/, "");
 
-    const decision = await decideLineup(pageWithEveryoneLocked);
+    const decision = await decideLineup(pageWithEveryoneLockedAndNoSaveButton);
 
     if (!decision.ok) throw new Error(decision.errors.join("\n"));
     expect(decision.changes).toEqual([]);

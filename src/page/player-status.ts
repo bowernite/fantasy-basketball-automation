@@ -134,9 +134,11 @@ async function getRefinedPlayerStatusFromRow(
     return undefined;
   }
 
-  const timeAgoString =
-    newsElement?.querySelector("relative-time")?.textContent;
-  return parsePlayerNews(news, timeAgoString);
+  const newsTime = newsElement?.querySelector("relative-time");
+  const parsedNews = parsePlayerNews(news, newsTime?.textContent);
+  const postedAt = new Date(newsTime?.getAttribute("datetime") ?? NaN);
+  if (!parsedNews || Number.isNaN(postedAt.getTime())) return parsedNews;
+  return { ...parsedNews, timeAgo: getTimeSince(postedAt) };
 }
 
 export async function getPlayerStatusInfo(
