@@ -164,9 +164,7 @@ test("the Save Lineup button and its shortcut submit Fleaflicker's lineup form w
   for (const submitted of submissions) expect(submitted[nazReidSlot.name]).toBe("16");
 });
 
-// Suspected bug: logged out (e.g. an expired session) there's no Fleaflicker save button, and saving
-// silently does nothing, so a headless run would think the lineup was saved
-test.failing("saving while logged out reports that nothing was saved", async () => {
+test("saving while logged out reports that nothing was saved", async () => {
   loadLineupPage({ loggedIn: false });
   await runContentScript();
 

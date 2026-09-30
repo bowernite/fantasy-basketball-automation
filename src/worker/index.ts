@@ -1,5 +1,5 @@
 import { DurableObject } from "cloudflare:workers";
-import { decideLineup, type LineupDecision } from "./decide-lineup";
+import { type ApiRoster, decideLineup, type LineupDecision } from "./decide-lineup";
 
 const FLEAFLICKER_LOGIN_URL = "https://www.fleaflicker.com/nba/login";
 const SESSION_COOKIE_KEY = "fleaflickerSessionCookie";
@@ -19,9 +19,10 @@ export class LineupRunner extends DurableObject<Env> {
     } catch (error) {
       record.error = String(error);
     }
-    this.ctx.storage.sql.exec("INSERT INTO runs (record) VALUES (?)", JSON.stringify(record));
     const problems = listProblems(record);
-    if (problems.length > 0) await this.alertFailure(trigger, problems);
+    if (problems.length > 0) record.alert = await this.alertFailure(trigger, problems).catch((error) => ({ error: String(error) }));
+    this.ctx.storage.sql.exec("INSERT INTO runs (record) VALUES (?)", JSON.stringify(record));
+    if (this.env.HEALTHCHECK_URL) await fetch(problems.length > 0 ? `${this.env.HEALTHCHECK_URL}/fail` : this.env.HEALTHCHECK_URL, { method: "POST" });
     return record;
   }
 
@@ -29,24 +30,43 @@ export class LineupRunner extends DurableObject<Env> {
     const fingerprint = problems.join("\n");
     const lastAlert = await this.ctx.storage.get<{ fingerprint: string; at: number }>(LAST_ALERT_KEY);
     const alreadyAlerted = lastAlert?.fingerprint === fingerprint && Date.now() - lastAlert.at < REPEAT_ALERT_AFTER_MS;
-    if (alreadyAlerted) return;
-    await this.ctx.storage.put(LAST_ALERT_KEY, { fingerprint, at: Date.now() });
-    await fetch(`https://ntfy.sh/${this.env.NTFY_TOPIC}`, {
+    if (alreadyAlerted) return undefined;
+    const response = await fetch(`https://ntfy.sh/${this.env.NTFY_TOPIC}`, {
       method: "POST",
       headers: { Title: "Lineup runner", Click: this.env.LINEUP_URL },
       body: `Lineup run (${trigger}) failed:\n${problems.map((problem) => `- ${problem}`).join("\n")}`,
     });
+    if (!response.ok) return { status: response.status, response: (await response.text()).slice(0, 200) };
+    await this.ctx.storage.put(LAST_ALERT_KEY, { fingerprint, at: Date.now() });
+    return { status: response.status };
   }
 
   private async checkLineup(record: RunRecord) {
-    let lineupPage = await this.fetchLineupPage();
+    const { eligibleLineupPeriods } = await this.fetchRoster();
+    const day = findCurrentDay(eligibleLineupPeriods, Date.now());
+    record.day = day;
+    let lineupPage = await this.fetchLineupPage(day);
     if (!lineupPage.loggedIn) {
       record.login = await this.logIn();
-      lineupPage = await this.fetchLineupPage();
+      lineupPage = await this.fetchLineupPage(day);
     }
     const { html, ...pageSummary } = lineupPage;
     record.lineupPage = pageSummary;
-    record.decision = await decideLineup(html);
+    record.decision = await decideLineup(html, await this.fetchRoster(day));
+  }
+
+  private async fetchRoster(day?: number): Promise<ApiRoster & { eligibleLineupPeriods: LineupPeriod[] }> {
+    const [, leagueId, teamId] = this.env.LINEUP_URL.match(/leagues\/(\d+)\/teams\/(\d+)/)!;
+    const url = new URL("https://www.fleaflicker.com/api/FetchRoster");
+    url.search = new URLSearchParams({ sport: "NBA", league_id: leagueId, team_id: teamId, ...(day ? { scoring_period: String(day) } : {}) }).toString();
+    const response = await fetch(url, { headers: await this.sessionHeaders() });
+    if (!response.ok) throw new Error(`Roster API returned HTTP ${response.status}`);
+    return response.json();
+  }
+
+  private async sessionHeaders(): Promise<Record<string, string>> {
+    const sessionCookie = await this.ctx.storage.get<string>(SESSION_COOKIE_KEY);
+    return sessionCookie ? { Cookie: sessionCookie } : {};
   }
 
   recentRuns(limit = 20): RunRecord[] {
@@ -64,10 +84,9 @@ export class LineupRunner extends DurableObject<Env> {
     await this.run("alarm");
   }
 
-  private async fetchLineupPage() {
-    const sessionCookie = await this.ctx.storage.get<string>(SESSION_COOKIE_KEY);
-    const fantasyStatsView = `${this.env.LINEUP_URL}?statType=0`;
-    const response = await fetch(fantasyStatsView, { headers: sessionCookie ? { Cookie: sessionCookie } : {} });
+  private async fetchLineupPage(day: number) {
+    const fantasyStatsView = `${this.env.LINEUP_URL}?statType=0&week=${day}`;
+    const response = await fetch(fantasyStatsView, { headers: await this.sessionHeaders() });
     const html = await response.text();
     const loggedIn = html.includes('href="/logout"');
     return { status: response.status, loggedIn, html };
@@ -112,15 +131,26 @@ export default {
 type RunRecord = {
   trigger: "manual" | "alarm" | "cron";
   startedAt: string;
+  day?: number;
   login?: { status: number; gotSessionCookie: boolean };
   lineupPage?: { status: number; loggedIn: boolean };
   decision?: LineupDecision;
   error?: string;
+  alert?: { status: number; response?: string } | { error: string };
 };
 
-function listProblems({ login, decision, error }: RunRecord) {
+type LineupPeriod = { ordinal: number; low: { startEpochMilli: string } };
+
+// Before the season starts, the first day is the one to set
+function findCurrentDay(periods: LineupPeriod[], nowMs: number) {
+  const started = periods.filter((period) => Number(period.low.startEpochMilli) <= nowMs);
+  return (started.at(-1) ?? periods[0]).ordinal;
+}
+
+function listProblems({ login, lineupPage, decision, error }: RunRecord) {
   const problems: string[] = [];
   if (login && !login.gotSessionCookie) problems.push(`Fleaflicker login failed (HTTP ${login.status}, no session cookie)`);
+  if (lineupPage && lineupPage.status !== 200) problems.push(`Lineup page returned HTTP ${lineupPage.status}`);
   if (decision && !decision.ok) problems.push(...decision.errors);
   if (error) problems.push(error);
   return problems;

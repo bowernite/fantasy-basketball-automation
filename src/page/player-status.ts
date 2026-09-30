@@ -51,11 +51,15 @@ export function parsePlayerNews(
   | undefined {
   const injuryStatusMatch = news.replace(NEWS_TIMESTAMP, " ").match(
     // "fouled out" / "sat out" describe a past game or practice, not a status
-    /\b(?<!(?:fouled|sat|sits|sitting)\s+)(questionable|doubtful|probable|available|out)\b/i
+    /\b(?<!(?:fouled|sat|sits|sitting)\s+)(questionable|doubtful|probable|not available|will not play|won't play|available|will play|(?<!not\s+(?:be\s+)?a\s+)full go|(?<!(?:not|n't)\s+(?:been\s+)?)cleared to (?:play|return)|out)\b/i
   );
   const rawStatus = injuryStatusMatch?.[1]?.toLowerCase();
   const injuryStatus: PlayerStatus | undefined =
-    rawStatus === "questionable"
+    rawStatus === "available" || rawStatus === "will play" || rawStatus === "full go" || rawStatus?.startsWith("cleared to")
+      ? "(active)"
+      : rawStatus === "not available" || rawStatus === "will not play" || rawStatus === "won't play"
+      ? "OUT"
+      : rawStatus === "questionable"
       ? "Q"
       : rawStatus === "doubtful"
       ? "D"

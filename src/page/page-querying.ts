@@ -6,8 +6,9 @@ export const PLAYER_STATUS_SELECTOR = ".injury";
 export function getPlayersTable() {
   const tables = document.querySelectorAll("table");
   if (tables.length !== 1) {
-    console.error("Expected exactly one table, found", tables);
-    throw new Error("Expected exactly one table");
+    const message = `Expected exactly one table but found ${tables.length}`;
+    console.error(message);
+    throw new Error(message);
   }
   return tables[0];
 }
@@ -59,11 +60,9 @@ export function getPageDate() {
     return text.match(/\d{1,2}\/\d{1,2}(?:\/\d{2})?/) || text === "today";
   });
   if (buttonsWithDates.length !== 1) {
-    console.error(
-      `Tried to get page date but found ${buttonsWithDates.length} date buttons`,
-      buttonsWithDates
-    );
-    throw new Error("Tried to get page date but found multiple date buttons");
+    const message = `Tried to get page date but found ${buttonsWithDates.length} date buttons`;
+    console.error(message);
+    throw new Error(message);
   }
   const dateText = buttonsWithDates[0].textContent?.toLowerCase().trim() ?? "";
   if (dateText === "today") {
@@ -72,8 +71,9 @@ export function getPageDate() {
   
   const date = parseDateFromText(dateText);
   if (!date) {
-    console.error("Could not find date in button text");
-    throw new Error("Could not find date in button text");
+    const message = `Could not find date in button text "${dateText}"`;
+    console.error(message);
+    throw new Error(message);
   }
   
   return date;

@@ -97,7 +97,7 @@ export function setOptimalLineup(players: Player[]) {
 // Reads everything it needs (scores, slots) before the page is touched, so a failure leaves the lineup as it was
 function planOptimalLineup(players: Player[]) {
   console.log("🟣 players:", players);
-  const slots = withoutLockedStartersSlots(buildDefaultSlots(), players);
+  const slots = withoutLockedStarterSlots(buildDefaultSlots(), players);
   const candidates = buildCandidates(players);
   console.table(candidates);
   const { assignments } = computeOptimalAssignments(
@@ -124,7 +124,7 @@ function planOptimalLineup(players: Player[]) {
 }
 
 // A locked player's row has no dropdown, just his slot's label in the last cell
-function withoutLockedStartersSlots(slots: Slot[], players: Player[]) {
+function withoutLockedStarterSlots(slots: Slot[], players: Player[]) {
   const openSlots = [...slots];
   for (const player of players) {
     if (player.setPositionDropdown) continue;

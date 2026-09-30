@@ -172,6 +172,18 @@ test("a player still tagged OUT isn't cleared by old news of a lesser status, bu
   expect(score(taggedOutWithNews("P", { value: 2, unit: "hours" }))).toBeGreaterThan(healthy / 2);
 });
 
+test("a day-to-day tag is lifted by fresh news clearing the player, but not by old news", () => {
+  setup();
+  const taggedDayToDayWithClearingNews = (timeAgo: TimeAgo) =>
+    makePlayer({ playerStatus: "DTD", refinedPlayerStatus: { injuryStatus: "(active)", timeAgo } });
+
+  const healthy = score(makePlayer());
+  const dayToDay = score(makePlayer({ playerStatus: "DTD" }));
+
+  expect(score(taggedDayToDayWithClearingNews({ value: 2, unit: "hours" }))).toBe(healthy);
+  expect(score(taggedDayToDayWithClearingNews({ value: 5, unit: "days" }))).toBe(dayToDay);
+});
+
 test("players with a game today rank ahead of those without, then by predicted score", () => {
   setup();
 

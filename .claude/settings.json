@@ -6,5 +6,8 @@
       "Read(./strategy/teams/**/*'s Team.md)",
       "Read(./strategy/teams/my-team/My Team.md)"
     ]
-  }
+  },
+  "enabledMcpjsonServers": [
+    "cloudflare-observability"
+  ]
 }

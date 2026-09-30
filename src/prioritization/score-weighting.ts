@@ -63,6 +63,12 @@ function getPlayerWeightedScore(player: Player) {
   });
   const actualPerformanceWeight = 1 - seasonProjectionWeight;
 
+  if (!playerData && seasonProjectionWeight > 0) {
+    console.warn(
+      `No projection for ${player.playerName}; scoring with the default ${NO_PROJECTION_RATE}/game`
+    );
+  }
+
   // Early season: rely more on projections
   // Late season: rely more on actual performance
   const weightedScore =

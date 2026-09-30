@@ -5,7 +5,7 @@ export type LineupDecision =
   | { ok: true; formAction: string; body: string; starters: Starter[]; changes: Change[]; warnings: string[] }
   | { ok: false; errors: string[] };
 
-type Starter = { player: string; slot: string };
+type Starter = { player: string; slot: string; locked?: true };
 type Change = { player: string; from: string; to: string };
 /** Signed-in `FetchRoster` response for one day (only the fields read here) */
 export type ApiRoster = { lineupPeriod: { ordinal: number }; groups: { slots: { position: { label: string }; leaguePlayer?: ApiPlayer }[] }[] };
@@ -19,6 +19,8 @@ const PAGE_TO_API_SLOT_LABEL: Record<string, string> = { Bench: "BN" };
 export async function decideLineup(html: string, apiRoster?: ApiRoster): Promise<LineupDecision> {
   const { window, document, Event } = parseHTML(html);
   addMissingFormControlBehavior(document);
+  const errorBanners = Array.from(document.querySelectorAll(".alert-danger"), (banner) => `The page shows an error: ${banner.textContent?.trim()}`);
+  if (errorBanners.length > 0) return { ok: false, errors: errorBanners };
   const form = document.querySelector<HTMLFormElement>("form[method=post]");
   if (!form) return { ok: false, errors: ["No lineup form on the page; the session may be logged out"] };
   const selects = Array.from(form.querySelectorAll<HTMLSelectElement>("select[name^=status]"));
@@ -56,9 +58,10 @@ export async function decideLineup(html: string, apiRoster?: ApiRoster): Promise
 
   const fields = Array.from(form.querySelectorAll<HTMLInputElement | HTMLSelectElement>("input[name], select[name]"));
   const body = new URLSearchParams(fields.map((field) => [field.name, field.value])).toString();
-  const starters = startingSlots.flatMap((slot) =>
-    selects.filter((select) => select.value === String(slot.mask)).map((select) => ({ player: getPlayerName(select), slot: slot.name })),
-  );
+  const starters = startingSlots.flatMap((slot): Starter[] => [
+    ...lockedPlayers.filter((player) => player.slot === slot.name).map((player) => ({ player: player.name, slot: slot.name, locked: true as const })),
+    ...selects.filter((select) => select.value === String(slot.mask)).map((select) => ({ player: getPlayerName(select), slot: slot.name })),
+  ]);
   const changes = selects
     .filter((select) => getSlotLabel(select) !== slotsBefore.get(select))
     .map((select) => ({ player: getPlayerName(select), from: slotsBefore.get(select)!, to: getSlotLabel(select) }));

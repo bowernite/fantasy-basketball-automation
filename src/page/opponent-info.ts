@@ -87,6 +87,9 @@ export async function getOpponentInfo(
 ) {
   const todaysGameElement = row.querySelector(".pro-opp-matchup");
   if (!todaysGameElement) return undefined;
+  // Once a game tips, its matchup links to the box score with no matchup tooltip
+  const gameHasStarted = !todaysGameElement.querySelector("a.tt-content");
+  if (gameHasStarted) return undefined;
 
   const opponentInfo = getPlayerOpponentInfoFromPageData(
     todaysGameElement,

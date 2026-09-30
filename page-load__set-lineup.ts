@@ -14,7 +14,15 @@ import {
   saveLineup,
 } from "./src/lineup/lineup-dom-actions";
 
-(window as any).saveLineup = saveLineup;
+// Run by the save shortcut, whose errors only reach the console
+(window as any).saveLineup = () => {
+  try {
+    saveLineup();
+  } catch (error) {
+    alert(error);
+    throw error;
+  }
+};
 (window as any).goToPreviousDay = goToPreviousDay;
 (window as any).goToNextDay = goToNextDay;
 

@@ -94,7 +94,9 @@ export function setAllPlayersToBench(players: Player[]) {
 
 export function saveLineup() {
   const button = getSaveLineupButton();
-  if (!button) return;
+  if (!button) {
+    throw new Error("No Save Lineup button on the page; you may be logged out. Nothing was saved");
+  }
 
   const form = getSubmitButtonForm(button);
   if (form) {

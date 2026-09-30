@@ -28,6 +28,18 @@ test.each([
   expect(parsePlayerNews(news, undefined)?.injuryStatus).toBe(status);
 });
 
+// A tagged (e.g. DTD) player whose news clears him should score as healthy, not stay discounted
+test.each([
+  ["Suggs (ankle) will play Tuesday against Boston, per coach Jamahl Mosley.", "(active)"],
+  ["Suggs (ankle) is available for Tuesday's game against Boston.", "(active)"],
+  ["Suggs (ankle) is not available for Tuesday's game against Boston.", "OUT"],
+  ["Suggs (ankle) will not play Tuesday against Boston.", "OUT"],
+])("reads whether the news clears the player to play: %s", (body, status) => {
+  const news = newsTooltipText("Jalen Suggs Injury Update", "Mon 10/19/26 5:12 PM", body);
+
+  expect(parsePlayerNews(news, undefined)?.injuryStatus).toBe(status);
+});
+
 test("a player who fouled out isn't read as ruled out", () => {
   const news = newsTooltipText(
     "Suggs Scores 18 in Loss",

@@ -113,16 +113,16 @@ describe("decideLineup", () => {
     for (const spy of debugOutput) expect(spy).not.toHaveBeenCalled();
   });
 
-  it("refuses a lineup that leaves a starting slot empty while an eligible player sits on the bench", async () => {
+  it("refuses a page whose slot options don't match the league's slots", async () => {
     const pageWithRenamedSlot = fantasyStatsPage.replaceAll(">F/C</option>", ">FC</option>");
 
     const decision = await decideLineup(pageWithRenamedSlot);
 
-    expect(decision).toEqual({ ok: false, errors: [expect.stringContaining("F/C slot is empty")] });
+    expect(decision).toEqual({ ok: false, errors: [expect.stringContaining("Can't fill the F/C slot")] });
   });
 
-  // Guessed locked-row markup (no select, the slot as a label), as the logged-out page shows every row. The cross-check against the API roster catches a wrong guess
-  it("refuses a lineup that also starts someone in a locked starter's slot", async () => {
+  // Locked-row markup as on a past day's page: no select, the slot as a label
+  it("fills the other 8 slots around a locked starter and lists him with the starters", async () => {
     const pageWithCadeLockedAtPG = fantasyStatsPage.replace(
       /<select class="form-control" name="status2147">.*?<\/select>/,
       '<span class="label label-success label-block"><span class="position">PG</span></span>',
@@ -130,7 +130,89 @@ describe("decideLineup", () => {
 
     const decision = await decideLineup(pageWithCadeLockedAtPG);
 
-    expect(decision).toEqual({ ok: false, errors: [expect.stringContaining("PG slot is over-filled")] });
+    if (!decision.ok) throw new Error(decision.errors.join("\n"));
+    expect(decision.starters).toMatchInlineSnapshot(`
+      [
+        {
+          "locked": true,
+          "player": "Cade Cunningham",
+          "slot": "PG",
+        },
+        {
+          "player": "Anfernee Simons",
+          "slot": "SG",
+        },
+        {
+          "player": "De'Aaron Fox",
+          "slot": "G",
+        },
+        {
+          "player": "Devin Vassell",
+          "slot": "SF",
+        },
+        {
+          "player": "Adem Bona",
+          "slot": "PF",
+        },
+        {
+          "player": "John Collins",
+          "slot": "C",
+        },
+        {
+          "player": "Neemias Queta",
+          "slot": "F/C",
+        },
+        {
+          "player": "Andre Drummond",
+          "slot": "ANY",
+        },
+        {
+          "player": "Josh Giddey",
+          "slot": "ANY",
+        },
+      ]
+    `);
+  });
+
+  it("has nothing to change once every player is locked", async () => {
+    const pageWithEveryoneLocked = fantasyStatsPage.replace(/<select class="form-control" name="status\d+">.*?<\/select>/g, (select) => {
+      const slot = select.match(/<option value="\d+" selected="selected">([^<]+)<\/option>/)![1]!;
+      return slot === "Bench"
+        ? '<span class="label label-danger label-block"><span class="text-muted">BN</span></span>'
+        : `<span class="label label-success label-block"><span class="position">${slot}</span></span>`;
+    });
+
+    const decision = await decideLineup(pageWithEveryoneLocked);
+
+    if (!decision.ok) throw new Error(decision.errors.join("\n"));
+    expect(decision.changes).toEqual([]);
+    expect(decision.starters.map(({ player, slot, locked }) => `${slot} ${player}${locked ? " (locked)" : ""}`)).toMatchInlineSnapshot(`
+      [
+        "PG Cade Cunningham (locked)",
+        "SG Anfernee Simons (locked)",
+        "G De'Aaron Fox (locked)",
+        "SF Devin Vassell (locked)",
+        "PF Adem Bona (locked)",
+        "C Naz Reid (locked)",
+        "F/C John Collins (locked)",
+        "ANY Neemias Queta (locked)",
+        "ANY Andre Drummond (locked)",
+      ]
+    `);
+  });
+
+  // A tipped game's matchup links to the box score with the score, and has no matchup tooltip
+  it("keeps setting the lineup, with nothing to warn about, once a player's game is over", async () => {
+    const pageWithCadesGameOver = fantasyStatsPage
+      .replace(/<select class="form-control" name="status2147">.*?<\/select>/, '<span class="label label-success label-block"><span class="position">PG</span></span>')
+      .replace(
+        /<a class="tt-content" href="\/nba\/boxscore\?gameId=27888" id="ttId3_0">.*?<\/a>/,
+        '<a class="" href="/nba/boxscore?gameId=27888">BOS<span class="pro-opp-matchup-info">W 125-116</span></a>',
+      );
+
+    const decision = await decideLineup(pageWithCadesGameOver);
+
+    expect(decision).toMatchObject({ ok: true, warnings: [] });
   });
 
   it("refuses a lineup where a player's select has no Bench option to fall back to", async () => {
@@ -165,6 +247,18 @@ describe("decideLineup", () => {
     const decision = await decideLineup(pageWithoutTooltips);
 
     expect(decision).toMatchObject({ ok: true, warnings: expect.arrayContaining([expect.stringContaining("Cade Cunningham")]) });
+  });
+
+  // Fleaflicker shows errors as a red banner above the page (e.g. a rejected save)
+  it("refuses a page showing an error banner, with the banner's text", async () => {
+    const pageWithErrorBanner = fantasyStatsPage.replace(
+      '<form action="/nba/leagues/30579/teams/161025" method="post"',
+      '<div class="alert alert-danger">Your roster has too many players.</div><form action="/nba/leagues/30579/teams/161025" method="post"',
+    );
+
+    const decision = await decideLineup(pageWithErrorBanner);
+
+    expect(decision).toEqual({ ok: false, errors: ["The page shows an error: Your roster has too many players."] });
   });
 
   it("refuses a page that isn't the fantasy stats view", async () => {
