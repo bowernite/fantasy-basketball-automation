@@ -8,6 +8,7 @@ const ESPN_INJURIES_URL = "https://site.api.espn.com/apis/site/v2/sports/basketb
 const ESPN_USER_AGENT = "curl/8.7.1";
 const URGENT_TIP_WINDOW_MS = 3 * 60 * 60 * 1000;
 const OUT_STATUSES: PlayerStatus[] = ["OUT", "OFS"];
+const MAY_PLAY_STATUSES: PlayerStatus[] = ["(active)", "P", "Q", "DTD"];
 
 export type EspnInjury = { status: string; date: string; shortComment?: string; athlete: { displayName: string }; details?: { returnDate?: string } };
 /** Signed-in `FetchRoster` response for one day (only the fields read here) */
@@ -18,7 +19,7 @@ type RosterPlayer = {
 };
 /** Both feeds' view of a rostered player with a game that day, when either has him injured */
 export type InjuryComparison = { player: string; ffStatus: PlayerStatus; ffNewsAt?: string; espnStatus?: string; espnDate?: string; espnReturnDate?: string; espnComment?: string };
-export type InjuryDisagreement = { message: string; urgent: boolean };
+export type InjuryDisagreement = { player: string; message: string; urgent: boolean };
 
 export async function fetchEspnInjuries(): Promise<{ injuries: EspnInjury[] } | { error: string }> {
   try {
@@ -49,17 +50,17 @@ export function compareInjuryFeeds(roster: InjuryRoster, espnInjuries: EspnInjur
     const espnOut = espn?.status === "Out";
     if (OUT_STATUSES.includes(ffStatus) && !espnOut) {
       const espnView = espn ? `${espn.status}${espn.details?.returnDate ? ` (return ${espn.details.returnDate})` : ""}` : "not on its injury list";
-      disagreements.push({ message: `Fleaflicker has ${player} ${ffStatus}, ESPN ${espnView}: he may be benched wrongly`, urgent: false });
+      disagreements.push({ player, message: `Fleaflicker has ${player} ${ffStatus}, ESPN ${espnView}: he may be benched wrongly`, urgent: false });
     }
     const espnNewer = espnOut && (!ffNewsAt || Date.parse(espn.date) > Date.parse(ffNewsAt));
-    if (espnNewer && !OUT_STATUSES.includes(ffStatus) && ffStatus !== "D") {
+    if (espnNewer && MAY_PLAY_STATUSES.includes(ffStatus)) {
       const tipSoon = requestedGames.some(({ game }) => {
         const untilTipMs = Number(game.startTimeEpochMilli) - Date.now();
         return untilTipMs >= 0 && untilTipMs <= URGENT_TIP_WINDOW_MS;
       });
       const comment = espn.shortComment ? `: "${espn.shortComment}"` : "";
       const ffView = ffStatus === "(active)" ? "healthy" : ffStatus;
-      disagreements.push({ message: `ESPN has ${player} Out as of ${espn.date}${comment}, Fleaflicker ${ffView}: he may start while out`, urgent: tipSoon && starters.has(player) });
+      disagreements.push({ player, message: `ESPN has ${player} Out as of ${espn.date}${comment}, Fleaflicker ${ffView}: he may start while out`, urgent: tipSoon && starters.has(player) });
     }
   }
   return { comparisons, disagreements };
@@ -78,7 +79,7 @@ function readFleaflickerStatus({ injury, news = [] }: RosterPlayer["proPlayer"])
 function normalizeName(name: string) {
   return name
     .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
+    .replace(/\p{Diacritic}/gu, "")
     .toLowerCase()
     .replace(/[.']/g, "")
     .replace(/\s+(jr|sr|ii|iii|iv)$/, "")

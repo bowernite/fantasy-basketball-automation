@@ -603,7 +603,7 @@ describe("scheduled checks", () => {
         "user": "test-pushover-user",
       }
     `);
-    expect(cards.map(({ name }) => name)).toEqual([alerts[0].title]);
+    expect(cards.map(({ name }) => name)).toEqual(["Lineup saves are off", alerts[0].title]);
   });
 
   it("sends an emergency alert 10 min before a tip with no successful run since T-45, unless that tick's run succeeds", async () => {
@@ -833,7 +833,7 @@ describe("scheduled checks", () => {
     expect(runs).toHaveLength(1);
     expect(runs[0].warningAlert).toEqual({ trello: { status: 200 } });
     expect(alerts).toEqual([]);
-    expect(cards.map(({ name }) => name)).toEqual(["Lineup run (cron) has warnings"]);
+    expect(cards.map(({ name }) => name)).toEqual(["Lineup run (cron) has warnings", "Lineup saves are off"]);
     expect(cards[0].desc.split("\n")[0]).toMatchInlineSnapshot(`"- Falling back to DOM scrape for Cade Cunningham opponent info"`);
   });
 
@@ -928,6 +928,45 @@ describe("scheduled checks", () => {
     expect(alerts.map(({ title, priority }) => ({ title, priority }))).toEqual([{ title: "Lineup run (cron) failed", priority: "1" }]);
   });
 
+  it("files one Trello card a day while saves are off and a tip is less than 24 h away", async () => {
+    vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-19T18:10:00Z") });
+    const { alerts, cards } = stubFleaflicker(fakeFleaflickerSeason);
+    const runner = freshRunner();
+
+    await runner.tick("cron");
+    const cardsMoreThan24hBeforeTip = cards.length;
+    vi.setSystemTime(new Date("2026-10-19T19:10:00Z"));
+    await runner.tick("cron");
+    vi.setSystemTime(new Date("2026-10-19T19:15:00Z"));
+    await runner.tick("cron");
+
+    expect(cardsMoreThan24hBeforeTip).toBe(0);
+    expect(alerts).toEqual([]);
+    expect(cards).toMatchInlineSnapshot(`
+      [
+        {
+          "authorization": "OAuth oauth_consumer_key="test-trello-key", oauth_token="test-trello-token"",
+          "desc": "A game tips within 24 h, but the runner only checks the lineup. Turn saves back on: PUT /saves {"enabled": true}
+
+      https://www.fleaflicker.com/nba/leagues/30579/teams/161025",
+          "list": "test-trello-list",
+          "name": "Lineup saves are off",
+        },
+      ]
+    `);
+  });
+
+  it("files no saves-off card while saves are on", async () => {
+    vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-19T19:10:00Z") });
+    const { cards } = stubLineupSaves();
+    const runner = freshRunner();
+    await runner.setSaves(true);
+
+    await runner.tick("cron");
+
+    expect(cards.map(({ name }) => name)).not.toContain("Lineup saves are off");
+  });
+
   it("checks in with the dead-man monitor on every tick, not on manual runs", async () => {
     vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-20T15:10:00Z") });
     let fleaflickerDown = false;
@@ -964,7 +1003,7 @@ describe("injury cross-check with ESPN", () => {
 
       https://www.fleaflicker.com/nba/leagues/30579/teams/161025",
           "list": "test-trello-list",
-          "name": "Fleaflicker and ESPN disagree on injuries",
+          "name": "Fleaflicker and ESPN disagree on Adem Bona",
         },
       ]
     `);
@@ -984,11 +1023,28 @@ describe("injury cross-check with ESPN", () => {
         {
           "message": "- ESPN has Cade Cunningham Out as of 2026-10-20T17:00Z: "Cunningham (hamstring) won't play Tuesday.", Fleaflicker healthy: he may start while out",
           "priority": "1",
-          "title": "Fleaflicker and ESPN disagree on injuries",
+          "title": "Fleaflicker and ESPN disagree on Cade Cunningham",
         },
       ]
     `);
-    expect(cards.map(({ name }) => name)).toEqual(["Fleaflicker and ESPN disagree on injuries"]);
+    expect(cards.map(({ name }) => name)).toEqual(["Fleaflicker and ESPN disagree on Cade Cunningham"]);
+  });
+
+  it("alerts each disagreement once a day, even as others come and go", async () => {
+    const cadeOut = { status: "Out", date: "2026-09-30T12:00Z", athlete: { displayName: "Cade Cunningham" } };
+    let espnLists = espnInjuries;
+    const { cards } = stubFleaflicker(fakeFleaflickerSeason, { espnInjuries: () => Response.json(espnLists) });
+
+    await triggerRun();
+    espnLists = { injuries: [...espnInjuries.injuries, { injuries: [cadeOut] }] } as typeof espnInjuries;
+    await triggerRun();
+
+    expect(cards.map(({ desc }) => desc.split("\n\n")[0])).toMatchInlineSnapshot(`
+      [
+        "- Fleaflicker has Adem Bona OUT, ESPN Day-To-Day (return 2026-10-01): he may be benched wrongly",
+        "- ESPN has Cade Cunningham Out as of 2026-09-30T12:00Z, Fleaflicker healthy: he may start while out",
+      ]
+    `);
   });
 
   it("matches ESPN names that differ in accents, punctuation or suffix", async () => {
@@ -1017,6 +1073,16 @@ describe("injury cross-check with ESPN", () => {
         },
       ]
     `);
+  });
+
+  it("only warns when ESPN's injury list has an unexpected shape, leaving the run ok", async () => {
+    const { alerts, cards } = stubFleaflicker(fakeFleaflickerSeason, { espnInjuries: () => Response.json({ injuries: [{ injuries: [{ status: "Out" }] }] }) });
+
+    const record = await (await triggerRun()).json<RunRecord>();
+
+    expect(record.error).toBeUndefined();
+    expect(alerts).toEqual([]);
+    expect(cards.map(({ name }) => name)).toEqual(["Lineup run (manual) has warnings"]);
   });
 
   it("only warns when ESPN blocks the request, leaving the run ok", async () => {

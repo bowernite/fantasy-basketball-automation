@@ -30,6 +30,7 @@ const KEPT_RUNS = 1000;
 const REPEAT_ALERT_AFTER_MS = 3 * 60 * 60 * 1000;
 const FORGET_ALERT_AFTER_MS = 24 * 60 * 60 * 1000;
 const REPEAT_INJURY_ALERT_AFTER_MS = 24 * 60 * 60 * 1000;
+const SAVES_OFF_WARNING_WINDOW_MS = 24 * 60 * 60 * 1000;
 const WAKE_INTERVAL_MS = 5 * 60 * 1000;
 
 export class LineupRunner extends DurableObject<Env> {
@@ -76,6 +77,9 @@ export class LineupRunner extends DurableObject<Env> {
     const record = runDays.length > 0 ? await this.run(trigger, runDays) : undefined;
     const { missedTips, nextTarget } = await planNow();
     for (const missedTip of missedTips) await this.alertMissedTip(missedTip);
+    const tipTables = (await this.ctx.storage.get<TipTable[]>(TIP_TABLES_KEY)) ?? [];
+    const savesOff = !(await this.ctx.storage.get<boolean>(SAVES_ENABLED_KEY));
+    if (savesOff && hasTipWithin(tipTables, SAVES_OFF_WARNING_WINDOW_MS)) await this.alertSavesOff();
     return { healthy: !record || listProblems(record).length === 0, nextTargetMs: nextTarget.getTime() };
   }
 
@@ -123,10 +127,22 @@ export class LineupRunner extends DurableObject<Env> {
   }
 
   private async alertInjuryDisagreements(disagreements: InjuryDisagreement[]) {
-    const urgent = disagreements.some((disagreement) => disagreement.urgent);
-    const body = disagreements.map(({ message }) => `- ${message}`).join("\n");
-    const alert: Alert = { title: "Fleaflicker and ESPN disagree on injuries", body, priority: urgent ? 1 : 0 };
-    return this.notify(alert, { key: INJURY_ALERTS_KEY, fingerprint: body, repeatAfterMs: REPEAT_INJURY_ALERT_AFTER_MS }, urgent ? ALERT_CHANNELS : ["trello"]);
+    const sends: AlertSends[] = [];
+    for (const { player, message, urgent } of disagreements) {
+      const alert: Alert = { title: `Fleaflicker and ESPN disagree on ${player}`, body: `- ${message}`, priority: urgent ? 1 : 0 };
+      sends.push(await this.notify(alert, { key: INJURY_ALERTS_KEY, fingerprint: message, repeatAfterMs: REPEAT_INJURY_ALERT_AFTER_MS }, urgent ? ALERT_CHANNELS : ["trello"]));
+    }
+    return sends.filter((send) => Object.keys(send).length > 0);
+  }
+
+  private async alertSavesOff() {
+    const alert: Alert = {
+      title: "Lineup saves are off",
+      body: 'A game tips within 24 h, but the runner only checks the lineup. Turn saves back on: PUT /saves {"enabled": true}',
+      priority: 0,
+    };
+    const sends = await this.notify(alert, { key: "savesOffAlerts", fingerprint: "savesOff", repeatAfterMs: SAVES_OFF_WARNING_WINDOW_MS }, ["trello"]);
+    if (Object.keys(sends).length > 0) console.log(JSON.stringify({ event: "savesOffAlert", sends }));
   }
 
   private async alertMissedTip({ at, players }: DayTip) {
@@ -201,11 +217,15 @@ export class LineupRunner extends DurableObject<Env> {
     for (const day of days) {
       const dayCheck: DayCheck = { day };
       record.days.push(dayCheck);
-      const roster = await this.checkDay(record, dayCheck).catch((error) => void (dayCheck.error = String(error)));
+      const roster = await this.checkDay(record, dayCheck).catch((error) => {
+        dayCheck.error = String(error);
+        return undefined;
+      });
       if (roster) checkedRosters.set(dayCheck, roster);
     }
-    // After every save, so a slow or failing ESPN never delays one
-    if (checkedRosters.size > 0) await this.crossCheckInjuries(record, checkedRosters);
+    // After every save, so a slow or failing ESPN never delays one or fails the run
+    if (checkedRosters.size === 0) return;
+    await this.crossCheckInjuries(record, checkedRosters).catch((error) => (record.warnings = [...(record.warnings ?? []), `Injury cross-check with ESPN failed: ${error}`]));
   }
 
   private async crossCheckInjuries(record: RunRecord, checkedRosters: Map<DayCheck, InjuryRoster>) {
@@ -221,7 +241,8 @@ export class LineupRunner extends DurableObject<Env> {
       if (comparison.comparisons.length > 0) dayCheck.injuries = comparison.comparisons;
       for (const disagreement of comparison.disagreements) disagreements.set(disagreement.message, disagreement);
     }
-    if (disagreements.size > 0) record.injuryAlert = await this.alertInjuryDisagreements([...disagreements.values()]);
+    const injuryAlerts = await this.alertInjuryDisagreements([...disagreements.values()]);
+    if (injuryAlerts.length > 0) record.injuryAlerts = injuryAlerts;
   }
 
   private async checkDay(record: RunRecord, dayCheck: DayCheck) {
@@ -391,7 +412,7 @@ type RunRecord = {
   error?: string;
   alert?: AlertSends;
   warningAlert?: AlertSends;
-  injuryAlert?: AlertSends;
+  injuryAlerts?: AlertSends[];
 };
 
 type AlertChannel = (typeof ALERT_CHANNELS)[number];

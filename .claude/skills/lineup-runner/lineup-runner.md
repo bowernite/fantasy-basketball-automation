@@ -1,5 +1,5 @@
 ---
-description: Use when debugging or checking the cloud auto-lineup runner (Cloudflare Worker `lineup-runner`): its runs, logs, alerts, cron or deploys
+description: Use when debugging, checking or changing the cloud auto-lineup runner (Cloudflare Worker `lineup-runner`): its runs, logs, alerts, cron, deploys or saves, or Fleaflicker login and lineup-save mechanics
 ---
 
 The runner is a Cloudflare Worker (`wrangler.jsonc`, `src/worker/`) that logs in to Fleaflicker, decides the lineup with the extension's code and stores a record per run. `$LINEUP_RUNNER_*` and `$CF_*` below come from the repo's `.env` (gitignored, already exported in agent shells).
@@ -19,6 +19,8 @@ Deploy only with `scripts/deploy-runner.sh`: it refuses within 90 min of a tip a
 
 `POST $LINEUP_RUNNER_URL/run` (same auth) runs the lineup now: only when the user asks.
 
+A bad save in progress: `PUT $LINEUP_RUNNER_URL/saves` with `{"enabled": false}` stops saving at once, no deploy.
+
 ## Where output lands
 
 During a run `src/worker/decide-lineup.ts` swaps `console`, so shared code's logs don't all reach Workers Logs. Read its console handling before concluding a log line was never written.
@@ -32,4 +34,11 @@ During a run `src/worker/decide-lineup.ts` swaps `console`, so shared code's log
 
 ## Tests
 
-`bunx vitest run --silent=true src/worker` (workerd pool; `bun test` skips `src/worker/`)
+`CI=1 bunx vitest run --silent=true src/worker` (workerd pool; `bun test` skips `src/worker/`)
+
+# Additional resources
+
+- [How it works](./how-it-works.md): tick and run flow, design decisions and why. Read before changing the runner
+- [Fleaflicker facts](./fleaflicker.md): login, lineup page and form, save responses, signed-in API, `/api/SetLineup`, injury feeds
+- [Operations](./operations.md): the saves switch, live save tests, deploys, secrets and alert setup, test gotchas
+- [Open items](./open-items.md): what needs the user, game-day tasks (e.g. the opening-night capture), backlog
