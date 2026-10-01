@@ -67,11 +67,12 @@ test("today's bar grows 2px per point and stops at 60 points with a cap notch", 
   expect(over.classList.contains("ffx-rail__bar--capped")).toBe(true);
 });
 
-test("the season value shows after the rail and as a tick 2px per point along it, also stopping at 60", () => {
+test("the season value is labeled above its tick, which sits 2px per point along the rail, also stopping at 60", () => {
   const row = render({ season: 47.6 });
   const capped = render({ season: 65 });
 
-  expect(row.querySelector(".ffx-score__season")!.textContent).toBe("47.6");
+  expect(row.querySelector(".ffx-rail__tick")!.textContent).toBe("47.6");
+  expect(row.querySelector(".ffx-rail")!.nextElementSibling!.className).toBe("ffx-popover");
   expect(row.querySelector<HTMLElement>(".ffx-rail__tick")!.style.left).toBe("95.2px");
   expect(capped.querySelector<HTMLElement>(".ffx-rail__tick")!.style.left).toBe("120px");
 });

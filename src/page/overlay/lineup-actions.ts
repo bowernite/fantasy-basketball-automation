@@ -31,13 +31,15 @@ export function addLineupActions() {
 
   const group = document.createElement("div");
   group.className = "btn-group ffx-actions";
-  group.append(
+  group.appendChild(
     actionButton({ label: "Set lineup", icon: setLineupIcon, className: "btn btn-primary ffx-set-lineup", onClick: runSetLineup }),
+  );
+  group.appendChild(
     actionButton({ label: "Save lineup", icon: saveLineupIcon, className: "btn btn-default ffx-save-lineup", onClick: runSaveLineup }),
   );
 
   const toolbar = document.querySelector("#body-top .button-bar .btn-toolbar");
-  (toolbar ?? document.getElementById("statusBox")!.parentElement!).prepend(group);
+  (toolbar ?? document.getElementById("statusBox")!.parentElement!).insertAdjacentElement("afterbegin", group);
 }
 
 // Also run by the Set lineup shortcut, so it works without the buttons on the page

@@ -65,6 +65,6 @@ export function showNotice({ kind, message, action }: Notice) {
   const statusBox = document.getElementById("statusBox");
   const rosterForm = document.querySelector("form[method='post']");
   if (statusBox) statusBox.appendChild(notice);
-  else if (rosterForm) rosterForm.before(notice);
-  else document.getElementById("body-center-main")!.prepend(notice);
+  else if (rosterForm) rosterForm.insertAdjacentElement("beforebegin", notice);
+  else document.getElementById("body-center-main")!.insertAdjacentElement("afterbegin", notice);
 }

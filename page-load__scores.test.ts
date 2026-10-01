@@ -106,7 +106,7 @@ test("the Name column header explains the rail once, however many times the scor
   const nameHeader = document.querySelector("thead span.player")!.closest("th")!;
   const keys = nameHeader.querySelectorAll(".ffx-score-key");
   expect(keys).toHaveLength(1);
-  expect(keys[0].textContent).toMatchInlineSnapshot(`"Today (bar)  Season (tick)  fantasy pts"`);
+  expect(keys[0].textContent).toMatchInlineSnapshot(`"Today (bar)  Season (tick)"`);
 });
 
 // Another owner's team page matches the saved page as-is: same table and date picker, no slot selects

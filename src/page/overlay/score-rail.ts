@@ -18,24 +18,27 @@ export const SCORE_RAIL_CSS = `
   .ffx-score__today { min-width: 2.4em; text-align: right; font-size: 16px; font-weight: 700; color: var(--ffx-ink); }
   .ffx-score__today--none { font-weight: 400; color: var(--ffx-muted); }
   .ffx-score__est { font-size: 11px; color: var(--ffx-orange-text); }
-  .ffx-score__season { font-size: 12px; color: var(--ffx-muted); }
+  .ffx-score__season {
+    position: absolute;
+    bottom: calc(100% + 1px);
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 12px;
+    line-height: 1;
+    white-space: nowrap;
+    color: var(--ffx-muted);
+  }
   .ffx-rail {
     position: relative;
     width: 120px;
     height: 8px;
     margin: 0 4px;
-    background: var(--ffx-track);
-    border-radius: var(--ffx-radius-sm);
-  }
-  .ffx-rail::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
     background:
       linear-gradient(#fff, #fff) 40px 0 / 1px 100% no-repeat,
       linear-gradient(#fff, #fff) 60px 0 / 1px 100% no-repeat,
-      linear-gradient(#fff, #fff) 80px 0 / 1px 100% no-repeat;
+      linear-gradient(#fff, #fff) 80px 0 / 1px 100% no-repeat,
+      var(--ffx-track);
+    border-radius: var(--ffx-radius-sm);
   }
   .ffx-rail__bar { position: absolute; top: 0; bottom: 0; left: 0; border-radius: var(--ffx-radius-sm); }
   .ffx-rail__bar--sit { background-color: var(--ffx-band-sit); }
@@ -129,10 +132,10 @@ export const insertPlayerScores = ({
   if (weightedScore != null) {
     const tick = element("span", "ffx-rail__tick");
     tick.style.left = `${railOffset(weightedScore)}px`;
+    tick.appendChild(element("span", "ffx-score__season", weightedScore.toFixed(1)));
     rail.appendChild(tick);
   }
   score.appendChild(rail);
-  if (weightedScore != null) score.appendChild(element("span", "ffx-score__season", weightedScore.toFixed(1)));
 
   const popover = createPopover({ today: hasGameToday ? predictedScore : null, season: weightedScore, debugInfo });
   score.setAttribute("aria-describedby", popover.id);
@@ -146,7 +149,7 @@ export const insertPlayerScores = ({
 function addScoreKey(row: HTMLTableRowElement) {
   const nameHeader = row.closest("table")?.querySelector("thead span.player")?.closest("th");
   if (!nameHeader || nameHeader.querySelector(".ffx-score-key")) return;
-  nameHeader.appendChild(element("span", "ffx-score-key", "Today (bar)  Season (tick)  fantasy pts"));
+  nameHeader.appendChild(element("span", "ffx-score-key", "Today (bar)  Season (tick)"));
 }
 
 // Never class it `tooltip`: Fleaflicker's news reader looks for `.tooltip` in the row
