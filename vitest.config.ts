@@ -11,6 +11,7 @@ export default defineConfig({
           FF_PASSWORD: "test-password",
           PUSHOVER_TOKEN: "test-pushover-token",
           PUSHOVER_USER: "test-pushover-user",
+          NTFY_TOPIC: "test-ntfy-topic",
           TRELLO_API_KEY: "test-trello-key",
           TRELLO_TOKEN: "test-trello-token",
           TRELLO_LIST: "test-trello-list",

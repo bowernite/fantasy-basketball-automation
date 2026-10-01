@@ -1,10 +1,53 @@
+# Priorities
+
+Rough triage as of 9/30. P1 = before opening night (10/20), P2 = opening week through midseason, P3 = later or only if needed. Effort is rough agent working time; "user" means it needs the user. Detail is in the entries below.
+
+| Pri | Item | Effort | When / gate |
+| --- | --- | --- | --- |
+| P1 | Confirm the GitHub watchdog's scheduled runs fire | ~10 min | Now: the safety net is unproven |
+| P1 | healthchecks.io dead-man sign-up | ~15 min (user) | Now: the dead-man check isn't set up yet |
+| P1 | See a T-40/T-15 tip run fire live (fake tip via debug route) | ~1–2 h | Before 10/20 |
+| P1 | Day-1 lineup is now the runner's: glance at it | ~5 min (user) | Before 10/20 |
+| P1 | 10/20 opening night: capture in-game page + API roster, add fixtures | ~2–3 h | 10/20 after the 2:00p CT tip |
+| P2 | Respect manual lineup changes (hourly runs overwrite hand-edits) | Decide ~15 min (user); build ~1 day | Before the user relies on manual edits |
+| P2 | Smaller runner backlog (NaN score fails the whole day first) | ~0.5 day | Opening week |
+| P2 | Game-day digest | ~2–3 h | Opening week |
+| P2 | Untagged OUT news: firmer status source | ~0.5 day (ESPN corroboration) to ~2 days (LLM) | After opening week's shadow `wouldBench` data |
+| P2 | Late scratches after T-15 | ~1 day | After opening week's injury-lag numbers |
+| P2 | Worker ntfy fallback: document it in the skill | ~15 min | Any time |
+| P2 | Board-residual test red on main | ~1 h | Any time |
+| P2 | Preseason freeze (projections) | ~1–2 h | Once all 12 rosters are re-cut |
+| P2 | Stale-projection alerts (needs generator change) | ~0.5 day | Early season |
+| P2 | Average projections from more sites (e.g. ESPN) | ~0.5 day | Once those sites publish |
+| P3 | AI sanity check (LLM reviewer) | ~1–2 days + API key (user) | Only if opening week shows misses the deterministic checks don't catch |
+| P3 | Aging role vets overvalued (progression model) | ~1 day | Before trusting year 2+ bands |
+| P3 | Top-5 picks over-projected | ~1 day | When enough post-2016 classes exist |
+| P3 | Team sim leftovers (retire `horizon.py`, calibrate) | ~1–2 days | After the model fixes above |
+| P3 | Draft-class nudge re-read | ~1 h each | Jan–Mar; freeze each October |
+| P3 | Each offseason: refit + backtest | ~0.5 day | After the season |
+| P3 | 2027 season finale rollover check | ~1 h | April 2027 |
+| P3 | Rookie P(active) swings; G1/G2 gate redesign | ~0.5–1 day | Low value |
+| P3 | Years 8–20 extrapolated; "if it ever feeds valuations" | — | Don't invest unless triggered |
+
+# General
+
 - [x] Delta w for just PF / in general, vs for this season simmed — see `Eval Definitions §Δw` vs `§Δw (season)`
 - [x] Formula Δw cutoff R stays 15, not ~25 — gap vs sim is our fitted REPL (~25) vs league last-rostered, not a wrong constant (`Eval Definitions §Δw`)
 - [ ] At some point Update repo (average projections from a few more sites, once those sites have released. e.g. ESPN)
 
 # Lineup runner
 
-- [ ] Sign-ups, saves approval and game-day tasks (10/20 opening-night capture) for the cloud lineup runner: `.claude/skills/lineup-runner/open-items.md`
+- [ ] Sign-up (healthchecks.io dead-man) and game-day tasks for the cloud lineup runner: `.claude/skills/lineup-runner/open-items.md`
+- [ ] **10/20 opening night: capture the in-game page + API roster** from `GET /captures` after the 2:00p CT tip and turn them into fixtures. The locked-row markup is a guess, and if the page vs API cross-check disagrees once starters lock, every later run that day fails (no late-scratch coverage for the 6p/8:30p games). Steps: `open-items.md` §Game-day tasks
+  - Before then: no T-40/T-15 tip run has fired live yet (preseason has no tip targets); watch the first ones on 10/20 in `/runs`
+- [ ] **Day-1 lineup is now the runner's**: the 9/30 save test and first automatic save replaced the hand-set day-1 lineup with the optimizer's. Glance at it before 10/20
+- [ ] **Confirm the GitHub watchdog's scheduled runs fire**: as of 10/1 00:30Z only manual (`workflow_dispatch`) runs exist. Check `gh run list --workflow lineup-watchdog.yml` for `schedule` runs (`operations.md` §Watchdog)
+- [ ] **Worker ntfy fallback is untested live**: it only sends when Pushover rejects, which can't be forced without hitting the phone; ntfy reaches it from Cloudflare only ~3/4 of the time. The skill still says ntfy can't be reached from Workers (`how-it-works.md` §Alerts): document the fallback there
+- [ ] **Late scratches after T-15**: the last scheduled run is T-15 (T-10/T-5 only retry failures), so a scratch announced in the last ~15 min is missed. Option: poll an injury feed inside ~90 min of tip and trigger a run when a starter's status changes. Decide after opening week's injury-lag numbers (`open-items.md` §Game-day tasks)
+- [ ] **Game-day digest**: one push at each day's first T-40 listing starters, benched players with a game, and changes, so a wrong lineup is visible without opening Fleaflicker (`open-items.md` §Backlog)
+- [ ] **Stale-projection alerts**: rostered players missing from the bundled `src/data/player-data.ts` (e.g. Okpara) get a 6.0 fallback (a run warning only), and nothing warns when the feed is old. Needs a generator change first (`projections` Skill; `open-items.md` §Backlog)
+- [ ] Smaller runner backlog (a NaN score fails the whole day, `.alert-warning` banners, duplicate alerts, `tsc` skips `src/worker/`): `open-items.md` §Backlog
+- [ ] **2027 season finale**: check what the API returns at rollover; an empty `eligibleLineupPeriods` makes every tick throw (`open-items.md` §Game-day tasks)
 - [ ] Respect manual lineup changes (hourly runs overwrite hand-edits); see `.claude/skills/lineup-runner/open-items.md` §Manual edits vs hourly runs
 - [ ] **AI sanity check (tabled 9/30)**: today every Worker check is deterministic. An LLM reviewer would catch soft problems: odd banners, news contradicting a tag (stale out-for-season tags), a starter who looks wrong given news, untagged OUT news (now only measured as `untaggedOutNews`)
   - Shape: reviewer only, never in the save path. Runs after save + reload verify, on T-40/T-15 tip runs and runs that saved changes (~5–10 calls/day in season), not hourly no-ops or 5-min ticks
@@ -13,6 +56,10 @@
   - Cost (estimate): ~10–20k input tokens/call → Sonnet-class ~$10–20/mo, Haiku-class ~$3–6/mo
   - Needs: an Anthropic API key as a Worker secret, plus a monthly spend cap
   - Before building: read opening week's `/runs` (`injuries`, `untaggedOutNews`). If ESPN cross-check + an untagged-news alert cover the misses, this may not be needed
+- [ ] **Untagged OUT news: firmer status source** (pairs with the AI sanity check above). v1 benches a player Fleaflicker hasn't tagged only on strict news wording ("ruled out", "won't play", "out for <game>") that names the game day and is newer than his last game. It's lower-only, `doubtful` only alerts, and it runs shadow-only for opening week (records who it would bench). Details: `lineup-runner` Skill
+  - Why it's not fully trusted: `parsePlayerNews` takes the first status keyword anywhere in the news and never checks which game. Probes read "closed out the win", "moved out of the starting lineup but played 28 minutes" and "out of his walking boot" as OUT, and "ruled out of Monday's game" (posted Mon) would still bench him Tue
+  - Options: corroborate with a second source before benching (ESPN injuries already fetched per run; NBA official injury report PDF is finer-grained, with Q/Available); or have an LLM read the news + game date and return `{status, forGame, confidence}`, acting only on high-confidence OUT for day N; or both (LLM as tiebreaker when the sources disagree)
+  - Before deciding: read opening week's shadow `wouldBench` rows and `injuries` rows in `/runs`. Count true and false benches and how often Fleaflicker tags lag the news. Turn on deterministic benching if it's clean; otherwise add the second source or LLM
 
 # Future-year projections
 

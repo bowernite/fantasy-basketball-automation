@@ -342,13 +342,13 @@ describe("lineup runner", () => {
     expect(cardComments).toEqual([]);
   });
 
-  it("tries the alert again on the next run when Pushover rejects it", async () => {
+  it("tries the alert again on the next run when Pushover and ntfy reject it", async () => {
     const pushoverStatuses = [429, 200];
     const { alerts } = stubFleaflicker(
       () => {
         throw new TypeError("TLS handshake failed");
       },
-      { pushoverStatus: () => pushoverStatuses.shift()! },
+      { pushoverStatus: () => pushoverStatuses.shift()!, ntfyStatus: () => 429 },
     );
 
     const firstRun = await (await triggerRun()).json<RunRecord>();
@@ -1168,6 +1168,66 @@ describe("injury cross-check with ESPN", () => {
   });
 });
 
+describe("untagged OUT news", () => {
+  it("files a Trello card on who it would bench when news rules out an untagged starter, leaving the lineup alone", async () => {
+    vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-20T14:00:00Z") });
+    const page = withCadeNews("Cade Cunningham Out Tuesday", "Cunningham (hamstring) has been ruled out of Tuesday's game against Boston.", "2026-10-20T13:00:00Z");
+    const { alerts, cards } = stubFleaflicker((request) => fakeFleaflicker(request, page));
+
+    const record = await freshRunner().run();
+
+    expect(record.days[0].untaggedOutNews).toMatchInlineSnapshot();
+    expect(record.days[0].decision?.ok && record.days[0].decision.starters.map(({ player }) => player)).toContain("Cade Cunningham");
+    expect(alerts).toEqual([]);
+    expect(cards.map(({ name, desc }) => ({ name, desc }))).toMatchInlineSnapshot();
+  });
+});
+
+describe("ntfy fallback for phone alerts", () => {
+  it("pushes through ntfy when Pushover rejects an alert", async () => {
+    const { ntfyPushes } = stubFleaflicker(
+      () => {
+        throw new TypeError("Connection refused");
+      },
+      { pushoverStatus: () => 500 },
+    );
+
+    const record = await (await triggerRun()).json<RunRecord>();
+
+    expect(ntfyPushes).toMatchInlineSnapshot(`
+      [
+        {
+          "click": "https://www.fleaflicker.com/nba/leagues/30579/teams/161025",
+          "message": "- TypeError: Connection refused
+
+      (Sent via ntfy: Pushover didn't accept it)",
+          "priority": 3,
+          "title": "Lineup run (manual) failed",
+          "topic": "test-ntfy-topic",
+        },
+      ]
+    `);
+    expect(record.alert).toMatchObject({ pushover: { status: 500 }, ntfy: { status: 200 } });
+    const [latest] = await listAlerts();
+    expect(latest).toMatchObject({ title: "Lineup run (manual) failed", delivered: true });
+  });
+
+  it("tries ntfy again within the same alert when it refuses", async () => {
+    const ntfyStatuses = [429, 522, 200];
+    const { ntfyPushes } = stubFleaflicker(
+      () => {
+        throw new TypeError("Connection refused");
+      },
+      { pushoverStatus: () => 500, ntfyStatus: () => ntfyStatuses.shift()! },
+    );
+
+    const record = await (await triggerRun()).json<RunRecord>();
+
+    expect(ntfyPushes).toHaveLength(3);
+    expect(record.alert?.ntfy).toEqual({ status: 200 });
+  });
+});
+
 describe("alert log for outside watchdogs", () => {
   it("lists a sent failure alert", async () => {
     vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-20T17:00:00Z") });
@@ -1189,12 +1249,12 @@ describe("alert log for outside watchdogs", () => {
     });
   });
 
-  it("marks an alert Pushover rejected as undelivered, so the watchdog sends it", async () => {
+  it("marks an alert Pushover and ntfy rejected as undelivered, so the watchdog sends it", async () => {
     stubFleaflicker(
       () => {
         throw new TypeError("Pushover rejects this one");
       },
-      { pushoverStatus: () => 500 },
+      { pushoverStatus: () => 500, ntfyStatus: () => 429 },
     );
 
     await triggerRun();
@@ -1410,6 +1470,15 @@ async function fakeFleaflicker(request: Request, loggedInPage = LOGGED_IN_PAGE) 
   return new Response(hasSession ? loggedInPage : LOGGED_OUT_PAGE);
 }
 
+// Opening night's page, where Cade Cunningham (untagged, tips 10/20 19:00Z) has this news
+function withCadeNews(headline: string, body: string, postedAt: string) {
+  const news = `<div class="news-content"><div class="news-date"></div><div class="news-text"><h5>${headline}</h5><em><relative-time datetime="${postedAt}">${postedAt}</relative-time></em><p>${body}</p></div></div>`;
+  const tooltip = JSON.stringify({ contents: news, ids: ["ttIdCadeNews"] }).replaceAll("<", "\\u003c");
+  return fantasyStatsPage
+    .replace('Cade Cunningham</a></div><div class="player-icons"></div>', 'Cade Cunningham</a></div><div class="player-icons"><i class="fa fa-file-text-o right-icon tt-content text-blue" id="ttIdCadeNews"></i></div>')
+    .replace('"tooltips":[', `"tooltips":[${tooltip},`);
+}
+
 // Opening night's page, with its tip times moved to the requested day
 function fakeFleaflickerSeason(request: Request) {
   const daysAfterOpeningNight = Number(new URL(request.url).searchParams.get("week") ?? 1) - 1;
@@ -1417,8 +1486,9 @@ function fakeFleaflickerSeason(request: Request) {
   return fakeFleaflicker(request, page);
 }
 
-function stubFleaflicker(respond: (request: Request) => Response | Promise<Response>, { pushoverStatus = () => 200, trelloStatus = () => 200, trelloCardArchived = () => false, rosterApiUp = (_url: URL) => true, deadManUp = true, espnInjuries = () => Response.json(ESPN_AGREES_WITH_FLEAFLICKER) } = {}) {
+function stubFleaflicker(respond: (request: Request) => Response | Promise<Response>, { pushoverStatus = () => 200, trelloStatus = () => 200, trelloCardArchived = () => false, rosterApiUp = (_url: URL) => true, deadManUp = true, espnInjuries = () => Response.json(ESPN_AGREES_WITH_FLEAFLICKER), ntfyStatus = () => 200 } = {}) {
   const deadManPings: string[] = [];
+  const ntfyPushes: Record<string, unknown>[] = [];
   const alerts: Record<string, string>[] = [];
   const cards: { list: string; name: string; desc: string; authorization: string | null }[] = [];
   const cardComments: { card: string; text: string }[] = [];
@@ -1451,6 +1521,11 @@ function stubFleaflicker(respond: (request: Request) => Response | Promise<Respo
     const cardLookup = pathname.match(/^\/1\/cards\/([^/]+)$/);
     if (hostname === "api.trello.com" && cardLookup) return Response.json({ id: cardLookup[1], closed: trelloCardArchived() });
     if (hostname === "site.api.espn.com") return espnInjuries();
+    if (hostname === "ntfy.sh") {
+      ntfyPushes.push(await request.json());
+      const status = ntfyStatus();
+      return status === 200 ? Response.json({ id: "n1", event: "message" }) : Response.json({ code: 42908, error: "limit reached: daily message quota reached" }, { status });
+    }
     if (hostname === "hc-ping.com") {
       if (!deadManUp) throw new TypeError("hc-ping.com unreachable");
       deadManPings.push(pathname);
@@ -1458,5 +1533,5 @@ function stubFleaflicker(respond: (request: Request) => Response | Promise<Respo
     }
     return realFetch(input, init);
   });
-  return { alerts, cards, cardComments, deadManPings };
+  return { alerts, cards, cardComments, deadManPings, ntfyPushes };
 }

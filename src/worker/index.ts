@@ -9,6 +9,10 @@ import { findUntaggedOutNews, type UntaggedOutNews } from "./untagged-news";
 const FLEAFLICKER_LOGIN_URL = "https://www.fleaflicker.com/nba/login";
 const PUSHOVER_URL = "https://api.pushover.net/1/messages.json";
 const PUSHOVER_MAX_MESSAGE_LENGTH = 1024;
+const NTFY_URL = "https://ntfy.sh";
+const NTFY_PRIORITIES = { 0: 3, 1: 4, 2: 5 } as const;
+// From Cloudflare, about half of ntfy requests fail (per-IP quota on shared egress, or no connection); each attempt may leave from another IP
+const NTFY_ATTEMPTS = 3;
 const TRELLO_CARDS_URL = "https://api.trello.com/1/cards";
 const ALERT_CHANNELS = ["pushover", "trello"] as const;
 const SESSION_COOKIE_KEY = "fleaflickerSessionCookie";
@@ -177,8 +181,13 @@ export class LineupRunner extends DurableObject<Env> {
       const { due, lastAlert } = await this.checkAlertDue(`${dedupe.key}:${channel}`, dedupe);
       if (!due) continue;
       const send = channel === "pushover" ? this.sendPushover(alert) : this.postToTrello(alert, lastAlert?.cardId);
-      const { accepted, cardId, ...sendRecord } = await send.catch((error): AlertOutcome => ({ accepted: false, error: String(error) }));
+      let { accepted, cardId, ...sendRecord } = await send.catch(failedSend);
       sends[channel] = sendRecord;
+      if (channel === "pushover" && !accepted) {
+        const { accepted: ntfyAccepted, ...ntfySend } = await this.sendNtfy(alert);
+        sends.ntfy = ntfySend;
+        accepted = ntfyAccepted;
+      }
       if (!accepted) {
         this.alertUndelivered = true;
         delivered = false;
@@ -217,6 +226,19 @@ export class LineupRunner extends DurableObject<Env> {
     });
     const accepted = response.ok && (await response.clone().json<{ status: number }>()).status === 1;
     return summarizeAlertResponse(response, accepted);
+  }
+
+  private async sendNtfy({ title, body, priority }: Alert): Promise<AlertOutcome> {
+    if (!this.env.NTFY_TOPIC) return { accepted: false, error: "NTFY_TOPIC not set" };
+    const message = `${body}\n\n(Sent via ntfy: Pushover didn't accept it)`;
+    const publish = JSON.stringify({ topic: this.env.NTFY_TOPIC, title, message, priority: NTFY_PRIORITIES[priority], click: this.env.LINEUP_URL });
+    let outcome: AlertOutcome = { accepted: false, error: "not sent" };
+    for (let attempt = 0; attempt < NTFY_ATTEMPTS && !outcome.accepted; attempt++) {
+      outcome = await fetchWithTimeout(NTFY_URL, { method: "POST", body: publish })
+        .then((response) => summarizeAlertResponse(response, response.ok))
+        .catch(failedSend);
+    }
+    return outcome;
   }
 
   private async postToTrello({ title, body }: Alert, sameFailureCardId?: string): Promise<AlertOutcome> {
@@ -490,7 +512,7 @@ type AlertChannel = (typeof ALERT_CHANNELS)[number];
 
 type SentAlerts = Record<string, { at: number; cardId?: string }>;
 
-type AlertSends = Partial<Record<AlertChannel, AlertSend>>;
+type AlertSends = Partial<Record<AlertChannel | "ntfy", AlertSend>>;
 
 type LoginOutcome = { status: number; gotSessionCookie: boolean; stillSignedOut?: true; backedOff?: true };
 
@@ -538,6 +560,10 @@ function hasTipWithin(tipTables: TipTable[], windowMs: number) {
 function isWithin(at: string, windowMs: number) {
   const untilMs = Date.parse(at) - Date.now();
   return untilMs >= 0 && untilMs <= windowMs;
+}
+
+function failedSend(error: unknown): AlertOutcome {
+  return { accepted: false, error: String(error) };
 }
 
 async function summarizeAlertResponse(response: Response, accepted: boolean) {
