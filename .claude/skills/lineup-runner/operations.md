@@ -9,6 +9,12 @@ Auth on every route: `-H "Authorization: Bearer $LINEUP_RUNNER_TOKEN"` against `
 - A one-off live save test is allowed with the lead's or the user's OK: record the day's original form body first, `PUT /saves true` → `POST /run` → `PUT /saves false`, confirm the saved lineup with an independent reload, then POST the original body back and confirm the reload matches it. Run it away from tips and deploys (a deploy mid-test runs the old version for ~30 s)
 - With saves on, the runs overwrite manual lineup edits within ~1 h; only `PUT /saves false` keeps a manual edit
 
+## Untagged OUT news
+
+- Shadow by default: matches are recorded (`wouldBench`) and alerted, never applied (`how-it-works.md` §Untagged OUT news)
+- `PUT /untagged-out-news` with `{"act": true}` benches matched OUT players (`benched`), unless no one with a game can replace him (`wouldBench`); anything else (e.g. `{"act": false}`) returns to shadow. It returns `{act}`; `GET /status` shows `untaggedOutNewsAct`. No deploy needed
+- Turn act on only when the user approves after the shadow-week review (`open-items.md`)
+
 ## Deploys
 
 - `scripts/deploy-runner.sh` deploys the working tree. When other sessions have uncommitted `src/` edits, deploy from a clean worktree of the commit you mean to ship

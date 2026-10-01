@@ -16,8 +16,24 @@ The goal: the user's lineup is set optimally and reliably for every game, with n
 2. Per day: GET the lineup page for an explicit `week=N` in the fantasy-stats view, plus the signed-in `FetchRoster` for the same day. Day `N` comes from the API's `eligibleLineupPeriods`, never the default page (the league day ends 6a ET)
 3. `decideLineup()`: runs the extension's `setLineup()` on the page, parsed with linkedom plus a small form-control shim, then serializes the whole form and checks invariants. It fails closed on an error banner, no form, page vs API disagreement, an empty or over-filled slot, or a select with no slot chosen
 4. When saves are on and something changed: `saveLineup()` POSTs the whole form, then reloads the page and diffs every posted slot. No POST within 3 min of a tip
-5. After every day is saved: the ESPN injury cross-check (alert only)
+5. After every day is saved: untagged OUT news alerts (below), then the ESPN injury cross-check (alert only)
 6. Record to DO SQLite (`GET /runs`), alert on problems or warnings. A day with problems, or the day's first check with locked rows, also keeps its page and roster (`GET /captures`), since in-game markup is gone by the next day
+
+## Untagged OUT news
+
+News can rule a player out before Fleaflicker tags him (`untagged-news.ts`, `untagged-out-match.ts`). A false positive benches a healthy starter, so matching is strict and only ever lowers a player.
+
+- Candidates: per day page, `findUntaggedNews` returns the tooltip news of every player with no `.injury` tag, with a loose `status` (OUT or D via `parsePlayerNews`, news ≤36 h old) when it has one. All of it goes to the strict matcher
+- Recorded in `days[].untaggedOutNews` (`player`, `status`, `postedAt`, `headline`): every match, plus unmatched news with a loose `status`, so misses can be reviewed
+- Strict match (`matchOutNews`) against his tip that day (`parseGameTips`; no game that day → no match). News must be posted 0–36 h before tip. The headline, then each body sentence (a truncated last fragment is dropped), is checked; the first that passes wins:
+  - Day: every day reference names the tip's ET day (weekday, "Oct. 20" / "10/20", "tonight/today" if posted that ET day from 6a, "tomorrow" if posted the ET day before from 6a), and there is at least one
+  - Rejected: hedges (could, might, may, would, likely, questionable, probable, upgraded…) and teammate wording (starts with "With", or has who, absence, in place of, usage, minutes, start…)
+  - OUT: "ruled out", "will not / won't play", "out <day>", "out for/against (≤4 words) <day>"; not negated, not an idiom ("sat out", "closed out"…). Otherwise "doubtful" → D
+- A match adds `tipAt` and `matched: {status, sentence}`. A matched OUT adds `wouldBench: true`. D never changes the lineup
+- Act mode: before `decideLineup()`, his row is rewritten to carry an OUT tag (×0) with no news icon, so the news can't lift the tag. `wouldBench` becomes `benched: true` only if the decision moved him out of the starters; when no one with a game can replace him he still starts and keeps `wouldBench`
+- Alerts, after the day loop: one per match, titled "Would bench X (news: out, no Fleaflicker tag)", "Benched X (news: out, no Fleaflicker tag)" or "News says X is doubtful"; body = headline, posted time (CT) and the quoted sentence. Pushover priority 1 if he's still a starter and his tip is ≤3 h away, else a Trello card. Dedupe on player + `postedAt`, repeat after 24 h, per channel (a later ≤3 h push still goes). Sends land in the run's `untaggedNewsAlerts`; a failure becomes a run warning
+- Mode: DO storage `untaggedOutNewsAct`, default off (shadow); switch via `PUT /untagged-out-news` (`operations.md` §Untagged OUT news)
+- Known risk: the matcher never sees the player's name, so news about a teammate still matches if it avoids the teammate words
 
 ## The watchdog
 

@@ -1,10 +1,12 @@
 import { DurableObject } from "cloudflare:workers";
+import { parseHTML } from "linkedom";
 import { type ApiRoster, decideLineup, type LineupDecision } from "./decide-lineup";
 import { fetchWithTimeout } from "./fetch-with-timeout";
 import { compareInjuryFeeds, fetchEspnInjuries, type InjuryComparison, type InjuryDisagreement, type InjuryRoster } from "./injury-cross-check";
 import { type DayTip, type LedgerEntry, parseGameTips, planTick, RETRY_TIP_WINDOW_MS, TIP_CUTOFF_MS, type TipTable } from "./lineup-schedule";
 import { type SaveResult, saveLineup } from "./save-lineup";
-import { findUntaggedOutNews, type UntaggedOutNews } from "./untagged-news";
+import { findUntaggedNews, type UntaggedNews } from "./untagged-news";
+import { matchOutNews, type OutNewsMatch } from "./untagged-out-match";
 
 const FLEAFLICKER_LOGIN_URL = "https://www.fleaflicker.com/nba/login";
 const PUSHOVER_URL = "https://api.pushover.net/1/messages.json";
@@ -19,6 +21,7 @@ const SESSION_COOKIE_KEY = "fleaflickerSessionCookie";
 const TIP_TABLES_KEY = "tipTables";
 const LINEUP_PERIODS_KEY = "lineupPeriods";
 const SAVES_ENABLED_KEY = "savesEnabled";
+const UNTAGGED_OUT_NEWS_ACT_KEY = "untaggedOutNewsAct";
 const FAILED_LOGIN_KEY = "failedLogin";
 const FAILURE_ALERTS_KEY = "failureAlerts";
 const FAILED_SAVE_KEY = "failedSave";
@@ -151,6 +154,23 @@ export class LineupRunner extends DurableObject<Env> {
     return sends.filter((send) => Object.keys(send).length > 0);
   }
 
+  // News can rule a player out before Fleaflicker tags him; a starter tipping within 3 h reaches the phone
+  private async alertUntaggedNews(record: RunRecord) {
+    const sends: AlertSends[] = [];
+    for (const { decision, untaggedOutNews = [] } of record.days) {
+      const starters = decision?.ok ? decision.starters.map(({ player }) => player) : [];
+      for (const { player, postedAt, headline, tipAt, matched, benched } of untaggedOutNews) {
+        if (!tipAt || !matched) continue;
+        const title = matched.status === "D" ? `News says ${player} is doubtful` : `${benched ? "Benched" : "Would bench"} ${player} (news: out, no Fleaflicker tag)`;
+        const posted = new Date(postedAt).toLocaleString("en-US", { timeZone: "America/Chicago", weekday: "short", hour: "numeric", minute: "2-digit" });
+        const alert: Alert = { title, body: `${headline} (posted ${posted} CT)\n> ${matched.sentence}`, priority: starters.includes(player) && isWithin(tipAt, URGENT_TIP_WINDOW_MS) ? 1 : 0 };
+        sends.push(await this.notify(alert, { key: "untaggedNewsAlerts", fingerprint: `${player}|${postedAt}`, repeatAfterMs: DAY_MS }));
+      }
+    }
+    const sent = sends.filter((send) => Object.keys(send).length > 0);
+    if (sent.length > 0) record.untaggedNewsAlerts = sent;
+  }
+
   private async alertSavesOff() {
     const alert: Alert = {
       title: "Lineup saves are off",
@@ -277,6 +297,7 @@ export class LineupRunner extends DurableObject<Env> {
       if (roster) checkedRosters.set(dayCheck, roster);
       await this.captureUnexpectedDay(record, dayCheck, fetched).catch((error) => console.error(JSON.stringify({ event: "captureFailed", day, error: String(error) })));
     }
+    await this.alertUntaggedNews(record).catch((error) => (record.warnings = [...(record.warnings ?? []), `Untagged-news alerts failed: ${error}`]));
     // After every save, so a slow or failing ESPN never delays one or fails the run
     if (checkedRosters.size === 0) return;
     await this.crossCheckInjuries(record, checkedRosters).catch((error) => (record.warnings = [...(record.warnings ?? []), `Injury cross-check with ESPN failed: ${error}`]));
@@ -331,18 +352,37 @@ export class LineupRunner extends DurableObject<Env> {
     fetched.html = html;
     const roster = await this.fetchRoster(day);
     fetched.roster = roster;
+    let lineupHtml = html;
+    let benchOnNews: UntaggedOutNewsCheck[] = [];
     if (pageSummary.status === 200) {
       const tips = parseGameTips(html);
       await this.storeTipTable({ day, fetchedAt: record.startedAt, tips });
-      const untaggedOutNews = findUntaggedOutNews(html);
+      const act = (await this.ctx.storage.get<boolean>(UNTAGGED_OUT_NEWS_ACT_KEY)) === true;
+      // The strict match judges freshness against the tip itself, so it reads news the loose 36 h status skips
+      const untaggedOutNews = findUntaggedNews(html).flatMap(({ body, ...news }): UntaggedOutNewsCheck[] => {
+        const tipAt = tips.find(({ players }) => players.includes(news.player))?.at;
+        const matched = tipAt ? matchOutNews({ ...news, body }, tipAt) : undefined;
+        if (!tipAt || !matched) return news.status ? [news] : [];
+        if (matched.status !== "OUT") return [{ ...news, tipAt, matched }];
+        return [{ ...news, tipAt, matched, wouldBench: true }];
+      });
       if (untaggedOutNews.length > 0) dayCheck.untaggedOutNews = untaggedOutNews;
+      if (act) benchOnNews = untaggedOutNews.filter(({ wouldBench }) => wouldBench);
+      lineupHtml = tagOut(html, benchOnNews.map(({ player }) => player));
       const players = roster.groups.flatMap(({ slots }) => slots.map(({ leaguePlayer }) => leaguePlayer?.requestedGames ?? []));
       const playersWithGamesAhead = players.filter((games) => games.some(({ game }) => Number(game.startTimeEpochMilli) > Date.now())).length;
       if (tips.length === 0 && playersWithGamesAhead > 0) {
         dayCheck.warnings = [`No tip times on the day ${day} page though ${playersWithGamesAhead} players have games ahead, so no pre-tip runs or missed-tip alerts that day`];
       }
     }
-    dayCheck.decision = await decideLineup(html, roster);
+    dayCheck.decision = await decideLineup(lineupHtml, roster);
+    // Tagged OUT, he still starts when no one with a game can replace him
+    const starters = dayCheck.decision.ok ? dayCheck.decision.starters.map(({ player }) => player) : [];
+    for (const news of benchOnNews) {
+      if (!dayCheck.decision.ok || starters.includes(news.player)) continue;
+      delete news.wouldBench;
+      news.benched = true;
+    }
     if (dayCheck.decision.ok && (await this.ctx.storage.get<boolean>(SAVES_ENABLED_KEY))) dayCheck.save = await this.saveUnlessBackingOff(day, dayCheck.decision);
     return roster;
   }
@@ -398,7 +438,17 @@ export class LineupRunner extends DurableObject<Env> {
       .flatMap(({ day, tips }) => tips.map(({ at }) => ({ day, at })))
       .filter(({ at }) => Date.parse(at) > Date.now())
       .sort((a, b) => a.at.localeCompare(b.at));
-    return { alarm: alarm ? new Date(alarm).toISOString() : null, savesEnabled: (await this.ctx.storage.get<boolean>(SAVES_ENABLED_KEY)) === true, upcomingTips };
+    return {
+      alarm: alarm ? new Date(alarm).toISOString() : null,
+      savesEnabled: (await this.ctx.storage.get<boolean>(SAVES_ENABLED_KEY)) === true,
+      untaggedOutNewsAct: (await this.ctx.storage.get<boolean>(UNTAGGED_OUT_NEWS_ACT_KEY)) === true,
+      upcomingTips,
+    };
+  }
+
+  async setUntaggedOutNewsAct(act: boolean) {
+    await this.ctx.storage.put(UNTAGGED_OUT_NEWS_ACT_KEY, act);
+    return { act };
   }
 
   async setSaves(enabled: boolean) {
@@ -488,6 +538,10 @@ export default {
       const { enabled } = await request.json<{ enabled?: unknown }>();
       return Response.json(await runner.setSaves(enabled === true));
     }
+    if (request.method === "PUT" && pathname === "/untagged-out-news") {
+      const { act } = await request.json<{ act?: unknown }>();
+      return Response.json(await runner.setUntaggedOutNewsAct(act === true));
+    }
     return new Response("Not found", { status: 404 });
   },
 
@@ -506,6 +560,7 @@ type RunRecord = {
   alert?: AlertSends;
   warningAlert?: AlertSends;
   injuryAlerts?: AlertSends[];
+  untaggedNewsAlerts?: AlertSends[];
 };
 
 type AlertChannel = (typeof ALERT_CHANNELS)[number];
@@ -523,7 +578,23 @@ type AlertSend = { status: number; response?: string } | { error: string };
 
 type AlertOutcome = AlertSend & { accepted: boolean; cardId?: string };
 
-type DayCheck = { day: number; lineupPage?: { status: number; loggedIn: boolean }; warnings?: string[]; untaggedOutNews?: UntaggedOutNews[]; injuries?: InjuryComparison[]; decision?: LineupDecision; save?: SaveResult & { backedOff?: true; skippedNearTip?: string }; error?: string };
+type DayCheck = { day: number; lineupPage?: { status: number; loggedIn: boolean }; warnings?: string[]; untaggedOutNews?: UntaggedOutNewsCheck[]; injuries?: InjuryComparison[]; decision?: LineupDecision; save?: SaveResult & { backedOff?: true; skippedNearTip?: string }; error?: string };
+
+// `wouldBench`: news rules him out of the day's game, but he may still start (shadow mode, or no one with a game can replace him)
+// `benched`: news rules him out, the runner acts on news (PUT /untagged-out-news) and the decision moved him out of the starters
+type UntaggedOutNewsCheck = Omit<UntaggedNews, "body"> & { tipAt?: string; matched?: OutNewsMatch; wouldBench?: true; benched?: true };
+
+// Tags each player OUT on the lineup page, as Fleaflicker would, so `decideLineup` benches him
+function tagOut(html: string, players: string[]) {
+  if (players.length === 0) return html;
+  const { document } = parseHTML(html);
+  for (const row of Array.from(document.querySelectorAll("tr"))) {
+    if (!players.includes(row.querySelector(".player-text")?.textContent ?? "")) continue;
+    row.querySelector(".player-name")?.insertAdjacentHTML("beforeend", '<span class="injury">OUT</span>');
+    for (const icon of Array.from(row.querySelectorAll(".fa-file-text-o, .fa-file-text"))) icon.remove();
+  }
+  return document.toString();
+}
 
 type FetchedDay = { html?: string; roster?: unknown };
 

@@ -440,6 +440,7 @@ describe("lineup runner", () => {
       {
         "alarm": "2026-10-20T19:35:00.000Z",
         "savesEnabled": false,
+        "untaggedOutNewsAct": false,
         "upcomingTips": [
           {
             "at": "2026-10-20T23:00:00.000Z",
@@ -874,7 +875,7 @@ describe("scheduled checks", () => {
 
     const record = await freshRunner().run();
 
-    expect(record.days[0].untaggedOutNews).toEqual([{ player: "Josh Giddey", status: "OUT", postedAt: "2026-09-29T13:56:15Z" }]);
+    expect(record.days[0].untaggedOutNews).toEqual([{ player: "Josh Giddey", status: "OUT", postedAt: "2026-09-29T13:56:15Z", headline: "Josh Giddey Out Tuesday" }]);
   });
 
   it("leaves out news over 36 h old and players who already have an injury tag", async () => {
@@ -1171,15 +1172,169 @@ describe("injury cross-check with ESPN", () => {
 describe("untagged OUT news", () => {
   it("files a Trello card on who it would bench when news rules out an untagged starter, leaving the lineup alone", async () => {
     vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-20T14:00:00Z") });
-    const page = withCadeNews("Cade Cunningham Out Tuesday", "Cunningham (hamstring) has been ruled out of Tuesday's game against Boston.", "2026-10-20T13:00:00Z");
+    const page = withCadeNews("Cade Cunningham Injury Update", "Cunningham (hamstring) has been ruled out of Tuesday's game against Boston.", "2026-10-20T13:00:00Z");
     const { alerts, cards } = stubFleaflicker((request) => fakeFleaflicker(request, page));
 
     const record = await freshRunner().run();
 
-    expect(record.days[0].untaggedOutNews).toMatchInlineSnapshot();
+    expect(record.days[0].untaggedOutNews).toMatchInlineSnapshot(`
+      [
+        {
+          "headline": "Cade Cunningham Injury Update",
+          "matched": {
+            "sentence": "Cunningham (hamstring) has been ruled out of Tuesday's game against Boston.",
+            "status": "OUT",
+          },
+          "player": "Cade Cunningham",
+          "postedAt": "2026-10-20T13:00:00Z",
+          "status": "OUT",
+          "tipAt": "2026-10-20T19:00:00.000Z",
+          "wouldBench": true,
+        },
+      ]
+    `);
     expect(record.days[0].decision?.ok && record.days[0].decision.starters.map(({ player }) => player)).toContain("Cade Cunningham");
     expect(alerts).toEqual([]);
-    expect(cards.map(({ name, desc }) => ({ name, desc }))).toMatchInlineSnapshot();
+    expect(cards.map(({ name, desc }) => ({ name, desc }))).toMatchInlineSnapshot(`
+      [
+        {
+          "desc": "Cade Cunningham Injury Update (posted Tue 8:00 AM CT)
+      > Cunningham (hamstring) has been ruled out of Tuesday's game against Boston.
+
+      https://www.fleaflicker.com/nba/leagues/30579/teams/161025",
+          "name": "Would bench Cade Cunningham (news: out, no Fleaflicker tag)",
+        },
+      ]
+    `);
+  });
+
+  it("only files a card when news says an untagged starter is doubtful", async () => {
+    vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-20T14:00:00Z") });
+    const page = withCadeNews("Cade Cunningham Injury Update", "Cunningham (hamstring) is doubtful for Tuesday's game against Boston.", "2026-10-20T13:00:00Z");
+    const { alerts, cards } = stubFleaflicker((request) => fakeFleaflicker(request, page));
+
+    const record = await freshRunner().run();
+
+    expect(record.days[0].untaggedOutNews).toEqual([
+      {
+        player: "Cade Cunningham",
+        status: "D",
+        postedAt: "2026-10-20T13:00:00Z",
+        headline: "Cade Cunningham Injury Update",
+        tipAt: "2026-10-20T19:00:00.000Z",
+        matched: { status: "D", sentence: "Cunningham (hamstring) is doubtful for Tuesday's game against Boston." },
+      },
+    ]);
+    expect(alerts).toEqual([]);
+    expect(cards.map(({ name, desc }) => ({ name, desc: desc.split("\n\n")[0] }))).toEqual([
+      { name: "News says Cade Cunningham is doubtful", desc: "Cade Cunningham Injury Update (posted Tue 8:00 AM CT)\n> Cunningham (hamstring) is doubtful for Tuesday's game against Boston." },
+    ]);
+  });
+
+  it("records news that loosely reads out but doesn't rule him out of his next game, without alerting", async () => {
+    vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-20T14:00:00Z") });
+    const page = withCadeNews("Cade Cunningham Injury Update", "Cunningham (hamstring) is out for Thursday's game against Boston.", "2026-10-20T13:00:00Z");
+    const { alerts, cards } = stubFleaflicker((request) => fakeFleaflicker(request, page));
+
+    const record = await freshRunner().run();
+
+    expect(record.days[0].untaggedOutNews).toEqual([{ player: "Cade Cunningham", status: "OUT", postedAt: "2026-10-20T13:00:00Z", headline: "Cade Cunningham Injury Update" }]);
+    expect(alerts).toEqual([]);
+    expect(cards).toEqual([]);
+  });
+
+  it("files a card when a later sentence rules out a starter whose news first reads questionable", async () => {
+    vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-20T14:00:00Z") });
+    const body = "Cunningham was listed as questionable on Monday's injury report. Cunningham has been ruled out of Tuesday's game against Boston.";
+    const page = withCadeNews("Cade Cunningham Injury Update", body, "2026-10-20T13:00:00Z");
+    const { cards } = stubFleaflicker((request) => fakeFleaflicker(request, page));
+
+    const record = await freshRunner().run();
+
+    expect(record.days[0].untaggedOutNews?.map(({ player, matched }) => ({ player, matched }))).toEqual([
+      { player: "Cade Cunningham", matched: { status: "OUT", sentence: "Cunningham has been ruled out of Tuesday's game against Boston." } },
+    ]);
+    expect(cards.map(({ name }) => name)).toEqual(["Would bench Cade Cunningham (news: out, no Fleaflicker tag)"]);
+  });
+
+  it("doesn't repeat the card for the same news on the next run", async () => {
+    vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-20T14:00:00Z") });
+    const page = withCadeNews("Cade Cunningham Injury Update", "Cunningham (hamstring) has been ruled out of Tuesday's game against Boston.", "2026-10-20T13:00:00Z");
+    const { cards } = stubFleaflicker((request) => fakeFleaflicker(request, page));
+    const runner = freshRunner();
+
+    await runner.run();
+    vi.setSystemTime(new Date("2026-10-20T15:00:00Z"));
+    const second = await runner.run();
+
+    expect(cards.map(({ name }) => name)).toEqual(["Would bench Cade Cunningham (news: out, no Fleaflicker tag)"]);
+    expect(second.untaggedNewsAlerts).toBeUndefined();
+  });
+
+  it("pushes to the phone when the starter the news rules out tips within 3 h", async () => {
+    vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-20T17:30:00Z") });
+    const page = withCadeNews("Cade Cunningham Injury Update", "Cunningham (hamstring) has been ruled out of Tuesday's game against Boston.", "2026-10-20T13:00:00Z");
+    const { alerts, cards } = stubFleaflicker((request) => fakeFleaflicker(request, page));
+
+    await freshRunner().run();
+
+    expect(alerts.map(({ title, priority }) => ({ title, priority }))).toEqual([{ title: "Would bench Cade Cunningham (news: out, no Fleaflicker tag)", priority: "1" }]);
+    expect(cards).toEqual([]);
+  });
+
+  it("benches the untagged starter the news rules out when acting on news", async () => {
+    vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-20T14:00:00Z") });
+    const page = withBenchGuardsPlayingLikeCade(withCadeNews("Cade Cunningham Injury Update", "Cunningham (hamstring) has been ruled out of Tuesday's game against Boston.", "2026-10-20T13:00:00Z"));
+    const { alerts, cards } = stubFleaflicker((request) => fakeFleaflicker(request, page));
+    const runner = freshRunner();
+    await runner.setUntaggedOutNewsAct(true);
+
+    const record = await runner.run();
+
+    expect(record.days[0].untaggedOutNews?.map(({ player, benched, wouldBench }) => ({ player, benched, wouldBench }))).toEqual([{ player: "Cade Cunningham", benched: true, wouldBench: undefined }]);
+    expect(record.days[0].decision?.ok && record.days[0].decision.starters.map(({ player }) => player)).not.toContain("Cade Cunningham");
+    expect(alerts).toEqual([]);
+    expect(cards.map(({ name }) => name)).toEqual(["Benched Cade Cunningham (news: out, no Fleaflicker tag)"]);
+  });
+
+  it("pushes that it would bench a starter the news rules out when acting on news can't replace him", async () => {
+    vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-20T17:30:00Z") });
+    const page = withCadeNews("Cade Cunningham Injury Update", "Cunningham (hamstring) has been ruled out of Tuesday's game against Boston.", "2026-10-20T13:00:00Z");
+    const { alerts, cards } = stubFleaflicker((request) => fakeFleaflicker(request, page));
+    const runner = freshRunner();
+    await runner.setUntaggedOutNewsAct(true);
+
+    const record = await runner.run();
+
+    expect(record.days[0].untaggedOutNews?.map(({ player, benched, wouldBench }) => ({ player, benched, wouldBench }))).toEqual([{ player: "Cade Cunningham", benched: undefined, wouldBench: true }]);
+    expect(record.days[0].decision?.ok && record.days[0].decision.starters.map(({ player }) => player)).toContain("Cade Cunningham");
+    expect(alerts.map(({ title, priority }) => ({ title, priority }))).toEqual([{ title: "Would bench Cade Cunningham (news: out, no Fleaflicker tag)", priority: "1" }]);
+    expect(cards).toEqual([]);
+  });
+
+  it("only files a card for a player it benched on news, even within 3 h of tip", async () => {
+    vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-20T17:30:00Z") });
+    const page = withBenchGuardsPlayingLikeCade(withCadeNews("Cade Cunningham Injury Update", "Cunningham (hamstring) has been ruled out of Tuesday's game against Boston.", "2026-10-20T13:00:00Z"));
+    const { alerts, cards } = stubFleaflicker((request) => fakeFleaflicker(request, page));
+    const runner = freshRunner();
+    await runner.setUntaggedOutNewsAct(true);
+
+    await runner.run();
+
+    expect(alerts).toEqual([]);
+    expect(cards.map(({ name }) => name)).toEqual(["Benched Cade Cunningham (news: out, no Fleaflicker tag)"]);
+  });
+
+  it("acts on news only once turned on with a literal true, and shows it in the status", async () => {
+    const putAct = (act: unknown) =>
+      exports.default.fetch("https://runner.test/untagged-out-news", { method: "PUT", headers: { Authorization: "Bearer test-run-token" }, body: JSON.stringify({ act }) });
+    const status = async () => (await (await exports.default.fetch("https://runner.test/status", { headers: { Authorization: "Bearer test-run-token" } })).json<{ untaggedOutNewsAct: boolean }>()).untaggedOutNewsAct;
+
+    expect(await status()).toBe(false);
+    expect(await (await putAct(true)).json()).toEqual({ act: true });
+    expect(await status()).toBe(true);
+    expect(await (await putAct("true")).json()).toEqual({ act: false });
+    expect(await status()).toBe(false);
   });
 });
 
@@ -1477,6 +1632,19 @@ function withCadeNews(headline: string, body: string, postedAt: string) {
   return fantasyStatsPage
     .replace('Cade Cunningham</a></div><div class="player-icons"></div>', 'Cade Cunningham</a></div><div class="player-icons"><i class="fa fa-file-text-o right-icon tt-content text-blue" id="ttIdCadeNews"></i></div>')
     .replace('"tooltips":[', `"tooltips":[${tooltip},`);
+}
+
+// Three bench guards get Cade's game and stats, so someone can take Cade's spot (no bench player has a game on opening night)
+function withBenchGuardsPlayingLikeCade(page: string) {
+  const { document } = parseHTML(page);
+  const rowOf = (player: string) => Array.from(document.querySelectorAll("tr")).find((row) => row.querySelector(".player-text")?.textContent === player)!;
+  const cade = rowOf("Cade Cunningham");
+  for (const guard of ["Tyus Jones", "Fred VanVleet", "Coby White"].map(rowOf)) {
+    Array.from(guard.children).forEach((cell, index) => {
+      if (index > 0 && !cell.querySelector("select")) cell.innerHTML = cade.children[index].innerHTML;
+    });
+  }
+  return document.toString();
 }
 
 // Opening night's page, with its tip times moved to the requested day

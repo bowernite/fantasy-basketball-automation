@@ -42,7 +42,7 @@ During a run `src/worker/decide-lineup.ts` swaps `console`, so shared code's log
 
 # Additional resources
 
-- [How it works](./how-it-works.md): tick and run flow, design decisions and why. Read before changing the runner
+- [How it works](./how-it-works.md): tick and run flow, untagged OUT news, design decisions and why. Read before changing the runner
 - [Fleaflicker facts](./fleaflicker.md): login, lineup page and form, save responses, signed-in API, `/api/SetLineup`, injury feeds
-- [Operations](./operations.md): the saves switch, live save tests, deploys, secrets and alert setup, test gotchas
+- [Operations](./operations.md): the saves and untagged-OUT-news switches, live save tests, deploys, secrets and alert setup, test gotchas
 - [Open items](./open-items.md): what needs the user, game-day tasks (e.g. the opening-night capture), backlog
