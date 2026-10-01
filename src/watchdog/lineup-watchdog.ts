@@ -2,7 +2,11 @@ const SILENT_AFTER_MS = 75 * 60_000;
 const REPEAT_AFTER_MS = 3 * 60 * 60_000;
 const ALARM_GRACE_MS = 15 * 60_000;
 const FETCH_TIMEOUT_MS = 20_000;
-/** Well inside ntfy.sh's 12 h message cache, which is how already-forwarded alerts are recognized */
+/** Pushover priorities: 2 emergency, 1 high, 0 normal, -1 quiet (no sound) */
+const EMERGENCY_PRIORITY = 2;
+const QUIET_PRIORITY = -1;
+const PUSHOVER_MAX_MESSAGE_LENGTH = 1024;
+/** Older Worker alerts are stale news, and a lost state file re-forwards no further back than this */
 const FORWARD_WINDOW_MS = 6 * 60 * 60_000;
 
 interface WorkerAlert {
@@ -12,25 +16,48 @@ interface WorkerAlert {
   body: string;
   priority: number;
   push: boolean;
+  /** Every channel the Worker tried accepted it */
+  delivered?: boolean;
 }
 
-interface TopicMessage {
-  time: number;
-  title?: string;
+interface PushoverCredentials {
+  token: string;
+  user: string;
 }
 
 interface Notification {
   title: string;
   message: string;
   priority: number;
+  alertId?: number;
 }
 
-export async function runLineupWatchdog({ runnerUrl, runToken, ntfyTopic, now = new Date() }: { runnerUrl: string; runToken: string; ntfyTopic: string; now?: Date }) {
-  const sent = await readTopic(ntfyTopic);
+/** What earlier runs pushed, carried between runs */
+export interface WatchdogState {
+  forwardedAlertIds: number[];
+  /** Watchdog alert title → ISO time last pushed */
+  ownAlertsSentAt: Record<string, string>;
+}
+
+export async function runLineupWatchdog({
+  runnerUrl,
+  runToken,
+  pushover,
+  state = { forwardedAlertIds: [], ownAlertsSentAt: {} },
+  now = new Date(),
+}: {
+  runnerUrl: string;
+  runToken: string;
+  pushover: PushoverCredentials;
+  state?: WatchdogState;
+  now?: Date;
+}) {
+  const nextState: WatchdogState = { forwardedAlertIds: [...state.forwardedAlertIds], ownAlertsSentAt: { ...state.ownAlertsSentAt } };
   const notifications: Notification[] = [];
   const raise = (title: string, message: string) => {
-    const sentRecently = sent.some((sentMessage) => sentMessage.title === title && now.getTime() - sentMessage.time * 1000 < REPEAT_AFTER_MS);
-    if (!sentRecently) notifications.push({ title, message, priority: 4 });
+    const lastSentAt = state.ownAlertsSentAt[title];
+    const sentRecently = lastSentAt !== undefined && now.getTime() - Date.parse(lastSentAt) < REPEAT_AFTER_MS;
+    if (!sentRecently) notifications.push({ title, message, priority: 1 });
   };
 
   try {
@@ -45,10 +72,10 @@ export async function runLineupWatchdog({ runnerUrl, runToken, ntfyTopic, now = 
     else if (now.getTime() - Date.parse(status.alarm) > ALARM_GRACE_MS) {
       raise("Lineup runner alarm stuck", `The Worker's 5-min alarm was due at ${formatCentralTime(status.alarm)} and hasn't fired, and cron didn't re-arm it`);
     }
+    nextState.forwardedAlertIds = state.forwardedAlertIds.filter((id) => alerts.some((alert) => alert.id === id));
     for (const alert of alerts) {
-      if (now.getTime() - Date.parse(alert.at) > FORWARD_WINDOW_MS) continue;
-      const alreadyForwarded = sent.some((message) => message.title === alert.title && message.time * 1000 >= Date.parse(alert.at));
-      if (!alreadyForwarded) notifications.push({ title: alert.title, message: alert.body, priority: ntfyPriority(alert) });
+      if (alert.delivered || now.getTime() - Date.parse(alert.at) > FORWARD_WINDOW_MS) continue;
+      if (!state.forwardedAlertIds.includes(alert.id)) notifications.push({ title: alert.title, message: alert.body, priority: alert.push ? alert.priority : QUIET_PRIORITY, alertId: alert.id });
     }
   } catch (error) {
     raise("Lineup runner unreachable", `The watchdog couldn't read the Worker: ${error instanceof Error ? error.message : error}`);
@@ -56,15 +83,22 @@ export async function runLineupWatchdog({ runnerUrl, runToken, ntfyTopic, now = 
 
   const result = { sent: 0, failed: 0 };
   for (const notification of notifications) {
-    const accepted = await publish(ntfyTopic, notification);
+    const accepted = await publish(pushover, notification);
     result[accepted ? "sent" : "failed"]++;
+    if (!accepted) continue;
+    if (notification.alertId === undefined) nextState.ownAlertsSentAt[notification.title] = now.toISOString();
+    else nextState.forwardedAlertIds.push(notification.alertId);
   }
-  return result;
+  return { ...result, state: nextState };
 }
 
-async function publish(ntfyTopic: string, notification: Notification) {
+async function publish({ token, user }: PushoverCredentials, { title, message: fullMessage, priority }: Notification) {
   try {
-    const response = await fetch("https://ntfy.sh/", { method: "POST", body: JSON.stringify({ topic: ntfyTopic, ...notification }), signal: AbortSignal.timeout(FETCH_TIMEOUT_MS) });
+    const message = fullMessage.length > PUSHOVER_MAX_MESSAGE_LENGTH ? `${fullMessage.slice(0, PUSHOVER_MAX_MESSAGE_LENGTH - 1)}…` : fullMessage;
+    // Same retry/expire as the Worker's missed-tip alerts: re-alerts every minute for 30 min until acknowledged
+    const emergency = priority === EMERGENCY_PRIORITY ? { retry: "60", expire: "1800" } : {};
+    const body = new URLSearchParams({ token, user, title, message, priority: String(priority), ...emergency });
+    const response = await fetch("https://api.pushover.net/1/messages.json", { method: "POST", body, signal: AbortSignal.timeout(FETCH_TIMEOUT_MS) });
     return response.ok;
   } catch {
     return false;
@@ -93,12 +127,6 @@ async function readTopic(ntfyTopic: string): Promise<TopicMessage[]> {
   }
 }
 
-/** ntfy priorities: 5 max, 4 high, 3 default, 2 low (silent) */
-function ntfyPriority({ priority, push }: WorkerAlert) {
-  if (!push) return 2;
-  return priority + 3;
-}
-
 function formatCentralTime(iso: string) {
   const parts = new Intl.DateTimeFormat("en-US", { timeZone: "America/Chicago", hour: "numeric", minute: "2-digit" }).formatToParts(new Date(iso));
   const part = (type: string) => parts.find((p) => p.type === type)?.value;
@@ -106,18 +134,22 @@ function formatCentralTime(iso: string) {
 }
 
 if (import.meta.main) {
-  const { LINEUP_RUNNER_URL, LINEUP_RUNNER_TOKEN, NTFY_TOPIC } = process.env;
-  if (!LINEUP_RUNNER_URL || !LINEUP_RUNNER_TOKEN || !NTFY_TOPIC) {
-    console.error("Set LINEUP_RUNNER_URL, LINEUP_RUNNER_TOKEN and NTFY_TOPIC");
+  const { LINEUP_RUNNER_URL, LINEUP_RUNNER_TOKEN, PUSHOVER_TOKEN, PUSHOVER_USER, WATCHDOG_STATE_FILE } = process.env;
+  if (!LINEUP_RUNNER_URL || !LINEUP_RUNNER_TOKEN || !PUSHOVER_TOKEN || !PUSHOVER_USER || !WATCHDOG_STATE_FILE) {
+    console.error("Set LINEUP_RUNNER_URL, LINEUP_RUNNER_TOKEN, PUSHOVER_TOKEN, PUSHOVER_USER and WATCHDOG_STATE_FILE");
     process.exit(1);
   }
+  const pushover = { token: PUSHOVER_TOKEN, user: PUSHOVER_USER };
   if (process.argv.includes("--test")) {
-    const accepted = await publish(NTFY_TOPIC, { title: "Lineup watchdog test", message: "Test push from the GitHub Actions lineup watchdog. No action needed", priority: 3 });
+    const accepted = await publish(pushover, { title: "TEST: Lineup watchdog (GitHub Actions)", message: "Test push from the GitHub Actions lineup watchdog via Pushover. No action needed", priority: 0 });
     console.log(accepted ? "Test push accepted" : "Test push failed");
     process.exit(accepted ? 0 : 1);
   }
-  const { sent, failed } = await runLineupWatchdog({ runnerUrl: LINEUP_RUNNER_URL, runToken: LINEUP_RUNNER_TOKEN, ntfyTopic: NTFY_TOPIC });
+  const stateFile = Bun.file(WATCHDOG_STATE_FILE);
+  const state: WatchdogState | undefined = await stateFile.json().catch(() => undefined);
+  const result = await runLineupWatchdog({ runnerUrl: LINEUP_RUNNER_URL, runToken: LINEUP_RUNNER_TOKEN, pushover, state });
+  await Bun.write(stateFile, JSON.stringify(result.state));
   // Counts only: workflow logs are public
-  console.log(`Pushed ${sent}, failed ${failed}`);
-  if (sent + failed > 0) process.exit(1);
+  console.log(`Pushed ${result.sent}, failed ${result.failed}${state ? "" : " (no saved state)"}`);
+  if (result.sent + result.failed > 0) process.exit(1);
 }

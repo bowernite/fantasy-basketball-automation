@@ -1,159 +1,197 @@
 import { afterEach, expect, spyOn, test } from "bun:test";
-import { runLineupWatchdog } from "./lineup-watchdog";
+import { runLineupWatchdog, type WatchdogState } from "./lineup-watchdog";
 
 const RUNNER_URL = "https://runner.example.com";
 const RUN_TOKEN = "test-run-token";
-const NTFY_TOPIC = "test-topic";
+const PUSHOVER = { token: "test-app-token", user: "test-user-key" };
 const NOW = new Date("2026-10-20T18:00:00.000Z");
 
 afterEach(() => {
   (globalThis.fetch as unknown as { mockRestore?: () => void }).mockRestore?.();
 });
 
-test("forwards a new Worker alert to ntfy", async () => {
-  const ntfy = fakeServices({
+test("forwards a new Worker alert to Pushover", async () => {
+  const pushover = fakeServices({
     alerts: [{ id: 7, at: "2026-10-20T17:55:00.000Z", title: "Lineup check failed", body: "Page had no lineup form", priority: 1, push: true }],
   });
 
-  await runLineupWatchdog({ runnerUrl: RUNNER_URL, runToken: RUN_TOKEN, ntfyTopic: NTFY_TOPIC, now: NOW });
+  await runLineupWatchdog({ runnerUrl: RUNNER_URL, runToken: RUN_TOKEN, pushover: PUSHOVER, now: NOW });
 
-  expect(ntfy.published).toMatchInlineSnapshot(`
+  expect(pushover.published).toMatchInlineSnapshot(`
     [
       {
         "message": "Page had no lineup form",
-        "priority": 4,
+        "priority": "1",
         "title": "Lineup check failed",
-        "topic": "test-topic",
       },
     ]
   `);
 });
 
-test("skips a Worker alert it already forwarded", async () => {
-  const ntfy = fakeServices({
+test("skips a Worker alert it forwarded on an earlier run", async () => {
+  const pushover = fakeServices({
     alerts: [{ id: 7, at: "2026-10-20T17:40:00.000Z", title: "Lineup check failed", body: "Page had no lineup form", priority: 1, push: true }],
-    alreadyOnTopic: [{ time: "2026-10-20T17:45:00.000Z", title: "Lineup check failed" }],
   });
 
-  await runLineupWatchdog({ runnerUrl: RUNNER_URL, runToken: RUN_TOKEN, ntfyTopic: NTFY_TOPIC, now: NOW });
+  const { state } = await runLineupWatchdog({ runnerUrl: RUNNER_URL, runToken: RUN_TOKEN, pushover: PUSHOVER, now: NOW });
+  await runLineupWatchdog({ runnerUrl: RUNNER_URL, runToken: RUN_TOKEN, pushover: PUSHOVER, state, now: new Date("2026-10-20T18:15:00.000Z") });
 
-  expect(ntfy.published).toEqual([]);
+  expect(pushover.published.map((message) => message.title)).toEqual(["Lineup check failed"]);
 });
 
-test("ignores Worker alerts older than 6 hours, which ntfy may have dropped from its cache", async () => {
-  const ntfy = fakeServices({
+test("leaves out a Worker alert every channel already accepted", async () => {
+  const pushover = fakeServices({
+    alerts: [
+      { id: 8, at: "2026-10-20T17:55:00.000Z", title: "Lineup check failed", body: "Page had no lineup form", priority: 1, push: true, delivered: true },
+      { id: 7, at: "2026-10-20T17:50:00.000Z", title: "Lineup save rejected", body: "Fleaflicker showed an error", priority: 1, push: true, delivered: false },
+    ],
+  });
+
+  await runLineupWatchdog({ runnerUrl: RUNNER_URL, runToken: RUN_TOKEN, pushover: PUSHOVER, now: NOW });
+
+  expect(pushover.published.map((message) => message.title)).toEqual(["Lineup save rejected"]);
+});
+
+test("ignores Worker alerts older than 6 hours", async () => {
+  const pushover = fakeServices({
     alerts: [{ id: 3, at: "2026-10-20T11:30:00.000Z", title: "Lineup check failed", body: "Page had no lineup form", priority: 1, push: true }],
   });
 
-  await runLineupWatchdog({ runnerUrl: RUNNER_URL, runToken: RUN_TOKEN, ntfyTopic: NTFY_TOPIC, now: NOW });
+  await runLineupWatchdog({ runnerUrl: RUNNER_URL, runToken: RUN_TOKEN, pushover: PUSHOVER, now: NOW });
 
-  expect(ntfy.published).toEqual([]);
+  expect(pushover.published).toEqual([]);
 });
 
 test.each([
-  { priority: 2, push: true, ntfyPriority: 5 },
-  { priority: 1, push: true, ntfyPriority: 4 },
-  { priority: 0, push: true, ntfyPriority: 3 },
-  { priority: 0, push: false, ntfyPriority: 2 },
-])("forwards Worker priority $priority (push $push) as ntfy priority $ntfyPriority", async ({ priority, push, ntfyPriority }) => {
-  const ntfy = fakeServices({
+  { priority: 1, push: true, pushoverPriority: "1" },
+  { priority: 0, push: true, pushoverPriority: "0" },
+  { priority: 0, push: false, pushoverPriority: "-1" },
+])("forwards Worker priority $priority (push $push) as Pushover priority $pushoverPriority", async ({ priority, push, pushoverPriority }) => {
+  const pushover = fakeServices({
     alerts: [{ id: 7, at: "2026-10-20T17:55:00.000Z", title: "Lineup check failed", body: "Page had no lineup form", priority, push }],
   });
 
-  await runLineupWatchdog({ runnerUrl: RUNNER_URL, runToken: RUN_TOKEN, ntfyTopic: NTFY_TOPIC, now: NOW });
+  await runLineupWatchdog({ runnerUrl: RUNNER_URL, runToken: RUN_TOKEN, pushover: PUSHOVER, now: NOW });
 
-  expect(ntfy.published.map((message) => message.priority)).toEqual([ntfyPriority]);
+  expect(pushover.published.map((message) => message.priority)).toEqual([pushoverPriority]);
+});
+
+test("forwards a missed-tip alert as a Pushover emergency that repeats until acknowledged", async () => {
+  const pushover = fakeServices({
+    alerts: [{ id: 9, at: "2026-10-20T17:55:00.000Z", title: "Lineup not checked before the 1:00 PM CT tip", body: "Check the lineup now", priority: 2, push: true }],
+  });
+
+  await runLineupWatchdog({ runnerUrl: RUNNER_URL, runToken: RUN_TOKEN, pushover: PUSHOVER, now: NOW });
+
+  expect(pushover.published).toMatchInlineSnapshot(`
+    [
+      {
+        "expire": "1800",
+        "message": "Check the lineup now",
+        "priority": "2",
+        "retry": "60",
+        "title": "Lineup not checked before the 1:00 PM CT tip",
+      },
+    ]
+  `);
+});
+
+test("shortens a Worker alert body to Pushover's 1024-character limit", async () => {
+  const pushover = fakeServices({
+    alerts: [{ id: 7, at: "2026-10-20T17:55:00.000Z", title: "Lineup check failed", body: "x".repeat(1500), priority: 1, push: true }],
+  });
+
+  await runLineupWatchdog({ runnerUrl: RUNNER_URL, runToken: RUN_TOKEN, pushover: PUSHOVER, now: NOW });
+
+  expect(pushover.published.map((message) => message.message)).toEqual([`${"x".repeat(1023)}…`]);
 });
 
 test("alerts when the Worker hasn't recorded a run in over 75 minutes", async () => {
-  const ntfy = fakeServices({ runs: [{ startedAt: "2026-10-20T16:40:00.000Z" }, { startedAt: "2026-10-20T15:40:00.000Z" }] });
+  const pushover = fakeServices({ runs: [{ startedAt: "2026-10-20T16:40:00.000Z" }, { startedAt: "2026-10-20T15:40:00.000Z" }] });
 
-  await runLineupWatchdog({ runnerUrl: RUNNER_URL, runToken: RUN_TOKEN, ntfyTopic: NTFY_TOPIC, now: NOW });
+  await runLineupWatchdog({ runnerUrl: RUNNER_URL, runToken: RUN_TOKEN, pushover: PUSHOVER, now: NOW });
 
-  expect(ntfy.published).toMatchInlineSnapshot(`
+  expect(pushover.published).toMatchInlineSnapshot(`
     [
       {
         "message": "No lineup run recorded in 80 min. Check the Worker (lineup-runner Skill)",
-        "priority": 4,
+        "priority": "1",
         "title": "Lineup runner silent",
-        "topic": "test-topic",
       },
     ]
   `);
 });
 
 test("repeats a watchdog alert only after 3 hours", async () => {
-  const runs = [{ startedAt: "2026-10-20T12:00:00.000Z" }];
-  const recentlySent = fakeServices({ runs, alreadyOnTopic: [{ time: "2026-10-20T15:30:00.000Z", title: "Lineup runner silent" }] });
-  await runLineupWatchdog({ runnerUrl: RUNNER_URL, runToken: RUN_TOKEN, ntfyTopic: NTFY_TOPIC, now: NOW });
-  expect(recentlySent.published).toEqual([]);
-  (globalThis.fetch as unknown as { mockRestore: () => void }).mockRestore();
+  const pushover = fakeServices({ runs: [{ startedAt: "2026-10-20T12:00:00.000Z" }], status: { alarm: "2026-10-20T21:02:00.000Z" } });
+  const runAt = async (now: string, state?: WatchdogState) => (await runLineupWatchdog({ runnerUrl: RUNNER_URL, runToken: RUN_TOKEN, pushover: PUSHOVER, state, now: new Date(now) })).state;
 
-  const sentLongAgo = fakeServices({ runs, alreadyOnTopic: [{ time: "2026-10-20T14:50:00.000Z", title: "Lineup runner silent" }] });
-  await runLineupWatchdog({ runnerUrl: RUNNER_URL, runToken: RUN_TOKEN, ntfyTopic: NTFY_TOPIC, now: NOW });
-  expect(sentLongAgo.published.map((message) => message.title)).toEqual(["Lineup runner silent"]);
+  const afterFirstPush = await runAt("2026-10-20T18:00:00.000Z");
+  await runAt("2026-10-20T20:59:00.000Z", afterFirstPush);
+  await runAt("2026-10-20T21:00:00.000Z", afterFirstPush);
+
+  expect(pushover.published.map((message) => message.title)).toEqual(["Lineup runner silent", "Lineup runner silent"]);
 });
 
 test.each([
   { alarm: "2026-10-20T17:40:00.000Z", message: "The Worker's 5-min alarm was due at 12:40p CT and hasn't fired, and cron didn't re-arm it" },
   { alarm: null, message: "The Worker has no alarm set, and cron didn't re-arm it" },
 ])("alerts when the Worker's alarm is $alarm", async ({ alarm, message }) => {
-  const ntfy = fakeServices({ status: { alarm } });
+  const pushover = fakeServices({ status: { alarm } });
 
-  await runLineupWatchdog({ runnerUrl: RUNNER_URL, runToken: RUN_TOKEN, ntfyTopic: NTFY_TOPIC, now: NOW });
+  await runLineupWatchdog({ runnerUrl: RUNNER_URL, runToken: RUN_TOKEN, pushover: PUSHOVER, now: NOW });
 
-  expect(ntfy.published).toEqual([{ topic: NTFY_TOPIC, title: "Lineup runner alarm stuck", message, priority: 4 }]);
+  expect(pushover.published).toEqual([{ title: "Lineup runner alarm stuck", message, priority: "1" }]);
 });
 
 test("alerts when the Worker is unreachable", async () => {
-  const ntfy = fakeServices({ runnerDown: true });
+  const pushover = fakeServices({ runnerDown: true });
 
-  await runLineupWatchdog({ runnerUrl: RUNNER_URL, runToken: RUN_TOKEN, ntfyTopic: NTFY_TOPIC, now: NOW });
+  await runLineupWatchdog({ runnerUrl: RUNNER_URL, runToken: RUN_TOKEN, pushover: PUSHOVER, now: NOW });
 
-  expect(ntfy.published).toMatchInlineSnapshot(`
+  expect(pushover.published).toMatchInlineSnapshot(`
     [
       {
         "message": "The watchdog couldn't read the Worker: GET /runs returned HTTP 503",
-        "priority": 4,
+        "priority": "1",
         "title": "Lineup runner unreachable",
-        "topic": "test-topic",
       },
     ]
   `);
 });
 
-test("reports how many pushes ntfy accepted and rejected", async () => {
-  fakeServices({ runs: [{ startedAt: "2026-10-20T12:00:00.000Z" }], status: { alarm: null }, ntfyRejectsTitle: "Lineup runner alarm stuck" });
+test("reports how many pushes Pushover accepted and rejected", async () => {
+  fakeServices({ runs: [{ startedAt: "2026-10-20T12:00:00.000Z" }], status: { alarm: null }, pushoverRejectsTitle: "Lineup runner alarm stuck" });
 
-  const result = await runLineupWatchdog({ runnerUrl: RUNNER_URL, runToken: RUN_TOKEN, ntfyTopic: NTFY_TOPIC, now: NOW });
+  const { sent, failed } = await runLineupWatchdog({ runnerUrl: RUNNER_URL, runToken: RUN_TOKEN, pushover: PUSHOVER, now: NOW });
 
-  expect(result).toEqual({ sent: 1, failed: 1 });
+  expect({ sent, failed }).toEqual({ sent: 1, failed: 1 });
 });
 
-test("still pushes when it can't read what the topic already has", async () => {
-  const ntfy = fakeServices({ runs: [{ startedAt: "2026-10-20T12:00:00.000Z" }], topicUnreadable: true });
+test("retries a forward Pushover rejected on the next run", async () => {
+  const alerts = [{ id: 7, at: "2026-10-20T17:55:00.000Z", title: "Lineup check failed", body: "Page had no lineup form", priority: 1, push: true }];
+  fakeServices({ alerts, pushoverRejectsTitle: "Lineup check failed" });
+  const { state } = await runLineupWatchdog({ runnerUrl: RUNNER_URL, runToken: RUN_TOKEN, pushover: PUSHOVER, now: NOW });
+  (globalThis.fetch as unknown as { mockRestore: () => void }).mockRestore();
 
-  await runLineupWatchdog({ runnerUrl: RUNNER_URL, runToken: RUN_TOKEN, ntfyTopic: NTFY_TOPIC, now: NOW });
+  const pushover = fakeServices({ alerts });
+  await runLineupWatchdog({ runnerUrl: RUNNER_URL, runToken: RUN_TOKEN, pushover: PUSHOVER, state, now: new Date("2026-10-20T18:15:00.000Z") });
 
-  expect(ntfy.published.map((message) => message.title)).toEqual(["Lineup runner silent"]);
+  expect(pushover.published.map((message) => message.title)).toEqual(["Lineup check failed"]);
 });
 
 function fakeServices({
   runs = [{ startedAt: "2026-10-20T17:30:00.000Z" }],
   status = { alarm: "2026-10-20T18:02:00.000Z" },
   alerts = [],
-  alreadyOnTopic = [],
   runnerDown = false,
-  ntfyRejectsTitle,
-  topicUnreadable = false,
+  pushoverRejectsTitle,
 }: {
   runs?: { startedAt: string }[];
   status?: { alarm: string | null };
-  alerts?: { id: number; at: string; title: string; body: string; priority: number; push: boolean }[];
-  alreadyOnTopic?: { time: string; title: string }[];
+  alerts?: { id: number; at: string; title: string; body: string; priority: number; push: boolean; delivered?: boolean }[];
   runnerDown?: boolean;
-  ntfyRejectsTitle?: string;
-  topicUnreadable?: boolean;
+  pushoverRejectsTitle?: string;
 } = {}) {
   const published: Record<string, unknown>[] = [];
   spyOn(globalThis, "fetch").mockImplementation((async (input: RequestInfo | URL, init?: RequestInit) => {
@@ -164,19 +202,14 @@ function fakeServices({
       const routes: Record<string, unknown> = { "/runs": runs, "/status": status, "/alerts": alerts };
       return url.pathname in routes ? Response.json(routes[url.pathname]) : new Response("not found", { status: 404 });
     }
-    if (url.origin === "https://ntfy.sh") {
-      if (init?.method === "POST" && url.pathname === "/") {
-        const message = JSON.parse(String(init.body));
-        if (message.title === ntfyRejectsTitle) return Response.json({ code: 42908, http: 429, error: "limit reached: daily message quota reached" }, { status: 429 });
-        published.push(message);
-        return Response.json({ id: `m${published.length}`, time: Math.floor(NOW.getTime() / 1000), event: "message", ...message });
-      }
-      if (url.pathname === `/${NTFY_TOPIC}/json`) {
-        if (topicUnreadable) return new Response("<html>502 Bad Gateway</html>", { status: 502 });
-        const earlier = alreadyOnTopic.map(({ time, title }) => ({ event: "message", time: Math.floor(Date.parse(time) / 1000), title, message: "" }));
-        const lines = [...earlier, ...published.map((message) => ({ event: "message", time: Math.floor(NOW.getTime() / 1000), ...message }))].map((message) => JSON.stringify(message));
-        return new Response(lines.join("\n"));
-      }
+    if (url.href === "https://api.pushover.net/1/messages.json" && init?.method === "POST") {
+      const form = Object.fromEntries(new URLSearchParams(String(init.body)));
+      if (form.token !== PUSHOVER.token || form.user !== PUSHOVER.user) return Response.json({ status: 0, errors: ["application token is invalid"] }, { status: 400 });
+      if (form.message.length > 1024) return Response.json({ status: 0, errors: ["message is too long"] }, { status: 400 });
+      if (form.title === pushoverRejectsTitle) return Response.json({ status: 0, errors: ["message cannot be blank"] }, { status: 400 });
+      const { token, user, ...message } = form;
+      published.push(message);
+      return Response.json({ status: 1, request: `r${published.length}` });
     }
     throw new Error(`Unexpected fetch ${url}`);
   }) as typeof fetch);

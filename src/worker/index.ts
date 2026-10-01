@@ -379,6 +379,10 @@ export class LineupRunner extends DurableObject<Env> {
       .map(({ id, alert }) => ({ id, ...JSON.parse(alert) }));
   }
 
+  deleteAlert(id: number) {
+    this.ctx.storage.sql.exec("DELETE FROM alerts WHERE id = ?", id);
+  }
+
   recentRuns(limit = 20): RunRecord[] {
     return this.ctx.storage.sql
       .exec<{ record: string }>("SELECT record FROM runs ORDER BY id DESC LIMIT ?", limit)
@@ -440,6 +444,11 @@ export default {
     if (request.method === "GET" && pathname === "/runs") return Response.json(await runner.recentRuns());
     if (request.method === "GET" && pathname === "/captures") return Response.json(await runner.recentCaptures());
     if (request.method === "GET" && pathname === "/alerts") return Response.json(await runner.recentAlerts());
+    const alertToDelete = pathname.match(/^\/alerts\/(\d+)$/);
+    if (request.method === "DELETE" && alertToDelete) {
+      await runner.deleteAlert(Number(alertToDelete[1]));
+      return new Response(null, { status: 204 });
+    }
     if (request.method === "GET" && pathname === "/status") return Response.json(await runner.status());
     if (request.method === "PUT" && pathname === "/saves") {
       const { enabled } = await request.json<{ enabled?: unknown }>();

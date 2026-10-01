@@ -6,7 +6,7 @@ The goal: the user's lineup is set optimally and reliably for every game, with n
 
 - Clocks: the `*/5` cron and the Durable Object alarm both call `tick()` on the one DO (`primary`). Every tick re-arms the alarm at most 5 min out, so either clock alone keeps the schedule alive, and double firing is harmless
 - Planning needs no network: `planTick()` (`lineup-schedule.ts`) reads stored tip tables, the per-day run ledger and cached lineup periods
-- Targets: T-40 and T-15 before every distinct tip time of the user's players, plus hourly at :05 (today and tomorrow, so an early game is pre-set even if the morning's runs die). A target is done only by an ok run for that day; failures retry every tick until T-3
+- Targets: T-40 and T-15 before every distinct tip time of the user's players, plus hourly at :05 (today and tomorrow, so an early game is pre-set even if the morning's runs die). A target is done only by an ok run for that day; a failed day retries every tick while a tip is ≤45 min away (until T-3), else every 30 min
 - Missed tip: from T-10, a day with no ok run since T-45 sends an emergency alert, once per tip
 - Tip times come from the lineup page's `local-time[datetime]`, so any early, international or holiday game gets the same targets with no special case
 

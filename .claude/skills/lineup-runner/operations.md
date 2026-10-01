@@ -13,11 +13,11 @@ Auth on every route: `-H "Authorization: Bearer $LINEUP_RUNNER_TOKEN"` against `
 
 - `scripts/deploy-runner.sh` deploys the working tree. When other sessions have uncommitted `src/` edits, deploy from a clean worktree of the commit you mean to ship
 - Cron schedule changes need `bunx wrangler triggers deploy`; a new cron can take ~30 min to start firing
-- Forced-failure alert test: `bunx wrangler versions upload --var LINEUP_URL:<a nonexistent team URL>`, then `bunx wrangler versions deploy <id>@100% -y` (keeps cron). `POST /run` then fails before any day (no capture); the next scheduled run fails per day and stores captures. Redeploy the previous version the same way, then delete the Trello card it made
+- Forced-failure alert test: `bunx wrangler versions upload --var LINEUP_URL:<a nonexistent team URL>`, then `bunx wrangler versions deploy <id>@100% -y` (keeps cron). `POST /run` then fails before any day (no capture); the next scheduled run fails per day and stores captures. Redeploy the previous version the same way. Its failure alerts go to Pushover too, so warn the user first. After: delete the Trello cards it made, and drop its `/alerts` entries with `DELETE /alerts/<id>` (same auth) before the watchdog's next run
 
 ## Secrets
 
-Set with `bunx wrangler secret put <NAME>` from stdin, never in the repo or command args. Values can't be read back.
+Set from stdin, never in the repo or command args. Cron-safe: `bunx wrangler versions secret put <NAME>` per secret, then `bunx wrangler versions deploy <last version>@100% -y` (plain `secret put` re-sets the cron trigger and pauses it ~30–45 min; deploy outside a save test). Values can't be read back.
 
 | Secret | Source |
 |---|---|
@@ -28,7 +28,7 @@ Set with `bunx wrangler secret put <NAME>` from stdin, never in the repo or comm
 | `PUSHOVER_TOKEN`, `PUSHOVER_USER` | pushover.net: the dashboard's User Key, and an application "Lineup runner" at `pushover.net/apps/build` |
 | `HEALTHCHECK_URL` | a healthchecks.io check: period 5 min, grace 15 min, notifying the user by its own Pushover or email integration |
 
-Pushover and healthchecks are unset until the user signs up (`open-items.md`); until then a channel with no secret records `{error: "… not set"}` and Trello still goes out. After setting either, send one test alert and have the user confirm it arrived. `NTFY_TOPIC` is unused: `bunx wrangler secret delete NTFY_TOPIC`.
+`PUSHOVER_*` are set (app "Lineup runner"). `HEALTHCHECK_URL` is unset until the user makes the check (`open-items.md`); until then a channel with no secret records `{error: "… not set"}` and Trello still goes out. After setting either, send one test alert and have the user confirm it arrived. `NTFY_TOPIC` is unused: `bunx wrangler secret delete NTFY_TOPIC`.
 
 ## Watchdog
 

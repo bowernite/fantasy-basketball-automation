@@ -1151,6 +1151,19 @@ describe("alert log for outside watchdogs", () => {
     expect(alerts.filter(({ id }) => id > (latestBefore?.id ?? 0)).map(({ body }) => body)).toEqual(["- TypeError: Connection flapping", "- TypeError: Connection flapping"]);
   });
 
+  it("drops an alert from the list, e.g. one a deliberate test caused", async () => {
+    stubFleaflicker(() => {
+      throw new TypeError("Forced failure");
+    });
+    await triggerRun();
+    const [testAlert] = await listAlerts();
+
+    const response = await exports.default.fetch(`https://runner.test/alerts/${testAlert.id}`, { method: "DELETE", headers: { Authorization: "Bearer test-run-token" } });
+
+    expect(response.status).toBe(204);
+    expect((await listAlerts()).map(({ id }) => id)).not.toContain(testAlert.id);
+  });
+
   it("marks a Trello-only warning as not meant for the phone", async () => {
     stubFleaflicker(fakeFleaflickerSeason, { espnInjuries: () => new Response("Forbidden", { status: 403 }) });
 

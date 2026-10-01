@@ -4,11 +4,10 @@ As of 2026-09-30: deployed and running every 5 min, saves **off**. Alerts reach 
 
 ## Needs the user
 
-1. **Pushover**: install it on the phone and sign up, then sign in at pushover.net in the agent browser. An agent then sets the secrets (`operations.md` §Secrets) and sends a test alert for the user to confirm. Until then the phone gets only the watchdog's ntfy pushes, 5–35 min late
+1. **Confirm the Pushover test push** ("TEST: Lineup runner alert setup", 9/30 ~7:10p CT) arrived on the phone. Pushover is signed up and `PUSHOVER_USER` / `PUSHOVER_TOKEN` are set on the Worker (the first live send from the runner itself will be the next real alert)
 2. **healthchecks.io check** for the dead-man (`operations.md` §Secrets)
 3. **Approve automated saves.** Gate: 1 and 2 live and a test alert confirmed on the phone
 4. **Manual edits vs hourly runs**: once saves are on, a manual lineup edit is overwritten within ~1 h. The user said to flag this for later; decide before relying on manual edits in season
-5. **Confirm the watchdog's test push** ("Lineup watchdog test", 9/30 6:53p CT) arrived on the phone
 
 ## Game-day tasks
 
