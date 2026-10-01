@@ -93,7 +93,9 @@ export function setAllPlayersToBench(players: Player[]) {
     });
 }
 
-export function saveLineup() {
+// Not `saveLineup`: the bundled content script is a classic script, so that name would be the same
+// global as the `window.saveLineup` shortcut hook, which calls back into this
+export function submitLineupForm() {
   const button = getSaveLineupButton();
   if (!button) {
     throw new Error("No Save Lineup button on the page; you may be logged out. Nothing was saved");

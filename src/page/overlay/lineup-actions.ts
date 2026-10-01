@@ -1,4 +1,4 @@
-import { saveLineup } from "../../lineup/lineup-dom-actions";
+import { submitLineupForm } from "../../lineup/lineup-dom-actions";
 import { setLineup } from "../../lineup/set-lineup";
 import { saveLineupIcon, setLineupIcon, spinnerIcon } from "../../icons/icons";
 import { showNotice } from "./notice";
@@ -68,7 +68,7 @@ export async function runSetLineup() {
 export function runSaveLineup() {
   const restore = showBusy(document.querySelector<HTMLButtonElement>(".ffx-save-lineup"), "Saving…");
   try {
-    saveLineup();
+    submitLineupForm();
   } catch (error) {
     console.error("Error saving lineup:", error);
     restore();

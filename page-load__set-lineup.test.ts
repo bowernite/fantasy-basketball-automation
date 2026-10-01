@@ -256,6 +256,37 @@ test("the previous-day shortcut goes back a day, and on opening night stays put 
   expect(navigations).toEqual(["/nba/leagues/30579/teams/161025?week=1"]);
 });
 
+// Runs the built content script the way the browser does, as one classic script whose top-level
+// functions become page globals; in its own process so those globals don't leak into other tests
+test("Save lineup in the built extension submits Fleaflicker's lineup form", () => {
+  const script = `
+    import { GlobalRegistrator } from "@happy-dom/global-registrator";
+    import { loadLineupPage, PAGE_URL, playerRow } from "./src/lineup/fixtures/lineup-page";
+    GlobalRegistrator.register({ url: PAGE_URL, settings: ${JSON.stringify(HAPPY_DOM_SETTINGS)} });
+    loadLineupPage();
+    console.log = console.error = console.warn = console.table = () => {};
+    const form = document.querySelector("form[method='post']");
+    const submissions = [];
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      submissions.push(Object.fromEntries(new FormData(form, event.submitter)));
+    });
+    const build = await Bun.build({ entrypoints: ["./page-load__set-lineup.ts"] });
+    (0, eval)(await build.outputs[0].text());
+    await Bun.sleep(0);
+    const nazReidSlot = playerRow("Naz Reid").querySelector("select");
+    nazReidSlot.value = "16"; // C
+
+    Array.from(document.querySelectorAll("button")).find((b) => b.textContent.trim() === "Save lineup").click();
+
+    process.stdout.write(JSON.stringify(submissions.map((submitted) => submitted[nazReidSlot.name])));
+  `;
+
+  const run = Bun.spawnSync(["bun", "-e", script], { cwd: import.meta.dir });
+
+  expect(run.stdout.toString()).toBe('["16"]');
+});
+
 // Runs in its own process: the content script rethrows so the failure reaches whatever runs the
 // page (a headless runner sees an uncaught error), which would fail this test runner outright
 test("when the page can't be read, tells the user and fails the page script loudly", () => {
