@@ -516,7 +516,7 @@ describe("scheduled checks", () => {
     expect(latest).toMatchObject({ trigger: "alarm", startedAt: "2026-10-20T18:20:00.000Z", days: [{ day: 1 }] });
   });
 
-  it("wakes itself every 5 min, so a failed run is retried without cron", async () => {
+  it("wakes itself every 5 min, so a failed run is retried without cron (after 30 min while no tip is near)", async () => {
     vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-20T15:10:00Z") });
     let fleaflickerDown = true;
     stubFleaflicker((request) => {
@@ -528,7 +528,7 @@ describe("scheduled checks", () => {
 
     expect(await runInDurableObject(runner, (_, state) => state.storage.getAlarm())).toBe(Date.parse("2026-10-20T15:15:00Z"));
     fleaflickerDown = false;
-    vi.setSystemTime(new Date("2026-10-20T15:15:00Z"));
+    vi.setSystemTime(new Date("2026-10-20T15:40:00Z"));
     await runDurableObjectAlarm(runner);
 
     const [latest] = await runner.recentRuns();
@@ -557,6 +557,7 @@ describe("scheduled checks", () => {
     for (let second = 0; second < 60 && !hungTickDone; second++) await runInDurableObject(runner, () => vi.advanceTimersByTimeAsync(1000));
     await hungTick;
     fleaflickerHangs = false;
+    vi.setSystemTime(new Date("2026-10-20T15:41:00Z"));
     await runner.tick("cron");
 
     const runs = await runner.recentRuns();
@@ -667,7 +668,7 @@ describe("scheduled checks", () => {
 
     for (const at of ["15:10", "15:15", "15:35", "15:40"]) {
       vi.setSystemTime(new Date(`2026-10-20T${at}:00Z`));
-      await runner.tick("cron");
+      await runner.run();
     }
 
     expect(loginAttempts).toEqual(["2026-10-20T15:10:00.000Z", "2026-10-20T15:40:00.000Z"]);

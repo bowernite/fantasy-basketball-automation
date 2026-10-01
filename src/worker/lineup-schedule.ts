@@ -11,6 +11,9 @@ const TIP_TARGET_LEADS_MS = [40 * MINUTE_MS, 15 * MINUTE_MS];
 // Setting a lineup while a player locks mid-request has unknown server behavior
 export const TIP_CUTOFF_MS = 3 * MINUTE_MS;
 const HOUR_MS = 60 * MINUTE_MS;
+// A failing run retries every tick near a tip, and backs off away from tips so it doesn't hammer Fleaflicker all day
+export const RETRY_TIP_WINDOW_MS = 45 * MINUTE_MS;
+const FAILED_RUN_RETRY_AFTER_MS = 30 * MINUTE_MS;
 const MISSED_WINDOW_MS = 45 * MINUTE_MS;
 // Late enough for the T-15 run and its retries, early enough for the owner to fix the lineup by hand
 const MISSED_ALERT_LEAD_MS = 10 * MINUTE_MS;
@@ -42,6 +45,10 @@ export function planTick(now: Date, day: number, tipTables: TipTable[], ledger: 
     });
     if (due) runDays.add(tip.day);
   }
+  const tipWithinRetryWindow = tips.some((tip) => Date.parse(tip.at) >= nowMs && Date.parse(tip.at) - nowMs <= RETRY_TIP_WINDOW_MS);
+  if (!tipWithinRetryWindow) {
+    for (const runDay of runDays) if (failedWithin(ledger, runDay, nowMs - FAILED_RUN_RETRY_AFTER_MS)) runDays.delete(runDay);
+  }
   const missedTips = tips.filter((tip) => {
     const tipMs = Date.parse(tip.at);
     return nowMs >= tipMs - MISSED_ALERT_LEAD_MS && !hasSuccessBetween(ledger, tipMs - MISSED_WINDOW_MS, tipMs, [tip.day]);
@@ -65,6 +72,11 @@ export function parseGameTips(html: string): GameTip[] {
 
 function latestHourlyTargetMs(nowMs: number) {
   return Math.floor((nowMs - HOURLY_OFFSET_MS) / HOUR_MS) * HOUR_MS + HOURLY_OFFSET_MS;
+}
+
+function failedWithin(ledger: LedgerEntry[], day: number, sinceMs: number) {
+  const latest = ledger.filter((entry) => entry.days.includes(day)).sort((a, b) => b.startedAt.localeCompare(a.startedAt))[0];
+  return latest && !latest.ok && Date.parse(latest.startedAt) > sinceMs;
 }
 
 function hasSuccessBetween(ledger: LedgerEntry[], fromMs: number, toMs: number, days: number[]) {

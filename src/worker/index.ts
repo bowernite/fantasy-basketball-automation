@@ -2,7 +2,7 @@ import { DurableObject } from "cloudflare:workers";
 import { type ApiRoster, decideLineup, type LineupDecision } from "./decide-lineup";
 import { fetchWithTimeout } from "./fetch-with-timeout";
 import { compareInjuryFeeds, fetchEspnInjuries, type InjuryComparison, type InjuryDisagreement, type InjuryRoster } from "./injury-cross-check";
-import { type DayTip, type LedgerEntry, parseGameTips, planTick, TIP_CUTOFF_MS, type TipTable } from "./lineup-schedule";
+import { type DayTip, type LedgerEntry, parseGameTips, planTick, RETRY_TIP_WINDOW_MS, TIP_CUTOFF_MS, type TipTable } from "./lineup-schedule";
 import { type SaveResult, saveLineup } from "./save-lineup";
 import { findUntaggedOutNews, type UntaggedOutNews } from "./untagged-news";
 
@@ -23,7 +23,6 @@ const LOCKED_ROWS_CAPTURED_DAY_KEY = "lockedRowsCapturedDay";
 // Repeated failed logins and saves risk a captcha or lockout, so they back off except shortly before a tip
 const LOGIN_RETRY_AFTER_MS = 30 * 60 * 1000;
 const SAVE_RETRY_AFTER_MS = 30 * 60 * 1000;
-const RETRY_TIP_WINDOW_MS = 45 * 60 * 1000;
 const URGENT_TIP_WINDOW_MS = 3 * 60 * 60 * 1000;
 // About two days of runs: enough to cover yesterday's late tips and today's targets
 const LEDGER_RUNS = 100;

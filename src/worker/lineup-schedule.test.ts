@@ -33,6 +33,17 @@ describe("planTick", () => {
     expect(planTick(new Date("2026-10-22T12:58:00Z"), 3, tipTables, ledger).runDays).toEqual([]);
   });
 
+  it("retries a failing run every 30 min while no tip is within 45 min", () => {
+    const tipTables = [{ day: 3, fetchedAt: "2026-10-22T13:05:00Z", tips: [{ at: "2026-10-22T20:00:00Z", players: ["Cade Cunningham"] }] }];
+    const ledger = [
+      { startedAt: "2026-10-22T13:05:00Z", ok: true, days: [3, 4] },
+      { startedAt: "2026-10-22T14:05:00Z", ok: false, days: [3, 4] },
+    ];
+
+    expect(planTick(new Date("2026-10-22T14:10:00Z"), 3, tipTables, ledger).runDays).toEqual([]);
+    expect(planTick(new Date("2026-10-22T14:35:00Z"), 3, tipTables, ledger).runDays).toEqual([3, 4]);
+  });
+
   it("runs today and tomorrow at :05 past every hour", () => {
     const tipTables = [{ day: 3, fetchedAt: "2026-10-22T13:05:00Z", tips: [] }];
     const ledger = [{ startedAt: "2026-10-22T13:05:00Z", ok: true, days: [3, 4] }];

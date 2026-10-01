@@ -5,6 +5,7 @@
 # Lineup runner
 
 - [ ] Sign-ups, saves approval and game-day tasks (10/20 opening-night capture) for the cloud lineup runner: `.claude/skills/lineup-runner/open-items.md`
+- [ ] Respect manual lineup changes (hourly runs overwrite hand-edits); see `.claude/skills/lineup-runner/open-items.md` §Manual edits vs hourly runs
 
 # Future-year projections
 
