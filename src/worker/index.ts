@@ -119,22 +119,25 @@ export class LineupRunner extends DurableObject<Env> {
 
   private async alertFailure(title: string, problems: string[]) {
     const tipTables = (await this.ctx.storage.get<TipTable[]>(TIP_TABLES_KEY)) ?? [];
+    const body = problems.map((problem) => `- ${problem}`).join("\n");
+    const dedupe = { key: FAILURE_ALERTS_KEY, fingerprint: problems.join("\n") };
+    // With no upcoming tip stored (offseason, All-Star break, or tip times stopped parsing) a tip may still be near, so it reaches the phone, but daily and within quiet hours
+    if (!hasTipWithin(tipTables, Infinity)) return this.notify({ title, body, priority: 0, push: true }, { ...dedupe, repeatAfterMs: FORGET_ALERT_AFTER_MS });
     // Priority 1 bypasses the phone's quiet hours, so it's kept for failures that can still cost a game
     const priority = hasTipWithin(tipTables, URGENT_TIP_WINDOW_MS) ? 1 : 0;
-    const alert: Alert = { title, body: problems.map((problem) => `- ${problem}`).join("\n"), priority };
-    return this.notify(alert, { key: FAILURE_ALERTS_KEY, fingerprint: problems.join("\n"), repeatAfterMs: REPEAT_ALERT_AFTER_MS });
+    return this.notify({ title, body, priority }, { ...dedupe, repeatAfterMs: REPEAT_ALERT_AFTER_MS });
   }
 
   private async alertWarnings(trigger: RunRecord["trigger"], warnings: string[]) {
     const alert: Alert = { title: `Lineup run (${trigger}) has warnings`, body: warnings.map((warning) => `- ${warning}`).join("\n"), priority: 0 };
-    return this.notify(alert, { key: "warningAlerts", fingerprint: warnings.join("\n"), repeatAfterMs: REPEAT_ALERT_AFTER_MS }, ["trello"]);
+    return this.notify(alert, { key: "warningAlerts", fingerprint: warnings.join("\n"), repeatAfterMs: REPEAT_ALERT_AFTER_MS });
   }
 
   private async alertInjuryDisagreements(disagreements: InjuryDisagreement[]) {
     const sends: AlertSends[] = [];
     for (const { player, message, urgent } of disagreements) {
       const alert: Alert = { title: `Fleaflicker and ESPN disagree on ${player}`, body: `- ${message}`, priority: urgent ? 1 : 0 };
-      sends.push(await this.notify(alert, { key: INJURY_ALERTS_KEY, fingerprint: message, repeatAfterMs: REPEAT_INJURY_ALERT_AFTER_MS }, urgent ? ALERT_CHANNELS : ["trello"]));
+      sends.push(await this.notify(alert, { key: INJURY_ALERTS_KEY, fingerprint: message, repeatAfterMs: REPEAT_INJURY_ALERT_AFTER_MS }));
     }
     return sends.filter((send) => Object.keys(send).length > 0);
   }
@@ -145,7 +148,7 @@ export class LineupRunner extends DurableObject<Env> {
       body: 'A game tips within 24 h, but the runner only checks the lineup. Turn saves back on: PUT /saves {"enabled": true}',
       priority: 0,
     };
-    const sends = await this.notify(alert, { key: "savesOffAlerts", fingerprint: "savesOff", repeatAfterMs: SAVES_OFF_WARNING_WINDOW_MS }, ["trello"]);
+    const sends = await this.notify(alert, { key: "savesOffAlerts", fingerprint: "savesOff", repeatAfterMs: SAVES_OFF_WARNING_WINDOW_MS });
     if (Object.keys(sends).length > 0) console.log(JSON.stringify({ event: "savesOffAlert", sends }));
   }
 
@@ -160,9 +163,11 @@ export class LineupRunner extends DurableObject<Env> {
     console.log(JSON.stringify({ event: "missedTipAlert", at, sends }));
   }
 
-  private async notify(alert: Alert, dedupe: { key: string; fingerprint: string; repeatAfterMs: number }, channels: readonly AlertChannel[] = ALERT_CHANNELS) {
+  // Urgent alerts go to the phone; the rest become Trello cards, the user's list of things that may not be working
+  private async notify(alert: Alert, dedupe: { key: string; fingerprint: string; repeatAfterMs: number }) {
+    const urgent = alert.push ?? alert.priority > 0;
     const sends: AlertSends = {};
-    for (const channel of channels) {
+    for (const channel of urgent ? (["pushover"] as const) : (["trello"] as const)) {
       const { due, lastAlert } = await this.checkAlertDue(`${dedupe.key}:${channel}`, dedupe);
       if (!due) continue;
       const send = channel === "pushover" ? this.sendPushover(alert) : this.postToTrello(alert, lastAlert?.cardId);
@@ -176,7 +181,7 @@ export class LineupRunner extends DurableObject<Env> {
     }
     // Logged on the channels' schedule but whether or not they accepted it, so a watchdog can still deliver it
     if ((await this.checkAlertDue(`${dedupe.key}:log`, dedupe)).due) {
-      this.ctx.storage.sql.exec("INSERT INTO alerts (alert) VALUES (?)", JSON.stringify({ at: new Date().toISOString(), ...alert, push: channels.includes("pushover") }));
+      this.ctx.storage.sql.exec("INSERT INTO alerts (alert) VALUES (?)", JSON.stringify({ at: new Date().toISOString(), ...alert, push: urgent }));
       this.ctx.storage.sql.exec("DELETE FROM alerts WHERE id <= (SELECT MAX(id) FROM alerts) - ?", LISTED_ALERTS);
       await this.rememberAlert(`${dedupe.key}:log`, dedupe.fingerprint);
     }
@@ -482,7 +487,8 @@ type AlertSends = Partial<Record<AlertChannel, AlertSend>>;
 
 type LoginOutcome = { status: number; gotSessionCookie: boolean; stillSignedOut?: true; backedOff?: true };
 
-type Alert = { title: string; body: string; priority: 0 | 1 | 2 };
+// `push` sends a priority-0 alert to the phone instead of Trello
+type Alert = { title: string; body: string; priority: 0 | 1 | 2; push?: boolean };
 
 type AlertSend = { status: number; response?: string } | { error: string };
 

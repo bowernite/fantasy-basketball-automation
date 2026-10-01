@@ -1,7 +1,7 @@
 name: Lineup watchdog
 
-# Pulls the lineup-runner Worker's /runs, /status and /alerts and pushes problems to ntfy (src/watchdog/lineup-watchdog.ts)
-# Logs are public: the script prints counts only, and URL, token and topic come from secrets
+# Pulls the lineup-runner Worker's /runs, /status and /alerts and pushes problems to Pushover (src/watchdog/lineup-watchdog.ts)
+# Logs are public: the script prints counts only, and URL and tokens come from secrets. The cached state holds alert ids and times only
 on:
   # GitHub starts schedules late, often 5-20 min, and more so on the hour
   schedule:
@@ -18,6 +18,9 @@ permissions:
 
 concurrency: lineup-watchdog
 
+env:
+  WATCHDOG_STATE_FILE: lineup-watchdog-state.json
+
 jobs:
   watchdog:
     runs-on: ubuntu-latest
@@ -28,9 +31,21 @@ jobs:
           sparse-checkout: src/watchdog
           persist-credentials: false
       - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+      # A cache key can't be overwritten, so each run saves a new one and the next restores the newest by prefix
+      - uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ${{ env.WATCHDOG_STATE_FILE }}
+          key: lineup-watchdog-state-${{ github.run_id }}
+          restore-keys: lineup-watchdog-state-
       - name: Check the Worker and push problems
         env:
           LINEUP_RUNNER_URL: ${{ secrets.LINEUP_RUNNER_URL }}
           LINEUP_RUNNER_TOKEN: ${{ secrets.LINEUP_RUNNER_TOKEN }}
-          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+          PUSHOVER_TOKEN: ${{ secrets.PUSHOVER_TOKEN }}
+          PUSHOVER_USER: ${{ secrets.PUSHOVER_USER }}
         run: bun src/watchdog/lineup-watchdog.ts ${{ inputs.test && '--test' || '' }}
+      - uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        if: always() && hashFiles(env.WATCHDOG_STATE_FILE) != ''
+        with:
+          path: ${{ env.WATCHDOG_STATE_FILE }}
+          key: lineup-watchdog-state-${{ github.run_id }}-${{ github.run_attempt }}

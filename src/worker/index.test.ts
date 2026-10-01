@@ -100,6 +100,7 @@ describe("lineup runner", () => {
   });
 
   it("alerts the owner when the reloaded page doesn't show the saved lineup", async () => {
+    vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-20T17:00:00Z") });
     const { alerts } = stubLineupSaves({ applySaves: false });
 
     await setSaves(true);
@@ -180,26 +181,31 @@ describe("lineup runner", () => {
     `);
   });
 
-  it("files a Trello card for a failed run", async () => {
-    const { cards } = stubFleaflicker(() => {
+  it("pushes a failed run when it knows no upcoming tip, since one may be near, without breaking the phone's quiet hours", async () => {
+    const { alerts, cards } = stubFleaflicker(() => {
       throw new TypeError("Connection refused");
     });
 
     const record = await (await triggerRun()).json<RunRecord>();
 
-    expect(cards).toMatchInlineSnapshot(`
-      [
-        {
-          "authorization": "OAuth oauth_consumer_key="test-trello-key", oauth_token="test-trello-token"",
-          "desc": "- TypeError: Connection refused
+    expect(alerts.map(({ title, priority }) => ({ title, priority }))).toEqual([{ title: "Lineup run (manual) failed", priority: "0" }]);
+    expect(cards).toEqual([]);
+    expect(record.alert).toEqual({ pushover: { status: 200 } });
+  });
 
-      https://www.fleaflicker.com/nba/leagues/30579/teams/161025",
-          "list": "test-trello-list",
-          "name": "Lineup run (manual) failed",
-        },
-      ]
-    `);
-    expect(record.alert?.trello).toEqual({ status: 200 });
+  it("pushes a failure that keeps happening while no upcoming tip is known once a day, e.g. in the offseason", async () => {
+    const { alerts } = stubFleaflicker(() => {
+      throw new TypeError("Connection refused");
+    });
+    vi.useFakeTimers({ toFake: ["Date"] });
+
+    await triggerRun();
+    vi.setSystemTime(Date.now() + 3 * 60 * 60 * 1000);
+    await triggerRun();
+    vi.setSystemTime(Date.now() + 21 * 60 * 60 * 1000);
+    await triggerRun();
+
+    expect(alerts).toHaveLength(2);
   });
 
   it("says in the alert when Fleaflicker serves an error page", async () => {
@@ -238,40 +244,57 @@ describe("lineup runner", () => {
   });
 
   it("alerts again when a failure comes back after a successful run", async () => {
-    let fleaflickerDown = true;
-    const { alerts } = stubFleaflicker((request) => {
+    vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-20T09:00:00Z") });
+    let fleaflickerDown = false;
+    const { cards } = stubFleaflicker((request) => {
       if (fleaflickerDown) throw new TypeError("Connection dropped");
       return fakeFleaflicker(request, fantasyStatsPage);
     });
+    await triggerRun();
 
+    fleaflickerDown = true;
     await triggerRun();
     fleaflickerDown = false;
     await triggerRun();
     fleaflickerDown = true;
     await triggerRun();
 
-    expect(alerts.map(({ message }) => message)).toEqual(["- TypeError: Connection dropped", "- TypeError: Connection dropped"]);
+    expect(cards.map(({ name, desc }) => [name, desc.split("\n\n")[0]])).toEqual([
+      ["Lineup run (manual) failed", "- TypeError: Connection dropped"],
+      ["Lineup run (manual) failed", "- TypeError: Connection dropped"],
+    ]);
   });
 
   it("alerts again when the same failure is still happening hours later", async () => {
-    const { alerts } = stubFleaflicker(() => {
-      throw new TypeError("Connection reset");
+    vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-20T16:30:00Z") });
+    let fleaflickerDown = false;
+    const { alerts } = stubFleaflicker((request) => {
+      if (fleaflickerDown) throw new TypeError("Connection reset");
+      return fakeFleaflicker(request, fantasyStatsPage);
     });
-    vi.useFakeTimers({ toFake: ["Date"] });
+    await triggerRun();
 
+    fleaflickerDown = true;
     await triggerRun();
     vi.setSystemTime(Date.now() + 3 * 60 * 60 * 1000);
     await triggerRun();
 
-    expect(alerts).toHaveLength(2);
+    expect(alerts.map(({ title, priority }) => ({ title, priority }))).toEqual([
+      { title: "Lineup run (manual) failed", priority: "1" },
+      { title: "Lineup run (manual) failed", priority: "1" },
+    ]);
   });
 
   it("comments on the open Trello card when the same failure is still happening hours later", async () => {
-    const { cards, cardComments } = stubFleaflicker(() => {
-      throw new TypeError("Connection timed out");
+    vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-20T09:00:00Z") });
+    let fleaflickerDown = false;
+    const { cards, cardComments } = stubFleaflicker((request) => {
+      if (fleaflickerDown) throw new TypeError("Connection timed out");
+      return fakeFleaflicker(request, fantasyStatsPage);
     });
-    vi.useFakeTimers({ toFake: ["Date"] });
+    await triggerRun();
 
+    fleaflickerDown = true;
     await triggerRun();
     vi.setSystemTime(Date.now() + 3 * 60 * 60 * 1000);
     await triggerRun();
@@ -281,15 +304,19 @@ describe("lineup runner", () => {
   });
 
   it("files a new Trello card for a repeat failure once the old card is archived", async () => {
+    vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-20T09:00:00Z") });
+    let fleaflickerDown = false;
     let cardArchived = false;
     const { cards, cardComments } = stubFleaflicker(
-      () => {
-        throw new TypeError("Connection aborted");
+      (request) => {
+        if (fleaflickerDown) throw new TypeError("Connection aborted");
+        return fakeFleaflicker(request, fantasyStatsPage);
       },
       { trelloCardArchived: () => cardArchived },
     );
-    vi.useFakeTimers({ toFake: ["Date"] });
+    await triggerRun();
 
+    fleaflickerDown = true;
     await triggerRun();
     cardArchived = true;
     vi.setSystemTime(Date.now() + 3 * 60 * 60 * 1000);
@@ -316,21 +343,28 @@ describe("lineup runner", () => {
     expect(secondRun.alert?.pushover).toEqual({ status: 200 });
   });
 
-  it("retries only the channel that rejected the alert", async () => {
-    const trelloStatuses = [401, 200];
+  it("tries the Trello card again on the next run when Trello rejects it", async () => {
+    vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-20T09:00:00Z") });
+    let fleaflickerDown = false;
+    let trelloUp = true;
     const { alerts, cards } = stubFleaflicker(
-      () => {
-        throw new TypeError("Handshake timed out");
+      (request) => {
+        if (fleaflickerDown) throw new TypeError("Handshake timed out");
+        return fakeFleaflicker(request, fantasyStatsPage);
       },
-      { trelloStatus: () => trelloStatuses.shift()! },
+      { trelloStatus: () => (trelloUp ? 200 : 401) },
     );
+    await triggerRun();
 
+    fleaflickerDown = true;
+    trelloUp = false;
     const firstRun = await (await triggerRun()).json<RunRecord>();
+    trelloUp = true;
     const secondRun = await (await triggerRun()).json<RunRecord>();
 
-    expect(firstRun.alert).toEqual({ pushover: { status: 200 }, trello: { status: 401, response: "invalid token" } });
+    expect(firstRun.alert).toEqual({ trello: { status: 401, response: "invalid token" } });
     expect(secondRun.alert).toEqual({ trello: { status: 200 } });
-    expect([alerts.length, cards.length]).toEqual([1, 2]);
+    expect([alerts.length, cards.length]).toEqual([0, 2]);
   });
 
   it("still records the run when the alert can't be sent", async () => {
@@ -604,7 +638,7 @@ describe("scheduled checks", () => {
         "user": "test-pushover-user",
       }
     `);
-    expect(cards.map(({ name }) => name)).toEqual(["Lineup saves are off", alerts[0].title]);
+    expect(cards.map(({ name }) => name)).toEqual(["Lineup saves are off"]);
   });
 
   it("sends an emergency alert 10 min before a tip with no successful run since T-45, unless that tick's run succeeds", async () => {
@@ -645,16 +679,37 @@ describe("scheduled checks", () => {
     expect(alerts.map(({ title, priority }) => ({ title, priority }))).toEqual([{ title: "Lineup run (cron) failed", priority: "1" }]);
   });
 
-  it("sends a failure alert without priority when the next tip is more than 3 h away", async () => {
+  it("files a Trello card, not a push, for a failed run when the next tip is more than 3 h away", async () => {
     vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-20T15:10:00Z") });
-    const { alerts } = stubFleaflicker((request) =>
+    const { alerts, cards } = stubFleaflicker((request) =>
       new URL(request.url).searchParams.get("week") === "2" ? new Response("Service unavailable", { status: 503 }) : fakeFleaflickerSeason(request),
     );
     const runner = freshRunner();
 
     await runner.tick("cron");
 
-    expect(alerts.map(({ title, priority }) => ({ title, priority }))).toEqual([{ title: "Lineup run (cron) failed", priority: "0" }]);
+    expect(alerts).toEqual([]);
+    expect(cards).toMatchInlineSnapshot(`
+      [
+        {
+          "authorization": "OAuth oauth_consumer_key="test-trello-key", oauth_token="test-trello-token"",
+          "desc": "- Lineup page returned HTTP 503
+      - No lineup form on the page; the session may be logged out
+
+      https://www.fleaflicker.com/nba/leagues/30579/teams/161025",
+          "list": "test-trello-list",
+          "name": "Lineup run (cron) failed",
+        },
+        {
+          "authorization": "OAuth oauth_consumer_key="test-trello-key", oauth_token="test-trello-token"",
+          "desc": "A game tips within 24 h, but the runner only checks the lineup. Turn saves back on: PUT /saves {"enabled": true}
+
+      https://www.fleaflicker.com/nba/leagues/30579/teams/161025",
+          "list": "test-trello-list",
+          "name": "Lineup saves are off",
+        },
+      ]
+    `);
   });
 
   it("waits 30 min before trying a failed login again", async () => {
@@ -1028,7 +1083,7 @@ describe("injury cross-check with ESPN", () => {
         },
       ]
     `);
-    expect(cards.map(({ name }) => name)).toEqual(["Fleaflicker and ESPN disagree on Cade Cunningham"]);
+    expect(cards).toEqual([]);
   });
 
   it("alerts each disagreement once a day, even as others come and go", async () => {

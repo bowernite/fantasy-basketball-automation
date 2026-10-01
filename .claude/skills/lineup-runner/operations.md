@@ -4,10 +4,10 @@ Auth on every route: `-H "Authorization: Bearer $LINEUP_RUNNER_TOKEN"` against `
 
 ## Saves
 
-- `PUT /saves` with `{"enabled": true}` or `{"enabled": false}` switches automated saving at runtime; `GET /status` shows `savesEnabled`. It's the kill switch: no deploy needed
-- Saves stay off until the user approves turning them on (`open-items.md`). While they're off, every run still decides and records the lineup, and a Trello warning goes out when a tip is within 24 h
+- Automated saves are **on** (user approved 2026-09-30; first save by the 00:10Z cron run, 4 moves, Worker's reload verify passed, independent reload matched; the next run had no changes)
+- `PUT /saves` with `{"enabled": true}` or `{"enabled": false}` switches automated saving at runtime; `GET /status` shows `savesEnabled`. It's the kill switch: no deploy needed. While off, every run still decides and records the lineup, and a Trello warning goes out when a tip is within 24 h
 - A one-off live save test is allowed with the lead's or the user's OK: record the day's original form body first, `PUT /saves true` → `POST /run` → `PUT /saves false`, confirm the saved lineup with an independent reload, then POST the original body back and confirm the reload matches it. Run it away from tips and deploys (a deploy mid-test runs the old version for ~30 s)
-- Once saves are on, the hourly runs overwrite manual lineup edits within ~1 h; only `PUT /saves false` keeps a manual edit
+- With saves on, the runs overwrite manual lineup edits within ~1 h; only `PUT /saves false` keeps a manual edit
 
 ## Deploys
 
@@ -32,11 +32,11 @@ Set from stdin, never in the repo or command args. Cron-safe: `bunx wrangler ver
 
 ## Watchdog
 
-- The workflow's logs are public: the script prints counts only, and the Worker URL, token and ntfy topic are GitHub secrets `LINEUP_RUNNER_URL`, `LINEUP_RUNNER_TOKEN`, `NTFY_TOPIC` (`gh secret set <NAME>` from stdin, no trailing newline). Rotating `RUN_TOKEN` means updating `LINEUP_RUNNER_TOKEN` too, or the watchdog alerts "unreachable"
-- Runs: `gh run list --workflow lineup-watchdog.yml`. A failed run means it pushed something (or couldn't): read the topic, not the log
-- Test push: `gh workflow run lineup-watchdog.yml -f test=true` sends one "Lineup watchdog test"
-- Forced-failure tests and other deliberate failures land in `/alerts`, so the watchdog forwards them to the user's phone within ~30 min. Warn the user first, or point `NTFY_TOPIC` at a throwaway topic for the test and back after 6 h
-- Local run: `LINEUP_RUNNER_URL=… LINEUP_RUNNER_TOKEN=… NTFY_TOPIC=<throwaway> bun src/watchdog/lineup-watchdog.ts`. Read a topic with `curl -s "https://ntfy.sh/<topic>/json?poll=1&since=1h"`
+- The workflow's logs are public: the script prints counts only, and the Worker URL and token and the Pushover creds are GitHub secrets `LINEUP_RUNNER_URL`, `LINEUP_RUNNER_TOKEN`, `PUSHOVER_TOKEN`, `PUSHOVER_USER` (`gh secret set <NAME>` from stdin, no trailing newline). Rotating `RUN_TOKEN` means updating `LINEUP_RUNNER_TOKEN` too, or the watchdog alerts "unreachable"
+- Runs: `gh run list --workflow lineup-watchdog.yml`. A failed run means it pushed something (or couldn't): check the phone or `/alerts`, not the log
+- Test push: `gh workflow run lineup-watchdog.yml -f test=true` sends one "TEST: Lineup watchdog (GitHub Actions)"
+- Forced-failure tests and other deliberate failures land in `/alerts`, so the watchdog forwards them to the user's phone within ~30 min. Warn the user first, or `DELETE /alerts/<id>` the test entries before the next watchdog run
+- Local run (pushes to the real phone): `LINEUP_RUNNER_URL=… LINEUP_RUNNER_TOKEN=… PUSHOVER_TOKEN=… PUSHOVER_USER=… WATCHDOG_STATE_FILE=/tmp/wd.json bun src/watchdog/lineup-watchdog.ts`
 
 ## Tests
 

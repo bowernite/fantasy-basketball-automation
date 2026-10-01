@@ -96,7 +96,7 @@ async function publish({ token, user }: PushoverCredentials, { title, message: f
   try {
     const message = fullMessage.length > PUSHOVER_MAX_MESSAGE_LENGTH ? `${fullMessage.slice(0, PUSHOVER_MAX_MESSAGE_LENGTH - 1)}…` : fullMessage;
     // Same retry/expire as the Worker's missed-tip alerts: re-alerts every minute for 30 min until acknowledged
-    const emergency = priority === EMERGENCY_PRIORITY ? { retry: "60", expire: "1800" } : {};
+    const emergency: Record<string, string> = priority === EMERGENCY_PRIORITY ? { retry: "60", expire: "1800" } : {};
     const body = new URLSearchParams({ token, user, title, message, priority: String(priority), ...emergency });
     const response = await fetch("https://api.pushover.net/1/messages.json", { method: "POST", body, signal: AbortSignal.timeout(FETCH_TIMEOUT_MS) });
     return response.ok;
@@ -113,18 +113,6 @@ async function readRunner(runnerUrl: string, runToken: string) {
   };
   const [runs, status, alerts] = await Promise.all([get<{ startedAt: string }[]>("/runs"), get<{ alarm: string | null }>("/status"), get<WorkerAlert[]>("/alerts")]);
   return { runs, status, alerts };
-}
-
-/** Messages already on the topic (ntfy.sh keeps 12 h); empty if unreadable, so alerts err toward repeating */
-async function readTopic(ntfyTopic: string): Promise<TopicMessage[]> {
-  try {
-    const response = await fetch(`https://ntfy.sh/${ntfyTopic}/json?poll=1&since=12h`, { signal: AbortSignal.timeout(FETCH_TIMEOUT_MS) });
-    if (!response.ok) return [];
-    const lines = (await response.text()).split("\n").filter(Boolean);
-    return lines.map((line) => JSON.parse(line)).filter((message) => message.event === "message");
-  } catch {
-    return [];
-  }
 }
 
 function formatCentralTime(iso: string) {

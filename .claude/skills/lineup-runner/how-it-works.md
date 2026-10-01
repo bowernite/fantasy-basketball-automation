@@ -21,18 +21,18 @@ The goal: the user's lineup is set optimally and reliably for every game, with n
 
 ## The watchdog
 
-A second vendor watches the Worker: `.github/workflows/lineup-watchdog.yml` runs `src/watchdog/lineup-watchdog.ts` at :07/:22/:37/:52 (GitHub starts it 5–20 min late). It reads `/runs`, `/status` and `/alerts` and pushes to the user's ntfy topic when:
+A second vendor watches the Worker: `.github/workflows/lineup-watchdog.yml` runs `src/watchdog/lineup-watchdog.ts` at :07/:22/:37/:52 (GitHub starts it 5–20 min late). It reads `/runs`, `/status` and `/alerts` and pushes to Pushover (app "Lineup runner") when:
 
 - no run record in 75 min (hourly runs always write one): "Lineup runner silent"
 - the alarm is unset or >15 min overdue: "Lineup runner alarm stuck"
 - any route fails or times out: "Lineup runner unreachable"
-- a Worker alert ≤6 h old hasn't been forwarded yet (priority 2 → ntfy 5, 1 → 4, 0 → 3, Trello-only → 2, silent)
+- a Worker alert ≤6 h old hasn't been forwarded yet and isn't marked `delivered` (same Pushover priority; Trello-only → −1, quiet). Its own three alerts are priority 1
 
-It keeps no state: it reads the topic's last 12 h from ntfy and skips an alert whose title was pushed after the alert's `at`, and repeats its own three alerts at most every 3 h. Any push fails the job, so GitHub also emails the user. It covers Cloudflare down, a billing lapse and a broken deploy, which the Worker can't report itself
+State (forwarded `/alerts` ids, when each own alert last went out) lives in a JSON file carried between runs by `actions/cache` (ids and times only: caches are readable from fork PRs). It repeats its own alerts at most every 3 h; a lost cache re-forwards ≤6 h of alerts. Any push fails the job, so GitHub also emails the user. It covers Cloudflare down, a billing lapse and a broken deploy, which the Worker can't report itself
 
 ## Decisions and why
 
-- **Watchdog pulls, from GitHub**: ntfy is reachable from GitHub runners, and pulling keeps any GitHub token out of the Worker. GitHub's late schedule is fine for a watchdog, not for the runner itself
+- **Watchdog pulls, from GitHub, and pushes to Pushover**: Pushover limits per account, not per IP (ntfy's per-IP quota is shared by every runner or Worker on that IP), and pulling keeps any GitHub token out of the Worker. GitHub's late schedule is fine for a watchdog, not for the runner itself
 - **Cloudflare Worker + Durable Object** over GitHub Actions (cron often late or dropped, which is fatal at T-15; logs would be public) and over a hosted LLM agent such as Grokbot (imprecise timing, usage caps, less accurate than the optimizer). Workers Paid is required: a run uses ~20 ms CPU, over Free's 10 ms
 - **Reuse the extension's code through linkedom**, one `src/`, rather than porting or splitting it. Shim gaps fail silently (a missing `option.text` once started 0 players with no error), so the invariants in step 3 are mandatory. happy-dom can't run in Workers and misreads `<option selected>`
 - **The runner guards legality itself**: Fleaflicker accepts an under-filled lineup. The page vs API cross-check catches markup drift before anything is saved
@@ -40,7 +40,7 @@ It keeps no state: it reads the topic's last 12 h from ntfy and skips an alert w
 - **Verify by reload, never by the save response**: a rejected save re-renders the form with the rejected values
 - **ESPN is a cross-check, not a scoring input**: it only has Out / Day-To-Day and is UA-gated. Its value is catching Fleaflicker's stale OUT/OFS tags, which score ×0. Revisit an OUT-only override after opening-week data (`open-items.md`)
 - **Questionable players keep the ×0.5 expected-value model** (`src/prioritization/injury-adjustments.ts`). Timing is the fix: T-40/T-15 runs see most Q players resolved
-- **Alerts**: urgent → Pushover (priority 1 when a tip is ≤3 h away, 2 for a missed tip) and Trello; general → a Trello card in the user's To-Do Inbox, comment on the open card on repeats. ntfy can't be reached from Workers (shared egress IPs hit its per-IP quota; 522s). Trello cards made with the user's own token never notify him, so Trello is never the only urgent channel. A healthchecks.io ping each tick is the dead-man for "the Worker stopped". Every alert is also logged on the channels' dedupe schedule, delivered or not, and served on `GET /alerts` for the watchdog below
+- **Alerts**: urgent → Pushover only (priority 1 for a failure or injury disagreement with a tip ≤3 h away, 2 for a missed tip); the rest → a Trello card in the user's To-Do Inbox (things that may not be working; repeats comment on the open card), since cards made with the user's own token never notify him. A failure while no upcoming tip is stored (offseason, All-Star break, or tip times stopped parsing) can't be ranked, so it pushes at priority 0 (respects quiet hours) once a day. ntfy can't be reached from Workers (shared egress IPs hit its per-IP quota; 522s). A healthchecks.io ping each tick is the dead-man for "the Worker stopped". Every alert is also logged on the channels' dedupe schedule, delivered or not, and served on `GET /alerts` with `delivered` (every channel tried accepted it) for the watchdog below
 - **Failed logins and failed saves back off 30 min** except within 45 min of a tip, to avoid a captcha or lockout
 - **No runtime self-healing**: a failure alerts, and a human merges any fix. Code that rewrites itself while writing the user's lineup is the wrong risk on a public repo
 - **Saves are a runtime switch** (`PUT /saves`, DO storage, default off), so turning them off needs no deploy
