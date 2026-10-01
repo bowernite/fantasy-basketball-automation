@@ -15,4 +15,11 @@ export function getSubmitButtonForm(
   return null;
 }
 
-
+export function applyStyles(
+  element: HTMLElement,
+  styles: Record<string, string>
+) {
+  Object.entries(styles).forEach(([key, value]) => {
+    element.style.setProperty(key, value);
+  });
+}

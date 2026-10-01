@@ -13,6 +13,7 @@ import {
   slotOf,
   startedLineup,
 } from "./fixtures/lineup-page";
+import { setProblemHandler } from "./report-problem";
 
 beforeAll(() =>
   GlobalRegistrator.register({
@@ -35,6 +36,8 @@ beforeEach(() => {
     spyOn(console, method).mockImplementation(() => {});
   }
   spyOn(window, "alert").mockImplementation((message) => void alerts.push(String(message)));
+  // Bun shares modules across test files, so a content script run elsewhere may have routed problems to the page
+  setProblemHandler((message) => void alerts.push(message));
 });
 afterEach(() => setSystemTime());
 

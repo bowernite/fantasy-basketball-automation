@@ -6,6 +6,7 @@ import {
 import type { Player } from "../types";
 import { adjustPredictedScoreForInjury } from "./injury-adjustments";
 import { getLeagueToday } from "../utils/date-utils";
+import { reportProblem } from "../lineup/report-problem";
 
 export type ScoreWeightingDebugInfo = ReturnType<
   typeof getPlayerPredictedScore
@@ -16,7 +17,7 @@ export function getPlayerPredictedScore(player: Player) {
     getPlayerWeightedScore(player);
   if (isNaN(blendedScore) && !player.isIr) {
     console.error(`NaN weighted score for ${player.playerName}`);
-    alert(`NaN weighted score for ${player.playerName}`);
+    reportProblem(`NaN weighted score for ${player.playerName}`);
   }
   const displayWeightedScore = isOffseason()
     ? (weightedScoreDebugInfo.seasonProjectionAvg ?? NO_PROJECTION_RATE)

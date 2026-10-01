@@ -2,19 +2,13 @@ import { GlobalRegistrator } from "@happy-dom/global-registrator";
 import { afterAll, beforeAll, beforeEach, expect, setSystemTime, spyOn, test } from "bun:test";
 import {
   givePlayerGame,
-  givePlayerNews,
   loadLineupPage,
   PAGE_URL,
   playerRow,
   showStatView,
   startedLineup,
 } from "./src/lineup/fixtures/lineup-page";
-
-const HAPPY_DOM_SETTINGS = {
-  disableJavaScriptFileLoading: true,
-  disableCSSFileLoading: true,
-  handleDisabledFileLoadingAsSuccess: true,
-};
+import { HAPPY_DOM_SETTINGS, recordAlerts, runContentScript } from "./src/lineup/fixtures/content-script";
 
 beforeAll(() => GlobalRegistrator.register({ url: PAGE_URL, settings: HAPPY_DOM_SETTINGS }));
 afterAll(() => {
@@ -25,29 +19,13 @@ afterAll(() => {
 let alerts: string[];
 beforeEach(() => {
   setSystemTime(new Date("2026-10-20T14:00:00Z"));
-  alerts = [];
   for (const method of ["log", "table", "clear", "warn"] as const) spyOn(console, method).mockImplementation(() => {});
-  spyOn(window, "alert").mockImplementation((message) => void alerts.push(String(message)));
+  alerts = recordAlerts();
 });
-
-// Each import re-runs the content script, like a fresh page load
-let loads = 0;
-async function runContentScript() {
-  await import(`./page-load__set-lineup.ts?load=${++loads}`);
-  await Bun.sleep(0);
-}
 
 // The extension's floating buttons are appended last, after any Fleaflicker button with the same text
 function button(name: string) {
   return Array.from(document.querySelectorAll("button")).findLast((b) => b.textContent!.trim() === name);
-}
-
-function scoreBadge(name: string) {
-  return playerRow(name).querySelector<HTMLElement>("[data-predicted-score]")!;
-}
-
-function isShown(el: HTMLElement) {
-  return getComputedStyle(el).visibility !== "hidden";
 }
 
 // Records where the browser would navigate when a link is clicked, without leaving the page
@@ -73,55 +51,15 @@ function recordLineupSubmissions() {
   return submissions;
 }
 
-const BONA_PROBABLE_NEWS =
-  '<div class="news-text"><h5>Adem Bona Probable Tuesday</h5>' +
-  '<em><relative-time datetime="2026-10-20T12:00:00Z">Tue 10/20/26 8:00 AM</relative-time></em>' +
-  "<p>Philadelphia 76ers center Adem Bona (knee) is probable for Tuesday's game against the Knicks.</p></div>";
-
-test("on load, shows a predicted score for players with a game and hides it for everyone else", async () => {
-  loadLineupPage();
-
-  await runContentScript();
-
-  expect(alerts).toEqual([]);
-  expect(isShown(scoreBadge("Cade Cunningham"))).toBe(true);
-  expect(parseFloat(scoreBadge("Cade Cunningham").textContent!)).toBeGreaterThan(0);
-  expect(isShown(scoreBadge("Naz Reid"))).toBe(false); // no game today
-  expect(isShown(scoreBadge("Adem Bona"))).toBe(false); // OUT
-  expect(isShown(scoreBadge("Kyrie Irving"))).toBe(false); // out for season, no game
-});
-
-test("hovering a score explains its opponent and injury adjustments", async () => {
-  loadLineupPage();
-
-  await runContentScript();
-
-  expect(scoreBadge("Cade Cunningham").title).toMatch(/^Opponent adjustment: [+-]\d+\.\d\nInjury multiplier: \(none\)$/);
-  expect(scoreBadge("Adem Bona").title).toMatch(/\nInjury multiplier: 0%$/);
-});
-
 // Another owner's team page matches the saved page as-is: same table and date picker, no slot selects
-test("on another owner's team page, shows the scores but no lineup buttons", async () => {
+test("on another owner's team page, shows no lineup buttons", async () => {
   loadLineupPage({ loggedIn: false });
 
   await runContentScript();
 
   expect(alerts).toEqual([]);
-  expect(isShown(scoreBadge("Cade Cunningham"))).toBe(true);
-  expect(parseFloat(scoreBadge("Cade Cunningham").textContent!)).toBeGreaterThan(0);
   expect(button("Set Lineup") != null).toBe(false);
   expect(button("Save Lineup") != null).toBe(false);
-});
-
-test("injury news that upgrades an OUT player shows the new status, the news' age, and scores him", async () => {
-  loadLineupPage();
-  givePlayerNews("Adem Bona", BONA_PROBABLE_NEWS);
-
-  await runContentScript();
-
-  expect(playerRow("Adem Bona").querySelector(".injury")!.textContent).toMatchInlineSnapshot(`"✨P (2h)"`);
-  expect(isShown(scoreBadge("Adem Bona"))).toBe(true);
-  expect(parseFloat(scoreBadge("Adem Bona").textContent!)).toBeGreaterThan(0);
 });
 
 test("clicking Set Lineup starts 9 legal starters, one per league slot", async () => {

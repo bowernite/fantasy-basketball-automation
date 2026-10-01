@@ -1,6 +1,6 @@
 import type { Player } from "../types";
 import { setAllPlayersToBench, setPlayerPosition } from "./lineup-dom-actions";
-import { stylePlayerAsStarted } from "../page/page-manipulation";
+import { stylePlayerAsStarted } from "../page/overlay/row-states";
 import {
   buildDefaultSlots,
   computeOptimalAssignments,

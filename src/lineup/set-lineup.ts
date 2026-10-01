@@ -3,7 +3,7 @@ import { getPlayers } from "../page/get-players";
 import {
   stylePlayerAsPossiblyInjured,
   stylePlayerAsUnableToStart,
-} from "../page/page-manipulation";
+} from "../page/overlay/row-states";
 import { verifyPage } from "../sanity-checks";
 import { setOptimalLineup } from "./set-optimal-lineup";
 

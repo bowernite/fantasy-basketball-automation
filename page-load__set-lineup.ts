@@ -1,11 +1,9 @@
 import { getPlayers } from "./src/page/get-players";
-import {
-  addSaveLineupButton,
-  addSetLineupButton,
-  insertPlayerScores,
-  randomPageStylings,
-  refinePlayerStatus,
-} from "./src/page/page-manipulation";
+import { randomPageStylings } from "./src/page/page-manipulation";
+import { addSaveLineupButton, addSetLineupButton } from "./src/page/overlay/lineup-actions";
+import { insertPlayerScores } from "./src/page/overlay/score-rail";
+import { refinePlayerStatus } from "./src/page/overlay/status-tag";
+import { injectOverlayStyles } from "./src/page/overlay/styles";
 import { hasEditableLineup } from "./src/page/page-querying";
 import { prioritizePlayers } from "./src/prioritization/prioritization";
 import {
@@ -26,6 +24,7 @@ import {
 (window as any).goToPreviousDay = goToPreviousDay;
 (window as any).goToNextDay = goToNextDay;
 
+injectOverlayStyles();
 pageLoad();
 randomPageStylings();
 

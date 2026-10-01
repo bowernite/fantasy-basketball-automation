@@ -4,12 +4,13 @@ import {
   getSaveLineupButton,
 } from "../page/page-querying";
 import { getSubmitButtonForm } from "../utils/dom-utils";
+import { reportProblem } from "./report-problem";
 import { type Player } from "../types";
 import {
   stylePlayerAsAlternate,
   stylePlayerAsStarted,
   stylePlayerAsUnableToStart,
-} from "../page/page-manipulation";
+} from "../page/overlay/row-states";
 
 export function startPlayer(
   player: Player,
@@ -17,7 +18,7 @@ export function startPlayer(
 ) {
   if (!player.setPositionDropdown) {
     const errorMessage = `Tried to start ${player.playerName} without a dropdown; this player is likely LOCKED.`;
-    alert(`WARNING: ${errorMessage}`);
+    reportProblem(`WARNING: ${errorMessage}`);
     return false;
   }
 
