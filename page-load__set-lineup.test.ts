@@ -9,6 +9,7 @@ import {
   startedLineup,
 } from "./src/lineup/fixtures/lineup-page";
 import { HAPPY_DOM_SETTINGS, recordAlerts, runContentScript } from "./src/lineup/fixtures/content-script";
+import { reportProblem } from "./src/lineup/report-problem";
 
 beforeAll(() => GlobalRegistrator.register({ url: PAGE_URL, settings: HAPPY_DOM_SETTINGS }));
 afterAll(() => {
@@ -23,9 +24,8 @@ beforeEach(() => {
   alerts = recordAlerts();
 });
 
-// The extension's floating buttons are appended last, after any Fleaflicker button with the same text
 function button(name: string) {
-  return Array.from(document.querySelectorAll("button")).findLast((b) => b.textContent!.trim() === name);
+  return Array.from(document.querySelectorAll("button")).find((b) => b.textContent!.trim() === name);
 }
 
 // Records where the browser would navigate when a link is clicked, without leaving the page
@@ -58,11 +58,50 @@ test("on another owner's team page, shows no lineup buttons", async () => {
   await runContentScript();
 
   expect(alerts).toEqual([]);
-  expect(button("Set Lineup") != null).toBe(false);
-  expect(button("Save Lineup") != null).toBe(false);
+  expect(button("Set lineup") != null).toBe(false);
+  expect(button("Save lineup") != null).toBe(false);
 });
 
-test("clicking Set Lineup starts 9 legal starters, one per league slot", async () => {
+test("Set lineup and Save lineup sit together at the start of the toolbar above the roster", async () => {
+  loadLineupPage();
+
+  await runContentScript();
+
+  const toolbar = document.querySelector("#body-top .btn-toolbar")!;
+  const group = toolbar.firstElementChild!;
+  expect(Array.from(group.querySelectorAll("button"), (b) => b.textContent!.trim())).toEqual(["Set lineup", "Save lineup"]);
+  expect(group.nextElementSibling!.textContent).toBe("Roster for");
+});
+
+test("the lineup button icons are 16px", async () => {
+  loadLineupPage();
+
+  await runContentScript();
+
+  const icon = getComputedStyle(button("Set lineup")!.querySelector("svg")!);
+  expect([icon.width, icon.height]).toEqual(["16px", "16px"]);
+});
+
+test("running the page script again doesn't add a second set of lineup buttons", async () => {
+  loadLineupPage();
+
+  await runContentScript();
+  await runContentScript();
+
+  expect(Array.from(document.querySelectorAll("button")).filter((b) => b.textContent!.trim() === "Set lineup")).toHaveLength(1);
+});
+
+test("if Fleaflicker reworks that toolbar, the lineup buttons go at the top of the roster area", async () => {
+  loadLineupPage();
+  document.querySelector("#body-top .button-bar")!.className = "action-bar";
+
+  await runContentScript();
+
+  const rosterArea = document.getElementById("body-center-main")!;
+  expect(rosterArea.firstElementChild!.querySelector("button")!.textContent!.trim()).toBe("Set lineup");
+});
+
+test("clicking Set lineup starts 9 legal starters, one per league slot", async () => {
   loadLineupPage();
   givePlayerGame("Josh Giddey", "LAL");
   givePlayerGame("Miles Bridges", "LAL");
@@ -70,50 +109,121 @@ test("clicking Set Lineup starts 9 legal starters, one per league slot", async (
   for (const select of document.querySelectorAll("select")) select.value = "0";
   await runContentScript();
 
-  button("Set Lineup")!.click();
+  button("Set lineup")!.click();
   for (let waited = 0; Object.keys(startedLineup()).length < 9 && waited < 3000; waited += 10) await Bun.sleep(10);
 
   expect(alerts).toEqual([]);
   expect(Object.values(startedLineup()).sort()).toEqual(["ANY", "ANY", "C", "F/C", "G", "PF", "PG", "SF", "SG"]);
 });
 
-test("clicking Set Lineup off the fantasy stats view tells the user", async () => {
+test("Set lineup shows it's busy until the lineup is set, then hands the lead to Save lineup", async () => {
+  loadLineupPage();
+  await runContentScript();
+  const setButton = button("Set lineup")!;
+
+  setButton.click();
+
+  expect(setButton.disabled).toBe(true);
+  expect(setButton.getAttribute("aria-busy")).toBe("true");
+  expect(setButton.textContent!.trim()).toMatchInlineSnapshot(`"Setting lineup…"`);
+
+  for (let waited = 0; setButton.disabled && waited < 3000; waited += 10) await Bun.sleep(10);
+
+  expect(setButton.disabled).toBe(false);
+  expect(setButton.hasAttribute("aria-busy")).toBe(false);
+  expect(setButton.textContent!.trim()).toBe("Set lineup");
+  expect(button("Save lineup")!.classList.contains("btn-primary")).toBe(true);
+  expect(setButton.classList.contains("btn-primary")).toBe(false);
+  expect(document.querySelector("[role=status]")!.textContent).toMatchInlineSnapshot(`"Lineup set. Review the highlighted rows, then save."`);
+  expect(alerts).toEqual([]);
+});
+
+test("the Set lineup shortcut shows the same busy button as clicking it", async () => {
+  loadLineupPage();
+  await runContentScript();
+  const setButton = button("Set lineup")!;
+
+  (window as any).runSetLineup(); // Cmd+Shift+U
+
+  expect(setButton.disabled).toBe(true);
+  expect(setButton.textContent!.trim()).toBe("Setting lineup…");
+  for (let waited = 0; setButton.disabled && waited < 3000; waited += 10) await Bun.sleep(10);
+  expect(document.querySelector("[role=status]")!.textContent).toBe("Lineup set. Review the highlighted rows, then save.");
+});
+
+test("a problem found while working on the lineup shows on the page instead of a popup", async () => {
+  loadLineupPage();
+  await runContentScript();
+
+  reportProblem("Tried to start Naz Reid without a dropdown");
+
+  expect(document.querySelector("[role=alert]")!.textContent).toBe("Tried to start Naz Reid without a dropdown");
+  expect(alerts).toEqual([]);
+});
+
+test("clicking Set lineup off the fantasy stats view tells the user on the page, with a retry", async () => {
   loadLineupPage();
   showStatView("season stats");
   await runContentScript();
 
-  button("Set Lineup")!.click();
-  for (let waited = 0; alerts.length === 0 && waited < 3000; waited += 10) await Bun.sleep(10);
+  button("Set lineup")!.click();
+  for (let waited = 0; !document.querySelector("[role=alert]") && waited < 3000; waited += 10) await Bun.sleep(10);
 
-  expect(alerts).toEqual([expect.stringContaining("Not on the fantasy stats page")]);
+  const notice = document.querySelector("[role=alert]")!;
+  expect(notice.firstChild!.textContent).toMatchInlineSnapshot(`"Couldn't set the lineup; nothing changed. Not on the fantasy stats page; aborting"`);
+  expect(notice.querySelector("button")!.textContent).toBe("Retry");
+  expect(alerts).toEqual([]);
 });
 
-test("the Save Lineup button and its shortcut submit Fleaflicker's lineup form with the chosen slots", async () => {
+test("Save lineup shows it's saving and submits Fleaflicker's lineup form with the chosen slots", async () => {
+  loadLineupPage();
+  const submissions = recordLineupSubmissions();
+  await runContentScript();
+  const nazReidSlot = playerRow("Naz Reid").querySelector("select")!;
+  nazReidSlot.value = "16"; // C
+  const saveButton = button("Save lineup")!;
+
+  saveButton.click();
+
+  expect(saveButton.disabled).toBe(true);
+  expect(saveButton.textContent!.trim()).toMatchInlineSnapshot(`"Saving…"`);
+  expect(submissions.map((submitted) => submitted[nazReidSlot.name])).toEqual(["16"]);
+});
+
+test("if Fleaflicker's own save is gone, Save lineup says nothing was saved and can be clicked again", async () => {
+  loadLineupPage();
+  await runContentScript();
+  document.querySelector("button[type=submit]")!.remove();
+  const saveButton = button("Save lineup")!;
+
+  saveButton.click();
+
+  expect(document.querySelector("[role=alert]")!.textContent).toMatchInlineSnapshot(`"Couldn't save the lineup. No Save Lineup button on the page; you may be logged out. Nothing was saved"`);
+  expect(saveButton.disabled).toBe(false);
+  expect(saveButton.textContent!.trim()).toBe("Save lineup");
+  expect(alerts).toEqual([]);
+});
+
+test("the save shortcut submits Fleaflicker's lineup form with the chosen slots", async () => {
   loadLineupPage();
   const submissions = recordLineupSubmissions();
   await runContentScript();
   const nazReidSlot = playerRow("Naz Reid").querySelector("select")!;
   nazReidSlot.value = "16"; // C
 
-  button("Save Lineup")!.click();
   (window as any).saveLineup(); // Cmd+Shift+I
 
-  expect(submissions).toHaveLength(2);
-  for (const submitted of submissions) expect(submitted[nazReidSlot.name]).toBe("16");
+  expect(submissions.map((submitted) => submitted[nazReidSlot.name])).toEqual(["16"]);
 });
 
 test("saving while logged out reports that nothing was saved", async () => {
   loadLineupPage({ loggedIn: false });
   await runContentScript();
 
-  let thrown: unknown;
-  try {
-    (window as any).saveLineup();
-  } catch (error) {
-    thrown = error;
-  }
+  (window as any).saveLineup();
 
-  expect(alerts.length > 0 || thrown !== undefined).toBe(true);
+  expect(document.querySelector("[role=alert]")!.textContent).toMatchInlineSnapshot(`"Couldn't save the lineup. No Save Lineup button on the page; you may be logged out. Nothing was saved"`);
+  expect(alerts).toEqual([]);
 });
 
 test("the next-day shortcut opens the next day's lineup", async () => {
@@ -157,13 +267,27 @@ test("when the page can't be read, tells the user and fails the page script loud
     // Fleaflicker drops the date picker
     for (const a of document.querySelectorAll("a.dropdown-toggle")) if (a.textContent.includes("Tue 10/20")) a.remove();
     console.log = console.error = console.warn = console.table = () => {};
-    window.alert = (message) => process.stdout.write("ALERT: " + message + "\\n");
+    process.on("exit", () => {
+      const notice = document.querySelector("[role=alert]");
+      process.stdout.write(JSON.stringify({
+        message: notice?.firstChild?.textContent,
+        buttons: Array.from(notice?.querySelectorAll("button") ?? [], (b) => b.textContent || b.getAttribute("aria-label")),
+      }));
+    });
     await import("./page-load__set-lineup.ts");
   `;
 
   const run = Bun.spawnSync(["bun", "-e", script], { cwd: import.meta.dir });
 
-  expect(run.stdout.toString()).toMatch(/^ALERT: .*date/im);
+  expect(JSON.parse(run.stdout.toString())).toMatchInlineSnapshot(`
+    {
+      "buttons": [
+        "Reload page",
+        "Dismiss",
+      ],
+      "message": "Couldn't read the roster page; the lineup wasn't changed. Tried to get page date but found 0 date buttons",
+    }
+  `);
   expect(run.stderr.toString()).toMatch(/date/i);
   expect(run.exitCode).not.toBe(0);
 });

@@ -30,16 +30,14 @@ async function setup({ activeTab }: { activeTab?: Tab } = {}) {
     scripting: {
       executeScript: ({ target, files, func }: any) => {
         injections.push({ tabId: target.tabId, files, func });
-        if (func) {
-          // Run the injected function as the page would
-          (globalThis as any).window = pageWindow;
-          try {
-            func();
-          } finally {
-            delete (globalThis as any).window;
-          }
+        if (!func) return Promise.resolve([]);
+        // Run the injected function as the page would
+        (globalThis as any).window = pageWindow;
+        try {
+          return Promise.resolve([{ result: func() }]);
+        } finally {
+          delete (globalThis as any).window;
         }
-        return Promise.resolve([]);
       },
     },
   };
@@ -63,15 +61,28 @@ describe("toolbar icon", () => {
   test("runs the lineup script in the clicked tab", async () => {
     const { injections, clickToolbarIcon } = await setup();
     clickToolbarIcon({ id: 7 });
-    expect(injections).toEqual([{ tabId: 7, files: ["dist/main.js"], func: undefined }]);
+    await Bun.sleep(0);
+    expect(injections.filter((i) => i.files)).toEqual([{ tabId: 7, files: ["dist/main.js"], func: undefined }]);
   });
 });
 
 describe("keyboard shortcuts", () => {
-  test("run-script runs the lineup script in the active tab", async () => {
+  test("run-script runs the page's own Set lineup when the page script is loaded", async () => {
+    const { injections, pageCalls, pageWindow, pressShortcut } = await setup({ activeTab: { id: 3 } });
+    pageWindow.runSetLineup = () => pageCalls.push("runSetLineup");
+
+    pressShortcut("run-script");
+    await Bun.sleep(0);
+
+    expect(pageCalls).toEqual(["runSetLineup"]);
+    expect(injections.filter((i) => i.files)).toEqual([]);
+  });
+
+  test("run-script runs the standalone lineup script when the page script isn't loaded", async () => {
     const { injections, pressShortcut } = await setup({ activeTab: { id: 3 } });
     pressShortcut("run-script");
-    expect(injections).toEqual([{ tabId: 3, files: ["dist/main.js"], func: undefined }]);
+    await Bun.sleep(0);
+    expect(injections.filter((i) => i.files)).toEqual([{ tabId: 3, files: ["dist/main.js"], func: undefined }]);
   });
 
   test.each([
@@ -113,7 +124,8 @@ describe("keyboard shortcuts", () => {
     for (const command of Object.keys(manifest.commands)) {
       const { injections, pressShortcut } = await setup({ activeTab: { id: 3 } });
       pressShortcut(command);
-      expect(injections.length, `command "${command}" is declared but unhandled`).toBe(1);
+      await Bun.sleep(0);
+      expect(injections.length, `command "${command}" is declared but unhandled`).toBeGreaterThan(0);
     }
   });
 });

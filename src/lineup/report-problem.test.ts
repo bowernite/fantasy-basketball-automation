@@ -1,5 +1,4 @@
 import { afterEach, expect, test } from "bun:test";
-import { reportProblem, setProblemHandler } from "./report-problem";
 
 const originalAlert = globalThis.alert;
 afterEach(() => {
@@ -7,7 +6,9 @@ afterEach(() => {
 });
 
 // The headless lineup runner swaps in its own `alert` after this module has loaded, to collect problems
-test("by default, a problem goes to whichever alert is in place when it's reported", () => {
+test("by default, a problem goes to whichever alert is in place when it's reported", async () => {
+  // A fresh copy: bun shares modules across test files, and other files set their own handler
+  const { reportProblem } = await import("./report-problem?fresh");
   const problems: string[] = [];
   globalThis.alert = (message) => void problems.push(String(message));
 
@@ -16,7 +17,8 @@ test("by default, a problem goes to whichever alert is in place when it's report
   expect(problems).toEqual(["NaN weighted score for Naz Reid"]);
 });
 
-test("once a page sets its own handler, problems go there instead of an alert", () => {
+test("once a page sets its own handler, problems go there instead of an alert", async () => {
+  const { reportProblem, setProblemHandler } = await import("./report-problem");
   const alerts: string[] = [];
   globalThis.alert = (message) => void alerts.push(String(message));
   const shown: string[] = [];

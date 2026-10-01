@@ -1,148 +1,107 @@
 import { saveLineup } from "../../lineup/lineup-dom-actions";
 import { setLineup } from "../../lineup/set-lineup";
-import { saveLineupIcon, setLineupIcon } from "../../icons/icons";
+import { saveLineupIcon, setLineupIcon, spinnerIcon } from "../../icons/icons";
+import { showNotice } from "./notice";
 
-export const LINEUP_ACTIONS_CSS = "";
-
-export function addSaveLineupButton() {
-  if (!document.head.querySelector('style[data-button-styles]')) {
-    const style = document.createElement("style");
-    style.textContent = BUTTON_STYLES;
-    style.setAttribute('data-button-styles', '');
-    document.head.appendChild(style);
+export const LINEUP_ACTIONS_CSS = `
+  .ffx-actions .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
   }
-
-  const button = document.createElement("button");
-  button.className = "save-lineup-button";
-  button.type = "button";
-
-  const innerButton = document.createElement("div");
-  innerButton.className = "save-lineup-button__inner";
-  
-  const iconDiv = document.createElement("div");
-  iconDiv.className = "save-lineup-button__icon";
-  iconDiv.innerHTML = saveLineupIcon;
-  
-  const textSpan = document.createElement("span");
-  textSpan.textContent = "Save Lineup";
-  
-  innerButton.appendChild(iconDiv);
-  innerButton.appendChild(textSpan);
-
-  button.appendChild(innerButton);
-  document.body.appendChild(button);
-
-  button.addEventListener("click", () => {
-    saveLineup();
-  });
-}
-
-export async function addSetLineupButton() {
-  if (!document.head.querySelector('style[data-button-styles]')) {
-    const style = document.createElement("style");
-    style.textContent = BUTTON_STYLES;
-    style.setAttribute('data-button-styles', '');
-    document.head.appendChild(style);
+  .ffx-actions svg {
+    width: 16px;
+    height: 16px;
+    flex: none;
   }
-
-  const button = document.createElement("button");
-  button.className = "set-lineup-button";
-  button.type = "button";
-
-  const innerButton = document.createElement("div");
-  innerButton.className = "set-lineup-button__inner";
-  
-  const iconDiv = document.createElement("div");
-  iconDiv.className = "set-lineup-button__icon";
-  iconDiv.innerHTML = setLineupIcon;
-  
-  const textSpan = document.createElement("span");
-  textSpan.textContent = "Set Lineup";
-  
-  innerButton.appendChild(iconDiv);
-  innerButton.appendChild(textSpan);
-
-  button.appendChild(innerButton);
-  document.body.appendChild(button);
-
-  button.addEventListener("click", async () => {
-    try {
-      await setLineup();
-    } catch (error) {
-      console.error("Error setting lineup:", error);
-      alert(`Error setting lineup: ${error}`);
+  @media (prefers-reduced-motion: no-preference) {
+    .ffx-spinner {
+      animation: ffx-spin 800ms linear infinite;
     }
-  });
-}
-
-const BUTTON_STYLES = `
-  .save-lineup-button,
-  .set-lineup-button {
-    position: fixed;
-    top: 6px;
-    padding: 2px;
-    background: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: bold;
-    z-index: 9999;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-    transition: all 0.2s ease-in-out;
-    display: flex;
-    align-items: center;
-    gap: 8px;
   }
-
-  .save-lineup-button {
-    right: 210px;
-    background-image: linear-gradient(45deg, #4ECDC4, #44A08D);
-  }
-
-  .set-lineup-button {
-    right: 385px;
-    background-image: linear-gradient(45deg, #F7971E, #FFD200);
-  }
-
-  .save-lineup-button:hover,
-  .set-lineup-button:hover {
-    transform: scale(1.05);
-    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
-  }
-
-  .save-lineup-button__inner {
-    background: white;
-    padding: 8px 18px;
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: #2C5F5A;
-  }
-
-  .set-lineup-button__inner {
-    background: white;
-    padding: 8px 18px;
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: #B8731A;
-  }
-
-  .save-lineup-button__inner:hover {
-    background: #f0f9f7;
-  }
-
-  .set-lineup-button__inner:hover {
-    background: #fff8f0;
-  }
-
-  .save-lineup-button__icon,
-  .set-lineup-button__icon {
-    width: 20px;
-    height: 20px;
-    flex-shrink: 0;
+  @keyframes ffx-spin {
+    to {
+      transform: rotate(360deg);
+    }
   }
 `;
+
+export function addLineupActions() {
+  document.querySelector(".ffx-actions")?.remove();
+
+  const group = document.createElement("div");
+  group.className = "btn-group ffx-actions";
+  group.append(
+    actionButton({ label: "Set lineup", icon: setLineupIcon, className: "btn btn-primary ffx-set-lineup", onClick: runSetLineup }),
+    actionButton({ label: "Save lineup", icon: saveLineupIcon, className: "btn btn-default ffx-save-lineup", onClick: runSaveLineup }),
+  );
+
+  const toolbar = document.querySelector("#body-top .button-bar .btn-toolbar");
+  (toolbar ?? document.getElementById("statusBox")!.parentElement!).prepend(group);
+}
+
+// Also run by the Set lineup shortcut, so it works without the buttons on the page
+export async function runSetLineup() {
+  const setButton = document.querySelector<HTMLButtonElement>(".ffx-set-lineup");
+  const saveButton = document.querySelector<HTMLButtonElement>(".ffx-save-lineup");
+  const restore = showBusy(setButton, "Setting lineup…");
+  try {
+    await setLineup();
+    showNotice({ kind: "info", message: "Lineup set. Review the highlighted rows, then save." });
+    setButton?.classList.replace("btn-primary", "btn-default");
+    saveButton?.classList.replace("btn-default", "btn-primary");
+  } catch (error) {
+    console.error("Error setting lineup:", error);
+    showNotice({
+      kind: "error",
+      message: `Couldn't set the lineup; nothing changed. ${errorMessage(error)}`,
+      action: { label: "Retry", onClick: runSetLineup },
+    });
+  } finally {
+    restore();
+  }
+}
+
+// Stays busy on success: the form submit reloads the page
+export function runSaveLineup() {
+  const restore = showBusy(document.querySelector<HTMLButtonElement>(".ffx-save-lineup"), "Saving…");
+  try {
+    saveLineup();
+  } catch (error) {
+    console.error("Error saving lineup:", error);
+    restore();
+    showNotice({ kind: "error", message: `Couldn't save the lineup. ${errorMessage(error)}` });
+  }
+}
+
+function actionButton({ label, icon, className, onClick }: { label: string; icon: string; className: string; onClick: () => void }) {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = className;
+  button.innerHTML = buttonContent(icon, label);
+  button.addEventListener("click", onClick);
+  return button;
+}
+
+function errorMessage(error: unknown) {
+  return error instanceof Error ? error.message : String(error);
+}
+
+function buttonContent(icon: string, label: string) {
+  return `${icon}<span class="ffx-actions__label">${label}</span>`;
+}
+
+// Returns a function that puts the button back as it was
+function showBusy(button: HTMLButtonElement | null, label: string) {
+  if (!button) return () => {};
+
+  const idleContent = button.innerHTML;
+  button.disabled = true;
+  button.setAttribute("aria-busy", "true");
+  button.innerHTML = buttonContent(spinnerIcon.replace("<svg ", '<svg class="ffx-spinner" '), label);
+  return () => {
+    button.disabled = false;
+    button.removeAttribute("aria-busy");
+    button.innerHTML = idleContent;
+  };
+}

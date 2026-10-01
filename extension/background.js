@@ -1,5 +1,16 @@
-function runScript(tab) {
+// Prefers the page script's Set lineup, which shows progress and errors on the page
+async function runScript(tab) {
   if (!tab.id) return;
+
+  const [injection] = await chrome.scripting.executeScript({
+    target: { tabId: tab.id },
+    func: () => {
+      if (typeof window.runSetLineup !== "function") return false;
+      window.runSetLineup();
+      return true;
+    },
+  });
+  if (injection?.result === true) return;
 
   chrome.scripting.executeScript({
     target: { tabId: tab.id },

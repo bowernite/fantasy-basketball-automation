@@ -1,6 +1,6 @@
 import { GlobalRegistrator } from "@happy-dom/global-registrator";
 import { afterAll, beforeAll, beforeEach, expect, setSystemTime, spyOn, test } from "bun:test";
-import { givePlayerGame, givePlayerNews, playerRows, loadLineupPage, PAGE_URL, playerRow } from "./src/lineup/fixtures/lineup-page";
+import { givePlayerNews, loadLineupPage, PAGE_URL, playerRow } from "./src/lineup/fixtures/lineup-page";
 import { HAPPY_DOM_SETTINGS, recordAlerts, runContentScript } from "./src/lineup/fixtures/content-script";
 
 beforeAll(() => GlobalRegistrator.register({ url: PAGE_URL, settings: HAPPY_DOM_SETTINGS }));
@@ -16,20 +16,24 @@ beforeEach(() => {
   alerts = recordAlerts();
 });
 
-function scoreBadge(name: string) {
-  return playerRow(name).querySelector<HTMLElement>("[data-predicted-score]")!;
-}
-
 function isShown(el: HTMLElement) {
   return getComputedStyle(el).visibility !== "hidden";
 }
 
-// The popover the score group points to via `aria-describedby`, one "label value" string per row
+function scoreOf(name: string) {
+  return playerRow(name).querySelector<HTMLElement>("[aria-describedby]")!;
+}
+
+function popoverOf(name: string) {
+  return document.getElementById(scoreOf(name).getAttribute("aria-describedby")!)!;
+}
+
+// One "label value" string per popover row
 function popoverRows(name: string) {
-  const score = playerRow(name).querySelector<HTMLElement>("[aria-describedby]")!;
+  const score = scoreOf(name);
   expect(score.tabIndex).toBe(0);
   expect(score.hasAttribute("title")).toBe(false);
-  const popover = document.getElementById(score.getAttribute("aria-describedby")!)!;
+  const popover = popoverOf(name);
   expect(popover.getAttribute("role")).toBe("tooltip");
   return Array.from(popover.children, (row) => Array.from(row.children, (cell) => cell.textContent).join(" "));
 }
@@ -81,6 +85,28 @@ test("hovering or focusing a score describes today's projection, season value, a
       "Injury ×0",
     ]
   `);
+});
+
+test("a score's popover stays hidden until the score is focused", async () => {
+  loadLineupPage();
+  await runContentScript();
+
+  scoreOf("Cade Cunningham").focus();
+
+  expect(isShown(popoverOf("Cade Cunningham"))).toBe(true);
+  expect(isShown(popoverOf("Adem Bona"))).toBe(false);
+});
+
+test("the Name column header explains the rail once, however many times the scores are drawn", async () => {
+  loadLineupPage();
+
+  await runContentScript();
+  await runContentScript();
+
+  const nameHeader = document.querySelector("thead span.player")!.closest("th")!;
+  const keys = nameHeader.querySelectorAll(".ffx-score-key");
+  expect(keys).toHaveLength(1);
+  expect(keys[0].textContent).toMatchInlineSnapshot(`"Today (bar)  Season (tick)  fantasy pts"`);
 });
 
 // Another owner's team page matches the saved page as-is: same table and date picker, no slot selects

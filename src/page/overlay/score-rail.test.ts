@@ -29,7 +29,8 @@ function makePlayer(overrides: Partial<Player> = {}): Player {
   };
 }
 
-const NO_ADJUSTMENTS = { injuryMultiplier: 1, opponentAdjustmentDiff: null, seasonProjectionAvg: 30, seasonProjectionWeight: 0 };
+type Adjustments = Parameters<typeof insertPlayerScores>[0]["debugInfo"];
+const NO_ADJUSTMENTS: Adjustments = { injuryMultiplier: 1, opponentAdjustmentDiff: undefined, seasonProjectionAvg: 30, seasonProjectionWeight: 0 };
 
 function render({
   player = makePlayer(),
@@ -40,7 +41,7 @@ function render({
   player?: Player;
   today?: number;
   season?: number | null;
-  debugInfo?: Partial<typeof NO_ADJUSTMENTS> & { seasonProjectionAvg?: number | undefined };
+  debugInfo?: Partial<Adjustments>;
 } = {}) {
   insertPlayerScores({ player, predictedScore: today, weightedScore: season, debugInfo: { ...NO_ADJUSTMENTS, ...debugInfo } });
   return player.row;
@@ -99,4 +100,15 @@ test("a player scored mostly on the no-projection guess is flagged 'est', and th
   expect(guessed.querySelector(".ffx-popover")!.lastElementChild!.textContent).toMatchInlineSnapshot(`"No preseason projection, so a guess of ~6.0 is weighted at 50%"`);
   expect(barelyGuessed.querySelector(".ffx-score__est")).toBeNull();
   expect(barelyGuessed.querySelector(".ffx-popover")!.textContent).not.toContain("projection");
+});
+
+test("scoring a player again redraws his one rail with the new values", () => {
+  const player = makePlayer();
+  render({ player, today: 12, season: 20 });
+
+  const row = render({ player, today: 35, season: 41 });
+
+  expect(row.querySelectorAll(".ffx-score")).toHaveLength(1);
+  expect(row.querySelector(".ffx-score__today")!.textContent).toBe("35.0");
+  expect(row.querySelector(".ffx-score__season")!.textContent).toBe("41.0");
 });
