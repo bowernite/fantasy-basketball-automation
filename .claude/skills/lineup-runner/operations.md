@@ -32,7 +32,7 @@ Set from stdin, never in the repo or command args. Cron-safe: `bunx wrangler ver
 
 ## Watchdog
 
-- The workflow's logs are public: the script prints counts only, and the Worker URL and token and the Pushover creds are GitHub secrets `LINEUP_RUNNER_URL`, `LINEUP_RUNNER_TOKEN`, `PUSHOVER_TOKEN`, `PUSHOVER_USER` (`gh secret set <NAME>` from stdin, no trailing newline). Rotating `RUN_TOKEN` means updating `LINEUP_RUNNER_TOKEN` too, or the watchdog alerts "unreachable"
+- The workflow's logs are public: the script prints counts only, and the Worker URL and token and the Pushover creds are GitHub secrets `LINEUP_RUNNER_URL`, `LINEUP_RUNNER_TOKEN`, `PUSHOVER_TOKEN`, `PUSHOVER_USER`, and optional `NTFY_TOPIC` (urgent-push fallback; unset = none) (`gh secret set <NAME>` from stdin, no trailing newline). Rotating `RUN_TOKEN` means updating `LINEUP_RUNNER_TOKEN` too, or the watchdog alerts "unreachable"
 - Runs: `gh run list --workflow lineup-watchdog.yml`. A failed run means it pushed something (or couldn't): check the phone or `/alerts`, not the log
 - Test push: `gh workflow run lineup-watchdog.yml -f test=true` sends one "TEST: Lineup watchdog (GitHub Actions)"
 - Forced-failure tests and other deliberate failures land in `/alerts`, so the watchdog forwards them to the user's phone within ~30 min. Warn the user first, or `DELETE /alerts/<id>` the test entries before the next watchdog run

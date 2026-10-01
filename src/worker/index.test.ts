@@ -193,7 +193,23 @@ describe("lineup runner", () => {
     expect(record.alert).toEqual({ pushover: { status: 200 } });
   });
 
-  it("pushes a failure that keeps happening while no upcoming tip is known once a day, e.g. in the offseason", async () => {
+  it("files a Trello card, not a push, for a failed run once the fantasy season is over", async () => {
+    vi.useFakeTimers({ toFake: ["Date"], now: new Date("2027-05-01T17:00:00Z") });
+    let fleaflickerDown = false;
+    const { alerts, cards } = stubFleaflicker((request) => {
+      if (fleaflickerDown) throw new TypeError("Offseason outage");
+      return fakeFleaflicker(request, fantasyStatsPage);
+    });
+    await triggerRun();
+    fleaflickerDown = true;
+
+    await triggerRun();
+
+    expect(alerts).toEqual([]);
+    expect(cards.map(({ name }) => name)).toEqual(["Lineup run (manual) failed"]);
+  });
+
+  it("pushes a failure that keeps happening while no upcoming tip is known once a day, e.g. over the All-Star break", async () => {
     const { alerts } = stubFleaflicker(() => {
       throw new TypeError("Connection refused");
     });
@@ -266,7 +282,7 @@ describe("lineup runner", () => {
   });
 
   it("alerts again when the same failure is still happening hours later", async () => {
-    vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-20T16:30:00Z") });
+    vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-20T17:30:00Z") });
     let fleaflickerDown = false;
     const { alerts } = stubFleaflicker((request) => {
       if (fleaflickerDown) throw new TypeError("Connection reset");
@@ -1169,7 +1185,22 @@ describe("alert log for outside watchdogs", () => {
       body: "- TypeError: Connection reset",
       priority: 0,
       push: true,
+      delivered: true,
     });
+  });
+
+  it("marks an alert Pushover rejected as undelivered, so the watchdog sends it", async () => {
+    stubFleaflicker(
+      () => {
+        throw new TypeError("Pushover rejects this one");
+      },
+      { pushoverStatus: () => 500 },
+    );
+
+    await triggerRun();
+
+    const [latest] = await listAlerts();
+    expect(latest).toMatchObject({ body: "- TypeError: Pushover rejects this one", push: true, delivered: false });
   });
 
   it("lists a repeating failure once, even while Pushover keeps rejecting it", async () => {

@@ -6,6 +6,13 @@
 
 - [ ] Sign-ups, saves approval and game-day tasks (10/20 opening-night capture) for the cloud lineup runner: `.claude/skills/lineup-runner/open-items.md`
 - [ ] Respect manual lineup changes (hourly runs overwrite hand-edits); see `.claude/skills/lineup-runner/open-items.md` §Manual edits vs hourly runs
+- [ ] **AI sanity check (tabled 9/30)**: today every Worker check is deterministic. An LLM reviewer would catch soft problems: odd banners, news contradicting a tag (stale out-for-season tags), a starter who looks wrong given news, untagged OUT news (now only measured as `untaggedOutNews`)
+  - Shape: reviewer only, never in the save path. Runs after save + reload verify, on T-40/T-15 tip runs and runs that saved changes (~5–10 calls/day in season), not hourly no-ops or 5-min ticks
+  - Input: trimmed text of the post-save lineup page, the decision (scores, slots, changes, warnings), ESPN injury rows, `untaggedOutNews`. Text, not screenshots
+  - Output: Claude API structured `{level: ok|warn|urgent, issues[]}`. `urgent` → Pushover (≤3 h to tip, same rule as failures); `warn` → Trello via the existing dedupe; LLM error/timeout → Trello, run still ok. Optional: server-side web search for Q/GTD starters on T-15 runs
+  - Cost (estimate): ~10–20k input tokens/call → Sonnet-class ~$10–20/mo, Haiku-class ~$3–6/mo
+  - Needs: an Anthropic API key as a Worker secret, plus a monthly spend cap
+  - Before building: read opening week's `/runs` (`injuries`, `untaggedOutNews`). If ESPN cross-check + an untagged-news alert cover the misses, this may not be needed
 
 # Future-year projections
 

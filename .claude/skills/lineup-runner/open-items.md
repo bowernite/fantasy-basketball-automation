@@ -13,7 +13,7 @@ As of 2026-09-30: deployed and running every 5 min, saves **on** (user approved;
 - **10/20, opening night (tips 2:00p, 6:00p, 8:30p CT)**: expect `/runs` records around 1:20p/1:45p, 5:20p/5:45p, 7:50p/8:15p CT plus hourlies
 - **10/20 after the 2:00p CT tip**: pull the signed-in lineup page and `FetchRoster` for day 1 from `GET /captures` (the Worker stores the day's first check with locked rows, and any failing check), scan them for secrets and personal data, add them as fixtures, and run `decideLineup` tests on them. This settles the locked-row markup (`fleaflicker.md`), whether the page vs API cross-check still agrees once starters lock (a mismatch fails every later run that day), and the in-progress matchup markup. After the last tip, capture the fully locked page too (does the form or Save button survive?). Saves are on: note the save response for a locked player
 - **Opening week**: measure injury-feed lag and untagged OUT news from `/runs` (`jq '[.[].days[].injuries // empty]'`, same for `untaggedOutNews`). Then decide an ESPN OUT-only scoring override and whether untagged OUT news should score
-- **2027 season finale**: check what the API returns at rollover. An empty `eligibleLineupPeriods` would make every tick throw (a priority-0 push once a day, since no tip is stored)
+- **2027 season finale**: check what the API returns at rollover. An empty `eligibleLineupPeriods` would make every tick throw (a Trello card once a day)
 
 ## Backlog
 

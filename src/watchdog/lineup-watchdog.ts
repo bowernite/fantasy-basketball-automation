@@ -6,6 +6,8 @@ const FETCH_TIMEOUT_MS = 20_000;
 const EMERGENCY_PRIORITY = 2;
 const QUIET_PRIORITY = -1;
 const PUSHOVER_MAX_MESSAGE_LENGTH = 1024;
+/** Pushover priority → ntfy priority (5 max, 4 high), for pushes that fall back to ntfy */
+const NTFY_PRIORITY: Record<number, number> = { 2: 5, 1: 4 };
 /** Older Worker alerts are stale news, and a lost state file re-forwards no further back than this */
 const FORWARD_WINDOW_MS = 6 * 60 * 60_000;
 
@@ -43,12 +45,15 @@ export async function runLineupWatchdog({
   runnerUrl,
   runToken,
   pushover,
+  ntfyTopic,
   state = { forwardedAlertIds: [], ownAlertsSentAt: {} },
   now = new Date(),
 }: {
   runnerUrl: string;
   runToken: string;
   pushover: PushoverCredentials;
+  /** Where an urgent push goes when Pushover rejects it; none = no fallback */
+  ntfyTopic?: string;
   state?: WatchdogState;
   now?: Date;
 }) {
@@ -83,7 +88,7 @@ export async function runLineupWatchdog({
 
   const result = { sent: 0, failed: 0 };
   for (const notification of notifications) {
-    const accepted = await publish(pushover, notification);
+    const accepted = (await publish(pushover, notification)) || (await publishToNtfyIfUrgent(ntfyTopic, notification));
     result[accepted ? "sent" : "failed"]++;
     if (!accepted) continue;
     if (notification.alertId === undefined) nextState.ownAlertsSentAt[notification.title] = now.toISOString();
@@ -99,6 +104,18 @@ async function publish({ token, user }: PushoverCredentials, { title, message: f
     const emergency: Record<string, string> = priority === EMERGENCY_PRIORITY ? { retry: "60", expire: "1800" } : {};
     const body = new URLSearchParams({ token, user, title, message, priority: String(priority), ...emergency });
     const response = await fetch("https://api.pushover.net/1/messages.json", { method: "POST", body, signal: AbortSignal.timeout(FETCH_TIMEOUT_MS) });
+    return response.ok;
+  } catch {
+    return false;
+  }
+}
+
+async function publishToNtfyIfUrgent(topic: string | undefined, { title, message, priority }: Notification) {
+  const ntfyPriority = NTFY_PRIORITY[priority];
+  if (!topic || ntfyPriority === undefined) return false;
+  try {
+    const body = JSON.stringify({ topic, title, message, priority: ntfyPriority });
+    const response = await fetch("https://ntfy.sh", { method: "POST", body, signal: AbortSignal.timeout(FETCH_TIMEOUT_MS) });
     return response.ok;
   } catch {
     return false;
@@ -122,7 +139,7 @@ function formatCentralTime(iso: string) {
 }
 
 if (import.meta.main) {
-  const { LINEUP_RUNNER_URL, LINEUP_RUNNER_TOKEN, PUSHOVER_TOKEN, PUSHOVER_USER, WATCHDOG_STATE_FILE } = process.env;
+  const { LINEUP_RUNNER_URL, LINEUP_RUNNER_TOKEN, PUSHOVER_TOKEN, PUSHOVER_USER, NTFY_TOPIC, WATCHDOG_STATE_FILE } = process.env;
   if (!LINEUP_RUNNER_URL || !LINEUP_RUNNER_TOKEN || !PUSHOVER_TOKEN || !PUSHOVER_USER || !WATCHDOG_STATE_FILE) {
     console.error("Set LINEUP_RUNNER_URL, LINEUP_RUNNER_TOKEN, PUSHOVER_TOKEN, PUSHOVER_USER and WATCHDOG_STATE_FILE");
     process.exit(1);
@@ -135,7 +152,7 @@ if (import.meta.main) {
   }
   const stateFile = Bun.file(WATCHDOG_STATE_FILE);
   const state: WatchdogState | undefined = await stateFile.json().catch(() => undefined);
-  const result = await runLineupWatchdog({ runnerUrl: LINEUP_RUNNER_URL, runToken: LINEUP_RUNNER_TOKEN, pushover, state });
+  const result = await runLineupWatchdog({ runnerUrl: LINEUP_RUNNER_URL, runToken: LINEUP_RUNNER_TOKEN, pushover, ntfyTopic: NTFY_TOPIC || undefined, state });
   await Bun.write(stateFile, JSON.stringify(result.state));
   // Counts only: workflow logs are public
   console.log(`Pushed ${result.sent}, failed ${result.failed}${state ? "" : " (no saved state)"}`);

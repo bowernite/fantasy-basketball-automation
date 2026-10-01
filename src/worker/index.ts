@@ -28,6 +28,7 @@ const URGENT_TIP_WINDOW_MS = 3 * 60 * 60 * 1000;
 const LEDGER_RUNS = 100;
 const KEPT_RUNS = 1000;
 const REPEAT_ALERT_AFTER_MS = 3 * 60 * 60 * 1000;
+const DAY_MS = 24 * 60 * 60 * 1000;
 const FORGET_ALERT_AFTER_MS = 24 * 60 * 60 * 1000;
 const REPEAT_INJURY_ALERT_AFTER_MS = 24 * 60 * 60 * 1000;
 const SAVES_OFF_WARNING_WINDOW_MS = 24 * 60 * 60 * 1000;
@@ -121,8 +122,12 @@ export class LineupRunner extends DurableObject<Env> {
     const tipTables = (await this.ctx.storage.get<TipTable[]>(TIP_TABLES_KEY)) ?? [];
     const body = problems.map((problem) => `- ${problem}`).join("\n");
     const dedupe = { key: FAILURE_ALERTS_KEY, fingerprint: problems.join("\n") };
-    // With no upcoming tip stored (offseason, All-Star break, or tip times stopped parsing) a tip may still be near, so it reaches the phone, but daily and within quiet hours
-    if (!hasTipWithin(tipTables, Infinity)) return this.notify({ title, body, priority: 0, push: true }, { ...dedupe, repeatAfterMs: FORGET_ALERT_AFTER_MS });
+    if (!hasTipWithin(tipTables, Infinity)) {
+      // After the fantasy season's last day no game is at stake; before it, with no upcoming tip stored (All-Star break, or tip times stopped parsing), one may still be near, so it reaches the phone, daily and within quiet hours
+      const periods = (await this.ctx.storage.get<LineupPeriod[]>(LINEUP_PERIODS_KEY)) ?? [];
+      const seasonOver = periods.length > 0 && Date.now() - Number(periods.at(-1)!.low.startEpochMilli) > DAY_MS;
+      return this.notify({ title, body, priority: 0, push: !seasonOver }, { ...dedupe, repeatAfterMs: DAY_MS });
+    }
     // Priority 1 bypasses the phone's quiet hours, so it's kept for failures that can still cost a game
     const priority = hasTipWithin(tipTables, URGENT_TIP_WINDOW_MS) ? 1 : 0;
     return this.notify({ title, body, priority }, { ...dedupe, repeatAfterMs: REPEAT_ALERT_AFTER_MS });
@@ -167,6 +172,7 @@ export class LineupRunner extends DurableObject<Env> {
   private async notify(alert: Alert, dedupe: { key: string; fingerprint: string; repeatAfterMs: number }) {
     const urgent = alert.push ?? alert.priority > 0;
     const sends: AlertSends = {};
+    let delivered = true;
     for (const channel of urgent ? (["pushover"] as const) : (["trello"] as const)) {
       const { due, lastAlert } = await this.checkAlertDue(`${dedupe.key}:${channel}`, dedupe);
       if (!due) continue;
@@ -175,13 +181,14 @@ export class LineupRunner extends DurableObject<Env> {
       sends[channel] = sendRecord;
       if (!accepted) {
         this.alertUndelivered = true;
+        delivered = false;
         continue;
       }
       await this.rememberAlert(`${dedupe.key}:${channel}`, dedupe.fingerprint, cardId);
     }
-    // Logged on the channels' schedule but whether or not they accepted it, so a watchdog can still deliver it
+    // Logged on the channels' schedule whether or not they accepted it, so a watchdog can deliver what they didn't
     if ((await this.checkAlertDue(`${dedupe.key}:log`, dedupe)).due) {
-      this.ctx.storage.sql.exec("INSERT INTO alerts (alert) VALUES (?)", JSON.stringify({ at: new Date().toISOString(), ...alert, push: urgent }));
+      this.ctx.storage.sql.exec("INSERT INTO alerts (alert) VALUES (?)", JSON.stringify({ at: new Date().toISOString(), ...alert, push: urgent, delivered }));
       this.ctx.storage.sql.exec("DELETE FROM alerts WHERE id <= (SELECT MAX(id) FROM alerts) - ?", LISTED_ALERTS);
       await this.rememberAlert(`${dedupe.key}:log`, dedupe.fingerprint);
     }

@@ -1,6 +1,6 @@
 name: Lineup watchdog
 
-# Pulls the lineup-runner Worker's /runs, /status and /alerts and pushes problems to Pushover (src/watchdog/lineup-watchdog.ts)
+# Pulls the lineup-runner Worker's /runs, /status and /alerts and pushes problems to Pushover, urgent ones falling back to ntfy if Pushover rejects them (src/watchdog/lineup-watchdog.ts)
 # Logs are public: the script prints counts only, and URL and tokens come from secrets. The cached state holds alert ids and times only
 on:
   # GitHub starts schedules late, often 5-20 min, and more so on the hour
@@ -43,6 +43,7 @@ jobs:
           LINEUP_RUNNER_TOKEN: ${{ secrets.LINEUP_RUNNER_TOKEN }}
           PUSHOVER_TOKEN: ${{ secrets.PUSHOVER_TOKEN }}
           PUSHOVER_USER: ${{ secrets.PUSHOVER_USER }}
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
         run: bun src/watchdog/lineup-watchdog.ts ${{ inputs.test && '--test' || '' }}
       - uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         if: always() && hashFiles(env.WATCHDOG_STATE_FILE) != ''
