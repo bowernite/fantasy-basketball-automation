@@ -15,7 +15,7 @@ const NTFY_URL = "https://ntfy.sh";
 const NTFY_PRIORITIES = { 0: 3, 1: 4, 2: 5 } as const;
 // From Cloudflare, about half of ntfy requests fail (per-IP quota on shared egress, or no connection); each attempt may leave from another IP
 const NTFY_ATTEMPTS = 3;
-const TRELLO_CARDS_URL = "https://api.trello.com/1/cards";
+const TRELLO_API_URL = "https://api.trello.com/1";
 const ALERT_CHANNELS = ["pushover", "trello"] as const;
 const SESSION_COOKIE_KEY = "fleaflickerSessionCookie";
 const TIP_TABLES_KEY = "tipTables";
@@ -198,10 +198,10 @@ export class LineupRunner extends DurableObject<Env> {
     const sends: AlertSends = {};
     let delivered = true;
     for (const channel of urgent ? (["pushover"] as const) : (["trello"] as const)) {
-      const { due, lastAlert } = await this.checkAlertDue(`${dedupe.key}:${channel}`, dedupe);
+      const { due } = await this.checkAlertDue(`${dedupe.key}:${channel}`, dedupe);
       if (!due) continue;
-      const send = channel === "pushover" ? this.sendPushover(alert) : this.postToTrello(alert, lastAlert?.cardId);
-      let { accepted, cardId, ...sendRecord } = await send.catch(failedSend);
+      const send = channel === "pushover" ? this.sendPushover(alert) : this.postToTrello(alert);
+      let { accepted, ...sendRecord } = await send.catch(failedSend);
       sends[channel] = sendRecord;
       if (channel === "pushover" && !accepted) {
         const { accepted: ntfyAccepted, ...ntfySend } = await this.sendNtfy(alert);
@@ -213,7 +213,7 @@ export class LineupRunner extends DurableObject<Env> {
         delivered = false;
         continue;
       }
-      await this.rememberAlert(`${dedupe.key}:${channel}`, dedupe.fingerprint, cardId);
+      await this.rememberAlert(`${dedupe.key}:${channel}`, dedupe.fingerprint);
     }
     // Logged on the channels' schedule whether or not they accepted it, so a watchdog can deliver what they didn't
     if ((await this.checkAlertDue(`${dedupe.key}:log`, dedupe)).due) {
@@ -226,13 +226,13 @@ export class LineupRunner extends DurableObject<Env> {
 
   private async checkAlertDue(sentAlertsKey: string, { fingerprint, repeatAfterMs }: { fingerprint: string; repeatAfterMs: number }) {
     const lastAlert = (await this.ctx.storage.get<SentAlerts>(sentAlertsKey))?.[fingerprint];
-    return { due: !lastAlert || Date.now() - lastAlert.at >= repeatAfterMs, lastAlert };
+    return { due: !lastAlert || Date.now() - lastAlert.at >= repeatAfterMs };
   }
 
-  private async rememberAlert(sentAlertsKey: string, fingerprint: string, cardId?: string) {
+  private async rememberAlert(sentAlertsKey: string, fingerprint: string) {
     const sentAlerts = (await this.ctx.storage.get<SentAlerts>(sentAlertsKey)) ?? {};
     const recentAlerts = Object.entries(sentAlerts).filter(([, { at }]) => Date.now() - at < FORGET_ALERT_AFTER_MS);
-    await this.ctx.storage.put(sentAlertsKey, { ...Object.fromEntries(recentAlerts), [fingerprint]: { at: Date.now(), cardId } });
+    await this.ctx.storage.put(sentAlertsKey, { ...Object.fromEntries(recentAlerts), [fingerprint]: { at: Date.now() } });
   }
 
   private async sendPushover({ title, body, priority }: Alert): Promise<AlertOutcome> {
@@ -261,26 +261,34 @@ export class LineupRunner extends DurableObject<Env> {
     return outcome;
   }
 
-  private async postToTrello({ title, body }: Alert, sameFailureCardId?: string): Promise<AlertOutcome> {
+  private async postToTrello({ title, body }: Alert): Promise<AlertOutcome> {
     if (!this.env.TRELLO_API_KEY || !this.env.TRELLO_TOKEN || !this.env.TRELLO_LIST) return { accepted: false, error: "TRELLO_API_KEY, TRELLO_TOKEN or TRELLO_LIST not set" };
-    const authorization = `OAuth oauth_consumer_key="${this.env.TRELLO_API_KEY}", oauth_token="${this.env.TRELLO_TOKEN}"`;
-    if (sameFailureCardId && (await this.isTrelloCardOpen(sameFailureCardId, authorization))) {
-      const commentUrl = `${TRELLO_CARDS_URL}/${sameFailureCardId}/actions/comments?${new URLSearchParams({ text: `Still failing:\n${body}` })}`;
-      const response = await fetchWithTimeout(commentUrl, { method: "POST", headers: { Authorization: authorization } });
-      return { ...(await summarizeAlertResponse(response, response.ok)), cardId: sameFailureCardId };
+    const headers = { Authorization: `OAuth oauth_consumer_key="${this.env.TRELLO_API_KEY}", oauth_token="${this.env.TRELLO_TOKEN}"`, "Content-Type": "application/json" };
+    const desc = `${body}\n\n${this.env.LINEUP_URL}`;
+    const openCard = await this.findOpenTrelloCard(title, headers);
+    if (openCard?.desc === desc) return { accepted: true, openCard: openCard.id, unchanged: true };
+    if (openCard) {
+      const response = await fetchWithTimeout(`${TRELLO_API_URL}/cards/${openCard.id}/actions/comments`, { method: "POST", headers, body: JSON.stringify({ text: body }) });
+      return { ...(await summarizeAlertResponse(response, response.ok)), openCard: openCard.id };
     }
-    const response = await fetchWithTimeout(TRELLO_CARDS_URL, {
+    const response = await fetchWithTimeout(`${TRELLO_API_URL}/cards`, {
       method: "POST",
-      headers: { Authorization: authorization, "Content-Type": "application/json" },
-      body: JSON.stringify({ idList: this.env.TRELLO_LIST, name: title, desc: `${body}\n\n${this.env.LINEUP_URL}` }),
+      headers,
+      body: JSON.stringify({ idList: this.env.TRELLO_LIST, name: title, desc }),
     });
-    const cardId = response.ok ? (await response.clone().json<{ id: string }>()).id : undefined;
-    return { ...(await summarizeAlertResponse(response, response.ok)), cardId };
+    return summarizeAlertResponse(response, response.ok);
   }
 
-  private async isTrelloCardOpen(cardId: string, authorization: string) {
-    const response = await fetchWithTimeout(`${TRELLO_CARDS_URL}/${cardId}?fields=closed`, { headers: { Authorization: authorization } });
-    return response.ok && !(await response.json<{ closed: boolean }>()).closed;
+  // The whole board, since the user moves cards out of the Inbox; archiving a card closes it
+  private async findOpenTrelloCard(name: string, headers: Record<string, string>) {
+    const getFromTrello = async <T>(path: string) => {
+      const response = await fetchWithTimeout(`${TRELLO_API_URL}${path}`, { headers });
+      if (!response.ok) throw new Error(`Trello ${path.split("?")[0]} returned HTTP ${response.status}`);
+      return response.json<T>();
+    };
+    const { idBoard } = await getFromTrello<{ idBoard: string }>(`/lists/${this.env.TRELLO_LIST}?fields=idBoard`);
+    const openCards = await getFromTrello<{ id: string; name: string; desc: string }[]>(`/boards/${idBoard}/cards/open?fields=name,desc`);
+    return openCards.find((card) => card.name === name);
   }
 
   private async checkDays(record: RunRecord, days?: number[]) {
@@ -565,7 +573,7 @@ type RunRecord = {
 
 type AlertChannel = (typeof ALERT_CHANNELS)[number];
 
-type SentAlerts = Record<string, { at: number; cardId?: string }>;
+type SentAlerts = Record<string, { at: number }>;
 
 type AlertSends = Partial<Record<AlertChannel | "ntfy", AlertSend>>;
 
@@ -574,9 +582,10 @@ type LoginOutcome = { status: number; gotSessionCookie: boolean; stillSignedOut?
 // `push` sends a priority-0 alert to the phone instead of Trello
 type Alert = { title: string; body: string; priority: 0 | 1 | 2; push?: boolean };
 
-type AlertSend = { status: number; response?: string } | { error: string };
+// `openCard`: the open Trello card with the alert's title, commented on instead of filing another, or left alone when `unchanged`
+type AlertSend = ({ status: number; response?: string } | { error: string } | { unchanged: true }) & { openCard?: string };
 
-type AlertOutcome = AlertSend & { accepted: boolean; cardId?: string };
+type AlertOutcome = AlertSend & { accepted: boolean };
 
 type DayCheck = { day: number; lineupPage?: { status: number; loggedIn: boolean }; warnings?: string[]; untaggedOutNews?: UntaggedOutNewsCheck[]; injuries?: InjuryComparison[]; decision?: LineupDecision; save?: SaveResult & { backedOff?: true; skippedNearTip?: string }; error?: string };
 

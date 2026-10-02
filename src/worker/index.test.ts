@@ -259,10 +259,10 @@ describe("lineup runner", () => {
     expect(alerts.map(({ message }) => message)).toEqual(["- TypeError: DNS lookup failed", "- TypeError: Connection refused"]);
   });
 
-  it("alerts again when a failure comes back after a successful run", async () => {
+  it("files no second card when a failure comes back after a successful run while its card is still open", async () => {
     vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-20T09:00:00Z") });
     let fleaflickerDown = false;
-    const { cards } = stubFleaflicker((request) => {
+    const { cards, cardComments } = stubFleaflicker((request) => {
       if (fleaflickerDown) throw new TypeError("Connection dropped");
       return fakeFleaflicker(request, fantasyStatsPage);
     });
@@ -275,10 +275,8 @@ describe("lineup runner", () => {
     fleaflickerDown = true;
     await triggerRun();
 
-    expect(cards.map(({ name, desc }) => [name, desc.split("\n\n")[0]])).toEqual([
-      ["Lineup run (manual) failed", "- TypeError: Connection dropped"],
-      ["Lineup run (manual) failed", "- TypeError: Connection dropped"],
-    ]);
+    expect(cards.map(({ name, desc }) => [name, desc.split("\n\n")[0]])).toEqual([["Lineup run (manual) failed", "- TypeError: Connection dropped"]]);
+    expect(cardComments).toEqual([]);
   });
 
   it("alerts again when the same failure is still happening hours later", async () => {
@@ -301,7 +299,7 @@ describe("lineup runner", () => {
     ]);
   });
 
-  it("comments on the open Trello card when the same failure is still happening hours later", async () => {
+  it("leaves the open Trello card alone while the same failure is still happening hours later", async () => {
     vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-20T09:00:00Z") });
     let fleaflickerDown = false;
     const { cards, cardComments } = stubFleaflicker((request) => {
@@ -316,25 +314,21 @@ describe("lineup runner", () => {
     await triggerRun();
 
     expect(cards).toHaveLength(1);
-    expect(cardComments).toEqual([{ card: "card-1", text: "Still failing:\n- TypeError: Connection timed out" }]);
+    expect(cardComments).toEqual([]);
   });
 
   it("files a new Trello card for a repeat failure once the old card is archived", async () => {
     vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-20T09:00:00Z") });
     let fleaflickerDown = false;
-    let cardArchived = false;
-    const { cards, cardComments } = stubFleaflicker(
-      (request) => {
-        if (fleaflickerDown) throw new TypeError("Connection aborted");
-        return fakeFleaflicker(request, fantasyStatsPage);
-      },
-      { trelloCardArchived: () => cardArchived },
-    );
+    const { cards, cardComments, trelloBoard } = stubFleaflicker((request) => {
+      if (fleaflickerDown) throw new TypeError("Connection aborted");
+      return fakeFleaflicker(request, fantasyStatsPage);
+    });
     await triggerRun();
 
     fleaflickerDown = true;
     await triggerRun();
-    cardArchived = true;
+    trelloBoard[0].closed = true;
     vi.setSystemTime(Date.now() + 3 * 60 * 60 * 1000);
     await triggerRun();
 
@@ -1169,6 +1163,25 @@ describe("injury cross-check with ESPN", () => {
   });
 });
 
+describe("Trello cards already on the board", () => {
+  it("comments on an open card with the same name instead of filing another, e.g. one the user made by hand", async () => {
+    const { cards, cardComments, trelloBoard } = stubFleaflicker(fakeFleaflickerSeason, { espnInjuries: () => Response.json(espnInjuries) });
+    trelloBoard.push({ id: "hand-made", name: "Fleaflicker and ESPN disagree on Adem Bona", desc: "Check Bona", closed: false, comments: [] });
+
+    await triggerRun();
+
+    expect(cards).toEqual([]);
+    expect(cardComments).toMatchInlineSnapshot(`
+      [
+        {
+          "card": "hand-made",
+          "text": "- Fleaflicker has Adem Bona OUT, ESPN Day-To-Day (return 2026-10-01): he may be benched wrongly",
+        },
+      ]
+    `);
+  });
+});
+
 describe("untagged OUT news", () => {
   it("files a Trello card on who it would bench when news rules out an untagged starter, leaving the lineup alone", async () => {
     vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-20T14:00:00Z") });
@@ -1654,12 +1667,14 @@ function fakeFleaflickerSeason(request: Request) {
   return fakeFleaflicker(request, page);
 }
 
-function stubFleaflicker(respond: (request: Request) => Response | Promise<Response>, { pushoverStatus = () => 200, trelloStatus = () => 200, trelloCardArchived = () => false, rosterApiUp = (_url: URL) => true, deadManUp = true, espnInjuries = () => Response.json(ESPN_AGREES_WITH_FLEAFLICKER), ntfyStatus = () => 200 } = {}) {
+function stubFleaflicker(respond: (request: Request) => Response | Promise<Response>, { pushoverStatus = () => 200, trelloStatus = () => 200, trelloBoardUp = () => true, rosterApiUp = (_url: URL) => true, deadManUp = true, espnInjuries = () => Response.json(ESPN_AGREES_WITH_FLEAFLICKER), ntfyStatus = () => 200 } = {}) {
   const deadManPings: string[] = [];
   const ntfyPushes: Record<string, unknown>[] = [];
   const alerts: Record<string, string>[] = [];
   const cards: { list: string; name: string; desc: string; authorization: string | null }[] = [];
   const cardComments: { card: string; text: string }[] = [];
+  // Every card on the To-Do board, newest comment last; archived cards are `closed`
+  const trelloBoard: { id: string; name: string; desc: string; closed: boolean; comments: string[] }[] = [];
   const realFetch = globalThis.fetch;
   vi.spyOn(globalThis, "fetch").mockImplementation(async (input, init) => {
     const request = new Request(input, init);
@@ -1679,15 +1694,31 @@ function stubFleaflicker(respond: (request: Request) => Response | Promise<Respo
       const { idList, name, desc } = await request.json<{ idList: string; name: string; desc: string }>();
       cards.push({ list: idList, name, desc, authorization: request.headers.get("Authorization") });
       const status = trelloStatus();
-      return status === 200 ? Response.json({ id: `card-${cards.length}` }) : new Response("invalid token", { status });
+      if (status !== 200) return new Response("invalid token", { status });
+      const id = `card-${cards.length}`;
+      trelloBoard.push({ id, name, desc, closed: false, comments: [] });
+      return Response.json({ id });
+    }
+    if (hostname === "api.trello.com" && pathname === "/1/lists/test-trello-list") {
+      return trelloBoardUp() ? Response.json({ id: "test-trello-list", idBoard: "test-trello-board" }) : new Response("Service unavailable", { status: 503 });
+    }
+    if (hostname === "api.trello.com" && pathname === "/1/boards/test-trello-board/cards/open") {
+      return Response.json(trelloBoard.filter(({ closed }) => !closed).map(({ id, name, desc }) => ({ id, name, desc })));
+    }
+    const cardActions = pathname.match(/^\/1\/cards\/([^/]+)\/actions$/);
+    if (hostname === "api.trello.com" && cardActions) {
+      const comments = trelloBoard.find(({ id }) => id === cardActions[1])?.comments ?? [];
+      return Response.json(comments.toReversed().map((text) => ({ data: { text } })));
     }
     const cardComment = pathname.match(/^\/1\/cards\/([^/]+)\/actions\/comments$/);
     if (hostname === "api.trello.com" && cardComment) {
-      cardComments.push({ card: cardComment[1], text: new URL(request.url).searchParams.get("text")! });
+      const text = new URL(request.url).searchParams.get("text") ?? (await request.json<{ text: string }>()).text;
+      cardComments.push({ card: cardComment[1], text });
+      trelloBoard.find(({ id }) => id === cardComment[1])?.comments.push(text);
       return Response.json({});
     }
     const cardLookup = pathname.match(/^\/1\/cards\/([^/]+)$/);
-    if (hostname === "api.trello.com" && cardLookup) return Response.json({ id: cardLookup[1], closed: trelloCardArchived() });
+    if (hostname === "api.trello.com" && cardLookup) return Response.json({ id: cardLookup[1], closed: trelloBoard.find(({ id }) => id === cardLookup[1])?.closed ?? true });
     if (hostname === "site.api.espn.com") return espnInjuries();
     if (hostname === "ntfy.sh") {
       ntfyPushes.push(await request.json());
@@ -1701,5 +1732,5 @@ function stubFleaflicker(respond: (request: Request) => Response | Promise<Respo
     }
     return realFetch(input, init);
   });
-  return { alerts, cards, cardComments, deadManPings, ntfyPushes };
+  return { alerts, cards, cardComments, trelloBoard, deadManPings, ntfyPushes };
 }
