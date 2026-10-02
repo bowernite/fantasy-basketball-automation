@@ -173,7 +173,7 @@ describe("lineup runner", () => {
         "message": "- Fleaflicker login failed (HTTP 503, no session cookie)
       - No lineup form on the page; the session may be logged out",
         "priority": "0",
-        "title": "Lineup run (manual) failed",
+        "title": "Lineup run failed",
         "token": "test-pushover-token",
         "url": "https://www.fleaflicker.com/nba/leagues/30579/teams/161025",
         "user": "test-pushover-user",
@@ -188,7 +188,7 @@ describe("lineup runner", () => {
 
     const record = await (await triggerRun()).json<RunRecord>();
 
-    expect(alerts.map(({ title, priority }) => ({ title, priority }))).toEqual([{ title: "Lineup run (manual) failed", priority: "0" }]);
+    expect(alerts.map(({ title, priority }) => ({ title, priority }))).toEqual([{ title: "Lineup run failed", priority: "0" }]);
     expect(cards).toEqual([]);
     expect(record.alert).toEqual({ pushover: { status: 200 } });
   });
@@ -206,7 +206,7 @@ describe("lineup runner", () => {
     await triggerRun();
 
     expect(alerts).toEqual([]);
-    expect(cards.map(({ name }) => name)).toEqual(["Lineup run (manual) failed"]);
+    expect(cards.map(({ name }) => name)).toEqual(["Lineup run failed"]);
   });
 
   it("pushes a failure that keeps happening while no upcoming tip is known once a day, e.g. over the All-Star break", async () => {
@@ -275,7 +275,7 @@ describe("lineup runner", () => {
     fleaflickerDown = true;
     await triggerRun();
 
-    expect(cards.map(({ name, desc }) => [name, desc.split("\n\n")[0]])).toEqual([["Lineup run (manual) failed", "- TypeError: Connection dropped"]]);
+    expect(cards.map(({ name, desc }) => [name, desc.split("\n\n")[0]])).toEqual([["Lineup run failed", "- TypeError: Connection dropped"]]);
     expect(cardComments).toEqual([]);
   });
 
@@ -294,8 +294,8 @@ describe("lineup runner", () => {
     await triggerRun();
 
     expect(alerts.map(({ title, priority }) => ({ title, priority }))).toEqual([
-      { title: "Lineup run (manual) failed", priority: "1" },
-      { title: "Lineup run (manual) failed", priority: "1" },
+      { title: "Lineup run failed", priority: "1" },
+      { title: "Lineup run failed", priority: "1" },
     ]);
   });
 
@@ -687,7 +687,7 @@ describe("scheduled checks", () => {
       await runner.tick("cron");
     }
 
-    expect(alerts.map(({ title, priority }) => ({ title, priority }))).toEqual([{ title: "Lineup run (cron) failed", priority: "1" }]);
+    expect(alerts.map(({ title, priority }) => ({ title, priority }))).toEqual([{ title: "Lineup run failed", priority: "1" }]);
   });
 
   it("files a Trello card, not a push, for a failed run when the next tip is more than 3 h away", async () => {
@@ -709,7 +709,7 @@ describe("scheduled checks", () => {
 
       https://www.fleaflicker.com/nba/leagues/30579/teams/161025",
           "list": "test-trello-list",
-          "name": "Lineup run (cron) failed",
+          "name": "Lineup run failed",
         },
         {
           "authorization": "OAuth oauth_consumer_key="test-trello-key", oauth_token="test-trello-token"",
@@ -900,7 +900,7 @@ describe("scheduled checks", () => {
     expect(runs).toHaveLength(1);
     expect(runs[0].warningAlert).toEqual({ trello: { status: 200 } });
     expect(alerts).toEqual([]);
-    expect(cards.map(({ name }) => name)).toEqual(["Lineup run (cron) has warnings", "Lineup saves are off"]);
+    expect(cards.map(({ name }) => name)).toEqual(["Lineup run has warnings", "Lineup saves are off"]);
     expect(cards[0].desc.split("\n")[0]).toMatchInlineSnapshot(`"- Falling back to DOM scrape for Cade Cunningham opponent info"`);
   });
 
@@ -971,7 +971,7 @@ describe("scheduled checks", () => {
 
     await runner.tick("cron");
 
-    expect(alerts.map(({ title, message }) => ({ title, message }))).toEqual([{ title: "Lineup tick (cron) failed", message: "- Error: Roster API returned HTTP 503" }]);
+    expect(alerts.map(({ title, message }) => ({ title, message }))).toEqual([{ title: "Lineup tick failed", message: "- Error: Roster API returned HTTP 503" }]);
   });
 
   it("finishes the tick when the dead-man monitor is unreachable", async () => {
@@ -992,7 +992,7 @@ describe("scheduled checks", () => {
       await runner.tick("cron");
     }
 
-    expect(alerts.map(({ title, priority }) => ({ title, priority }))).toEqual([{ title: "Lineup run (cron) failed", priority: "1" }]);
+    expect(alerts.map(({ title, priority }) => ({ title, priority }))).toEqual([{ title: "Lineup run failed", priority: "1" }]);
   });
 
   it("files one Trello card a day while saves are off and a tip is less than 24 h away", async () => {
@@ -1149,7 +1149,7 @@ describe("injury cross-check with ESPN", () => {
 
     expect(record.error).toBeUndefined();
     expect(alerts).toEqual([]);
-    expect(cards.map(({ name }) => name)).toEqual(["Lineup run (manual) has warnings"]);
+    expect(cards.map(({ name }) => name)).toEqual(["Lineup run has warnings"]);
   });
 
   it("only warns when ESPN blocks the request, leaving the run ok", async () => {
@@ -1159,7 +1159,7 @@ describe("injury cross-check with ESPN", () => {
 
     expect(record.days[0].decision?.ok).toBe(true);
     expect(alerts).toEqual([]);
-    expect(cards.map(({ name, desc }) => ({ name, desc: desc.split("\n")[0] }))).toEqual([{ name: "Lineup run (manual) has warnings", desc: "- ESPN injuries unavailable (HTTP 403)" }]);
+    expect(cards.map(({ name, desc }) => ({ name, desc: desc.split("\n")[0] }))).toEqual([{ name: "Lineup run has warnings", desc: "- ESPN injuries unavailable (HTTP 403)" }]);
   });
 });
 
@@ -1178,6 +1178,58 @@ describe("Trello cards already on the board", () => {
           "text": "- Fleaflicker has Adem Bona OUT, ESPN Day-To-Day (return 2026-10-01): he may be benched wrongly",
         },
       ]
+    `);
+  });
+
+  it("comments once when an issue's details change, not again while they stay the same", async () => {
+    vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-20T09:00:00Z") });
+    let bonaReturnDate = "2026-10-01";
+    const { cards, cardComments } = stubFleaflicker(fakeFleaflickerSeason, {
+      espnInjuries: () => Response.json(JSON.parse(JSON.stringify(espnInjuries).replace('"returnDate":"2026-10-01"', `"returnDate":"${bonaReturnDate}"`))),
+    });
+
+    await triggerRun();
+    bonaReturnDate = "2026-10-05";
+    await triggerRun();
+    vi.setSystemTime(Date.now() + 25 * 60 * 60 * 1000);
+    await triggerRun();
+
+    expect(cards).toHaveLength(1);
+    expect(cardComments).toMatchInlineSnapshot(`
+      [
+        {
+          "card": "card-1",
+          "text": "- Fleaflicker has Adem Bona OUT, ESPN Day-To-Day (return 2026-10-05): he may be benched wrongly",
+        },
+      ]
+    `);
+  });
+
+  it("files one card for a warning whether the hourly check or a manual run finds it", async () => {
+    vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-20T09:00:00Z") });
+    const { cards } = stubFleaflicker(fakeFleaflickerSeason, { espnInjuries: () => new Response("Forbidden", { status: 403 }) });
+    const runner = freshRunner();
+
+    await runner.tick("cron");
+    vi.setSystemTime(Date.now() + 3 * 60 * 60 * 1000);
+    await runner.runManually();
+
+    expect(cards.map(({ name }) => name).filter((name) => name.includes("warnings"))).toEqual(["Lineup run has warnings"]);
+  });
+
+  it("files the card anyway when it can't read the board, since a duplicate beats a lost alert", async () => {
+    const { cards } = stubFleaflicker(fakeFleaflickerSeason, { espnInjuries: () => new Response("Forbidden", { status: 403 }), trelloBoardUp: () => false });
+
+    const record = await (await triggerRun()).json<RunRecord>();
+
+    expect(cards.map(({ name }) => name)).toEqual(["Lineup run has warnings"]);
+    expect(record.warningAlert).toMatchInlineSnapshot(`
+      {
+        "trello": {
+          "lookupError": "Error: Trello /lists/test-trello-list returned HTTP 503",
+          "status": 200,
+        },
+      }
     `);
   });
 });
@@ -1370,14 +1422,14 @@ describe("ntfy fallback for phone alerts", () => {
 
       (Sent via ntfy: Pushover didn't accept it)",
           "priority": 3,
-          "title": "Lineup run (manual) failed",
+          "title": "Lineup run failed",
           "topic": "test-ntfy-topic",
         },
       ]
     `);
     expect(record.alert).toMatchObject({ pushover: { status: 500 }, ntfy: { status: 200 } });
     const [latest] = await listAlerts();
-    expect(latest).toMatchObject({ title: "Lineup run (manual) failed", delivered: true });
+    expect(latest).toMatchObject({ title: "Lineup run failed", delivered: true });
   });
 
   it("tries ntfy again within the same alert when it refuses", async () => {
@@ -1409,7 +1461,7 @@ describe("alert log for outside watchdogs", () => {
     expect(latest).toEqual({
       id: expect.any(Number),
       at: "2026-10-20T17:00:00.000Z",
-      title: "Lineup run (manual) failed",
+      title: "Lineup run failed",
       body: "- TypeError: Connection reset",
       priority: 0,
       push: true,
@@ -1484,7 +1536,7 @@ describe("alert log for outside watchdogs", () => {
     await triggerRun();
 
     const [latest] = await listAlerts();
-    expect(latest).toMatchObject({ title: "Lineup run (manual) has warnings", priority: 0, push: false });
+    expect(latest).toMatchObject({ title: "Lineup run has warnings", priority: 0, push: false });
   });
 });
 
@@ -1673,7 +1725,6 @@ function stubFleaflicker(respond: (request: Request) => Response | Promise<Respo
   const alerts: Record<string, string>[] = [];
   const cards: { list: string; name: string; desc: string; authorization: string | null }[] = [];
   const cardComments: { card: string; text: string }[] = [];
-  // Every card on the To-Do board, newest comment last; archived cards are `closed`
   const trelloBoard: { id: string; name: string; desc: string; closed: boolean; comments: string[] }[] = [];
   const realFetch = globalThis.fetch;
   vi.spyOn(globalThis, "fetch").mockImplementation(async (input, init) => {
@@ -1717,8 +1768,6 @@ function stubFleaflicker(respond: (request: Request) => Response | Promise<Respo
       trelloBoard.find(({ id }) => id === cardComment[1])?.comments.push(text);
       return Response.json({});
     }
-    const cardLookup = pathname.match(/^\/1\/cards\/([^/]+)$/);
-    if (hostname === "api.trello.com" && cardLookup) return Response.json({ id: cardLookup[1], closed: trelloBoard.find(({ id }) => id === cardLookup[1])?.closed ?? true });
     if (hostname === "site.api.espn.com") return espnInjuries();
     if (hostname === "ntfy.sh") {
       ntfyPushes.push(await request.json());

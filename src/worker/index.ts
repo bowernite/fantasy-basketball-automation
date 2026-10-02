@@ -65,7 +65,7 @@ export class LineupRunner extends DurableObject<Env> {
       ({ healthy, nextTargetMs } = await this.planAndRun(trigger));
     } catch (error) {
       console.error(JSON.stringify({ event: "tickFailed", trigger, error: String(error) }));
-      await this.alertFailure(`Lineup tick (${trigger}) failed`, [String(error)]);
+      await this.alertFailure("Lineup tick failed", [String(error)]);
     } finally {
       this.busy = false;
       // Waking at least every 5 min retries failed runs and keeps the schedule going when cron doesn't fire
@@ -116,10 +116,10 @@ export class LineupRunner extends DurableObject<Env> {
       record.error = String(error);
     }
     const problems = listProblems(record);
-    if (problems.length > 0) record.alert = await this.alertFailure(`Lineup run (${trigger}) failed`, problems).catch((error) => ({ error: String(error) }));
+    if (problems.length > 0) record.alert = await this.alertFailure("Lineup run failed", problems).catch((error) => ({ error: String(error) }));
     else await this.ctx.storage.delete([...ALERT_CHANNELS, "log"].map((channel) => `${FAILURE_ALERTS_KEY}:${channel}`));
     const warnings = [...(record.warnings ?? []), ...record.days.flatMap(({ decision, warnings = [] }) => [...warnings, ...(decision?.ok ? decision.warnings : [])])];
-    if (warnings.length > 0) record.warningAlert = await this.alertWarnings(trigger, warnings).catch((error) => ({ error: String(error) }));
+    if (warnings.length > 0) record.warningAlert = await this.alertWarnings(warnings).catch((error) => ({ error: String(error) }));
     this.ctx.storage.sql.exec("INSERT INTO runs (record) VALUES (?)", JSON.stringify(record));
     this.ctx.storage.sql.exec("DELETE FROM runs WHERE id <= (SELECT MAX(id) FROM runs) - ?", KEPT_RUNS);
     return record;
@@ -140,8 +140,8 @@ export class LineupRunner extends DurableObject<Env> {
     return this.notify({ title, body, priority }, { ...dedupe, repeatAfterMs: REPEAT_ALERT_AFTER_MS });
   }
 
-  private async alertWarnings(trigger: RunRecord["trigger"], warnings: string[]) {
-    const alert: Alert = { title: `Lineup run (${trigger}) has warnings`, body: warnings.map((warning) => `- ${warning}`).join("\n"), priority: 0 };
+  private async alertWarnings(warnings: string[]) {
+    const alert: Alert = { title: "Lineup run has warnings", body: warnings.map((warning) => `- ${warning}`).join("\n"), priority: 0 };
     return this.notify(alert, { key: "warningAlerts", fingerprint: warnings.join("\n"), repeatAfterMs: REPEAT_ALERT_AFTER_MS });
   }
 
@@ -265,9 +265,13 @@ export class LineupRunner extends DurableObject<Env> {
     if (!this.env.TRELLO_API_KEY || !this.env.TRELLO_TOKEN || !this.env.TRELLO_LIST) return { accepted: false, error: "TRELLO_API_KEY, TRELLO_TOKEN or TRELLO_LIST not set" };
     const headers = { Authorization: `OAuth oauth_consumer_key="${this.env.TRELLO_API_KEY}", oauth_token="${this.env.TRELLO_TOKEN}"`, "Content-Type": "application/json" };
     const desc = `${body}\n\n${this.env.LINEUP_URL}`;
-    const openCard = await this.findOpenTrelloCard(title, headers);
-    if (openCard?.desc === desc) return { accepted: true, openCard: openCard.id, unchanged: true };
+    let lookupError: string | undefined;
+    const openCard = await this.findOpenTrelloCard(title, headers).catch((error) => {
+      lookupError = String(error);
+      return undefined;
+    });
     if (openCard) {
+      if ([body, desc].includes(openCard.latestText)) return { accepted: true, openCard: openCard.id, unchanged: true };
       const response = await fetchWithTimeout(`${TRELLO_API_URL}/cards/${openCard.id}/actions/comments`, { method: "POST", headers, body: JSON.stringify({ text: body }) });
       return { ...(await summarizeAlertResponse(response, response.ok)), openCard: openCard.id };
     }
@@ -276,19 +280,17 @@ export class LineupRunner extends DurableObject<Env> {
       headers,
       body: JSON.stringify({ idList: this.env.TRELLO_LIST, name: title, desc }),
     });
-    return summarizeAlertResponse(response, response.ok);
+    return { ...(await summarizeAlertResponse(response, response.ok)), ...(lookupError && { lookupError }) };
   }
 
   // The whole board, since the user moves cards out of the Inbox; archiving a card closes it
   private async findOpenTrelloCard(name: string, headers: Record<string, string>) {
-    const getFromTrello = async <T>(path: string) => {
-      const response = await fetchWithTimeout(`${TRELLO_API_URL}${path}`, { headers });
-      if (!response.ok) throw new Error(`Trello ${path.split("?")[0]} returned HTTP ${response.status}`);
-      return response.json<T>();
-    };
-    const { idBoard } = await getFromTrello<{ idBoard: string }>(`/lists/${this.env.TRELLO_LIST}?fields=idBoard`);
-    const openCards = await getFromTrello<{ id: string; name: string; desc: string }[]>(`/boards/${idBoard}/cards/open?fields=name,desc`);
-    return openCards.find((card) => card.name === name);
+    const { idBoard } = await getFromTrello<{ idBoard: string }>(`/lists/${this.env.TRELLO_LIST}?fields=idBoard`, headers);
+    const openCards = await getFromTrello<{ id: string; name: string; desc: string }[]>(`/boards/${idBoard}/cards/open?fields=name,desc`, headers);
+    const openCard = openCards.find((card) => card.name === name);
+    if (!openCard) return undefined;
+    const [lastComment] = await getFromTrello<{ data: { text: string } }[]>(`/cards/${openCard.id}/actions?filter=commentCard&limit=1`, headers);
+    return { id: openCard.id, latestText: lastComment?.data.text ?? openCard.desc };
   }
 
   private async checkDays(record: RunRecord, days?: number[]) {
@@ -582,8 +584,7 @@ type LoginOutcome = { status: number; gotSessionCookie: boolean; stillSignedOut?
 // `push` sends a priority-0 alert to the phone instead of Trello
 type Alert = { title: string; body: string; priority: 0 | 1 | 2; push?: boolean };
 
-// `openCard`: the open Trello card with the alert's title, commented on instead of filing another, or left alone when `unchanged`
-type AlertSend = ({ status: number; response?: string } | { error: string } | { unchanged: true }) & { openCard?: string };
+type AlertSend = ({ status: number; response?: string } | { error: string } | { unchanged: true }) & { openCard?: string; lookupError?: string };
 
 type AlertOutcome = AlertSend & { accepted: boolean };
 
@@ -648,6 +649,12 @@ function failedSend(error: unknown): AlertOutcome {
 
 async function summarizeAlertResponse(response: Response, accepted: boolean) {
   return accepted ? { accepted, status: response.status } : { accepted, status: response.status, response: (await response.text()).slice(0, 200) };
+}
+
+async function getFromTrello<T>(path: string, headers: Record<string, string>) {
+  const response = await fetchWithTimeout(`${TRELLO_API_URL}${path}`, { headers });
+  if (!response.ok) throw new Error(`Trello ${path.split("?")[0]} returned HTTP ${response.status}`);
+  return response.json<T>();
 }
 
 function hasRunToken(request: Request, runToken: string | undefined) {

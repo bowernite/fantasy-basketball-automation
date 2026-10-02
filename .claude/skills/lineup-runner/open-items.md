@@ -21,7 +21,6 @@ As of 2026-09-30: deployed and running every 5 min, saves **on** (user approved;
 - Game-day digest (saves are on): at each day's first T-40, send starters, benched players with a game, and changes (Pushover priority −1)
 - A NaN score `alert()` in `src/prioritization/score-weighting.ts` fails the whole day: score 0 and warn instead
 - Only `.alert-danger` banners fail a run; decide fail vs warning if a real `.alert-warning` shows up
-- One problem can alert twice (hourly and tip runs fingerprint differently; warnings change as games start). Trello "Still failing" comments send the body in the URL and also say it for warnings
 - Stale bundled projections: rostered players missing from generated `src/data/player-data.ts` (`projections` Skill)
 - `tsc` doesn't cover `src/worker/`, and the empty-slot / over-fill guards in `decide-lineup.ts` have no test reaching them
 - Only if needed: `/api/SetLineup` fallback, a GitHub Actions backup runner, a per-run LLM review, Pushover receipts, a "recovered" message, pruning dedupe keys
