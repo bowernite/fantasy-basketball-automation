@@ -1057,6 +1057,7 @@ describe("scheduled checks", () => {
 
 describe("injury cross-check with ESPN", () => {
   it("files a Trello card when Fleaflicker has a player out who ESPN lists as day-to-day", async () => {
+    vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-17T12:00:00Z") });
     const { alerts, cards } = stubFleaflicker(fakeFleaflickerSeason, { espnInjuries: () => Response.json(espnInjuries) });
 
     await triggerRun();
@@ -1098,6 +1099,7 @@ describe("injury cross-check with ESPN", () => {
   });
 
   it("alerts each disagreement once a day, even as others come and go", async () => {
+    vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-20T09:00:00Z") });
     const cadeOut = { status: "Out", date: "2026-09-30T12:00Z", athlete: { displayName: "Cade Cunningham" } };
     let espnLists = espnInjuries;
     const { cards } = stubFleaflicker(fakeFleaflickerSeason, { espnInjuries: () => Response.json(espnLists) });
@@ -1142,6 +1144,36 @@ describe("injury cross-check with ESPN", () => {
     `);
   });
 
+  it("holds disagreement alerts until 3 days before opening night, still recording both feeds", async () => {
+    vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-02T16:00:00Z") });
+    const { alerts, cards } = stubFleaflicker(fakeFleaflickerSeason, { espnInjuries: () => Response.json(espnInjuries) });
+
+    const record = await (await triggerRun()).json<RunRecord>();
+
+    expect(record.days[0].injuries?.map(({ player }) => player)).toEqual(["Adem Bona"]);
+    expect(alerts).toEqual([]);
+    expect(cards).toEqual([]);
+  });
+
+  it("holds disagreement alerts after the fantasy season's last day", async () => {
+    vi.useFakeTimers({ toFake: ["Date"], now: new Date("2027-05-01T16:00:00Z") });
+    const { alerts, cards } = stubFleaflicker(fakeFleaflickerSeason, { espnInjuries: () => Response.json(espnInjuries) });
+
+    await triggerRun();
+
+    expect(alerts).toEqual([]);
+    expect(cards).toEqual([]);
+  });
+
+  it("still files process warnings before the season", async () => {
+    vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-02T16:00:00Z") });
+    const { cards } = stubFleaflicker(fakeFleaflickerSeason, { espnInjuries: () => new Response("Access Denied", { status: 403 }) });
+
+    await triggerRun();
+
+    expect(cards.map(({ name }) => name)).toEqual(["Lineup run has warnings"]);
+  });
+
   it("only warns when ESPN's injury list has an unexpected shape, leaving the run ok", async () => {
     const { alerts, cards } = stubFleaflicker(fakeFleaflickerSeason, { espnInjuries: () => Response.json({ injuries: [{ injuries: [{ status: "Out" }] }] }) });
 
@@ -1165,6 +1197,7 @@ describe("injury cross-check with ESPN", () => {
 
 describe("Trello cards already on the board", () => {
   it("comments on an open card with the same name instead of filing another, e.g. one the user made by hand", async () => {
+    vi.useFakeTimers({ toFake: ["Date"], now: new Date("2026-10-20T09:00:00Z") });
     const { cards, cardComments, trelloBoard } = stubFleaflicker(fakeFleaflickerSeason, { espnInjuries: () => Response.json(espnInjuries) });
     trelloBoard.push({ id: "hand-made", name: "Fleaflicker and ESPN disagree on Adem Bona", desc: "Check Bona", closed: false, comments: [] });
 

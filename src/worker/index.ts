@@ -39,6 +39,8 @@ const DAY_MS = 24 * 60 * 60 * 1000;
 const FORGET_ALERT_AFTER_MS = 24 * 60 * 60 * 1000;
 const REPEAT_INJURY_ALERT_AFTER_MS = 24 * 60 * 60 * 1000;
 const SAVES_OFF_WARNING_WINDOW_MS = 24 * 60 * 60 * 1000;
+// Player alerts (injury disagreements, untagged news) start this long before the fantasy season's first day
+const PLAYER_ALERTS_LEAD_MS = 3 * DAY_MS;
 const WAKE_INTERVAL_MS = 5 * 60 * 1000;
 const LISTED_ALERTS = 50;
 const KEPT_CAPTURES = 10;
@@ -326,8 +328,17 @@ export class LineupRunner extends DurableObject<Env> {
       if (comparison.comparisons.length > 0) dayCheck.injuries = comparison.comparisons;
       for (const disagreement of comparison.disagreements) disagreements.set(disagreement.message, disagreement);
     }
+    if (!(await this.playerAlertsOn())) return;
     const injuryAlerts = await this.alertInjuryDisagreements([...disagreements.values()]);
     if (injuryAlerts.length > 0) record.injuryAlerts = injuryAlerts;
+  }
+
+  // Player news can't cost a game outside the fantasy season, so only process failures and warnings alert then; the window comes from Fleaflicker's lineup periods, so it rolls to each new season on its own
+  private async playerAlertsOn() {
+    const periods = (await this.ctx.storage.get<LineupPeriod[]>(LINEUP_PERIODS_KEY)) ?? [];
+    if (periods.length === 0) return true;
+    const now = Date.now();
+    return now >= Number(periods[0].low.startEpochMilli) - PLAYER_ALERTS_LEAD_MS && now - Number(periods.at(-1)!.low.startEpochMilli) <= DAY_MS;
   }
 
   // Evidence to fix parsing from the real page later: in-game markup, for one, is gone by the next day

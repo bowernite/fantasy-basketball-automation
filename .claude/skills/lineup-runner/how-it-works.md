@@ -16,7 +16,7 @@ The goal: the user's lineup is set optimally and reliably for every game, with n
 2. Per day: GET the lineup page for an explicit `week=N` in the fantasy-stats view, plus the signed-in `FetchRoster` for the same day. Day `N` comes from the API's `eligibleLineupPeriods`, never the default page (the league day ends 6a ET)
 3. `decideLineup()`: runs the extension's `setLineup()` on the page, parsed with linkedom plus a small form-control shim, then serializes the whole form and checks invariants. It fails closed on an error banner, no form, page vs API disagreement, an empty or over-filled slot, or a select with no slot chosen
 4. When saves are on and something changed: `saveLineup()` POSTs the whole form, then reloads the page and diffs every posted slot. No POST within 3 min of a tip
-5. After every day is saved: untagged OUT news alerts (below), then the ESPN injury cross-check (alert only)
+5. After every day is saved: untagged OUT news alerts (below), then the ESPN injury cross-check (alert only). Disagreements are always recorded but alert only from 3 days before the fantasy season's first day until a day after its last (from the stored `eligibleLineupPeriods`, so each season rolls over unattended; no periods stored → alert). Process failures and run warnings alert year-round. Untagged news needs a tip ≤36 h out, so it can't fire off-season either
 6. Record to DO SQLite (`GET /runs`), alert on problems or warnings. A day with problems, or the day's first check with locked rows, also keeps its page and roster (`GET /captures`), since in-game markup is gone by the next day
 
 ## Untagged OUT news
